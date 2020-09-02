@@ -3,8 +3,13 @@ import Antd from 'ant-design-vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
+import {createFromIconfontCN} from '@ant-design/icons-vue'
 
 const app = createApp(App)
-app.use(store).use(router).mount('#app')
-
-app.use(Antd)
+const IconFont = createFromIconfontCN({
+    scriptUrl: '//at.alicdn.com/t/font_1621893_lxlqg2tkrd.js'
+})
+app.use(store).use(router).use(Antd).component('IconFont', IconFont)
+app.config.globalProperties.axios = axios
+app.mount('#app')
