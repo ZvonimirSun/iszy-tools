@@ -15,26 +15,16 @@
           <template #title>
             <span><user-outlined /><span>User</span></span>
           </template>
-          <a-menu-item key="3">
-            Tom
-          </a-menu-item>
-          <a-menu-item key="4">
-            Bill
-          </a-menu-item>
-          <a-menu-item key="5">
-            Alex
-          </a-menu-item>
+          <a-menu-item key="3"> Tom </a-menu-item>
+          <a-menu-item key="4"> Bill </a-menu-item>
+          <a-menu-item key="5"> Alex </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
             <span><team-outlined /><span>Team</span></span>
           </template>
-          <a-menu-item key="6">
-            Team 1
-          </a-menu-item>
-          <a-menu-item key="8">
-            Team 2
-          </a-menu-item>
+          <a-menu-item key="6"> Team 1 </a-menu-item>
+          <a-menu-item key="8"> Team 2 </a-menu-item>
         </a-sub-menu>
         <a-menu-item key="9">
           <file-outlined />
@@ -68,7 +58,7 @@ import {
   UserOutlined,
   TeamOutlined,
   FileOutlined
-} from "@ant-design/icons-vue";
+} from '@ant-design/icons-vue'
 
 export default {
   components: {
@@ -78,13 +68,13 @@ export default {
     TeamOutlined,
     FileOutlined
   },
-  data() {
+  data () {
     return {
       collapsed: false,
-      selectedKeys: ["1"]
-    };
+      selectedKeys: ['1']
+    }
   }
-};
+}
 </script>
 
 <style>
