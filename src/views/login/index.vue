@@ -17,7 +17,7 @@
           </a-input-password>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" block size="large" @click="login">
+          <a-button type="primary" block size="large" @click="login" :loading="loading">
             确定
           </a-button>
         </a-form-item>
@@ -37,18 +37,53 @@ export default {
     UserOutlined,
     LockOutlined
   },
+  watch: {
+    $route: {
+      handler: function (route) {
+        const query = route.query
+        if (query) {
+          this.redirect = query.redirect
+          this.otherQuery = this.getOtherQuery(query)
+        }
+      },
+      immediate: true
+    }
+  },
   data: () => ({
     form: {
       layout: 'horizontal',
       username: '',
       password: ''
-    }
+    },
+    redirect: undefined,
+    otherQuery: {},
+    loading: false
   }),
   methods: {
     login () {
       if (this.form.username !== '' && this.form.password !== '') {
-        this.$store.dispatch('login', { username: this.form.username, password: this.form.password })
+        this.loading = true
+        this.$store.dispatch('user/login', {
+          username: this.form.username,
+          password: this.form.password
+        }).then(() => {
+          this.$msg.success('登录成功！')
+          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+          this.loading = false
+        }).catch(() => {
+          this.$msg.error('用户名或密码错误！')
+        }).finally(() => {
+          this.loading = false
+        })
       }
+    },
+    getOtherQuery (query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {})
     }
   }
 }

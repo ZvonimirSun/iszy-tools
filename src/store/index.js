@@ -1,25 +1,17 @@
 import { createStore } from 'vuex'
-import Parse from 'parse'
-import { message } from 'ant-design-vue'
+import getters from './getters'
+
+const modulesFiles = require.context('./modules', true, /\.js$/)
+
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+  // set './app.js' => 'app'
+  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
+  const value = modulesFiles(modulePath)
+  modules[moduleName] = value.default
+  return modules
+}, {})
 
 export default createStore({
-  state: {},
-  getters: {
-    currentUser: () => {
-      return Parse.User.current()
-    }
-  },
-  mutations: {},
-  actions: {
-    async login ({ commit }, { username, password }) {
-      try {
-        const user = await Parse.User.logIn(username.trim(), password, { usePost: true })
-        message.success('登陆成功！')
-        console.log(user)
-      } catch (e) {
-        message.error('用户名或密码错误！')
-      }
-    }
-  },
-  modules: {}
+  getters,
+  modules
 })
