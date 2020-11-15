@@ -15,7 +15,17 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  },
+  {
+    path: '/login',
+    name: '登录',
+    component: () => import('@/views/login/index'),
+    meta: {
+      title: '登录',
+      requiresAuth: false
+    }
+  },
+  { path: '/:catchAll(.*)', redirect: '/404', hidden: true }
 ]
 
 const router = createRouter({
