@@ -1,27 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import UUID from '@/views/encrypt/uuid'
-import mtpLoans from '@/views/money/mtpLoans'
 
 const routes = [
   {
     path: '/',
-    name: '首页',
-    component: Home,
+    name: 'ISZY 工具集合',
+    component: () => import('@/views/Home.vue'),
     meta: {
-      title: '首页',
       requiresAuth: false
     }
   },
   {
     path: '/encrypt/uuid',
-    name: 'UUID在线生成',
-    component: UUID
+    name: 'UUID在线生成工具',
+    component: () => import('@/views/encrypt/uuid'),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
-    path: '/money/mtpLoans',
+    path: '/money/mtqLoans',
     name: '多次提前还贷计算器',
-    component: mtpLoans
+    component: () => import('@/views/money/mtqLoans'),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: '/about',
@@ -30,7 +32,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
+      import(/* webpackChunkName: "about" */ '@/views/About.vue')
   },
   {
     path: '/login',
@@ -43,6 +45,7 @@ const routes = [
   },
   {
     path: '/404',
+    name: '404',
     component: () => import('@/views/error-page/404'),
     hidden: true
   },

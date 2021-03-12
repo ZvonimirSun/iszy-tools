@@ -1,3 +1,3 @@
 module.exports = {
-  title: 'ISZY TOOLS'
+  title: 'ISZY 工具集合'
 }

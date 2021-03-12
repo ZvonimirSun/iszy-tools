@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'mtpLoans'
+  name: 'mtqLoans'
 }
 </script>
 

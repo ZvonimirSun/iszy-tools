@@ -1,6 +1,20 @@
 <template>
   <a-config-provider>
-    <router-view/>
+    <div class="container">
+      <a-back-top/>
+      <div class="panel">
+        <div class="top">
+          <div class="header">{{$route.name}}</div>
+          <div class="desc">
+            <span v-if="$route.path === '/'">一个轻量的工具集合</span>
+            <router-link to="/" v-else>返回首页</router-link>
+          </div>
+        </div>
+        <div class="main">
+          <router-view/>
+        </div>
+      </div>
+    </div>
   </a-config-provider>
 </template>
 
@@ -44,5 +58,44 @@
 
 body {
   margin: 0
+}
+</style>
+
+<style lang="scss" scoped>
+.container {
+  height: 100%;
+  width: 100%;
+
+  .panel {
+    max-width: 75rem;
+    position: relative;
+    margin: 0 auto;
+    padding: 0 1.25rem 1.25rem;
+
+    .top {
+      padding-top: 2rem;
+      width: 100%;
+      text-align: center;
+
+      .header {
+        height: 44px;
+        line-height: 44px;
+        font-size: 33px;
+        color: #333333;
+        font-weight: 600;
+      }
+
+      .desc {
+        font-size: 14px;
+        margin-top: 12px;
+        margin-bottom: 40px;
+        color: #999999;
+      }
+    }
+
+    .main {
+      width: 100%;
+    }
+  }
 }
 </style>
