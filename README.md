@@ -1,4 +1,4 @@
-# iszy-tools
+# iszy-tools [![Node.js CI](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/node.js.yml/badge.svg)](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/node.js.yml)
 
 ## Project setup
 ```
