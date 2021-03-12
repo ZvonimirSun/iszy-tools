@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import UUID from '../views/encrypt/uuid'
+import Home from '@/views/Home.vue'
+import UUID from '@/views/encrypt/uuid'
+import mtpLoans from '@/views/money/mtpLoans'
 
 const routes = [
   {
@@ -16,6 +17,11 @@ const routes = [
     path: '/encrypt/uuid',
     name: 'UUID在线生成',
     component: UUID
+  },
+  {
+    path: '/money/mtpLoans',
+    name: '多次提前还贷计算器',
+    component: mtpLoans
   },
   {
     path: '/about',
