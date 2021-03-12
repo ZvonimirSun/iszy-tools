@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
     <div class="top">
-      <div class="header">ISZY TOOLS</div>
-      <div class="desc">ISZY TOOLS 是为个人使用方便而编写的工具集合</div>
+      <div class="header">ISZY 工具集合</div>
+      <div class="desc">一个轻量的工具集合</div>
     </div>
     <div class="main">
       <a-form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">

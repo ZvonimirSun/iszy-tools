@@ -1,11 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import UUID from '../views/encrypt/uuid'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: '首页',
+    component: Home,
+    meta: {
+      title: '首页',
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/encrypt/uuid',
+    name: 'UUID在线生成',
+    component: UUID
   },
   {
     path: '/about',
