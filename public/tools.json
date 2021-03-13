@@ -1,19 +1,19 @@
 [
   {
-    "type": "理财",
-    "children": [
-      {
-        "name": "多次提前还贷计算器",
-        "link": "/money/mtqLoans"
-      }
-    ]
-  },
-  {
     "type": "加密解密",
     "children": [
       {
         "name": "UUID在线生成",
         "link": "/encrypt/uuid"
+      }
+    ]
+  },
+  {
+    "type": "理财",
+    "children": [
+      {
+        "name": "多次提前还贷计算器",
+        "link": "/money/mtqLoans"
       }
     ]
   }
