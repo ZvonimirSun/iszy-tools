@@ -24,7 +24,7 @@
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  //text-align: center;
   font-size: 14px;
   line-height: 22px;
   color: #333333;
