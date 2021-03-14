@@ -1,10 +1,10 @@
 <template>
-  <a-config-provider>
+  <a-config-provider :locale="locale">
     <div class="container">
       <a-back-top/>
       <div class="panel">
         <div class="top">
-          <div class="header">{{$route.name}}</div>
+          <div class="header">{{ $route.name }}</div>
           <div class="desc">
             <span v-if="$route.path === '/'">一个轻量的工具集合</span>
             <router-link to="/" v-else>返回首页</router-link>
@@ -17,6 +17,16 @@
     </div>
   </a-config-provider>
 </template>
+
+<script>
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
+
+export default {
+  data: () => ({
+    locale: zhCN
+  })
+}
+</script>
 
 <style lang="scss">
 #app {
