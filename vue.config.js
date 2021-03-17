@@ -1,4 +1,5 @@
 module.exports = {
+  productionSourceMap: false,
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
       const terserWebpackPlugin = config.optimization.minimizer[0]
