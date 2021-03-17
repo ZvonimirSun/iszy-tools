@@ -1,12 +1,23 @@
 module.exports = {
-  configureWebpack: (config) => {
+  configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
-      config.optimization.minimizer.map((arg) => {
-        const option = arg.options.terserOptions.compress
-        option.drop_console = true // 打开开关
-        option.drop_debugger = true // 打开开关
-        return arg
-      })
+      const terserWebpackPlugin = config.optimization.minimizer[0]
+      const terserOptions = terserWebpackPlugin.options.terserOptions
+
+      terserOptions.compress.drop_console = true
+      terserOptions.compress.dead_code = false
+
+      terserOptions.compress.drop_debugger = true
+      terserOptions.compress.keep_classnames = false
+      terserOptions.compress.keep_fnames = false
+      terserOptions.compress.module = false
+
+      terserOptions.keep_classnames = false
+      terserOptions.keep_fnames = false
+      terserOptions.module = false
+    }
+    config.resolve.fallback = {
+      crypto: false
     }
   },
   devServer: {
