@@ -23,10 +23,10 @@
           </a-form-item>
           <a-form-item label="还款方式">
             <a-select v-model:value="options.repayment">
-              <a-select-option :value="1">
+              <a-select-option value="1">
                 等额本息
               </a-select-option>
-              <a-select-option :value="2">
+              <a-select-option value="2">
                 等额本金
               </a-select-option>
             </a-select>
@@ -41,20 +41,23 @@
     <a-col :xs="24" :lg="18">
       <div class="panel">
         <a-form :label-col="{span:6}" :wrapper-col="{ span: 18}" labelAlign="left" :colon="false">
-          <a-form-item label="累计缴息">
-            <a-input addon-after="元" v-model:value="cumulativeInterestPayment" readonly/>
-          </a-form-item>
           <a-form-item label="累计提前还款">
             <a-input addon-after="元" v-model:value="savedMoney" readonly/>
           </a-form-item>
           <a-form-item label="累计调整期数">
             <a-input addon-after="元" v-model:value="savedMoney" readonly/>
           </a-form-item>
+          <a-form-item label="原累计利息">
+            <a-input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
+          </a-form-item>
+          <a-form-item label="累计缴息">
+            <a-input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
+          </a-form-item>
           <a-form-item label="累计节省利息">
             <a-input addon-after="元" v-model:value="savedMoney" readonly/>
           </a-form-item>
           <a-form-item :wrapper-col="{span:24}">
-            <a-table :dataSource="dataSource" :columns="columns" bordered size="small"/>
+            <a-table :dataSource="dataSource" :columns="columns" bordered size="small" :pagination="false"/>
           </a-form-item>
         </a-form>
       </div>
@@ -63,16 +66,18 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'mtqLoans',
   data: () => ({
     options: {
-      loanAmount: 0,
+      loanAmount: 1100000,
       repaymentPeriod: 0,
       loanMonth: 120,
-      lendingRates: 4.9,
-      repayment: 1,
-      firstRepaymentDate: undefined
+      lendingRates: 5.9,
+      repayment: '2',
+      firstRepaymentDate: moment()
     },
 
     columns: [
@@ -129,8 +134,8 @@ export default {
       if (!isNaN(parseFloat(this.options.lendingRates)) && parseFloat(this.options.lendingRates) > 0) {
         newOptions.lendingRates = parseFloat(this.options.lendingRates)
       }
-      if (this.options.firstRepaymentDate && this.options.firstRepaymentDate._d instanceof Date) {
-        newOptions.firstRepaymentDate = this.options.firstRepaymentDate._d
+      if (moment.isMoment(this.options.firstRepaymentDate)) {
+        newOptions.firstRepaymentDate = this.options.firstRepaymentDate
       }
       return newOptions
     },
@@ -138,21 +143,82 @@ export default {
       return 0
     },
     dataSource: function () {
-      return []
+      if (this.isValidOptions) {
+        const result = []
+        result.push({ key: 0, times: 0, remainingPrincipal: this.computedOptions.loanAmount })
+        if (this.options.repayment === '2') {
+          const remain = {
+            loanAmount: this.computedOptions.loanAmount,
+            loanMonth: this.computedOptions.loanMonth
+          }
+          for (let i = 1; i <= this.computedOptions.loanMonth; i++) {
+            const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
+            const interest = Number((remain.loanAmount * this.computedOptions.lendingRates / 100.0 / 12).toFixed(2))
+            const amount = Number((principal + interest).toFixed(2))
+            remain.loanAmount -= principal
+            remain.loanMonth--
+            result.push({
+              key: i,
+              times: i,
+              repaymentDate: this.computedOptions.firstRepaymentDate.clone().add((i - 1), 'M').format('YYYY年M月D日'),
+              monthlyAmount: amount,
+              interestRepayment: interest,
+              principalRepayment: principal,
+              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+            })
+          }
+        }
+        return result
+      } else { return [] }
     },
     isValidOptions: function () {
       return Object.keys(this.computedOptions).length >= 4
     },
-    cumulativeInterestPayment: function () {
-      return ''
-      // try {
-      //   return ''
-      // } catch (e) {
-      //   return ''
-      // }
+    originalCumulativeInterestPayment: function () {
+      if (this.isValidOptions) {
+        const options = this.computedOptions
+        if (this.options.repayment === '1') {
+          return options.loanAmount * options.lendingRates / 100.0 / 12 * (1 + options.lendingRates / 100.0 / 12)
+        } else {
+          return (options.loanAmount * options.lendingRates / 100.0 / 12 * (options.loanMonth + 1) / 2).toFixed(2)
+        }
+      } else { return 0 }
     }
   },
-  methods: {}
+  methods: {
+  }
+}
+
+/**
+ * Copy of Excel's PMT function.
+ * Credit: http://stackoverflow.com/questions/2094967/excel-pmt-function-in-js
+ *
+ * @param ratePerPeriod       The interest rate for the loan.
+ * @param numberOfPayments    The total number of payments for the loan in months.
+ * @param presentValue         The present value, or the total amount that a series of future payments is worth now;
+ *                              Also known as the principal.
+ * @param futureValue          The future value, or a cash balance you want to attain after the last payment is made.
+ *                              If fv is omitted, it is assumed to be 0 (zero), that is, the future value of a loan is 0.
+ * @param type                  Optional, defaults to 0. The number 0 (zero) or 1 and indicates when payments are due.
+ *                              0 = At the end of period
+ *                              1 = At the beginning of the period
+ * @returns {number}
+ */
+// eslint-disable-next-line no-unused-vars
+function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) {
+  futureValue = typeof futureValue !== 'undefined' ? futureValue : 0
+  type = typeof type !== 'undefined' ? type : 0
+
+  if (ratePerPeriod !== 0.0) {
+    // Interest rate exists
+    const q = Math.pow(1 + ratePerPeriod, numberOfPayments)
+    return -(ratePerPeriod * (futureValue + (q * presentValue))) / ((-1 + q) * (1 + ratePerPeriod * (type)))
+  } else if (numberOfPayments !== 0.0) {
+    // No interest rate, but number of payments exists
+    return -(futureValue + presentValue) / numberOfPayments
+  }
+
+  return 0
 }
 </script>
 
