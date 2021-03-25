@@ -1,5 +1,14 @@
 [
   {
+    "type": "常用工具",
+    "children": [
+      {
+        "name": "极简图床",
+        "link": "/common/imgHosting"
+      }
+    ]
+  },
+  {
     "type": "加密解密",
     "children": [
       {
