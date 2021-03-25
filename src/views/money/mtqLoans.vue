@@ -3,12 +3,12 @@
     <a-col :xs="24" :lg="6">
       <div class="panel">
         <a-form layout="horizontal" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
-                :colon="false" v-model:value="options">
+                :colon="false">
           <a-form-item label="贷款金额">
-            <a-input addon-after="元" v-model:value="options.loanAmount" type="number"/>
+            <a-input addon-after="元" v-model:value="loanAmount" type="number"/>
           </a-form-item>
           <a-form-item label="贷款期限">
-            <a-select v-model:value="options.repaymentPeriod" type="number">
+            <a-select v-model:value="repaymentPeriod" type="number">
               <a-select-option :value="0">自定义贷款期限</a-select-option>
               <a-select-option v-for="(n,index) in 30" :key="'repaymentPeriod'+index" :value="n">
                 {{ n }}年({{ n * 12 }}月)
@@ -16,13 +16,13 @@
             </a-select>
           </a-form-item>
           <a-form-item label="贷款月数">
-            <a-input addon-after="月" v-model:value="options.loanMonth" :disabled="options.repaymentPeriod!==0"/>
+            <a-input addon-after="月" v-model:value="loanMonth" :disabled="repaymentPeriod!==0"/>
           </a-form-item>
           <a-form-item label="贷款利率">
-            <a-input addon-after="%" v-model:value="options.lendingRates"/>
+            <a-input addon-after="%" v-model:value="lendingRates"/>
           </a-form-item>
           <a-form-item label="还款方式">
-            <a-select v-model:value="options.repayment">
+            <a-select v-model:value="repayment">
               <a-select-option value="1">
                 等额本息
               </a-select-option>
@@ -32,9 +32,12 @@
             </a-select>
           </a-form-item>
           <a-form-item label="首次还款">
-            <a-date-picker v-model:value="options.firstRepaymentDate" style="width: 100%"/>
+            <a-date-picker v-model:value="firstRepaymentDate" :format="dateFormat" style="width: 100%"/>
           </a-form-item>
           <a-divider/>
+          <a-form-item>
+            <a-button type="primary">添加提前还款</a-button>
+          </a-form-item>
         </a-form>
       </div>
     </a-col>
@@ -51,7 +54,7 @@
             <a-input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
           </a-form-item>
           <a-form-item label="累计缴息">
-            <a-input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
+            <a-input addon-after="元" v-model:value="cumulativeInterestPayment" readonly/>
           </a-form-item>
           <a-form-item label="累计节省利息">
             <a-input addon-after="元" v-model:value="savedMoney" readonly/>
@@ -71,14 +74,12 @@ import moment from 'moment'
 export default {
   name: 'mtqLoans',
   data: () => ({
-    options: {
-      loanAmount: 1100000,
-      repaymentPeriod: 0,
-      loanMonth: 120,
-      lendingRates: 5.9,
-      repayment: '2',
-      firstRepaymentDate: moment()
-    },
+    loanAmount: 1100000,
+    repaymentPeriod: 0,
+    loanMonth: 120,
+    lendingRates: 5.9,
+    repayment: '2',
+    firstRepaymentDate: moment(),
 
     columns: [
       {
@@ -111,56 +112,57 @@ export default {
         dataIndex: 'remainingPrincipal',
         key: 'remainingPrincipal'
       }
-    ]
+    ],
+    dateFormat: 'YYYY/MM'
   }),
   watch: {
-    'options.repaymentPeriod' (val) {
+    repaymentPeriod (val) {
       if (val !== 0) {
-        this.options.loanMonth = val * 12
+        this.loanMonth = val * 12
       } else {
-        this.options.loanMonth = 120
+        this.loanMonth = 120
       }
     }
   },
   computed: {
-    computedOptions: function () {
+    options: function () {
       const newOptions = {}
-      if (!isNaN(parseFloat(this.options.loanAmount)) && parseFloat(this.options.loanAmount) > 0) {
-        newOptions.loanAmount = parseFloat(this.options.loanAmount)
+      if (!isNaN(parseFloat(this.loanAmount)) && parseFloat(this.loanAmount) > 0) {
+        newOptions.loanAmount = parseFloat(this.loanAmount)
       }
-      if (Number.isInteger(parseFloat(this.options.loanMonth)) && parseFloat(this.options.loanMonth) > 0) {
-        newOptions.loanMonth = parseInt(this.options.loanMonth)
+      if (Number.isInteger(parseFloat(this.loanMonth)) && parseFloat(this.loanMonth) > 0) {
+        newOptions.loanMonth = parseInt(this.loanMonth)
       }
-      if (!isNaN(parseFloat(this.options.lendingRates)) && parseFloat(this.options.lendingRates) > 0) {
-        newOptions.lendingRates = parseFloat(this.options.lendingRates)
+      if (!isNaN(parseFloat(this.lendingRates)) && parseFloat(this.lendingRates) > 0) {
+        newOptions.lendingRates = parseFloat(this.lendingRates)
       }
-      if (moment.isMoment(this.options.firstRepaymentDate)) {
-        newOptions.firstRepaymentDate = this.options.firstRepaymentDate
+      if (moment.isMoment(this.firstRepaymentDate)) {
+        newOptions.firstRepaymentDate = this.firstRepaymentDate
       }
       return newOptions
     },
     savedMoney: function () {
-      return 0
+      return (this.originalCumulativeInterestPayment - this.cumulativeInterestPayment).toFixed(2)
     },
     dataSource: function () {
       if (this.isValidOptions) {
         const result = []
-        result.push({ key: 0, times: 0, remainingPrincipal: this.computedOptions.loanAmount })
-        if (this.options.repayment === '2') {
+        result.push({ key: 0, times: 0, remainingPrincipal: this.options.loanAmount })
+        if (this.repayment === '2') {
           const remain = {
-            loanAmount: this.computedOptions.loanAmount,
-            loanMonth: this.computedOptions.loanMonth
+            loanAmount: this.options.loanAmount,
+            loanMonth: this.options.loanMonth
           }
-          for (let i = 1; i <= this.computedOptions.loanMonth; i++) {
+          for (let i = 1; i <= this.options.loanMonth; i++) {
             const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
-            const interest = Number((remain.loanAmount * this.computedOptions.lendingRates / 100.0 / 12).toFixed(2))
+            const interest = Number((remain.loanAmount * this.options.lendingRates / 100.0 / 12).toFixed(2))
             const amount = Number((principal + interest).toFixed(2))
             remain.loanAmount -= principal
             remain.loanMonth--
             result.push({
               key: i,
               times: i,
-              repaymentDate: this.computedOptions.firstRepaymentDate.clone().add((i - 1), 'M').format('YYYY年M月D日'),
+              repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
               monthlyAmount: amount,
               interestRepayment: interest,
               principalRepayment: principal,
@@ -172,17 +174,25 @@ export default {
       } else { return [] }
     },
     isValidOptions: function () {
-      return Object.keys(this.computedOptions).length >= 4
+      return Object.keys(this.options).length >= 4
     },
     originalCumulativeInterestPayment: function () {
       if (this.isValidOptions) {
-        const options = this.computedOptions
-        if (this.options.repayment === '1') {
-          return options.loanAmount * options.lendingRates / 100.0 / 12 * (1 + options.lendingRates / 100.0 / 12)
+        if (this.repayment === '1') {
+          return this.options.loanAmount * this.options.lendingRates / 100.0 / 12 * (1 + this.options.lendingRates / 100.0 / 12)
         } else {
-          return (options.loanAmount * options.lendingRates / 100.0 / 12 * (options.loanMonth + 1) / 2).toFixed(2)
+          return (this.options.loanAmount * this.options.lendingRates / 100.0 / 12 * (this.options.loanMonth + 1) / 2).toFixed(2)
         }
       } else { return 0 }
+    },
+    cumulativeInterestPayment: function () {
+      let tmp = 0
+      if (this.isValidOptions) {
+        for (const item of this.dataSource) {
+          tmp += item.interestRepayment || 0
+        }
+      }
+      return Number(tmp.toFixed(2))
     }
   },
   methods: {
