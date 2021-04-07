@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/encrypt/uuid',
     name: 'UUID在线生成工具',
-    component: () => import('@/views/encrypt/uuid'),
+    component: () => import('@/views/encrypt/uuid.vue'),
     meta: {
       requiresAuth: false
     }
@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/money/mtqLoans',
     name: '多次提前还贷计算器(加工中)',
-    component: () => import('@/views/money/mtqLoans'),
+    component: () => import('@/views/money/mtqLoans.vue'),
     meta: {
       requiresAuth: false
     }
@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/common/imgHosting',
     name: '极简图床(加工中)',
-    component: () => import('@/views/common/imgHosting'),
+    component: () => import('@/views/common/imgHosting.vue'),
     meta: {
       requiresAuth: false
     }
@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/login',
     name: '登录',
-    component: () => import('@/views/login/index'),
+    component: () => import('@/views/login/index.vue'),
     meta: {
       title: '登录',
       requiresAuth: false
@@ -45,19 +45,19 @@ const routes = [
   {
     path: '/404',
     name: '404',
-    component: () => import('@/views/error-page/404'),
+    component: () => import('@/views/error-page/404.vue'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/views/error-page/401'),
+    component: () => import('@/views/error-page/401.vue'),
     hidden: true
   },
   { path: '/:catchAll(.*)', redirect: '/404', hidden: true }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes
 })
 
