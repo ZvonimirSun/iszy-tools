@@ -148,6 +148,29 @@ export default {
       if (this.isValidOptions) {
         const result = []
         result.push({ key: 0, times: 0, remainingPrincipal: this.options.loanAmount })
+        if (this.repayment === '1') {
+          const remain = {
+            loanAmount: this.options.loanAmount,
+            loanMonth: this.options.loanMonth,
+            lendingRates: this.options.lendingRates
+          }
+          for (let i = 1; i <= this.options.loanMonth; i++) {
+            const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
+            const interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
+            const principal = Number((amount - interest).toFixed(2))
+            remain.loanAmount -= principal
+            remain.loanMonth--
+            result.push({
+              key: i,
+              times: i,
+              repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
+              monthlyAmount: amount,
+              interestRepayment: interest,
+              principalRepayment: principal,
+              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+            })
+          }
+        }
         if (this.repayment === '2') {
           const remain = {
             loanAmount: this.options.loanAmount,
@@ -179,7 +202,7 @@ export default {
     originalCumulativeInterestPayment: function () {
       if (this.isValidOptions) {
         if (this.repayment === '1') {
-          return this.options.loanAmount * this.options.lendingRates / 100.0 / 12 * (1 + this.options.lendingRates / 100.0 / 12)
+          return 0
         } else {
           return (this.options.loanAmount * this.options.lendingRates / 100.0 / 12 * (this.options.loanMonth + 1) / 2).toFixed(2)
         }
