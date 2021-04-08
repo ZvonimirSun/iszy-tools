@@ -25,5 +25,14 @@
         "link": "/money/mtqLoans"
       }
     ]
+  },
+  {
+    "type": "其他",
+    "children": [
+      {
+        "name": "资源包",
+        "link": "https://lib.iszy.xyz"
+      }
+    ]
   }
 ]
