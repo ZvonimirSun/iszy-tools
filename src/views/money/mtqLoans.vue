@@ -98,10 +98,10 @@ import { cloneDeep } from 'lodash'
 export default {
   name: 'mtqLoans',
   data: () => ({
-    loanAmount: 1100000,
-    repaymentPeriod: 0,
-    loanMonth: 120,
-    lendingRates: 5.9,
+    loanAmount: 150000,
+    repaymentPeriod: 2,
+    loanMonth: 24,
+    lendingRates: 4.5,
     repayment: 'equalLoan',
     firstRepaymentDate: moment(),
 
