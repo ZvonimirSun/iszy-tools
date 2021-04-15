@@ -42,7 +42,7 @@
           <a-divider/>
           <a-form-item>
             <a-button-group>
-              <a-button type="primary" @click="addPrepayment">添加提前还款</a-button>
+              <a-button type="primary" @click="addPrepayment" :disabled="!firstRepaymentDate">添加提前还款</a-button>
               <a-button @click="removePrepayment" v-if="prepayment.length > 0">移除</a-button>
             </a-button-group>
           </a-form-item>
@@ -170,7 +170,7 @@ export default {
           let flag = true
           for (const i in this.prepayment) {
             if (i === '0') {
-              if (!(moment.isMoment(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.firstRepaymentDate, 'days') >= 0)) {
+              if (!(moment.isMoment(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.firstRepaymentDate.clone().subtract(1, 'M'), 'days') >= 0)) {
                 flag = false
                 break
               }
@@ -188,6 +188,10 @@ export default {
       }
       return newOptions
     },
+    isValidOptions: function () {
+      return Object.keys(this.options).length >= 5
+    },
+
     originDataSource: function () {
       if (this.isValidOptions) {
         const result = []
@@ -269,18 +273,12 @@ export default {
                 while (prepayment.length > 0 && prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
                   const a = prepayment.shift()
                   if (Number(a.repaymentAmount || 0) > 0) {
-                    // const interest = Number((
-                    //   remain.loanAmount * remain.lendingRates / 100.0 / 12 *
-                    //   a.repaymentDate.diff(this.options.firstRepaymentDate.clone().add(i - 2, 'M'), 'days') /
-                    //   this.options.firstRepaymentDate.clone().add(i - 1, 'M').diff(this.options.firstRepaymentDate.clone().add(i - 2, 'M'), 'days')
-                    // ).toFixed(2))
                     remain.loanAmount -= Number(a.repaymentAmount)
                     remain.lendingRates = Number(a.lendingRates || 0)
                     remain.loanMonth -= Number(a.adjustLoanMonth || 0)
                     adjustLoanMonth += Number(a.adjustLoanMonth || 0)
                     result.push({
                       repaymentDate: a.repaymentDate.format(this.dateFormat),
-                      // interestRepayment: interest,
                       principalRepayment: a.repaymentAmount,
                       remainingPrincipal: Number(remain.loanAmount.toFixed(2))
                     })
@@ -321,18 +319,12 @@ export default {
                 if (prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
                   const a = prepayment.shift()
                   if (Number(a.repaymentAmount || 0) > 0) {
-                    // const interest = Number((
-                    //   remain.loanAmount * remain.lendingRates / 100.0 / 12 *
-                    //   a.repaymentDate.diff(this.options.firstRepaymentDate.clone().add(i - 2, 'M'), 'days') /
-                    //   this.options.firstRepaymentDate.clone().add(i - 1, 'M').diff(this.options.firstRepaymentDate.clone().add(i - 2, 'M'), 'days')
-                    // ).toFixed(2))
                     remain.loanAmount -= Number(a.repaymentAmount)
                     remain.lendingRates = Number(a.lendingRates || 0)
                     remain.loanMonth -= Number(a.adjustLoanMonth || 0)
                     adjustLoanMonth += Number(a.adjustLoanMonth || 0)
                     result.push({
                       repaymentDate: a.repaymentDate.format(this.dateFormat),
-                      // interestRepayment: interest,
                       principalRepayment: a.repaymentAmount,
                       remainingPrincipal: Number(remain.loanAmount.toFixed(2))
                     })
@@ -367,9 +359,7 @@ export default {
         return []
       }
     },
-    isValidOptions: function () {
-      return Object.keys(this.options).length >= 5
-    },
+
     originalCumulativeInterestPayment: function () {
       let tmp = 0
       if (this.isValidOptions) {
