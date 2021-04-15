@@ -19,7 +19,7 @@ export default defineConfig({
     include: ['@ant-design/icons-vue']
   },
   build: {
-    sourcemap: false,
+    sourcemap: true,
     terserOptions: {
       compress: {
         drop_console: true,

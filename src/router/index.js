@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: '/money/mtqLoans',
-    name: '多次提前还贷计算器(加工中)',
+    name: '多次提前还贷计算器',
     component: () => import('@/views/money/mtqLoans.vue'),
     meta: {
       requiresAuth: false
