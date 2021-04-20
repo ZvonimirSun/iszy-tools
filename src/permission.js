@@ -5,7 +5,7 @@ import getPageTitle from '@/utils/get-page-title'
 const whiteList = ['/login', '/auth-redirect']
 
 router.beforeEach(async (to, from, next) => {
-  document.title = getPageTitle(to.name || to.meta.title)
+  document.title = getPageTitle(to.meta.title || to.name)
   const currentUser = store.getters.currentUser
   if (currentUser) {
     next()

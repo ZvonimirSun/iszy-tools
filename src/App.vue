@@ -4,7 +4,7 @@
       <a-back-top/>
       <div class="panel">
         <div class="top">
-          <div class="header">{{ $route.name }}</div>
+          <div class="header">{{ ($route.meta || {}).title || $route.name  }}</div>
           <div class="desc">
             <span v-if="$route.path === '/'">一个轻量的工具集合</span>
             <router-link to="/" v-else>返回首页</router-link>

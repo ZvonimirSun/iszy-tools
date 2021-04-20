@@ -46,7 +46,7 @@ const routes = [
     name: '登录',
     component: () => import('@/views/login/index.vue'),
     meta: {
-      title: '登录',
+      title: 'ISZY 工具集合',
       requiresAuth: false
     }
   },
@@ -58,7 +58,8 @@ const routes = [
   },
   {
     path: '/401',
-    component: () => import('@/views/error-page/401.vue'),
+    name: '401',
+    redirect: '/login',
     hidden: true
   },
   { path: '/:catchAll(.*)', redirect: '/404', hidden: true }
