@@ -15,16 +15,13 @@
 </template>
 
 <script>
-
+import tools from '@/assets/tools.json'
 export default {
   name: '首页',
   data: () => ({
-    tools: []
+    tools: tools || []
   }),
   mounted () {
-    this.$axios.get('/tools.json').then(tools => {
-      this.tools = tools.data
-    })
   }
 }
 </script>

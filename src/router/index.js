@@ -10,6 +10,14 @@ const routes = [
     }
   },
   {
+    path: '/program/timestamp',
+    name: '时间戳转换',
+    component: () => import('@/views/program/timestamp.vue'),
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
     path: '/encrypt/uuid',
     name: 'UUID在线生成工具',
     component: () => import('@/views/encrypt/uuid.vue'),
