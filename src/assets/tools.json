@@ -12,8 +12,8 @@
     "type": "编程开发",
     "children": [
       {
-        "name": "时间戳转换",
-        "link": "/program/timestamp"
+        "name": "时间计算",
+        "link": "/program/timeCompute"
       }
     ]
   },

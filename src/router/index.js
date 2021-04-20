@@ -10,9 +10,9 @@ const routes = [
     }
   },
   {
-    path: '/program/timestamp',
-    name: '时间戳转换',
-    component: () => import('@/views/program/timestamp.vue'),
+    path: '/program/timeCompute',
+    name: '时间计算',
+    component: () => import('@/views/program/timeCompute.vue'),
     meta: {
       requiresAuth: false
     }
