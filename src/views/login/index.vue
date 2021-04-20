@@ -1,9 +1,5 @@
 <template>
   <div class="login-container">
-    <div class="top">
-      <div class="header">ISZY 工具集合</div>
-      <div class="desc">一个轻量的工具集合</div>
-    </div>
     <div class="main">
       <a-form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
         <a-form-item required>
@@ -94,28 +90,28 @@ export default {
   width: 100%;
   min-height: 100%;
   position: relative;
-  background: #F6F6F6;
-  padding: 110px 0 144px;
+  //background: #F6F6F6;
+  padding: 50px 0 144px;
 
-  .top {
-    text-align: center;
-    width: 100%;
-
-    .header {
-      height: 44px;
-      line-height: 44px;
-      font-size: 33px;
-      color: #333333;
-      font-weight: 600;
-    }
-
-    .desc {
-      font-size: 14px;
-      margin-top: 12px;
-      margin-bottom: 40px;
-      color: #999999;
-    }
-  }
+  //.top {
+  //  text-align: center;
+  //  width: 100%;
+  //
+  //  .header {
+  //    height: 44px;
+  //    line-height: 44px;
+  //    font-size: 33px;
+  //    color: #333333;
+  //    font-weight: 600;
+  //  }
+  //
+  //  .desc {
+  //    font-size: 14px;
+  //    margin-top: 12px;
+  //    margin-bottom: 40px;
+  //    color: #999999;
+  //  }
+  //}
 
   .main {
     min-width: 260px;
