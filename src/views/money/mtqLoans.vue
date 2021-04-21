@@ -96,7 +96,7 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash'
 
 export default {
-  name: 'mtqLoans',
+  name: '多次提前还贷计算器',
   data: () => ({
     loanAmount: 150000,
     repaymentPeriod: 2,

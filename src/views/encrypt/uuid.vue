@@ -45,7 +45,7 @@
 import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
 
 export default {
-  name: 'uuid',
+  name: 'UUID在线生成',
   watch: {
     formState: {
       handler (val) {
