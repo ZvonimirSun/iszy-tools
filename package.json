@@ -19,7 +19,8 @@
     "uuid": "^8.3.2",
     "vue": "^3.0.2",
     "vue-router": "^4.0.5",
-    "vuex": "^4.0.0-rc.1"
+    "vuex": "^4.0.0-rc.1",
+    "@ckpack/vue-color": "^0.0.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.10",
@@ -57,7 +58,9 @@
       "plugin:vue/vue3-essential",
       "@vue/standard"
     ],
-    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
     "rules": {
       "no-console": 0,
       "no-unused-vars": 0,

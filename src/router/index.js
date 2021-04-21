@@ -17,12 +17,13 @@ for (const tmp of tools) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
       if (!/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)) {
-        const tmp1 = widgets.filter(item => (item.name === tool.name))
-        if (tmp1.length > 0) {
+        const path = (tmp.link || '') + (tool.link || '')
+        const tmp1 = path.match('[^/]+(?!.*/)')
+        if (tmp1.length > 0 && widgets[tmp1[0]]) {
           routes.push({
-            path: (tmp.link || '') + (tool.link || ''),
+            path: path,
             name: tool.name,
-            component: tmp1[0],
+            component: widgets[tmp1[0]],
             meta: {
               requiresAuth: false
             }
