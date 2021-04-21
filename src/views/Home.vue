@@ -6,7 +6,7 @@
     <a-row :gutter="{ xs: 8, sm: 16, md: 24}">
       <a-col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
         <a :href="tool.link" target="_blank" v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)"><div class="tool">{{ tool.name }}</div></a>
-        <router-link :to="tool.link" v-else>
+        <router-link :to="(item.link||'')+(tool.link||'')" v-else>
           <div class="tool">{{ tool.name }}</div>
         </router-link>
       </a-col>

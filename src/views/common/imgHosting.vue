@@ -74,7 +74,7 @@ export default {
   components: {
     InboxOutlined, SettingOutlined
   },
-  name: 'imgHosting',
+  name: '极简图床',
   data: () => ({
     mode: 'aliOss',
     setting: false,
