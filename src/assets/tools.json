@@ -1,15 +1,5 @@
 [
   {
-    "type": "常用工具",
-    "link": "/common",
-    "children": [
-      {
-        "name": "极简图床",
-        "link": "/imgHosting"
-      }
-    ]
-  },
-  {
     "type": "编程开发",
     "link": "/program",
     "children": [
