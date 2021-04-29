@@ -181,8 +181,10 @@ export default {
     fix () {
       try {
         const tmp = codemirror.getScrollInfo()
+        const tmp1 = this.cursor
         codemirror.setValue(JSON.stringify(eval('(' + this.code + ')'), undefined, 2))
         codemirror.scrollTo(tmp.left, tmp.top)
+        codemirror.setCursor(tmp1)
       } catch (e) {}
     },
     redo () {
