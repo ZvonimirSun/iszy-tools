@@ -10,6 +10,10 @@
       {
         "name": "颜色转换",
         "link": "/colorTransform"
+      },
+      {
+        "name": "JSON编辑器",
+        "link": "/jsonEditor"
       }
     ]
   },
