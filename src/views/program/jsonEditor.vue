@@ -6,34 +6,39 @@
           <IconFont type="icon-t-format-indent-increa"></IconFont>
         </template>
       </a-button>
-      <a-button type="primary" @click="compact" title="压缩 (Ctrl-Shift-I)">
+      <a-button type="primary" @click="compact" title="压缩">
         <template #icon>
           <IconFont type="icon-t-format-indent-decrea"></IconFont>
         </template>
       </a-button>
-      <a-divider type="vertical" />
+      <a-button type="primary" @click="showFilterPanel" title="筛选，排序，或者转换内容">
+        <template #icon>
+          <FilterFilled/>
+        </template>
+      </a-button>
+      <a-divider type="vertical"/>
       <a-button type="primary" @click="undo" title="撤销 (Ctrl-Z)" :disabled="historySize.undo === 0">
         <template #icon>
-          <UndoOutlined />
+          <UndoOutlined/>
         </template>
       </a-button>
       <a-button type="primary" @click="redo" title="重做 (Ctrl-Y)" :disabled="historySize.redo === 0">
         <template #icon>
-          <RedoOutlined />
+          <RedoOutlined/>
         </template>
       </a-button>
-      <a-divider type="vertical" />
+      <a-divider type="vertical"/>
       <a-button type="primary" title="前往顶部" @click="goTop">
         <template #icon>
-          <VerticalAlignTopOutlined />
+          <VerticalAlignTopOutlined/>
         </template>
       </a-button>
       <a-button type="primary" title="前往底部" @click="goBottom">
         <template #icon>
-          <VerticalAlignBottomOutlined />
+          <VerticalAlignBottomOutlined/>
         </template>
       </a-button>
-      <a-divider type="vertical" />
+      <a-divider type="vertical"/>
       <a-button type="primary" title="修复" @click="fix">
         <template #icon>
           <IconFont type="icon-t-fix"></IconFont>
@@ -44,13 +49,29 @@
     <div class="footer">
       <span>总行数:&nbsp;{{lineCount}}&nbsp;&nbsp;行数:&nbsp;{{cursor.line+1}}&nbsp;&nbsp;列数:&nbsp;{{cursor.ch+1}}</span>
     </div>
+    <a-modal v-model:visible="showFilter" title="变换" @ok="filter" :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
+      <p>输入一个<code>JMESPath</code>查询以过滤、排序或转换JSON数据。要学习<code>JMESPath</code>，请转到<a target="_blank" href="https://jmespath.org/tutorial.html">教程</a>。</p>
+      <a-divider orientation="left">查询</a-divider>
+      <a-textarea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
+      <a-divider orientation="left">预览</a-divider>
+      <a-textarea v-model:value="filterPreview" style="resize: vertical;" readonly :auto-size="{ minRows: 2, maxRows: 15 }"/>
+    </a-modal>
   </div>
 </template>
 
 <script>
-// region import
-
 import { markRaw } from 'vue'
+import {
+  UndoOutlined,
+  RedoOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
+  FilterFilled
+} from '@ant-design/icons-vue'
+import jmespath from 'jmespath'
+
+// region codemirror
+
 import CodeMirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
 // 代码高亮
@@ -86,11 +107,9 @@ import jsonlint from 'jsonlint-mod'
 import 'codemirror/addon/lint/lint.css'
 import 'codemirror/addon/lint/lint.js'
 import 'codemirror/addon/lint/json-lint.js'
-
-import { UndoOutlined, RedoOutlined, VerticalAlignTopOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons-vue'
+// endregion
 
 window.jsonlint = jsonlint
-// endregion
 
 let codemirror
 
@@ -100,9 +119,30 @@ export default {
     code: '{\n  "Array": [\n    1,\n    2,\n    3\n  ],\n  "Boolean": true,\n  "Null": null,\n  "Number": 123,\n  "Object": {\n    "a": "b",\n    "c": "d"\n  },\n  "String": "Hello World"\n}',
     cursor: { line: 0, ch: 0 },
     lineCount: 0,
-    historySize: { undo: 0, redo: 0 }
+    historySize: { undo: 0, redo: 0 },
+
+    showFilter: false,
+    startFilter: false,
+    filterExpression: '@'
   }),
-  components: { UndoOutlined, RedoOutlined, VerticalAlignTopOutlined, VerticalAlignBottomOutlined },
+  computed: {
+    filterPreview: function () {
+      if (this.startFilter && this.filterExpression) {
+        try {
+          return JSON.stringify(jmespath.search(JSON.parse(this.code), this.filterExpression), undefined, 2)
+        } catch (e) {
+          return ''
+        }
+      } else { return '' }
+    }
+  },
+  components: {
+    UndoOutlined,
+    RedoOutlined,
+    VerticalAlignTopOutlined,
+    VerticalAlignBottomOutlined,
+    FilterFilled
+  },
   mounted () {
     codemirror = markRaw(CodeMirror.fromTextArea(this.$refs.codemirror, {
       // Js高亮显示
@@ -176,7 +216,10 @@ export default {
       }
     },
     compact () {
-      codemirror.setValue((this.code || '').replaceAll(' ', '').replaceAll('\n', ''))
+      try {
+        codemirror.setValue(JSON.stringify((JSON).parse(this.code)))
+      } catch (e) {
+      }
     },
     fix () {
       try {
@@ -186,6 +229,16 @@ export default {
         codemirror.scrollTo(tmp.left, tmp.top)
         codemirror.setCursor(tmp1)
       } catch (e) {}
+    },
+    showFilterPanel () {
+      this.showFilter = true
+      this.startFilter = true
+    },
+    filter () {
+      this.code = this.filterPreview
+      this.startFilter = false
+      this.showFilter = false
+      this.filterExpression = '@'
     },
     redo () {
       codemirror.redo()
@@ -208,6 +261,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$highlight-background: #f0f0f0;
+$highlight-foreground: #444;
+$font-family: JetBrains Mono, consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei';
+
+code, pre {
+  border-radius: 3px;
+  font-size: .875em;
+  font-family: $font-family;
+  background-color: $highlight-background;
+  color: $highlight-foreground;
+}
+
+code {
+  padding: 2px 4px;
+  overflow-wrap: break-word;
+}
+
 .codePanel {
   width: 100%;
   height: calc(100vh - 200px);
@@ -230,6 +300,10 @@ export default {
     line-height: 22px;
     background-color: #f7f7f7;
     border-top: 1px solid #ddd;
+  }
+
+  .CodeMirror {
+    font-family: $font-family;
   }
 }
 
