@@ -235,7 +235,7 @@ export default {
       this.startFilter = true
     },
     filter () {
-      this.code = this.filterPreview
+      codemirror.setValue(this.filterPreview)
       this.startFilter = false
       this.showFilter = false
       this.filterExpression = '@'
