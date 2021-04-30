@@ -15,6 +15,7 @@
     "axios": "^0.21.1",
     "codemirror": "^5.61.0",
     "core-js": "^3.7.0",
+    "jmespath": "^0.15.0",
     "jsonlint-mod": "^1.7.6",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
