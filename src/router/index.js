@@ -26,7 +26,8 @@ for (const tmp of tools) {
             name: tool.name,
             component: widgets[tmp1[0]],
             meta: {
-              requiresAuth: false
+              requiresAuth: false,
+              statistics: tool.statistics !== false
             }
           })
         }
@@ -58,6 +59,15 @@ routes = routes.concat([
     hidden: true
   },
   {
+    path: '/redirect',
+    name: 'redirect',
+    beforeEnter (to) {
+      if (to.query.url) {
+        window.location.href = to.query.url
+      }
+    }
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/404',
     hidden: true
@@ -70,7 +80,7 @@ const router = createRouter({
 })
 
 router.afterEach((to, from, next) => {
-  if (to.path !== '/' && to.name) {
+  if (to.name && to.meta.statistics) {
     store.dispatch('statistics/access', { name: to.name, link: to.path })
   }
 })

@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: () => ({
     settings: {
-      showMost: false,
+      showMost: true,
       showRecent: false
     }
   }),

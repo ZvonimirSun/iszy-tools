@@ -23,8 +23,7 @@ export default {
   methods: {
     ...mapActions({
       triggerMost: 'settings/triggerMost',
-      triggerRecent: 'settings/triggerRecent',
-      triggerStatistics: 'settings/triggerStatistics'
+      triggerRecent: 'settings/triggerRecent'
     })
   }
 }

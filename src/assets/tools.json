@@ -51,7 +51,8 @@
     "children": [
       {
         "name": "网站设置",
-        "link": "/settings"
+        "link": "/settings",
+        "statistics": false
       }
     ]
   }
