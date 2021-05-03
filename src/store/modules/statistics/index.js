@@ -35,11 +35,18 @@ export default {
         }]
       }
       setLocalStorage('store_statistics', state.statistics)
+    },
+    clearHistory (state) {
+      state.statistics = []
+      setLocalStorage('store_statistics', state.statistics)
     }
   },
   actions: {
     access ({ commit }, { name, link }) {
       commit('access', { name, link })
+    },
+    clearHistory ({ commit }) {
+      commit('clearHistory')
     }
   }
 }

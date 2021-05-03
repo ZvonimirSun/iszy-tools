@@ -45,5 +45,14 @@
         "link": "https://lib.iszy.xyz"
       }
     ]
+  },
+  {
+    "type": "网站相关",
+    "children": [
+      {
+        "name": "网站设置",
+        "link": "/settings"
+      }
+    ]
   }
 ]

@@ -70,7 +70,7 @@ const router = createRouter({
 })
 
 router.afterEach((to, from, next) => {
-  if (to.path !== '/' && to.name) {
+  if (store.state.settings.settings.enableStatistics && to.path !== '/' && to.name) {
     store.dispatch('statistics/access', { name: to.name, link: to.path })
   }
 })

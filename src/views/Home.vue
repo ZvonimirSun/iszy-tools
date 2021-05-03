@@ -21,21 +21,21 @@
 
 <script>
 import tools from '@/assets/tools.json'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: '首页',
   computed: {
     tools () {
       const tmp = [...tools] || []
-      if (this.recent.length > 0) {
+      if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
           icon: 'icon-t-recent',
           children: this.recent
         })
       }
-      if (this.most.length > 0) {
+      if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
           icon: 'icon-t-changyong',
@@ -44,6 +44,9 @@ export default {
       }
       return tmp
     },
+    ...mapState({
+      settings: state => state.settings.settings
+    }),
     ...mapGetters({
       most: 'statistics/most',
       recent: 'statistics/recent'
