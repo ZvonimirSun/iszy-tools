@@ -1,11 +1,16 @@
 <template>
   <template v-for="(item,index) in tools" :key="'type'+ index">
     <a-divider orientation="left">
-      <div class="typeName">{{ item.type }}</div>
+      <span class="typeName">
+      <IconFont :type="item.icon" v-if="item.icon"></IconFont>
+      <div>{{ item.type }}</div>
+      </span>
     </a-divider>
     <a-row :gutter="{ xs: 8, sm: 16, md: 24}">
       <a-col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-        <a :href="tool.link" target="_blank" v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)"><div class="tool">{{ tool.name }}</div></a>
+        <a :href="tool.link" target="_blank" v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)">
+          <div class="tool">{{ tool.name }}</div>
+        </a>
         <router-link :to="(item.link||'')+(tool.link||'')" v-else>
           <div class="tool">{{ tool.name }}</div>
         </router-link>
@@ -16,12 +21,33 @@
 
 <script>
 import tools from '@/assets/tools.json'
+import { mapGetters } from 'vuex'
+
 export default {
   name: '首页',
-  data: () => ({
-    tools: tools || []
-  }),
-  mounted () {
+  computed: {
+    tools () {
+      const tmp = [...tools] || []
+      if (this.recent.length > 0) {
+        tmp.unshift({
+          type: '最近访问',
+          icon: 'icon-t-recent',
+          children: this.recent
+        })
+      }
+      if (this.most.length > 0) {
+        tmp.unshift({
+          type: '最常访问',
+          icon: 'icon-t-changyong',
+          children: this.most
+        })
+      }
+      return tmp
+    },
+    ...mapGetters({
+      most: 'statistics/most',
+      recent: 'statistics/recent'
+    })
   }
 }
 </script>
@@ -30,13 +56,18 @@ export default {
 .typeName {
   font-size: 1.125rem;
   font-weight: 700;
-  line-height: 1.67rem;
-  display: block;
+  display: inline-flex;
+  align-items: center;
   background-color: #16b0f6;
   padding: .3rem .8rem;
   color: #fff;
   box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
   border-radius: .5rem;
+
+  .anticon {
+    font-size: 1.5rem;
+    margin-right: 5px;
+  }
 }
 
 .tool {
