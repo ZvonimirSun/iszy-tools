@@ -85,6 +85,7 @@ export default {
   transform: translateZ(0);
   transition: transform 0.2s, color 0.2s, background-color 0.2s;
   text-align: center;
+  text-overflow: ellipsis;
 
   &:hover {
     background-color: #16b0f6;
