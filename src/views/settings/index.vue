@@ -1,14 +1,11 @@
 <template>
   <a-form>
     <a-divider orientation="left">
-      其他设置
+      访问统计
     </a-divider>
     <a-form-item>
-      <a-checkbox :checked="settings.enableStatistics" @change="triggerStatistics">访问统计</a-checkbox>
-      <template v-if="settings.enableStatistics">
-        <a-checkbox :checked="settings.showMost" @change="triggerMost">最常访问</a-checkbox>
-        <a-checkbox :checked="settings.showRecent" @change="triggerRecent">最近访问</a-checkbox>
-      </template>
+      <a-checkbox :checked="settings.showMost" @change="triggerMost">最常访问</a-checkbox>
+      <a-checkbox :checked="settings.showRecent" @change="triggerRecent">最近访问</a-checkbox>
     </a-form-item>
   </a-form>
 </template>

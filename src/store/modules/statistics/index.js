@@ -1,9 +1,7 @@
-import { getLocalStorage, setLocalStorage } from '@/utils/StorageUtils'
-
 export default {
   namespaced: true,
   state: () => ({
-    statistics: getLocalStorage('store_statistics', [])
+    statistics: []
   }),
   getters: {
     recent (state) {
@@ -34,11 +32,9 @@ export default {
           name, link, times: 1, lastAccessTime: new Date().getTime()
         }]
       }
-      setLocalStorage('store_statistics', state.statistics)
     },
     clearHistory (state) {
       state.statistics = []
-      setLocalStorage('store_statistics', state.statistics)
     }
   },
   actions: {
