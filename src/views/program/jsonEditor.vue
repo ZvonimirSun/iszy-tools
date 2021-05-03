@@ -61,6 +61,7 @@
 
 <script>
 import { markRaw } from 'vue'
+import { mapActions, mapState } from 'vuex'
 import {
   UndoOutlined,
   RedoOutlined,
@@ -134,7 +135,10 @@ export default {
           return ''
         }
       } else { return '' }
-    }
+    },
+    ...mapState({
+      content: state => state.jsonEditor.content
+    })
   },
   components: {
     UndoOutlined,
@@ -186,7 +190,7 @@ export default {
         }, // 代码格式化
         'Ctrl-S': (cm) => {
           cm.save()
-          localStorage.setItem('jsonEditor_content', this.code)
+          this.saveContent(this.code)
           cm.doc.markClean()
         }
       }
@@ -199,7 +203,7 @@ export default {
     codemirror.on('cursorActivity', cm => {
       this.cursor = cm.getCursor()
     })
-    codemirror.setValue(localStorage.getItem('jsonEditor_content') || this.code)
+    codemirror.setValue(this.content || this.code)
     this.lineCount = codemirror.doc.lineCount()
     codemirror.doc.clearHistory()
     this.historySize = codemirror.doc.historySize()
@@ -255,7 +259,10 @@ export default {
     destroy () {
       const element = codemirror.doc.cm.getWrapperElement()
       element && element.remove && element.remove()
-    }
+    },
+    ...mapActions({
+      saveContent: 'jsonEditor/saveContent'
+    })
   }
 }
 </script>
