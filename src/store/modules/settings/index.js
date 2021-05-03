@@ -21,17 +21,20 @@ export default {
     }
   },
   actions: {
-    triggerMost ({ commit }) {
+    triggerMost ({ commit, state }) {
       commit('triggerMost')
+      setLocalStorage('store_settings', state.settings)
     },
-    triggerRecent ({ commit }) {
+    triggerRecent ({ commit, state }) {
       commit('triggerRecent')
+      setLocalStorage('store_settings', state.settings)
     },
     triggerStatistics ({ dispatch, commit, state }) {
       commit('triggerStatistics')
       if (!state.settings.enableStatistics) {
         dispatch('statistics/clearHistory', null, { root: true })
       }
+      setLocalStorage('store_settings', state.settings)
     }
   }
 }
