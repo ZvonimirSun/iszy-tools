@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import widgets from '@/views/index.js'
+import widgets from '@/views'
 import tools from '@/assets/tools.json'
+import store from '@/store'
 
 let routes = [
   {
@@ -16,7 +17,7 @@ let routes = [
 for (const tmp of tools) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
-      if (!/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)) {
+      if (!/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link)) {
         const path = (tmp.link || '') + (tool.link || '')
         const tmp1 = path.match('[^/]+(?!.*/)')
         if (tmp1.length > 0 && widgets[tmp1[0]]) {
@@ -25,7 +26,8 @@ for (const tmp of tools) {
             name: tool.name,
             component: widgets[tmp1[0]],
             meta: {
-              requiresAuth: false
+              requiresAuth: false,
+              statistics: tool.statistics !== false
             }
           })
         }
@@ -57,6 +59,15 @@ routes = routes.concat([
     hidden: true
   },
   {
+    path: '/redirect',
+    name: 'redirect',
+    beforeEnter (to) {
+      if (to.query.url) {
+        window.location.href = to.query.url
+      }
+    }
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/404',
     hidden: true
@@ -64,8 +75,14 @@ routes = routes.concat([
 ])
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
+})
+
+router.afterEach((to, from, next) => {
+  if (to.name && to.meta.statistics) {
+    store.dispatch('statistics/access', { name: to.name, link: to.path })
+  }
 })
 
 export default router
