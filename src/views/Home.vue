@@ -12,7 +12,11 @@
           <div class="tool">{{ tool.name }}</div>
         </router-link>
         <router-link :to="(item.link||'')+(tool.link||'')" v-else>
-          <div class="tool">{{ tool.name }}</div>
+          <div class="tool">
+            <span class="toolName">{{ tool.name }}</span>
+            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled /></span>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else><span class="nonHover"><StarOutlined /></span><span class="hovered"><StarFilled /></span></span>
+          </div>
         </router-link>
       </a-col>
     </a-row>
@@ -20,11 +24,19 @@
 </template>
 
 <script>
+import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
 import tools from '@/assets/tools.json'
-import { mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: '首页',
+  components: { StarOutlined, StarFilled },
+  methods: {
+    ...mapActions({
+      addFav: 'favorite/addFav',
+      removeFav: 'favorite/removeFav'
+    })
+  },
   computed: {
     tools () {
       const tmp = [...tools] || []
@@ -42,14 +54,23 @@ export default {
           children: this.most
         })
       }
+      if (this.favorite.length > 0) {
+        tmp.unshift({
+          type: '收藏',
+          icon: 'icon-t-star-filled',
+          children: this.favorite
+        })
+      }
       return tmp
     },
     ...mapState({
-      settings: state => state.settings.settings
+      settings: state => state.settings.settings,
+      favorite: state => state.favorite.favorite
     }),
     ...mapGetters({
       most: 'statistics/most',
-      recent: 'statistics/recent'
+      recent: 'statistics/recent',
+      isFav: 'favorite/isFav'
     })
   }
 }
@@ -89,11 +110,48 @@ export default {
   transition: transform 0.2s, color 0.2s, background-color 0.2s;
   text-align: center;
   text-overflow: ellipsis;
+  position: relative;
+
+  .fav {
+    display: none;
+    position: absolute;
+    right: 0.9375rem;
+    overflow: hidden;
+
+    &.collected {
+      display: unset;
+      color: #16b0f6;
+    }
+
+    .hovered {
+      display: none;
+    }
+  }
 
   &:hover {
     background-color: #16b0f6;
     color: #fff;
     transform: scale3d(1.1, 1.1, 1.1);
+    padding-right: .9375rem * 2;
+
+    .fav {
+      display: unset;
+
+      &.collected {
+        color: yellow;
+      }
+
+      &:hover {
+        .nonHover {
+          display: none;
+        }
+
+        .hovered {
+          display: unset;
+          color: yellow;
+        }
+      }
+    }
   }
 }
 </style>
