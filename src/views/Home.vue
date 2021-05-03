@@ -1,13 +1,22 @@
 <template>
   <template v-for="(item,index) in tools" :key="'type'+ index">
     <a-divider orientation="left">
-      <div class="typeName">{{ item.type }}</div>
+      <span class="typeName">
+      <IconFont :type="item.icon" v-if="item.icon"></IconFont>
+      <div>{{ item.type }}</div>
+      </span>
     </a-divider>
     <a-row :gutter="{ xs: 8, sm: 16, md: 24}">
       <a-col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-        <a :href="tool.link" target="_blank" v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)"><div class="tool">{{ tool.name }}</div></a>
-        <router-link :to="(item.link||'')+(tool.link||'')" v-else>
+        <router-link target="_blank" :to="'/redirect?url='+tool.link" v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)">
           <div class="tool">{{ tool.name }}</div>
+        </router-link>
+        <router-link :to="(item.link||'')+(tool.link||'')" v-else>
+          <div class="tool">
+            <span class="toolName">{{ tool.name }}</span>
+            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled /></span>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else><span class="nonHover"><StarOutlined /></span><span class="hovered"><StarFilled /></span></span>
+          </div>
         </router-link>
       </a-col>
     </a-row>
@@ -15,13 +24,54 @@
 </template>
 
 <script>
+import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
 import tools from '@/assets/tools.json'
+import { mapActions, mapGetters, mapState } from 'vuex'
+
 export default {
   name: '首页',
-  data: () => ({
-    tools: tools || []
-  }),
-  mounted () {
+  components: { StarOutlined, StarFilled },
+  methods: {
+    ...mapActions({
+      addFav: 'favorite/addFav',
+      removeFav: 'favorite/removeFav'
+    })
+  },
+  computed: {
+    tools () {
+      const tmp = [...tools] || []
+      if (this.settings.showRecent && this.recent.length > 0) {
+        tmp.unshift({
+          type: '最近访问',
+          icon: 'icon-t-recent',
+          children: this.recent
+        })
+      }
+      if (this.settings.showMost && this.most.length > 0) {
+        tmp.unshift({
+          type: '最常访问',
+          icon: 'icon-t-changyong',
+          children: this.most
+        })
+      }
+      if (this.favorite.length > 0) {
+        tmp.unshift({
+          type: '收藏',
+          icon: 'icon-t-star-filled',
+          children: this.favorite
+        })
+      }
+      return tmp
+    },
+    ...mapState({
+      settings: state => state.settings.settings,
+      favorite: state => state.favorite.favorite
+    }),
+    ...mapGetters({
+      most: 'statistics/most',
+      recent: 'statistics/recent',
+      isFav: 'favorite/isFav'
+    })
   }
 }
 </script>
@@ -30,13 +80,18 @@ export default {
 .typeName {
   font-size: 1.125rem;
   font-weight: 700;
-  line-height: 1.67rem;
-  display: block;
+  display: inline-flex;
+  align-items: center;
   background-color: #16b0f6;
   padding: .3rem .8rem;
   color: #fff;
   box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
   border-radius: .5rem;
+
+  .anticon {
+    font-size: 1.5rem;
+    margin-right: 5px;
+  }
 }
 
 .tool {
@@ -54,11 +109,49 @@ export default {
   transform: translateZ(0);
   transition: transform 0.2s, color 0.2s, background-color 0.2s;
   text-align: center;
+  text-overflow: ellipsis;
+  position: relative;
+
+  .fav {
+    display: none;
+    position: absolute;
+    right: 0.9375rem;
+    overflow: hidden;
+
+    &.collected {
+      display: unset;
+      color: #16b0f6;
+    }
+
+    .hovered {
+      display: none;
+    }
+  }
 
   &:hover {
     background-color: #16b0f6;
     color: #fff;
     transform: scale3d(1.1, 1.1, 1.1);
+    padding-right: .9375rem * 2;
+
+    .fav {
+      display: unset;
+
+      &.collected {
+        color: yellow;
+      }
+
+      &:hover {
+        .nonHover {
+          display: none;
+        }
+
+        .hovered {
+          display: unset;
+          color: yellow;
+        }
+      }
+    }
   }
 }
 </style>

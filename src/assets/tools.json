@@ -2,6 +2,7 @@
   {
     "type": "编程开发",
     "link": "/program",
+    "icon": "icon-t-code",
     "children": [
       {
         "name": "时间计算",
@@ -10,6 +11,10 @@
       {
         "name": "颜色转换",
         "link": "/colorTransform"
+      },
+      {
+        "name": "JSON编辑器",
+        "link": "/jsonEditor"
       }
     ]
   },
@@ -26,6 +31,7 @@
   {
     "type": "理财",
     "link": "/money",
+    "icon": "icon-t-finances",
     "children": [
       {
         "name": "多次提前还贷计算器",
@@ -39,6 +45,17 @@
       {
         "name": "资源包",
         "link": "https://lib.iszy.xyz"
+      }
+    ]
+  },
+  {
+    "type": "网站相关",
+    "icon": "icon-t-settings",
+    "children": [
+      {
+        "name": "网站设置",
+        "link": "/settings",
+        "statistics": false
       }
     ]
   }

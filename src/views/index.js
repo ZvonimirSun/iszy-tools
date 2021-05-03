@@ -4,5 +4,7 @@ export default {
   uuid: () => import('@/views/encrypt/uuid.vue'),
   mtqLoans: () => import('@/views/money/mtqLoans.vue'),
   timeCompute: () => import('@/views/program/timeCompute.vue'),
-  colorTransform: () => import('@/views/program/colorTransform.vue')
+  colorTransform: () => import('@/views/program/colorTransform.vue'),
+  jsonEditor: () => import('@/views/program/jsonEditor.vue'),
+  settings: () => import('@/views/settings/index.vue')
 }
