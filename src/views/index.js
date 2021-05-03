@@ -5,5 +5,6 @@ export default {
   mtqLoans: () => import('@/views/money/mtqLoans.vue'),
   timeCompute: () => import('@/views/program/timeCompute.vue'),
   colorTransform: () => import('@/views/program/colorTransform.vue'),
-  jsonEditor: () => import('@/views/program/jsonEditor.vue')
+  jsonEditor: () => import('@/views/program/jsonEditor.vue'),
+  settings: () => import('@/views/settings/index.vue')
 }
