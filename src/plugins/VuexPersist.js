@@ -19,7 +19,7 @@ export default (options = {}) => {
 
   return store => {
     // 初始化时获取数据，如果有的话，把原来的vuex的state替换掉
-    const data = getState(key, storage)
+    const data = Object.assign(store.state, getState(key, storage))
     if (data) {
       store.replaceState(data)
     }
