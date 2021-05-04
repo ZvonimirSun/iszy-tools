@@ -18,18 +18,20 @@ for (const tmp of tools) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
       if (!/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link)) {
-        const path = (tmp.link || '') + (tool.link || '')
-        const tmp1 = path.match('[^/]+(?!.*/)')
-        if (tmp1.length > 0 && widgets[tmp1[0]]) {
-          routes.push({
-            path: path,
-            name: tool.name,
-            component: widgets[tmp1[0]],
-            meta: {
-              requiresAuth: false,
-              statistics: tool.statistics !== false
-            }
-          })
+        if (routes.filter(item => (item.name === tool.name)).length === 0) {
+          const path = (tmp.link || '') + (tool.link || '')
+          const tmp1 = path.match('[^/]+(?!.*/)')
+          if (tmp1.length > 0 && widgets[tmp1[0]]) {
+            routes.push({
+              path: path,
+              name: tool.name,
+              component: widgets[tmp1[0]],
+              meta: {
+                requiresAuth: false,
+                statistics: tool.statistics !== false
+              }
+            })
+          }
         }
       }
     }
