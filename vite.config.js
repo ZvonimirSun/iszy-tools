@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
+import { VitePWA } from 'vite-plugin-pwa'
+import styleImport from 'vite-plugin-style-import'
 import path from 'path'
 
 // https://vitejs.dev/config/
@@ -8,7 +10,20 @@ export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
     vue(),
-    legacy()
+    legacy(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {}
+    }),
+    styleImport({
+      libs: [
+        {
+          libraryName: 'ant-design-vue',
+          esModule: true,
+          resolveStyle: name => `ant-design-vue/es/${name}/style/index`
+        }
+      ]
+    })
   ],
   resolve: {
     alias: [
