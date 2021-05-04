@@ -296,7 +296,7 @@ $font-family: JetBrains Mono, consolas, Menlo, monospace, 'PingFang SC', 'Micros
 
 .codePanel {
   width: 100%;
-  height: calc(100vh - 204px);
+  height: calc(100vh - 310px);
   border: 1px solid #ddd;
   font-size: 14px;
   overflow: hidden;
