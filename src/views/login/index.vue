@@ -1,23 +1,23 @@
 <template>
   <div class="login-container">
     <div class="main">
-      <a-form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
-        <a-form-item required>
-          <a-input v-model:value="form.username" placeholder="账户" size="large">
+      <Form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
+        <Item required>
+          <Input v-model:value="form.username" placeholder="账户" size="large">
             <template #prefix><UserOutlined style="color:rgba(0,0,0,.25)"/></template>
-          </a-input>
-        </a-form-item>
-        <a-form-item required>
-          <a-input-password v-model:value="form.password" placeholder="密码" size="large">
+          </Input>
+        </Item>
+        <Item required>
+          <Password v-model:value="form.password" placeholder="密码" size="large">
             <template #prefix><LockOutlined style="color:rgba(0,0,0,.25)"/></template>
-          </a-input-password>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary" block size="large" @click="login" :loading="loading">
+          </Password>
+        </Item>
+        <Item>
+          <Button type="primary" block size="large" @click="login" :loading="loading">
             确定
-          </a-button>
-        </a-form-item>
-      </a-form>
+          </Button>
+        </Item>
+      </Form>
     </div>
     <div class="footer">
       <div class="copyright"> Copyright © 2020 ISZY</div>
@@ -27,11 +27,20 @@
 
 <script>
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { Form, Input, Button } from 'ant-design-vue'
+const { Item } = Form
+const { Password } = Input
+
 export default {
   name: 'Login',
   components: {
     UserOutlined,
-    LockOutlined
+    LockOutlined,
+    Form,
+    Input,
+    Button,
+    Item,
+    Password
   },
   watch: {
     $route: {

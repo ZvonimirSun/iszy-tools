@@ -1,33 +1,37 @@
 <template>
-  <a-config-provider :locale="locale">
-    <a-back-top/>
-    <a-layout>
-      <a-layout-header>
+  <config-provider :locale="locale">
+    <BackTop/>
+    <layout>
+      <Header>
         <div class="header">
           <router-link to="/">ISZY 工具集合</router-link>
         </div>
         <div class="desc">一个轻量的工具集合</div>
-      </a-layout-header>
-      <a-layout-content>
+      </Header>
+      <Content>
         <router-view/>
-      </a-layout-content>
-      <a-layout-footer>
+      </Content>
+      <Footer>
         <span>© 2021&nbsp;</span>
-        <a-typography-link href="https://www.iszy.cc" target="_blank">
+        <Link href="https://www.iszy.cc" target="_blank">
           随遇而安
-        </a-typography-link>
-      </a-layout-footer>
-    </a-layout>
-  </a-config-provider>
+        </Link>
+      </Footer>
+    </layout>
+  </config-provider>
 </template>
 
 <script>
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import { Layout, ConfigProvider, BackTop, Typography } from 'ant-design-vue'
+const { Header, Content, Footer } = Layout
+const { Link } = Typography
 
 export default {
   data: () => ({
     locale: zhCN
-  })
+  }),
+  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link }
 }
 </script>
 

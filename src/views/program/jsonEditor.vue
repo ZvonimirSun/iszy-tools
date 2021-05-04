@@ -2,49 +2,49 @@
   <container>
     <div class="codePanel">
       <div class="header">
-        <a-button type="primary" @click="format" title="格式化 (Ctrl-I)">
+        <Button type="primary" @click="format" title="格式化 (Ctrl-I)">
           <template #icon>
             <IconFont type="icon-t-format-indent-increa"></IconFont>
           </template>
-        </a-button>
-        <a-button type="primary" @click="compact" title="压缩">
+        </Button>
+        <Button type="primary" @click="compact" title="压缩">
           <template #icon>
             <IconFont type="icon-t-format-indent-decrea"></IconFont>
           </template>
-        </a-button>
-        <a-button type="primary" @click="showFilterPanel" title="筛选，排序，或者转换内容">
+        </Button>
+        <Button type="primary" @click="showFilterPanel" title="筛选，排序，或者转换内容">
           <template #icon>
             <FilterFilled/>
           </template>
-        </a-button>
-        <a-divider type="vertical"/>
-        <a-button type="primary" @click="undo" title="撤销 (Ctrl-Z)" :disabled="historySize.undo === 0">
+        </Button>
+        <Divider type="vertical"/>
+        <Button type="primary" @click="undo" title="撤销 (Ctrl-Z)" :disabled="historySize.undo === 0">
           <template #icon>
             <UndoOutlined/>
           </template>
-        </a-button>
-        <a-button type="primary" @click="redo" title="重做 (Ctrl-Y)" :disabled="historySize.redo === 0">
+        </Button>
+        <Button type="primary" @click="redo" title="重做 (Ctrl-Y)" :disabled="historySize.redo === 0">
           <template #icon>
             <RedoOutlined/>
           </template>
-        </a-button>
-        <a-divider type="vertical"/>
-        <a-button type="primary" title="前往顶部" @click="goTop">
+        </Button>
+        <Divider type="vertical"/>
+        <Button type="primary" title="前往顶部" @click="goTop">
           <template #icon>
             <VerticalAlignTopOutlined/>
           </template>
-        </a-button>
-        <a-button type="primary" title="前往底部" @click="goBottom">
+        </Button>
+        <Button type="primary" title="前往底部" @click="goBottom">
           <template #icon>
             <VerticalAlignBottomOutlined/>
           </template>
-        </a-button>
-        <a-divider type="vertical"/>
-        <a-button type="primary" title="修复" @click="fix">
+        </Button>
+        <Divider type="vertical"/>
+        <Button type="primary" title="修复" @click="fix">
           <template #icon>
             <IconFont type="icon-t-fix"></IconFont>
           </template>
-        </a-button>
+        </Button>
       </div>
       <textarea ref="codemirror"></textarea>
       <div class="footer">
@@ -52,24 +52,24 @@
             cursor.ch + 1
           }}</span>
       </div>
-      <a-modal v-model:visible="showFilter" title="变换" @ok="filter"
+      <Modal v-model:visible="showFilter" title="变换" @ok="filter"
                :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
         <p>输入一个
-          <a-typography-text code>JMESPath</a-typography-text>
+          <Text code>JMESPath</Text>
           查询以过滤、排序或转换JSON数据。要学习
-          <a-typography-text code>JMESPath</a-typography-text>
+          <Text code>JMESPath</Text>
           ，请转到
-          <a-typography-link target="_blank" href="https://jmespath.org/tutorial.html">教程</a-typography-link>
+          <Link target="_blank" href="https://jmespath.org/tutorial.html">教程</Link>
           。
         </p>
-        <a-divider orientation="left">查询</a-divider>
-        <a-textarea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear
+        <Divider orientation="left">查询</Divider>
+        <TextArea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear
                     style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
-        <a-divider orientation="left">预览</a-divider>
-        <a-typography-paragraph>
+        <Divider orientation="left">预览</Divider>
+        <Paragraph>
           <pre>{{ filterPreview }}</pre>
-        </a-typography-paragraph>
-      </a-modal>
+        </Paragraph>
+      </Modal>
     </div>
   </container>
 </template>
@@ -126,6 +126,9 @@ import 'codemirror/addon/lint/json-lint.js'
 import Container from '@/components/container.vue'
 // endregion
 
+import { Button, Divider, Modal, Typography, Input } from 'ant-design-vue'
+const { Text, Link, Paragraph } = Typography
+const { TextArea } = Input
 window.jsonlint = jsonlint
 
 let codemirror
@@ -164,7 +167,14 @@ export default {
     RedoOutlined,
     VerticalAlignTopOutlined,
     VerticalAlignBottomOutlined,
-    FilterFilled
+    FilterFilled,
+    Button,
+    Divider,
+    Modal,
+    Text,
+    Link,
+    Paragraph,
+    TextArea
   },
   mounted () {
     codemirror = markRaw(CodeMirror.fromTextArea(this.$refs.codemirror, {
