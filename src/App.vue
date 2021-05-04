@@ -3,11 +3,10 @@
     <a-back-top/>
     <a-layout>
       <a-layout-header>
-        <div class="header">{{ ($route.meta || {}).title || $route.name }}</div>
-        <div class="desc">
-          <span v-if="$route.path === '/'">一个轻量的工具集合</span>
-          <router-link to="/" v-else>返回首页</router-link>
+        <div class="header">
+          <router-link to="/">ISZY 工具集合</router-link>
         </div>
+        <div class="desc">一个轻量的工具集合</div>
       </a-layout-header>
       <a-layout-content>
         <router-view/>
@@ -101,6 +100,10 @@ html, body, #app {
       font-size: 38px;
       color: #333333;
       font-weight: 600;
+
+      a {
+        color: #333333;
+      }
     }
 
     .desc {

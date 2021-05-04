@@ -1,64 +1,77 @@
 <template>
-  <div class="codePanel">
-    <div class="header">
-      <a-button type="primary" @click="format" title="格式化 (Ctrl-I)">
-        <template #icon>
-          <IconFont type="icon-t-format-indent-increa"></IconFont>
-        </template>
-      </a-button>
-      <a-button type="primary" @click="compact" title="压缩">
-        <template #icon>
-          <IconFont type="icon-t-format-indent-decrea"></IconFont>
-        </template>
-      </a-button>
-      <a-button type="primary" @click="showFilterPanel" title="筛选，排序，或者转换内容">
-        <template #icon>
-          <FilterFilled/>
-        </template>
-      </a-button>
-      <a-divider type="vertical"/>
-      <a-button type="primary" @click="undo" title="撤销 (Ctrl-Z)" :disabled="historySize.undo === 0">
-        <template #icon>
-          <UndoOutlined/>
-        </template>
-      </a-button>
-      <a-button type="primary" @click="redo" title="重做 (Ctrl-Y)" :disabled="historySize.redo === 0">
-        <template #icon>
-          <RedoOutlined/>
-        </template>
-      </a-button>
-      <a-divider type="vertical"/>
-      <a-button type="primary" title="前往顶部" @click="goTop">
-        <template #icon>
-          <VerticalAlignTopOutlined/>
-        </template>
-      </a-button>
-      <a-button type="primary" title="前往底部" @click="goBottom">
-        <template #icon>
-          <VerticalAlignBottomOutlined/>
-        </template>
-      </a-button>
-      <a-divider type="vertical"/>
-      <a-button type="primary" title="修复" @click="fix">
-        <template #icon>
-          <IconFont type="icon-t-fix"></IconFont>
-        </template>
-      </a-button>
+  <container>
+    <div class="codePanel">
+      <div class="header">
+        <a-button type="primary" @click="format" title="格式化 (Ctrl-I)">
+          <template #icon>
+            <IconFont type="icon-t-format-indent-increa"></IconFont>
+          </template>
+        </a-button>
+        <a-button type="primary" @click="compact" title="压缩">
+          <template #icon>
+            <IconFont type="icon-t-format-indent-decrea"></IconFont>
+          </template>
+        </a-button>
+        <a-button type="primary" @click="showFilterPanel" title="筛选，排序，或者转换内容">
+          <template #icon>
+            <FilterFilled/>
+          </template>
+        </a-button>
+        <a-divider type="vertical"/>
+        <a-button type="primary" @click="undo" title="撤销 (Ctrl-Z)" :disabled="historySize.undo === 0">
+          <template #icon>
+            <UndoOutlined/>
+          </template>
+        </a-button>
+        <a-button type="primary" @click="redo" title="重做 (Ctrl-Y)" :disabled="historySize.redo === 0">
+          <template #icon>
+            <RedoOutlined/>
+          </template>
+        </a-button>
+        <a-divider type="vertical"/>
+        <a-button type="primary" title="前往顶部" @click="goTop">
+          <template #icon>
+            <VerticalAlignTopOutlined/>
+          </template>
+        </a-button>
+        <a-button type="primary" title="前往底部" @click="goBottom">
+          <template #icon>
+            <VerticalAlignBottomOutlined/>
+          </template>
+        </a-button>
+        <a-divider type="vertical"/>
+        <a-button type="primary" title="修复" @click="fix">
+          <template #icon>
+            <IconFont type="icon-t-fix"></IconFont>
+          </template>
+        </a-button>
+      </div>
+      <textarea ref="codemirror"></textarea>
+      <div class="footer">
+        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
+            cursor.ch + 1
+          }}</span>
+      </div>
+      <a-modal v-model:visible="showFilter" title="变换" @ok="filter"
+               :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
+        <p>输入一个
+          <a-typography-text code>JMESPath</a-typography-text>
+          查询以过滤、排序或转换JSON数据。要学习
+          <a-typography-text code>JMESPath</a-typography-text>
+          ，请转到
+          <a-typography-link target="_blank" href="https://jmespath.org/tutorial.html">教程</a-typography-link>
+          。
+        </p>
+        <a-divider orientation="left">查询</a-divider>
+        <a-textarea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear
+                    style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
+        <a-divider orientation="left">预览</a-divider>
+        <a-typography-paragraph>
+          <pre>{{ filterPreview }}</pre>
+        </a-typography-paragraph>
+      </a-modal>
     </div>
-    <textarea ref="codemirror"></textarea>
-    <div class="footer">
-      <span>总行数:&nbsp;{{lineCount}}&nbsp;&nbsp;行数:&nbsp;{{cursor.line+1}}&nbsp;&nbsp;列数:&nbsp;{{cursor.ch+1}}</span>
-    </div>
-    <a-modal v-model:visible="showFilter" title="变换" @ok="filter" :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
-      <p>输入一个<a-typography-text code>JMESPath</a-typography-text>查询以过滤、排序或转换JSON数据。要学习<a-typography-text code>JMESPath</a-typography-text>，请转到<a-typography-link target="_blank" href="https://jmespath.org/tutorial.html">教程</a-typography-link>。</p>
-      <a-divider orientation="left">查询</a-divider>
-      <a-textarea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
-      <a-divider orientation="left">预览</a-divider>
-      <a-typography-paragraph>
-        <pre>{{ filterPreview }}</pre>
-      </a-typography-paragraph>
-    </a-modal>
-  </div>
+  </container>
 </template>
 
 <script>
@@ -110,6 +123,7 @@ import jsonlint from 'jsonlint-mod'
 import 'codemirror/addon/lint/lint.css'
 import 'codemirror/addon/lint/lint.js'
 import 'codemirror/addon/lint/json-lint.js'
+import Container from '@/components/container.vue'
 // endregion
 
 window.jsonlint = jsonlint
@@ -136,13 +150,16 @@ export default {
         } catch (e) {
           return ''
         }
-      } else { return '' }
+      } else {
+        return ''
+      }
     },
     ...mapState({
       content: state => state.jsonEditor.content
     })
   },
   components: {
+    Container,
     UndoOutlined,
     RedoOutlined,
     VerticalAlignTopOutlined,
@@ -182,7 +199,9 @@ export default {
           cm.setOption('fullScreen', !cm.getOption('fullScreen'))
         },
         Esc: (cm) => {
-          if (cm.getOption('fullScreen')) { cm.setOption('fullScreen', false) }
+          if (cm.getOption('fullScreen')) {
+            cm.setOption('fullScreen', false)
+          }
         },
         'Ctrl-/': (cm) => {
           cm.execCommand('toggleComment')
@@ -234,7 +253,8 @@ export default {
         codemirror.setValue(JSON.stringify(eval('(' + this.code + ')'), undefined, 2))
         codemirror.scrollTo(tmp.left, tmp.top)
         codemirror.setCursor(tmp1)
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     showFilterPanel () {
       this.showFilter = true
