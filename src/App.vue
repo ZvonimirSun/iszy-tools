@@ -1,20 +1,23 @@
 <template>
   <a-config-provider :locale="locale">
-    <div class="container">
-      <a-back-top/>
-      <div class="panel">
-        <div class="top">
-          <div class="header">{{ ($route.meta || {}).title || $route.name  }}</div>
-          <div class="desc">
-            <span v-if="$route.path === '/'">一个轻量的工具集合</span>
-            <router-link to="/" v-else>返回首页</router-link>
-          </div>
+    <a-back-top/>
+    <a-layout>
+      <a-layout-header>
+        <div class="header">
+          <router-link to="/">ISZY 工具集合</router-link>
         </div>
-        <div class="main">
-          <router-view/>
-        </div>
-      </div>
-    </div>
+        <div class="desc">一个轻量的工具集合</div>
+      </a-layout-header>
+      <a-layout-content>
+        <router-view/>
+      </a-layout-content>
+      <a-layout-footer>
+        <span>© 2021&nbsp;</span>
+        <a-typography-link href="https://www.iszy.cc" target="_blank">
+          随遇而安
+        </a-typography-link>
+      </a-layout-footer>
+    </a-layout>
   </a-config-provider>
 </template>
 
@@ -34,11 +37,10 @@ export default {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  //text-align: center;
   font-size: 14px;
   line-height: 22px;
   color: #333333;
-  height: 100%;
+  background: #f4f8fb;
 }
 
 /*滚动条样式*/
@@ -66,46 +68,64 @@ export default {
   background-color: rgb(210, 212, 214);
 }
 
-body {
-  margin: 0
+html, body, #app {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 </style>
 
 <style lang="scss" scoped>
-.container {
+.ant-layout {
+  background: transparent;
   height: 100%;
   width: 100%;
+  font-size: 14px;
+  overflow: hidden;
 
-  .panel {
-    max-width: 75rem;
-    position: relative;
-    margin: 0 auto;
-    padding: 0 1.25rem 1.25rem;
+  &-header, &-layout, &-footer {
+    background: transparent;
+  }
 
-    .top {
-      padding-top: 2rem;
-      width: 100%;
-      text-align: center;
+  &-header {
+    padding: 2rem 0 24px;
+    text-align: center;
+    height: 134px;
+    line-height: unset;
 
-      .header {
-        height: 44px;
-        line-height: 44px;
-        font-size: 33px;
+    .header {
+      height: 46px;
+      line-height: 46px;
+      font-size: 38px;
+      color: #333333;
+      font-weight: 600;
+
+      a {
         color: #333333;
-        font-weight: 600;
-      }
-
-      .desc {
-        font-size: 14px;
-        margin-top: 12px;
-        margin-bottom: 40px;
-        color: #999999;
       }
     }
 
-    .main {
-      width: 100%;
+    .desc {
+      height: 22px;
+      font-size: 14px;
+      line-height: 22px;
+      margin-top: 12px;
+      color: #999999;
     }
+  }
+
+  &-content {
+    max-width: 75rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    overflow-y: auto;
+  }
+
+  &-footer {
+    height: 70px;
+    text-align: center;
   }
 }
 </style>

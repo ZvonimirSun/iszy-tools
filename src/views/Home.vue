@@ -1,21 +1,25 @@
 <template>
   <template v-for="(item,index) in tools" :key="'type'+ index">
-    <a-divider orientation="left">
-      <span class="typeName">
-      <IconFont :type="item.icon" v-if="item.icon"></IconFont>
-      <div>{{ item.type }}</div>
-      </span>
-    </a-divider>
     <a-row :gutter="{ xs: 8, sm: 16, md: 24}">
+      <a-col :span="24">
+        <a-divider orientation="left">
+          <span class="typeName">
+            <IconFont :type="item.icon" v-if="item.icon"></IconFont>
+            <div>{{ item.type }}</div>
+          </span>
+        </a-divider>
+      </a-col>
       <a-col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-        <router-link target="_blank" :to="'/redirect?url='+tool.link" v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)">
+        <router-link target="_blank" :to="'/redirect?url='+tool.link"
+                     v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)">
           <div class="tool">{{ tool.name }}</div>
         </router-link>
         <router-link :to="(item.link||'')+(tool.link||'')" v-else>
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
-            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled /></span>
-            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else><span class="nonHover"><StarOutlined /></span><span class="hovered"><StarFilled /></span></span>
+            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
+                  v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
           </div>
         </router-link>
       </a-col>
@@ -77,6 +81,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.ant-row {
+  margin-top: 35px;
+  background: #fff;
+  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
+  border-radius: .5rem;
+
+  .ant-col:first-child {
+    margin-top: -35px;
+  }
+}
+
 .typeName {
   font-size: 1.125rem;
   font-weight: 700;
@@ -105,7 +120,7 @@ export default {
   margin: .4375rem;
   padding: .625rem .9375rem;
   white-space: nowrap;
-  background-color: transparent;
+  background-color: #fff;
   transform: translateZ(0);
   transition: transform 0.2s, color 0.2s, background-color 0.2s;
   text-align: center;
