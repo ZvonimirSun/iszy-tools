@@ -41,6 +41,7 @@ export default {
   font-size: 14px;
   line-height: 22px;
   color: #333333;
+  background: #f4f8fb;
 }
 
 /*滚动条样式*/
