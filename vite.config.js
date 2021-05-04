@@ -10,10 +10,30 @@ export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
     vue(),
-    legacy(),
+    legacy({
+      targets: ['defaults', 'not IE 11']
+    }),
     VitePWA({
       registerType: 'autoUpdate',
-      manifest: {}
+      manifest: {
+        name: 'ISZY工具集合',
+        short_name: 'ISZY TOOLS',
+        icons: [
+          {
+            src: '/images/android-chrome-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: '/images/android-chrome-384x384.png',
+            sizes: '384x384',
+            type: 'image/png'
+          }
+        ],
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        display: 'standalone'
+      }
     }),
     styleImport({
       libs: [
