@@ -50,11 +50,13 @@
       <span>总行数:&nbsp;{{lineCount}}&nbsp;&nbsp;行数:&nbsp;{{cursor.line+1}}&nbsp;&nbsp;列数:&nbsp;{{cursor.ch+1}}</span>
     </div>
     <a-modal v-model:visible="showFilter" title="变换" @ok="filter" :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
-      <p>输入一个<code>JMESPath</code>查询以过滤、排序或转换JSON数据。要学习<code>JMESPath</code>，请转到<a target="_blank" href="https://jmespath.org/tutorial.html">教程</a>。</p>
+      <p>输入一个<a-typography-text code>JMESPath</a-typography-text>查询以过滤、排序或转换JSON数据。要学习<a-typography-text code>JMESPath</a-typography-text>，请转到<a-typography-link target="_blank" href="https://jmespath.org/tutorial.html">教程</a-typography-link>。</p>
       <a-divider orientation="left">查询</a-divider>
       <a-textarea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
       <a-divider orientation="left">预览</a-divider>
-      <a-textarea v-model:value="filterPreview" style="resize: vertical;" readonly :auto-size="{ minRows: 2, maxRows: 15 }"/>
+      <a-typography-paragraph>
+        <pre>{{ filterPreview }}</pre>
+      </a-typography-paragraph>
     </a-modal>
   </div>
 </template>
@@ -271,19 +273,6 @@ export default {
 $highlight-background: #f0f0f0;
 $highlight-foreground: #444;
 $font-family: JetBrains Mono, consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei';
-
-code, pre {
-  border-radius: 3px;
-  font-size: .875em;
-  font-family: $font-family;
-  background-color: $highlight-background;
-  color: $highlight-foreground;
-}
-
-code {
-  padding: 2px 4px;
-  overflow-wrap: break-word;
-}
 
 .codePanel {
   width: 100%;
