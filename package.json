@@ -90,11 +90,6 @@
       "@babel/plugin-transform-arrow-functions"
     ]
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "license": "MIT",
   "husky": {
     "hooks": {

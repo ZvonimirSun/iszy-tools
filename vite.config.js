@@ -10,7 +10,9 @@ export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
     vue(),
-    legacy(),
+    legacy({
+      targets: ['defaults', 'not IE 11']
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
