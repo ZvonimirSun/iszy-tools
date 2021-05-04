@@ -1,6 +1,7 @@
 name: Build Test
 
 on:
+  push:
   pull_request:
     types: [ opened ]
   workflow_dispatch:
@@ -19,5 +20,7 @@ jobs:
           node-version: '14'
       - name: Install dependencies 🔧
         run: yarn install --frozen-lockfile
+      - name: Eslint Fix 🔧
+        run: yarn lint
       - name: Build app 🔧
-        run: yarn run build
+        run: yarn build

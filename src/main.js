@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
-import Antd, { message } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import App from '@/App.vue'
-import 'ant-design-vue/dist/antd.css'
 import router from '@/router'
 import store from '@/store'
 import axios from '@/plugins/Axios'
@@ -21,5 +20,5 @@ message.config({
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
 
-app.use(store).use(router).use(Antd).component('IconFont', IconFont)
+app.use(store).use(router).component('IconFont', IconFont)
 app.mount('#app')

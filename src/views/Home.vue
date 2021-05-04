@@ -1,15 +1,15 @@
 <template>
   <template v-for="(item,index) in tools" :key="'type'+ index">
-    <a-row :gutter="{ xs: 8, sm: 16, md: 24}">
-      <a-col :span="24">
-        <a-divider orientation="left">
+    <Row :gutter="{ xs: 8, sm: 16, md: 24}">
+      <Col :span="24">
+        <Divider orientation="left">
           <span class="typeName">
             <IconFont :type="item.icon" v-if="item.icon"></IconFont>
             <div>{{ item.type }}</div>
           </span>
-        </a-divider>
-      </a-col>
-      <a-col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
+        </Divider>
+      </Col>
+      <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
         <router-link target="_blank" :to="'/redirect?url='+tool.link"
                      v-if="/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link)">
           <div class="tool">{{ tool.name }}</div>
@@ -22,19 +22,20 @@
                   v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
           </div>
         </router-link>
-      </a-col>
-    </a-row>
+      </Col>
+    </Row>
   </template>
 </template>
 
 <script>
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
+import { Row, Col, Divider } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
 import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: '首页',
-  components: { StarOutlined, StarFilled },
+  components: { StarOutlined, StarFilled, Row, Col, Divider },
   methods: {
     ...mapActions({
       addFav: 'favorite/addFav',

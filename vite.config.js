@@ -48,5 +48,12 @@ export default defineConfig({
       keep_fnames: false,
       module: false
     }
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    }
   }
 })

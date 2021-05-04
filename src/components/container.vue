@@ -1,23 +1,26 @@
 <template>
-  <a-row :span="24">
-    <a-col :span="24">
-      <a-divider orientation="left">
+  <Row :span="24">
+    <Col :span="24">
+      <Divider orientation="left">
         <span class="typeName">{{name || ($route.meta || {}).title || $route.name}}</span>
-      </a-divider>
-    </a-col>
-    <a-col :span="24">
+      </Divider>
+    </Col>
+    <Col :span="24">
       <div class="main">
         <slot></slot>
       </div>
-    </a-col>
-  </a-row>
+    </Col>
+  </Row>
 </template>
 <script>
+import { Row, Col, Divider } from 'ant-design-vue'
+
 export default {
   name: 'container',
   props: {
     name: String
-  }
+  },
+  components: { Row, Col, Divider }
 }
 </script>
 
