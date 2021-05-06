@@ -50,6 +50,13 @@ export default defineConfig({
             options: {
               cacheName: 'jsdelivr-cdn'
             }
+          },
+          {
+            urlPattern: /^https:\/\/tools\.iszy\.xyz/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'tools-iszy-xyz'
+            }
           }
         ]
       }
