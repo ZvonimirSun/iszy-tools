@@ -33,6 +33,24 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone'
+      },
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'google-fonts-webfonts'
+            }
+          },
+          {
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'jsdelivr-cdn'
+            }
+          }
+        ]
       }
     }),
     styleImport({

@@ -302,7 +302,6 @@ export default {
 <style scoped lang="scss">
 $highlight-background: #f0f0f0;
 $highlight-foreground: #444;
-$font-family: JetBrains Mono, consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei';
 
 .codePanel {
   width: 100%;
@@ -326,10 +325,6 @@ $font-family: JetBrains Mono, consolas, Menlo, monospace, 'PingFang SC', 'Micros
     line-height: 22px;
     background-color: #f7f7f7;
     border-top: 1px solid #ddd;
-  }
-
-  .CodeMirror {
-    font-family: $font-family;
   }
 }
 
