@@ -15,6 +15,7 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
+      scope: 'https://tools.iszy.xyz/',
       manifest: {
         name: 'ISZY工具集合',
         short_name: 'ISZY TOOLS',
