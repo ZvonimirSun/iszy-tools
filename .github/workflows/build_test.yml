@@ -5,7 +5,10 @@ on:
     branches:
       - dev
   pull_request:
-    types: [ opened ]
+    types: [ opened, synchronize ]
+    branches:
+      - main
+      - dev
   workflow_dispatch:
 
 jobs:
