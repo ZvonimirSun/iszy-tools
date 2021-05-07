@@ -1,12 +1,19 @@
+@import "@/assets/css/googlefont.css";
+
 #app {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: EB Garamond, 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+  font-family: Lora, 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   font-size: 14px;
   line-height: 22px;
   color: #333333;
   background: #f4f8fb;
+
+  pre,
+  code, kbd, samp, input, textarea {
+    font-family: JetBrains Mono, monospace;
+  }
 }
 
 /*滚动条样式*/
@@ -39,9 +46,4 @@ html, body, #app {
   height: 100%;
   width: 100%;
   overflow: hidden;
-}
-
-pre,
-code, kbd, samp {
-  font-family: JetBrains Mono, consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei' !important;
 }

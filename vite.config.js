@@ -1,9 +1,10 @@
+'use strict'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
 import { VitePWA } from 'vite-plugin-pwa'
 import styleImport from 'vite-plugin-style-import'
-import path from 'path'
+import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -39,21 +40,21 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'google-fonts-webfonts'
             }
           },
           {
             urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'jsdelivr-cdn'
             }
           },
           {
             urlPattern: /^https:\/\/tools\.iszy\.xyz/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'tools-iszy-xyz'
             }
@@ -72,9 +73,9 @@ export default defineConfig({
     })
   ],
   resolve: {
-    alias: [
-      { find: '@', replacement: path.resolve(__dirname, '.', 'src') }
-    ]
+    alias: {
+      '@': resolve('src')
+    }
   },
   optimizeDeps: {
     include: ['@ant-design/icons-vue']

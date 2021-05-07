@@ -1,3 +1,3 @@
 export default {
-  title: 'ISZY 工具集合'
+  title: 'ISZY工具集合'
 }
