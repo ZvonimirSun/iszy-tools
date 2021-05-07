@@ -39,21 +39,21 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'google-fonts-webfonts'
             }
           },
           {
             urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'jsdelivr-cdn'
             }
           },
           {
             urlPattern: /^https:\/\/tools\.iszy\.xyz/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'tools-iszy-xyz'
             }
