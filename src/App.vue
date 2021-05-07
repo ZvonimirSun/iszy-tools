@@ -4,7 +4,7 @@
     <layout>
       <Header>
         <div class="header">
-          <router-link to="/">ISZY 工具集合</router-link>
+          <router-link to="/">ISZY工具集合</router-link>
         </div>
         <div class="desc">一个轻量的工具集合</div>
       </Header>
