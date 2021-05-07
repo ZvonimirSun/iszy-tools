@@ -46,6 +46,13 @@ export default defineConfig({
             }
           },
           {
+            urlPattern: /^https:\/\/gstatic\.loli\.net/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'loli-google-fonts-webfonts'
+            }
+          },
+          {
             urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
             handler: 'StaleWhileRevalidate',
             options: {
