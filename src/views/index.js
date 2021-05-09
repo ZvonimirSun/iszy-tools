@@ -7,5 +7,6 @@ export default {
   colorTransform: () => import('@/views/program/colorTransform.vue'),
   jsonEditor: () => import('@/views/program/jsonEditor.vue'),
   settings: () => import('@/views/settings/index.vue'),
-  whatAnimeIsThis: () => import('@/views/anime/whatAnimeIsThis.vue')
+  whatAnimeIsThis: () => import('@/views/anime/whatAnimeIsThis.vue'),
+  bilibiliBv2av: () => import('@/views/anime/bilibiliBv2av.vue')
 }
