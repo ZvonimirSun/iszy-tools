@@ -20,6 +20,7 @@
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
             <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
                   v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
+            <sup :style="{color:tool.color}" v-if="tool.color"></sup>
           </div>
         </router-link>
       </Col>
@@ -144,6 +145,17 @@ export default {
     }
   }
 
+  sup {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 6px;
+    height: 6px;
+    background: #ff4d4f;
+    border-radius: 100%;
+    box-shadow: 0 0 0 1px #fff;
+  }
+
   &:hover {
     background-color: #16b0f6;
     color: #fff;
@@ -167,6 +179,10 @@ export default {
           color: yellow;
         }
       }
+    }
+
+    sup {
+      display: none;
     }
   }
 }
