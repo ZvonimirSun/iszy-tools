@@ -6,7 +6,7 @@ import store from '@/store'
 let routes = [
   {
     path: '/',
-    name: 'ISZY 工具集合',
+    name: 'ISZY工具集合',
     component: () => import('@/views/Home.vue'),
     meta: {
       requiresAuth: false
