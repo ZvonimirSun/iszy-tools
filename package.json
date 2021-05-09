@@ -86,7 +86,12 @@
         }
       ],
       "@babel/plugin-syntax-dynamic-import",
-      "@babel/plugin-transform-arrow-functions"
+      [
+        "@babel/plugin-transform-arrow-functions",
+        {
+          "spec": true
+        }
+      ]
     ]
   },
   "license": "MIT",

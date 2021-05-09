@@ -43,6 +43,11 @@
     "type": "其他",
     "children": [
       {
+        "name": "这是什么动漫",
+        "link": "/anime/whatAnimeIsThis",
+        "color": "red"
+      },
+      {
         "name": "资源包",
         "link": "https://lib.iszy.xyz"
       }
