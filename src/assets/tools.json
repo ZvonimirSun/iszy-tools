@@ -29,6 +29,16 @@
     ]
   },
   {
+    "type": "游戏",
+    "link": "/games",
+    "children": [
+      {
+        "name": "奥利奥生成器",
+        "link": "/oreooo"
+      }
+    ]
+  },
+  {
     "type": "理财",
     "link": "/money",
     "icon": "icon-t-finances",
