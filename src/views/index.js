@@ -8,5 +8,6 @@ export default {
   jsonEditor: () => import('@/views/program/jsonEditor.vue'),
   settings: () => import('@/views/settings/index.vue'),
   whatAnimeIsThis: () => import('@/views/anime/whatAnimeIsThis.vue'),
-  bilibiliBv2av: () => import('@/views/anime/bilibiliBv2av.vue')
+  bilibiliBv2av: () => import('@/views/anime/bilibiliBv2av.vue'),
+  oreooo: () => import('@/views/games/oreooo/index.vue')
 }
