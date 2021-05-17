@@ -43,8 +43,8 @@
       <div class="output-image">
         <canvas ref="oreo_canvas" width="240" height="500">您的浏览器不支持 HTML5 canvas 标签。</canvas>
       </div>
-      <div v-if="isIOS()" @click="showImage" class="btn">查看图片</div>
-      <div v-else @click="downloadImage" class="btn">保存图片</div>
+      <div @click="showImage" class="btn">查看图片</div>
+<!--      <div v-else @click="downloadImage" class="btn">保存图片</div>-->
       <div @click="backToInput" class="btn">返回</div>
     </div>
   </div>
@@ -214,12 +214,12 @@ export default {
       this.output = false
       this.oreoArr = []
       this.imgUrl = ''
-    },
-    isIOS () {
-      const u = navigator.userAgent
-      const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-      return isiOS
     }
+    // isIOS () {
+    //   const u = navigator.userAgent
+    //   const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+    //   return isiOS
+    // }
   }
 }
 </script>
