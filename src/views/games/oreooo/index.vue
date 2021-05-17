@@ -43,7 +43,7 @@
       <div class="output-image">
         <canvas ref="oreo_canvas" width="240" height="500">您的浏览器不支持 HTML5 canvas 标签。</canvas>
       </div>
-      <div @click="showImage" class="btn">查看图片</div>
+      <div class="btn"><a :href="imgUrl" target="_blank">查看图片</a></div>
 <!--      <div v-else @click="downloadImage" class="btn">保存图片</div>-->
       <div @click="backToInput" class="btn">返回</div>
     </div>
@@ -154,7 +154,6 @@ export default {
     },
     generateImage () {
       if (this.oreoArr.length > 0) {
-        const that = this
         this.loading = true
         this.output = true
         const oreoArr = this.oreoArr
@@ -192,35 +191,19 @@ export default {
         drawArr.forEach(item => {
           ctx.drawImage(item.image, item.x, item.y, item.width, item.height)
         })
-
-        this.imgUrl = canvas.toDataURL('image/png')
+        Axios.get(canvas.toDataURL('image/png'), { responseType: 'blob' }).then(res => {
+          this.imgUrl = URL.createObjectURL(res.data)
+        })
         setTimeout(() => {
-          that.loading = false
+          this.loading = false
         }, 1000)
       }
-    },
-    downloadImage () {
-      const a = document.createElement('a')
-      a.href = this.imgUrl
-      a.download = 'oreo.png'
-      a.dispatchEvent(new MouseEvent('click', {}))
-    },
-    showImage () {
-      const winRef = window.open('', '_blank')
-      Axios.get(this.imgUrl, { responseType: 'blob' }).then(res => {
-        winRef.location = URL.createObjectURL(res.data)
-      })
     },
     backToInput () {
       this.output = false
       this.oreoArr = []
       this.imgUrl = ''
     }
-    // isIOS () {
-    //   const u = navigator.userAgent
-    //   const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-    //   return isiOS
-    // }
   }
 }
 </script>
@@ -339,10 +322,18 @@ export default {
       margin: 5px;
       border-radius: 25px;
 
+      a {
+        color: #515151;
+      }
+
       &:hover {
         cursor: pointer;
         background-color: #515151;
         color: #ffffff;
+
+        a {
+          color: #fff;
+        }
       }
     }
 
@@ -354,6 +345,7 @@ export default {
       margin: 16px -25px -25px;
       padding: 12px;
       border-radius: 0 0 25px 25px;
+      cursor: pointer;
     }
 
     .output-image {
