@@ -22,6 +22,7 @@ export default {
         if (tmp.length > 0) {
           tmp[0].times++
           tmp[0].lastAccessTime = new Date().getTime()
+          tmp[0].link = link
         } else {
           state.statistics.push({
             name, link, times: 1, lastAccessTime: new Date().getTime()

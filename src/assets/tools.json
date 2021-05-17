@@ -32,10 +32,6 @@
     "type": "游戏",
     "link": "/games",
     "children": [
-      {
-        "name": "奥利奥生成器",
-        "link": "/oreooo"
-      }
     ]
   },
   {
@@ -60,6 +56,10 @@
       {
         "name": "哔哩哔哩AV、BV号转换",
         "link": "/anime/bilibiliBv2av"
+      },
+      {
+        "name": "奥利奥生成器",
+        "link": "/others/oreooo"
       },
       {
         "name": "资源包",

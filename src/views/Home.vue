@@ -67,7 +67,7 @@ export default {
           children: this.favorite
         })
       }
-      return tmp
+      return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
     },
     ...mapState({
       settings: state => state.settings.settings,
