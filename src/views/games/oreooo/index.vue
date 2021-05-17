@@ -56,6 +56,7 @@ import R from './assets/image/R.png'
 import Ob from './assets/image/Ob.png'
 import Oreo from './assets/image/oreo.png'
 import random from './assets/image/random.png'
+import Axios from 'axios'
 
 export default {
   name: 'index.vue',
@@ -102,7 +103,7 @@ export default {
     }, 1000)
   },
   methods: {
-    strAdd: function (str) {
+    strAdd (str) {
       switch (str) {
         case 'o':
           if (this.oreoArr.length === 0) {
@@ -128,7 +129,7 @@ export default {
           break
       }
     },
-    getRandom: function () {
+    getRandom () {
       for (let i = 0; i < Math.floor(Math.random() * 8) + 1; i++) {
         const random = Math.random() * 5
         let str = ''
@@ -151,7 +152,7 @@ export default {
         this.getRandom()
       }
     },
-    generateImage: function () {
+    generateImage () {
       if (this.oreoArr.length > 0) {
         const that = this
         this.loading = true
@@ -198,21 +199,23 @@ export default {
         }, 1000)
       }
     },
-    downloadImage: function () {
+    downloadImage () {
       const a = document.createElement('a')
       a.href = this.imgUrl
       a.download = 'oreo.png'
       a.dispatchEvent(new MouseEvent('click', {}))
     },
-    showImage: function () {
-      window.open(this.imgUrl)
+    showImage () {
+      Axios.get(this.imgUrl, { responseType: 'blob' }).then(res => {
+        window.open(URL.createObjectURL(res.data))
+      })
     },
-    backToInput: function () {
+    backToInput () {
       this.output = false
       this.oreoArr = []
       this.imgUrl = ''
     },
-    isIOS: function () {
+    isIOS () {
       const u = navigator.userAgent
       const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
       return isiOS
