@@ -32,6 +32,10 @@
     "type": "游戏",
     "link": "/games",
     "children": [
+      {
+        "name": "2048",
+        "link": "/2048"
+      }
     ]
   },
   {
