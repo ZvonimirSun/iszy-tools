@@ -206,8 +206,9 @@ export default {
       a.dispatchEvent(new MouseEvent('click', {}))
     },
     showImage () {
+      const winRef = window.open('', '_blank')
       Axios.get(this.imgUrl, { responseType: 'blob' }).then(res => {
-        window.open(URL.createObjectURL(res.data))
+        winRef.location = URL.createObjectURL(res.data)
       })
     },
     backToInput () {
