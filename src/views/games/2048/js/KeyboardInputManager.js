@@ -1,6 +1,22 @@
 export default class KeyboardInputManager {
-  constructor () {
+  constructor (vue) {
     this.events = {}
+    this.vue = vue
+
+    this.map = {
+      ArrowUp: 0, // Up
+      ArrowRight: 1, // Right
+      ArrowDown: 2, // Down
+      ArrowLeft: 3, // Left
+      KeyK: 0, // Vim up
+      KeyL: 1, // Vim right
+      keyJ: 2, // Vim down
+      keyH: 3, // Vim left
+      KeyW: 0, // W
+      KeyD: 1, // D
+      KeyS: 2, // S
+      KeyA: 3 // A
+    }
 
     if (window.navigator.msPointerEnabled) {
       // Internet Explorer 10 style
@@ -35,48 +51,17 @@ export default class KeyboardInputManager {
   listen () {
     const self = this
 
-    const map = {
-      38: 0, // Up
-      39: 1, // Right
-      40: 2, // Down
-      37: 3, // Left
-      75: 0, // Vim up
-      76: 1, // Vim right
-      74: 2, // Vim down
-      72: 3, // Vim left
-      87: 0, // W
-      68: 1, // D
-      83: 2, // S
-      65: 3 // A
-    }
-
     // Respond to direction keys
-    document.addEventListener('keydown', function (event) {
-      const modifiers = event.altKey || event.ctrlKey || event.metaKey ||
-        event.shiftKey
-      const mapped = map[event.which]
-
-      if (!modifiers) {
-        if (mapped !== undefined) {
-          event.preventDefault()
-          self.emit('move', mapped)
-        }
-      }
-
-      // R key restarts the game
-      if (!modifiers && event.which === 82) {
-        self.restart.call(self, event)
-      }
-    })
+    document.addEventListener('keydown', this._keyboardEvent.bind(this))
 
     // Respond to button presses
-    this.bindButtonPress('.retry-button', this.restart)
-    this.bindButtonPress('.restart-button', this.restart)
-    this.bindButtonPress('.keep-playing-button', this.keepPlaying)
+    // this.bindButtonPress('.retry-button', this.restart)
+    // this.bindButtonPress('.restart-button', this.restart)
+    // this.bindButtonPress('.keep-playing-button', this.keepPlaying)
 
     // Respond to swipe events
     let touchStartClientX, touchStartClientY
-    const gameContainer = document.getElementsByClassName('game-container')[0]
+    const gameContainer = this.vue.$refs.gameContainer
 
     gameContainer.addEventListener(this.eventTouchstart, function (event) {
       if ((!window.navigator.msPointerEnabled && event.touches.length > 1) ||
@@ -142,5 +127,27 @@ export default class KeyboardInputManager {
     const button = document.querySelector(selector)
     button.addEventListener('click', fn.bind(this))
     button.addEventListener(this.eventTouchend, fn.bind(this))
+  }
+
+  _keyboardEvent (event) {
+    const modifiers = event.altKey || event.ctrlKey || event.metaKey ||
+      event.shiftKey
+    const mapped = this.map[event.code]
+
+    if (!modifiers) {
+      if (mapped !== undefined) {
+        event.preventDefault()
+        this.emit('move', mapped)
+      }
+    }
+
+    // R key restarts the game
+    if (!modifiers && event.code === 'KeyR') {
+      this.restart.call(self, event)
+    }
+  }
+
+  destroy () {
+    document.removeEventListener('keydown', this._keyboardEvent)
   }
 }

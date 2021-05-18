@@ -1,22 +1,25 @@
 import Tile from './Tile'
 import Grid from './Grid'
+import InputManager from './KeyboardInputManager'
 
 export default class GameManager {
   constructor (size, vue) {
     this.vue = vue
     this.size = size // Size of the grid
-    // this.inputManager = new InputManager()
+    this.inputManager = new InputManager(vue)
     // this.storageManager = new StorageManager()
     // this.actuator = new Actuator()
 
     this.startTiles = 2
-    //
-    // this.inputManager.on('move', this.move.bind(this))
-    // this.inputManager.on('restart', this.restart.bind(this))
-    // this.inputManager.on('keepPlaying', this.keepPlaying.bind(this))
+
+    this.inputManager.on('move', this.move.bind(this))
+    this.inputManager.on('restart', this.restart.bind(this))
+    this.inputManager.on('keepPlaying', this.keepPlaying.bind(this))
 
     this.setup()
   }
+
+  destroy () {}
 
   restart () {
     this.vue.clearGameState()
@@ -91,7 +94,7 @@ export default class GameManager {
       score: this.score,
       over: this.over,
       won: this.won,
-      bestScore: this.storageManager.getBestScore(),
+      bestScore: this.vue.bestScore,
       terminated: this.isGameTerminated()
     }
   }
