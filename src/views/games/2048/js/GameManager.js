@@ -1,28 +1,32 @@
+import Tile from './Tile'
+import Grid from './Grid'
+
 export default class GameManager {
-  constructor (size, InputManager, Actuator, StorageManager) {
+  constructor (size, vue) {
+    this.vue = vue
     this.size = size // Size of the grid
-    this.inputManager = new InputManager()
-    this.storageManager = new StorageManager()
-    this.actuator = new Actuator()
+    // this.inputManager = new InputManager()
+    // this.storageManager = new StorageManager()
+    // this.actuator = new Actuator()
 
     this.startTiles = 2
-
-    this.inputManager.on('move', this.move.bind(this))
-    this.inputManager.on('restart', this.restart.bind(this))
-    this.inputManager.on('keepPlaying', this.keepPlaying.bind(this))
+    //
+    // this.inputManager.on('move', this.move.bind(this))
+    // this.inputManager.on('restart', this.restart.bind(this))
+    // this.inputManager.on('keepPlaying', this.keepPlaying.bind(this))
 
     this.setup()
   }
 
   restart () {
-    this.storageManager.clearGameState()
-    this.actuator.continueGame() // Clear the game won/lost message
+    this.vue.clearGameState()
+    this.vue.continueGame() // Clear the game won/lost message
     this.setup()
   }
 
   keepPlaying () {
     this.keepPlaying = true
-    this.actuator.continueGame() // Clear the game won/lost message
+    this.vue.continueGame() // Clear the game won/lost message
   }
 
   isGameTerminated () {
@@ -30,7 +34,7 @@ export default class GameManager {
   }
 
   setup () {
-    const previousState = this.storageManager.getGameState()
+    const previousState = this.vue.gameState
 
     // Reload the game from a previous game if present
     if (previousState) {
@@ -71,24 +75,25 @@ export default class GameManager {
   }
 
   actuate () {
-    if (this.storageManager.getBestScore() < this.score) {
-      this.storageManager.setBestScore(this.score)
+    if (this.vue.bestScore < this.score) {
+      this.vue.setBestScore(this.score)
     }
 
     // Clear the state when the game is over (game over only, not win)
     if (this.over) {
-      this.storageManager.clearGameState()
+      this.vue.clearGameState()
     } else {
-      this.storageManager.setGameState(this.serialize())
+      this.vue.setGameState(this.serialize())
     }
 
-    this.actuator.actuate(this.grid, {
+    this.state = {
+      grid: this.grid,
       score: this.score,
       over: this.over,
       won: this.won,
       bestScore: this.storageManager.getBestScore(),
       terminated: this.isGameTerminated()
-    })
+    }
   }
 
   serialize () {

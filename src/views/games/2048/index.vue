@@ -11,86 +11,60 @@
 <script>
 import Container from '@/components/container.vue'
 import GameManager from './js/GameManager.js'
-import KeyboardInputManager from './js/KeyboardInputManager.js'
-import HTMLActuator from './js/HTMLActuator.js'
-import LocalStorageManager from './js/LocalStorageManager.js'
+import { mapActions, mapState } from 'vuex'
+
+let gameManager
 
 export default {
   name: '2048',
   components: { Container },
   data: () => ({
-    // 格网大小
-    size: 4,
-    // 初始数量
-    startTiles: 2,
-
-    cells: undefined,
-
-    score: 0,
-    best: 0,
-    over: false,
-    won: false,
-    keepPlaying: false
+    state: {}
   }),
-  mounted () {
-    window.requestAnimationFrame(function () {
-      new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager)
+  computed: {
+    ...mapState({
+      gameState: state => state.g2048.gameState,
+      bestScore: state => state.g2048.bestScore
     })
   },
+  mounted () {
+    gameManager = new GameManager(4, this)
+  },
   methods: {
-    setup () {
-      this.empty()
-      this.addStartTiles()
-    },
-    addStartTiles () {
-      for (const i = 0; i < this.startTiles; i++) {
-        this.addRandomTile()
-      }
-    },
-    addRandomTile () {
-      if (this.cellsAvailable()) {
-        const value = Math.random() < 0.9 ? 2 : 4
-      }
-    },
+    actuate (grid, metadata) {
 
-    empty () {
-      this.cells = []
-      for (let x = 0; x < this.size; x++) {
-        this.cells.push([])
-        const row = this.cells[x]
-
-        for (let y = 0; y < this.size; y++) {
-          row.push(null)
-        }
-      }
     },
-    cellsAvailable () {
-      let count = 0
-      for (const x of this.cells) {
-        for (const y of x) {
-          if (y) {
-            count++
-          }
-        }
-      }
-      return !!count
-    }
+    continueGame () {},
+    ...mapActions({
+      setBestScore: 'g2048/setBestScore',
+      setGameState: 'g2048/setGameState',
+      clearGameState: 'g2048/clearGameState'
+    })
   }
 }
 </script>
 
 <style scoped lang="scss">
 .game-container {
-  width: 500px;
-  height: 500px;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 15px;
   background: #bbada0;
   border-radius: 6px;
+  position: relative;
+
+  &:after {
+    padding-bottom: 100%;
+    content: '';
+    display: block;
+  }
 
   .grid-container {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
     display: grid;
 
     grid-template-columns: repeat(4, 1fr);
