@@ -4,8 +4,8 @@
       <div class="grid-container">
         <div class="grid-cell" v-for="item in 16" :key="item"></div>
       </div>
-      <div class="tile-container" v-if="gameState && gameState.grid">
-        <template v-for="(item, index) in gameState.grid.cells">
+      <div class="tile-container" v-if="cells">
+        <template v-for="(item, index) in cells">
           <template v-for="(item1, index1) in item">
             <div class="tile" :key="'tile-'+index+'-'+index1" v-if="item1" :class="tileClass(item1)">
               <span>{{item1.value}}</span>
@@ -31,6 +31,13 @@ export default {
     state: {}
   }),
   computed: {
+    cells: function () {
+      if (this.gameState && this.gameState.grid) {
+        return this.gameState.grid.cells
+      } else {
+        return null
+      }
+    },
     ...mapState({
       gameState: state => state.g2048.gameState,
       bestScore: state => state.g2048.bestScore
@@ -40,15 +47,20 @@ export default {
     gameManager = new GameManager(4, this)
   },
   methods: {
-    tileClass (cell) {
-      if (cell) {
+    tileClass (tile) {
+      if (tile) {
         const tmp = []
-        if (cell.value > 2048) {
+        tmp.push('tile-' + tile.value)
+        tmp.push('tile-position-' + (tile.position.x + 1) + '-' + (tile.position.y + 1))
+        if (tile.value > 2048) {
           tmp.push('tile-super')
-        } else {
-          tmp.push('tile-' + cell.value)
         }
-        tmp.push('tile-position-' + (cell.position.x + 1) + '-' + (cell.position.y + 1))
+        if (tile.previousPosition) {
+        } else if (tile.mergedFrom) {
+          tmp.push('tile-merged')
+        } else {
+          tmp.push('tile-new')
+        }
         return tmp
       } else {
         return []
@@ -81,6 +93,8 @@ $field-width: 500px;
 $grid-spacing: 15px;
 $grid-row-cells: 4;
 $tile-border-radius: 3px;
+
+$mobile-threshold: $field-width + 20px;
 
 $text-color: #776E65;
 $bright-text-color: #f9f6f2;
@@ -142,16 +156,20 @@ $transition-speed: 100ms;
       border-radius: $tile-border-radius;
       display: flex;
       align-items: center;
+      font-size: 55px;
 
       span {
         font-weight: bold;
-        font-size: 55px;
         flex: 1;
         text-align: center;
       }
 
+      @include smaller($mobile-threshold) {
+        font-size: 35px;
+      }
+
       @for $x from 1 through $grid-row-cells {
-        @for $y from 1 through 4 {
+        @for $y from 1 through $grid-row-cells {
           &.tile-position-#{$x}-#{$y} {
             grid-column: col $x;
             grid-row: row $y;
@@ -213,15 +231,15 @@ $transition-speed: 100ms;
             font-size: 45px;
 
             // Media queries placed here to avoid carrying over the rest of the logic
-            //@include smaller($mobile-threshold) {
-            //  font-size: 25px;
-            //}
+            @include smaller($mobile-threshold) {
+              font-size: 25px;
+            }
           } @else if $power >= 1000 {
             font-size: 35px;
 
-            //@include smaller($mobile-threshold) {
-            //  font-size: 15px;
-            //}
+            @include smaller($mobile-threshold) {
+              font-size: 15px;
+            }
           }
         }
 
@@ -233,7 +251,48 @@ $transition-speed: 100ms;
         background: mix(#333, $tile-gold-color, 95%);
 
         font-size: 30px;
+
+        @include smaller($mobile-threshold) {
+          font-size: 10px;
+        }
       }
+    }
+
+    @include keyframes(appear) {
+      0% {
+        opacity: 0;
+        @include transform(scale(0));
+      }
+
+      100% {
+        opacity: 1;
+        @include transform(scale(1));
+      }
+    }
+
+    .tile-new {
+      @include animation(appear 200ms ease $transition-speed);
+      @include animation-fill-mode(backwards);
+    }
+
+    @include keyframes(pop) {
+      0% {
+        @include transform(scale(0));
+      }
+
+      50% {
+        @include transform(scale(1.2));
+      }
+
+      100% {
+        @include transform(scale(1));
+      }
+    }
+
+    .tile-merged {
+      z-index: 20;
+      @include animation(pop 200ms ease $transition-speed);
+      @include animation-fill-mode(backwards);
     }
   }
 }
