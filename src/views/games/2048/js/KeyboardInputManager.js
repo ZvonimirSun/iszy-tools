@@ -55,9 +55,9 @@ export default class KeyboardInputManager {
     document.addEventListener('keydown', this._keyboardEvent.bind(this))
 
     // Respond to button presses
-    // this.bindButtonPress('.retry-button', this.restart)
-    // this.bindButtonPress('.restart-button', this.restart)
-    // this.bindButtonPress('.keep-playing-button', this.keepPlaying)
+    this.bindButtonPress(this.vue.$refs.retryButton, this.restart)
+    this.bindButtonPress(this.vue.$refs.restartButton, this.restart)
+    this.bindButtonPress(this.vue.$refs.keepPlayingButton, this.keepPlaying)
 
     // Respond to swipe events
     let touchStartClientX, touchStartClientY
@@ -123,8 +123,7 @@ export default class KeyboardInputManager {
     this.emit('keepPlaying')
   }
 
-  bindButtonPress (selector, fn) {
-    const button = document.querySelector(selector)
+  bindButtonPress (button, fn) {
     button.addEventListener('click', fn.bind(this))
     button.addEventListener(this.eventTouchend, fn.bind(this))
   }
@@ -143,7 +142,7 @@ export default class KeyboardInputManager {
 
     // R key restarts the game
     if (!modifiers && event.code === 'KeyR') {
-      this.restart.call(self, event)
+      this.restart(event)
     }
   }
 

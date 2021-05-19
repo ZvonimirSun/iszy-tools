@@ -1,6 +1,7 @@
 import Tile from './Tile'
 import Grid from './Grid'
 import InputManager from './KeyboardInputManager'
+import Actuator from './HtmlActuator.js'
 
 export default class GameManager {
   constructor (size, vue) {
@@ -8,7 +9,7 @@ export default class GameManager {
     this.size = size // Size of the grid
     this.inputManager = new InputManager(vue)
     // this.storageManager = new StorageManager()
-    // this.actuator = new Actuator()
+    this.actuator = new Actuator(vue)
 
     this.startTiles = 2
 
@@ -23,13 +24,13 @@ export default class GameManager {
 
   restart () {
     this.vue.clearGameState()
-    this.vue.continueGame() // Clear the game won/lost message
+    this.actuator.continueGame() // Clear the game won/lost message
     this.setup()
   }
 
   keepPlaying () {
     this.keepPlaying = true
-    this.vue.continueGame() // Clear the game won/lost message
+    this.actuator.continueGame() // Clear the game won/lost message
   }
 
   isGameTerminated () {
@@ -97,6 +98,14 @@ export default class GameManager {
       bestScore: this.vue.bestScore,
       terminated: this.isGameTerminated()
     }
+
+    this.actuator.actuate(this.grid, {
+      score: this.score,
+      over: this.over,
+      won: this.won,
+      bestScore: this.vue.bestScore,
+      terminated: this.isGameTerminated()
+    })
   }
 
   serialize () {
