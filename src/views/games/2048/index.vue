@@ -32,8 +32,8 @@ export default {
   }),
   computed: {
     cells: function () {
-      if (this.gameState && this.gameState.grid) {
-        return this.gameState.grid.cells
+      if (this.state && this.state.grid) {
+        return this.state.grid.cells
       } else {
         return null
       }
@@ -51,7 +51,7 @@ export default {
       if (tile) {
         const tmp = []
         tmp.push('tile-' + tile.value)
-        tmp.push('tile-position-' + (tile.position.x + 1) + '-' + (tile.position.y + 1))
+        tmp.push('tile-position-' + (tile.x + 1) + '-' + (tile.y + 1))
         if (tile.value > 2048) {
           tmp.push('tile-super')
         }

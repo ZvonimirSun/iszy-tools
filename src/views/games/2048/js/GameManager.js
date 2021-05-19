@@ -89,7 +89,7 @@ export default class GameManager {
       this.vue.setGameState(this.serialize())
     }
 
-    this.state = {
+    this.vue.state = {
       grid: this.grid,
       score: this.score,
       over: this.over,
