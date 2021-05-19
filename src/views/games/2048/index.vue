@@ -10,27 +10,20 @@
           </div>
         </div>
         <div class="above-game">
-          <a class="restart-button" ref="restartButton">New Game</a>
+          <a class="restart-button" ref="restartButton">新游戏</a>
         </div>
         <div class="game-container" ref="gameContainer">
           <div class="game-message">
             <p></p>
             <div class="lower">
-              <a class="keep-playing-button" ref="keepPlayingButton">Keep going</a>
-              <a class="retry-button" ref="retryButton">Try again</a>
+              <a class="keep-playing-button" ref="keepPlayingButton">继续挑战</a>
+              <a class="retry-button" ref="retryButton">重新开始</a>
             </div>
           </div>
           <div class="grid-container">
             <div class="grid-cell" v-for="item in 16" :key="item"></div>
           </div>
           <div class="tile-container" ref="tileContainer">
-            <!--          <template v-for="(tile, index) in cells" :key="'tile-'+index">-->
-            <!--            <div :class="tile.class">-->
-            <!--              <div class="tile-inner">-->
-            <!--                {{ tile.value }}-->
-            <!--              </div>-->
-            <!--            </div>-->
-            <!--          </template>-->
           </div>
         </div>
       </div>
@@ -193,13 +186,13 @@ export default {
   }
 
   .score-container:after {
-    content: "Score";
+    content: "分数";
     box-sizing: content-box;
   }
 
   .best-container:after {
     box-sizing: content-box;
-    content: "Best";
+    content: "最高分";
   }
 
   p {

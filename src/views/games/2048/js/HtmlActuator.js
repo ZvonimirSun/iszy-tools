@@ -128,7 +128,7 @@ export default class HtmlActuator {
 
   message (won) {
     const type = won ? 'game-won' : 'game-over'
-    const message = won ? 'You win!' : 'Game over!'
+    const message = won ? '你赢啦!' : '游戏结束!'
 
     this.messageContainer.classList.add(type)
     this.messageContainer.getElementsByTagName('p')[0].textContent = message
