@@ -63,6 +63,58 @@ export default {
 }
 </script>
 
+<style lang="scss">
+@import "./style/helpers";
+
+@include keyframes(move-up) {
+  0% {
+    top: 25px;
+    opacity: 1;
+  }
+
+  100% {
+    top: -50px;
+    opacity: 0;
+  }
+}
+
+@include keyframes(fade-in) {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@include keyframes(appear) {
+  0% {
+    opacity: 0;
+    @include transform(scale(0));
+  }
+
+  100% {
+    opacity: 1;
+    @include transform(scale(1));
+  }
+}
+
+@include keyframes(pop) {
+  0% {
+    @include transform(scale(0));
+  }
+
+  50% {
+    @include transform(scale(1.2));
+  }
+
+  100% {
+    @include transform(scale(1));
+  }
+}
+</style>
+
 <style scoped lang="scss">
 ::v-deep(.panel) {
   @import "./style/helpers";
@@ -87,30 +139,6 @@ export default {
   $game-container-background: #bbada0;
 
   $transition-speed: 100ms;
-
-  @include keyframes(move-up) {
-    0% {
-      top: 25px;
-      opacity: 1;
-    }
-
-    100% {
-      top: -50px;
-      opacity: 0;
-    }
-  }
-
-  @include keyframes(move-up) {
-    0% {
-      top: 25px;
-      opacity: 1;
-    }
-
-    100% {
-      top: -50px;
-      opacity: 0;
-    }
-  }
 
   .scores-container {
     display: flex;
@@ -219,16 +247,6 @@ export default {
     color: $bright-text-color;
     height: 40px;
     line-height: 42px;
-  }
-
-  @include keyframes(fade-in) {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
   }
 
   .game-container {
@@ -463,35 +481,9 @@ export default {
     }
   }
 
-  @include keyframes(appear) {
-    0% {
-      opacity: 0;
-      @include transform(scale(0));
-    }
-
-    100% {
-      opacity: 1;
-      @include transform(scale(1));
-    }
-  }
-
   .tile-new .tile-inner {
     @include animation(appear 200ms ease $transition-speed);
     @include animation-fill-mode(backwards);
-  }
-
-  @include keyframes(pop) {
-    0% {
-      @include transform(scale(0));
-    }
-
-    50% {
-      @include transform(scale(1.2));
-    }
-
-    100% {
-      @include transform(scale(1));
-    }
   }
 
   .tile-merged .tile-inner {
