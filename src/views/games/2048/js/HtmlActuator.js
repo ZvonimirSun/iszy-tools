@@ -5,7 +5,7 @@ export default class HtmlActuator {
     this.tileContainer = this.vue.$refs.tileContainer
     this.scoreContainer = this.vue.$refs.scoreContainer
     this.bestContainer = this.vue.$refs.bestContainer
-    this.messageContainer = document.querySelector('.game-message')
+    this.messageContainer = this.vue.$refs.messageContainer
 
     this.score = 0
   }
