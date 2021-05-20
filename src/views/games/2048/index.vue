@@ -2,18 +2,15 @@
   <container>
     <div class="panel">
       <div class="container">
-        <div class="heading">
-          <h1 class="title">2048</h1>
+        <div class="above-game">
           <div class="scores-container">
             <div class="score-container" ref="scoreContainer">0</div>
             <div class="best-container" ref="bestContainer">0</div>
           </div>
-        </div>
-        <div class="above-game">
           <a class="restart-button" ref="restartButton">新游戏</a>
         </div>
         <div class="game-container" ref="gameContainer">
-          <div class="game-message">
+          <div class="game-message" ref="messageContainer">
             <p></p>
             <div class="lower">
               <a class="keep-playing-button" ref="keepPlayingButton">继续挑战</a>
@@ -103,20 +100,6 @@ export default {
     }
   }
 
-  .heading {
-    @include clearfix;
-  }
-
-  h1.title {
-    font-size: 80px;
-    font-weight: bold;
-    line-height: 88px;
-    color: inherit;
-    margin: 0;
-    display: block;
-    float: left;
-  }
-
   @include keyframes(move-up) {
     0% {
       top: 25px;
@@ -130,9 +113,7 @@ export default {
   }
 
   .scores-container {
-    float: right;
     display: flex;
-    text-align: right;
     box-sizing: content-box;
 
     * + * {
@@ -153,7 +134,6 @@ export default {
     font-weight: bold;
     border-radius: 3px;
     color: white;
-    margin-top: 8px;
     text-align: center;
     box-sizing: content-box;
 
@@ -521,7 +501,10 @@ export default {
   }
 
   .above-game {
-    @include clearfix;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .game-intro {
@@ -550,11 +533,6 @@ export default {
     $tile-border-radius: 3px;
     $game-container-margin-top: 17px;
 
-    h1.title {
-      font-size: 27px;
-      margin-top: 15px;
-    }
-
     .container {
       font-size: 15px;
       width: $field-width;
@@ -567,10 +545,6 @@ export default {
       min-width: 40px;
     }
 
-    .heading {
-      margin-bottom: 10px;
-    }
-
     // Show intro and restart button side by side
     .game-intro {
       width: 55%;
@@ -580,7 +554,7 @@ export default {
     }
 
     .restart-button {
-      width: 42%;
+      width: 25%;
       padding: 0;
       display: block;
       box-sizing: border-box;
