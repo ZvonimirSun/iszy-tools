@@ -1,5 +1,31 @@
 [
   {
+    "type": "其他",
+    "children": [
+      {
+        "name": "淘宝优惠券精选",
+        "link": "https://taobao.iszy.xyz"
+      },
+      {
+        "name": "这是什么动漫",
+        "link": "/anime/whatAnimeIsThis",
+        "color": "red"
+      },
+      {
+        "name": "哔哩哔哩AV、BV号转换",
+        "link": "/anime/bilibiliBv2av"
+      },
+      {
+        "name": "奥利奥生成器",
+        "link": "/others/oreooo"
+      },
+      {
+        "name": "资源包",
+        "link": "https://lib.iszy.xyz"
+      }
+    ]
+  },
+  {
     "type": "编程开发",
     "link": "/program",
     "icon": "icon-t-code",
@@ -46,28 +72,6 @@
       {
         "name": "多次提前还贷计算器",
         "link": "/mtqLoans"
-      }
-    ]
-  },
-  {
-    "type": "其他",
-    "children": [
-      {
-        "name": "这是什么动漫",
-        "link": "/anime/whatAnimeIsThis",
-        "color": "red"
-      },
-      {
-        "name": "哔哩哔哩AV、BV号转换",
-        "link": "/anime/bilibiliBv2av"
-      },
-      {
-        "name": "奥利奥生成器",
-        "link": "/others/oreooo"
-      },
-      {
-        "name": "资源包",
-        "link": "https://lib.iszy.xyz"
       }
     ]
   },
