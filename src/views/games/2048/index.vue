@@ -63,67 +63,17 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "./style/helpers";
-
-@include keyframes(move-up) {
-  0% {
-    top: 25px;
-    opacity: 1;
-  }
-
-  100% {
-    top: -50px;
-    opacity: 0;
-  }
-}
-
-@include keyframes(fade-in) {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@include keyframes(appear) {
-  0% {
-    opacity: 0;
-    @include transform(scale(0));
-  }
-
-  100% {
-    opacity: 1;
-    @include transform(scale(1));
-  }
-}
-
-@include keyframes(pop) {
-  0% {
-    @include transform(scale(0));
-  }
-
-  50% {
-    @include transform(scale(1.2));
-  }
-
-  100% {
-    @include transform(scale(1));
-  }
-}
-</style>
-
 <style scoped lang="scss">
+@use "sass:math";
+@import "./style/helpers";
+@import "./style/clear-sans";
+
 ::v-deep(.panel) {
-  @import "./style/helpers";
-  @import "./style/clear-sans";
 
   $field-width: 500px;
   $grid-spacing: 15px;
   $grid-row-cells: 4;
-  $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
+  $tile-size: math.div($field-width - $grid-spacing * ($grid-row-cells + 1), $grid-row-cells);
   $tile-border-radius: 3px;
 
   $mobile-threshold: $field-width + 20px;
@@ -139,6 +89,18 @@ export default {
   $game-container-background: #bbada0;
 
   $transition-speed: 100ms;
+
+  @include keyframes(move-up) {
+    0% {
+      top: 25px;
+      opacity: 1;
+    }
+
+    100% {
+      top: -50px;
+      opacity: 0;
+    }
+  }
 
   .scores-container {
     display: flex;
@@ -235,6 +197,16 @@ export default {
     color: $text-color;
     width: $field-width;
     margin: 0 auto;
+  }
+
+  @include keyframes(fade-in) {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
   }
 
   // Styles for buttons
@@ -421,7 +393,7 @@ export default {
 
       &.tile-#{$power} .tile-inner {
         // Calculate base background color
-        $gold-percent: ($exponent - 1) / ($limit - 1) * 100;
+        $gold-percent: math.div($exponent - 1, $limit - 1) * 100;
         $mixed-background: mix($tile-gold-color, $tile-color, $gold-percent);
 
         $nth-color: nth($special-colors, $exponent);
@@ -481,9 +453,35 @@ export default {
     }
   }
 
+  @include keyframes(appear) {
+    0% {
+      opacity: 0;
+      @include transform(scale(0));
+    }
+
+    100% {
+      opacity: 1;
+      @include transform(scale(1));
+    }
+  }
+
   .tile-new .tile-inner {
     @include animation(appear 200ms ease $transition-speed);
     @include animation-fill-mode(backwards);
+  }
+
+  @include keyframes(pop) {
+    0% {
+      @include transform(scale(0));
+    }
+
+    50% {
+      @include transform(scale(1.2));
+    }
+
+    100% {
+      @include transform(scale(1));
+    }
   }
 
   .tile-merged .tile-inner {
@@ -521,7 +519,7 @@ export default {
     $field-width: 280px;
     $grid-spacing: 10px;
     $grid-row-cells: 4;
-    $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
+    $tile-size: math.div($field-width - $grid-spacing * ($grid-row-cells + 1), $grid-row-cells);
     $tile-border-radius: 3px;
     $game-container-margin-top: 17px;
 
