@@ -1,12 +1,17 @@
 <template>
-  <Row :gutter="{ xs: 8, sm: 16, md: 24}">
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
+    <Col :span="24">
+      <div class="search">
+        <IconFont type="icon-t-search"/><input type="search" placeholder="搜索工具" v-model="searchStr">
+      </div>
+    </Col>
   </Row>
   <template v-for="(item,index) in tools" :key="'type'+ index">
     <Row :gutter="{ xs: 8, sm: 16, md: 24}">
       <Col :span="24">
         <Divider orientation="left">
           <span class="typeName">
-            <IconFont :type="item.icon" v-if="item.icon"></IconFont>
+            <IconFont :type="item.icon" v-if="item.icon"/>
             <div>{{ item.type }}</div>
           </span>
         </Divider>
@@ -30,7 +35,7 @@
     <Col :span="24">
       <Divider orientation="left">
           <span class="typeName">
-            <IconFont type="icon-t-gonggao"></IconFont>
+            <IconFont type="icon-t-gonggao"/>
             <div>公告</div>
           </span>
       </Divider>
@@ -59,6 +64,7 @@ import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
 import { mapActions, mapGetters, mapState } from 'vuex'
+import { cloneDeep } from 'lodash'
 
 const { Paragraph } = Typography
 
@@ -71,18 +77,21 @@ export default {
       removeFav: 'favorite/removeFav'
     })
   },
+  data: () => ({
+    searchStr: ''
+  }),
   computed: {
     tools () {
       let tmp
       if (this.settings.showType) {
-        tmp = [...tools] || []
+        tmp = tools ? [...tools] : []
       } else {
         tmp = [{
           type: '工具',
           icon: 'icon-t-changyong',
           children: []
         }]
-        for (const type of (tools || [])) {
+        for (const type of (tools ? [...tools] : [])) {
           for (const tool of type.children) {
             tmp[0].children.push(
               Object.assign(tool, {
@@ -113,6 +122,13 @@ export default {
           children: this.favorite
         })
       }
+      if (this.searchStr) {
+        tmp = tmp.map(item => {
+          const a = cloneDeep(item)
+          a.children = a.children.filter(item => (item.name.includes(this.searchStr)))
+          return a
+        })
+      }
       return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
     },
     ...mapState({
@@ -135,8 +151,10 @@ export default {
   box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
   border-radius: .5rem;
 
-  .ant-col:first-child {
-    margin-top: -35px;
+  &:not(.noName) {
+    .ant-col:first-child {
+      margin-top: -35px;
+    }
   }
 }
 
@@ -252,6 +270,28 @@ export default {
       border-radius: 100%;
       box-shadow: 0 0 0 1px #fff;
     }
+  }
+}
+
+.search {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  padding: 16px 8px;
+  color: #666666;
+
+  .anticon {
+    font-size: 1.5rem;
+    margin-right: 16px;
+  }
+
+  input {
+    flex: 1;
+    outline: none;
+    border: none;
   }
 }
 </style>
