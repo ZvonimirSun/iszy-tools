@@ -10,8 +10,8 @@
         </Divider>
       </Col>
       <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-        <router-link :target="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link))?'_blank':''"
-                     :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
+        <router-link :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?'_blank':''"
+                     :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
@@ -42,7 +42,25 @@ export default {
   },
   computed: {
     tools () {
-      const tmp = [...tools] || []
+      let tmp
+      if (this.settings.showType) {
+        tmp = [...tools] || []
+      } else {
+        tmp = [{
+          type: '工具',
+          icon: 'icon-t-changyong',
+          children: []
+        }]
+        for (const type of (tools || [])) {
+          for (const tool of type.children) {
+            tmp[0].children.push(
+              Object.assign(tool, {
+                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? ('/redirect?url=' + tool.link) : ((type.link || '') + (tool.link || ''))
+              })
+            )
+          }
+        }
+      }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
