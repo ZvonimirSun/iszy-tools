@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import {
   UndoOutlined,
   RedoOutlined,
@@ -130,6 +130,7 @@ import CodeMirror from '@/components/vue-codemirror.vue'
 
 import { Button, Divider, Modal, Typography, Input } from 'ant-design-vue'
 
+const { mapActions, mapState } = createNamespacedHelpers('jsonEditor')
 const { Text, Link, Paragraph } = Typography
 const { TextArea } = Input
 window.jsonlint = jsonlint
@@ -209,7 +210,7 @@ export default {
       }
     },
     ...mapState({
-      content: state => state.jsonEditor.content
+      content: state => state.content
     })
   },
   components: {
@@ -298,9 +299,7 @@ export default {
     onCursorActivity (cm) {
       this.cursor = cm.getCursor()
     },
-    ...mapActions({
-      saveContent: 'jsonEditor/saveContent'
-    })
+    ...mapActions(['saveContent'])
   }
 }
 </script>

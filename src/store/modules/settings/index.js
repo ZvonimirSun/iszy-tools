@@ -4,8 +4,10 @@ export default {
     settings: {
       showMost: true,
       showRecent: false,
-      openInNewTab: false,
-      showType: true
+
+      showSearch: true,
+      showType: true,
+      openInNewTab: false
     }
   }),
   mutations: {
@@ -15,11 +17,15 @@ export default {
     triggerRecent (state) {
       state.settings.showRecent = !state.settings.showRecent
     },
-    triggerNewTab (state) {
-      state.settings.openInNewTab = !state.settings.openInNewTab
+
+    triggerSearch (state) {
+      state.settings.showSearch = !state.settings.showSearch
     },
     triggerType (state) {
       state.settings.showType = !state.settings.showType
+    },
+    triggerNewTab (state) {
+      state.settings.openInNewTab = !state.settings.openInNewTab
     }
   },
   actions: {
@@ -29,11 +35,15 @@ export default {
     triggerRecent ({ commit }) {
       commit('triggerRecent')
     },
-    triggerNewTab ({ commit }) {
-      commit('triggerNewTab')
+
+    triggerSearch ({ commit }) {
+      commit('triggerSearch')
     },
     triggerType ({ commit }) {
       commit('triggerType')
+    },
+    triggerNewTab ({ commit }) {
+      commit('triggerNewTab')
     }
   }
 }

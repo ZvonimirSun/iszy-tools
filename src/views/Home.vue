@@ -1,4 +1,6 @@
 <template>
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}">
+  </Row>
   <template v-for="(item,index) in tools" :key="'type'+ index">
     <Row :gutter="{ xs: 8, sm: 16, md: 24}">
       <Col :span="24">

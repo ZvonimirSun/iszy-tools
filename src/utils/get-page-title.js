@@ -1,6 +1,4 @@
-import defaultSettings from '@/settings'
-
-const title = defaultSettings.title || 'ISZY_TOOLS'
+const title = 'ISZY工具集合'
 
 export default function getPageTitle (pageTitle) {
   if (pageTitle && pageTitle !== title) {
