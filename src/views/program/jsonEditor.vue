@@ -2,7 +2,7 @@
   <container>
     <div class="codePanel">
       <div class="header">
-        <Button type="primary" @click="format" title="格式化 (Ctrl-I)">
+        <Button type="primary" @click="format" title="格式化">
           <template #icon>
             <IconFont type="icon-t-format-indent-increa"></IconFont>
           </template>
@@ -18,12 +18,12 @@
           </template>
         </Button>
         <Divider type="vertical"/>
-        <Button type="primary" @click="undo" title="撤销 (Ctrl-Z)" :disabled="historySize.undo === 0">
+        <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
           <template #icon>
             <UndoOutlined/>
           </template>
         </Button>
-        <Button type="primary" @click="redo" title="重做 (Ctrl-Y)" :disabled="historySize.redo === 0">
+        <Button type="primary" @click="redo" title="重做" :disabled="historySize.redo === 0">
           <template #icon>
             <RedoOutlined/>
           </template>
@@ -46,14 +46,17 @@
           </template>
         </Button>
       </div>
-      <textarea ref="codemirror"></textarea>
+      <CodeMirror ref="cmEditor" class="cmEditor" v-model:value="code" :options="cmOptions"
+                  @changes="onChanges"
+                  @cursorActivity="onCursorActivity"
+      />
       <div class="footer">
         <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
             cursor.ch + 1
           }}</span>
       </div>
       <Modal v-model:visible="showFilter" title="变换" @ok="filter"
-               :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
+             :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
         <p>输入一个
           <Text code>JMESPath</Text>
           查询以过滤、排序或转换JSON数据。要学习
@@ -64,7 +67,7 @@
         </p>
         <Divider orientation="left">查询</Divider>
         <TextArea v-model:value="filterExpression" placeholder="输入一个JMESPath查询以过滤、排序或转换JSON数据。" allow-clear
-                    style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
+                  style="resize: vertical;" :auto-size="{ minRows: 2, maxRows: 5 }"/>
         <Divider orientation="left">预览</Divider>
         <Paragraph>
           <pre>{{ filterPreview }}</pre>
@@ -75,7 +78,6 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
 import { mapActions, mapState } from 'vuex'
 import {
   UndoOutlined,
@@ -88,7 +90,6 @@ import jmespath from 'jmespath'
 
 // region codemirror
 
-import CodeMirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
 // 代码高亮
 import 'codemirror/mode/javascript/javascript.js'
@@ -124,14 +125,14 @@ import 'codemirror/addon/lint/lint.css'
 import 'codemirror/addon/lint/lint.js'
 import 'codemirror/addon/lint/json-lint.js'
 import Container from '@/components/container.vue'
+import CodeMirror from '@/components/vue-codemirror.vue'
 // endregion
 
 import { Button, Divider, Modal, Typography, Input } from 'ant-design-vue'
+
 const { Text, Link, Paragraph } = Typography
 const { TextArea } = Input
 window.jsonlint = jsonlint
-
-let codemirror
 
 export default {
   name: 'JSON编辑器',
@@ -143,43 +144,14 @@ export default {
 
     showFilter: false,
     startFilter: false,
-    filterExpression: '@'
-  }),
-  computed: {
-    filterPreview: function () {
-      if (this.startFilter && this.filterExpression) {
-        try {
-          return JSON.stringify(jmespath.search(JSON.parse(this.code), this.filterExpression), undefined, 2)
-        } catch (e) {
-          return ''
-        }
-      } else {
-        return ''
-      }
-    },
-    ...mapState({
-      content: state => state.jsonEditor.content
-    })
-  },
-  components: {
-    Container,
-    UndoOutlined,
-    RedoOutlined,
-    VerticalAlignTopOutlined,
-    VerticalAlignBottomOutlined,
-    FilterFilled,
-    Button,
-    Divider,
-    Modal,
-    Text,
-    Link,
-    Paragraph,
-    TextArea
-  },
-  mounted () {
-    codemirror = markRaw(CodeMirror.fromTextArea(this.$refs.codemirror, {
+    filterExpression: '@',
+    cmOptions: {
       // Js高亮显示
-      mode: 'application/json',
+      mode: {
+        name: 'javascript',
+        json: true
+      },
+      tabSize: 2,
       indentUnit: 2, // 缩进单位，默认2
       smartIndent: true, // 是否智能缩进
       // 显示行号
@@ -212,33 +184,58 @@ export default {
           if (cm.getOption('fullScreen')) {
             cm.setOption('fullScreen', false)
           }
-        },
-        'Ctrl-/': (cm) => {
-          cm.execCommand('toggleComment')
-        },
-        'Ctrl-I': () => {
-          this.format()
-        }, // 代码格式化
-        'Ctrl-S': (cm) => {
-          cm.save()
-          this.saveContent(this.code)
-          cm.doc.markClean()
         }
       }
-    }))
-    codemirror.on('change', cm => {
-      this.code = cm.getValue()
-      this.lineCount = cm.doc.lineCount()
-      this.historySize = cm.doc.historySize()
+    }
+  }),
+  watch: {
+    code: function (val) {
+      this.saveContent(val)
+    }
+  },
+  computed: {
+    codemirror: function () {
+      return this.$refs.cmEditor.codemirror
+    },
+    filterPreview: function () {
+      if (this.startFilter && this.filterExpression) {
+        try {
+          return JSON.stringify(jmespath.search(JSON.parse(this.code), this.filterExpression), undefined, 2)
+        } catch (e) {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    },
+    ...mapState({
+      content: state => state.jsonEditor.content
     })
-    codemirror.on('cursorActivity', cm => {
-      this.cursor = cm.getCursor()
+  },
+  components: {
+    CodeMirror,
+    Container,
+    UndoOutlined,
+    RedoOutlined,
+    VerticalAlignTopOutlined,
+    VerticalAlignBottomOutlined,
+    FilterFilled,
+    Button,
+    Divider,
+    Modal,
+    Text,
+    Link,
+    Paragraph,
+    TextArea
+  },
+  mounted () {
+    this.codemirror.setSize('100%', '100%')
+    this.code = this.content || this.code
+    this.$nextTick(() => {
+      this.codemirror.doc.clearHistory()
+      this.lineCount = this.codemirror.doc.lineCount()
+      this.historySize = this.codemirror.doc.historySize()
     })
-    codemirror.setValue(this.content || this.code)
-    this.lineCount = codemirror.doc.lineCount()
-    codemirror.doc.clearHistory()
-    this.historySize = codemirror.doc.historySize()
-    codemirror.setSize('100%', 'calc(100% - 72px)')
   },
   beforeUnmount () {
     this.destroy()
@@ -246,23 +243,23 @@ export default {
   methods: {
     format () {
       try {
-        codemirror.setValue(JSON.stringify(JSON.parse(this.code), undefined, 2))
+        this.code = JSON.stringify(JSON.parse(this.code), undefined, 2)
       } catch (e) {
       }
     },
     compact () {
       try {
-        codemirror.setValue(JSON.stringify((JSON).parse(this.code)))
+        this.code = JSON.stringify((JSON).parse(this.code))
       } catch (e) {
       }
     },
     fix () {
       try {
-        const tmp = codemirror.getScrollInfo()
+        const tmp = this.codemirror.getScrollInfo()
         const tmp1 = this.cursor
-        codemirror.setValue(JSON.stringify(eval('(' + this.code + ')'), undefined, 2))
-        codemirror.scrollTo(tmp.left, tmp.top)
-        codemirror.setCursor(tmp1)
+        this.code = JSON.stringify(eval('(' + this.code + ')'), undefined, 2)
+        this.codemirror.scrollTo(tmp.left, tmp.top)
+        this.codemirror.setCursor(tmp1)
       } catch (e) {
       }
     },
@@ -271,26 +268,35 @@ export default {
       this.startFilter = true
     },
     filter () {
-      codemirror.setValue(this.filterPreview)
+      this.code = this.filterPreview
       this.startFilter = false
       this.showFilter = false
       this.filterExpression = '@'
     },
     redo () {
-      codemirror.redo()
+      this.codemirror.redo()
     },
     undo () {
-      codemirror.undo()
+      this.codemirror.undo()
     },
     goTop () {
-      codemirror.execCommand('goDocStart')
+      this.codemirror.execCommand('goDocStart')
     },
     goBottom () {
-      codemirror.execCommand('goDocEnd')
+      this.codemirror.execCommand('goDocEnd')
     },
     destroy () {
-      const element = codemirror.doc.cm.getWrapperElement()
+      const element = this.codemirror.doc.cm.getWrapperElement()
       element && element.remove && element.remove()
+    },
+
+    onChanges (cm) {
+      this.code = cm.getValue()
+      this.lineCount = cm.doc.lineCount()
+      this.historySize = cm.doc.historySize()
+    },
+    onCursorActivity (cm) {
+      this.cursor = cm.getCursor()
     },
     ...mapActions({
       saveContent: 'jsonEditor/saveContent'
@@ -317,6 +323,11 @@ $highlight-foreground: #444;
     background-color: #1890ff;
     color: #fff;
     align-items: center;
+  }
+
+  .cmEditor {
+    width: 100%;
+    height: calc(100% - 72px);
   }
 
   .footer {
