@@ -85,7 +85,7 @@ export default {
     max-width: 75rem;
     width: 100%;
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 1.25rem 16px;
     overflow-y: auto;
   }
 

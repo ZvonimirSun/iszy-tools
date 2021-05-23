@@ -146,10 +146,13 @@ export default {
 
 <style scoped lang="scss">
 .ant-row {
-  margin-top: 35px;
   background: #fff;
   box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
   border-radius: .5rem;
+
+  &:not(:first-child) {
+    margin-top: 35px;
+  }
 
   &:not(.noName) {
     .ant-col:first-child {
