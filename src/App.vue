@@ -14,7 +14,10 @@
       <Footer>
         <span>© 2021&nbsp;</span>
         <Link href="https://www.iszy.cc" target="_blank">
-          随遇而安
+          随遇而安Blog
+        </Link>
+        <Link href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_blank">
+          苏ICP备18047890号-2
         </Link>
       </Footer>
     </layout>

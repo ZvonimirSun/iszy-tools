@@ -1,10 +1,12 @@
 [
   {
     "type": "其他",
+    "icon": "icon-t-stack-fill",
     "children": [
       {
         "name": "淘宝优惠券精选",
-        "link": "https://taobao.iszy.xyz"
+        "link": "https://taobao.iszy.xyz",
+        "color": "#16b0f6"
       },
       {
         "name": "这是什么动漫",
@@ -57,6 +59,7 @@
   {
     "type": "游戏",
     "link": "/games",
+    "icon": "icon-t-game",
     "children": [
       {
         "name": "2048",
@@ -67,7 +70,7 @@
   {
     "type": "理财",
     "link": "/money",
-    "icon": "icon-t-finances",
+    "icon": "icon-t-licai",
     "children": [
       {
         "name": "多次提前还贷计算器",
@@ -82,7 +85,8 @@
       {
         "name": "网站设置",
         "link": "/settings",
-        "statistics": false
+        "statistics": false,
+        "color": "#16b0f6"
       }
     ]
   }

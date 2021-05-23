@@ -10,30 +10,59 @@
         </Divider>
       </Col>
       <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-        <router-link :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?'_blank':''"
-                     :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
+        <router-link
+          :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?'_blank':''"
+          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
             <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
                   v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
-            <sup :style="{color:tool.color}" v-if="tool.color"></sup>
+            <sup :style="{background:tool.color}" v-if="tool.color"></sup>
           </div>
         </router-link>
       </Col>
     </Row>
   </template>
+  <Row>
+    <Col :span="24">
+      <Divider orientation="left">
+          <span class="typeName">
+            <IconFont type="icon-t-gonggao"></IconFont>
+            <div>公告</div>
+          </span>
+      </Divider>
+    </Col>
+    <Col :span="24">
+      <div class="announcement">
+        <Typography>
+          <Paragraph>
+            <ul>
+              <li>
+                <div class="legendInfo">图例：
+                  <span class="legendName">推荐</span><sup :style="{background:'#16b0f6'}"></sup>
+                  <span class="legendName">需要联网</span><sup :style="{background:'red'}"></sup>
+                </div>
+              </li>
+            </ul>
+          </Paragraph>
+        </Typography>
+      </div>
+    </Col>
+  </Row>
 </template>
 
 <script>
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
-import { Row, Col, Divider } from 'ant-design-vue'
+import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
 import { mapActions, mapGetters, mapState } from 'vuex'
 
+const { Paragraph } = Typography
+
 export default {
   name: '首页',
-  components: { StarOutlined, StarFilled, Row, Col, Divider },
+  components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
   methods: {
     ...mapActions({
       addFav: 'favorite/addFav',
@@ -166,7 +195,6 @@ export default {
     right: 5px;
     width: 6px;
     height: 6px;
-    background: #ff4d4f;
     border-radius: 100%;
     box-shadow: 0 0 0 1px #fff;
   }
@@ -198,6 +226,29 @@ export default {
 
     sup {
       display: none;
+    }
+  }
+}
+
+.announcement {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+
+  .legendInfo {
+    display: flex;
+    align-items: center;
+
+    .legendName + sup {
+      margin: 0 8px 0 5px;
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 100%;
+      box-shadow: 0 0 0 1px #fff;
     }
   }
 }
