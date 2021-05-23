@@ -1,48 +1,106 @@
 <template>
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
+    <Col :span="24">
+      <div class="search">
+        <IconFont type="icon-t-search"/><input type="search" placeholder="搜索工具" v-model="searchStr">
+      </div>
+    </Col>
+  </Row>
   <template v-for="(item,index) in tools" :key="'type'+ index">
     <Row :gutter="{ xs: 8, sm: 16, md: 24}">
       <Col :span="24">
         <Divider orientation="left">
           <span class="typeName">
-            <IconFont :type="item.icon" v-if="item.icon"></IconFont>
+            <IconFont :type="item.icon" v-if="item.icon"/>
             <div>{{ item.type }}</div>
           </span>
         </Divider>
       </Col>
       <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-        <router-link :target="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link))?'_blank':''"
-                     :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
+        <router-link
+          :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?'_blank':''"
+          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
             <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
                   v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
-            <sup :style="{color:tool.color}" v-if="tool.color"></sup>
+            <sup :style="{background:tool.color}" v-if="tool.color"></sup>
           </div>
         </router-link>
       </Col>
     </Row>
   </template>
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}">
+    <Col :span="24">
+      <Divider orientation="left">
+          <span class="typeName">
+            <IconFont type="icon-t-gonggao"/>
+            <div>公告</div>
+          </span>
+      </Divider>
+    </Col>
+    <Col :span="24">
+      <div class="announcement">
+        <Typography>
+          <Paragraph>
+            <ul>
+              <li>
+                <div class="legendInfo">图例：
+                  <span class="legendName">推荐</span><sup :style="{background:'#16b0f6'}"></sup>
+                  <span class="legendName">需要联网</span><sup :style="{background:'red'}"></sup>
+                </div>
+              </li>
+            </ul>
+          </Paragraph>
+        </Typography>
+      </div>
+    </Col>
+  </Row>
 </template>
 
 <script>
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
-import { Row, Col, Divider } from 'ant-design-vue'
+import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
 import { mapActions, mapGetters, mapState } from 'vuex'
+import { cloneDeep } from 'lodash'
+
+const { Paragraph } = Typography
 
 export default {
   name: '首页',
-  components: { StarOutlined, StarFilled, Row, Col, Divider },
+  components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
   methods: {
     ...mapActions({
       addFav: 'favorite/addFav',
       removeFav: 'favorite/removeFav'
     })
   },
+  data: () => ({
+    searchStr: ''
+  }),
   computed: {
     tools () {
-      const tmp = [...tools] || []
+      let tmp
+      if (this.settings.showType) {
+        tmp = tools ? [...tools] : []
+      } else {
+        tmp = [{
+          type: '工具',
+          icon: 'icon-t-changyong',
+          children: []
+        }]
+        for (const type of (tools ? [...tools] : [])) {
+          for (const tool of type.children) {
+            tmp[0].children.push(
+              Object.assign(tool, {
+                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? ('/redirect?url=' + tool.link) : ((type.link || '') + (tool.link || ''))
+              })
+            )
+          }
+        }
+      }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
@@ -62,6 +120,13 @@ export default {
           type: '收藏',
           icon: 'icon-t-star-filled',
           children: this.favorite
+        })
+      }
+      if (this.searchStr) {
+        tmp = tmp.map(item => {
+          const a = cloneDeep(item)
+          a.children = a.children.filter(item => (item.name.includes(this.searchStr)))
+          return a
         })
       }
       return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
@@ -86,8 +151,10 @@ export default {
   box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
   border-radius: .5rem;
 
-  .ant-col:first-child {
-    margin-top: -35px;
+  &:not(.noName) {
+    .ant-col:first-child {
+      margin-top: -35px;
+    }
   }
 }
 
@@ -148,7 +215,6 @@ export default {
     right: 5px;
     width: 6px;
     height: 6px;
-    background: #ff4d4f;
     border-radius: 100%;
     box-shadow: 0 0 0 1px #fff;
   }
@@ -181,6 +247,51 @@ export default {
     sup {
       display: none;
     }
+  }
+}
+
+.announcement {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+
+  .legendInfo {
+    display: flex;
+    align-items: center;
+
+    .legendName + sup {
+      margin: 0 8px 0 5px;
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 100%;
+      box-shadow: 0 0 0 1px #fff;
+    }
+  }
+}
+
+.search {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  padding: 16px 8px;
+  color: #666666;
+
+  .anticon {
+    font-size: 1.5rem;
+    margin-right: 16px;
+  }
+
+  input {
+    flex: 1;
+    outline: none;
+    border: none;
   }
 }
 </style>
