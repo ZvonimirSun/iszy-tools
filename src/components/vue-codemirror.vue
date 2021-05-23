@@ -162,6 +162,7 @@ export default {
       // Save current values
       const history = this.cminstance.doc.history
       const cleanGeneration = this.cminstance.doc.cleanGeneration
+      // eslint-disable-next-line vue/no-mutating-props
       this.options.value = this.cminstance.getValue()
       this.destroy()
       this.initialize()
