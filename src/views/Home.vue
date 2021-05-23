@@ -24,7 +24,7 @@
       </Col>
     </Row>
   </template>
-  <Row>
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}">
     <Col :span="24">
       <Divider orientation="left">
           <span class="typeName">
