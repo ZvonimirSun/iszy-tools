@@ -1,3 +1,5 @@
+import { merge } from 'lodash'
+
 export default (options = {}) => {
   const storage = options.storage || (window && window.localStorage)
   const key = options.key || 'vuex'
@@ -19,7 +21,7 @@ export default (options = {}) => {
 
   return store => {
     // 初始化时获取数据，如果有的话，把原来的vuex的state替换掉
-    const data = Object.assign(store.state, getState(key, storage))
+    const data = merge({}, store.state, getState(key, storage))
     if (data) {
       store.replaceState(data)
     }
