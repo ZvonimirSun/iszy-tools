@@ -1,68 +1,66 @@
 <template>
-  <div @touchstart="triggerTouch" @MSPointerDown="triggerTouch" :class="{touch: isTouch}">
-    <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
-      <Col :span="24">
-        <div class="search">
-          <IconFont type="icon-t-search"/>
-          <input type="search" placeholder="搜索工具" v-model="searchStr">
-        </div>
-      </Col>
-    </Row>
-    <template v-for="(item,index) in tools" :key="'type'+ index">
-      <Row :gutter="{ xs: 8, sm: 16, md: 24}">
-        <Col :span="24">
-          <Divider orientation="left">
-          <span class="typeName">
-            <IconFont :type="item.icon" v-if="item.icon"/>
-            <div>{{ item.type }}</div>
-          </span>
-          </Divider>
-        </Col>
-        <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
-          <router-link
-            :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
-            :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
-            <div class="tool">
-              <span class="toolName">{{ tool.name }}</span>
-              <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
-              <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else>
-                <span class="nonHover"><StarOutlined/></span>
-                <span class="hovered"><StarFilled/></span>
-              </span>
-              <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
-            </div>
-          </router-link>
-        </Col>
-      </Row>
-    </template>
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
+    <Col :span="24">
+      <div class="search">
+        <IconFont type="icon-t-search"/>
+        <input type="search" placeholder="搜索工具" v-model="searchStr">
+      </div>
+    </Col>
+  </Row>
+  <template v-for="(item,index) in tools" :key="'type'+ index">
     <Row :gutter="{ xs: 8, sm: 16, md: 24}">
       <Col :span="24">
         <Divider orientation="left">
           <span class="typeName">
-            <IconFont type="icon-t-gonggao"/>
-            <div>公告</div>
+            <IconFont :type="item.icon" v-if="item.icon"/>
+            <div>{{ item.type }}</div>
           </span>
         </Divider>
       </Col>
-      <Col :span="24">
-        <div class="announcement">
-          <Typography>
-            <Paragraph>
-              <ul>
-                <li>
-                  <div class="legendInfo">图例：
-                    <template v-for="(item,index) in legends" :key="index">
-                      <span class="legendName">{{ item.label }}</span><sup :style="{background:item.color}"></sup>
-                    </template>
-                  </div>
-                </li>
-              </ul>
-            </Paragraph>
-          </Typography>
-        </div>
+      <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
+        <router-link
+          :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
+          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
+          <div class="tool">
+            <span class="toolName">{{ tool.name }}</span>
+            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else>
+                <span class="nonHover"><StarOutlined/></span>
+                <span class="hovered"><StarFilled/></span>
+              </span>
+            <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
+          </div>
+        </router-link>
       </Col>
     </Row>
-  </div>
+  </template>
+  <Row :gutter="{ xs: 8, sm: 16, md: 24}">
+    <Col :span="24">
+      <Divider orientation="left">
+          <span class="typeName">
+            <IconFont type="icon-t-gonggao"/>
+            <div>公告</div>
+          </span>
+      </Divider>
+    </Col>
+    <Col :span="24">
+      <div class="announcement">
+        <Typography>
+          <Paragraph>
+            <ul>
+              <li>
+                <div class="legendInfo">图例：
+                  <template v-for="(item,index) in legends" :key="index">
+                    <span class="legendName">{{ item.label }}</span><sup :style="{background:item.color}"></sup>
+                  </template>
+                </div>
+              </li>
+            </ul>
+          </Paragraph>
+        </Typography>
+      </div>
+    </Col>
+  </Row>
 </template>
 
 <script>
@@ -140,14 +138,10 @@ export default {
     ])
   },
   data: () => ({
-    isTouch: false,
     searchStr: '',
     legends: legends
   }),
   methods: {
-    triggerTouch () {
-      this.isTouch = true
-    },
     getLegendColor (label) {
       const tmp = legends.filter(item => (item.label === label))
       if (tmp.length > 0) {
@@ -275,6 +269,8 @@ export default {
   }
 
   @media (any-hover: none) {
+    padding-right: 1.5rem * 2;
+
     .fav {
       display: unset;
     }
@@ -283,24 +279,20 @@ export default {
       background-color: #16b0f6;
       color: #fff;
       transform: scale3d(1.1, 1.1, 1.1);
-      padding-right: 1.5rem * 2;
 
       .fav {
-        display: unset;
 
         &.collected {
           color: yellow;
         }
 
-        &:hover {
-          .nonHover {
-            display: none;
-          }
+        .nonHover {
+          display: none;
+        }
 
-          .hovered {
-            display: unset;
-            color: yellow;
-          }
+        .hovered {
+          display: unset;
+          color: yellow;
         }
       }
 
