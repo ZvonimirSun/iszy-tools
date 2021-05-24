@@ -247,7 +247,7 @@ export default {
         display: unset;
 
         &.collected {
-          color: yellow;
+          color: white;
         }
 
         &:hover {
@@ -257,7 +257,7 @@ export default {
 
           .hovered {
             display: unset;
-            color: yellow;
+            color: white;
           }
         }
       }
@@ -283,7 +283,7 @@ export default {
       .fav {
 
         &.collected {
-          color: yellow;
+          color: white;
         }
 
         .nonHover {
@@ -292,7 +292,7 @@ export default {
 
         .hovered {
           display: unset;
-          color: yellow;
+          color: white;
         }
       }
 
