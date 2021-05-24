@@ -25,7 +25,7 @@
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
             <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
                   v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
-            <sup :style="{background:tool.color}" v-if="tool.color"></sup>
+            <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
           </div>
         </router-link>
       </Col>
@@ -47,8 +47,9 @@
             <ul>
               <li>
                 <div class="legendInfo">图例：
-                  <span class="legendName">推荐</span><sup :style="{background:'#16b0f6'}"></sup>
-                  <span class="legendName">需要联网</span><sup :style="{background:'red'}"></sup>
+                  <template v-for="(item,index) in legends" :key="index">
+                    <span class="legendName">{{item.label}}</span><sup :style="{background:item.color}"></sup>
+                  </template>
                 </div>
               </li>
             </ul>
@@ -63,39 +64,51 @@
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
-import { mapActions, mapGetters, mapState } from 'vuex'
+import legends from '@/assets/legends.json'
+import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep } from 'lodash'
 
 const { Paragraph } = Typography
+const { mapActions, mapGetters, mapState: favMapState } = createNamespacedHelpers('favorite')
+const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
   components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
   methods: {
-    ...mapActions({
-      addFav: 'favorite/addFav',
-      removeFav: 'favorite/removeFav'
-    })
+    getLegendColor (label) {
+      const tmp = legends.filter(item => (item.label === label))
+      if (tmp.length > 0) {
+        return tmp[0].color
+      } else {
+        return ''
+      }
+    },
+    ...mapActions([
+      'addFav',
+      'removeFav'
+    ])
   },
   data: () => ({
-    searchStr: ''
+    searchStr: '',
+    legends: legends
   }),
   computed: {
     tools () {
       let tmp
       if (this.settings.showType) {
-        tmp = tools ? [...tools] : []
+        tmp = tools || []
       } else {
         tmp = [{
           type: '工具',
           icon: 'icon-t-changyong',
           children: []
         }]
-        for (const type of (tools ? [...tools] : [])) {
+        for (const type of (tools || [])) {
           for (const tool of type.children) {
             tmp[0].children.push(
-              Object.assign(tool, {
-                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? ('/redirect?url=' + tool.link) : ((type.link || '') + (tool.link || ''))
+              Object.assign({}, tool, {
+                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? tool.link : ((type.link || '') + (tool.link || ''))
               })
             )
           }
@@ -131,15 +144,13 @@ export default {
       }
       return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
     },
-    ...mapState({
-      settings: state => state.settings.settings,
-      favorite: state => state.favorite.favorite
-    }),
-    ...mapGetters({
-      most: 'statistics/most',
-      recent: 'statistics/recent',
-      isFav: 'favorite/isFav'
-    })
+    ...settingsMapState(['settings']),
+    ...favMapState(['favorite']),
+    ...mapGetters([
+      'most',
+      'recent',
+      'isFav'
+    ])
   }
 }
 </script>

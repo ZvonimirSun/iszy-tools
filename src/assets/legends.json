@@ -1,0 +1,10 @@
+[
+  {
+    "label": "新功能",
+    "color": "lightskyblue"
+  },
+  {
+    "label": "需要联网",
+    "color": "lightpink"
+  }
+]
