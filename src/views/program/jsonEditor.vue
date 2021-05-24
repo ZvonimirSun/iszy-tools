@@ -292,7 +292,7 @@ export default {
     },
 
     onChanges (cm) {
-      this.code = cm.getValue()
+      // this.code = cm.getValue()
       this.lineCount = cm.doc.lineCount()
       this.historySize = cm.doc.historySize()
     },
