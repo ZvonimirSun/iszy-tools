@@ -28,27 +28,38 @@ export default {
 .ant-row {
   margin-top: 35px;
   background: #fff;
-  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
-  border-radius: .5rem;
+  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+  border-radius: .8rem;
 
-  .ant-col:first-child {
-    margin-top: -35px;
+  &:not(:first-child) {
+    margin-top: 3.5rem;
+  }
+
+  &:not(.noName) {
+    .ant-col:first-child {
+      margin-top: -3.5rem;
+    }
   }
 }
 
 .main {
-  padding: 12px;
+  padding: 1.2rem;
 }
 
 .typeName {
-  font-size: 1.125rem;
+  font-size: 1.8rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   background-color: #16b0f6;
-  padding: .3rem .8rem;
+  padding: .48rem 1.28rem;
   color: #fff;
-  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
-  border-radius: .5rem;
+  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+  border-radius: .8rem;
+
+  .anticon {
+    font-size: 2.4rem;
+    margin-right: .5rem;
+  }
 }
 </style>
