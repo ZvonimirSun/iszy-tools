@@ -65,6 +65,13 @@ export default defineConfig({
             options: {
               cacheName: 'tools-iszy-xyz'
             }
+          },
+          {
+            urlPattern: /^https:\/\/at\.alicdn\.com/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'iconfont'
+            }
           }
         ]
       }

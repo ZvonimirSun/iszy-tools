@@ -3,7 +3,11 @@ export default {
   state: () => ({
     settings: {
       showMost: true,
-      showRecent: false
+      showRecent: false,
+
+      showSearch: true,
+      showType: true,
+      openInNewTab: false
     }
   }),
   mutations: {
@@ -12,14 +16,34 @@ export default {
     },
     triggerRecent (state) {
       state.settings.showRecent = !state.settings.showRecent
+    },
+
+    triggerSearch (state) {
+      state.settings.showSearch = !state.settings.showSearch
+    },
+    triggerType (state) {
+      state.settings.showType = !state.settings.showType
+    },
+    triggerNewTab (state) {
+      state.settings.openInNewTab = !state.settings.openInNewTab
     }
   },
   actions: {
-    triggerMost ({ commit, state }) {
+    triggerMost ({ commit }) {
       commit('triggerMost')
     },
-    triggerRecent ({ commit, state }) {
+    triggerRecent ({ commit }) {
       commit('triggerRecent')
+    },
+
+    triggerSearch ({ commit }) {
+      commit('triggerSearch')
+    },
+    triggerType ({ commit }) {
+      commit('triggerType')
+    },
+    triggerNewTab ({ commit }) {
+      commit('triggerNewTab')
     }
   }
 }

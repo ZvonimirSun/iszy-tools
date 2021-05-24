@@ -14,7 +14,10 @@
       <Footer>
         <span>© 2021&nbsp;</span>
         <Link href="https://www.iszy.cc" target="_blank">
-          随遇而安
+          随遇而安Blog
+        </Link>
+        <Link href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_blank">
+          苏ICP备18047890号-2
         </Link>
       </Footer>
     </layout>
@@ -82,7 +85,7 @@ export default {
     max-width: 75rem;
     width: 100%;
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 1.25rem 16px;
     overflow-y: auto;
   }
 
