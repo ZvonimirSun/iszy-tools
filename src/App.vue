@@ -16,6 +16,7 @@
         <Link href="https://www.iszy.cc" target="_blank">
           随遇而安Blog
         </Link>
+        <br/>
         <Link href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_blank">
           苏ICP备18047890号-2
         </Link>
@@ -47,7 +48,7 @@ export default {
   background: transparent;
   height: 100%;
   width: 100%;
-  font-size: 14px;
+  font-size: 1.4rem;
   overflow: hidden;
 
   &-header, &-layout, &-footer {
@@ -55,15 +56,15 @@ export default {
   }
 
   &-header {
-    padding: 2rem 0 24px;
+    padding: 3.2rem 0 2.4rem;
     text-align: center;
-    height: 134px;
+    height: 13.4rem;
     line-height: unset;
 
     .header {
-      height: 46px;
-      line-height: 46px;
-      font-size: 38px;
+      height: 4.6rem;
+      line-height: 4.6rem;
+      font-size: 3.8rem;
       color: #333333;
       font-weight: 600;
 
@@ -73,24 +74,24 @@ export default {
     }
 
     .desc {
-      height: 22px;
-      font-size: 14px;
-      line-height: 22px;
-      margin-top: 12px;
+      height: 2.2rem;
+      font-size: 1.4rem;
+      line-height: 2.2rem;
+      margin-top: 1.2rem;
       color: #999999;
     }
   }
 
   &-content {
-    max-width: 75rem;
+    max-width: 120rem;
     width: 100%;
     margin: 0 auto;
-    padding: 0 1.25rem 16px;
+    padding: 0 2rem 1.6rem;
     overflow-y: auto;
   }
 
   &-footer {
-    height: 70px;
+    height: 7rem;
     text-align: center;
   }
 }

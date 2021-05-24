@@ -147,47 +147,47 @@ export default {
 <style scoped lang="scss">
 .ant-row {
   background: #fff;
-  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
-  border-radius: .5rem;
+  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+  border-radius: .8rem;
 
   &:not(:first-child) {
-    margin-top: 35px;
+    margin-top: 3.5rem;
   }
 
   &:not(.noName) {
     .ant-col:first-child {
-      margin-top: -35px;
+      margin-top: -3.5rem;
     }
   }
 }
 
 .typeName {
-  font-size: 1.125rem;
+  font-size: 1.8rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   background-color: #16b0f6;
-  padding: .3rem .8rem;
+  padding: .48rem 1.28rem;
   color: #fff;
-  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
-  border-radius: .5rem;
+  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+  border-radius: .8rem;
 
   .anticon {
-    font-size: 1.5rem;
-    margin-right: 5px;
+    font-size: 2.4rem;
+    margin-right: .5rem;
   }
 }
 
 .tool {
   color: #666666;
-  font-size: 1.125rem;
-  line-height: 1.67rem;
+  font-size: 1.8rem;
+  line-height: 2.672rem;
   font-weight: 600;
-  box-shadow: 0 0 0.0625rem 0 rgb(8 11 14 / 6%), 0 0.1875rem 0.1875rem -0.0625rem rgb(8 11 14 / 10%), 0 0 0.1875rem 0 rgb(8 11 14 / 2%);
+  box-shadow: 0 0 0.1rem 0 rgb(8 11 14 / 6%), 0 0.3rem 0.3rem -0.1rem rgb(8 11 14 / 10%), 0 0 0.3rem 0 rgb(8 11 14 / 2%);
   border-radius: .25rem;
   overflow: hidden;
-  margin: .4375rem;
-  padding: .625rem .9375rem;
+  margin: .7rem;
+  padding: 1rem 1.5rem;
   white-space: nowrap;
   background-color: #fff;
   transform: translateZ(0);
@@ -199,7 +199,7 @@ export default {
   .fav {
     display: none;
     position: absolute;
-    right: 0.9375rem;
+    right: 1.5rem;
     overflow: hidden;
 
     &.collected {
@@ -214,19 +214,19 @@ export default {
 
   sup {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 6px;
-    height: 6px;
+    top: .5rem;
+    right: .5rem;
+    width: .6rem;
+    height: .6rem;
     border-radius: 100%;
-    box-shadow: 0 0 0 1px #fff;
+    box-shadow: 0 0 0 .1rem #fff;
   }
 
   &:hover {
     background-color: #16b0f6;
     color: #fff;
     transform: scale3d(1.1, 1.1, 1.1);
-    padding-right: .9375rem * 2;
+    padding-right: 1.5rem * 2;
 
     .fav {
       display: unset;
@@ -256,9 +256,9 @@ export default {
 .announcement {
   display: block;
   width: 100%;
-  padding: 16px;
-  font-size: 16px;
-  line-height: 24px;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
   font-weight: 700;
 
   .legendInfo {
@@ -266,12 +266,12 @@ export default {
     align-items: center;
 
     .legendName + sup {
-      margin: 0 8px 0 5px;
+      margin: 0 .8rem 0 .5rem;
       display: block;
-      width: 6px;
-      height: 6px;
+      width: .6rem;
+      height: .6rem;
       border-radius: 100%;
-      box-shadow: 0 0 0 1px #fff;
+      box-shadow: 0 0 0 .1rem #fff;
     }
   }
 }
@@ -280,15 +280,15 @@ export default {
   display: inline-flex;
   width: 100%;
   align-items: center;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
   font-weight: 700;
-  padding: 16px 8px;
+  padding: 1.6rem .8rem;
   color: #666666;
 
   .anticon {
-    font-size: 1.5rem;
-    margin-right: 16px;
+    font-size: 2.4rem;
+    margin-right: 1.6rem;
   }
 
   input {
