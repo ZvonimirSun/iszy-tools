@@ -26,7 +26,7 @@ export default {
 
 <style scoped lang="scss">
 .ant-row {
-  margin-top: 35px;
+  margin-top: 3.5rem;
   background: #fff;
   box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
   border-radius: .8rem;

@@ -1,6 +1,6 @@
 <template>
   <container>
-    <Sketch v-model="colors" :style="{maxWidth: '300px', width: '100%', margin: '0 auto'}"/>
+    <Sketch v-model="colors" :style="{maxWidth: '30rem', width: '100%', margin: '0 auto'}"/>
   </container>
 </template>
 

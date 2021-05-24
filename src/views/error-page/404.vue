@@ -27,9 +27,9 @@ export default {
   &__child {
     position: absolute;
     &.left {
-      width: 80px;
-      top: 17px;
-      left: 220px;
+      width: 8rem;
+      top: 1.7rem;
+      left: 22rem;
       opacity: 0;
       animation-name: cloudLeft;
       animation-duration: 2s;
@@ -38,9 +38,9 @@ export default {
       animation-delay: 1s;
     }
     &.mid {
-      width: 46px;
-      top: 10px;
-      left: 420px;
+      width: 4.6rem;
+      top: 1rem;
+      left: 42rem;
       opacity: 0;
       animation-name: cloudMid;
       animation-duration: 2s;
@@ -49,9 +49,9 @@ export default {
       animation-delay: 1.2s;
     }
     &.right {
-      width: 62px;
-      top: 100px;
-      left: 500px;
+      width: 6.2rem;
+      top: 10rem;
+      left: 50rem;
       opacity: 0;
       animation-name: cloudRight;
       animation-duration: 2s;
@@ -61,67 +61,67 @@ export default {
     }
     @keyframes cloudLeft {
       0% {
-        top: 17px;
-        left: 220px;
+        top: 1.7rem;
+        left: 22rem;
         opacity: 0;
       }
       20% {
-        top: 33px;
-        left: 188px;
+        top: 3.3rem;
+        left: 18.8rem;
         opacity: 1;
       }
       80% {
-        top: 81px;
-        left: 92px;
+        top: 8.1rem;
+        left: 9.2rem;
         opacity: 1;
       }
       100% {
-        top: 97px;
-        left: 60px;
+        top: 9.7rem;
+        left: 6rem;
         opacity: 0;
       }
     }
     @keyframes cloudMid {
       0% {
-        top: 10px;
-        left: 420px;
+        top: 1rem;
+        left: 42rem;
         opacity: 0;
       }
       20% {
-        top: 40px;
-        left: 360px;
+        top: 4rem;
+        left: 36rem;
         opacity: 1;
       }
       70% {
-        top: 130px;
-        left: 180px;
+        top: 13rem;
+        left: 18rem;
         opacity: 1;
       }
       100% {
-        top: 160px;
-        left: 120px;
+        top: 16rem;
+        left: 12rem;
         opacity: 0;
       }
     }
     @keyframes cloudRight {
       0% {
-        top: 100px;
-        left: 500px;
+        top: 10rem;
+        left: 50rem;
         opacity: 0;
       }
       20% {
-        top: 120px;
-        left: 460px;
+        top: 12rem;
+        left: 46rem;
         opacity: 1;
       }
       80% {
-        top: 180px;
-        left: 340px;
+        top: 18rem;
+        left: 34rem;
         opacity: 1;
       }
       100% {
-        top: 200px;
-        left: 300px;
+        top: 20rem;
+        left: 30rem;
         opacity: 0;
       }
     }
