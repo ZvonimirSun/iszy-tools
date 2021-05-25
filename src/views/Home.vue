@@ -2,7 +2,8 @@
   <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
     <Col :span="24">
       <div class="search">
-        <IconFont type="icon-t-search"/><input type="search" placeholder="搜索工具" v-model="searchStr">
+        <IconFont type="icon-t-search"/>
+        <input type="search" placeholder="搜索工具" v-model="searchStr">
       </div>
     </Col>
   </Row>
@@ -23,8 +24,10 @@
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
-            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
-                  v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else>
+                <span class="nonHover"><StarOutlined/></span>
+                <span class="hovered"><StarFilled/></span>
+              </span>
             <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
           </div>
         </router-link>
@@ -48,7 +51,7 @@
               <li>
                 <div class="legendInfo">图例：
                   <template v-for="(item,index) in legends" :key="index">
-                    <span class="legendName">{{item.label}}</span><sup :style="{background:item.color}"></sup>
+                    <span class="legendName">{{ item.label }}</span><sup :style="{background:item.color}"></sup>
                   </template>
                 </div>
               </li>
@@ -75,36 +78,18 @@ const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 export default {
   name: '首页',
   components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
-  methods: {
-    getLegendColor (label) {
-      const tmp = legends.filter(item => (item.label === label))
-      if (tmp.length > 0) {
-        return tmp[0].color
-      } else {
-        return ''
-      }
-    },
-    ...mapActions([
-      'addFav',
-      'removeFav'
-    ])
-  },
-  data: () => ({
-    searchStr: '',
-    legends: legends
-  }),
   computed: {
     tools () {
       let tmp
       if (this.settings.showType) {
-        tmp = tools || []
+        tmp = [...(tools || [])]
       } else {
         tmp = [{
           type: '工具',
           icon: 'icon-t-changyong',
           children: []
         }]
-        for (const type of (tools || [])) {
+        for (const type of [...(tools || [])]) {
           for (const tool of type.children) {
             tmp[0].children.push(
               Object.assign({}, tool, {
@@ -150,6 +135,24 @@ export default {
       'most',
       'recent',
       'isFav'
+    ])
+  },
+  data: () => ({
+    searchStr: '',
+    legends: legends
+  }),
+  methods: {
+    getLegendColor (label) {
+      const tmp = legends.filter(item => (item.label === label))
+      if (tmp.length > 0) {
+        return tmp[0].color
+      } else {
+        return ''
+      }
+    },
+    ...mapActions([
+      'addFav',
+      'removeFav'
     ])
   }
 }
@@ -233,33 +236,69 @@ export default {
     box-shadow: 0 0 0 .1rem #fff;
   }
 
-  &:hover {
-    background-color: #16b0f6;
-    color: #fff;
-    transform: scale3d(1.1, 1.1, 1.1);
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: #16b0f6;
+      color: #fff;
+      transform: scale3d(1.1, 1.1, 1.1);
+      padding-right: 1.5rem * 2;
+
+      .fav {
+        display: unset;
+
+        &.collected {
+          color: white;
+        }
+
+        &:hover {
+          .nonHover {
+            display: none;
+          }
+
+          .hovered {
+            display: unset;
+            color: white;
+          }
+        }
+      }
+
+      sup {
+        display: none;
+      }
+    }
+  }
+
+  @media (any-hover: none) {
     padding-right: 1.5rem * 2;
 
     .fav {
       display: unset;
+    }
 
-      &.collected {
-        color: yellow;
-      }
+    &:active {
+      background-color: #16b0f6;
+      color: #fff;
+      transform: scale3d(1.1, 1.1, 1.1);
 
-      &:hover {
+      .fav {
+
+        &.collected {
+          color: white;
+        }
+
         .nonHover {
           display: none;
         }
 
         .hovered {
           display: unset;
-          color: yellow;
+          color: white;
         }
       }
-    }
 
-    sup {
-      display: none;
+      sup {
+        display: none;
+      }
     }
   }
 }
