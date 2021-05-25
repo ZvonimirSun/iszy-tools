@@ -1,17 +1,25 @@
 <template>
   <container>
     <Form layout="vertical">
-      <Divider orientation="left">转换时间戳</Divider>
+      <Title :level="3">转换时间戳</Title>
       <Item label="时间">
         <DatePicker v-model:value="time" :showTime="true" style="width: 100%" @change="toTimeStamp"
-                       @ok="toTimeStamp"/>
+                    @ok="toTimeStamp" :getCalendarContainer="getContainer"/>
       </Item>
       <Item label="时间戳">
-        <Input v-model:value="timestamp" @change="toTime"/>
+        <Input v-model:value="timestamp" @change="toTime">
+          <template #addonAfter>
+            <Select v-model:value="timestampUnit" @change="toTimeStamp">
+              <Option value="s">秒</Option>
+              <Option value="ms">毫秒</Option>
+            </Select>
+          </template>
+        </Input>
       </Item>
-      <Divider orientation="left">计算几天后的日期</Divider>
+      <Title :level="3">计算几天后的日期</Title>
       <Item label="日期">
-        <DatePicker v-model:value="baseTime" style="width: 100%" @change="calculateDate" @ok="calculateDate"/>
+        <DatePicker v-model:value="baseTime" style="width: 100%" @change="calculateDate" @ok="calculateDate"
+                    :getCalendarContainer="getContainer"/>
       </Item>
       <Item label="相差天数（输入负数向前计算）">
         <Input v-model:value="addDays" addon-after="天" @change="calculateDate"/>
@@ -19,13 +27,14 @@
       <Item label="目标日期">
         <Input v-model:value="resultTime" readonly/>
       </Item>
-      <Divider orientation="left">计算日期差</Divider>
+      <Title :level="3">计算日期差</Title>
       <Item label="开始日期">
         <DatePicker v-model:value="startTime" style="width: 100%" @change="calculateDuration"
-                       @ok="calculateDuration"/>
+                    @ok="calculateDuration" :getCalendarContainer="getContainer"/>
       </Item>
       <Item label="结束日期">
-        <DatePicker v-model:value="endTime" style="width: 100%" @change="calculateDuration" @ok="calculateDuration"/>
+        <DatePicker v-model:value="endTime" style="width: 100%" @change="calculateDuration" @ok="calculateDuration"
+                    :getCalendarContainer="getContainer"/>
       </Item>
       <Item label="相差天数">
         <Input v-model:value="duration" addon-after="天" readonly/>
@@ -37,18 +46,22 @@
 <script>
 import moment from 'moment'
 import Container from '@/components/container.vue'
-import { Form, Divider, DatePicker, Input } from 'ant-design-vue'
+import { Form, DatePicker, Input, Typography, Select } from 'ant-design-vue'
+
 const { Item } = Form
+const { Title } = Typography
+const { Option } = Select
 
 export default {
   name: '时间计算',
-  components: { Container, Form, Divider, DatePicker, Input, Item },
+  components: { Container, Form, DatePicker, Input, Item, Select, Title, Option },
   data () {
     return {
       moment: moment,
 
       time: moment(),
       timestamp: moment().valueOf(),
+      timestampUnit: 'ms',
 
       baseTime: moment(),
       addDays: 100,
@@ -60,9 +73,12 @@ export default {
     }
   },
   methods: {
+    getContainer (triggerNode) {
+      return triggerNode.parentElement
+    },
     toTime () {
       if (this.timestamp && !isNaN(parseInt(this.timestamp))) {
-        const time = moment(parseInt(this.timestamp))
+        const time = moment(parseInt(this.timestamp + (this.timestampUnit === 's' ? '000' : '')))
         if (time.isValid()) {
           this.time = time
         } else {
@@ -74,7 +90,17 @@ export default {
     },
     toTimeStamp () {
       if (moment.isMoment(this.time)) {
-        this.timestamp = this.time.valueOf()
+        switch (this.timestampUnit) {
+          case 'ms':
+            this.timestamp = this.time.format('x')
+            break
+          case 's':
+            this.timestamp = this.time.format('X')
+            break
+          default:
+            this.timestamp = undefined
+            break
+        }
       } else {
         this.timestamp = undefined
       }
