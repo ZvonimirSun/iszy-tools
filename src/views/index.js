@@ -10,5 +10,6 @@ export default {
   whatAnimeIsThis: () => import('@/views/anime/whatAnimeIsThis.vue'),
   bilibiliBv2av: () => import('@/views/anime/bilibiliBv2av.vue'),
   oreooo: () => import('@/views/others/oreooo/index.vue'),
-  2048: () => import('@/views/games/2048/index.vue')
+  2048: () => import('@/views/games/2048/index.vue'),
+  cesiumDemo: () => import('@/views/program/cesiumDemo/cesiumDemo.vue')
 }

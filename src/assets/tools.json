@@ -43,6 +43,10 @@
       {
         "name": "JSON编辑器",
         "link": "/jsonEditor"
+      },
+      {
+        "name": "Cesium代码样例",
+        "link": "/cesiumDemo"
       }
     ]
   },
