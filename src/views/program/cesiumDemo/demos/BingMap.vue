@@ -12,11 +12,18 @@ export default {
   name: 'BingMap',
   mounted () {
     this.$nextTick(() => {
+      const bing = new BingMapsImageryProvider({
+        url: 'https://dev.virtualearth.net',
+        key: 'AjdX6boBhLMBIkXHL7-U76zwpopBKk39DTqXCOfLthsf-2448hcsK4hElZNdnQRg',
+        mapStyle: BingMapsStyle.AERIAL,
+        baseLayerPicker: false
+      })
       this.viewer = markRaw(new Viewer('cesiumContainer', {
         geocoder: false,
         homeButton: false,
         sceneModePicker: false,
         baseLayerPicker: false,
+        imageryProvider: bing,
         navigationHelpButton: false,
         animation: false,
         timeline: false,
@@ -26,11 +33,6 @@ export default {
         infoBox: false
       }))
       this.viewer.scene.debugShowFramesPerSecond = true
-      this.viewer.imageryLayers.addImageryProvider(new BingMapsImageryProvider({
-        url: 'https://dev.virtualearth.net',
-        key: 'AjdX6boBhLMBIkXHL7-U76zwpopBKk39DTqXCOfLthsf-2448hcsK4hElZNdnQRg',
-        mapStyle: BingMapsStyle.AERIAL
-      }))
     })
   },
   data: () => ({
