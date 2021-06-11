@@ -1,14 +1,10 @@
 name: Build Test
 
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     types: [ opened, synchronize ]
     branches:
       - main
-      - dev
   workflow_dispatch:
 
 jobs:
