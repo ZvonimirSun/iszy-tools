@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '14'
       - name: Install dependencies 🔧
-        run: yarn install --frozen-lockfile
+        run: yarn
       - name: Eslint Fix 🔧
         run: yarn lint
       - name: Build app 🔧
