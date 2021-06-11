@@ -2,7 +2,8 @@
   <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
     <Col :span="24">
       <div class="search">
-        <IconFont type="icon-t-search"/><input type="search" placeholder="搜索工具" v-model="searchStr">
+        <IconFont type="icon-t-search"/>
+        <input type="search" placeholder="搜索工具" v-model="searchStr">
       </div>
     </Col>
   </Row>
@@ -18,14 +19,16 @@
       </Col>
       <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
         <router-link
-          :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?'_blank':''"
-          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
+          :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
+          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
-            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})"
-                  v-else><span class="nonHover"><StarOutlined/></span><span class="hovered"><StarFilled/></span></span>
-            <sup :style="{background:tool.color}" v-if="tool.color"></sup>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else>
+                <span class="nonHover"><StarOutlined/></span>
+                <span class="hovered"><StarFilled/></span>
+              </span>
+            <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
           </div>
         </router-link>
       </Col>
@@ -47,8 +50,9 @@
             <ul>
               <li>
                 <div class="legendInfo">图例：
-                  <span class="legendName">推荐</span><sup :style="{background:'#16b0f6'}"></sup>
-                  <span class="legendName">需要联网</span><sup :style="{background:'red'}"></sup>
+                  <template v-for="(item,index) in legends" :key="index">
+                    <span class="legendName">{{ item.label }}</span><sup :style="{background:item.color}"></sup>
+                  </template>
                 </div>
               </li>
             </ul>
@@ -63,39 +67,33 @@
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
-import { mapActions, mapGetters, mapState } from 'vuex'
+import legends from '@/assets/legends.json'
+import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep } from 'lodash'
 
 const { Paragraph } = Typography
+const { mapActions, mapGetters, mapState: favMapState } = createNamespacedHelpers('favorite')
+const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
   components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
-  methods: {
-    ...mapActions({
-      addFav: 'favorite/addFav',
-      removeFav: 'favorite/removeFav'
-    })
-  },
-  data: () => ({
-    searchStr: ''
-  }),
   computed: {
     tools () {
       let tmp
       if (this.settings.showType) {
-        tmp = tools ? [...tools] : []
+        tmp = [...(tools || [])]
       } else {
         tmp = [{
           type: '工具',
           icon: 'icon-t-changyong',
           children: []
         }]
-        for (const type of (tools ? [...tools] : [])) {
+        for (const type of [...(tools || [])]) {
           for (const tool of type.children) {
             tmp[0].children.push(
-              Object.assign(tool, {
-                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? ('/redirect?url=' + tool.link) : ((type.link || '') + (tool.link || ''))
+              Object.assign({}, tool, {
+                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? tool.link : ((type.link || '') + (tool.link || ''))
               })
             )
           }
@@ -131,15 +129,31 @@ export default {
       }
       return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
     },
-    ...mapState({
-      settings: state => state.settings.settings,
-      favorite: state => state.favorite.favorite
-    }),
-    ...mapGetters({
-      most: 'statistics/most',
-      recent: 'statistics/recent',
-      isFav: 'favorite/isFav'
-    })
+    ...settingsMapState(['settings']),
+    ...favMapState(['favorite']),
+    ...mapGetters([
+      'most',
+      'recent',
+      'isFav'
+    ])
+  },
+  data: () => ({
+    searchStr: '',
+    legends: legends
+  }),
+  methods: {
+    getLegendColor (label) {
+      const tmp = legends.filter(item => (item.label === label))
+      if (tmp.length > 0) {
+        return tmp[0].color
+      } else {
+        return ''
+      }
+    },
+    ...mapActions([
+      'addFav',
+      'removeFav'
+    ])
   }
 }
 </script>
@@ -147,47 +161,47 @@ export default {
 <style scoped lang="scss">
 .ant-row {
   background: #fff;
-  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
-  border-radius: .5rem;
+  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+  border-radius: .8rem;
 
   &:not(:first-child) {
-    margin-top: 35px;
+    margin-top: 3.5rem;
   }
 
   &:not(.noName) {
     .ant-col:first-child {
-      margin-top: -35px;
+      margin-top: -3.5rem;
     }
   }
 }
 
 .typeName {
-  font-size: 1.125rem;
+  font-size: 1.8rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   background-color: #16b0f6;
-  padding: .3rem .8rem;
+  padding: .48rem 1.28rem;
   color: #fff;
-  box-shadow: 0 0.5rem 0.625rem rgb(36 159 253 / 30%);
-  border-radius: .5rem;
+  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+  border-radius: .8rem;
 
   .anticon {
-    font-size: 1.5rem;
-    margin-right: 5px;
+    font-size: 2.4rem;
+    margin-right: .5rem;
   }
 }
 
 .tool {
   color: #666666;
-  font-size: 1.125rem;
-  line-height: 1.67rem;
+  font-size: 1.8rem;
+  line-height: 2.672rem;
   font-weight: 600;
-  box-shadow: 0 0 0.0625rem 0 rgb(8 11 14 / 6%), 0 0.1875rem 0.1875rem -0.0625rem rgb(8 11 14 / 10%), 0 0 0.1875rem 0 rgb(8 11 14 / 2%);
+  box-shadow: 0 0 0.1rem 0 rgb(8 11 14 / 6%), 0 0.3rem 0.3rem -0.1rem rgb(8 11 14 / 10%), 0 0 0.3rem 0 rgb(8 11 14 / 2%);
   border-radius: .25rem;
   overflow: hidden;
-  margin: .4375rem;
-  padding: .625rem .9375rem;
+  margin: .7rem;
+  padding: 1rem 1.5rem;
   white-space: nowrap;
   background-color: #fff;
   transform: translateZ(0);
@@ -199,7 +213,7 @@ export default {
   .fav {
     display: none;
     position: absolute;
-    right: 0.9375rem;
+    right: 1.5rem;
     overflow: hidden;
 
     &.collected {
@@ -214,41 +228,77 @@ export default {
 
   sup {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 6px;
-    height: 6px;
+    top: .5rem;
+    right: .5rem;
+    width: .6rem;
+    height: .6rem;
     border-radius: 100%;
-    box-shadow: 0 0 0 1px #fff;
+    box-shadow: 0 0 0 .1rem #fff;
   }
 
-  &:hover {
-    background-color: #16b0f6;
-    color: #fff;
-    transform: scale3d(1.1, 1.1, 1.1);
-    padding-right: .9375rem * 2;
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: #16b0f6;
+      color: #fff;
+      transform: scale3d(1.1, 1.1, 1.1);
+      padding-right: 1.5rem * 2;
+
+      .fav {
+        display: unset;
+
+        &.collected {
+          color: white;
+        }
+
+        &:hover {
+          .nonHover {
+            display: none;
+          }
+
+          .hovered {
+            display: unset;
+            color: white;
+          }
+        }
+      }
+
+      sup {
+        display: none;
+      }
+    }
+  }
+
+  @media (any-hover: none) {
+    padding-right: 1.5rem * 2;
 
     .fav {
       display: unset;
+    }
 
-      &.collected {
-        color: yellow;
-      }
+    &:active {
+      background-color: #16b0f6;
+      color: #fff;
+      transform: scale3d(1.1, 1.1, 1.1);
 
-      &:hover {
+      .fav {
+
+        &.collected {
+          color: white;
+        }
+
         .nonHover {
           display: none;
         }
 
         .hovered {
           display: unset;
-          color: yellow;
+          color: white;
         }
       }
-    }
 
-    sup {
-      display: none;
+      sup {
+        display: none;
+      }
     }
   }
 }
@@ -256,9 +306,9 @@ export default {
 .announcement {
   display: block;
   width: 100%;
-  padding: 16px;
-  font-size: 16px;
-  line-height: 24px;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
   font-weight: 700;
 
   .legendInfo {
@@ -266,12 +316,12 @@ export default {
     align-items: center;
 
     .legendName + sup {
-      margin: 0 8px 0 5px;
+      margin: 0 .8rem 0 .5rem;
       display: block;
-      width: 6px;
-      height: 6px;
+      width: .6rem;
+      height: .6rem;
       border-radius: 100%;
-      box-shadow: 0 0 0 1px #fff;
+      box-shadow: 0 0 0 .1rem #fff;
     }
   }
 }
@@ -280,15 +330,15 @@ export default {
   display: inline-flex;
   width: 100%;
   align-items: center;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
   font-weight: 700;
-  padding: 16px 8px;
+  padding: 1.6rem .8rem;
   color: #666666;
 
   .anticon {
-    font-size: 1.5rem;
-    margin-right: 16px;
+    font-size: 2.4rem;
+    margin-right: 1.6rem;
   }
 
   input {

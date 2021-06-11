@@ -83,7 +83,7 @@ const router = createRouter({
 
 router.afterEach((to, from, next) => {
   if (to.name && to.meta.statistics) {
-    store.dispatch('statistics/access', { name: to.name, link: to.path })
+    store.dispatch('favorite/access', { name: to.name, link: to.path })
   }
 })
 

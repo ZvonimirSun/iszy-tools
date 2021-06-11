@@ -136,13 +136,13 @@ export default {
 <style scoped lang="scss">
 .resultPanel {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 1.6rem;
 }
 
 .btnGroup {
 
   .ant-btn + .ant-btn {
-    margin-left: 8px;
+    margin-left: .8rem;
   }
 }
 </style>

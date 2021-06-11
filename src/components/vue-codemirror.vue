@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash'
 import { markRaw } from 'vue'
 // lib
 import CodeMirror from 'codemirror'
@@ -16,7 +17,8 @@ export default {
     return {
       content: '',
       codemirror: null,
-      cminstance: null
+      cminstance: null,
+      cloneOptions: {}
     }
   },
   props: {
@@ -53,11 +55,13 @@ export default {
       default: () => ([])
     }
   },
+  emits: ['update:code', 'update:value', 'update:options'],
   watch: {
     options: {
       deep: true,
       handler (options) {
-        for (const key in options) {
+        this.cloneOptions = cloneDeep(options)
+        for (const key in this.cloneOptions) {
           this.cminstance.setOption(key, options[key])
         }
       }
@@ -74,7 +78,8 @@ export default {
   },
   methods: {
     initialize () {
-      const cmOptions = Object.assign({}, this.globalOptions, this.options)
+      this.cloneOptions = cloneDeep(this.options)
+      const cmOptions = Object.assign({}, this.globalOptions, this.cloneOptions)
       if (this.merge) {
         this.codemirror = markRaw(CodeMirror.MergeView(this.$refs.mergeview, cmOptions))
         this.cminstance = this.codemirror.edit
@@ -86,7 +91,8 @@ export default {
       this.cminstance.on('change', cm => {
         this.content = cm.getValue()
         if (this.$emit) {
-          this.$emit('input', this.content)
+          this.$emit('update:code', this.content)
+          this.$emit('update:value', this.content)
         }
       })
       // 所有有效事件（驼峰命名）+ 去重
@@ -162,8 +168,8 @@ export default {
       // Save current values
       const history = this.cminstance.doc.history
       const cleanGeneration = this.cminstance.doc.cleanGeneration
-      // eslint-disable-next-line vue/no-mutating-props
-      this.options.value = this.cminstance.getValue()
+      this.cloneOptions.value = this.cminstance.getValue()
+      this.$emit('update:options', this.cloneOptions)
       this.destroy()
       this.initialize()
       // Restore values

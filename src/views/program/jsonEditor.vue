@@ -18,6 +18,17 @@
           </template>
         </Button>
         <Divider type="vertical"/>
+        <Button type="primary" @click="foldAll" title="折叠所有">
+          <template #icon>
+            <IconFont type="icon-t-collapse"></IconFont>
+          </template>
+        </Button>
+        <Button type="primary" @click="unfoldAll" title="展开所有">
+          <template #icon>
+            <IconFont type="icon-t-expand"></IconFont>
+          </template>
+        </Button>
+        <Divider type="vertical"/>
         <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
           <template #icon>
             <UndoOutlined/>
@@ -51,12 +62,10 @@
                   @cursorActivity="onCursorActivity"
       />
       <div class="footer">
-        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
-            cursor.ch + 1
-          }}</span>
+        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{ cursor.ch + 1 }}</span>
       </div>
       <Modal v-model:visible="showFilter" title="变换" @ok="filter"
-             :bodyStyle="{maxHeight: 'calc(100vh - 80px - 103px)', overflowY: 'auto'}" style="top: 40px">
+             :bodyStyle="{maxHeight: 'calc(100vh - 8rem - 10.3rem)', overflowY: 'auto'}" style="top: 4rem">
         <p>输入一个
           <Text code>JMESPath</Text>
           查询以过滤、排序或转换JSON数据。要学习
@@ -286,13 +295,20 @@ export default {
     goBottom () {
       this.codemirror.execCommand('goDocEnd')
     },
+    foldAll () {
+      this.codemirror.execCommand('foldAll')
+    },
+    unfoldAll () {
+      this.codemirror.execCommand('unfoldAll')
+    },
+
     destroy () {
       const element = this.codemirror.doc.cm.getWrapperElement()
       element && element.remove && element.remove()
     },
 
     onChanges (cm) {
-      this.code = cm.getValue()
+      // this.code = cm.getValue()
       this.lineCount = cm.doc.lineCount()
       this.historySize = cm.doc.historySize()
     },
@@ -310,15 +326,16 @@ $highlight-foreground: #444;
 
 .codePanel {
   width: 100%;
-  height: calc(100vh - 310px);
-  border: 1px solid #ddd;
-  font-size: 14px;
+  height: calc(100vh - 31.5rem);
+  border: .1rem solid #ddd;
+  font-size: 1.4rem;
   overflow: hidden;
 
   .header {
-    display: inline-flex;
+    display: flex;
+    flex-flow: row wrap;
     width: 100%;
-    padding: 5px;
+    padding: .5rem;
     background-color: #1890ff;
     color: #fff;
     align-items: center;
@@ -326,20 +343,20 @@ $highlight-foreground: #444;
 
   .cmEditor {
     width: 100%;
-    height: calc(100% - 72px);
+    height: calc(100% - 7.2rem);
   }
 
   .footer {
     width: 100%;
-    padding: 5px;
-    line-height: 22px;
+    padding: .5rem;
+    line-height: 2.2rem;
     background-color: #f7f7f7;
-    border-top: 1px solid #ddd;
+    border-top: .1rem solid #ddd;
   }
 }
 
 .ant-btn {
-  font-size: 18px;
+  font-size: 1.8rem;
 
   &[disabled] {
     background-color: #1890ff;
@@ -352,7 +369,7 @@ $highlight-foreground: #444;
   }
 
   &:not(:last-child) {
-    margin-right: 5px;
+    margin-right: .5rem;
   }
 }
 </style>

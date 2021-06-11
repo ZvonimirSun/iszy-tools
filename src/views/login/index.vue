@@ -100,31 +100,31 @@ export default {
   min-height: 100%;
   position: relative;
   //background: #F6F6F6;
-  padding: 50px 0 144px;
+  padding: 5rem 0 14.4rem;
 
   //.top {
   //  text-align: center;
   //  width: 100%;
   //
   //  .header {
-  //    height: 44px;
-  //    line-height: 44px;
-  //    font-size: 33px;
+  //    height: 4.4rem;
+  //    line-height: 4.4rem;
+  //    font-size: 3.3rem;
   //    color: #333333;
   //    font-weight: 600;
   //  }
   //
   //  .desc {
-  //    font-size: 14px;
-  //    margin-top: 12px;
-  //    margin-bottom: 40px;
+  //    font-size: 1.4rem;
+  //    margin-top: 1.2rem;
+  //    margin-bottom: 4rem;
   //    color: #999999;
   //  }
   //}
 
   .main {
-    min-width: 260px;
-    width: 368px;
+    min-width: 26rem;
+    width: 36.8rem;
     margin: 0 auto;
   }
 
@@ -132,8 +132,8 @@ export default {
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 0 16px;
-    margin: 48px 0 24px;
+    padding: 0 1.6rem;
+    margin: 4.8rem 0 2.4rem;
     text-align: center;
     color: #999999;
   }

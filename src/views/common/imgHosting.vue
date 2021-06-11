@@ -34,12 +34,12 @@
           </Form>
         </Col>
         <Col :xs="24" :sm="4">
-          <Button type="primary" @click="changeSettings" style="float: right;margin-bottom: 16px;">保存</Button>
+          <Button type="primary" @click="changeSettings" style="float: right;margin-bottom: 1.6rem;">保存</Button>
         </Col>
       </Row>
       <Row v-else>
         <Col span="24">
-          <Button shape="circle" style="float: right;margin: 16px;" @click="changeSettings">
+          <Button shape="circle" style="float: right;margin: 1.6rem;" @click="changeSettings">
             <template #icon>
               <SettingOutlined/>
             </template>
@@ -176,8 +176,8 @@ export default {
 
 .imgUploaderContent {
   user-select: none;
-  height: 250px;
-  padding-top: 78px;
+  height: 25rem;
+  padding-top: 7.8rem;
 }
 
 .ant-upload {

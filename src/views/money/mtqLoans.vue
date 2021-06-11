@@ -468,7 +468,7 @@ function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) 
 .tips {
   width: 100%;
   height: 100%;
-  padding: 5px 8px;
+  padding: .5rem .8rem;
 
   color: red;
 }
@@ -476,7 +476,7 @@ function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) 
 .panel {
   width: 100%;
   height: 100%;
-  padding: 5px 8px;
+  padding: .5rem .8rem;
 
   .ant-calendar-picker {
     width: 100%;

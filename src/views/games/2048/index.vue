@@ -72,13 +72,13 @@ export default {
 
 ::v-deep(.panel) {
 
-  $field-width: 500px;
-  $grid-spacing: 15px;
+  $field-width: 50rem;
+  $grid-spacing: 1.5rem;
   $grid-row-cells: 4;
   $tile-size: math.div($field-width - $grid-spacing * ($grid-row-cells + 1), $grid-row-cells);
-  $tile-border-radius: 3px;
+  $tile-border-radius: .3rem;
 
-  $mobile-threshold: $field-width + 20px;
+  $mobile-threshold: $field-width + 2rem;
 
   $text-color: #776E65;
   $bright-text-color: #f9f6f2;
@@ -87,19 +87,19 @@ export default {
   $tile-gold-color: #edc22e;
   $tile-gold-glow-color: lighten($tile-gold-color, 15%);
 
-  $game-container-margin-top: 40px;
+  $game-container-margin-top: 4rem;
   $game-container-background: #bbada0;
 
   $transition-speed: 100ms;
 
   @include keyframes(move-up) {
     0% {
-      top: 25px;
+      top: 2.5rem;
       opacity: 1;
     }
 
     100% {
-      top: -50px;
+      top: -5rem;
       opacity: 0;
     }
   }
@@ -109,22 +109,22 @@ export default {
     box-sizing: content-box;
 
     * + * {
-      margin-left: 5px;
+      margin-left: .5rem;
     }
   }
 
   .score-container, .best-container {
-    $height: 25px;
+    $height: 2.5rem;
 
     position: relative;
     display: inline-block;
     background: $game-container-background;
-    padding: 15px 25px;
+    padding: 1.5rem 2.5rem;
     font-size: $height;
     height: $height;
-    line-height: $height + 22px;
+    line-height: $height + 2.2rem;
     font-weight: bold;
-    border-radius: 3px;
+    border-radius: .3rem;
     color: white;
     text-align: center;
     box-sizing: content-box;
@@ -132,11 +132,11 @@ export default {
     &:after {
       position: absolute;
       width: 100%;
-      top: 10px;
+      top: 1rem;
       left: 0;
       text-transform: uppercase;
-      font-size: 13px;
-      line-height: 13px;
+      font-size: 1.3rem;
+      line-height: 1.3rem;
       text-align: center;
       color: $tile-color;
       box-sizing: content-box;
@@ -144,7 +144,7 @@ export default {
 
     .score-addition {
       position: absolute;
-      right: 30px;
+      right: 3rem;
       color: red;
       font-size: $height;
       line-height: $height;
@@ -169,7 +169,7 @@ export default {
 
   p {
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     line-height: 1.65;
   }
 
@@ -188,14 +188,14 @@ export default {
 
   hr {
     border: none;
-    border-bottom: 1px solid lighten($text-color, 40%);
-    margin-top: 20px;
-    margin-bottom: 30px;
+    border-bottom: .1rem solid lighten($text-color, 40%);
+    margin-top: 2rem;
+    margin-bottom: 3rem;
   }
 
   .container {
     font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-    font-size: 18px;
+    font-size: 1.8rem;
     color: $text-color;
     width: $field-width;
     margin: 0 auto;
@@ -215,12 +215,12 @@ export default {
   @mixin button {
     display: inline-block;
     background: darken($game-container-background, 20%);
-    border-radius: 3px;
-    padding: 0 20px;
+    border-radius: .3rem;
+    padding: 0 2rem;
     text-decoration: none;
     color: $bright-text-color;
-    height: 40px;
-    line-height: 42px;
+    height: 4rem;
+    line-height: 4.2rem;
   }
 
   .game-container {
@@ -261,24 +261,24 @@ export default {
       text-align: center;
 
       p {
-        font-size: 60px;
+        font-size: 6rem;
         font-weight: bold;
-        height: 60px;
-        line-height: 60px;
-        margin-top: 222px;
+        height: 6rem;
+        line-height: 6rem;
+        margin-top: 22.2rem;
         // height: $field-width;
         // line-height: $field-width;
       }
 
       .lower {
         display: block;
-        margin-top: 59px;
+        margin-top: 5.9rem;
       }
 
       a {
         @include button;
-        margin-left: 9px;
-        // margin-top: 59px;
+        margin-left: .9rem;
+        // margin-top: 5.9rem;
 
         &.keep-playing-button {
           display: none;
@@ -363,7 +363,7 @@ export default {
       font-weight: bold;
       z-index: 10;
 
-      font-size: 55px;
+      font-size: 5.5rem;
     }
 
     // Movement transition
@@ -418,23 +418,23 @@ export default {
         $glow-opacity: max(#{$exponent} - 4, 0) / ($limit - 4);
 
         @if not $special-background {
-          box-shadow: 0 0 30px 10px rgba($tile-gold-glow-color, $glow-opacity / 1.8),
-          inset 0 0 0 1px rgba(white, $glow-opacity / 3);
+          box-shadow: 0 0 3rem 1rem rgba($tile-gold-glow-color, $glow-opacity / 1.8),
+          inset 0 0 0 .1rem rgba(white, $glow-opacity / 3);
         }
 
         // Adjust font size for bigger numbers
         @if $power >= 100 and $power < 1000 {
-          font-size: 45px;
+          font-size: 4.5rem;
 
           // Media queries placed here to avoid carrying over the rest of the logic
           @include smaller($mobile-threshold) {
-            font-size: 25px;
+            font-size: 2.5rem;
           }
         } @else if $power >= 1000 {
-          font-size: 35px;
+          font-size: 3.5rem;
 
           @include smaller($mobile-threshold) {
-            font-size: 15px;
+            font-size: 1.5rem;
           }
         }
       }
@@ -447,10 +447,10 @@ export default {
       color: $bright-text-color;
       background: mix(#333, $tile-gold-color, 95%);
 
-      font-size: 30px;
+      font-size: 3rem;
 
       @include smaller($mobile-threshold) {
-        font-size: 10px;
+        font-size: 1rem;
       }
     }
   }
@@ -501,7 +501,7 @@ export default {
 
   .game-intro {
     float: left;
-    line-height: 42px;
+    line-height: 4.2rem;
     margin-bottom: 0;
   }
 
@@ -513,28 +513,28 @@ export default {
   }
 
   .game-explanation {
-    margin-top: 50px;
+    margin-top: 5rem;
   }
 
   @include smaller($mobile-threshold) {
     // Redefine variables for smaller screens
-    $field-width: 280px;
-    $grid-spacing: 10px;
+    $field-width: 28rem;
+    $grid-spacing: 1rem;
     $grid-row-cells: 4;
     $tile-size: math.div($field-width - $grid-spacing * ($grid-row-cells + 1), $grid-row-cells);
-    $tile-border-radius: 3px;
-    $game-container-margin-top: 17px;
+    $tile-border-radius: .3rem;
+    $game-container-margin-top: 1.7rem;
 
     .container {
-      font-size: 15px;
+      font-size: 1.5rem;
       width: $field-width;
       margin: 0 auto;
     }
 
     .score-container, .best-container {
       margin-top: 0;
-      padding: 15px 10px;
-      min-width: 40px;
+      padding: 1.5rem 1rem;
+      min-width: 4rem;
     }
 
     // Show intro and restart button side by side
@@ -550,7 +550,7 @@ export default {
       padding: 0;
       display: block;
       box-sizing: border-box;
-      margin-top: 2px;
+      margin-top: .2rem;
     }
 
     // Render the game field at the right width
@@ -592,24 +592,24 @@ export default {
         text-align: center;
 
         p {
-          font-size: 60px;
+          font-size: 6rem;
           font-weight: bold;
-          height: 60px;
-          line-height: 60px;
-          margin-top: 222px;
+          height: 6rem;
+          line-height: 6rem;
+          margin-top: 22.2rem;
           // height: $field-width;
           // line-height: $field-width;
         }
 
         .lower {
           display: block;
-          margin-top: 59px;
+          margin-top: 5.9rem;
         }
 
         a {
           @include button;
-          margin-left: 9px;
-          // margin-top: 59px;
+          margin-left: .9rem;
+          // margin-top: 5.9rem;
 
           &.keep-playing-button {
             display: none;
@@ -685,19 +685,19 @@ export default {
 
     // Rest of the font-size adjustments in the tile class
     .tile .tile-inner {
-      font-size: 35px;
+      font-size: 3.5rem;
     }
 
     .game-message {
       p {
-        font-size: 30px !important;
-        height: 30px !important;
-        line-height: 30px !important;
-        margin-top: 90px !important;
+        font-size: 3rem !important;
+        height: 3rem !important;
+        line-height: 3rem !important;
+        margin-top: 9rem !important;
       }
 
       .lower {
-        margin-top: 30px !important;
+        margin-top: 3rem !important;
       }
     }
   }

@@ -255,8 +255,8 @@ export default {
     }
 
     .loading-img {
-      width: 200px;
-      height: 200px;
+      width: 20rem;
+      height: 20rem;
       margin: 0 auto;
       animation: rotate 6s infinite linear;
     }
@@ -266,33 +266,33 @@ export default {
     position: relative;
     text-align: center;
     background-color: #fff;
-    padding: 25px;
-    border-radius: 25px;
-    box-shadow: 0 8px 8px rgb(0 0 0 / 13%);
+    padding: 2.5rem;
+    border-radius: 2.5rem;
+    box-shadow: 0 .8rem .8rem rgb(0 0 0 / 13%);
 
     .title {
       .meta {
         color: #515151;
-        font-size: 24px;
-        line-height: 32px;
-        margin-bottom: 16px;
+        font-size: 2.4rem;
+        line-height: 3.2rem;
+        margin-bottom: 1.6rem;
       }
 
       .str {
         color: #515151;
-        font-size: 46px;
-        line-height: 54px;
-        margin-bottom: 16px;
+        font-size: 4.6rem;
+        line-height: 5.4rem;
+        margin-bottom: 1.6rem;
         word-break: break-all;
 
         &.input {
           display: flex;
           align-items: center;
-          border: 2px solid #eee;
+          border: .2rem solid #eee;
           background: #f6f6f6;
-          padding: 8px;
+          padding: .8rem;
           word-break: break-all;
-          border-radius: 25px;
+          border-radius: 2.5rem;
 
           &.placeholder {
             color: #ccc;
@@ -303,9 +303,9 @@ export default {
           }
 
           .icon {
-            width: 25px;
-            height: 25px;
-            margin: 0 5px;
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0 .5rem;
             opacity: .4;
             transition: opacity .2s;
           }
@@ -315,12 +315,12 @@ export default {
 
     .btn {
       display: inline-block;
-      border: 2px solid #515151;
-      font-size: 20px;
-      line-height: 28px;
-      padding: 5px 16px;
-      margin: 5px;
-      border-radius: 25px;
+      border: .2rem solid #515151;
+      font-size: 2rem;
+      line-height: 2.8rem;
+      padding: .5rem 1.6rem;
+      margin: .5rem;
+      border-radius: 2.5rem;
 
       a {
         color: #515151;
@@ -340,16 +340,16 @@ export default {
     .index-btn {
       background-color: #515151;
       color: #fff;
-      line-height: 38px;
-      font-size: 30px;
-      margin: 16px -25px -25px;
-      padding: 12px;
-      border-radius: 0 0 25px 25px;
+      line-height: 3.8rem;
+      font-size: 3rem;
+      margin: 1.6rem -2.5rem -2.5rem;
+      padding: 1.2rem;
+      border-radius: 0 0 2.5rem 2.5rem;
       cursor: pointer;
     }
 
     .output-image {
-      margin-bottom: 16px;
+      margin-bottom: 1.6rem;
     }
   }
 }
