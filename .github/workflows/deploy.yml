@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-        with:
-          ref: dev
       - name: Setup node 🔧
         uses: actions/setup-node@v2
         with:
