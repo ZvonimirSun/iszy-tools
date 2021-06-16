@@ -9,7 +9,7 @@
       <Group>
         <Button type="primary" @click="encode">UrlEncode编码</Button>
         <Button type="primary" @click="decode">UrlDecode解码</Button>
-        <Button @click="clear">清空结果</Button>
+        <Button type="link" @click="clear">清空结果</Button>
       </Group>
     </Space>
   </container>
@@ -54,11 +54,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep(.ant-space-vertical) {
+.ant-space-vertical {
   width: 100%;
+}
 
-  .ant-space-item {
-    text-align: right;
+.ant-btn-group {
+  flex-flow: row wrap;
+
+  .ant-btn {
+    margin-bottom: 5px;
+
+    @media (max-width: 450px) {
+      padding: 0 8px;
+    }
   }
 }
 </style>
