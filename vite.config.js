@@ -39,17 +39,10 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'google-fonts-webfonts'
-            }
-          },
-          {
-            urlPattern: /^https:\/\/gstatic\.loli\.net/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'loli-google-fonts-webfonts'
+              cacheName: 'iszy-google-fonts-webfonts'
             }
           },
           {
