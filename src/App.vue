@@ -1,5 +1,5 @@
 <template>
-  <config-provider :locale="locale">
+  <config-provider :locale="locale"  :getPopupContainer="getPopupContainer">
     <BackTop/>
     <layout>
       <Header>
@@ -35,7 +35,15 @@ export default {
   data: () => ({
     locale: zhCN
   }),
-  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link }
+  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
+  methods: {
+    getPopupContainer (node) {
+      if (node) {
+        return node.parentNode
+      }
+      return document.body
+    }
+  }
 }
 </script>
 
