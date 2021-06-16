@@ -17,6 +17,7 @@
     "codemirror": "^5.61.1",
     "core-js": "^3.14.0",
     "jmespath": "^0.15.0",
+    "jsoneditor": "^9.5.0",
     "jsonlint-mod": "^1.7.6",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
