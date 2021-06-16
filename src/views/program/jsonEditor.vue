@@ -18,6 +18,17 @@
           </template>
         </Button>
         <Divider type="vertical"/>
+        <Button type="primary" @click="foldAll" title="折叠所有">
+          <template #icon>
+            <IconFont type="icon-t-collapse"></IconFont>
+          </template>
+        </Button>
+        <Button type="primary" @click="unfoldAll" title="展开所有">
+          <template #icon>
+            <IconFont type="icon-t-expand"></IconFont>
+          </template>
+        </Button>
+        <Divider type="vertical"/>
         <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
           <template #icon>
             <UndoOutlined/>
@@ -51,9 +62,7 @@
                   @cursorActivity="onCursorActivity"
       />
       <div class="footer">
-        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
-            cursor.ch + 1
-          }}</span>
+        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{ cursor.ch + 1 }}</span>
       </div>
       <Modal v-model:visible="showFilter" title="变换" @ok="filter"
              :bodyStyle="{maxHeight: 'calc(100vh - 8rem - 10.3rem)', overflowY: 'auto'}" style="top: 4rem">
@@ -286,6 +295,13 @@ export default {
     goBottom () {
       this.codemirror.execCommand('goDocEnd')
     },
+    foldAll () {
+      this.codemirror.execCommand('foldAll')
+    },
+    unfoldAll () {
+      this.codemirror.execCommand('unfoldAll')
+    },
+
     destroy () {
       const element = this.codemirror.doc.cm.getWrapperElement()
       element && element.remove && element.remove()
@@ -310,13 +326,14 @@ $highlight-foreground: #444;
 
 .codePanel {
   width: 100%;
-  height: calc(100vh - 31rem);
+  height: calc(100vh - 31.5rem);
   border: .1rem solid #ddd;
   font-size: 1.4rem;
   overflow: hidden;
 
   .header {
-    display: inline-flex;
+    display: flex;
+    flex-flow: row wrap;
     width: 100%;
     padding: .5rem;
     background-color: #1890ff;

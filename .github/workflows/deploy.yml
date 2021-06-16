@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - dev
+      - main
   workflow_dispatch:
 
 jobs:
@@ -14,16 +14,14 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-        with:
-          ref: dev
       - name: Setup node 🔧
         uses: actions/setup-node@v2
         with:
           node-version: '14'
       - name: Install dependencies 🔧
-        run: yarn install --frozen-lockfile
+        run: yarn
       - name: Build app 🔧
-        run: yarn run build
+        run: yarn build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:

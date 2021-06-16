@@ -45,6 +45,10 @@
         "link": "/jsonEditor"
       },
       {
+        "name": "URL编码/解码",
+        "link": "/urlEncode"
+      },
+      {
         "name": "Cesium代码样例",
         "link": "/cesiumDemo"
       }

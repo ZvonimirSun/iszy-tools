@@ -9,7 +9,7 @@ import '@/permission'
 
 const app = createApp(App)
 const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1621893_9r06wrhndo6.js'
+  scriptUrl: '//at.alicdn.com/t/font_1621893_9j8fud3lbbm.js'
 })
 
 message.config({
