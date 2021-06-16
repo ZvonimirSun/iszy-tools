@@ -44,25 +44,18 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-section {
-  display: flex;
-  flex: auto;
-  flex-direction: column;
+.ant-layout {
   background: transparent;
   height: 100%;
   width: 100%;
   font-size: 1.4rem;
   overflow: hidden;
 
-  header, main, footer {
+  &-header, &-layout, &-footer {
     background: transparent;
   }
 
-  footer, header {
-    flex: 0 0 auto;
-  }
-
-  header {
+  &-header {
     padding: 3.2rem 0 2.4rem;
     text-align: center;
     height: 13.4rem;
@@ -89,7 +82,7 @@ section {
     }
   }
 
-  main {
+  &-content {
     max-width: 120rem;
     width: 100%;
     margin: 0 auto;
@@ -97,7 +90,7 @@ section {
     overflow-y: auto;
   }
 
-  footer {
+  &-footer {
     height: 7rem;
     text-align: center;
   }

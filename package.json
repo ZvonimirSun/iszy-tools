@@ -12,7 +12,7 @@
     "@ant-design/icons-vue": "^6.0.1",
     "@ckpack/vue-color": "^0.0.3",
     "ali-oss": "^6.15.2",
-    "ant-design-vue": "^2.1.6",
+    "ant-design-vue": "^2.2.0-beta.3",
     "axios": "^0.21.1",
     "codemirror": "^5.61.1",
     "core-js": "^3.14.0",
