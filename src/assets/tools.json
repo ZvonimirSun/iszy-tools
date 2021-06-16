@@ -43,6 +43,10 @@
       {
         "name": "JSON编辑器",
         "link": "/jsonEditor"
+      },
+      {
+        "name": "URL编码/解码",
+        "link": "/urlEncode"
       }
     ]
   },
