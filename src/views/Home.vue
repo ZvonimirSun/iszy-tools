@@ -20,11 +20,11 @@
       <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
         <router-link
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
-          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):((item.link||'')+(tool.link||''))">
+          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
             <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
-            <span class="fav" @click.prevent="addFav({name:tool.name,link:(item.link||'')+(tool.link||'')})" v-else>
+            <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
                 <span class="nonHover"><StarOutlined/></span>
                 <span class="hovered"><StarFilled/></span>
               </span>
@@ -69,7 +69,7 @@ import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/assets/tools.json'
 import legends from '@/assets/legends.json'
 import { createNamespacedHelpers } from 'vuex'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, flatten } from 'lodash'
 
 const { Paragraph } = Typography
 const { mapActions, mapGetters, mapState: favMapState } = createNamespacedHelpers('favorite')
@@ -87,17 +87,8 @@ export default {
         tmp = [{
           type: '工具',
           icon: 'icon-t-changyong',
-          children: []
+          children: this.allTools
         }]
-        for (const type of [...(tools || [])]) {
-          for (const tool of type.children) {
-            tmp[0].children.push(
-              Object.assign({}, tool, {
-                link: (/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1+}$/.test(tool.link)) ? tool.link : ((type.link || '') + (tool.link || ''))
-              })
-            )
-          }
-        }
       }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
@@ -129,6 +120,11 @@ export default {
       }
       return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
     },
+    allTools () {
+      return flatten([...(tools || [])].map(item => {
+        return item.children
+      }))
+    },
     ...settingsMapState(['settings']),
     ...favMapState(['favorite']),
     ...mapGetters([
@@ -141,6 +137,9 @@ export default {
     searchStr: '',
     legends: legends
   }),
+  mounted () {
+    this.fixFavorite()
+  },
   methods: {
     getLegendColor (label) {
       const tmp = legends.filter(item => (item.label === label))
@@ -152,7 +151,8 @@ export default {
     },
     ...mapActions([
       'addFav',
-      'removeFav'
+      'removeFav',
+      'fixFavorite'
     ])
   }
 }
