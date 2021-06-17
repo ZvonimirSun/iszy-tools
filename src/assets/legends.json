@@ -1,10 +1,10 @@
 [
   {
     "label": "新功能",
-    "color": "lightskyblue"
+    "color": "#52c41a"
   },
   {
-    "label": "需要联网",
-    "color": "lightpink"
+    "label": "在线",
+    "color": "#1890ff"
   }
 ]

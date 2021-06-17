@@ -11,7 +11,7 @@
       {
         "name": "这是什么动漫",
         "link": "/anime/whatAnimeIsThis",
-        "legend": "需要联网"
+        "legend": "在线"
       },
       {
         "name": "哔哩哔哩AV、BV号转换",
@@ -46,7 +46,8 @@
       },
       {
         "name": "URL编码/解码",
-        "link": "/urlEncode"
+        "link": "/urlEncode",
+        "legend": "新功能"
       }
     ]
   },
