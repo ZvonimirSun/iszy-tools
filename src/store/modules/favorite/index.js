@@ -85,10 +85,26 @@ export default {
       commit('removeHistory', { name })
     },
 
-    fixFavorite ({ commit }) {
-      const tmp = flatten([...(tools || [])].map(item => {
+    fixFavorite ({ dispatch, state, getters }) {
+      const allTools = flatten([...(tools || [])].map(item => {
         return item.children
       }))
+      for (const tool of state.favorite) {
+        const tmp = allTools.filter(item => (item.name === tool.name))
+        if (tmp.length === 0) {
+          dispatch('removeFav', { name: tool.name })
+        } else if (tmp[0].link !== tool.link) {
+          dispatch('addFav', { name: tool.name, link: tmp[0].link })
+        }
+      }
+      for (const tool of state.statistics) {
+        const tmp = allTools.filter(item => (item.name === tool.name))
+        if (tmp.length === 0) {
+          dispatch('removeHistory', { name: tool.name })
+        } else if (tmp[0].link !== tool.link) {
+          dispatch('updateHistory', { name: tool.name, link: tmp[0].link })
+        }
+      }
     }
   }
 }
