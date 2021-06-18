@@ -1,14 +1,14 @@
 <template>
   <config-provider :locale="locale"  :getPopupContainer="getPopupContainer">
-    <BackTop/>
-    <layout>
+    <Layout>
       <Header>
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
         <div class="desc">一个轻量的工具集合</div>
       </Header>
-      <Content>
+      <Content ref="view">
+        <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
         <router-view/>
       </Content>
       <Footer>
@@ -21,7 +21,7 @@
           苏ICP备18047890号-2
         </Link>
       </Footer>
-    </layout>
+    </Layout>
   </config-provider>
 </template>
 

@@ -76,6 +76,10 @@ export default {
 <style lang="scss">
 .jsonEditor {
   height: calc(100vh - 36.3rem);
+
+  .ace-jsoneditor *, textarea.jsoneditor-text * {
+    font-family: JetBrains Mono, monospace;
+  }
 }
 
 .ant-btn {
