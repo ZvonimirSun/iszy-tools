@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { range } from 'lodash'
+import { range, random } from 'lodash'
 import Container from '@/components/container.vue'
 
 export default {
@@ -31,14 +31,24 @@ export default {
       col: 10,
       row: 20
     },
-    matrix: undefined
+    tetriminos: ['i', 'j', 'l', 'o', 's', 't', 'z'],
+
+    matrix: undefined,
+    nextTetrimino: undefined,
+    score: 0
   }),
   mounted () {
     this.matrix = Array(this.gridCells.row)
     for (const x of range(this.gridCells.row)) {
       this.matrix[x] = Array(this.gridCells.col).fill('')
     }
+    this.getNextTetrimino()
     this.inited = true
+  },
+  methods: {
+    getNextTetrimino () {
+      this.nextTetrimino = this.tetriminos[random(0, 6)]
+    }
   }
 }
 </script>
