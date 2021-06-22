@@ -2,11 +2,14 @@
   <container>
     <div class="gamePanel">
       <div class="tetrisPanel">
-        <div v-for="item in (gridCells.col*2+gridCells.row*2+4)" :class="'tetrisFrameGrid tetrisFrameGrid-'+item" :key="'tetrisFrameGrid'+item"></div>
+        <div v-for="item in (gridCells.col*2+gridCells.row*2+4)" :class="['tetrisCell','tetrisCellGrid']"
+             :key="'tetrisFrameGrid'+item"></div>
         <div class="tetrisMainPanel">
           <template v-for="x in gridCells.row" :key="x">
             <template v-for="y in gridCells.col" :key="y">
-              <div :class="'tetrisTile tetrisTile-'+x+'-'+y"></div>
+              <div :class="['tetrisCell', 'tetrisCellColor-'+matrix[x-1][y-1]]"
+                   v-if="inited && matrix[x-1][y-1]"></div>
+              <div class="tetrisCell" v-else></div>
             </template>
           </template>
         </div>
@@ -16,16 +19,27 @@
 </template>
 
 <script>
+import { range } from 'lodash'
 import Container from '@/components/container.vue'
+
 export default {
   name: 'tetris',
   components: { Container },
   data: () => ({
+    inited: false,
     gridCells: {
       col: 10,
       row: 20
+    },
+    matrix: undefined
+  }),
+  mounted () {
+    this.matrix = Array(this.gridCells.row)
+    for (const x of range(this.gridCells.row)) {
+      this.matrix[x] = Array(this.gridCells.col).fill('')
     }
-  })
+    this.inited = true
+  }
 }
 </script>
 
@@ -33,10 +47,10 @@ export default {
 @import "./style/variables";
 
 .gamePanel {
-  height: calc(100vh - 32rem);
-  width: calc(100vh - 32rem);
-  max-height: calc(100vw - 8rem);
-  max-width: calc(100vw - 8rem);
+  height: $height;
+  width: $width;
+  max-height: $max-height;
+  max-width: $max-width;
   margin: 0 auto;
   border: 1rem solid $gray-bottom;
   border-right-color: $gray-left;
@@ -49,35 +63,9 @@ export default {
   .tetrisPanel {
     height: 100%;
     width: 50%;
-    box-sizing: content-box;
     display: grid;
     grid-template-columns: repeat(($grid-col-cells + 2), 1fr);
     grid-template-rows: repeat(($grid-row-cells + 2), 1fr);
-
-    .tetrisFrameGrid {
-      background: $gray;
-      border: $grid-border-width solid $gray-top;
-      border-right-color: $gray-right;
-      border-bottom-color: $gray-bottom;
-      border-left-color: $gray-left;
-    }
-
-    @for $x from 1 through ($grid-row-cells * 2 + $grid-col-cells * 2 + 4) {
-      .tetrisFrameGrid-#{$x} {
-        @if $x <= ($grid-col-cells + 2) {
-          grid-column: $x;
-        } @else if $x <= ($grid-row-cells + $grid-col-cells + 2) {
-          grid-column: 1;
-          grid-row: ($x - $grid-col-cells - 1);
-        } @else if $x <= ($grid-row-cells * 2 + $grid-col-cells + 2) {
-          grid-column: $grid-col-cells + 2;
-          grid-row: ($x - $grid-col-cells - $grid-row-cells - 1);
-        } @else {
-          grid-column: ($x - $grid-row-cells * 2 - $grid-col-cells - 2);
-          grid-row: ($grid-row-cells + 2);
-        }
-      }
-    }
 
     .tetrisMainPanel {
       grid-column: 2 / #{$grid-col-cells + 2};
@@ -85,15 +73,77 @@ export default {
       display: grid;
       grid-template-columns: repeat($grid-col-cells, 1fr);
       grid-template-rows: repeat($grid-row-cells, 1fr);
+    }
+  }
 
-      @for $x from 1 through $grid-row-cells {
-        @for $y from 1 through $grid-col-cells {
-          &.tetrisTile-#{$x}-#{$y} {
-            grid-column: $x;
-            grid-row: $y;
-          }
-        }
-      }
+  .tetrisCell {
+    height: $cell-height;
+    width: $cell-width;
+    max-height: $cell-max-height;
+    max-width: $cell-max-width;
+
+    &.tetrisCellColor-i {
+      background: $light-blue;
+      border: $grid-border-width solid $light-blue-top;
+      border-right-color: $light-blue-right;
+      border-bottom-color: $light-blue-bottom;
+      border-left-color: $light-blue-left;
+    }
+
+    &.tetrisCellColor-j {
+      background: $blue;
+      border: $grid-border-width solid $blue-top;
+      border-right-color: $blue-right;
+      border-bottom-color: $blue-bottom;
+      border-left-color: $blue-left;
+    }
+
+    &.tetrisCellColor-l {
+      background: $orange;
+      border: $grid-border-width solid $orange-top;
+      border-right-color: $orange-right;
+      border-bottom-color: $orange-bottom;
+      border-left-color: $orange-left;
+    }
+
+    &.tetrisCellColor-o {
+      background: $yellow;
+      border: $grid-border-width solid $yellow-top;
+      border-right-color: $yellow-right;
+      border-bottom-color: $yellow-bottom;
+      border-left-color: $yellow-left;
+    }
+
+    &.tetrisCellColor-s {
+      background: $green;
+      border: $grid-border-width solid $green-top;
+      border-right-color: $green-right;
+      border-bottom-color: $green-bottom;
+      border-left-color: $green-left;
+    }
+
+    &.tetrisCellColor-t {
+      background: $purple;
+      border: $grid-border-width solid $purple-top;
+      border-right-color: $purple-right;
+      border-bottom-color: $purple-bottom;
+      border-left-color: $purple-left;
+    }
+
+    &.tetrisCellColor-z {
+      background: $red;
+      border: $grid-border-width solid $red-top;
+      border-right-color: $red-right;
+      border-bottom-color: $red-bottom;
+      border-left-color: $red-left;
+    }
+
+    &.tetrisCellGrid {
+      background: $gray;
+      border: $grid-border-width solid $gray-top;
+      border-right-color: $gray-right;
+      border-bottom-color: $gray-bottom;
+      border-left-color: $gray-left;
     }
   }
 }

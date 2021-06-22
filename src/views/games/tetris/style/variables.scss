@@ -1,5 +1,17 @@
+@use "sass:math";
+
 $grid-row-cells: 20;
 $grid-col-cells: 10;
+
+$height: calc(100vh - 32rem);
+$width: calc(100vh - 32rem);
+$max-height: calc(100vw - 8rem);
+$max-width: calc(100vw - 8rem);
+
+$cell-height: calc(#{math.div(100vh, $grid-row-cells+2)} - #{math.div(32rem+3.6rem, $grid-row-cells+2)});
+$cell-width: calc(#{math.div(100vh, $grid-row-cells+2)} - #{math.div(32rem+3.6rem, $grid-row-cells+2)});
+$cell-max-height: calc(#{math.div(100vw, $grid-row-cells+2)} - #{math.div(8rem+3.6rem, $grid-row-cells+2)});
+$cell-max-width: calc(#{math.div(100vw, $grid-row-cells+2)} - #{math.div(8rem+3.6rem, $grid-row-cells+2)});
 
 $grid-border-width: .6rem;
 
