@@ -2,8 +2,14 @@
   <container>
     <div class="gamePanel">
       <div class="tetrisPanel">
-        <div v-for="item in 64" :class="'tetrisFrameGrid tetrisFrameGrid-'+item" :key="'tetrisFrameGrid'+item"></div>
-        <div class="tetrisMainPanel"></div>
+        <div v-for="item in (gridCells.col*2+gridCells.row*2+4)" :class="'tetrisFrameGrid tetrisFrameGrid-'+item" :key="'tetrisFrameGrid'+item"></div>
+        <div class="tetrisMainPanel">
+          <template v-for="x in gridCells.row" :key="x">
+            <template v-for="y in gridCells.col" :key="y">
+              <div :class="'tetrisTile tetrisTile-'+x+'-'+y"></div>
+            </template>
+          </template>
+        </div>
       </div>
     </div>
   </container>
@@ -13,7 +19,13 @@
 import Container from '@/components/container.vue'
 export default {
   name: 'tetris',
-  components: { Container }
+  components: { Container },
+  data: () => ({
+    gridCells: {
+      col: 10,
+      row: 20
+    }
+  })
 }
 </script>
 
@@ -70,6 +82,18 @@ export default {
     .tetrisMainPanel {
       grid-column: 2 / #{$grid-col-cells + 2};
       grid-row: 2 / #{$grid-row-cells + 2};
+      display: grid;
+      grid-template-columns: repeat($grid-col-cells, 1fr);
+      grid-template-rows: repeat($grid-row-cells, 1fr);
+
+      @for $x from 1 through $grid-row-cells {
+        @for $y from 1 through $grid-col-cells {
+          &.tetrisTile-#{$x}-#{$y} {
+            grid-column: $x;
+            grid-row: $y;
+          }
+        }
+      }
     }
   }
 }
