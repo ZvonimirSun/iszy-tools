@@ -5,11 +5,26 @@
         <div v-for="item in (gridCells.col*2+gridCells.row*2+4)" :class="['tetrisCell','tetrisCellGrid']"
              :key="'tetrisFrameGrid'+item"></div>
         <div class="tetrisMainPanel">
-          <template v-for="x in gridCells.row" :key="x">
-            <template v-for="y in gridCells.col" :key="y">
-              <div :class="['tetrisCell', 'tetrisCellColor-'+matrix[x-1][y-1]]"
-                   v-if="inited && matrix[x-1][y-1]"></div>
-              <div class="tetrisCell" v-else></div>
+          <template v-if="inited">
+            <template v-for="x in gridCells.row" :key="x">
+              <template v-for="y in gridCells.col" :key="y">
+                <div :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1]]"
+                     v-if="currentMatrix[x-1][y-1]"></div>
+                <div class="tetrisCell" v-else></div>
+              </template>
+            </template>
+          </template>
+        </div>
+      </div>
+      <div class="infoPanel">
+        <div class="nextTetrimino">
+          <template v-if="inited">
+            <template v-for="x in 2" :key="x">
+              <template v-for="y in 4" :key="y">
+                <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
+                     v-if="nextTetriminoMatrix[x-1][y-1]"></div>
+                <div class="tetrisCell" v-else></div>
+              </template>
             </template>
           </template>
         </div>
@@ -19,8 +34,9 @@
 </template>
 
 <script>
-import { range, random } from 'lodash'
+import { range, random, cloneDeep } from 'lodash'
 import Container from '@/components/container.vue'
+import TetriminosMatrix from './js/TetriminosMatrix.js'
 
 export default {
   name: 'tetris',
@@ -33,21 +49,72 @@ export default {
     },
     tetriminos: ['i', 'j', 'l', 'o', 's', 't', 'z'],
 
-    matrix: undefined,
-    nextTetrimino: undefined,
+    matrix: null,
+    nextTetrimino: null,
+    currentTetrimino: null,
+
+    position: null,
+    rotate: 0,
     score: 0
   }),
   mounted () {
+    this.position = [0, Math.ceil(this.gridCells.col / 2)]
     this.matrix = Array(this.gridCells.row)
     for (const x of range(this.gridCells.row)) {
       this.matrix[x] = Array(this.gridCells.col).fill('')
     }
     this.getNextTetrimino()
     this.inited = true
+    this.start()
   },
   methods: {
     getNextTetrimino () {
+      this.currentTetrimino = this.nextTetrimino
       this.nextTetrimino = this.tetriminos[random(0, 6)]
+    },
+    start () {
+      this.getNextTetrimino()
+    }
+  },
+  computed: {
+    currentTetriminoMatrix: function () {
+      if (this.currentTetrimino) {
+        return TetriminosMatrix[this.currentTetrimino][this.rotate % TetriminosMatrix[this.currentTetrimino].length]
+      } else {
+        return null
+      }
+    },
+    nextTetriminoMatrix: function () {
+      if (this.nextTetrimino) {
+        return TetriminosMatrix[this.nextTetrimino + 'Legend']
+      } else {
+        return null
+      }
+    },
+    currentMatrix: function () {
+      if (this.currentTetrimino) {
+        const tmp = cloneDeep(this.matrix)
+        if (this.currentTetriminoMatrix.length === 4) {
+          for (let x = 0; x < 4; x++) {
+            for (let y = 0; y < 4; y++) {
+              if (this.position[0] - 2 + x >= 0 && this.position[1] - 2 + y >= 0) {
+                tmp[this.position[0] - 2 + x][this.position[1] - 2 + y] = this.currentTetriminoMatrix[x][y] === 1 ? this.currentTetrimino : ''
+              }
+            }
+          }
+        } else if (this.currentTetriminoMatrix.length === 3) {
+          for (let x = 0; x < 3; x++) {
+            for (let y = 0; y < 3; y++) {
+              if (this.position[0] - 1 + x >= 0 && this.position[1] - 1 + y >= 0) {
+                tmp[this.position[0] - 1 + x][this.position[1] - 1 + y] = this.currentTetriminoMatrix[x][y] === 1 ? this.currentTetrimino : ''
+              }
+            }
+          }
+        }
+        return tmp
+      } else {
+        return this.matrix
+      }
     }
   }
 }
@@ -69,10 +136,10 @@ export default {
   background: #000;
   box-sizing: border-box;
   padding: .8rem;
+  display: flex;
 
   .tetrisPanel {
-    height: 100%;
-    width: 50%;
+    width: fit-content;
     display: grid;
     grid-template-columns: repeat(($grid-col-cells + 2), 1fr);
     grid-template-rows: repeat(($grid-row-cells + 2), 1fr);
@@ -83,6 +150,20 @@ export default {
       display: grid;
       grid-template-columns: repeat($grid-col-cells, 1fr);
       grid-template-rows: repeat($grid-row-cells, 1fr);
+    }
+  }
+
+  .infoPanel {
+    height: 100%;
+    padding-left: .8rem;
+    flex: 1;
+
+    .nextTetrimino {
+      margin: 0 auto;
+      display: grid;
+      width: fit-content;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
     }
   }
 
