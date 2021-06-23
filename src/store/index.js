@@ -12,5 +12,8 @@ export default createStore({
     jsonEditor,
     g2048
   },
-  plugins: [VuexPersist()]
+  plugins: [VuexPersist({
+    name: 'iszy_tools',
+    storeName: 'state'
+  })]
 })
