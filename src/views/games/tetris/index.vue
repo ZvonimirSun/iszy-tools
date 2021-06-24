@@ -22,11 +22,14 @@
             <template v-for="x in 2" :key="x">
               <template v-for="y in 4" :key="y">
                 <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
-                     v-if="nextTetriminoMatrix[x-1][y-1]"></div>
+                     v-if="nextTetriminoMatrixLegend[x-1][y-1]"></div>
                 <div class="tetrisCell" v-else></div>
               </template>
             </template>
           </template>
+        </div>
+        <div class="score">
+          {{score}}
         </div>
       </div>
     </div>
@@ -38,6 +41,8 @@ import { range, random, cloneDeep } from 'lodash'
 import Container from '@/components/container.vue'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
 
+const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
+
 export default {
   name: 'tetris',
   components: { Container },
@@ -47,7 +52,6 @@ export default {
       col: 10,
       row: 20
     },
-    tetriminos: ['i', 'j', 'l', 'o', 's', 't', 'z'],
 
     matrix: null,
     nextTetrimino: null,
@@ -55,38 +59,25 @@ export default {
 
     position: null,
     rotate: 0,
-    score: 0
+    score: 0,
+    lines: 0,
+    end: false,
+    clearing: false
   }),
-  mounted () {
-    this.position = [0, Math.ceil(this.gridCells.col / 2)]
-    this.matrix = Array(this.gridCells.row)
-    for (const x of range(this.gridCells.row)) {
-      this.matrix[x] = Array(this.gridCells.col).fill('')
-    }
-    this.getNextTetrimino()
-    this.inited = true
-    this.start()
-  },
-  methods: {
-    getNextTetrimino () {
-      this.currentTetrimino = this.nextTetrimino
-      this.nextTetrimino = this.tetriminos[random(0, 6)]
-    },
-    start () {
-      this.getNextTetrimino()
-    }
-  },
   computed: {
-    currentTetriminoMatrix: function () {
-      if (this.currentTetrimino) {
-        return TetriminosMatrix[this.currentTetrimino][this.rotate % TetriminosMatrix[this.currentTetrimino].length]
+    level: function () {
+      return Math.ceil(this.lines / 10)
+    },
+    nextTetriminoMatrixLegend: function () {
+      if (this.nextTetrimino) {
+        return TetriminosMatrix[this.nextTetrimino + 'Legend']
       } else {
         return null
       }
     },
-    nextTetriminoMatrix: function () {
-      if (this.nextTetrimino) {
-        return TetriminosMatrix[this.nextTetrimino + 'Legend']
+    positions: function () {
+      if (this.currentTetrimino) {
+        return this._getPositions(this._getRotatedMatrix(this.rotate), this.position)
       } else {
         return null
       }
@@ -94,21 +85,10 @@ export default {
     currentMatrix: function () {
       if (this.currentTetrimino) {
         const tmp = cloneDeep(this.matrix)
-        if (this.currentTetriminoMatrix.length === 4) {
-          for (let x = 0; x < 4; x++) {
-            for (let y = 0; y < 4; y++) {
-              if (this.position[0] - 2 + x >= 0 && this.position[1] - 2 + y >= 0) {
-                tmp[this.position[0] - 2 + x][this.position[1] - 2 + y] = this.currentTetriminoMatrix[x][y] === 1 ? this.currentTetrimino : ''
-              }
-            }
-          }
-        } else if (this.currentTetriminoMatrix.length === 3) {
-          for (let x = 0; x < 3; x++) {
-            for (let y = 0; y < 3; y++) {
-              if (this.position[0] - 1 + x >= 0 && this.position[1] - 1 + y >= 0) {
-                tmp[this.position[0] - 1 + x][this.position[1] - 1 + y] = this.currentTetriminoMatrix[x][y] === 1 ? this.currentTetrimino : ''
-              }
-            }
+        for (const position of this.positions) {
+          if (position[0] >= 0 && position[0] < this.gridCells.row &&
+            position[1] >= 0 && position[1] < this.gridCells.col) {
+            tmp[position[0]][position[1]] = this.currentTetrimino
           }
         }
         return tmp
@@ -116,6 +96,212 @@ export default {
         return this.matrix
       }
     }
+  },
+  watch: {
+    matrix: {
+      handler: function (val) {
+        if (this.inited && !this.clearing) {
+          const indexs = []
+          for (const i in val) {
+            const tmp = val[i].filter(item => (item === ''))
+            if (tmp.length === 0) {
+              indexs.push(i)
+            }
+          }
+          if (indexs.length > 0) {
+            this.clearing = true
+            const tmp = cloneDeep(val)
+            for (let i = indexs.length - 1; i >= 0; i--) {
+              tmp.splice(indexs[i], 1)
+            }
+            const tmp1 = Array(indexs.length)
+            for (const x of range(indexs.length)) {
+              tmp1[x] = Array(this.gridCells.col).fill('')
+            }
+            this.matrix = tmp1.concat(tmp)
+            this.lines += indexs.length
+            debugger
+            switch (indexs.length) {
+              case 1:
+                this.score += 40 * this.level
+                break
+              case 2:
+                this.score += 100 * this.level
+                break
+              case 3:
+                this.score += 300 * this.level
+                break
+              case 4:
+                this.score += 1200 * this.level
+                break
+              default:
+                break
+            }
+            this.clearing = false
+          }
+        }
+      },
+      deep: true
+    }
+  },
+  mounted () {
+    this._resetPosition()
+    this.matrix = Array(this.gridCells.row)
+    for (const x of range(this.gridCells.row)) {
+      this.matrix[x] = Array(this.gridCells.col).fill('')
+    }
+    this._getNextTetrimino()
+    this._addListener()
+    this.inited = true
+  },
+  methods: {
+    start () {
+      if (!this.currentTetrimino) {
+        this.end = false
+        this._getNextTetrimino()
+      }
+    },
+
+    rotateRight () {
+      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
+        this.rotate++
+      }
+    },
+    rotateLeft () {
+      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
+        this.rotate--
+      }
+    },
+    moveLeft () {
+      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] - 1]))) {
+        this.position[1]--
+      }
+    },
+    moveRight () {
+      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] + 1]))) {
+        this.position[1]++
+      }
+    },
+    moveDown () {
+      if (this.currentTetrimino) {
+        if (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + 1, this.position[1]]))) {
+          this.position[0]++
+        } else {
+          this._updateMatrix()
+        }
+      }
+    },
+
+    _resetPosition () {
+      this.rotate = 0
+      this.position = [0, Math.ceil(this.gridCells.col / 2)]
+    },
+    _updateMatrix () {
+      if (this.currentTetrimino) {
+        for (const position of this.positions) {
+          if (position[0] < 0) {
+            this.end = true
+          } else {
+            this.matrix[position[0]][position[1]] = this.currentTetrimino
+          }
+        }
+        if (this.end) {
+          this.currentTetrimino = undefined
+          return
+        }
+        this._getNextTetrimino()
+        this._resetPosition()
+      }
+    },
+    _getNextTetrimino () {
+      this.currentTetrimino = this.nextTetrimino
+      this.nextTetrimino = tetriminos[random(0, 6)]
+    },
+    _getRotatedMatrix (rotate) {
+      let index = rotate % TetriminosMatrix[this.currentTetrimino].length
+      if (index < 0) { index += TetriminosMatrix[this.currentTetrimino].length }
+      return TetriminosMatrix[this.currentTetrimino][index]
+    },
+    _getPositions (matrix, position) {
+      const positions = []
+      for (let x = 0; x < matrix.length; x++) {
+        for (let y = 0; y < matrix[x].length; y++) {
+          if (matrix[x][y] === 1) {
+            switch (this.currentTetrimino) {
+              case 'i':
+              case 'o':
+                positions.push([position[0] - 2 + x, position[1] - 2 + y])
+                break
+              case 'j':
+              case 'l':
+              case 't':
+                positions.push([position[0] - 1 + x, position[1] - 1 + y])
+                break
+              case 's':
+              case 'z':
+                positions.push([position[0] - 2 + x, position[1] - 1 + y])
+                break
+              default:
+                return null
+            }
+          }
+        }
+      }
+      return positions
+    },
+    _keyboardEvent (event) {
+      const modifiers = event.altKey || event.ctrlKey || event.metaKey ||
+        event.shiftKey
+
+      if (!modifiers) {
+        switch (event.code) {
+          case 'Space':
+            this.start()
+            break
+          case 'KeyW':
+          case 'KeyE':
+          case 'ArrowUp':
+            this.rotateRight()
+            break
+          case 'KeyQ':
+            this.rotateLeft()
+            break
+          case 'KeyS':
+          case 'ArrowDown':
+            this.moveDown()
+            break
+          case 'KeyA':
+          case 'ArrowLeft':
+            this.moveLeft()
+            break
+          case 'KeyD':
+          case 'ArrowRight':
+            this.moveRight()
+            break
+          default:
+            break
+        }
+      }
+    },
+    _hasConflict (positions) {
+      for (const position of positions) {
+        if (position[0] >= this.gridCells.row || position[1] < 0 || position[1] >= this.gridCells.col) {
+          return true
+        } else if (position[0] >= 0 && this.matrix[position[0]][position[1]] !== '') {
+          return true
+        }
+      }
+      return false
+    },
+    _addListener () {
+      document.addEventListener('keydown', this._keyboardEvent.bind(this))
+    },
+    _removeListener () {
+      document.removeEventListener('keydown', this._keyboardEvent.bind(this))
+    }
+  },
+  beforeUnmount () {
+    this._removeListener()
   }
 }
 </script>
@@ -164,6 +350,14 @@ export default {
       width: fit-content;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(2, 1fr);
+    }
+
+    .score {
+      color: #fff;
+      font-size: 6.4rem;
+      line-height: 6.4rem;
+      text-align: center;
+      margin-top: .8rem;
     }
   }
 
