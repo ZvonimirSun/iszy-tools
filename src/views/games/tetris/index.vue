@@ -8,7 +8,7 @@
           <template v-if="inited">
             <template v-for="x in gridCells.row" :key="x">
               <template v-for="y in gridCells.col" :key="y">
-                <div :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1]]"
+                <div :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
                      v-if="currentMatrix[x-1][y-1]"></div>
                 <div class="tetrisCell" v-else></div>
               </template>
@@ -17,6 +17,23 @@
         </div>
       </div>
       <div class="infoPanel">
+        <div class="infoTitle">最高分</div>
+        <div class="score">
+          {{bestScore}}
+        </div>
+        <div class="infoTitle">得分</div>
+        <div class="score">
+          {{score}}
+        </div>
+        <div class="infoTitle">消除行</div>
+        <div class="score">
+          {{lines}}
+        </div>
+        <div class="infoTitle">级别</div>
+        <div class="score">
+          {{level}}
+        </div>
+        <div class="infoTitle">下一个</div>
         <div class="nextTetrimino">
           <template v-if="inited">
             <template v-for="x in 2" :key="x">
@@ -28,8 +45,12 @@
             </template>
           </template>
         </div>
-        <div class="score">
-          {{score}}
+
+        <div class="startGame" @click="playGame">
+          <div class="tetrisCell">开</div>
+          <div class="tetrisCell">始</div>
+          <div class="tetrisCell">游</div>
+          <div class="tetrisCell">戏</div>
         </div>
       </div>
     </div>
@@ -54,17 +75,27 @@ export default {
     },
 
     matrix: null,
-    nextTetrimino: null,
-    currentTetrimino: null,
-
-    position: null,
     rotate: 0,
+    position: null,
+    currentTetrimino: null,
+    nextTetrimino: null,
+    bestScore: 0,
     score: 0,
     lines: 0,
+
+    start: false,
     end: false,
-    clearing: false
+    pause: false,
+
+    clearing: false,
+    clearIndexs: [],
+
+    intervalID: undefined
   }),
   computed: {
+    movable: function () {
+      return this.start && !this.end && !this.clearing && !this.pause
+    },
     level: function () {
       return Math.ceil(this.lines / 10)
     },
@@ -97,31 +128,102 @@ export default {
       }
     }
   },
-  watch: {
-    matrix: {
-      handler: function (val) {
-        if (this.inited && !this.clearing) {
-          const indexs = []
-          for (const i in val) {
-            const tmp = val[i].filter(item => (item === ''))
-            if (tmp.length === 0) {
-              indexs.push(i)
-            }
+  mounted () {
+    this.resetGame()
+    this.getNextTetrimino()
+    this.addListener()
+    this.inited = true
+  },
+  methods: {
+    playGame () {
+      if (!this.start) {
+        this.score = 0
+        this.lines = 0
+        this.getNextTetrimino()
+        this.start = true
+        this.intervalID = setInterval(() => {
+          if (!this.clearing) {
+            this.moveDown()
           }
-          if (indexs.length > 0) {
-            this.clearing = true
-            const tmp = cloneDeep(val)
-            for (let i = indexs.length - 1; i >= 0; i--) {
-              tmp.splice(indexs[i], 1)
+        }, 1000)
+      }
+    },
+    resetGame () {
+      const tmp = Array(this.gridCells.row)
+      for (const x of range(this.gridCells.row)) {
+        tmp[x] = Array(this.gridCells.col).fill('')
+      }
+      this.matrix = tmp
+      this.rotate = 0
+      this.resetPosition()
+      this.currentTetrimino = undefined
+      this.start = false
+      this.end = false
+      this.pause = false
+      this.clearing = false
+    },
+    pauseGame () {
+      if (this.start) {
+        if (this.pause) {
+          this.pause = !this.pause
+          this.intervalID = setInterval(() => {
+            if (!this.clearing) {
+              this.moveDown()
             }
-            const tmp1 = Array(indexs.length)
-            for (const x of range(indexs.length)) {
-              tmp1[x] = Array(this.gridCells.col).fill('')
+          }, 1000)
+        } else {
+          this.pause = !this.pause
+          clearInterval(this.intervalID)
+        }
+      }
+    },
+    resetPosition () {
+      this.rotate = 0
+      this.position = [0, Math.ceil(this.gridCells.col / 2)]
+    },
+    updateMatrix () {
+      if (this.start) {
+        for (const position of this.positions) {
+          if (position[0] < 0) {
+            this.end = true
+          }
+        }
+        this.matrix = cloneDeep(this.currentMatrix)
+        if (this.end) {
+          this.clearIndexs = []
+          for (const x of range(this.gridCells.row)) {
+            this.clearIndexs.push(x)
+          }
+          setTimeout(() => {
+            if (this.score > this.bestScore) {
+              this.bestScore = this.score
             }
-            this.matrix = tmp1.concat(tmp)
-            this.lines += indexs.length
-            debugger
-            switch (indexs.length) {
+            this.clearIndexs = []
+            this.resetGame()
+          }, 600)
+          return
+        }
+        const indexs = []
+        for (const i in this.matrix) {
+          const tmp = this.matrix[i].filter(item => (item === ''))
+          if (tmp.length === 0) {
+            indexs.push(parseInt(i))
+          }
+        }
+        if (indexs.length > 0) {
+          this.clearing = true
+          this.clearIndexs = indexs
+          const tmp = cloneDeep(this.matrix)
+          for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
+            tmp.splice(this.clearIndexs[i], 1)
+          }
+          const tmp1 = Array(this.clearIndexs.length)
+          for (const x of range(this.clearIndexs.length)) {
+            tmp1[x] = Array(this.gridCells.col).fill('')
+          }
+          setTimeout(() => {
+            this.lines += this.clearIndexs.length
+            switch (this.clearIndexs.length) {
               case 1:
                 this.score += 40 * this.level
                 break
@@ -137,86 +239,70 @@ export default {
               default:
                 break
             }
+            this.clearIndexs = []
+            this.matrix = [...tmp1, ...tmp]
+            this.getNextTetrimino()
+            this.resetPosition()
             this.clearing = false
-          }
+          }, 600)
+        } else {
+          this.getNextTetrimino()
+          this.resetPosition()
         }
-      },
-      deep: true
-    }
-  },
-  mounted () {
-    this._resetPosition()
-    this.matrix = Array(this.gridCells.row)
-    for (const x of range(this.gridCells.row)) {
-      this.matrix[x] = Array(this.gridCells.col).fill('')
-    }
-    this._getNextTetrimino()
-    this._addListener()
-    this.inited = true
-  },
-  methods: {
-    start () {
-      if (!this.currentTetrimino) {
-        this.end = false
-        this._getNextTetrimino()
       }
+    },
+    getNextTetrimino () {
+      this.currentTetrimino = this.nextTetrimino
+      this.nextTetrimino = tetriminos[random(0, 6)]
     },
 
     rotateRight () {
-      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
         this.rotate++
       }
     },
     rotateLeft () {
-      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
         this.rotate--
       }
     },
     moveLeft () {
-      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] - 1]))) {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] - 1]))) {
         this.position[1]--
       }
     },
     moveRight () {
-      if (this.currentTetrimino && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] + 1]))) {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] + 1]))) {
         this.position[1]++
       }
     },
     moveDown () {
-      if (this.currentTetrimino) {
+      if (this.movable) {
         if (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + 1, this.position[1]]))) {
           this.position[0]++
         } else {
-          this._updateMatrix()
+          this.updateMatrix()
         }
+      }
+    },
+    moveBottom () {
+      if (this.movable) {
+        let time = 0
+        while (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + time + 1, this.position[1]]))) {
+          time++
+        }
+        this.position[0] += time
+        this.updateMatrix()
       }
     },
 
-    _resetPosition () {
-      this.rotate = 0
-      this.position = [0, Math.ceil(this.gridCells.col / 2)]
+    addListener () {
+      document.addEventListener('keydown', this._keyboardEvent.bind(this))
     },
-    _updateMatrix () {
-      if (this.currentTetrimino) {
-        for (const position of this.positions) {
-          if (position[0] < 0) {
-            this.end = true
-          } else {
-            this.matrix[position[0]][position[1]] = this.currentTetrimino
-          }
-        }
-        if (this.end) {
-          this.currentTetrimino = undefined
-          return
-        }
-        this._getNextTetrimino()
-        this._resetPosition()
-      }
+    removeListener () {
+      document.removeEventListener('keydown', this._keyboardEvent.bind(this))
     },
-    _getNextTetrimino () {
-      this.currentTetrimino = this.nextTetrimino
-      this.nextTetrimino = tetriminos[random(0, 6)]
-    },
+
     _getRotatedMatrix (rotate) {
       let index = rotate % TetriminosMatrix[this.currentTetrimino].length
       if (index < 0) { index += TetriminosMatrix[this.currentTetrimino].length }
@@ -256,27 +342,52 @@ export default {
       if (!modifiers) {
         switch (event.code) {
           case 'Space':
-            this.start()
+            if (!this.start) {
+              this.playGame()
+            } else {
+              if (this.pause) {
+                this.pauseGame()
+              }
+              this.moveBottom()
+            }
             break
           case 'KeyW':
           case 'KeyE':
           case 'ArrowUp':
+            if (this.pause) {
+              this.pauseGame()
+            }
             this.rotateRight()
             break
           case 'KeyQ':
+            if (this.pause) {
+              this.pauseGame()
+            }
             this.rotateLeft()
             break
           case 'KeyS':
           case 'ArrowDown':
+            if (this.pause) {
+              this.pauseGame()
+            }
             this.moveDown()
             break
           case 'KeyA':
           case 'ArrowLeft':
+            if (this.pause) {
+              this.pauseGame()
+            }
             this.moveLeft()
             break
           case 'KeyD':
           case 'ArrowRight':
+            if (this.pause) {
+              this.pauseGame()
+            }
             this.moveRight()
+            break
+          case 'KeyP':
+            this.pauseGame()
             break
           default:
             break
@@ -292,22 +403,28 @@ export default {
         }
       }
       return false
-    },
-    _addListener () {
-      document.addEventListener('keydown', this._keyboardEvent.bind(this))
-    },
-    _removeListener () {
-      document.removeEventListener('keydown', this._keyboardEvent.bind(this))
     }
   },
   beforeUnmount () {
-    this._removeListener()
+    this.removeListener()
   }
 }
 </script>
 
 <style scoped lang="scss">
 @import "./style/variables";
+
+@keyframes blink {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
 
 .gamePanel {
   height: $height;
@@ -336,6 +453,8 @@ export default {
       display: grid;
       grid-template-columns: repeat($grid-col-cells, 1fr);
       grid-template-rows: repeat($grid-row-cells, 1fr);
+
+
     }
   }
 
@@ -344,7 +463,15 @@ export default {
     padding-left: .8rem;
     flex: 1;
 
-    .nextTetrimino {
+    .infoTitle {
+      font-size: 4.6rem;
+      line-height: 5.4rem;
+      color: #fff;
+      margin: 1.6rem auto;
+      padding-left: 1rem;
+    }
+
+    .nextTetrimino, .startGame {
       margin: 0 auto;
       display: grid;
       width: fit-content;
@@ -352,12 +479,43 @@ export default {
       grid-template-rows: repeat(2, 1fr);
     }
 
+    .startGame {
+      margin: 2rem auto 0;
+      display: grid;
+      width: fit-content;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      cursor: pointer;
+      user-select: none;
+
+      .tetrisCell {
+        color: #fff;
+        text-align: center;
+        line-height: 3.131rem;
+        font-size: 2.5rem;
+
+        background: $blue;
+        border: $grid-border-width solid $blue-top;
+        border-right-color: $blue-right;
+        border-bottom-color: $blue-bottom;
+        border-left-color: $blue-left;
+      }
+
+      &:active .tetrisCell{
+        border: $grid-border-width solid $blue-bottom;
+        border-right-color: $blue-left;
+        border-bottom-color: $blue-top;
+        border-left-color: $blue-right;
+        font-size: 2rem;
+        transition: .1s;
+      }
+    }
+
     .score {
       color: #fff;
-      font-size: 6.4rem;
-      line-height: 6.4rem;
+      font-size: 6.8rem;
+      line-height: 7.6rem;
       text-align: center;
-      margin-top: .8rem;
     }
   }
 
@@ -366,6 +524,10 @@ export default {
     width: $cell-width;
     max-height: $cell-max-height;
     max-width: $cell-max-width;
+
+    &.blink {
+      animation: blink 0.6s both;
+    }
 
     &.tetrisCellColor-i {
       background: $light-blue;
