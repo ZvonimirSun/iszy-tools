@@ -11,5 +11,6 @@ export default {
   bilibiliBv2av: () => import('@/views/anime/bilibiliBv2av.vue'),
   oreooo: () => import('@/views/others/oreooo/index.vue'),
   2048: () => import('@/views/games/2048/index.vue'),
-  urlEncode: () => import('@/views/program/urlEncode.vue')
+  urlEncode: () => import('@/views/program/urlEncode.vue'),
+  dataListTreeHandler: () => import('@/views/priTools/dataListTreeHandler.vue')
 }
