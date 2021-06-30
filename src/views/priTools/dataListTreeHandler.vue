@@ -1,22 +1,28 @@
 <template>
   <container>
     <Group>
-      <Upload :showUploadList="false" :beforeUpload="upload">
-        <Button type="primary">
+      <Upload :showUploadList="false" :beforeUpload="upload" :disabled="!inited || loading">
+        <Button type="primary" :disabled="!inited || loading">
           <UploadOutlined/>
           上传
         </Button>
       </Upload>
-      <Button @click="handler">
-        <ToolOutlined/>
-        处理
-      </Button>
-      <Button @click="download">
+      <Button type="primary" @click="download" :disabled="!inited || loading">
         <DownloadOutlined/>
         下载
       </Button>
+      <Button type="primary" @click="handler" :loading="loading" :disabled="!inited">
+        <ToolOutlined v-show="!loading"/>
+        处理
+      </Button>
     </Group>
     <div ref="jsonEditor" class="jsonEditor"></div>
+    <Modal title="错误提示" v-model:visible="showError" @ok="showError=false">
+      <Paragraph>以下图层处理中遇到错误，可能配置有误，需要检查</Paragraph>
+      <Paragraph>
+        <pre>{{errorLayer.join('\n')}}</pre>
+      </Paragraph>
+    </Modal>
   </container>
 </template>
 
@@ -26,11 +32,12 @@ import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { markRaw } from 'vue'
-import { Button, Upload } from 'ant-design-vue'
+import { Button, Upload, Modal, Typography } from 'ant-design-vue'
 import { UploadOutlined, DownloadOutlined, ToolOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash'
 
 const { Group } = Button
+const { Paragraph } = Typography
 
 export default {
   name: 'dataListTreeHandler',
@@ -39,14 +46,19 @@ export default {
     Button,
     Group,
     Upload,
+    Modal,
+    Paragraph,
     UploadOutlined,
     DownloadOutlined,
     ToolOutlined
   },
   data: () => ({
+    inited: false,
     editor: null,
     code: undefined,
-    loading: true
+    loading: false,
+    errorLayer: [],
+    showError: false
   }),
   mounted () {
     this.init()
@@ -67,6 +79,7 @@ export default {
           }
         }
       ))
+      this.inited = true
     },
     // 上传配置文件
     upload (e) {
@@ -75,7 +88,7 @@ export default {
       reader.onload = (e) => {
         try {
           this.code = JSON.parse(e.target.result)
-          this.editor.set(this.code)
+          this.editor.update(this.code)
         } catch (e) {
         }
       }
@@ -87,15 +100,25 @@ export default {
     },
     // 处理配置文件
     async handler () {
+      this.errorLayer = []
       if (this.code && Array.isArray(this.code.layerList) && this.code.layerList.length > 0) {
-        this.loading = true
+        const tmp = this.editor.getMode()
+        const timeoutID = setTimeout(() => {
+          this.loading = true
+          this.editor.setMode('preview')
+        }, 100)
         const config = cloneDeep(this.code)
         for (const layer of config.layerList) {
           await this.checkLayer(layer)
         }
         this.code = config
-        this.editor.set(this.code)
+        this.editor.update(this.code)
+        clearTimeout(timeoutID)
+        this.editor.setMode(tmp)
         this.loading = false
+        if (this.errorLayer.length > 0) {
+          this.showError = true
+        }
       }
     },
 
@@ -108,11 +131,16 @@ export default {
           }
         }
       } else {
-        await this.addIdentifyConfig(layer)
+        if (await this.addIdentifyConfig(layer)) {
+          if (layer.title) {
+            this.errorLayer.push(layer.title)
+          }
+        }
       }
     },
     // 添加属性识别相关配置
     async addIdentifyConfig (layer) {
+      let flag = 0
       if (layer.serviceConfig && layer.serviceConfig.identify) {
         if (layer.serviceConfig.type && layer.serviceConfig.type.data) {
           layer.serviceConfig.identify.data = layer.serviceConfig.identify.data || []
@@ -123,7 +151,9 @@ export default {
               if (dataUrl) {
                 for (const item of layer.serviceConfig.identify.data) {
                   if (!(Array.isArray(item.resultMapping) && item.resultMapping.length > 0)) {
-                    await this.handleSupermapService(item, dataUrl.itemValue, item.datasetName)
+                    if (await this.handleSupermapService(item, dataUrl.itemValue, item.datasetName)) {
+                      flag = 1
+                    }
                   }
                 }
               }
@@ -134,7 +164,9 @@ export default {
               const url = layer.serviceConfig.url.data
               for (const item of layer.serviceConfig.identify.data) {
                 if (!(Array.isArray(item.resultMapping) && item.resultMapping.length > 0)) {
-                  await this.handleArcgisService(item, url, item.layerId)
+                  if (await this.handleArcgisService(item, url, item.layerId)) {
+                    flag = 1
+                  }
                 }
               }
               break
@@ -144,6 +176,7 @@ export default {
           }
         }
       }
+      return flag
     },
 
     // 处理超图服务
@@ -170,8 +203,10 @@ export default {
           isTemplet: false,
           remark: ''
         }
+        return 0
       } catch (e) {
         console.log(e)
+        return 1
       }
     },
     // 处理ArcGIS服务
@@ -194,8 +229,10 @@ export default {
           isTemplet: false,
           remark: ''
         }
+        return 0
       } catch (e) {
         console.log(e)
+        return 1
       }
     }
   },
