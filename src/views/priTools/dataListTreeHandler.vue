@@ -45,12 +45,14 @@ export default {
   },
   data: () => ({
     editor: null,
-    code: undefined
+    code: undefined,
+    loading: true
   }),
   mounted () {
     this.init()
   },
   methods: {
+    // 初始化jsonEditor
     init () {
       this.editor = markRaw(new JSONEditor(
         this.$refs.jsonEditor,
@@ -66,6 +68,7 @@ export default {
         }
       ))
     },
+    // 上传配置文件
     upload (e) {
       const reader = new FileReader()
       reader.readAsText(e, 'UTF-8')
@@ -78,95 +81,122 @@ export default {
       }
       return false
     },
+    // 下载配置文件
     download () {
       createFile(this.editor.getText(), 'data.json')
     },
-    handler () {
+    // 处理配置文件
+    async handler () {
       if (this.code && Array.isArray(this.code.layerList) && this.code.layerList.length > 0) {
+        this.loading = true
         const config = cloneDeep(this.code)
         for (const layer of config.layerList) {
-          this.handleLayer(layer)
+          await this.checkLayer(layer)
         }
         this.code = config
         this.editor.set(this.code)
+        this.loading = false
       }
     },
 
-    handleLayer (layer) {
-      if (layer.type === 'dir' && layer.children) {
-        layer.children.forEach(item => {
-          this.handleLayer(item)
-        })
+    // 遍历资源树，处理图层
+    async checkLayer (layer) {
+      if (layer.type === 'dir') {
+        if (layer.children) {
+          for (const item of layer.children) {
+            await this.checkLayer(item)
+          }
+        }
       } else {
-        this.addIdentifyConfig(layer)
+        await this.addIdentifyConfig(layer)
       }
     },
+    // 添加属性识别相关配置
     async addIdentifyConfig (layer) {
       if (layer.serviceConfig && layer.serviceConfig.identify) {
         if (layer.serviceConfig.type && layer.serviceConfig.type.data) {
           layer.serviceConfig.identify.data = layer.serviceConfig.identify.data || []
           switch (layer.serviceConfig.type.data) {
-            case 'arcgis_rest':
-            case 'arcgis_tile': {
-              const url = layer.serviceConfig.url.data
-              for (const item of layer.serviceConfig.identify.data) {
-                item.resultMapping = await this.getFieldFromeArcgisService(url, item.layerId)
-              }
-              break
-            }
             case 'supermap_rest':
             case 'supermap_tile': {
               const dataUrl = layer.serviceConfig.relevantUrls && Array.isArray(layer.serviceConfig.relevantUrls.data) ? layer.serviceConfig.relevantUrls.data.find(i => i.itemKey === 'dataUrl') : ''
               if (dataUrl) {
                 for (const item of layer.serviceConfig.identify.data) {
-                  item.resultMapping = await this.getFieldFromSupermapService(dataUrl.itemValue, item.datasetName)
+                  if (!(Array.isArray(item.resultMapping) && item.resultMapping.length > 0)) {
+                    await this.handleSupermapService(item, dataUrl.itemValue, item.datasetName)
+                  }
                 }
               }
               break
             }
+            case 'arcgis_rest':
+            case 'arcgis_tile': {
+              const url = layer.serviceConfig.url.data
+              for (const item of layer.serviceConfig.identify.data) {
+                if (!(Array.isArray(item.resultMapping) && item.resultMapping.length > 0)) {
+                  await this.handleArcgisService(item, url, item.layerId)
+                }
+              }
+              break
+            }
+            default:
+              break
           }
         }
       }
     },
 
-    async getFieldFromSupermapService (url, dataSet) {
-      const fields = []
-      const postData = {
-        datasetNames: [dataSet],
-        getFeatureMode: 'ID',
-        ids: [1]
-      }
-      const postUrl = url + '/data/featureResults.rjson?returnContent=true'
+    // 处理超图服务
+    async handleSupermapService (layer, url, dataSet) {
       try {
-        const resultSuperMap = await this.$axios.post(postUrl, postData)
-        const fieldNames = resultSuperMap.features[0].fieldNames
-        fieldNames.forEach((fieldName) => {
-          const temp = {
+        const fields = []
+        const postData = {
+          datasetNames: [dataSet],
+          getFeatureMode: 'ID',
+          ids: [1],
+          hasGeometry: false
+        }
+        const postUrl = url + (url.endsWith('/') ? '' : '/') + 'data/featureResults.json?returnContent=true'
+        const result = (await this.$axios.post(postUrl, postData)).data
+        for (const fieldName of result.features[0].fieldNames) {
+          fields.push({
             label: fieldName,
             value: fieldName
-          }
-          fields.push(temp)
-        })
-      } catch (e) {
-        console.log(e)
-      }
-      return fields
-    },
-    async getFieldFromeArcgisService (url, layerID) {
-      const fields = []
-      try {
-        const resultSuperMap = await this.$axios.get(url + '/layers', { params: { f: 'json' } })
-        const layer = resultSuperMap.layers[Number(layerID)]
-        layer.fields.forEach(e => {
-          fields.push({
-            label: e.alias || e.name,
-            value: e.name
           })
-        })
+        }
+        layer.resultMapping = fields
+        layer.title = layer.title || {
+          field: fields[0].value,
+          isTemplet: false,
+          remark: ''
+        }
       } catch (e) {
         console.log(e)
       }
-      return fields
+    },
+    // 处理ArcGIS服务
+    async handleArcgisService (layer, url, layerID) {
+      try {
+        const fields = []
+        layerID = parseInt(layerID)
+        const result = (await this.$axios.get(url + (url.endsWith('/') ? '' : '/') + layerID, { params: { f: 'json' } })).data
+        const fieldInfos = result.fields
+        for (const field of fieldInfos) {
+          fields.push({
+            label: field.alias || field.name,
+            value: field.name
+          })
+        }
+        layer.layerName = layer.layerName || result.name
+        layer.resultMapping = fields
+        layer.title = layer.title || {
+          field: fields[0].value,
+          isTemplet: false,
+          remark: ''
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   beforeUnmount () {
