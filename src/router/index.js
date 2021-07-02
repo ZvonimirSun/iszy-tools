@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import widgets from '@/views'
 import tools from '@/assets/tools.json'
+import priTools from '@/assets/priTools.json'
 import store from '@/store'
 
 let routes = [
@@ -36,6 +37,19 @@ for (const tmp of tools) {
       }
     }
   }
+}
+
+for (const tool of priTools) {
+  const tmp = tool.link.match('[^/]+(?!.*/)')
+  routes.push({
+    path: tool.link,
+    name: tool.name,
+    component: widgets[tmp[0]],
+    meta: {
+      requiresAuth: false,
+      statistics: false
+    }
+  })
 }
 
 routes = routes.concat([
@@ -79,6 +93,11 @@ routes = routes.concat([
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  await store.restored
+  next()
 })
 
 router.afterEach((to, from, next) => {
