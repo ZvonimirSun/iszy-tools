@@ -46,7 +46,9 @@
 import { range, random, cloneDeep } from 'lodash'
 import Container from '@/components/container.vue'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
+import { createNamespacedHelpers } from 'vuex'
 
+const { mapState, mapActions } = createNamespacedHelpers('tetris')
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {
@@ -64,13 +66,13 @@ export default {
     position: null,
     currentTetrimino: null,
     nextTetrimino: null,
-    bestScore: 0,
     score: 0,
     lines: 0,
 
     start: false,
     end: false,
     pause: false,
+    lock: false,
 
     clearing: false,
     clearIndexs: [],
@@ -111,7 +113,8 @@ export default {
       } else {
         return this.matrix
       }
-    }
+    },
+    ...mapState(['bestScore'])
   },
   mounted () {
     this.resetGame()
@@ -145,10 +148,16 @@ export default {
       this.start = false
       this.end = false
       this.pause = false
+      this.lock = false
       this.clearing = false
     },
-    pauseGame () {
-      if (this.start) {
+    pauseGame (lock) {
+      if (lock) {
+        this.lock = true
+      } else if (lock === false) {
+        this.lock = false
+      }
+      if (this.start && (this.lock === false || lock)) {
         if (this.pause) {
           this.pause = !this.pause
           this.intervalID = setInterval(() => {
@@ -175,19 +184,21 @@ export default {
         }
         this.matrix = cloneDeep(this.currentMatrix)
         if (this.end) {
+          this.pauseGame(true)
           this.clearIndexs = []
           for (const x of range(this.gridCells.row)) {
             this.clearIndexs.push(x)
           }
           setTimeout(() => {
             if (this.score > this.bestScore) {
-              this.bestScore = this.score
+              this.setBestScore(this.score)
             }
             this.clearIndexs = []
             this.resetGame()
           }, 600)
           return
         }
+        this.score += 4
         const indexs = []
         for (const i in this.matrix) {
           const tmp = this.matrix[i].filter(item => (item === ''))
@@ -197,6 +208,7 @@ export default {
         }
         if (indexs.length > 0) {
           this.clearing = true
+          this.pauseGame(true)
           this.clearIndexs = indexs
           const tmp = cloneDeep(this.matrix)
           for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
@@ -229,6 +241,7 @@ export default {
             this.getNextTetrimino()
             this.resetPosition()
             this.clearing = false
+            this.pauseGame(false)
           }, 600)
         } else {
           this.getNextTetrimino()
@@ -388,7 +401,8 @@ export default {
         }
       }
       return false
-    }
+    },
+    ...mapActions(['setBestScore'])
   },
   beforeUnmount () {
     this.removeListener()
