@@ -1,14 +1,14 @@
 <template>
-  <config-provider :locale="locale">
-    <BackTop/>
-    <layout>
+  <config-provider :locale="locale"  :getPopupContainer="getPopupContainer">
+    <Layout>
       <Header>
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
         <div class="desc">一个轻量的工具集合</div>
       </Header>
-      <Content>
+      <Content ref="view">
+        <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
         <router-view/>
       </Content>
       <Footer>
@@ -21,7 +21,7 @@
           苏ICP备18047890号-2
         </Link>
       </Footer>
-    </layout>
+    </Layout>
   </config-provider>
 </template>
 
@@ -35,7 +35,15 @@ export default {
   data: () => ({
     locale: zhCN
   }),
-  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link }
+  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
+  methods: {
+    getPopupContainer (node) {
+      if (node) {
+        return node.parentNode
+      }
+      return document.body
+    }
+  }
 }
 </script>
 
@@ -44,25 +52,18 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-section {
-  display: flex;
-  flex: auto;
-  flex-direction: column;
+.ant-layout {
   background: transparent;
   height: 100%;
   width: 100%;
   font-size: 1.4rem;
   overflow: hidden;
 
-  header, main, footer {
+  &-header, &-layout, &-footer {
     background: transparent;
   }
 
-  footer, header {
-    flex: 0 0 auto;
-  }
-
-  header {
+  &-header {
     padding: 3.2rem 0 2.4rem;
     text-align: center;
     height: 13.4rem;
@@ -89,7 +90,7 @@ section {
     }
   }
 
-  main {
+  &-content {
     max-width: 120rem;
     width: 100%;
     margin: 0 auto;
@@ -97,7 +98,7 @@ section {
     overflow-y: auto;
   }
 
-  footer {
+  &-footer {
     height: 7rem;
     text-align: center;
   }

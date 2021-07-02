@@ -28,9 +28,10 @@ export default defineConfig({
             type: 'image/png'
           },
           {
-            src: '/images/android-chrome-384x384.png',
-            sizes: '384x384',
-            type: 'image/png'
+            src: '/images/android-chrome-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ],
         theme_color: '#ffffff',
@@ -40,17 +41,10 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'google-fonts-webfonts'
-            }
-          },
-          {
-            urlPattern: /^https:\/\/gstatic\.loli\.net/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'loli-google-fonts-webfonts'
+              cacheName: 'iszy-google-fonts-webfonts'
             }
           },
           {

@@ -11,46 +11,47 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@ckpack/vue-color": "^0.0.3",
-    "ali-oss": "^6.14.1",
-    "ant-design-vue": "^2.1.6",
+    "ali-oss": "^6.15.2",
+    "ant-design-vue": "^2.2.0-beta.3",
     "axios": "^0.21.1",
     "cesium": "^1.81.0",
-    "codemirror": "^5.61.0",
-    "core-js": "^3.12.1",
-    "jmespath": "^0.15.0",
-    "jsonlint-mod": "^1.7.6",
+    "core-js": "^3.14.0",
+    "jsoneditor": "^9.5.0",
+    "localforage": "^1.9.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "uuid": "^8.3.2",
-    "vue": "^3.0.11",
-    "vue-router": "^4.0.8",
-    "vuex": "^4.0.0-rc.1"
+    "vue": "^3.1.1",
+    "vue-router": "^4.0.9",
+    "vuex": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.14.3",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/plugin-proposal-decorators": "^7.14.2",
-    "@babel/plugin-proposal-private-methods": "^7.13.0",
+    "@babel/core": "^7.14.6",
+    "@babel/eslint-parser": "^7.14.5",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-decorators": "^7.14.5",
+    "@babel/plugin-proposal-private-methods": "^7.14.5",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-arrow-functions": "^7.10.4",
-    "@vitejs/plugin-legacy": "^1.4.0",
-    "@vitejs/plugin-vue": "^1.2.2",
-    "@vue/compiler-sfc": "^3.0.11",
+    "@babel/plugin-transform-arrow-functions": "^7.14.5",
+    "@babel/preset-env": "^7.14.5",
+    "@vitejs/plugin-legacy": "^1.4.1",
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vue/compiler-sfc": "^3.1.1",
     "@vue/eslint-config-standard": "^6.0.0",
-    "eslint": "^7.26.0",
-    "eslint-plugin-import": "^2.23.2",
+    "co": "^4.6.0",
+    "eslint": "^7.28.0",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-vue": "^7.9.0",
-    "husky": "^6.0.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-vue": "^7.11.1",
     "less": "^4.1.1",
-    "lint-staged": "^11.0.0",
-    "sass": "^1.32.13",
+    "rollup": "^2.52.0",
+    "sass": "^1.35.1",
     "vite": "^2.3.3",
     "vite-plugin-cesium": "^1.2.4",
     "vite-plugin-html": "^2.0.7",
-    "vite-plugin-pwa": "^0.7.3",
-    "vite-plugin-style-import": "^0.10.0",
+    "vite-plugin-pwa": "^0.8.1",
+    "vite-plugin-style-import": "^1.0.0",
     "yorkie": "^2.0.0"
   },
   "eslintConfig": {
@@ -96,16 +97,5 @@
       ]
     ]
   },
-  "license": "MIT",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,ts,tsx,vue}": [
-      "eslint --cache --fix",
-      "git add"
-    ]
-  }
+  "license": "MIT"
 }

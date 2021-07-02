@@ -6,12 +6,12 @@
       {
         "name": "淘宝优惠券精选",
         "link": "https://taobao.iszy.xyz",
-        "legend": "新功能"
+        "legend": "外部"
       },
       {
         "name": "这是什么动漫",
         "link": "/anime/whatAnimeIsThis",
-        "legend": "需要联网"
+        "legend": "在线"
       },
       {
         "name": "哔哩哔哩AV、BV号转换",
@@ -23,66 +23,63 @@
       },
       {
         "name": "资源包",
-        "link": "https://lib.iszy.xyz"
+        "link": "https://lib.iszy.xyz",
+        "legend": "外部"
       }
     ]
   },
   {
     "type": "编程开发",
-    "link": "/program",
     "icon": "icon-t-code",
     "children": [
       {
         "name": "时间计算",
-        "link": "/timeCompute"
+        "link": "/program/timeCompute"
       },
       {
         "name": "颜色转换",
-        "link": "/colorTransform"
+        "link": "/program/colorTransform"
+      },
+      {
+        "name": "UUID在线生成",
+        "link": "/program/uuid"
       },
       {
         "name": "JSON编辑器",
-        "link": "/jsonEditor"
+        "link": "/program/jsonEditor"
       },
       {
         "name": "URL编码/解码",
-        "link": "/urlEncode"
+        "link": "/program/urlEncode",
+        "legend": "新功能"
       },
       {
         "name": "Cesium代码样例",
-        "link": "/cesiumDemo"
-      }
-    ]
-  },
-  {
-    "type": "加密解密",
-    "link": "/encrypt",
-    "children": [
-      {
-        "name": "UUID在线生成",
-        "link": "/uuid"
+        "link": "/program/cesiumDemo"
       }
     ]
   },
   {
     "type": "游戏",
-    "link": "/games",
     "icon": "icon-t-game",
     "children": [
       {
         "name": "2048",
-        "link": "/2048"
+        "link": "/games/2048"
+      },
+      {
+        "name": "俄罗斯方块",
+        "link": "/games/tetris"
       }
     ]
   },
   {
     "type": "理财",
-    "link": "/money",
     "icon": "icon-t-licai",
     "children": [
       {
         "name": "多次提前还贷计算器",
-        "link": "/mtqLoans"
+        "link": "/money/mtqLoans"
       }
     ]
   },
