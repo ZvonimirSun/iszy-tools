@@ -95,6 +95,11 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach(async (to, from, next) => {
+  await store.restored
+  next()
+})
+
 router.afterEach((to, from, next) => {
   if (to.name && to.meta.statistics) {
     store.dispatch('favorite/access', { name: to.name, link: to.path })
