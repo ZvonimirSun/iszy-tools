@@ -52,6 +52,10 @@
         "name": "URL编码/解码",
         "link": "/program/urlEncode",
         "legend": "新功能"
+      },
+      {
+        "name": "Cesium代码样例",
+        "link": "/program/cesiumDemo"
       }
     ]
   },

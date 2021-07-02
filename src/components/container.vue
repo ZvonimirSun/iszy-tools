@@ -7,20 +7,20 @@
     </Col>
     <Col :span="24">
       <div class="main">
-        <slot></slot>
+        <slot><Empty/></slot>
       </div>
     </Col>
   </Row>
 </template>
 <script>
-import { Row, Col, Divider } from 'ant-design-vue'
+import { Row, Col, Divider, Empty } from 'ant-design-vue'
 
 export default {
   name: 'container',
   props: {
     name: String
   },
-  components: { Row, Col, Divider }
+  components: { Row, Col, Divider, Empty }
 }
 </script>
 

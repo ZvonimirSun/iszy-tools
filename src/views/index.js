@@ -13,5 +13,6 @@ export default {
   2048: () => import('@/views/games/2048/index.vue'),
   urlEncode: () => import('@/views/program/urlEncode.vue'),
   dataListTreeHandler: () => import('@/views/priTools/dataListTreeHandler.vue'),
-  tetris: () => import('@/views/games/tetris/index.vue')
+  tetris: () => import('@/views/games/tetris/index.vue'),
+  cesiumDemo: () => import('@/views/program/cesiumDemo/cesiumDemo.vue')
 }
