@@ -1,0 +1,64 @@
+@use "sass:math";
+
+$grid-row-cells: 20;
+$grid-col-cells: 10;
+
+$height: calc(100vh - 32rem);
+$width: calc(100vh - 32rem);
+$max-height: calc(100vw - 8rem);
+$max-width: calc(100vw - 8rem);
+
+$cell-height: calc(#{math.div(100vh, $grid-row-cells+2)} - #{math.div(32rem+3.6rem, $grid-row-cells+2)});
+$cell-width: calc(#{math.div(100vh, $grid-row-cells+2)} - #{math.div(32rem+3.6rem, $grid-row-cells+2)});
+$cell-max-height: calc(#{math.div(100vw, $grid-row-cells+2)} - #{math.div(8rem+3.6rem, $grid-row-cells+2)});
+$cell-max-width: calc(#{math.div(100vw, $grid-row-cells+2)} - #{math.div(8rem+3.6rem, $grid-row-cells+2)});
+
+$grid-border-width: .6rem;
+
+$gray: #787878;
+$gray-top: #d7d7d7;
+$gray-bottom: #1e1e1e;
+$gray-left: #a1a1a1;
+$gray-right: #525252;
+
+$light-blue: #02ffff;
+$light-blue-top: #b4ffff;
+$light-blue-bottom: #004a4b;
+$light-blue-left: #4cffff;
+$light-blue-right: #00b4b3;
+
+$blue: #0000ab;
+$blue-top: #b4b4e7;
+$blue-bottom: #00002f;
+$blue-left: #4c4cc5;
+$blue-right: #000078;
+
+$red: #ff0000;
+$red-top: #ffb5b4;
+$red-bottom: #4b0000;
+$red-left: #ff4b4b;
+$red-right: #b30100;
+
+$yellow: #ffff00;
+$yellow-top: #ffffb5;
+$yellow-bottom: #4b4b00;
+$yellow-left: #ffff4c;
+$yellow-right: #b3b302;
+
+$purple: #cd00cd;
+$purple-top: #f0b5f1;
+$purple-bottom: #3b003a;
+$purple-left: #dc4cdb;
+$purple-right: #8f008f;
+
+$green: #00ff00;
+$green-top: #b4ffb4;
+$green-bottom: #004a00;
+$green-left: #4cff4b;
+$green-right: #00b400;
+
+$orange: #ff7700;
+$orange-top: #ffd8b5;
+$orange-bottom: #4b1d00;
+$orange-left: #ffa24c;
+$orange-right: #b35200;
