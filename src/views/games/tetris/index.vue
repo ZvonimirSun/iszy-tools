@@ -17,23 +17,11 @@
         </div>
       </div>
       <div class="infoPanel">
-        <div class="infoTitle">最高分</div>
-        <div class="score">
-          {{bestScore}}
-        </div>
-        <div class="infoTitle">得分</div>
-        <div class="score">
-          {{score}}
-        </div>
-        <div class="infoTitle">消除行</div>
-        <div class="score">
-          {{lines}}
-        </div>
-        <div class="infoTitle">级别</div>
-        <div class="score">
-          {{level}}
-        </div>
-        <div class="infoTitle">下一个</div>
+        <div class="info">最高分: {{ bestScore }}</div>
+        <div class="info">得分: {{ score }}</div>
+        <div class="info">消除行: {{ lines }}</div>
+        <div class="info">级别: {{ level }}</div>
+        <div class="info">下一个</div>
         <div class="nextTetrimino">
           <template v-if="inited">
             <template v-for="x in 2" :key="x">
@@ -47,10 +35,7 @@
         </div>
 
         <div class="startGame" @click="playGame">
-          <div class="tetrisCell">开</div>
-          <div class="tetrisCell">始</div>
-          <div class="tetrisCell">游</div>
-          <div class="tetrisCell">戏</div>
+          开始游戏
         </div>
       </div>
     </div>
@@ -61,7 +46,9 @@
 import { range, random, cloneDeep } from 'lodash'
 import Container from '@/components/container.vue'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
+import { createNamespacedHelpers } from 'vuex'
 
+const { mapState, mapActions } = createNamespacedHelpers('tetris')
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {
@@ -79,13 +66,13 @@ export default {
     position: null,
     currentTetrimino: null,
     nextTetrimino: null,
-    bestScore: 0,
     score: 0,
     lines: 0,
 
     start: false,
     end: false,
     pause: false,
+    lock: false,
 
     clearing: false,
     clearIndexs: [],
@@ -126,7 +113,8 @@ export default {
       } else {
         return this.matrix
       }
-    }
+    },
+    ...mapState(['bestScore'])
   },
   mounted () {
     this.resetGame()
@@ -160,10 +148,16 @@ export default {
       this.start = false
       this.end = false
       this.pause = false
+      this.lock = false
       this.clearing = false
     },
-    pauseGame () {
-      if (this.start) {
+    pauseGame (lock) {
+      if (lock) {
+        this.lock = true
+      } else if (lock === false) {
+        this.lock = false
+      }
+      if (this.start && (this.lock === false || lock)) {
         if (this.pause) {
           this.pause = !this.pause
           this.intervalID = setInterval(() => {
@@ -190,19 +184,21 @@ export default {
         }
         this.matrix = cloneDeep(this.currentMatrix)
         if (this.end) {
+          this.pauseGame(true)
           this.clearIndexs = []
           for (const x of range(this.gridCells.row)) {
             this.clearIndexs.push(x)
           }
           setTimeout(() => {
             if (this.score > this.bestScore) {
-              this.bestScore = this.score
+              this.setBestScore(this.score)
             }
             this.clearIndexs = []
             this.resetGame()
           }, 600)
           return
         }
+        this.score += 4
         const indexs = []
         for (const i in this.matrix) {
           const tmp = this.matrix[i].filter(item => (item === ''))
@@ -212,6 +208,7 @@ export default {
         }
         if (indexs.length > 0) {
           this.clearing = true
+          this.pauseGame(true)
           this.clearIndexs = indexs
           const tmp = cloneDeep(this.matrix)
           for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
@@ -244,6 +241,7 @@ export default {
             this.getNextTetrimino()
             this.resetPosition()
             this.clearing = false
+            this.pauseGame(false)
           }, 600)
         } else {
           this.getNextTetrimino()
@@ -403,7 +401,8 @@ export default {
         }
       }
       return false
-    }
+    },
+    ...mapActions(['setBestScore'])
   },
   beforeUnmount () {
     this.removeListener()
@@ -429,16 +428,14 @@ export default {
 .gamePanel {
   height: $height;
   width: $width;
-  max-height: $max-height;
-  max-width: $max-width;
   margin: 0 auto;
-  border: 1rem solid $gray-bottom;
+  border: $padding solid $gray-bottom;
   border-right-color: $gray-left;
   border-bottom-color: $gray-top;
   border-left-color: $gray-right;
   background: #000;
   box-sizing: border-box;
-  padding: .8rem;
+  padding: $padding;
   display: flex;
 
   .tetrisPanel {
@@ -453,25 +450,25 @@ export default {
       display: grid;
       grid-template-columns: repeat($grid-col-cells, 1fr);
       grid-template-rows: repeat($grid-row-cells, 1fr);
-
-
     }
   }
 
   .infoPanel {
     height: 100%;
-    padding-left: .8rem;
+    padding-left: $padding;
     flex: 1;
+    overflow-y: auto;
+    text-align: center;
 
-    .infoTitle {
-      font-size: 4.6rem;
-      line-height: 5.4rem;
+    .info {
+      text-align: left;
+      font-size: $font-size;
+      line-height: calc(#{$font-size} + .8rem);
       color: #fff;
-      margin: 1.6rem auto;
-      padding-left: 1rem;
+      margin-bottom: $padding;
     }
 
-    .nextTetrimino, .startGame {
+    .nextTetrimino {
       margin: 0 auto;
       display: grid;
       width: fit-content;
@@ -480,50 +477,33 @@ export default {
     }
 
     .startGame {
-      margin: 2rem auto 0;
-      display: grid;
       width: fit-content;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
+      font-size: $font-size;
+      font-weight: 700;
+      color: #fff;
+      line-height: calc(#{$font-size} + .8rem);
       cursor: pointer;
-      user-select: none;
+      margin: $font-size auto 0;
+      background: $gray;
+      border: $grid-border-width solid $gray-top;
+      border-right-color: $gray-right;
+      border-bottom-color: $gray-bottom;
+      border-left-color: $gray-left;
 
-      .tetrisCell {
-        color: #fff;
-        text-align: center;
-        line-height: 3.131rem;
-        font-size: 2.5rem;
-
-        background: $blue;
-        border: $grid-border-width solid $blue-top;
-        border-right-color: $blue-right;
-        border-bottom-color: $blue-bottom;
-        border-left-color: $blue-left;
-      }
-
-      &:active .tetrisCell{
-        border: $grid-border-width solid $blue-bottom;
-        border-right-color: $blue-left;
-        border-bottom-color: $blue-top;
-        border-left-color: $blue-right;
-        font-size: 2rem;
+      &:active {
+        border-top-color: $gray-bottom;
+        border-right-color: $gray-left;
+        border-bottom-color: $gray-top;
+        border-left-color: $gray-right;
+        font-size: calc(#{$font-size} * 0.9);
         transition: .1s;
       }
-    }
-
-    .score {
-      color: #fff;
-      font-size: 6.8rem;
-      line-height: 7.6rem;
-      text-align: center;
     }
   }
 
   .tetrisCell {
     height: $cell-height;
     width: $cell-width;
-    max-height: $cell-max-height;
-    max-width: $cell-max-width;
 
     &.blink {
       animation: blink 0.6s both;
