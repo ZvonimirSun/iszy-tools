@@ -62,6 +62,10 @@
       {
         "name": "2048",
         "link": "/games/2048"
+      },
+      {
+        "name": "俄罗斯方块",
+        "link": "/games/tetris"
       }
     ]
   },
