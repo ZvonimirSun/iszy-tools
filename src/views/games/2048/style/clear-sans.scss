@@ -1,29 +1,29 @@
 @font-face {
     font-family: "Clear Sans";
-    src: url("/fonts/ClearSans-Light-webfont.eot");
-    src: url("/fonts/ClearSans-Light-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/ClearSans-Light-webfont.svg#clear_sans_lightregular") format("svg"),
-         url("/fonts/ClearSans-Light-webfont.woff") format("woff");
+    src: url("@/views/games/2048/style/fonts/ClearSans-Light-webfont.eot");
+    src: url("@/views/games/2048/style/fonts/ClearSans-Light-webfont.eot?#iefix") format("embedded-opentype"),
+         url("@/views/games/2048/style/fonts/ClearSans-Light-webfont.svg#clear_sans_lightregular") format("svg"),
+         url("@/views/games/2048/style/fonts/ClearSans-Light-webfont.woff") format("woff");
     font-weight: 200;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Clear Sans";
-    src: url("/fonts/ClearSans-Regular-webfont.eot");
-    src: url("/fonts/ClearSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/ClearSans-Regular-webfont.svg#clear_sansregular") format("svg"),
-         url("/fonts/ClearSans-Regular-webfont.woff") format("woff");
+    src: url("@/views/games/2048/style/fonts/ClearSans-Regular-webfont.eot");
+    src: url("@/views/games/2048/style/fonts/ClearSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
+         url("@/views/games/2048/style/fonts/ClearSans-Regular-webfont.svg#clear_sansregular") format("svg"),
+         url("@/views/games/2048/style/fonts/ClearSans-Regular-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Clear Sans";
-    src: url("/fonts/ClearSans-Bold-webfont.eot");
-    src: url("/fonts/ClearSans-Bold-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/ClearSans-Bold-webfont.svg#clear_sansbold") format("svg"),
-         url("/fonts/ClearSans-Bold-webfont.woff") format("woff");
+    src: url("@/views/games/2048/style/fonts/ClearSans-Bold-webfont.eot");
+    src: url("@/views/games/2048/style/fonts/ClearSans-Bold-webfont.eot?#iefix") format("embedded-opentype"),
+         url("@/views/games/2048/style/fonts/ClearSans-Bold-webfont.svg#clear_sansbold") format("svg"),
+         url("@/views/games/2048/style/fonts/ClearSans-Bold-webfont.woff") format("woff");
     font-weight: 700;
     font-style: normal;
 }
