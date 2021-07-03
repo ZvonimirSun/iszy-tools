@@ -8,34 +8,54 @@
           <template v-if="inited">
             <template v-for="x in gridCells.row" :key="x">
               <template v-for="y in gridCells.col" :key="y">
-                <div :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
-                     v-if="currentMatrix[x-1][y-1]"></div>
+                <div
+                  :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
+                  v-if="currentMatrix[x-1][y-1]"></div>
                 <div class="tetrisCell" v-else></div>
               </template>
             </template>
           </template>
         </div>
       </div>
-      <div class="infoPanel">
-        <div class="info">最高分: {{ bestScore }}</div>
-        <div class="info">得分: {{ score }}</div>
-        <div class="info">消除行: {{ lines }}</div>
-        <div class="info">级别: {{ level }}</div>
-        <div class="info">下一个</div>
-        <div class="nextTetrimino">
-          <template v-if="inited">
-            <template v-for="x in 2" :key="x">
-              <template v-for="y in 4" :key="y">
-                <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
-                     v-if="nextTetriminoMatrixLegend[x-1][y-1]"></div>
-                <div class="tetrisCell" v-else></div>
+      <div class="otherPanel">
+        <div class="infoPanel">
+          <div class="info">最高分: <span class="digital">{{ bestScore }}</span></div>
+          <div class="info">
+            <template v-if="!start">上轮</template>
+            得分: <span class="digital">{{ score }}</span></div>
+          <div class="info">消除行: <span class="digital">{{ lines }}</span></div>
+          <div class="info">级别: <span class="digital">{{ level }}</span></div>
+          <div class="info">下一个</div>
+          <div class="nextTetrimino">
+            <template v-if="inited">
+              <template v-for="x in 2" :key="x">
+                <template v-for="y in 4" :key="y">
+                  <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
+                       v-if="nextTetriminoMatrixLegend[x-1][y-1]"></div>
+                  <div class="tetrisCell" v-else></div>
+                </template>
               </template>
             </template>
-          </template>
-        </div>
+          </div>
 
-        <div class="startGame" @click="playGame">
-          开始游戏
+        </div>
+        <div class="controlPanel">
+          <div class="controlButton pause" @click="pauseGame"></div>
+          <div class="controlInfo pause">暂停P</div>
+          <div class="controlButton restart" @click="resetGame" v-if="start"></div>
+          <div class="controlButton restart" @click="playGame" v-else></div>
+          <div class="controlInfo restart">重玩R</div>
+          <div class="controlButton drop" @click="moveBottom" v-if="start"></div>
+          <div class="controlButton drop" @click="playGame" v-else></div>
+          <div class="controlInfo drop">掉落Space</div>
+          <div class="controlButton up" @click="rotateRight"></div>
+          <div class="controlInfo up">旋转</div>
+          <div class="controlButton left" @click="moveLeft"></div>
+          <div class="controlInfo left">左移</div>
+          <div class="controlButton right" @click="moveRight"></div>
+          <div class="controlInfo right">右移</div>
+          <div class="controlButton down" @click="moveDown"></div>
+          <div class="controlInfo down">下移</div>
         </div>
       </div>
     </div>
@@ -137,6 +157,7 @@ export default {
       }
     },
     resetGame () {
+      clearInterval(this.intervalID)
       const tmp = Array(this.gridCells.row)
       for (const x of range(this.gridCells.row)) {
         tmp[x] = Array(this.gridCells.col).fill('')
@@ -164,7 +185,7 @@ export default {
             if (!this.clearing) {
               this.moveDown()
             }
-          }, 1000)
+          }, 1000 - this.level * 10)
         } else {
           this.pause = !this.pause
           clearInterval(this.intervalID)
@@ -303,7 +324,9 @@ export default {
 
     _getRotatedMatrix (rotate) {
       let index = rotate % TetriminosMatrix[this.currentTetrimino].length
-      if (index < 0) { index += TetriminosMatrix[this.currentTetrimino].length }
+      if (index < 0) {
+        index += TetriminosMatrix[this.currentTetrimino].length
+      }
       return TetriminosMatrix[this.currentTetrimino][index]
     },
     _getPositions (matrix, position) {
@@ -387,6 +410,13 @@ export default {
           case 'KeyP':
             this.pauseGame()
             break
+          case 'KeyR':
+            if (this.start) {
+              this.resetGame()
+            } else {
+              this.playGame()
+            }
+            break
           default:
             break
         }
@@ -411,6 +441,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./style/ds-digital";
 @import "./style/variables";
 
 @keyframes blink {
@@ -437,6 +468,7 @@ export default {
   box-sizing: border-box;
   padding: $padding;
   display: flex;
+  user-select: none;
 
   .tetrisPanel {
     width: fit-content;
@@ -453,50 +485,247 @@ export default {
     }
   }
 
-  .infoPanel {
+  .otherPanel {
     height: 100%;
     padding-left: $padding;
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    overflow-y: auto;
-    text-align: center;
 
-    .info {
-      text-align: left;
-      font-size: $font-size;
-      line-height: calc(#{$font-size} + .8rem);
-      color: #fff;
-      margin-bottom: $padding;
+    .infoPanel {
+      text-align: center;
+      height: fit-content;
+
+      .info {
+        text-align: left;
+        font-size: calc(#{$font-size} - .8rem);
+        line-height: calc(#{$font-size} + .8rem);
+        color: #fff;
+        margin-bottom: calc(#{$padding} * 3);
+        font-family: 'Microsoft Yahei', sans-serif;
+
+        .digital {
+          font-family: "DS Digital", serif;
+          font-style: italic;
+          font-size: calc(#{$font-size} + .8rem);
+        }
+      }
+
+      .nextTetrimino {
+        margin: 0 auto;
+        display: grid;
+        width: fit-content;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+      }
     }
 
-    .nextTetrimino {
-      margin: 0 auto;
+    .controlPanel {
+      flex: 1;
       display: grid;
-      width: fit-content;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-    }
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
 
-    .startGame {
-      width: fit-content;
-      font-size: $font-size;
-      font-weight: 700;
-      color: #fff;
-      line-height: calc(#{$font-size} + .8rem);
-      cursor: pointer;
-      margin: $font-size auto 0;
-      background: $gray;
-      border: $grid-border-width solid $gray-top;
-      border-right-color: $gray-right;
-      border-bottom-color: $gray-bottom;
-      border-left-color: $gray-left;
+      .controlButton {
+        cursor: pointer;
 
-      &:active {
-        border-top-color: $gray-bottom;
-        border-right-color: $gray-left;
-        border-bottom-color: $gray-top;
-        border-left-color: $gray-right;
-        font-size: calc(#{$font-size} * 0.9);
-        transition: .1s;
+        &.pause {
+          grid-row: 2;
+          grid-column: 2 / 4;
+
+          background: $green;
+          border: $grid-border-width solid $green-top;
+          border-right-color: $green-right;
+          border-bottom-color: $green-bottom;
+          border-left-color: $green-left;
+
+          &:active {
+            border: $grid-border-width solid $green-bottom;
+            border-right-color: $green-left;
+            border-bottom-color: $green-top;
+            border-left-color: $green-right;
+          }
+        }
+
+        &.restart {
+          grid-row: 2;
+          grid-column: 5 / 7;
+
+          background: $red;
+          border: $grid-border-width solid $red-top;
+          border-right-color: $red-right;
+          border-bottom-color: $red-bottom;
+          border-left-color: $red-left;
+
+          &:active {
+            border: $grid-border-width solid $red-bottom;
+            border-right-color: $red-left;
+            border-bottom-color: $red-top;
+            border-left-color: $red-right;
+          }
+        }
+
+        &.drop {
+          grid-row: 5 / 7;
+          grid-column: 2 / 4;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.up {
+          grid-row: 4;
+          grid-column: 6;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.left {
+          grid-row: 5;
+          grid-column: 5;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.right {
+          grid-row: 5;
+          grid-column: 7;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.down {
+          grid-row: 6;
+          grid-column: 6;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+      }
+
+      .controlInfo {
+        text-align: center;
+        color: #fff;
+        font-family: 'Microsoft Yahei', sans-serif;
+        font-size: 1.2rem;
+        line-height: 2.0rem;
+        white-space: nowrap;
+        //text-overflow: ellipsis;
+        overflow: hidden;
+
+        @media screen and (max-width: 40rem) {
+          display: none;
+        }
+
+        &.pause {
+          grid-row: 3;
+          grid-column: 2 / 4;
+        }
+
+        &.restart {
+          grid-row: 3;
+          grid-column: 5 / 7;
+        }
+
+        &.drop {
+          grid-row: 7;
+          grid-column: 2 / 4;
+        }
+
+        &.up {
+          grid-row: 4;
+          grid-column: 7;
+        }
+
+        &.left {
+          grid-row: 6;
+          grid-column: 5;
+        }
+
+        &.right {
+          grid-row: 6;
+          grid-column: 7;
+        }
+
+        &.down {
+          grid-row: 7;
+          grid-column: 6;
+        }
+      }
+
+      .startGame {
+        font-family: 'Microsoft Yahei', sans-serif;
+        font-size: $font-size;
+        color: #fff;
+        line-height: calc(#{$font-size} + .8rem);
+        cursor: pointer;
+        background: $gray;
+        border: $grid-border-width solid $gray-top;
+        border-right-color: $gray-right;
+        border-bottom-color: $gray-bottom;
+        border-left-color: $gray-left;
+
+        &:active {
+          border-top-color: $gray-bottom;
+          border-right-color: $gray-left;
+          border-bottom-color: $gray-top;
+          border-left-color: $gray-right;
+          font-size: calc(#{$font-size} * 0.9);
+          transition: .1s;
+        }
       }
     }
   }
