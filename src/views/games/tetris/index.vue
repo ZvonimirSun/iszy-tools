@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { range, random, cloneDeep } from 'lodash'
+import { range, shuffle, cloneDeep } from 'lodash'
 import Container from '@/components/container.vue'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
 import { createNamespacedHelpers } from 'vuex'
@@ -86,6 +86,7 @@ export default {
     position: null,
     currentTetrimino: null,
     nextTetrimino: null,
+    tetriminosShuffle: [],
     score: 0,
     lines: 0,
 
@@ -134,6 +135,10 @@ export default {
         return this.matrix
       }
     },
+    speed: function () {
+      const level = this.level <= 20 ? this.level : 20
+      return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
+    },
     ...mapState(['bestScore'])
   },
   mounted () {
@@ -153,7 +158,7 @@ export default {
           if (!this.clearing) {
             this.moveDown()
           }
-        }, 1000)
+        }, this.speed)
       }
     },
     resetGame () {
@@ -185,7 +190,7 @@ export default {
             if (!this.clearing) {
               this.moveDown()
             }
-          }, 1000 - this.level * 10)
+          }, this.speed)
         } else {
           this.pause = !this.pause
           clearInterval(this.intervalID)
@@ -272,7 +277,10 @@ export default {
     },
     getNextTetrimino () {
       this.currentTetrimino = this.nextTetrimino
-      this.nextTetrimino = tetriminos[random(0, 6)]
+      if (this.tetriminosShuffle.length <= 7) {
+        this.tetriminosShuffle = this.tetriminosShuffle.concat(shuffle(tetriminos))
+      }
+      this.nextTetrimino = this.tetriminosShuffle.shift()
     },
 
     rotateRight () {
