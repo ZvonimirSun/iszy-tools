@@ -56,7 +56,18 @@
     ]
   },
   {
-    "type": "游戏",
+    "type": "地图相关",
+    "icon": "icon-t-map",
+    "children": [
+      {
+        "name": "地图选择器",
+        "link": "https://datav.aliyun.com/tools/atlas/index.html",
+        "legend": "外部"
+      }
+    ]
+  },
+  {
+    "type": "小游戏",
     "icon": "icon-t-game",
     "children": [
       {
