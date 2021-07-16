@@ -50,7 +50,11 @@
       },
       {
         "name": "URL编码/解码",
-        "link": "/program/urlEncode",
+        "link": "/program/urlEncode"
+      },
+      {
+        "name": "查看网页源码",
+        "link": "/program/viewSourceCode",
         "legend": "新功能"
       }
     ]
@@ -76,7 +80,8 @@
       },
       {
         "name": "俄罗斯方块",
-        "link": "/games/tetris"
+        "link": "/games/tetris",
+        "legend": "新功能"
       }
     ]
   },
