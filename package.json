@@ -14,6 +14,7 @@
     "ali-oss": "^6.15.2",
     "ant-design-vue": "^2.2.0-beta.3",
     "axios": "^0.21.1",
+    "codemirror": "^5.62.0",
     "core-js": "^3.14.0",
     "js-beautify": "^1.14.0",
     "jsoneditor": "^9.5.0",
