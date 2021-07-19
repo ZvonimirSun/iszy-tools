@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import widgets from '@/views'
-import tools from '@/assets/tools.json'
-import priTools from '@/assets/priTools.json'
+import tools from '@/views/tools.json'
+import priTools from '@/views/priTools.json'
 import store from '@/store'
 
 let routes = [

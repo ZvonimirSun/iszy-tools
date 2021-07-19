@@ -56,6 +56,10 @@
         "name": "查看网页源码",
         "link": "/program/viewSourceCode",
         "legend": "新功能"
+      },
+      {
+        "name": "CSS格式化/压缩",
+        "link": "/program/cssFormatter"
       }
     ]
   },

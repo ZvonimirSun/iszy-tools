@@ -1,4 +1,4 @@
-import tools from '@/assets/tools.json'
+import tools from '@/views/tools.json'
 import { flatten } from 'lodash'
 export default {
   namespaced: true,

@@ -66,8 +66,8 @@
 <script>
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
-import tools from '@/assets/tools.json'
-import legends from '@/assets/legends.json'
+import tools from '@/views/tools.json'
+import legends from '@/views/legends.json'
 import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash'
 
