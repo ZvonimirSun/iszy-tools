@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "codemirror": "^5.62.0",
     "core-js": "^3.14.0",
+    "csslint": "^1.0.5",
     "js-beautify": "^1.14.0",
     "jsoneditor": "^9.5.0",
     "localforage": "^1.9.0",
