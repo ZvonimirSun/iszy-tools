@@ -1,4 +1,3 @@
-import getPageTitle from '@/utils/get-page-title.js'
 import { createRouter, createWebHistory } from 'vue-router'
 import widgets from '@/views'
 import tools from '@/views/tools.json'
@@ -116,5 +115,12 @@ router.beforeEach(async (to, from, next) => {
     next(`/login?redirect=${to.path}`)
   }
 })
+
+function getPageTitle (pageTitle) {
+  if (pageTitle && pageTitle !== 'ISZY工具集合') {
+    return `${pageTitle} - ISZY工具集合`
+  }
+  return 'ISZY工具集合'
+}
 
 export default router
