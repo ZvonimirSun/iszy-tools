@@ -95,16 +95,16 @@ import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/anyword-hint.js'
 // 行注释
 import 'codemirror/addon/comment/comment.js'
-import { CSSLint } from 'csslint'
-import 'codemirror/addon/lint/lint.css'
-import 'codemirror/addon/lint/lint.js'
-import 'codemirror/addon/lint/css-lint.js'
+// import { CSSLint } from 'csslint'
+// import 'codemirror/addon/lint/lint.css'
+// import 'codemirror/addon/lint/lint.js'
+// import 'codemirror/addon/lint/css-lint.js'
 import Container from '@/components/container.vue'
 import CodeMirror from '@/components/vue-codemirror.vue'
 // endregion
 import { Button, Divider } from 'ant-design-vue'
 import { css_beautify as cssBeautify } from 'js-beautify'
-window.CSSLint = CSSLint
+// window.CSSLint = CSSLint
 
 export default {
   name: 'cssFormatter',
@@ -131,7 +131,7 @@ export default {
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
       // CodeMirror-lint-markers是实现语法报错功能
-      lint: true,
+      lint: false,
       // 全屏模式
       fullScreen: false,
       // 括号匹配
