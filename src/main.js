@@ -5,11 +5,10 @@ import router from '@/router'
 import store from '@/store'
 import axios from '@/plugins/Axios'
 import { createFromIconfontCN } from '@ant-design/icons-vue'
-import '@/permission'
 
 const app = createApp(App)
 const IconFont = createFromIconfontCN({
-  scriptUrl: 'https://at.alicdn.com/t/font_1621893_kuzoluuzii.js'
+  scriptUrl: '//at.alicdn.com/t/font_1621893_xd2ds9wt5hf.js'
 })
 
 message.config({
