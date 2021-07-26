@@ -1,18 +1,21 @@
 <template>
   <container>
     <Title :level="3">请选择要识别动漫截图</Title>
-    <Upload :fileList="fileList" :showUploadList="false" accept="image/*" :before-upload="beforeUpload">
+    <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="beforeUpload">
       <Input readonly placeholder="点击这里上传图片" :value="fileName">
         <template #addonAfter>
-          <Button block :disabled="!file || limit===0 || quota===0" @click.stop="start"><span v-if="loading"><LoadingOutlined />识别中</span><span v-else>开始识别</span></Button>
+          <Button block :disabled="!file || quota===0 || quota-quotaUsed<=0" @click.stop="start"><span v-if="loading"><LoadingOutlined/>识别中</span><span
+            v-else>开始识别</span></Button>
         </template>
       </Input>
     </Upload>
     <Paragraph>
-      <blockquote>使用 trace.moe API，有使用次数限制。每日次数剩余：
+      <blockquote>使用 trace.moe API，有使用次数限制。用户ID：
+        <Text code>{{ id }}</Text>
+        ，每月次数剩余：
         <Text code>{{ quota }}</Text>
-        ，每分钟剩余：
-        <Text code>{{ limit }}</Text>
+        ，已使用次数：
+        <Text code>{{ quotaUsed }}</Text>
       </blockquote>
     </Paragraph>
     <template v-if="file">
@@ -29,23 +32,19 @@
       <Title :level="3">结果</Title>
       <template v-for="(item,index) in result" :key="index">
         <Divider/>
-        <Descriptions :title="item.anime + ' EP#' + item.episode" bordered size="small" layout="vertical">
-          <Item label="中文名称">{{ item.title_chinese }}</Item>
-          <Item label="英文名称">{{ item.title_english }}</Item>
-          <Item label="日文名称">{{ item.title_native }}</Item>
-          <Item label="匹配位置">
-            <Text code>{{ secondToDate(item.at) }}</Text>
-          </Item>
+        <Descriptions :title="item.anilist.title.native + (item.episode ? ' EP#' + item.episode: '')" bordered size="small" layout="vertical">
+          <Item label="罗马音">{{ item.anilist.title.romaji }}</Item>
+          <Item label="文件名">{{ item.filename }}</Item>
           <Item label="相似度">{{ (item.similarity * 100).toFixed(2) + '%' }}</Item>
-          <Item label="片段">
+          <Item label="匹配位置">
             <Text code>{{ secondToDate(item.from) }}</Text>
             ~
             <Text code>{{ secondToDate(item.to) }}</Text>
           </Item>
           <Item label="预览" :span="3">
             <video controls style="max-width: 100%"
-                   :src="'https://media.trace.moe/video/'+item.anilist_id+'/'+encodeURIComponent(item.filename)+'?t='+item.at+'&token='+item.tokenthumb"
-                   :poster="'https://media.trace.moe/image/'+item.anilist_id+'/'+encodeURIComponent(item.filename)+'?t='+item.at+'&token='+item.tokenthumb"></video>
+                   :src="item.video"
+                   :poster="item.image"></video>
           </Item>
         </Descriptions>
       </template>
@@ -63,13 +62,27 @@ const { Title, Paragraph, Text } = Typography
 
 export default {
   name: 'what_anime_is_this',
-  components: { Container, Input, Upload, Title, Button, Divider, Image, Paragraph, Text, Descriptions, Item, LoadingOutlined },
+  components: {
+    Container,
+    Input,
+    Upload,
+    Title,
+    Button,
+    Divider,
+    Image,
+    Paragraph,
+    Text,
+    Descriptions,
+    Item,
+    LoadingOutlined
+  },
   data: () => ({
     file: '',
-    fileList: [],
+    img: undefined,
     fileName: '',
+    id: '',
     quota: 0,
-    limit: 0,
+    quotaUsed: 0,
     loading: false,
 
     result: []
@@ -85,6 +98,7 @@ export default {
       }
       const reader = new FileReader()
       reader.onload = () => {
+        this.img = img
         this.fileName = img.name
         this.file = reader.result
       }
@@ -94,13 +108,18 @@ export default {
     async start () {
       try {
         this.loading = true
-        const res = await this.$axios.post('https://trace.moe/api/search', {
-          image: this.file
+        const formData = new FormData()
+        formData.append('image', this.img)
+        const res = await this.$axios.post('https://api.trace.moe/search?anilistInfo', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         })
         this.loading = false
-        this.limit = res.data.limit
-        this.quota = res.data.quota
-        this.result = (res.data.docs || []).filter(item => (!item.is_adult))
+        await this.checkTimes()
+        if (!res.data.error) {
+          this.result = res.data.result || []
+        }
       } catch (e) {
         this.loading = false
         this.$msg.error('请求失败，请检查网络连接')
@@ -108,8 +127,9 @@ export default {
     },
     async checkTimes () {
       try {
-        const res = await this.$axios.get('https://trace.moe/api/me')
-        this.limit = res.data.limit || 0
+        const res = await this.$axios.get('https://api.trace.moe/me')
+        this.id = res.data.id || ''
+        this.quotaUsed = res.data.quotaUsed || 0
         this.quota = res.data.quota || 0
       } catch (e) {
         this.$msg.error('请求失败，请检查网络连接')
