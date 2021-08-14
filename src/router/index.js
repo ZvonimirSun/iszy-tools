@@ -26,7 +26,8 @@ for (const tmp of tools) {
               name: tool.name,
               component: widgets[tmp1[0]],
               meta: {
-                statistics: tool.statistics !== false
+                statistics: tool.statistics !== false,
+                layout: tool.layout
               }
             })
           }
@@ -44,7 +45,8 @@ for (const tool of priTools) {
     name: tool.name,
     component: widgets[tmp[0]],
     meta: {
-      statistics: false
+      statistics: false,
+      layout: tool.layout
     }
   })
 }

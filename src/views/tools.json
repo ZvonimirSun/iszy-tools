@@ -46,7 +46,8 @@
       },
       {
         "name": "JSON编辑器",
-        "link": "/program/jsonEditor"
+        "link": "/program/jsonEditor",
+        "layout": "wide"
       },
       {
         "name": "URL编码/解码",
