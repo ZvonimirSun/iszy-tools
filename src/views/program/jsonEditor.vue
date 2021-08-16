@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .jsonEditor {
   height: calc(100vh - 36.3rem);
 

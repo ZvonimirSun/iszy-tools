@@ -2,11 +2,11 @@
   <Row :span="24">
     <Col :span="24">
       <Divider orientation="left">
-        <span class="typeName">{{name || ($route.meta || {}).title || $route.name}}</span>
+        <span class="typeName">{{name || ($route.meta || {}).title || $route.name}}&nbsp;<span class="fullScreen" @click="fullScreen"><FullscreenOutlined /></span></span>
       </Divider>
     </Col>
     <Col :span="24">
-      <div class="main">
+      <div class="main" ref="container">
         <slot></slot>
       </div>
     </Col>
@@ -14,13 +14,20 @@
 </template>
 <script>
 import { Row, Col, Divider } from 'ant-design-vue'
+import { FullscreenOutlined } from '@ant-design/icons-vue'
 
 export default {
   name: 'container',
   props: {
     name: String
   },
-  components: { Row, Col, Divider }
+  components: { Row, Col, Divider, FullscreenOutlined },
+  methods: {
+    fullScreen () {
+      // eslint-disable-next-line no-useless-call
+      this.$refs.container.requestFullscreen.call(this.$refs.container)
+    }
+  }
 }
 </script>
 
@@ -44,6 +51,7 @@ export default {
 
 .main {
   padding: 1.2rem;
+  background: #fff;
 }
 
 .typeName {
@@ -60,6 +68,14 @@ export default {
   .anticon {
     font-size: 2.4rem;
     margin-right: .5rem;
+  }
+
+  .fullScreen {
+    cursor: pointer;
+
+    .anticon {
+      font-size: 1.8rem;
+    }
   }
 }
 </style>
