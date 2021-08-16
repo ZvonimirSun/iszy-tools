@@ -15,13 +15,7 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-      - name: Setup node 🔧
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
       - name: Install dependencies 🔧
         run: yarn
       - name: Eslint Fix 🔧
         run: yarn lint
-      - name: Build app 🔧
-        run: yarn build
