@@ -7,7 +7,7 @@
         </div>
         <div class="desc">一个轻量的工具集合</div>
       </Header>
-      <Content ref="view">
+      <Content ref="view" :class="($route.meta || {}).layout?['layout-' + ($route.meta || {}).layout]:[]">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
         <router-view/>
       </Content>
@@ -96,6 +96,10 @@ export default {
     margin: 0 auto;
     padding: 0 2rem 1.6rem;
     overflow-y: auto;
+
+    &.layout-wide {
+      max-width: 180rem;
+    }
   }
 
   &-footer {
