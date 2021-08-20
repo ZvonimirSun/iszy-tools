@@ -2,10 +2,10 @@ name: Build Test
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
-    paths:
-      - '!.github/**'
+    paths-ignore:
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
