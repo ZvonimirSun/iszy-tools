@@ -1,41 +1,57 @@
 <template>
   <container>
-    <div ref="jsonEditor" class="jsonEditor"></div>
-    <Space>
+    <div class="editorPanel">
+      <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
+      <div class="controller noShowMobile">
+        <Space direction="vertical">
+          <Button type="primary" @click="copyRight" block>复制
+            <RightOutlined/>
+          </Button>
+          <Button type="primary" @click="copyLeft" block>
+            <LeftOutlined/>
+            复制
+          </Button>
+          <Button type="primary" @click="download" block>
+            下载
+          </Button>
+          <Checkbox v-model:checked="diff" @change="changeDiff">Diff</Checkbox>
+        </Space>
+      </div>
+      <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight noShowMobile"></div>
+    </div>
+    <Space class="showMobile">
       <Button type="primary" @click="download">
-        下载 JSON 文件
+        下载
       </Button>
-      <Checkbox v-model:checked="save">保留结果</Checkbox>
     </Space>
   </container>
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
 import Container from '@/components/container.vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
-import { Button, Checkbox, Space } from 'ant-design-vue'
+import { Button, Space, Checkbox } from 'ant-design-vue'
+import { RightOutlined, LeftOutlined } from '@ant-design/icons-vue'
 import { markRaw } from 'vue'
-
-const {
-  mapActions,
-  mapState
-} = createNamespacedHelpers('jsonEditor')
+import { cloneDeep, get, isEqual } from 'lodash'
 
 export default {
   name: 'JsonEditor',
   components: {
     Container,
     Button,
+    Space,
     Checkbox,
-    Space
+    RightOutlined,
+    LeftOutlined
   },
   data () {
     return {
-      editor: null,
-      code: JSON.stringify({
+      editorLeft: null,
+      editorRight: null,
+      codeLeft: {
         Array: [1, 2, 3],
         Boolean: true,
         Null: null,
@@ -45,82 +61,171 @@ export default {
           c: 'd'
         },
         String: 'Hello World'
-      })
+      },
+      codeRight: {
+        Array: [1, 2, 3],
+        Boolean: true,
+        Null: null,
+        Number: 123,
+        Object: {
+          a: 'b',
+          c: 'd'
+        },
+        String: 'Hello World'
+      },
+      diff: true
     }
   },
   mounted () {
     this.init()
   },
-  computed: {
-    save: {
-      get () {
-        return this.$store.state.jsonEditor.save
-      },
-      set (save) {
-        if (save) {
-          this.$store.dispatch('jsonEditor/changeSave', {
-            save,
-            content: this.code
-          })
-        } else {
-          this.$store.dispatch('jsonEditor/changeSave', { save })
-        }
-      }
-    },
-    ...mapState({
-      content: state => state.content
-    })
-  },
   methods: {
     init () {
-      let code = this.save
-        ? this.content || this.code
-        : this.code
-      if (typeof code === 'string') {
-        try {
-          code = JSON.parse(code)
-        } catch (e) {
-        }
-      }
-      this.editor = markRaw(new JSONEditor(
-        this.$refs.jsonEditor,
+      this.editorLeft = markRaw(new JSONEditor(
+        this.$refs.jsonEditorLeft,
         {
-          mode: 'code',
-          modes: ['text', 'code', 'tree', 'form', 'view'],
-          onChangeText: (jsonString) => {
-            this.code = jsonString
-            if (this.save) {
-              this.saveContent(jsonString)
-            }
+          mode: 'tree',
+          modes: ['code', 'tree'],
+          onClassName: this.onClassName,
+          onChangeText: (json) => {
+            this.codeLeft = JSON.parse(json)
+            this.editorRight.refresh()
           }
         },
-        code
+        this.codeLeft
+      ))
+      this.editorRight = markRaw(new JSONEditor(
+        this.$refs.jsonEditorRight,
+        {
+          mode: 'tree',
+          modes: ['code', 'tree'],
+          onClassName: this.onClassName,
+          onChangeText: (json) => {
+            this.codeRight = JSON.parse(json)
+            this.editorLeft.refresh()
+          }
+        },
+        this.codeRight
       ))
     },
-    download () {
-      createFile(this.editor.getText(), 'main.json')
+    onClassName ({
+      path,
+      field,
+      value
+    }) {
+      const leftValue = get(this.codeLeft, path)
+      const rightValue = get(this.codeRight, path)
+
+      return this.diff
+        ? (isEqual(leftValue, rightValue)
+            ? ''
+            : 'differentElement')
+        : ''
     },
-    ...mapActions(['saveContent'])
+    download () {
+      createFile(this.editorLeft.getText(), 'main.json')
+    },
+    changeDiff () {
+      this.editorLeft.refresh()
+      this.editorRight.refresh()
+    },
+    copyRight () {
+      this.codeRight = cloneDeep(this.codeLeft)
+      this.editorRight.set(this.codeRight)
+      this.editorLeft.refresh()
+    },
+    copyLeft () {
+      this.codeLeft = cloneDeep(this.codeRight)
+      this.editorLeft.set(this.codeLeft)
+      this.editorRight.refresh()
+    }
   },
   beforeUnmount () {
-    if (this.editor) {
-      this.editor.destroy()
+    if (this.editorLeft) {
+      this.editorLeft.destroy()
+    }
+    if (this.editorRight) {
+      this.editorRight.destroy()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.jsonEditor {
-  height: calc(100% - 3.2rem - 1.2rem);
+.editorPanel {
+  display: flex;
+  height: 100%;
 
-  .ace-jsoneditor *, textarea.jsoneditor-text * {
-    font-family: JetBrains Mono, monospace;
+  @media (max-width: 1024px) {
+    height: calc(100% - 3.2rem - 1.2rem);
+  }
+
+  .controller {
+    height: 100%;
+    width: 10rem;
+    text-align: center;
+
+    .ant-space {
+      margin-top: 10rem;
+      width: 80%;
+
+      :deep(.ant-btn) {
+        .anticon + span, span + .anticon {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  :deep(.jsonEditor) {
+    height: 100%;
+    width: calc(50% - 5rem);
+
+    .ace-jsoneditor *, textarea.jsoneditor-text *, code, pre {
+      font-family: JetBrains Mono, monospace;
+    }
+
+    &.jsonEditorLeft {
+      @media (max-width: 1024px) {
+        width: 100%;
+      }
+
+      .differentElement {
+        background-color: pink;
+
+        .jsoneditor-field, .jsoneditor-value {
+          color: red;
+        }
+      }
+    }
+
+    &.jsonEditorRight .differentElement {
+      background-color: #acee61;
+
+      .jsoneditor-field, .jsoneditor-value {
+        color: red;
+      }
+    }
+  }
+
+}
+
+.noShowMobile {
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.showMobile {
+  @media (min-width: 1024px) {
+    display: none !important;
   }
 }
 
 .ant-space {
-  margin-top: 1.2rem;
+  @media (max-width: 1024px) {
+    margin-top: 1.2rem;
+  }
 }
 
 :deep(.jsoneditor-poweredBy) {
