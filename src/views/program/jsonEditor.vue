@@ -1,9 +1,12 @@
 <template>
   <container>
     <div ref="jsonEditor" class="jsonEditor"></div>
-    <Button type="primary" @click="download">
-      下载 JSON 文件
-    </Button>
+    <Space>
+      <Button type="primary" @click="download">
+        下载 JSON 文件
+      </Button>
+      <Checkbox v-model:checked="save">保留结果</Checkbox>
+    </Space>
   </container>
 </template>
 
@@ -13,40 +16,71 @@ import Container from '@/components/container.vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
-import { Button } from 'ant-design-vue'
+import { Button, Checkbox, Space } from 'ant-design-vue'
 import { markRaw } from 'vue'
-const { mapActions, mapState } = createNamespacedHelpers('jsonEditor')
+
+const {
+  mapActions,
+  mapState
+} = createNamespacedHelpers('jsonEditor')
 
 export default {
   name: 'JsonEditor',
-  components: { Container, Button },
+  components: {
+    Container,
+    Button,
+    Checkbox,
+    Space
+  },
   data () {
     return {
-      editor: null
+      editor: null,
+      code: JSON.stringify({
+        Array: [1, 2, 3],
+        Boolean: true,
+        Null: null,
+        Number: 123,
+        Object: {
+          a: 'b',
+          c: 'd'
+        },
+        String: 'Hello World'
+      })
     }
   },
   mounted () {
     this.init()
   },
   computed: {
+    save: {
+      get () {
+        return this.$store.state.jsonEditor.save
+      },
+      set (save) {
+        if (save) {
+          this.$store.dispatch('jsonEditor/changeSave', {
+            save,
+            content: this.code
+          })
+        } else {
+          this.$store.dispatch('jsonEditor/changeSave', { save })
+        }
+      }
+    },
     ...mapState({
       content: state => state.content
     })
   },
   methods: {
     init () {
-      let code = this.content || {
-        Array: [1, 2, 3],
-        Boolean: true,
-        Null: null,
-        Number: 123,
-        Object: { a: 'b', c: 'd' },
-        String: 'Hello World'
-      }
+      let code = this.save
+        ? this.content || this.code
+        : this.code
       if (typeof code === 'string') {
         try {
-          code = JSON.parse(this.content)
-        } catch (e) {}
+          code = JSON.parse(code)
+        } catch (e) {
+        }
       }
       this.editor = markRaw(new JSONEditor(
         this.$refs.jsonEditor,
@@ -54,7 +88,10 @@ export default {
           mode: 'code',
           modes: ['text', 'code', 'tree', 'form', 'view'],
           onChangeText: (jsonString) => {
-            this.saveContent(jsonString)
+            this.code = jsonString
+            if (this.save) {
+              this.saveContent(jsonString)
+            }
           }
         },
         code
@@ -82,11 +119,11 @@ export default {
   }
 }
 
-.ant-btn {
+.ant-space {
   margin-top: 1.2rem;
 }
 
-.jsoneditor-poweredBy {
+:deep(.jsoneditor-poweredBy) {
   display: none;
 }
 </style>
