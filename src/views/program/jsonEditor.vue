@@ -75,7 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .jsonEditor {
-  height: calc(100vh - 36.3rem);
+  height: calc(100% - 3.2rem - 1.2rem);
 
   .ace-jsoneditor *, textarea.jsoneditor-text * {
     font-family: JetBrains Mono, monospace;

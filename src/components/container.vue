@@ -2,8 +2,9 @@
   <div class="containerAll">
     <div class="containerTitle">
       <Divider orientation="left">
-          <span class="typeName">{{ name || ($route.meta || {}).title || $route.name }}&nbsp;<span class="fullScreen"
-                                                                                                   @click="fullScreen"><FullscreenOutlined/></span></span>
+          <span class="typeName">{{ name || ($route.meta || {}).title || $route.name }}&nbsp;
+            <span class="fullScreen" title="全屏" @click="fullScreen"><FullscreenOutlined/></span>
+          </span>
       </Divider>
     </div>
     <div class="main" ref="container">
@@ -60,7 +61,10 @@ export default {
 
     .anticon {
       font-size: 2.4rem;
-      margin-right: .5rem;
+
+      .anticon:first-child {
+        margin-right: .5rem;
+      }
     }
 
     .fullScreen {
