@@ -47,35 +47,33 @@ export default {
     RightOutlined,
     LeftOutlined
   },
-  data () {
-    return {
-      editorLeft: null,
-      editorRight: null,
-      codeLeft: {
-        Array: [1, 2, 3],
-        Boolean: true,
-        Null: null,
-        Number: 123,
-        Object: {
-          a: 'b',
-          c: 'd'
-        },
-        String: 'Hello World'
+  data: () => ({
+    editorLeft: null,
+    editorRight: null,
+    codeLeft: {
+      Array: [1, 2, 3],
+      Boolean: true,
+      Null: null,
+      Number: 123,
+      Object: {
+        a: 'b',
+        c: 'd'
       },
-      codeRight: {
-        Array: [1, 2, 3],
-        Boolean: true,
-        Null: null,
-        Number: 123,
-        Object: {
-          a: 'b',
-          c: 'd'
-        },
-        String: 'Hello World'
+      String: 'Hello World'
+    },
+    codeRight: {
+      Array: [1, 2, 3],
+      Boolean: true,
+      Null: null,
+      Number: 123,
+      Object: {
+        a: 'b',
+        c: 'd'
       },
-      diff: true
-    }
-  },
+      String: 'Hello World'
+    },
+    diff: true
+  }),
   mounted () {
     this.init()
   },
@@ -116,11 +114,15 @@ export default {
       const leftValue = get(this.codeLeft, path)
       const rightValue = get(this.codeRight, path)
 
-      return this.diff
-        ? (isEqual(leftValue, rightValue)
-            ? ''
-            : 'differentElement')
-        : ''
+      if (this.diff) {
+        if (isEqual(leftValue, rightValue)) {
+          return ''
+        } else {
+          return 'differentElement'
+        }
+      } else {
+        return ''
+      }
     },
     download () {
       createFile(this.editorLeft.getText(), 'main.json')
@@ -131,12 +133,12 @@ export default {
     },
     copyRight () {
       this.codeRight = cloneDeep(this.codeLeft)
-      this.editorRight.set(this.codeRight)
+      this.editorRight.update(this.codeRight)
       this.editorLeft.refresh()
     },
     copyLeft () {
       this.codeLeft = cloneDeep(this.codeRight)
-      this.editorLeft.set(this.codeLeft)
+      this.editorLeft.update(this.codeLeft)
       this.editorRight.refresh()
     }
   },
