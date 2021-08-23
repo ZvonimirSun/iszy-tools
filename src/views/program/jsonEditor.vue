@@ -35,7 +35,7 @@ import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
 import { RightOutlined, LeftOutlined } from '@ant-design/icons-vue'
 import { markRaw } from 'vue'
-import { cloneDeep, get, isEqual } from 'lodash'
+import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash'
 
 export default {
   name: 'JsonEditor',
@@ -88,6 +88,21 @@ export default {
           onChangeText: (json) => {
             this.codeLeft = JSON.parse(json)
             this.editorRight.refresh()
+          },
+          autocomplete: {
+            applyTo: ['value'],
+            filter: 'contain',
+            trigger: 'focus',
+            getOptions: (text, path, input, editor) => {
+              return new Promise((resolve, reject) => {
+                const options = this.extractUniqueWords(editor.get())
+                if (options.length > 0) {
+                  resolve(options)
+                } else {
+                  reject(new Error('noOptions'))
+                }
+              })
+            }
           }
         },
         this.codeLeft
@@ -101,16 +116,46 @@ export default {
           onChangeText: (json) => {
             this.codeRight = JSON.parse(json)
             this.editorLeft.refresh()
+          },
+          autocomplete: {
+            applyTo: ['value'],
+            filter: 'contain',
+            trigger: 'focus',
+            getOptions: (text, path, input, editor) => {
+              return new Promise((resolve, reject) => {
+                const options = this.extractUniqueWords(editor.get())
+                if (options.length > 0) {
+                  resolve(options)
+                } else {
+                  reject(new Error('noOptions'))
+                }
+              })
+            }
           }
         },
         this.codeRight
       ))
     },
-    onClassName ({
-      path,
-      field,
-      value
-    }) {
+
+    copyRight () {
+      this.codeRight = cloneDeep(this.codeLeft)
+      this.editorRight.update(this.codeRight)
+      this.editorLeft.refresh()
+    },
+    copyLeft () {
+      this.codeLeft = cloneDeep(this.codeRight)
+      this.editorLeft.update(this.codeLeft)
+      this.editorRight.refresh()
+    },
+    download () {
+      createFile(this.editorLeft.getText(), 'main.json')
+    },
+    changeDiff () {
+      this.editorLeft.refresh()
+      this.editorRight.refresh()
+    },
+
+    onClassName ({ path }) {
       const leftValue = get(this.codeLeft, path)
       const rightValue = get(this.codeRight, path)
 
@@ -124,22 +169,12 @@ export default {
         return ''
       }
     },
-    download () {
-      createFile(this.editorLeft.getText(), 'main.json')
-    },
-    changeDiff () {
-      this.editorLeft.refresh()
-      this.editorRight.refresh()
-    },
-    copyRight () {
-      this.codeRight = cloneDeep(this.codeLeft)
-      this.editorRight.update(this.codeRight)
-      this.editorLeft.refresh()
-    },
-    copyLeft () {
-      this.codeLeft = cloneDeep(this.codeRight)
-      this.editorLeft.update(this.codeLeft)
-      this.editorRight.refresh()
+    extractUniqueWords (json) {
+      return uniq(flatMapDeep(json, function (value, key) {
+        return isObject(value)
+          ? [key]
+          : [key, String(value)]
+      }))
     }
   },
   beforeUnmount () {
