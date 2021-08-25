@@ -24,10 +24,28 @@ export default {
     geoJson: {
       type: 'FeatureCollection',
       features: []
-    }
+    },
+    geoJsonLayer: undefined
   }),
+  watch: {
+    geoJson: {
+      handler (val) {
+        if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
+          this.map.removeLayer(this.geoJsonLayer)
+          this.geoJsonLayer = undefined
+        }
+        try {
+          this.geoJsonLayer = L.geoJSON(val).addTo(this.map)
+          const bounds = this.geoJsonLayer.getBounds()
+          const center = bounds.getCenter()
+          const zoom = this.map.getBoundsZoom(bounds)
+          this.map.setView(center, zoom)
+        } catch (e) {}
+      },
+      deep: true
+    }
+  },
   mounted () {
-    this.map = markRaw(L.map(this.$refs.mapContainer))
     this.editor = markRaw(new JSONEditor(
       this.$refs.geoJsonContainer,
       {
@@ -41,6 +59,19 @@ export default {
       },
       this.geoJson
     ))
+    this.initMap()
+  },
+  methods: {
+    initMap () {
+      this.map = markRaw(L.map(this.$refs.mapContainer))
+      this.map.setView([35, 105], 4)
+      this.map.addLayer(L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+        subdomains: '1234',
+        minZoom: 3,
+        maxZoom: 18,
+        attribution: '&copy; 高德地图'
+      }))
+    }
   }
 }
 </script>
