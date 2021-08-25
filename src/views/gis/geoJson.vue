@@ -2,7 +2,14 @@
   <container>
     <div class="container">
       <div class="mapContainer" ref="mapContainer"></div>
-      <div class="geoJsonContainer" ref="geoJsonContainer"></div>
+      <Tabs type="card">
+        <TabPane key="geoJson" tab="GeoJSON">
+          <div class="geoJsonContainer" ref="geoJsonContainer"></div>
+        </TabPane>
+        <TabPane key="table" tab="table">
+          <div></div>
+        </TabPane>
+      </Tabs>
     </div>
   </container>
 </template>
@@ -14,10 +21,13 @@ import Container from '@/components/container.vue'
 import { markRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
+import { Tabs } from 'ant-design-vue'
+
+const { TabPane } = Tabs
 
 export default {
   name: 'geoJson',
-  components: { Container },
+  components: { Container, Tabs, TabPane },
   data: () => ({
     map: undefined,
     editor: undefined,
@@ -93,9 +103,26 @@ export default {
     width: 60%;
   }
 
-  .geoJsonContainer {
-    height: 100%;
+  :deep(.ant-tabs) {
     width: 40%;
+    height: 100%;
+
+    .ant-tabs-bar {
+      margin: 0;
+    }
+
+    .ant-tabs-content {
+      height: calc(100% - 4rem);
+
+      .ant-tabs-tabpane {
+        height: 100%;
+      }
+    }
+
+    .geoJsonContainer {
+      height: 100%;
+    }
   }
+
 }
 </style>
