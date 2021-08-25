@@ -14,5 +14,6 @@ export default {
   urlEncode: () => import('@/views/program/urlEncode.vue'),
   tetris: () => import('@/views/games/tetris/index.vue'),
   viewSourceCode: () => import('@/views/program/viewSourceCode.vue'),
-  cssFormatter: () => import('@/views/program/cssFormatter.vue')
+  cssFormatter: () => import('@/views/program/cssFormatter.vue'),
+  geoJson: () => import('@/views/gis/geoJson.vue')
 }
