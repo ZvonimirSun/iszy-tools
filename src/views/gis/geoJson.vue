@@ -34,13 +34,15 @@ export default {
           this.map.removeLayer(this.geoJsonLayer)
           this.geoJsonLayer = undefined
         }
-        try {
-          this.geoJsonLayer = L.geoJSON(val).addTo(this.map)
-          const bounds = this.geoJsonLayer.getBounds()
-          const center = bounds.getCenter()
-          const zoom = this.map.getBoundsZoom(bounds)
-          this.map.setView(center, zoom)
-        } catch (e) {}
+        if (val) {
+          try {
+            this.geoJsonLayer = L.geoJSON(val).addTo(this.map)
+            const bounds = this.geoJsonLayer.getBounds()
+            const center = bounds.getCenter()
+            const zoom = this.map.getBoundsZoom(bounds)
+            this.map.setView(center, zoom)
+          } catch (e) {}
+        }
       },
       deep: true
     }
@@ -51,6 +53,10 @@ export default {
       {
         mode: 'code',
         onChangeText: (json) => {
+          if (json == null || json === '') {
+            this.geoJson = undefined
+            return
+          }
           try {
             this.geoJson = JSON.parse(json)
           } catch (e) {
