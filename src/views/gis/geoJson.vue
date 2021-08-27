@@ -135,26 +135,46 @@ export default defineComponent({
   },
   methods: {
     initMap () {
-      this.map = markRaw(L.map(this.$refs.mapContainer))
+      this.map = markRaw(L.map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
       this.map.setView([35, 105], 4)
-      this.map.addLayer(L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+      const gaodeLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
         subdomains: '1234',
         minZoom: 3,
         maxZoom: 18,
-        attribution: '&copy; 高德地图'
-      }))
+        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a>'
+      }).addTo(this.map)
+      const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      })
+      this.geoJsonLayer = L.geoJSON(undefined, {
+        onEachFeature: this.onEachFeature
+      }).addTo(this.map)
+      L.control.layers({
+        高德: gaodeLayer,
+        OpenStreetMap: osmLayer
+      }, {
+        图形: this.geoJsonLayer
+      }, {
+        position: 'topright'
+      }).addTo(this.map)
+      L.control.scale({
+        imperial: false,
+        position: 'bottomleft'
+      }).addTo(this.map)
+      L.control.zoom({
+        zoomInTitle: '放大',
+        zoomOutTitle: '缩小',
+        position: 'bottomright'
+      }).addTo(this.map)
     },
     updateGeoJsonLayer () {
-      if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
-        this.map.removeLayer(this.geoJsonLayer)
-        this.geoJsonLayer = undefined
+      if (this.geoJsonLayer && this.geoJsonLayer instanceof L.GeoJSON) {
+        this.geoJsonLayer.clearLayers()
       }
       try {
         this.geoJson = this.editor.get()
         try {
-          this.geoJsonLayer = L.geoJSON(this.geoJson, {
-            onEachFeature: this.onEachFeature
-          }).addTo(this.map)
+          this.geoJsonLayer.addData(this.geoJson)
           const bounds = this.geoJsonLayer.getBounds()
           const center = bounds.getCenter()
           const zoom = this.map.getBoundsZoom(bounds)
@@ -216,9 +236,17 @@ export default defineComponent({
     }
   },
   beforeUnmount () {
+    if (this.geoJsonLayer) {
+      this.map.removeLayer(this.geoJsonLayer)
+      this.geoJsonLayer = undefined
+    }
     if (this.map) {
       this.map.remove()
       this.map = undefined
+    }
+    if (this.editor) {
+      this.editor.destroy()
+      this.editor = undefined
     }
   }
 })
