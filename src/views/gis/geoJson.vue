@@ -137,24 +137,24 @@ export default defineComponent({
     initMap () {
       this.map = markRaw(L.map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
       this.map.setView([35, 105], 4)
-      const gaodeLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-        subdomains: '1234',
-        minZoom: 3,
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
-      }).addTo(this.map)
-      const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
-      })
       this.geoJsonLayer = L.geoJSON(undefined, {
         onEachFeature: this.onEachFeature
       }).addTo(this.map)
       L.control.layers({
-        高德: gaodeLayer,
-        OpenStreetMap: osmLayer
+        OpenStreetMap: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
+        }).addTo(this.map),
+        高德: L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+          subdomains: '1234',
+          minZoom: 3,
+          maxZoom: 18,
+          attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
+        })
       }, {
         图形: this.geoJsonLayer
       }, {
+        collapsed: false,
+        hideSingleBase: true,
         position: 'topright'
       }).addTo(this.map)
       L.control.scale({
