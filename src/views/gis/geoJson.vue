@@ -20,6 +20,14 @@
                  :rowKey="(record,index)=>{return index}" :scroll="{x: true}" :pagination="false" bordered size="small"
                  :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
                  :customRow="rowEvents">
+            <template #property="{text:data}">
+              <template v-if="typeof data === 'object'">
+                {{JSON.stringify(data)}}
+              </template>
+              <template v-else>
+                {{data}}
+              </template>
+            </template>
           </Table>
           <Empty v-else></Empty>
         </TabPane>
@@ -32,7 +40,7 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import Container from '@/components/container.vue'
-import { defineComponent, markRaw } from 'vue'
+import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import { Tabs, Table, Empty, Form, Input } from 'ant-design-vue'
@@ -74,7 +82,8 @@ export default defineComponent({
           return {
             title: item,
             dataIndex: item,
-            key: item
+            key: item,
+            slots: { customRender: 'property' }
           }
         })
       } else {
@@ -151,7 +160,7 @@ export default defineComponent({
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         })
       }, {
-        图形: this.geoJsonLayer
+        图形: toRaw(this.geoJsonLayer)
       }, {
         collapsed: false,
         hideSingleBase: true,
@@ -185,14 +194,9 @@ export default defineComponent({
         this.geoJson = undefined
       }
     },
-    locationGeo (geoJson, add) {
+    locationGeo (geoJson) {
       try {
-        const layer = L.geoJSON(geoJson, {
-          onEachFeature: this.onEachFeature
-        })
-        if (add) {
-          this.geoJsonLayer = layer.addTo(this.map)
-        }
+        const layer = L.geoJSON(geoJson)
         const bounds = layer.getBounds()
         const center = bounds.getCenter()
         const zoom = this.map.getBoundsZoom(bounds)
@@ -236,10 +240,6 @@ export default defineComponent({
     }
   },
   beforeUnmount () {
-    if (this.geoJsonLayer) {
-      this.map.removeLayer(this.geoJsonLayer)
-      this.geoJsonLayer = undefined
-    }
     if (this.map) {
       this.map.remove()
       this.map = undefined
