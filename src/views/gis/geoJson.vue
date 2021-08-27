@@ -141,10 +141,10 @@ export default defineComponent({
         subdomains: '1234',
         minZoom: 3,
         maxZoom: 18,
-        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a>'
+        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
       }).addTo(this.map)
       const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
       })
       this.geoJsonLayer = L.geoJSON(undefined, {
         onEachFeature: this.onEachFeature
