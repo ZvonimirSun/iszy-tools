@@ -2,6 +2,14 @@
   <container>
     <div class="container">
       <div class="mapContainer" ref="mapContainer"></div>
+      <div class="propertyPopup" v-show="false" ref="propertyPopup">
+        <Form v-if="selectedFeature?.properties" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" :colon="false">
+          <Item v-for="(val,key,index) of selectedFeature.properties" :label="key" :key="'prop'+index">
+            <Input v-model:value="selectedFeature.properties[key]" v-if="['string', 'number'].indexOf(typeof selectedFeature.properties[key]) !== -1" @change="saveToEditor"/>
+            <Input v-else :value="val.toString()" disabled/>
+          </Item>
+        </Form>
+      </div>
       <Tabs type="card">
         <TabPane key="geoJson" tab="GeoJSON">
           <div class="geoJsonContainer" ref="geoJsonContainer"></div>
@@ -12,6 +20,7 @@
                  :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
                  :customRow="rowEvents">
           </Table>
+          <Empty v-else></Empty>
         </TabPane>
       </Tabs>
     </div>
@@ -25,9 +34,10 @@ import Container from '@/components/container.vue'
 import { defineComponent, markRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
-import { Tabs, Table } from 'ant-design-vue'
+import { Tabs, Table, Empty, Form, Input } from 'ant-design-vue'
 
 const { TabPane } = Tabs
+const { Item } = Form
 
 export default defineComponent({
   name: 'geoJson',
@@ -35,7 +45,11 @@ export default defineComponent({
     Container,
     Tabs,
     TabPane,
-    Table
+    Table,
+    Empty,
+    Form,
+    Item,
+    Input
   },
   data: () => ({
     map: undefined,
@@ -44,7 +58,11 @@ export default defineComponent({
       type: 'FeatureCollection',
       features: []
     },
-    geoJsonLayer: undefined
+    geoJsonLayer: undefined,
+    selectedFeature: undefined,
+
+    // flags
+    editorUpdated: false
   }),
   computed: {
     tableColumns () {
@@ -70,9 +88,9 @@ export default defineComponent({
       return null
     },
     features () {
-      if (this.geoJson) {
+      if (this.geoJsonLayer) {
         try {
-          const tmp = L.geoJSON(this.geoJson).toGeoJSON()
+          const tmp = this.geoJsonLayer.toGeoJSON()
           return tmp.features
         } catch (e) {
           return null
@@ -81,33 +99,31 @@ export default defineComponent({
       return null
     }
   },
-  watch: {
-    geoJson: {
-      handler (val) {
-        if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
-          this.map.removeLayer(this.geoJsonLayer)
-          this.geoJsonLayer = undefined
-        }
-        if (val) {
-          this.locationGeo(val, true)
-        }
-      },
-      deep: true
-    }
-  },
   mounted () {
     this.editor = markRaw(new JSONEditor(
       this.$refs.geoJsonContainer,
       {
         mode: 'code',
-        onChangeText: (json) => {
-          if (json == null || json === '') {
-            this.geoJson = undefined
-            return
-          }
-          try {
-            this.geoJson = JSON.parse(json)
-          } catch (e) {
+        onChangeText: () => {
+          this.editorUpdated = true
+        },
+        onBlur: () => {
+          if (this.editorUpdated) {
+            if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
+              this.map.removeLayer(this.geoJsonLayer)
+              this.geoJsonLayer = undefined
+            }
+            try {
+              this.geoJson = this.editor.get()
+              if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
+                this.map.removeLayer(this.geoJsonLayer)
+                this.geoJsonLayer = undefined
+              }
+              this.locationGeo(this.geoJson, true)
+            } catch (e) {
+              this.geoJson = undefined
+            }
+            this.editorUpdated = false
           }
         }
       },
@@ -128,7 +144,9 @@ export default defineComponent({
     },
     locationGeo (geoJson, add) {
       try {
-        const layer = L.geoJSON(geoJson)
+        const layer = L.geoJSON(geoJson, {
+          onEachFeature: this.onEachFeature
+        })
         if (add) {
           this.geoJsonLayer = layer.addTo(this.map)
         }
@@ -136,7 +154,19 @@ export default defineComponent({
         const center = bounds.getCenter()
         const zoom = this.map.getBoundsZoom(bounds)
         this.map.setView(center, zoom)
-      } catch (e) {}
+      } catch (e) {
+      }
+    },
+    onEachFeature (feature, layer) {
+      if (feature.properties) {
+        layer.bindPopup(this.$refs.propertyPopup).on('popupopen', () => {
+          this.selectedFeature = feature
+        })
+      }
+    },
+    saveToEditor () {
+      this.geoJson = this.geoJsonLayer.toGeoJSON()
+      this.editor.update(this.geoJson)
     },
 
     rowEvents (record, index) {
@@ -145,6 +175,12 @@ export default defineComponent({
           this.locationGeo(this.features[index])
         }
       }
+    }
+  },
+  beforeUnmount () {
+    if (this.map) {
+      this.map.remove()
+      this.map = undefined
     }
   }
 })
@@ -159,6 +195,15 @@ export default defineComponent({
   .mapContainer {
     height: 100%;
     width: 60%;
+  }
+
+  .leaflet-popup-content {
+    .propertyPopup {
+      display: block !important;
+      width: 25rem;
+      height: 20rem;
+      overflow-y: auto;
+    }
   }
 
   :deep(.ant-tabs) {
