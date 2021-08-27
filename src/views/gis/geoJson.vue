@@ -63,7 +63,8 @@ export default defineComponent({
     selectedFeature: undefined,
 
     // flags
-    editorUpdated: false
+    editorUpdated: false,
+    editorUpdateTimeout: undefined
   }),
   computed: {
     tableColumns () {
@@ -107,23 +108,23 @@ export default defineComponent({
         mode: 'code',
         onChangeText: () => {
           this.editorUpdated = true
+          if (this.editorUpdateTimeout) {
+            clearTimeout(this.editorUpdateTimeout)
+            this.editorUpdateTimeout = undefined
+          }
+          this.editorUpdateTimeout = setTimeout(() => {
+            this.updateGeoJsonLayer()
+            this.editorUpdated = false
+            this.editorUpdateTimeout = undefined
+          }, 5000)
         },
         onBlur: () => {
+          if (this.editorUpdateTimeout) {
+            clearTimeout(this.editorUpdateTimeout)
+            this.editorUpdateTimeout = undefined
+          }
           if (this.editorUpdated) {
-            if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
-              this.map.removeLayer(this.geoJsonLayer)
-              this.geoJsonLayer = undefined
-            }
-            try {
-              this.geoJson = this.editor.get()
-              if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
-                this.map.removeLayer(this.geoJsonLayer)
-                this.geoJsonLayer = undefined
-              }
-              this.locationGeo(this.geoJson, true)
-            } catch (e) {
-              this.geoJson = undefined
-            }
+            this.updateGeoJsonLayer()
             this.editorUpdated = false
           }
         }
@@ -142,6 +143,27 @@ export default defineComponent({
         maxZoom: 18,
         attribution: '&copy; 高德地图'
       }))
+    },
+    updateGeoJsonLayer () {
+      if (this.geoJsonLayer && this.geoJsonLayer instanceof L.Layer) {
+        this.map.removeLayer(this.geoJsonLayer)
+        this.geoJsonLayer = undefined
+      }
+      try {
+        this.geoJson = this.editor.get()
+        try {
+          this.geoJsonLayer = L.geoJSON(this.geoJson, {
+            onEachFeature: this.onEachFeature
+          }).addTo(this.map)
+          const bounds = this.geoJsonLayer.getBounds()
+          const center = bounds.getCenter()
+          const zoom = this.map.getBoundsZoom(bounds)
+          this.map.setView(center, zoom)
+        } catch (e) {
+        }
+      } catch (e) {
+        this.geoJson = undefined
+      }
     },
     locationGeo (geoJson, add) {
       try {
@@ -162,6 +184,14 @@ export default defineComponent({
       if (feature.properties) {
         layer.bindPopup(this.$refs.propertyPopup).on('popupopen', () => {
           this.selectedFeature = feature
+          layer.setStyle({
+            color: '#ff7800',
+            weight: 5,
+            opacity: 0.65
+          })
+        }).on('popupclose', () => {
+          this.selectedFeature = undefined
+          this.geoJsonLayer.resetStyle()
         })
       }
     },
