@@ -7,7 +7,7 @@
           <Item v-for="(val,key,index) of selectedFeature.properties" :label="key" :key="'prop'+index">
             <Input v-model:value="selectedFeature.properties[key]" v-if="typeof selectedFeature.properties[key] === 'string'" @change="saveToEditor"/>
             <Input v-model:value.number="selectedFeature.properties[key]" v-else-if="typeof selectedFeature.properties[key] === 'number'" @change="saveToEditor"/>
-            <Input v-else :value="val.toString()" disabled/>
+            <Input :value="JSON.stringify(val)" v-else @change="saveToEditor($event, selectedFeature, key)"/>
           </Item>
         </Form>
       </div>
@@ -165,7 +165,14 @@ export default defineComponent({
         })
       }
     },
-    saveToEditor () {
+    saveToEditor (val, feature, key) {
+      if (val instanceof InputEvent && feature && key) {
+        try {
+          feature.properties[key] = JSON.parse(val.currentTarget.value)
+        } catch (e) {
+          feature.properties[key] = val.currentTarget.value
+        }
+      }
       this.geoJson = this.geoJsonLayer.toGeoJSON()
       this.editor.update(this.geoJson)
     },
