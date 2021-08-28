@@ -5,8 +5,10 @@
       <div class="propertyPopup" v-show="false" ref="propertyPopup">
         <Form v-if="selectedFeature?.properties" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" :colon="false">
           <Item v-for="(val,key,index) of selectedFeature.properties" :label="key" :key="'prop'+index">
-            <Input v-model:value="selectedFeature.properties[key]" v-if="typeof selectedFeature.properties[key] === 'string'" @change="saveToEditor"/>
-            <Input v-model:value.number="selectedFeature.properties[key]" v-else-if="typeof selectedFeature.properties[key] === 'number'" @change="saveToEditor"/>
+            <Input v-model:value="selectedFeature.properties[key]"
+                   v-if="typeof selectedFeature.properties[key] === 'string'" @change="saveToEditor"/>
+            <Input v-model:value.number="selectedFeature.properties[key]"
+                   v-else-if="typeof selectedFeature.properties[key] === 'number'" @change="saveToEditor"/>
             <Input :value="JSON.stringify(val)" v-else @change="saveToEditor($event, selectedFeature, key)"/>
           </Item>
         </Form>
@@ -21,10 +23,13 @@
                  :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
                  :customRow="rowEvents">
             <template #property="{text, column, index}">
-              <div v-if="editableData[index]" class="editable-cell-input-wrapper" >
-                <Input v-model:value="editableData[index][column.dataIndex]" v-if="typeof editableData[index][column.dataIndex] === 'string'" @change="saveToEditor"/>
-                <Input v-model:value.number="editableData[index][column.dataIndex]" v-else-if="typeof editableData[index][column.dataIndex] === 'number'" @change="saveToEditor"/>
-                <Input :value="JSON.stringify(editableData[index][column.dataIndex])" v-else @change="saveToEditableData($event, editableData[index], column.dataIndex)"/>
+              <div v-if="editableData[index]" class="editable-cell-input-wrapper">
+                <Input v-model:value="editableData[index][column.dataIndex]"
+                       v-if="typeof editableData[index][column.dataIndex] === 'string'" @change="saveToEditor"/>
+                <Input v-model:value.number="editableData[index][column.dataIndex]"
+                       v-else-if="typeof editableData[index][column.dataIndex] === 'number'" @change="saveToEditor"/>
+                <Input :value="JSON.stringify(editableData[index][column.dataIndex])" v-else
+                       @change="saveToEditableData($event, editableData[index], column.dataIndex)"/>
               </div>
               <div v-else class="editable-cell-text-wrapper">
                 {{ typeof text === 'object' ? JSON.stringify(text) : (text || ' ') }}
@@ -342,13 +347,16 @@ export default defineComponent({
 
         td {
           white-space: nowrap;
+
+          .editable-cell-input-wrapper, .editable-cell-text-wrapper {
+            width: max-content;
+          }
         }
       }
 
       .ant-table-striped .table-striped {
         background-color: #fafafa;
       }
-
     }
 
     .geoJsonContainer {
