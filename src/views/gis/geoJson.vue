@@ -32,7 +32,7 @@
                        @change="saveToEditableData($event, editableData[index], column.dataIndex)"/>
               </div>
               <div v-else class="editable-cell-text-wrapper">
-                {{ typeof text === 'object' ? JSON.stringify(text) : (text || ' ') }}
+                {{ typeof text === 'object' ? JSON.stringify(text) : text }}
               </div>
             </template>
             <template #operation="{ index }">
