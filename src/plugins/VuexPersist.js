@@ -1,4 +1,4 @@
-import { merge, cloneDeep, omit } from 'lodash'
+import { merge, cloneDeep, omit } from 'lodash-es'
 import localforage from 'localforage'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
