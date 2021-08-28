@@ -35,7 +35,7 @@ import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
 import { RightOutlined, LeftOutlined } from '@ant-design/icons-vue'
 import { markRaw } from 'vue'
-import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash'
+import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
 
 export default {
   name: 'JsonEditor',

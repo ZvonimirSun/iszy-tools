@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { range, shuffle, cloneDeep } from 'lodash'
+import { range, shuffle, cloneDeep } from 'lodash-es'
 import Container from '@/components/container.vue'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
 import { createNamespacedHelpers } from 'vuex'

@@ -95,7 +95,7 @@
 
 <script>
 import moment from 'moment'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import Container from '@/components/container.vue'
 import { Row, Col, Form, Table, Input, Select, DatePicker, Divider, Button } from 'ant-design-vue'
 const { Item } = Form

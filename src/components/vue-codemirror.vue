@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import { markRaw } from 'vue'
 // lib
 import CodeMirror from 'codemirror'

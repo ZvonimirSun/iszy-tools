@@ -17,16 +17,27 @@
         </TabPane>
         <TabPane key="table" tab="Table">
           <Table class="ant-table-striped" v-if="tableColumns" :columns="tableColumns" :data-source="propertyList"
-                 :rowKey="(record,index)=>{return index}" :scroll="{x: true}" :pagination="false" bordered size="small"
+                 :rowKey="(record,index)=>{return index}" :pagination="false" bordered size="small" :scroll="{x:true}"
                  :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
                  :customRow="rowEvents">
-            <template #property="{text:data}">
-              <template v-if="typeof data === 'object'">
-                {{JSON.stringify(data)}}
-              </template>
-              <template v-else>
-                {{data}}
-              </template>
+            <template #property="{text, column, index}">
+              <div v-if="editableData[index]" class="editable-cell-input-wrapper" >
+                <Input v-model:value="editableData[index][column.dataIndex]" v-if="typeof editableData[index][column.dataIndex] === 'string'" @change="saveToEditor"/>
+                <Input v-model:value.number="editableData[index][column.dataIndex]" v-else-if="typeof editableData[index][column.dataIndex] === 'number'" @change="saveToEditor"/>
+                <Input :value="JSON.stringify(editableData[index][column.dataIndex])" v-else @change="saveToEditableData($event, editableData[index], column.dataIndex)"/>
+              </div>
+              <div v-else class="editable-cell-text-wrapper">
+                {{ typeof text === 'object' ? JSON.stringify(text) : (text || ' ') }}
+              </div>
+            </template>
+            <template #operation="{ index }">
+              <span v-if="editableData[index]">
+                <a @click.stop="save(index)"> 保存属性 </a>
+                <a @click.stop="cancel(index)"> 取消编辑 </a>
+              </span>
+              <span v-else>
+                <a @click.stop="edit(index)"> 编辑属性 </a>
+              </span>
             </template>
           </Table>
           <Empty v-else></Empty>
@@ -44,6 +55,7 @@ import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import { Tabs, Table, Empty, Form, Input } from 'ant-design-vue'
+import { cloneDeep } from 'lodash-es'
 
 const { TabPane } = Tabs
 const { Item } = Form
@@ -72,13 +84,15 @@ export default defineComponent({
 
     // flags
     editorUpdated: false,
-    editorUpdateTimeout: undefined
+    editorUpdateTimeout: undefined,
+
+    editableData: {}
   }),
   computed: {
     tableColumns () {
       if (this.propertyList && this.propertyList.length > 0) {
         const keys = Object.keys(this.propertyList[0])
-        return keys.map(item => {
+        const columns = keys.map(item => {
           return {
             title: item,
             dataIndex: item,
@@ -86,6 +100,16 @@ export default defineComponent({
             slots: { customRender: 'property' }
           }
         })
+        columns.push({
+          title: '操作',
+          dataIndex: 'operation',
+          width: 40,
+          fixed: 'right',
+          slots: {
+            customRender: 'operation'
+          }
+        })
+        return columns
       } else {
         return null
       }
@@ -229,6 +253,25 @@ export default defineComponent({
       }
       this.geoJson = this.geoJsonLayer.toGeoJSON()
       this.editor.update(this.geoJson)
+    },
+    saveToEditableData (val, property, key) {
+      if (val instanceof InputEvent && property && key) {
+        try {
+          property[key] = JSON.parse(val.currentTarget.value)
+        } catch (e) {
+          property[key] = val.currentTarget.value
+        }
+      }
+    },
+    edit (index) {
+      this.editableData[index] = cloneDeep(this.propertyList[index])
+    },
+    save (index) {
+      Object.assign(this.propertyList[index], this.editableData[index])
+      delete this.editableData[index]
+    },
+    cancel (index) {
+      delete this.editableData[index]
     },
 
     rowEvents (record, index) {
