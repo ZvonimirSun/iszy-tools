@@ -2,7 +2,7 @@
   <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
     <Col :span="24">
       <div class="search">
-        <IconFont type="icon-t-search"/>
+        <search theme="outline"/>
         <input type="search" placeholder="搜索工具" v-model="searchStr">
       </div>
     </Col>
@@ -38,7 +38,7 @@
     <Col :span="24">
       <Divider orientation="left">
           <span class="typeName">
-            <IconFont type="icon-t-gonggao"/>
+            <notes theme="outline" size="24"/>
             <div>公告</div>
           </span>
       </Divider>
@@ -65,6 +65,7 @@
 
 <script>
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
+import { Search, Notes } from '@icon-park/vue-next'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/views/tools.json'
 import legends from '@/views/legends.json'
@@ -77,7 +78,7 @@ const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
-  components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
+  components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography, Search, Notes },
   computed: {
     tools () {
       let tmp
@@ -188,6 +189,12 @@ export default {
 
   .anticon {
     font-size: 2.4rem;
+    margin-right: .5rem;
+  }
+
+  .i-icon {
+    font-size: 2.2rem;
+    height: 2.4rem;
     margin-right: .5rem;
   }
 }
@@ -336,7 +343,7 @@ export default {
   padding: 1.6rem .8rem;
   color: #666666;
 
-  .anticon {
+  .i-icon {
     font-size: 2.4rem;
     margin-right: 1.6rem;
   }
