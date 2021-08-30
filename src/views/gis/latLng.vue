@@ -240,20 +240,24 @@ export default {
     async locateLatLng (latLng = {}, address) {
       if (latLng.lng != null && latLng.lat != null && latLng.lng !== '' && latLng.lat !== '') {
         try {
-          try {
-            const res = await this.$axios.get('https://restapi.amap.com/v3/geocode/regeo', {
-              params: {
-                location: `${latLng.lng},${latLng.lat}`,
-                output: 'json',
-                key: this.gaodeToken
+          if (!address) {
+            try {
+              const res = await this.$axios.get('https://amapapi.iszy.xyz/v3/geocode/regeo', {
+                params: {
+                  location: `${latLng.lng},${latLng.lat}`,
+                  output: 'json',
+                  key: this.gaodeToken
+                }
+              })
+              if (res.data.status === '1' && res.data.regeocode.formatted_address) {
+                address = res.data.regeocode.formatted_address
+              } else {
+                this.$msg.warn('未找到相关地址。')
               }
-            })
-            if (res.data.status === '1' && res.data.regeocode.formatted_address) {
-              address = res.data.regeocode.formatted_address
-            } else {
-              this.$msg.warn('未找到相关地址。')
+            } catch (e) {
+              this.$msg.error('查询地址失败！')
             }
-          } catch (e) { this.$msg.error('查询地址失败！') }
+          }
           if (this.clickMarker) {
             this.clickMarker
               .setLatLng(latLng)
@@ -281,7 +285,7 @@ export default {
     async locateAddress () {
       if (this.address) {
         try {
-          const res = await this.$axios.get('https://restapi.amap.com/v3/geocode/geo', {
+          const res = await this.$axios.get('https://amapapi.iszy.xyz/v3/geocode/geo', {
             params: {
               address: this.address,
               key: this.gaodeToken
