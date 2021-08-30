@@ -4,45 +4,45 @@
       <div class="header">
         <Button type="primary" @click="format" title="格式化">
           <template #icon>
-            <IconFont type="icon-t-format-indent-increa"></IconFont>
+            <indent-right theme="outline" size="16"/>
           </template>
         </Button>
         <Button type="primary" @click="compact" title="压缩">
           <template #icon>
-            <IconFont type="icon-t-format-indent-decrea"></IconFont>
+            <compression theme="outline" size="16"/>
           </template>
         </Button>
         <Divider type="vertical"/>
         <Button type="primary" @click="foldAll" title="折叠所有">
           <template #icon>
-            <IconFont type="icon-t-collapse"></IconFont>
+            <collapse-text-input theme="outline" size="16"/>
           </template>
         </Button>
         <Button type="primary" @click="unfoldAll" title="展开所有">
           <template #icon>
-            <IconFont type="icon-t-expand"></IconFont>
+            <expand-text-input theme="outline" size="16"/>
           </template>
         </Button>
         <Divider type="vertical"/>
         <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
           <template #icon>
-            <UndoOutlined/>
+            <undo theme="outline" size="16"/>
           </template>
         </Button>
         <Button type="primary" @click="redo" title="重做" :disabled="historySize.redo === 0">
           <template #icon>
-            <RedoOutlined/>
+            <redo theme="outline" size="16"/>
           </template>
         </Button>
         <Divider type="vertical"/>
         <Button type="primary" title="前往顶部" @click="goTop">
           <template #icon>
-            <VerticalAlignTopOutlined/>
+            <to-top theme="outline" size="16"/>
           </template>
         </Button>
         <Button type="primary" title="前往底部" @click="goBottom">
           <template #icon>
-            <VerticalAlignBottomOutlined/>
+            <to-bottom theme="outline" size="16"/>
           </template>
         </Button>
       </div>
@@ -51,7 +51,9 @@
                   @cursorActivity="onCursorActivity"
       />
       <div class="footer">
-        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{ cursor.ch + 1 }}</span>
+        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
+            cursor.ch + 1
+          }}</span>
       </div>
     </div>
   </container>
@@ -59,11 +61,15 @@
 
 <script>
 import {
-  UndoOutlined,
-  RedoOutlined,
-  VerticalAlignTopOutlined,
-  VerticalAlignBottomOutlined
-} from '@ant-design/icons-vue'
+  IndentRight,
+  Compression,
+  Undo,
+  Redo,
+  ToTop,
+  ToBottom,
+  ExpandTextInput,
+  CollapseTextInput
+} from '@icon-park/vue-next'
 // region codemirror
 import 'codemirror/lib/codemirror.css'
 // 代码高亮
@@ -110,9 +116,15 @@ export default {
   name: 'cssFormatter',
   data: () => ({
     code: '',
-    cursor: { line: 0, ch: 0 },
+    cursor: {
+      line: 0,
+      ch: 0
+    },
     lineCount: 0,
-    historySize: { undo: 0, redo: 0 },
+    historySize: {
+      undo: 0,
+      redo: 0
+    },
     cmOptions: {
       // Js高亮显示
       mode: 'text/css',
@@ -158,12 +170,16 @@ export default {
   components: {
     CodeMirror,
     Container,
-    UndoOutlined,
-    RedoOutlined,
-    VerticalAlignTopOutlined,
-    VerticalAlignBottomOutlined,
     Button,
-    Divider
+    Divider,
+    IndentRight,
+    Compression,
+    Undo,
+    Redo,
+    ToTop,
+    ToBottom,
+    ExpandTextInput,
+    CollapseTextInput
   },
   mounted () {
     this.codemirror.setSize('100%', '100%')
@@ -180,7 +196,8 @@ export default {
     format () {
       try {
         this.code = cssBeautify(this.code)
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     compact () {
       try {
@@ -189,7 +206,8 @@ export default {
           .replace(/\s*}\s*/g, '}')
           .replace(/\s*:\s*/g, ':')
           .replace(/\s*;\s*/g, ';')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     redo () {
       this.codemirror.redo()
@@ -231,6 +249,7 @@ export default {
   border: .1rem solid #ddd;
   font-size: 1.4rem;
   overflow: hidden;
+
   .header {
     display: flex;
     flex-flow: row wrap;
@@ -240,10 +259,12 @@ export default {
     color: #fff;
     align-items: center;
   }
+
   .cmEditor {
     width: 100%;
     height: calc(100% - 7.2rem);
   }
+
   .footer {
     width: 100%;
     padding: .5rem;
@@ -252,16 +273,20 @@ export default {
     border-top: .1rem solid #ddd;
   }
 }
+
 .ant-btn {
   font-size: 1.8rem;
+
   &[disabled] {
     background-color: #1890ff;
     border: unset;
     cursor: default;
   }
+
   &:hover:not([disabled]) {
     border-color: #f7f7f7;
   }
+
   &:not(:last-child) {
     margin-right: .5rem;
   }
