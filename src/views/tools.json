@@ -78,6 +78,12 @@
         "link": "/gis/geoJson",
         "legend": "新功能",
         "layout": "wide"
+      },
+      {
+        "name": "经纬度查询",
+        "link": "/gis/latLng",
+        "legend": "新功能",
+        "layout": "wide"
       }
     ]
   },
