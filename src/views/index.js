@@ -15,5 +15,6 @@ export default {
   tetris: () => import('@/views/games/tetris/index.vue'),
   viewSourceCode: () => import('@/views/program/viewSourceCode.vue'),
   cssFormatter: () => import('@/views/program/cssFormatter.vue'),
-  geoJson: () => import('@/views/gis/geoJson.vue')
+  geoJson: () => import('@/views/gis/geoJson.vue'),
+  latLng: () => import('@/views/gis/latLng.vue')
 }
