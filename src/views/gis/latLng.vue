@@ -1,18 +1,24 @@
 <template>
-<container>
-  <Form layout="inline">
-    <Item>
-      <Input v-model:value.number="latLng.lat" placeholder="输入纬度"></Input>
-    </Item>
-    <Item>
-      <Input v-model:value.number="latLng.lng" placeholder="输入经度"></Input>
-    </Item>
-    <Item>
-      <Button type="primary" @click="locate">定位</Button>
-    </Item>
-  </Form>
-  <div class="mapContainer" ref="mapContainer"></div>
-</container>
+  <container>
+    <Form layout="inline">
+      <Item>
+        <Input v-model:value.number="latLng.lat" placeholder="输入纬度"></Input>
+      </Item>
+      <Item>
+        <Input v-model:value.number="latLng.lng" placeholder="输入经度"></Input>
+      </Item>
+      <Item>
+        <Button type="primary" @click="locateLatLng(latLng)">解析经纬度</Button>
+      </Item>
+      <Item>
+        <Input v-model:value.number="address" placeholder="输入结构化地址"></Input>
+      </Item>
+      <Item>
+        <Button type="primary" @click="locateAddress">解析地址</Button>
+      </Item>
+    </Form>
+    <div class="mapContainer" ref="mapContainer"></div>
+  </container>
 </template>
 
 <script>
@@ -49,11 +55,13 @@ export default {
     centerMarker: undefined,
     clickMarker: undefined,
     tdtToken: 'bed806b1ccb34b268ab1c0700123d444',
+    gaodeToken: '868d6830a7409520ae283cde3a3f84d1',
 
     latLng: {
-      lng: 105,
-      lat: 35
-    }
+      lng: '',
+      lat: ''
+    },
+    address: ''
   }),
   mounted () {
     this.initMap()
@@ -87,13 +95,13 @@ export default {
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }),
         天地图矢量: layerGroup([
-          tileLayer('https://t{s}.tianditu.gov.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=vec&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=' + this.tdtToken, {
+          tileLayer(`https://t{s}.tianditu.gov.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=vec&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
             subdomains: '01234567',
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer('https://t{s}.tianditu.gov.cn/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cva&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=' + this.tdtToken, {
+          tileLayer(`https://t{s}.tianditu.gov.cn/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cva&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
             subdomains: '01234567',
             minZoom: 3,
             maxNativeZoom: 18,
@@ -103,13 +111,13 @@ export default {
           attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
         }),
         天地图影像: layerGroup([
-          tileLayer('https://t{s}.tianditu.gov.cn/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=img&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=' + this.tdtToken, {
+          tileLayer(`https://t{s}.tianditu.gov.cn/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=img&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
             subdomains: '01234567',
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer('https://t{s}.tianditu.gov.cn/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cia&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=' + this.tdtToken, {
+          tileLayer(`https://t{s}.tianditu.gov.cn/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cia&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
             subdomains: '01234567',
             minZoom: 3,
             maxNativeZoom: 18,
@@ -119,13 +127,13 @@ export default {
           attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
         }),
         天地图地形: layerGroup([
-          tileLayer('https://t{s}.tianditu.gov.cn/ter_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=ter&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=' + this.tdtToken, {
+          tileLayer(`https://t{s}.tianditu.gov.cn/ter_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=ter&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
             subdomains: '01234567',
             minZoom: 3,
             maxNativeZoom: 14,
             maxZoom: 20
           }),
-          tileLayer('https://t{s}.tianditu.gov.cn/cta_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cta&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=' + this.tdtToken, {
+          tileLayer(`https://t{s}.tianditu.gov.cn/cta_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cta&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
             subdomains: '01234567',
             minZoom: 3,
             maxNativeZoom: 14,
@@ -137,8 +145,7 @@ export default {
         OpenStreetMap: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
         })
-      }, {
-      }, {
+      }, {}, {
         collapsed: false,
         hideSingleBase: true,
         position: 'topright'
@@ -159,8 +166,7 @@ export default {
           autoPan: false,
           autoClose: false,
           closeOnEscapeKey: false,
-          closeOnClick: false,
-          maxWidth: 350
+          closeOnClick: false
         })
         .openPopup()
       this.map.on('move', () => {
@@ -180,8 +186,7 @@ export default {
               autoPan: false,
               autoClose: false,
               closeOnEscapeKey: false,
-              closeOnClick: false,
-              maxWidth: 350
+              closeOnClick: false
             })
             .openPopup()
         }
@@ -189,37 +194,38 @@ export default {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
           this.map.setView([position.coords.latitude, position.coords.longitude], 18)
-          this.latLng = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          }
         })
       }
     },
-    getPopupContent (latLng) {
+    getPopupContent (latLng, address) {
       const lat = latLng.lat
       let lng = latLng.lng % 360
-      if (lng <= -180) { lng += 360 }
+      if (lng <= -180) {
+        lng += 360
+      }
       let content = ''
       if (lat >= 0) {
-        content += '<p>北纬N: ' + Math.abs(lat) + '</p>'
+        content += `<p>北纬N: ${Math.abs(lat)}</p>`
       } else {
-        content += '<p>南纬S: ' + Math.abs(lat) + '</p>'
+        content += `<p>南纬S: ${Math.abs(lat)}</p>`
       }
       if (lng >= 0) {
-        content += '<p>东经E: ' + Math.abs(lng) + '</p>'
+        content += `<p>东经E: ${Math.abs(lng)}</p>`
       } else {
-        content += '<p>西经W: ' + Math.abs(lng) + '</p>'
+        content += `<p>西经W: ${Math.abs(lng)}</p>`
       }
       if (lat >= 0) {
-        content += '<p>北纬N: ' + this.formatDegree(Math.abs(lat)) + '</p>'
+        content += `<p>北纬N: ${this.formatDegree(Math.abs(lat))}</p>`
       } else {
-        content += '<p>南纬S: ' + this.formatDegree(Math.abs(lat)) + '</p>'
+        content += `<p>南纬S: ${this.formatDegree(Math.abs(lat))}</p>`
       }
       if (lng >= 0) {
-        content += '<p>东经E: ' + this.formatDegree(lng) + '</p>'
+        content += `<p>东经E: ${this.formatDegree(lng)}</p>`
       } else {
-        content += '<p>西经W: ' + this.formatDegree(lng) + '</p>'
+        content += `<p>西经W: ${this.formatDegree(lng)}</p>`
+      }
+      if (address) {
+        content += `<p>地址: ${address}</p>`
       }
       return content
     },
@@ -231,19 +237,33 @@ export default {
       const v3 = ((value - v1) * 3600 % 60).toFixed(2) // 秒
       return v1 + '° ' + (v2 < 10 ? '0' + v2 : v2) + '\' ' + (v3 < 10 ? '0' + v3 : v3) + '" '
     },
-    locate () {
-      if (this.latLng.lng != null && this.latLng.lat != null && this.latLng.lng !== '' && this.latLng.lat !== '') {
+    async locateLatLng (latLng = {}, address) {
+      if (latLng.lng != null && latLng.lat != null && latLng.lng !== '' && latLng.lat !== '') {
         try {
+          try {
+            const res = await this.$axios.get('https://restapi.amap.com/v3/geocode/regeo', {
+              params: {
+                location: `${latLng.lng},${latLng.lat}`,
+                output: 'json',
+                key: this.gaodeToken
+              }
+            })
+            if (res.data.status === '1' && res.data.regeocode.formatted_address) {
+              address = res.data.regeocode.formatted_address
+            } else {
+              this.$msg.warn('未找到相关地址。')
+            }
+          } catch (e) { this.$msg.error('查询地址失败！') }
           if (this.clickMarker) {
             this.clickMarker
-              .setLatLng(this.latLng)
+              .setLatLng(latLng)
               .getPopup()
-              .setContent(this.getPopupContent(this.latLng))
+              .setContent(this.getPopupContent(latLng, address))
               .openPopup()
           } else {
-            this.clickMarker = markRaw(marker(this.latLng, { icon: yellowIcon }))
+            this.clickMarker = markRaw(marker(latLng, { icon: yellowIcon }))
               .addTo(this.map)
-              .bindPopup(this.getPopupContent(this.latLng), {
+              .bindPopup(this.getPopupContent(latLng, address), {
                 autoPan: false,
                 autoClose: false,
                 closeOnEscapeKey: false,
@@ -252,8 +272,29 @@ export default {
               })
               .openPopup()
           }
-          this.map.setView(this.latLng, 18)
+          this.map.setView(latLng, 18)
         } catch (e) {
+          this.$msg.error('定位失败!')
+        }
+      }
+    },
+    async locateAddress () {
+      if (this.address) {
+        try {
+          const res = await this.$axios.get('https://restapi.amap.com/v3/geocode/geo', {
+            params: {
+              address: this.address,
+              key: this.gaodeToken
+            }
+          })
+          if (res.data.status === '1' && Number(res.data.count) > 0) {
+            const info = res.data.geocodes[0]
+            await this.locateLatLng({ lat: parseFloat(info.location.split(',')[1]), lng: parseFloat(info.location.split(',')[0]) }, info.formatted_address)
+          } else {
+            this.$msg.warn('未找到相关地址。')
+          }
+        } catch (e) {
+          this.$msg.error('查询地址失败!')
         }
       }
     }
