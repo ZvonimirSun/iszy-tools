@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import widgets from '@/views'
 import tools from '@/views/tools.json'
@@ -56,7 +57,7 @@ routes = routes.concat([
   {
     path: '/login',
     name: '登录',
-    component: () => import('@/views/login/index.vue'),
+    component: defineAsyncComponent(() => import('@/views/login/index.vue')),
     meta: {
       title: 'ISZY 工具集合'
     }
@@ -64,7 +65,7 @@ routes = routes.concat([
   {
     path: '/404',
     name: '404',
-    component: () => import('@/views/error-page/404.vue'),
+    component: defineAsyncComponent(() => import('@/views/error-page/404.vue')),
     hidden: true
   },
   {

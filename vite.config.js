@@ -15,8 +15,7 @@ export default defineConfig({
       targets: ['defaults', 'not IE 11']
     }),
     VitePWA({
-      registerType: 'autoUpdate',
-      scope: 'https://tools.iszy.xyz/',
+      scope: '/',
       manifest: {
         name: 'ISZY工具集合',
         short_name: 'ISZY TOOLS',
