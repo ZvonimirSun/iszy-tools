@@ -23,19 +23,23 @@
       </Footer>
     </Layout>
   </config-provider>
+  <pwa-reload-prompt/>
 </template>
 
 <script>
+import PwaReloadPrompt from '@/components/pwaReloadPrompt.vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography } from 'ant-design-vue'
+import { defineComponent } from 'vue'
+
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
 
-export default {
+export default defineComponent({
   data: () => ({
     locale: zhCN
   }),
-  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
+  components: { PwaReloadPrompt, Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
   methods: {
     getPopupContainer (node) {
       if (node) {
@@ -44,7 +48,7 @@ export default {
       return document.body
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
