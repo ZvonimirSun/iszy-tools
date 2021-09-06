@@ -12,7 +12,7 @@
       <Col :span="24">
         <Divider orientation="left">
           <span class="typeName">
-            <IconFont :type="item.icon" v-if="item.icon"/>
+            <iconpark-icon class="i-icon" :name="item.icon" color="#fff" v-if="item.icon"/>
             <div>{{ item.type }}</div>
           </span>
         </Divider>
@@ -86,28 +86,28 @@ export default {
       } else {
         tmp = [{
           type: '工具',
-          icon: 'icon-t-changyong',
+          icon: 'all-application',
           children: this.allTools
         }]
       }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
-          icon: 'icon-t-recent',
+          icon: 'history',
           children: this.recent
         })
       }
       if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
-          icon: 'icon-t-changyong',
+          icon: 'concern',
           children: this.most
         })
       }
       if (this.favorite.length > 0) {
         tmp.unshift({
           type: '收藏',
-          icon: 'icon-t-star-filled',
+          icon: 'folder-focus',
           children: this.favorite
         })
       }
@@ -185,11 +185,6 @@ export default {
   color: #fff;
   box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
   border-radius: .8rem;
-
-  .anticon {
-    font-size: 2.4rem;
-    margin-right: .5rem;
-  }
 
   .i-icon {
     font-size: 2.4rem;

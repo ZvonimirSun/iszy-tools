@@ -61,6 +61,13 @@ export default defineConfig({
             options: {
               cacheName: 'iconfont'
             }
+          },
+          {
+            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'bytegoofy'
+            }
           }
         ]
       }
