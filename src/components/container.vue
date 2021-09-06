@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+import toggleFullscreen from '@/utils/toggleFullscreen.js'
 import { Divider } from 'ant-design-vue'
 import { FullscreenOutlined } from '@ant-design/icons-vue'
 
@@ -27,8 +28,7 @@ export default {
   },
   methods: {
     fullScreen () {
-      // eslint-disable-next-line no-useless-call
-      this.$refs.container.requestFullscreen.call(this.$refs.container)
+      toggleFullscreen.bind(this)(this.$refs.container)
     }
   }
 }
