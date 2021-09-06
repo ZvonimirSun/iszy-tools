@@ -3,7 +3,7 @@
     <div class="containerTitle">
       <Divider orientation="left">
           <span class="typeName">{{ name || ($route.meta || {}).title || $route.name }}&nbsp;
-            <span class="fullScreen" title="全屏" @click="fullScreen"><FullscreenOutlined/></span>
+            <span class="fullScreen" title="全屏" @click="fullScreen"><FullScreen theme="outline"/></span>
           </span>
       </Divider>
     </div>
@@ -15,7 +15,7 @@
 <script>
 import toggleFullscreen from '@/utils/toggleFullscreen.js'
 import { Divider } from 'ant-design-vue'
-import { FullscreenOutlined } from '@ant-design/icons-vue'
+import { FullScreen } from '@icon-park/vue-next'
 
 export default {
   name: 'container',
@@ -24,7 +24,7 @@ export default {
   },
   components: {
     Divider,
-    FullscreenOutlined
+    FullScreen
   },
   methods: {
     fullScreen () {
@@ -49,40 +49,40 @@ export default {
     margin-top: -3.5rem;
 
     .typeName {
-    font-size: 1.8rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    background-color: #16b0f6;
-    padding: .48rem 1.28rem;
-    color: #fff;
-    box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
-    border-radius: .8rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      background-color: #16b0f6;
+      padding: .48rem 1.28rem;
+      color: #fff;
+      box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
+      border-radius: .8rem;
 
-    .anticon {
-      font-size: 2.4rem;
+      .i-icon {
+        font-size: 2.4rem;
 
-      .anticon:first-child {
-        margin-right: .5rem;
+        .i-icon:first-child {
+          margin-right: .5rem;
+        }
+      }
+
+      .fullScreen {
+        cursor: pointer;
+
+        .i-icon {
+          font-size: 1.8rem;
+        }
       }
     }
-
-    .fullScreen {
-      cursor: pointer;
-
-      .anticon {
-        font-size: 1.8rem;
-      }
-    }
-  }
   }
 
   .main {
-     padding: 1.2rem;
-     background: #fff;
-     flex: 1;
-     overflow-y: auto;
-     border-radius: .8rem;
-   }
+    padding: 1.2rem;
+    background: #fff;
+    flex: 1;
+    overflow-y: auto;
+    border-radius: .8rem;
+  }
 }
 </style>

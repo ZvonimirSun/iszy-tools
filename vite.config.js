@@ -81,7 +81,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['@ant-design/icons-vue']
+    include: ['@icon-park/vue-next']
   },
   build: {
     sourcemap: false,

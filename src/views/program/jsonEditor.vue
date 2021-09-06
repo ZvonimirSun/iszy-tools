@@ -5,10 +5,10 @@
       <div class="controller noShowMobile">
         <Space direction="vertical">
           <Button type="primary" @click="copyRight" block>复制
-            <RightOutlined/>
+            <Right theme="outline"/>
           </Button>
           <Button type="primary" @click="copyLeft" block>
-            <LeftOutlined/>
+            <Left theme="outline"/>
             复制
           </Button>
           <Button type="primary" @click="download" block>
@@ -33,7 +33,7 @@ import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
-import { RightOutlined, LeftOutlined } from '@ant-design/icons-vue'
+import { Right, Left } from '@icon-park/vue-next'
 import { markRaw } from 'vue'
 import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
 
@@ -44,8 +44,8 @@ export default {
     Button,
     Space,
     Checkbox,
-    RightOutlined,
-    LeftOutlined
+    Right,
+    Left
   },
   data: () => ({
     editorLeft: null,
@@ -82,7 +82,7 @@ export default {
       this.editorLeft = markRaw(new JSONEditor(
         this.$refs.jsonEditorLeft,
         {
-          mode: 'tree',
+          mode: 'code',
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
@@ -207,7 +207,14 @@ export default {
       width: 80%;
 
       :deep(.ant-btn) {
-        .anticon + span, span + .anticon {
+        display: flex;
+        align-items: center;
+
+        .i-icon {
+          font-size: 1.8rem;
+        }
+
+        .i-icon + span, span + .i-icon {
           margin-left: 0;
         }
       }

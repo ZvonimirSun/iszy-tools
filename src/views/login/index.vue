@@ -4,12 +4,12 @@
       <Form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
         <Item required>
           <Input v-model:value="form.userName" placeholder="账户" size="large">
-            <template #prefix><UserOutlined style="color:rgba(0,0,0,.25)"/></template>
+            <template #prefix><User theme="outline" style="color:rgba(0,0,0,.25)"/></template>
           </Input>
         </Item>
         <Item required>
           <Password v-model:value="form.password" placeholder="密码" size="large">
-            <template #prefix><LockOutlined style="color:rgba(0,0,0,.25)"/></template>
+            <template #prefix><Lock theme="outline" style="color:rgba(0,0,0,.25)"/></template>
           </Password>
         </Item>
         <Item>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { User, Lock } from '@icon-park/vue-next'
 import { Form, Input, Button } from 'ant-design-vue'
 const { Item } = Form
 const { Password } = Input
@@ -34,8 +34,8 @@ const { Password } = Input
 export default {
   name: 'Login',
   components: {
-    UserOutlined,
-    LockOutlined,
+    User,
+    Lock,
     Form,
     Input,
     Button,

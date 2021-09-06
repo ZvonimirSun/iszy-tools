@@ -1,7 +1,7 @@
 <template>
 <div class="fixedWidgets" :style="style">
   <div v-for="(item,index) of widgets" :key="'widget'+index">
-    <IconFont :type="item.icon" @click="item.callback"/>
+<!--    <IconFont :type="item.icon" @click="item.callback"/>-->
   </div>
 </div>
 </template>

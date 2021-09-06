@@ -4,7 +4,7 @@
     <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="beforeUpload">
       <Input readonly placeholder="点击这里上传图片" :value="fileName">
         <template #addonAfter>
-          <Button block :disabled="!file || quota===0 || quota-quotaUsed<=0" @click.stop="start"><span v-if="loading"><LoadingOutlined/>识别中</span><span
+          <Button block :disabled="!file || quota===0 || quota-quotaUsed<=0" @click.stop="start"><span v-if="loading"><Loading theme="outline"/>识别中</span><span
             v-else>开始识别</span></Button>
         </template>
       </Input>
@@ -55,7 +55,7 @@
 <script>
 import Container from '@/components/container.vue'
 import { Input, Upload, Typography, Button, Divider, Image, Descriptions } from 'ant-design-vue'
-import { LoadingOutlined } from '@ant-design/icons-vue'
+import { Loading } from '@icon-park/vue-next'
 
 const { Item } = Descriptions
 const { Title, Paragraph, Text } = Typography
@@ -74,7 +74,7 @@ export default {
     Text,
     Descriptions,
     Item,
-    LoadingOutlined
+    Loading
   },
   data: () => ({
     file: '',

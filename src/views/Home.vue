@@ -23,10 +23,10 @@
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
-            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
+            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><Star theme="filled"/></span>
             <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
-                <span class="nonHover"><StarOutlined/></span>
-                <span class="hovered"><StarFilled/></span>
+                <span class="nonHover"><Star theme="outline"/></span>
+                <span class="hovered"><Star theme="filled"/></span>
               </span>
             <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
           </div>
@@ -64,8 +64,7 @@
 </template>
 
 <script>
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
-import { Search, Notes } from '@icon-park/vue-next'
+import { Search, Notes, Star } from '@icon-park/vue-next'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
 import tools from '@/views/tools.json'
 import legends from '@/views/legends.json'
@@ -78,7 +77,7 @@ const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
-  components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography, Search, Notes },
+  components: { Star, Row, Col, Divider, Paragraph, Typography, Search, Notes },
   computed: {
     tools () {
       let tmp
@@ -193,8 +192,7 @@ export default {
   }
 
   .i-icon {
-    font-size: 2.2rem;
-    height: 2.4rem;
+    font-size: 2.4rem;
     margin-right: .5rem;
   }
 }

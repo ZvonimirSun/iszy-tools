@@ -4,45 +4,45 @@
       <div class="header">
         <Button type="primary" @click="format" title="格式化">
           <template #icon>
-            <indent-right theme="outline" size="16"/>
+            <indent-right theme="outline"/>
           </template>
         </Button>
         <Button type="primary" @click="compact" title="压缩">
           <template #icon>
-            <compression theme="outline" size="16"/>
+            <compression theme="outline"/>
           </template>
         </Button>
         <Divider type="vertical"/>
         <Button type="primary" @click="foldAll" title="折叠所有">
           <template #icon>
-            <collapse-text-input theme="outline" size="16"/>
+            <collapse-text-input theme="outline"/>
           </template>
         </Button>
         <Button type="primary" @click="unfoldAll" title="展开所有">
           <template #icon>
-            <expand-text-input theme="outline" size="16"/>
+            <expand-text-input theme="outline"/>
           </template>
         </Button>
         <Divider type="vertical"/>
         <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
           <template #icon>
-            <undo theme="outline" size="16"/>
+            <undo theme="outline"/>
           </template>
         </Button>
         <Button type="primary" @click="redo" title="重做" :disabled="historySize.redo === 0">
           <template #icon>
-            <redo theme="outline" size="16"/>
+            <redo theme="outline"/>
           </template>
         </Button>
         <Divider type="vertical"/>
         <Button type="primary" title="前往顶部" @click="goTop">
           <template #icon>
-            <to-top theme="outline" size="16"/>
+            <to-top theme="outline"/>
           </template>
         </Button>
         <Button type="primary" title="前往底部" @click="goBottom">
           <template #icon>
-            <to-bottom theme="outline" size="16"/>
+            <to-bottom theme="outline"/>
           </template>
         </Button>
       </div>
