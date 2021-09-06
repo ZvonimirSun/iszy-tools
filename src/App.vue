@@ -23,23 +23,66 @@
       </Footer>
     </Layout>
   </config-provider>
-  <pwa-reload-prompt/>
 </template>
 
 <script>
-import PwaReloadPrompt from '@/components/pwaReloadPrompt.vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { Layout, ConfigProvider, BackTop, Typography } from 'ant-design-vue'
-import { defineComponent } from 'vue'
+import { Layout, ConfigProvider, BackTop, Typography, notification } from 'ant-design-vue'
+import PwaReloadPrompt from '@/components/pwaReloadPrompt.vue'
+import { h, defineComponent } from 'vue'
+import { useRegisterSW } from 'virtual:pwa-register/vue'
 
+const {
+  offlineReady,
+  needRefresh,
+  updateServiceWorker
+} = useRegisterSW()
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
+const notificationKey = 'pwaNotice'
 
 export default defineComponent({
   data: () => ({
-    locale: zhCN
+    locale: zhCN,
+    offlineReady,
+    needRefresh
   }),
-  components: { PwaReloadPrompt, Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
+  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
+  watch: {
+    offlineReady: function (val) {
+      if (val) {
+        notification.close(notificationKey)
+        notification.success({
+          key: notificationKey,
+          message: '离线使用已准备好~',
+          placement: 'bottomRight',
+          description: h(PwaReloadPrompt, {
+            onClose: () => {
+              notification.close(notificationKey)
+            }
+          })
+        })
+      }
+    },
+    needRefresh: function (val) {
+      if (val) {
+        notification.close(notificationKey)
+        notification.info({
+          key: notificationKey,
+          message: '存在新内容，请点击按钮重载更新~',
+          placement: 'bottomRight',
+          duration: null,
+          description: h(PwaReloadPrompt, {
+            onReload: () => updateServiceWorker(),
+            onClose: () => {
+              notification.close(notificationKey)
+            },
+            type: 'reload'
+          })
+        })
+      }
+    }
+  },
   methods: {
     getPopupContainer (node) {
       if (node) {
