@@ -146,7 +146,6 @@ export default {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
         })
       }, {}, {
-        collapsed: false,
         hideSingleBase: true,
         position: 'topright'
       }).addTo(this.map)

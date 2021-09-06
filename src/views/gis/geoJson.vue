@@ -93,7 +93,8 @@ export default defineComponent({
 
     editableData: {},
 
-    tdtToken: 'bed806b1ccb34b268ab1c0700123d444'
+    tdtToken: 'bed806b1ccb34b268ab1c0700123d444',
+    gaodeToken: '868d6830a7409520ae283cde3a3f84d1'
   }),
   computed: {
     tableColumns () {
@@ -258,7 +259,6 @@ export default defineComponent({
       }, {
         图形: toRaw(this.geoJsonLayer)
       }, {
-        collapsed: false,
         hideSingleBase: true,
         position: 'topright'
       }).addTo(this.map)
@@ -271,6 +271,23 @@ export default defineComponent({
         zoomOutTitle: '缩小',
         position: 'bottomright'
       }).addTo(this.map)
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.$axios.get('https://amapapi.iszy.xyz/v3/assistant/coordinate/convert', {
+            params: {
+              key: this.gaodeToken,
+              locations: `${position.coords.longitude},${position.coords.latitude}`,
+              coordsys: 'gps',
+              output: 'json'
+            }
+          }).then((res) => {
+            if (res.data && res.data.status === '1') {
+              const location = res.data.locations.split(',')
+              this.map.setView([location[1], location[0]], 18)
+            }
+          })
+        })
+      }
     },
     updateGeoJsonLayer () {
       if (this.geoJsonLayer && this.geoJsonLayer instanceof GeoJSON) {

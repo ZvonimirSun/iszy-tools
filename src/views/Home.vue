@@ -38,7 +38,7 @@
     <Col :span="24">
       <Divider orientation="left">
           <span class="typeName">
-            <notes theme="outline" size="24"/>
+            <notes theme="outline"/>
             <div>公告</div>
           </span>
       </Divider>
