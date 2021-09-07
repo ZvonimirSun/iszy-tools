@@ -16,5 +16,6 @@ export default {
   viewSourceCode: () => import('@/views/program/viewSourceCode.vue'),
   cssFormatter: () => import('@/views/program/cssFormatter.vue'),
   geoJson: () => import('@/views/gis/geoJson.vue'),
-  latLng: () => import('@/views/gis/latLng.vue')
+  latLng: () => import('@/views/gis/latLng.vue'),
+  tinyEditor: () => import('@/views/program/tinyEditor.vue')
 }
