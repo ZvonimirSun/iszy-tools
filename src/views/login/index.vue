@@ -3,13 +3,13 @@
     <div class="main">
       <Form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
         <Item required>
-          <Input v-model:value="form.username" placeholder="账户" size="large">
-            <template #prefix><UserOutlined style="color:rgba(0,0,0,.25)"/></template>
+          <Input v-model:value="form.userName" placeholder="账户" size="large">
+            <template #prefix><User theme="outline" style="color:rgba(0,0,0,.25)"/></template>
           </Input>
         </Item>
         <Item required>
           <Password v-model:value="form.password" placeholder="密码" size="large">
-            <template #prefix><LockOutlined style="color:rgba(0,0,0,.25)"/></template>
+            <template #prefix><Lock theme="outline" style="color:rgba(0,0,0,.25)"/></template>
           </Password>
         </Item>
         <Item>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { User, Lock } from '@icon-park/vue-next'
 import { Form, Input, Button } from 'ant-design-vue'
 const { Item } = Form
 const { Password } = Input
@@ -34,8 +34,8 @@ const { Password } = Input
 export default {
   name: 'Login',
   components: {
-    UserOutlined,
-    LockOutlined,
+    User,
+    Lock,
     Form,
     Input,
     Button,
@@ -57,7 +57,7 @@ export default {
   data: () => ({
     form: {
       layout: 'horizontal',
-      username: '',
+      userName: '',
       password: ''
     },
     redirect: undefined,
@@ -66,15 +66,19 @@ export default {
   }),
   methods: {
     login () {
-      if (this.form.username !== '' && this.form.password !== '') {
+      if (this.form.userName != null && this.form.password != null) {
         this.loading = true
         this.$store.dispatch('user/login', {
-          username: this.form.username,
+          userName: this.form.userName,
           password: this.form.password
-        }).then(() => {
-          this.$msg.success('登录成功！')
-          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-          this.loading = false
+        }).then((result) => {
+          if (result) {
+            this.$msg.success('登录成功！')
+            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            this.loading = false
+          } else {
+            this.$msg.error('用户名或密码错误！')
+          }
         }).catch(() => {
           this.$msg.error('用户名或密码错误！')
         }).finally(() => {

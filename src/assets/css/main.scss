@@ -1,6 +1,10 @@
 /*字号统一控制*/
 html {
   font-size: 62.5%;
+
+  @media screen and (max-width: 426px) {
+    font-size: 45%;
+  }
 }
 
 /*滚动条样式*/
@@ -50,4 +54,8 @@ html, body, #app {
   code, kbd, samp {
     font-family: JetBrains Mono, monospace;
   }
+}
+
+.i-icon {
+  line-height: 0;
 }

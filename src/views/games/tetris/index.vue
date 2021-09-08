@@ -8,49 +8,54 @@
           <template v-if="inited">
             <template v-for="x in gridCells.row" :key="x">
               <template v-for="y in gridCells.col" :key="y">
-                <div :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
-                     v-if="currentMatrix[x-1][y-1]"></div>
+                <div
+                  :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
+                  v-if="currentMatrix[x-1][y-1]"></div>
                 <div class="tetrisCell" v-else></div>
               </template>
             </template>
           </template>
         </div>
       </div>
-      <div class="infoPanel">
-        <div class="infoTitle">最高分</div>
-        <div class="score">
-          {{bestScore}}
-        </div>
-        <div class="infoTitle">得分</div>
-        <div class="score">
-          {{score}}
-        </div>
-        <div class="infoTitle">消除行</div>
-        <div class="score">
-          {{lines}}
-        </div>
-        <div class="infoTitle">级别</div>
-        <div class="score">
-          {{level}}
-        </div>
-        <div class="infoTitle">下一个</div>
-        <div class="nextTetrimino">
-          <template v-if="inited">
-            <template v-for="x in 2" :key="x">
-              <template v-for="y in 4" :key="y">
-                <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
-                     v-if="nextTetriminoMatrixLegend[x-1][y-1]"></div>
-                <div class="tetrisCell" v-else></div>
+      <div class="otherPanel">
+        <div class="infoPanel">
+          <div class="info">最高分: <span class="digital">{{ bestScore }}</span></div>
+          <div class="info">
+            <template v-if="!start">上轮</template>
+            得分: <span class="digital">{{ score }}</span></div>
+          <div class="info">消除行: <span class="digital">{{ lines }}</span></div>
+          <div class="info">级别: <span class="digital">{{ level }}</span></div>
+          <div class="info">下一个</div>
+          <div class="nextTetrimino">
+            <template v-if="inited">
+              <template v-for="x in 2" :key="x">
+                <template v-for="y in 4" :key="y">
+                  <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
+                       v-if="nextTetriminoMatrixLegend[x-1][y-1]"></div>
+                  <div class="tetrisCell" v-else></div>
+                </template>
               </template>
             </template>
-          </template>
-        </div>
+          </div>
 
-        <div class="startGame" @click="playGame">
-          <div class="tetrisCell">开</div>
-          <div class="tetrisCell">始</div>
-          <div class="tetrisCell">游</div>
-          <div class="tetrisCell">戏</div>
+        </div>
+        <div class="controlPanel">
+          <div class="controlButton pause" @click="pauseGame"></div>
+          <div class="controlInfo pause">暂停P</div>
+          <div class="controlButton restart" @click="resetGame" v-if="start"></div>
+          <div class="controlButton restart" @click="playGame" v-else></div>
+          <div class="controlInfo restart">重玩R</div>
+          <div class="controlButton drop" @click="moveBottom" v-if="start"></div>
+          <div class="controlButton drop" @click="playGame" v-else></div>
+          <div class="controlInfo drop">掉落Space</div>
+          <div class="controlButton up" @click="rotateRight"></div>
+          <div class="controlInfo up">旋转</div>
+          <div class="controlButton left" @click="moveLeft"></div>
+          <div class="controlInfo left">左移</div>
+          <div class="controlButton right" @click="moveRight"></div>
+          <div class="controlInfo right">右移</div>
+          <div class="controlButton down" @click="moveDown"></div>
+          <div class="controlInfo down">下移</div>
         </div>
       </div>
     </div>
@@ -58,10 +63,12 @@
 </template>
 
 <script>
-import { range, random, cloneDeep } from 'lodash'
+import { range, shuffle, cloneDeep } from 'lodash-es'
 import Container from '@/components/container.vue'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
+import { createNamespacedHelpers } from 'vuex'
 
+const { mapState, mapActions } = createNamespacedHelpers('tetris')
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {
@@ -79,13 +86,14 @@ export default {
     position: null,
     currentTetrimino: null,
     nextTetrimino: null,
-    bestScore: 0,
+    tetriminosShuffle: [],
     score: 0,
     lines: 0,
 
     start: false,
     end: false,
     pause: false,
+    lock: false,
 
     clearing: false,
     clearIndexs: [],
@@ -126,7 +134,12 @@ export default {
       } else {
         return this.matrix
       }
-    }
+    },
+    speed: function () {
+      const level = this.level <= 20 ? this.level : 20
+      return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
+    },
+    ...mapState(['bestScore'])
   },
   mounted () {
     this.resetGame()
@@ -145,10 +158,11 @@ export default {
           if (!this.clearing) {
             this.moveDown()
           }
-        }, 1000)
+        }, this.speed)
       }
     },
     resetGame () {
+      clearInterval(this.intervalID)
       const tmp = Array(this.gridCells.row)
       for (const x of range(this.gridCells.row)) {
         tmp[x] = Array(this.gridCells.col).fill('')
@@ -160,17 +174,23 @@ export default {
       this.start = false
       this.end = false
       this.pause = false
+      this.lock = false
       this.clearing = false
     },
-    pauseGame () {
-      if (this.start) {
+    pauseGame (lock) {
+      if (lock) {
+        this.lock = true
+      } else if (lock === false) {
+        this.lock = false
+      }
+      if (this.start && (this.lock === false || lock)) {
         if (this.pause) {
           this.pause = !this.pause
           this.intervalID = setInterval(() => {
             if (!this.clearing) {
               this.moveDown()
             }
-          }, 1000)
+          }, this.speed)
         } else {
           this.pause = !this.pause
           clearInterval(this.intervalID)
@@ -190,19 +210,21 @@ export default {
         }
         this.matrix = cloneDeep(this.currentMatrix)
         if (this.end) {
+          this.pauseGame(true)
           this.clearIndexs = []
           for (const x of range(this.gridCells.row)) {
             this.clearIndexs.push(x)
           }
           setTimeout(() => {
             if (this.score > this.bestScore) {
-              this.bestScore = this.score
+              this.setBestScore(this.score)
             }
             this.clearIndexs = []
             this.resetGame()
           }, 600)
           return
         }
+        this.score += 4
         const indexs = []
         for (const i in this.matrix) {
           const tmp = this.matrix[i].filter(item => (item === ''))
@@ -212,6 +234,7 @@ export default {
         }
         if (indexs.length > 0) {
           this.clearing = true
+          this.pauseGame(true)
           this.clearIndexs = indexs
           const tmp = cloneDeep(this.matrix)
           for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
@@ -244,6 +267,7 @@ export default {
             this.getNextTetrimino()
             this.resetPosition()
             this.clearing = false
+            this.pauseGame(false)
           }, 600)
         } else {
           this.getNextTetrimino()
@@ -253,7 +277,10 @@ export default {
     },
     getNextTetrimino () {
       this.currentTetrimino = this.nextTetrimino
-      this.nextTetrimino = tetriminos[random(0, 6)]
+      if (this.tetriminosShuffle.length <= 7) {
+        this.tetriminosShuffle = this.tetriminosShuffle.concat(shuffle(tetriminos))
+      }
+      this.nextTetrimino = this.tetriminosShuffle.shift()
     },
 
     rotateRight () {
@@ -305,7 +332,9 @@ export default {
 
     _getRotatedMatrix (rotate) {
       let index = rotate % TetriminosMatrix[this.currentTetrimino].length
-      if (index < 0) { index += TetriminosMatrix[this.currentTetrimino].length }
+      if (index < 0) {
+        index += TetriminosMatrix[this.currentTetrimino].length
+      }
       return TetriminosMatrix[this.currentTetrimino][index]
     },
     _getPositions (matrix, position) {
@@ -389,6 +418,13 @@ export default {
           case 'KeyP':
             this.pauseGame()
             break
+          case 'KeyR':
+            if (this.start) {
+              this.resetGame()
+            } else {
+              this.playGame()
+            }
+            break
           default:
             break
         }
@@ -403,7 +439,8 @@ export default {
         }
       }
       return false
-    }
+    },
+    ...mapActions(['setBestScore'])
   },
   beforeUnmount () {
     this.removeListener()
@@ -412,6 +449,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./style/ds-digital";
 @import "./style/variables";
 
 @keyframes blink {
@@ -429,17 +467,16 @@ export default {
 .gamePanel {
   height: $height;
   width: $width;
-  max-height: $max-height;
-  max-width: $max-width;
   margin: 0 auto;
-  border: 1rem solid $gray-bottom;
+  border: $padding solid $gray-bottom;
   border-right-color: $gray-left;
   border-bottom-color: $gray-top;
   border-left-color: $gray-right;
   background: #000;
   box-sizing: border-box;
-  padding: .8rem;
+  padding: $padding;
   display: flex;
+  user-select: none;
 
   .tetrisPanel {
     width: fit-content;
@@ -453,77 +490,257 @@ export default {
       display: grid;
       grid-template-columns: repeat($grid-col-cells, 1fr);
       grid-template-rows: repeat($grid-row-cells, 1fr);
-
-
     }
   }
 
-  .infoPanel {
+  .otherPanel {
     height: 100%;
-    padding-left: .8rem;
+    padding-left: $padding;
+    display: flex;
+    flex-direction: column;
     flex: 1;
 
-    .infoTitle {
-      font-size: 4.6rem;
-      line-height: 5.4rem;
-      color: #fff;
-      margin: 1.6rem auto;
-      padding-left: 1rem;
-    }
-
-    .nextTetrimino, .startGame {
-      margin: 0 auto;
-      display: grid;
-      width: fit-content;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-    }
-
-    .startGame {
-      margin: 2rem auto 0;
-      display: grid;
-      width: fit-content;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      cursor: pointer;
-      user-select: none;
-
-      .tetrisCell {
-        color: #fff;
-        text-align: center;
-        line-height: 3.131rem;
-        font-size: 2.5rem;
-
-        background: $blue;
-        border: $grid-border-width solid $blue-top;
-        border-right-color: $blue-right;
-        border-bottom-color: $blue-bottom;
-        border-left-color: $blue-left;
-      }
-
-      &:active .tetrisCell{
-        border: $grid-border-width solid $blue-bottom;
-        border-right-color: $blue-left;
-        border-bottom-color: $blue-top;
-        border-left-color: $blue-right;
-        font-size: 2rem;
-        transition: .1s;
-      }
-    }
-
-    .score {
-      color: #fff;
-      font-size: 6.8rem;
-      line-height: 7.6rem;
+    .infoPanel {
       text-align: center;
+      height: fit-content;
+
+      .info {
+        text-align: left;
+        font-size: calc(#{$font-size} - .8rem);
+        line-height: calc(#{$font-size} + .8rem);
+        color: #fff;
+        margin-bottom: calc(#{$padding} * 3);
+        font-family: 'Microsoft Yahei', sans-serif;
+
+        .digital {
+          font-family: "DS Digital", serif;
+          font-style: italic;
+          font-size: calc(#{$font-size} + .8rem);
+        }
+      }
+
+      .nextTetrimino {
+        margin: 0 auto;
+        display: grid;
+        width: fit-content;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+      }
+    }
+
+    .controlPanel {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+
+      .controlButton {
+        cursor: pointer;
+
+        &.pause {
+          grid-row: 2;
+          grid-column: 2 / 4;
+
+          background: $green;
+          border: $grid-border-width solid $green-top;
+          border-right-color: $green-right;
+          border-bottom-color: $green-bottom;
+          border-left-color: $green-left;
+
+          &:active {
+            border: $grid-border-width solid $green-bottom;
+            border-right-color: $green-left;
+            border-bottom-color: $green-top;
+            border-left-color: $green-right;
+          }
+        }
+
+        &.restart {
+          grid-row: 2;
+          grid-column: 5 / 7;
+
+          background: $red;
+          border: $grid-border-width solid $red-top;
+          border-right-color: $red-right;
+          border-bottom-color: $red-bottom;
+          border-left-color: $red-left;
+
+          &:active {
+            border: $grid-border-width solid $red-bottom;
+            border-right-color: $red-left;
+            border-bottom-color: $red-top;
+            border-left-color: $red-right;
+          }
+        }
+
+        &.drop {
+          grid-row: 5 / 7;
+          grid-column: 2 / 4;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.up {
+          grid-row: 4;
+          grid-column: 6;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.left {
+          grid-row: 5;
+          grid-column: 5;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.right {
+          grid-row: 5;
+          grid-column: 7;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+
+        &.down {
+          grid-row: 6;
+          grid-column: 6;
+
+          background: $blue;
+          border: $grid-border-width solid $blue-top;
+          border-right-color: $blue-right;
+          border-bottom-color: $blue-bottom;
+          border-left-color: $blue-left;
+
+          &:active {
+            border: $grid-border-width solid $blue-bottom;
+            border-right-color: $blue-left;
+            border-bottom-color: $blue-top;
+            border-left-color: $blue-right;
+          }
+        }
+      }
+
+      .controlInfo {
+        text-align: center;
+        color: #fff;
+        font-family: 'Microsoft Yahei', sans-serif;
+        font-size: 1.2rem;
+        line-height: 2.0rem;
+        white-space: nowrap;
+        //text-overflow: ellipsis;
+        overflow: hidden;
+
+        @media screen and (max-width: 40rem) {
+          display: none;
+        }
+
+        &.pause {
+          grid-row: 3;
+          grid-column: 2 / 4;
+        }
+
+        &.restart {
+          grid-row: 3;
+          grid-column: 5 / 7;
+        }
+
+        &.drop {
+          grid-row: 7;
+          grid-column: 2 / 4;
+        }
+
+        &.up {
+          grid-row: 4;
+          grid-column: 7;
+        }
+
+        &.left {
+          grid-row: 6;
+          grid-column: 5;
+        }
+
+        &.right {
+          grid-row: 6;
+          grid-column: 7;
+        }
+
+        &.down {
+          grid-row: 7;
+          grid-column: 6;
+        }
+      }
+
+      .startGame {
+        font-family: 'Microsoft Yahei', sans-serif;
+        font-size: $font-size;
+        color: #fff;
+        line-height: calc(#{$font-size} + .8rem);
+        cursor: pointer;
+        background: $gray;
+        border: $grid-border-width solid $gray-top;
+        border-right-color: $gray-right;
+        border-bottom-color: $gray-bottom;
+        border-left-color: $gray-left;
+
+        &:active {
+          border-top-color: $gray-bottom;
+          border-right-color: $gray-left;
+          border-bottom-color: $gray-top;
+          border-left-color: $gray-right;
+          font-size: calc(#{$font-size} * 0.9);
+          transition: .1s;
+        }
+      }
     }
   }
 
   .tetrisCell {
     height: $cell-height;
     width: $cell-width;
-    max-height: $cell-max-height;
-    max-width: $cell-max-width;
 
     &.blink {
       animation: blink 0.6s both;

@@ -1,7 +1,7 @@
 [
   {
     "type": "其他",
-    "icon": "icon-t-stack-fill",
+    "icon": "all-application",
     "children": [
       {
         "name": "淘宝优惠券精选",
@@ -29,8 +29,31 @@
     ]
   },
   {
+    "type": "地图",
+    "icon": "map-draw",
+    "children": [
+      {
+        "name": "地图选择器",
+        "link": "https://datav.aliyun.com/tools/atlas/index.html",
+        "legend": "外部"
+      },
+      {
+        "name": "GeoJSON",
+        "link": "/gis/geoJson",
+        "legend": "新功能",
+        "layout": "wide"
+      },
+      {
+        "name": "经纬度查询",
+        "link": "/gis/latLng",
+        "legend": "新功能",
+        "layout": "wide"
+      }
+    ]
+  },
+  {
     "type": "编程开发",
-    "icon": "icon-t-code",
+    "icon": "code",
     "children": [
       {
         "name": "时间计算",
@@ -46,12 +69,25 @@
       },
       {
         "name": "JSON编辑器",
-        "link": "/program/jsonEditor"
+        "link": "/program/jsonEditor",
+        "layout": "wide"
       },
       {
         "name": "URL编码/解码",
-        "link": "/program/urlEncode",
+        "link": "/program/urlEncode"
+      },
+      {
+        "name": "查看网页源码",
+        "link": "/program/viewSourceCode",
         "legend": "新功能"
+      },
+      {
+        "name": "CSS格式化/压缩",
+        "link": "/program/cssFormatter"
+      },
+      {
+        "name": "TinyEditor",
+        "link": "/program/tinyEditor"
       },
       {
         "name": "Cesium代码样例",
@@ -60,8 +96,8 @@
     ]
   },
   {
-    "type": "游戏",
-    "icon": "icon-t-game",
+    "type": "小游戏",
+    "icon": "game",
     "children": [
       {
         "name": "2048",
@@ -69,13 +105,14 @@
       },
       {
         "name": "俄罗斯方块",
-        "link": "/games/tetris"
+        "link": "/games/tetris",
+        "legend": "新功能"
       }
     ]
   },
   {
     "type": "理财",
-    "icon": "icon-t-licai",
+    "icon": "financing-one",
     "children": [
       {
         "name": "多次提前还贷计算器",
@@ -85,7 +122,7 @@
   },
   {
     "type": "网站相关",
-    "icon": "icon-t-settings",
+    "icon": "setting-two",
     "children": [
       {
         "name": "网站设置",

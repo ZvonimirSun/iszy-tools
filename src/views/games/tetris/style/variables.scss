@@ -3,17 +3,16 @@
 $grid-row-cells: 20;
 $grid-col-cells: 10;
 
-$height: calc(100vh - 32rem);
-$width: calc(100vh - 32rem);
-$max-height: calc(100vw - 8rem);
-$max-width: calc(100vw - 8rem);
+$height: max(min(calc(100vh - 32rem), calc(100vw - 8rem)), 29.7rem);
+$width: $height;
 
-$cell-height: calc(#{math.div(100vh, $grid-row-cells+2)} - #{math.div(32rem+3.6rem, $grid-row-cells+2)});
-$cell-width: calc(#{math.div(100vh, $grid-row-cells+2)} - #{math.div(32rem+3.6rem, $grid-row-cells+2)});
-$cell-max-height: calc(#{math.div(100vw, $grid-row-cells+2)} - #{math.div(8rem+3.6rem, $grid-row-cells+2)});
-$cell-max-width: calc(#{math.div(100vw, $grid-row-cells+2)} - #{math.div(8rem+3.6rem, $grid-row-cells+2)});
+$cell-height: calc(#{$height} * 0.96 / (#{$grid-row-cells} + 2));
+$cell-width: $cell-height;
 
-$grid-border-width: .6rem;
+$grid-border-width: calc(#{$cell-height} * 0.2);
+
+$padding: calc(#{$height} * 0.01);
+$font-size: calc(#{$height} * 0.05);
 
 $gray: #787878;
 $gray-top: #d7d7d7;

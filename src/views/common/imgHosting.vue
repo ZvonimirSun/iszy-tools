@@ -41,7 +41,7 @@
         <Col span="24">
           <Button shape="circle" style="float: right;margin: 1.6rem;" @click="changeSettings">
             <template #icon>
-              <SettingOutlined/>
+              <SettingTwo theme="outline"/>
             </template>
           </Button>
         </Col>
@@ -59,7 +59,7 @@
       >
         <div class="imgUploaderContent">
           <p class="ant-upload-drag-icon">
-            <inbox-outlined></inbox-outlined>
+            <Inbox theme="outline"/>
           </p>
           <p class="ant-upload-text">点击或拖拽图片到这里上传</p>
         </div>
@@ -69,9 +69,10 @@
 </template>
 
 <script>
-import { InboxOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import { SettingTwo, Inbox } from '@icon-park/vue-next'
 import Container from '@/components/container.vue'
 import { Row, Col, Form, Button, Input, Select, Divider, Upload } from 'ant-design-vue'
+
 const { Item } = Form
 const { Option } = Select
 const { Password } = Input
@@ -80,8 +81,8 @@ const { Dragger } = Upload
 export default {
   components: {
     Container,
-    InboxOutlined,
-    SettingOutlined,
+    Inbox,
+    SettingTwo,
     Row,
     Col,
     Form,

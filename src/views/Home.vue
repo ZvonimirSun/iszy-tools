@@ -2,7 +2,7 @@
   <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
     <Col :span="24">
       <div class="search">
-        <IconFont type="icon-t-search"/>
+        <search theme="outline"/>
         <input type="search" placeholder="搜索工具" v-model="searchStr">
       </div>
     </Col>
@@ -12,7 +12,7 @@
       <Col :span="24">
         <Divider orientation="left">
           <span class="typeName">
-            <IconFont :type="item.icon" v-if="item.icon"/>
+            <iconpark-icon class="i-icon" :name="item.icon" color="#fff" v-if="item.icon"/>
             <div>{{ item.type }}</div>
           </span>
         </Divider>
@@ -23,10 +23,10 @@
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
           <div class="tool">
             <span class="toolName">{{ tool.name }}</span>
-            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><StarFilled/></span>
+            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><Star theme="filled"/></span>
             <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
-                <span class="nonHover"><StarOutlined/></span>
-                <span class="hovered"><StarFilled/></span>
+                <span class="nonHover"><Star theme="outline"/></span>
+                <span class="hovered"><Star theme="filled"/></span>
               </span>
             <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
           </div>
@@ -38,7 +38,7 @@
     <Col :span="24">
       <Divider orientation="left">
           <span class="typeName">
-            <IconFont type="icon-t-gonggao"/>
+            <notes theme="outline"/>
             <div>公告</div>
           </span>
       </Divider>
@@ -64,12 +64,12 @@
 </template>
 
 <script>
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue'
+import { Search, Notes, Star } from '@icon-park/vue-next'
 import { Row, Col, Divider, Typography } from 'ant-design-vue'
-import tools from '@/assets/tools.json'
-import legends from '@/assets/legends.json'
+import tools from '@/views/tools.json'
+import legends from '@/views/legends.json'
 import { createNamespacedHelpers } from 'vuex'
-import { cloneDeep, flatten } from 'lodash'
+import { cloneDeep, flatten } from 'lodash-es'
 
 const { Paragraph } = Typography
 const { mapActions, mapGetters, mapState: favMapState } = createNamespacedHelpers('favorite')
@@ -77,7 +77,7 @@ const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
-  components: { StarOutlined, StarFilled, Row, Col, Divider, Paragraph, Typography },
+  components: { Star, Row, Col, Divider, Paragraph, Typography, Search, Notes },
   computed: {
     tools () {
       let tmp
@@ -86,28 +86,28 @@ export default {
       } else {
         tmp = [{
           type: '工具',
-          icon: 'icon-t-changyong',
+          icon: 'all-application',
           children: this.allTools
         }]
       }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
-          icon: 'icon-t-recent',
+          icon: 'history',
           children: this.recent
         })
       }
       if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
-          icon: 'icon-t-changyong',
+          icon: 'concern',
           children: this.most
         })
       }
       if (this.favorite.length > 0) {
         tmp.unshift({
           type: '收藏',
-          icon: 'icon-t-star-filled',
+          icon: 'folder-focus',
           children: this.favorite
         })
       }
@@ -186,7 +186,7 @@ export default {
   box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
   border-radius: .8rem;
 
-  .anticon {
+  .i-icon {
     font-size: 2.4rem;
     margin-right: .5rem;
   }
@@ -336,7 +336,7 @@ export default {
   padding: 1.6rem .8rem;
   color: #666666;
 
-  .anticon {
+  .i-icon {
     font-size: 2.4rem;
     margin-right: 1.6rem;
   }

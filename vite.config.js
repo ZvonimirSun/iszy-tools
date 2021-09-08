@@ -1,7 +1,6 @@
 'use strict'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import legacy from '@vitejs/plugin-legacy'
 import { VitePWA } from 'vite-plugin-pwa'
 import cesium from 'vite-plugin-cesium'
 import styleImport from 'vite-plugin-style-import'
@@ -12,12 +11,8 @@ export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
     vue(),
-    legacy({
-      targets: ['defaults', 'not IE 11']
-    }),
     VitePWA({
-      registerType: 'autoUpdate',
-      scope: 'https://tools.iszy.xyz/',
+      scope: '/',
       manifest: {
         name: 'ISZY工具集合',
         short_name: 'ISZY TOOLS',
@@ -67,6 +62,13 @@ export default defineConfig({
             options: {
               cacheName: 'iconfont'
             }
+          },
+          {
+            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'bytegoofy'
+            }
           }
         ]
       }
@@ -88,7 +90,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['@ant-design/icons-vue']
+    include: ['@icon-park/vue-next']
   },
   build: {
     sourcemap: false,

@@ -1,12 +1,22 @@
-import { merge, cloneDeep, omit } from 'lodash'
+import { merge, cloneDeep, omit } from 'lodash-es'
 import localforage from 'localforage'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
 export default (options = {}) => {
-  localforage.config(options)
+  const name = ((options.name != null) ? options.name : 'vuex')
+  const storeName = ((options.storeName != null) ? options.storeName : 'keyvaluepairs')
+  localforage.config({
+    name,
+    storeName
+  })
+
+  const _mutex = new SimplePromiseQueue()
+
+  const filter = options.filter || (() => true)
 
   // 获取state的值
-  const getState = async (key) => {
-    return await localforage.getItem(key)
+  const getState = (key) => {
+    return localforage.getItem(key)
   }
 
   // 设置state的值
@@ -31,11 +41,13 @@ export default (options = {}) => {
 
       // 订阅 store 的 mutation。handler 会在每个 mutation 完成后调用，接收 mutation 和经过 mutation 后的状态作为参数
       _store.subscribe((mutation, state) => {
-        const tmp = mutation.type.split('/')
-        if (tmp.length <= 1) {
-          setState('root', omit(state, modules))
-        } else {
-          setState(tmp[0], state[tmp[0]])
+        if (filter(mutation)) {
+          const tmp = mutation.type.split('/')
+          if (tmp.length <= 1) {
+            _mutex.enqueue(setState('root', omit(state, modules)))
+          } else {
+            _mutex.enqueue(setState(tmp[0], state[tmp[0]]))
+          }
         }
       })
     })()
