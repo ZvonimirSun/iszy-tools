@@ -17,5 +17,6 @@ export default {
   cssFormatter: () => import('@/views/program/cssFormatter.vue'),
   geoJson: () => import('@/views/gis/geoJson.vue'),
   latLng: () => import('@/views/gis/latLng.vue'),
-  tinyEditor: () => import('@/views/program/tinyEditor.vue')
+  tinyEditor: () => import('@/views/program/tinyEditor.vue'),
+  idChinese: () => import('@/views/others/idChinese/idChinese.vue')
 }

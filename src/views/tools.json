@@ -22,6 +22,11 @@
         "link": "/others/oreooo"
       },
       {
+        "name": "身份证解析",
+        "link": "/others/idChinese",
+        "legend": "新功能"
+      },
+      {
         "name": "资源包",
         "link": "https://lib.iszy.xyz",
         "legend": "外部"
