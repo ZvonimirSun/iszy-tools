@@ -1,6 +1,7 @@
 import zodiac from '@/utils/12zodiac.js'
 import chineseLunar from '@/utils/chinese-lunar.js'
 import dataAddress from '@/utils/data.json'
+import moment from 'moment'
 
 // 字典
 const dict = {
@@ -130,6 +131,12 @@ function address (idCard) {
 }
 */
 
+function age (idCard) {
+  const date = birthDay(idCard).date.replace(/\//g, '-')
+  const duration = moment.duration(moment().diff(moment(date)))
+  return Math.floor(duration.asYears())
+}
+
 // 性别解析
 function sex (idCard) {
   idCard = idCard.toString()
@@ -143,7 +150,8 @@ function all (idCard) {
     birthDay: birthDay(idCard),
     checkIdCard: checkIdCard(idCard),
     address: address(idCard),
-    sex: sex(idCard)
+    sex: sex(idCard),
+    age: age(idCard)
   }
 }
 
@@ -156,6 +164,7 @@ export default {
   sex,
   address,
   nong: Nong,
+  age,
   all
 }
 
@@ -168,5 +177,6 @@ export {
   sex,
   address,
   Nong as nong,
+  age,
   all
 }
