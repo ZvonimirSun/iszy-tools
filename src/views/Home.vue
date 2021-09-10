@@ -8,16 +8,14 @@
     </Col>
   </Row>
   <template v-for="(item,index) in tools" :key="'type'+ index">
-    <Row :gutter="{ xs: 8, sm: 16, md: 24}">
-      <Col :span="24">
-        <Divider orientation="left">
-          <span class="typeName">
-            <iconpark-icon class="i-icon" :name="item.icon" color="#fff" v-if="item.icon"/>
-            <div>{{ item.type }}</div>
-          </span>
-        </Divider>
+    <Row :gutter="{ xs: 8, sm: 16}">
+      <Col :span="24" class="typeNameCol">
+        <div class="typeName">
+          <iconpark-icon class="i-icon" :name="item.icon" color="#fff" v-if="item.icon"/>
+          <div>{{ item.type }}</div>
+        </div>
       </Col>
-      <Col :xs="12" :sm="12" :md="8" :lg="6" v-for="(tool,i) in item.children" :key="'tool'+i">
+      <Col :xs="12" :sm="12" :md="8" :lg="6" :xl="4" :xxl="3" v-for="(tool,i) in item.children" :key="'tool'+i">
         <router-link
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
@@ -35,13 +33,11 @@
     </Row>
   </template>
   <Row :gutter="{ xs: 8, sm: 16, md: 24}">
-    <Col :span="24">
-      <Divider orientation="left">
-          <span class="typeName">
-            <notes theme="outline"/>
-            <div>公告</div>
-          </span>
-      </Divider>
+    <Col :span="24" class="typeNameCol">
+      <div class="typeName">
+        <notes theme="outline"/>
+        <div>公告</div>
+      </div>
     </Col>
     <Col :span="24">
       <div class="announcement">
@@ -65,7 +61,7 @@
 
 <script>
 import { Search, Notes, Star } from '@icon-park/vue-next'
-import { Row, Col, Divider, Typography } from 'ant-design-vue'
+import { Row, Col, Typography } from 'ant-design-vue'
 import tools from '@/views/tools.json'
 import legends from '@/views/legends.json'
 import { createNamespacedHelpers } from 'vuex'
@@ -77,7 +73,7 @@ const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
-  components: { Star, Row, Col, Divider, Paragraph, Typography, Search, Notes },
+  components: { Star, Row, Col, Paragraph, Typography, Search, Notes },
   computed: {
     tools () {
       let tmp
@@ -165,30 +161,35 @@ export default {
   border-radius: .8rem;
 
   &:not(:first-child) {
-    margin-top: 3.5rem;
-  }
-
-  &:not(.noName) {
-    .ant-col:first-child {
-      margin-top: -3.5rem;
-    }
+    margin-top: 3.3rem;
   }
 }
 
-.typeName {
-  font-size: 1.8rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  background-color: #16b0f6;
-  padding: .48rem 1.28rem;
-  color: #fff;
-  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
-  border-radius: .8rem;
+.typeNameCol {
+  padding: .8rem;
+  margin-top: -2.5rem;
 
-  .i-icon {
-    font-size: 2.4rem;
-    margin-right: .5rem;
+  .typeName {
+    margin-left: 3rem;
+    padding: .5rem 1.6rem;
+
+    height: 3.2rem;
+    display: inline-flex;
+    align-items: center;
+
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 2.4rem;
+
+    color: #fff;
+    background-color: #16b0f6;
+    box-shadow: 0 0.8rem 1rem #16B0F64D;
+    border-radius: .8rem;
+
+    .i-icon {
+      font-size: 2.4rem;
+      margin-right: .5rem;
+    }
   }
 }
 
