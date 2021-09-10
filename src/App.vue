@@ -111,15 +111,15 @@ export default defineComponent({
   }
 
   &-header {
-    padding: 3.2rem 0 2.4rem;
+    padding: 1.6rem 0 .8rem;
     text-align: center;
-    height: 13.4rem;
+    height: 8.4rem;
     line-height: unset;
 
     .header {
-      height: 4.6rem;
-      line-height: 4.6rem;
-      font-size: 3.8rem;
+      height: 3.2rem;
+      line-height: 3.2rem;
+      font-size: 2.4rem;
       color: #333333;
       font-weight: 600;
 
@@ -132,16 +132,16 @@ export default defineComponent({
       height: 2.2rem;
       font-size: 1.4rem;
       line-height: 2.2rem;
-      margin-top: 1.2rem;
+      margin-top: .8rem;
       color: #999999;
     }
   }
 
   &-content {
-    max-width: 120rem;
+    max-width: 180rem;
     width: 100%;
     margin: 0 auto;
-    padding: 0 2rem 1.6rem;
+    padding: 0 1.6rem 1.6rem;
     overflow-y: auto;
 
     &.layout-wide {
@@ -150,8 +150,16 @@ export default defineComponent({
   }
 
   &-footer {
-    height: 7rem;
+    font-size: 1.4rem;
+    line-height: 2.2rem;
+    padding: 0.8rem 0;
+
+    height: 6rem;
     text-align: center;
+
+    * {
+      height: 2.2rem;
+    }
   }
 }
 </style>

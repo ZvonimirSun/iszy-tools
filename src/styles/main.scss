@@ -1,9 +1,15 @@
+:root {
+  --main-bg-color: #f4f8fb;
+  --global-font-size: 62.5%;
+  --global-mobile-font-size: 45%;
+}
+
 /*字号统一控制*/
 html {
-  font-size: 62.5%;
+  font-size: var(--global-font-size);
 
-  @media screen and (max-width: 426px) {
-    font-size: 45%;
+  @media screen and (max-width: 480px) {
+    font-size: var(--global-mobile-font-size);
   }
 }
 
@@ -48,7 +54,7 @@ html, body, #app {
   font-size: 1.4rem;
   line-height: 2.2rem;
   color: #333333;
-  background: #f4f8fb;
+  background: var(--main-bg-color);
 
   pre,
   code, kbd, samp {

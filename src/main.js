@@ -4,6 +4,7 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
 import axios from '@/plugins/Axios'
+import span from '@/directives/span'
 
 const app = createApp(App)
 
@@ -15,5 +16,5 @@ message.config({
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
 
-app.use(store).use(router)
+app.use(store).use(router).use(span)
 app.mount('#app')
