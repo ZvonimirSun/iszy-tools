@@ -10,16 +10,21 @@
       },
       {
         "name": "这是什么动漫",
-        "link": "/anime/whatAnimeIsThis",
+        "link": "/others/whatAnimeIsThis",
         "legend": "在线"
       },
       {
         "name": "哔哩哔哩AV、BV号转换",
-        "link": "/anime/bilibiliBv2av"
+        "link": "/others/bilibiliBv2av"
       },
       {
         "name": "奥利奥生成器",
         "link": "/others/oreooo"
+      },
+      {
+        "name": "身份证解析",
+        "link": "/others/idChinese",
+        "legend": "新功能"
       },
       {
         "name": "资源包",
@@ -40,13 +45,11 @@
       {
         "name": "GeoJSON",
         "link": "/gis/geoJson",
-        "legend": "新功能",
         "layout": "wide"
       },
       {
         "name": "经纬度查询",
         "link": "/gis/latLng",
-        "legend": "新功能",
         "layout": "wide"
       }
     ]
@@ -78,8 +81,7 @@
       },
       {
         "name": "查看网页源码",
-        "link": "/program/viewSourceCode",
-        "legend": "新功能"
+        "link": "/program/viewSourceCode"
       },
       {
         "name": "CSS格式化/压缩",
@@ -105,8 +107,7 @@
       },
       {
         "name": "俄罗斯方块",
-        "link": "/games/tetris",
-        "legend": "新功能"
+        "link": "/games/tetris"
       }
     ]
   },

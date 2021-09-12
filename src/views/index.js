@@ -7,8 +7,8 @@ export default {
   colorTransform: () => import('@/views/program/colorTransform.vue'),
   jsonEditor: () => import('@/views/program/jsonEditor.vue'),
   settings: () => import('@/views/settings/index.vue'),
-  whatAnimeIsThis: () => import('@/views/anime/whatAnimeIsThis.vue'),
-  bilibiliBv2av: () => import('@/views/anime/bilibiliBv2av.vue'),
+  whatAnimeIsThis: () => import('@/views/others/whatAnimeIsThis.vue'),
+  bilibiliBv2av: () => import('@/views/others/bilibiliBv2av.vue'),
   oreooo: () => import('@/views/others/oreooo/index.vue'),
   2048: () => import('@/views/games/2048/index.vue'),
   urlEncode: () => import('@/views/program/urlEncode.vue'),
@@ -18,5 +18,6 @@ export default {
   geoJson: () => import('@/views/gis/geoJson.vue'),
   latLng: () => import('@/views/gis/latLng.vue'),
   tinyEditor: () => import('@/views/program/tinyEditor.vue'),
+  idChinese: () => import('@/views/others/idChinese/idChinese.vue'),
   cesiumDemo: () => import('@/views/program/cesiumDemo/cesiumDemo.vue')
 }
