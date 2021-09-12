@@ -35,7 +35,7 @@
 <script>
 import Container from '@/components/container.vue'
 import { Row, Col, Card, Breadcrumb } from 'ant-design-vue'
-import BingMap from '@/views/program/cesiumDemo/demos/BingMap.vue'
+import BingMap from '@/views/gis/cesiumDemo/demos/BingMap.vue'
 
 const { Meta } = Card
 const { Item } = Breadcrumb
