@@ -24,10 +24,24 @@
       </template>
       <Divider/>
       <Title :level="3">设置</Title>
-      <Form>
-        <FormItem label="录制音频">
-          <Select v-model:value="recordAudio" :disabled="disabled.open" :options="recordAudioOptions">
-          </Select>
+      <Form :labelCol="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}">
+        <FormItem label="系统音频">
+          <Select v-model:value="recordAudio" :disabled="disabled.open" :options="recordAudioOptions" @change="selectAudio"/>
+        </FormItem>
+        <FormItem label="麦克风">
+          <Select v-model:value="recordMicro" :disabled="disabled.open" :options="recordMicroOptions" @change="selectMicro"/>
+        </FormItem>
+        <FormItem label="选择长宽比" v-if="supportedConstraints.aspectRatio">
+          <Select v-model:value="aspectRatio" :disabled="disabled.open" :options="aspectRatioList"/>
+        </FormItem>
+        <FormItem label="选择帧率" v-if="supportedConstraints.frameRate">
+          <Select v-model:value="frameRate" :disabled="disabled.open" :options="frameRateList"/>
+        </FormItem>
+        <FormItem label="选择分辨率" v-if="supportedConstraints.width && supportedConstraints.height">
+          <Select v-model:value="resolutions" :disabled="disabled.open" :options="resolutionsList"/>
+        </FormItem>
+        <FormItem label="是否显示光标">
+          <Select v-model:value="cursor" :disabled="disabled.open" :options="cursorList"/>
         </FormItem>
       </Form>
     </template>
@@ -78,6 +92,113 @@ export default {
         label: '是',
         value: 'always'
       }
+    ],
+    recordMicro: 'never',
+    recordMicroOptions: [
+      {
+        label: '否',
+        value: 'never'
+      },
+      {
+        label: '是',
+        value: 'always'
+      }
+    ],
+    aspectRatio: 'default',
+    aspectRatioList: [
+      {
+        label: '默认',
+        value: 'default'
+      },
+      {
+        label: '16:9',
+        value: 1.77
+      },
+      {
+        label: '4:3',
+        value: 1.33
+      },
+      {
+        label: '21:9',
+        value: 2.35
+      },
+      {
+        label: '14:10',
+        value: 1.4
+      },
+      {
+        label: '19:10',
+        value: 1.9
+      }
+    ],
+    frameRate: 'default',
+    frameRateList: [
+      {
+        label: '默认',
+        value: 'default'
+      },
+      {
+        label: '60',
+        value: 60
+      },
+      {
+        label: '30',
+        value: 30
+      },
+      {
+        label: '25',
+        value: 25
+      },
+      {
+        label: '15',
+        value: 15
+      },
+      {
+        label: '5',
+        value: 5
+      }
+    ],
+    resolutions: 'default',
+    resolutionsList: [
+      {
+        label: '默认',
+        value: 'default'
+      },
+      {
+        label: '屏幕尺寸',
+        value: 'fit-screen'
+      },
+      {
+        label: '4K',
+        value: '4k'
+      },
+      {
+        label: '1080p',
+        value: '1080p'
+      },
+      {
+        label: '720p',
+        value: '720p'
+      }
+    ],
+    cursor: 'default',
+    cursorList: [
+      {
+        label: '默认',
+        value: 'default'
+      },
+      {
+        label: '总是显示',
+        value: 'always'
+      },
+      {
+        label: '移动时显示',
+        value: 'motion'
+      },
+      {
+        label: '从不显示',
+        value: 'never'
+      }
     ]
   }),
   computed: {
@@ -99,6 +220,40 @@ export default {
     },
     showREC () {
       return this.status === RECORD_STATUS_RECORDING
+    },
+    displayMediaOptions () {
+      const videoConstraints = {}
+      if (this.aspectRatio !== 'default') {
+        videoConstraints.aspectRatio = this.aspectRatio
+      }
+      if (this.frameRate !== 'default') {
+        videoConstraints.frameRate = this.frameRate
+      }
+      if (this.cursor !== 'default') {
+        videoConstraints.cursor = this.cursor
+      }
+      if (this.resolutions !== 'default') {
+        if (this.resolutions === 'fit-screen') {
+          videoConstraints.width = screen.width
+          videoConstraints.height = screen.height
+        }
+        if (this.resolutions === '4K') {
+          videoConstraints.width = 3840
+          videoConstraints.height = 2160
+        }
+        if (this.resolutions === '1080p') {
+          videoConstraints.width = 1920
+          videoConstraints.height = 1080
+        }
+        if (this.resolutions === '720p') {
+          videoConstraints.width = 1280
+          videoConstraints.height = 720
+        }
+      }
+      return {
+        video: videoConstraints,
+        audio: this.recordAudio === 'always'
+      }
     }
   },
   mounted () {
@@ -107,8 +262,8 @@ export default {
   methods: {
     async openScreenShare () {
       try {
-        this.localScreenShareStream = await navigator.mediaDevices.getDisplayMedia()
-        if (this.recordAudio === 'always') {
+        this.localScreenShareStream = await navigator.mediaDevices.getDisplayMedia(this.displayMediaOptions)
+        if (this.recordMicro === 'always') {
           const tempStream = await navigator.mediaDevices.getUserMedia({ audio: true })
           this.localScreenShareStream.addTrack(tempStream.getAudioTracks()[0])
         }
@@ -193,6 +348,17 @@ export default {
     },
     onDataAvailable (e) {
       this.chunks.push(e.data)
+    },
+
+    selectAudio () {
+      if (this.recordAudio && this.recordMicro) {
+        this.recordMicro = 'never'
+      }
+    },
+    selectMicro () {
+      if (this.recordAudio && this.recordMicro) {
+        this.recordAudio = 'never'
+      }
     }
   },
   beforeUnmount () {
