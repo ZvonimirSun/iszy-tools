@@ -24,26 +24,41 @@
       </template>
       <Divider/>
       <Title :level="3">设置</Title>
-      <Form :labelCol="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}">
+      <Alert message="由于浏览器限制，部分设置可能无法生效" type="warning" show-icon closable style="margin-bottom: .8rem;"/>
+      <Form :labelCol="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}" v-if="!disabled.open">
         <FormItem label="系统音频">
-          <Select v-model:value="recordAudio" :disabled="disabled.open" :options="recordAudioOptions" @change="selectAudio"/>
+          <Select v-model:value="recordAudio" :options="recordAudioOptions" @change="selectAudio"/>
         </FormItem>
         <FormItem label="麦克风">
-          <Select v-model:value="recordMicro" :disabled="disabled.open" :options="recordMicroOptions" @change="selectMicro"/>
+          <Select v-model:value="recordMicro" :options="recordMicroOptions" @change="selectMicro"/>
         </FormItem>
         <FormItem label="选择长宽比" v-if="supportedConstraints.aspectRatio">
-          <Select v-model:value="aspectRatio" :disabled="disabled.open" :options="aspectRatioList"/>
+          <Select v-model:value="aspectRatio" :options="aspectRatioList"/>
         </FormItem>
         <FormItem label="选择帧率" v-if="supportedConstraints.frameRate">
-          <Select v-model:value="frameRate" :disabled="disabled.open" :options="frameRateList"/>
+          <Select v-model:value="frameRate" :options="frameRateList"/>
         </FormItem>
         <FormItem label="选择分辨率" v-if="supportedConstraints.width && supportedConstraints.height">
-          <Select v-model:value="resolutions" :disabled="disabled.open" :options="resolutionsList"/>
+          <Select v-model:value="resolutions" :options="resolutionsList"/>
         </FormItem>
         <FormItem label="是否显示光标">
-          <Select v-model:value="cursor" :disabled="disabled.open" :options="cursorList"/>
+          <Select v-model:value="cursor" :options="cursorList"/>
         </FormItem>
       </Form>
+      <template v-else>
+        <Title :level="4">当前设置</Title>
+        <Paragraph>
+          <ul>
+            <li>系统音频: {{currentDisplayMediaOptions.video.recordAudio}}</li>
+            <li>麦克风: {{currentDisplayMediaOptions.video.recordMicro}}</li>
+            <li>长宽比: {{currentDisplayMediaOptions.video.aspectRatio}}</li>
+            <li>帧率: {{currentDisplayMediaOptions.video.frameRate}}</li>
+            <li>视频宽度: {{currentDisplayMediaOptions.video.width}}</li>
+            <li>视频高度: {{currentDisplayMediaOptions.video.height}}</li>
+            <li>显示鼠标: {{currentDisplayMediaOptions.video.cursor}}</li>
+          </ul>
+        </Paragraph>
+      </template>
     </template>
     <template v-else>
       <Title :level="3">你的浏览器不支持WebRTC，请安装最新版本Chrome后重试。</Title>
@@ -52,10 +67,10 @@
 </template>
 
 <script>
-import { Typography, Space, Button, Divider, Form, Select } from 'ant-design-vue'
+import { Typography, Space, Button, Divider, Form, Select, Alert } from 'ant-design-vue'
 import Container from '@/components/container.vue'
 
-const { Title } = Typography
+const { Title, Paragraph } = Typography
 const { Item: FormItem } = Form
 
 const RECORD_STATUS_UNSTART = 'unstart'
@@ -65,7 +80,7 @@ const RECORD_STATUS_STOPPED = 'stopped'
 
 export default {
   name: 'screenRecord',
-  components: { Container, Title, Space, Button, Divider, Form, FormItem, Select },
+  components: { Container, Title, Paragraph, Space, Button, Divider, Form, FormItem, Select, Alert },
   data: () => ({
     recorder: null,
     screenShareVideoElement: null,
@@ -253,6 +268,44 @@ export default {
       return {
         video: videoConstraints,
         audio: this.recordAudio === 'always'
+      }
+    },
+    currentDisplayMediaOptions () {
+      if (this.localScreenShareStream) {
+        const tracks = this.localScreenShareStream.getVideoTracks()
+        if (tracks.length > 0) {
+          const settings = tracks[0].getSettings()
+          const currentOptions = {
+            recordAudio: this.recordAudioOptions.find(item => (this.recordAudio === item.value)).label,
+            recordMicro: this.recordMicroOptions.find(item => (this.recordMicro === item.value)).label,
+            frameRate: settings.frameRate,
+            width: settings.width,
+            height: settings.height
+          }
+          if (settings.aspectRatio) {
+            const option = this.aspectRatioList.find(item => (settings.aspectRatio - item.value <= 0.1))
+            if (option) {
+              currentOptions.aspectRatio = option.label
+            } else {
+              currentOptions.aspectRatio = '默认'
+            }
+          }
+          if (settings.cursor) {
+            const option = this.cursorList.find(item => (settings.cursor === item.value))
+            if (option) {
+              currentOptions.cursor = option.label
+            } else {
+              currentOptions.cursor = '默认'
+            }
+          }
+          return {
+            video: currentOptions
+          }
+        }
+      }
+      return {
+        video: {},
+        audio: {}
       }
     }
   },
