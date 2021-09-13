@@ -9,7 +9,7 @@
     @search="getContent"
   />
   <Paragraph v-show="data">
-    <highlightjs autodetect :code="data"></highlightjs>
+    <highlight-js autodetect :code="data"></highlight-js>
   </Paragraph>
 </container>
 </template>
@@ -26,7 +26,7 @@ const { Search } = Input
 const { Paragraph } = Typography
 export default {
   name: 'viewSourceCode',
-  components: { Container, Search, Paragraph, highlightjs: hljsVuePlugin.component },
+  components: { Container, Search, Paragraph, highlightJs: hljsVuePlugin.component },
   data: () => ({
     url: undefined,
     data: '',
