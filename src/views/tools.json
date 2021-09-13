@@ -27,6 +27,11 @@
         "legend": "新功能"
       },
       {
+        "name": "屏幕录制",
+        "link": "/others/screenRecord",
+        "legend": "新功能"
+      },
+      {
         "name": "资源包",
         "link": "https://lib.iszy.xyz",
         "legend": "外部"
