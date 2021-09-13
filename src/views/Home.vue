@@ -21,7 +21,7 @@
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
           <Tooltip>
             <template #title>{{ tool.name }}</template>
-            <div class="tool">
+            <div class="tool" :class="{toolCollected:isFav(tool.name)}">
               <span class="toolName">{{ tool.name }}</span>
               <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><Star theme="filled"/></span>
               <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
@@ -222,6 +222,10 @@ export default {
   white-space: nowrap;
 
   position: relative;
+
+  &.toolCollected {
+    padding-right: 1.5rem * 2;
+  }
 
   .fav {
     display: none;
