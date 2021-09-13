@@ -188,27 +188,36 @@ export default {
 
     .i-icon {
       font-size: 2.4rem;
-      margin-right: .5rem;
+
+      & + * {
+        margin-left: .5rem;
+      }
+    }
+
+    * + .i-icon {
+      margin-left: .5rem;
     }
   }
 }
 
 .tool {
-  color: #666666;
-  font-size: 1.8rem;
-  line-height: 2.672rem;
+  color: #333333;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
   font-weight: 600;
-  box-shadow: 0 0 0.1rem 0 rgb(8 11 14 / 6%), 0 0.3rem 0.3rem -0.1rem rgb(8 11 14 / 10%), 0 0 0.3rem 0 rgb(8 11 14 / 2%);
-  border-radius: .25rem;
-  overflow: hidden;
-  margin: .7rem;
-  padding: 1rem 1.5rem;
-  white-space: nowrap;
+  box-shadow: 0 .5rem .8rem #16B0F64D;
+  border-radius: .8rem;
+  margin: .8rem 0;
+  padding: .8rem 1.6rem;
   background-color: #fff;
   transform: translateZ(0);
   transition: transform 0.2s, color 0.2s, background-color 0.2s;
-  text-align: center;
+
+  overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap;
+
   position: relative;
 
   .fav {
@@ -241,7 +250,7 @@ export default {
     &:hover {
       background-color: #16b0f6;
       color: #fff;
-      transform: scale3d(1.1, 1.1, 1.1);
+      //transform: scale3d(1.1, 1.1, 1.1);
       padding-right: 1.5rem * 2;
 
       .fav {
@@ -279,7 +288,7 @@ export default {
     &:active {
       background-color: #16b0f6;
       color: #fff;
-      transform: scale3d(1.1, 1.1, 1.1);
+      //transform: scale3d(1.1, 1.1, 1.1);
 
       .fav {
 

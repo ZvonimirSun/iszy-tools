@@ -51,6 +51,10 @@
         "name": "经纬度查询",
         "link": "/gis/latLng",
         "layout": "wide"
+      },
+      {
+        "name": "Cesium代码样例",
+        "link": "/gis/cesiumDemo"
       }
     ]
   },

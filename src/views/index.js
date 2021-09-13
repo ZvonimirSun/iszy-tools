@@ -18,5 +18,6 @@ export default {
   geoJson: () => import('@/views/gis/geoJson.vue'),
   latLng: () => import('@/views/gis/latLng.vue'),
   tinyEditor: () => import('@/views/program/tinyEditor.vue'),
-  idChinese: () => import('@/views/others/idChinese/idChinese.vue')
+  idChinese: () => import('@/views/others/idChinese/idChinese.vue'),
+  cesiumDemo: () => import('@/views/gis/cesiumDemo/cesiumDemo.vue')
 }
