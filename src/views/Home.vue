@@ -19,15 +19,18 @@
         <router-link
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
-          <div class="tool">
-            <span class="toolName">{{ tool.name }}</span>
-            <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><Star theme="filled"/></span>
-            <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
+          <Tooltip>
+            <template #title>{{ tool.name }}</template>
+            <div class="tool">
+              <span class="toolName">{{ tool.name }}</span>
+              <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><Star theme="filled"/></span>
+              <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
                 <span class="nonHover"><Star theme="outline"/></span>
                 <span class="hovered"><Star theme="filled"/></span>
               </span>
-            <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
-          </div>
+              <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
+            </div>
+          </Tooltip>
         </router-link>
       </Col>
     </Row>
@@ -61,7 +64,7 @@
 
 <script>
 import { Search, Notes, Star } from '@icon-park/vue-next'
-import { Row, Col, Typography } from 'ant-design-vue'
+import { Row, Col, Typography, Tooltip } from 'ant-design-vue'
 import tools from '@/views/tools.json'
 import legends from '@/views/legends.json'
 import { createNamespacedHelpers } from 'vuex'
@@ -73,7 +76,7 @@ const { mapState: settingsMapState } = createNamespacedHelpers('settings')
 
 export default {
   name: '首页',
-  components: { Star, Row, Col, Paragraph, Typography, Search, Notes },
+  components: { Star, Row, Col, Paragraph, Typography, Search, Notes, Tooltip },
   computed: {
     tools () {
       let tmp
