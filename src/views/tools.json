@@ -99,6 +99,10 @@
       {
         "name": "TinyEditor",
         "link": "/program/tinyEditor"
+      },
+      {
+        "name": "正则大全",
+        "link": "/program/anyRule"
       }
     ]
   },
