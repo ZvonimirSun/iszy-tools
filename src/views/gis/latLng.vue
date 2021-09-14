@@ -1,6 +1,9 @@
 <template>
   <container>
-    <Space :size="8"><Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler"></Input><Button @click="handler" type="primary">解析</Button></Space>
+    <Space :size="8">
+      <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler" allow-clear/>
+      <Button @click="handler" type="primary">解析</Button>
+    </Space>
     <div class="mapContainer" ref="mapContainer"></div>
   </container>
 </template>
