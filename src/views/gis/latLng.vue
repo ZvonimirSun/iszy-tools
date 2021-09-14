@@ -179,19 +179,7 @@ export default {
       })
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
-          this.$axios.get('https://amapapi.iszy.xyz/v3/assistant/coordinate/convert', {
-            params: {
-              key: this.gaodeToken,
-              locations: `${position.coords.longitude},${position.coords.latitude}`,
-              coordsys: 'gps',
-              output: 'json'
-            }
-          }).then((res) => {
-            if (res.data && res.data.status === '1') {
-              const location = res.data.locations.split(',')
-              this.map.setView([location[1], location[0]], 18)
-            }
-          })
+          this.map.setView([position.coords.latitude, position.coords.longitude], 18)
         })
       }
     },
