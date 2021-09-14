@@ -2,16 +2,16 @@
   <container>
     <Form layout="inline">
       <Item>
-        <Input v-model:value.number="latLng.lat" placeholder="输入纬度"></Input>
+        <Input v-model:value="latLng.lat" placeholder="输入纬度"></Input>
       </Item>
       <Item>
-        <Input v-model:value.number="latLng.lng" placeholder="输入经度"></Input>
+        <Input v-model:value="latLng.lng" placeholder="输入经度"></Input>
       </Item>
       <Item>
         <Button type="primary" @click="locateLatLng(latLng)">解析经纬度</Button>
       </Item>
       <Item>
-        <Input v-model:value.number="address" placeholder="输入结构化地址"></Input>
+        <Input v-model:value="address" placeholder="输入结构化地址"></Input>
       </Item>
       <Item>
         <Button type="primary" @click="locateAddress">解析地址</Button>
