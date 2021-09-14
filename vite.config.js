@@ -42,38 +42,59 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
-            handler: 'StaleWhileRevalidate',
+            urlPattern: /^https:\/\/fonts\.iszy\.xyz\/.*/i,
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-google-fonts-webfonts'
+              cacheName: 'iszy-google-fonts-webfonts',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           },
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'jsdelivr-cdn'
             }
           },
           {
-            urlPattern: /^https:\/\/tools\.iszy\.xyz/,
+            urlPattern: /^https:\/\/tools\.iszy\.xyz\/.*/i,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'tools-iszy-xyz'
             }
           },
           {
-            urlPattern: /^https:\/\/at\.alicdn\.com/,
-            handler: 'StaleWhileRevalidate',
+            urlPattern: /^https:\/\/at\.alicdn\.com\/.*/i,
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'iconfont'
+              cacheName: 'iconfont',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           },
           {
-            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com/,
-            handler: 'StaleWhileRevalidate',
+            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com\/.*/i,
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'bytegoofy'
+              cacheName: 'bytegoofy',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           }
         ]
