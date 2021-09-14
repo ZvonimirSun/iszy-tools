@@ -40,12 +40,20 @@ export default defineConfig({
         display: 'standalone'
       },
       workbox: {
+        globPatterns: ['**/*'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-google-fonts-webfonts'
+              cacheName: 'iszy-google-fonts-webfonts',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           },
           {
@@ -56,24 +64,31 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/tools\.iszy\.xyz/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'tools-iszy-xyz'
-            }
-          },
-          {
             urlPattern: /^https:\/\/at\.alicdn\.com/,
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'iconfont'
+              cacheName: 'iconfont',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           },
           {
             urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com/,
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'bytegoofy'
+              cacheName: 'bytegoofy',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           }
         ]
