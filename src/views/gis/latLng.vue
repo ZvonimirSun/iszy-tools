@@ -1,22 +1,9 @@
 <template>
   <container>
-    <Form layout="inline">
-      <Item>
-        <Input v-model:value="latLng.lat" placeholder="输入纬度"></Input>
-      </Item>
-      <Item>
-        <Input v-model:value="latLng.lng" placeholder="输入经度"></Input>
-      </Item>
-      <Item>
-        <Button type="primary" @click="locateLatLng(latLng)">解析经纬度</Button>
-      </Item>
-      <Item>
-        <Input v-model:value="address" placeholder="输入结构化地址"></Input>
-      </Item>
-      <Item>
-        <Button type="primary" @click="locateAddress">解析地址</Button>
-      </Item>
-    </Form>
+    <Space :size="8">
+      <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler" allow-clear/>
+      <Button @click="handler" type="primary">解析</Button>
+    </Space>
     <div class="mapContainer" ref="mapContainer"></div>
   </container>
 </template>
@@ -27,9 +14,8 @@ import Container from '@/components/container.vue'
 import { map, control, tileLayer, layerGroup, marker, Icon } from 'leaflet/dist/leaflet-src.esm.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw } from 'vue'
-import { Form, Button, Input } from 'ant-design-vue'
+import { Button, Input, Space } from 'ant-design-vue'
 
-const { Item } = Form
 const greenIcon = new Icon({
   iconUrl: 'https://cdn.jsdelivr.net/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-green.png',
   shadowUrl: markerShadow,
@@ -49,7 +35,7 @@ const yellowIcon = new Icon({
 
 export default {
   name: 'latLng',
-  components: { Container, Form, Item, Button, Input },
+  components: { Container, Button, Input, Space },
   data: () => ({
     map: undefined,
     centerMarker: undefined,
@@ -61,7 +47,8 @@ export default {
       lng: '',
       lat: ''
     },
-    address: ''
+    address: '',
+    keyword: ''
   }),
   mounted () {
     this.initMap()
@@ -241,12 +228,21 @@ export default {
       return content
     },
 
-    formatDegree (value) {
-      value = Math.abs(value)
-      const v1 = Math.floor(value)// 度
-      const v2 = Math.floor((value - v1) * 60) // 分
-      const v3 = ((value - v1) * 3600 % 60).toFixed(2) // 秒
-      return v1 + '° ' + (v2 < 10 ? '0' + v2 : v2) + '\' ' + (v3 < 10 ? '0' + v3 : v3) + '" '
+    handler () {
+      if (!this.keyword) {
+        return
+      }
+      const tmp = this.keyword.replace(/，/g, ',').split(',')
+      if (tmp.length === 2) {
+        if (!isNaN(parseFloat(tmp[0].trim())) && !isNaN(parseFloat(tmp[1].trim()))) {
+          this.latLng.lng = parseFloat(tmp[0].trim())
+          this.latLng.lat = parseFloat(tmp[1].trim())
+          this.locateLatLng(this.latLng)
+          return
+        }
+      }
+      this.address = this.keyword
+      this.locateAddress()
     },
     async locateLatLng (latLng = {}, address) {
       if (latLng.lng != null && latLng.lat != null && latLng.lng !== '' && latLng.lat !== '') {
@@ -274,7 +270,7 @@ export default {
               .setLatLng(latLng)
               .getPopup()
               .setContent(this.getPopupContent(latLng, address))
-              .openPopup()
+            this.clickMarker.openPopup()
           } else {
             this.clickMarker = markRaw(marker(latLng, { icon: yellowIcon }))
               .addTo(this.map)
@@ -312,14 +308,27 @@ export default {
           this.$msg.error('查询地址失败!')
         }
       }
+    },
+
+    formatDegree (value) {
+      value = Math.abs(value)
+      const v1 = Math.floor(value)// 度
+      const v2 = Math.floor((value - v1) * 60) // 分
+      const v3 = ((value - v1) * 3600 % 60).toFixed(2) // 秒
+      return v1 + '° ' + (v2 < 10 ? '0' + v2 : v2) + '\' ' + (v3 < 10 ? '0' + v3 : v3) + '" '
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.ant-form {
+.ant-space {
   margin-bottom: .8rem;
+  width: 100%;
+
+  :deep(.ant-space-item:first-child) {
+    flex: 1;
+  }
 }
 
 .mapContainer {
