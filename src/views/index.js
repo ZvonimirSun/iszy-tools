@@ -20,5 +20,6 @@ export default {
   tinyEditor: () => import('@/views/program/tinyEditor.vue'),
   idChinese: () => import('@/views/others/idChinese/idChinese.vue'),
   cesiumDemo: () => import('@/views/gis/cesiumDemo/cesiumDemo.vue'),
-  screenRecord: () => import('@/views/others/screenRecord.vue')
+  screenRecord: () => import('@/views/others/screenRecord.vue'),
+  anyRule: () => import('@/views/program/anyRule.vue')
 }
