@@ -8,10 +8,12 @@
     </div>
     <div class="main" ref="container">
       <slot></slot>
+      <BackTop :target="()=>$refs.container" :visibilityHeight="100"/>
     </div>
   </div>
 </template>
 <script>
+import { BackTop } from 'ant-design-vue'
 import toggleFullscreen from '@/utils/toggleFullscreen.js'
 import { FullScreen } from '@icon-park/vue-next'
 
@@ -21,7 +23,7 @@ export default {
     name: String
   },
   components: {
-    FullScreen
+    FullScreen, BackTop
   },
   methods: {
     fullScreen () {
