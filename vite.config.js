@@ -42,7 +42,7 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/fonts\.iszy\.xyz\/.*/i,
+            urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'iszy-google-fonts-webfonts',
@@ -56,21 +56,21 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'jsdelivr-cdn'
             }
           },
           {
-            urlPattern: /^https:\/\/tools\.iszy\.xyz\/.*/i,
+            urlPattern: /^https:\/\/tools\.iszy\.xyz/,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'tools-iszy-xyz'
             }
           },
           {
-            urlPattern: /^https:\/\/at\.alicdn\.com\/.*/i,
+            urlPattern: /^https:\/\/at\.alicdn\.com/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'iconfont',
@@ -84,7 +84,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com\/.*/i,
+            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'bytegoofy',
