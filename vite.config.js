@@ -40,6 +40,7 @@ export default defineConfig({
         display: 'standalone'
       },
       workbox: {
+        globPatterns: ['**/*'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
@@ -60,13 +61,6 @@ export default defineConfig({
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'jsdelivr-cdn'
-            }
-          },
-          {
-            urlPattern: /^https:\/\/tools\.iszy\.xyz/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'tools-iszy-xyz'
             }
           },
           {
