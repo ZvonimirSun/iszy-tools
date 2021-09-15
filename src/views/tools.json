@@ -103,6 +103,10 @@
       {
         "name": "正则大全",
         "link": "/program/anyRule"
+      },
+      {
+        "name": "Linux命令查询",
+        "link": "/program/linuxCommand"
       }
     ]
   },
