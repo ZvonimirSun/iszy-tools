@@ -274,7 +274,7 @@ export default {
           })
           if (res.data.status === '1' && Number(res.data.count) > 0) {
             const info = res.data.geocodes[0]
-            const latLng = ChineseLayer.prototype.csysConvert.gcj02_To_gps84(parseFloat(info.location.split(',')[1]), parseFloat(info.location.split(',')[0]))
+            const latLng = ChineseLayer.prototype.csysConvert.gcj02_To_gps84(parseFloat(info.location.split(',')[0]), parseFloat(info.location.split(',')[1]))
             await this.locateLatLng({ lat: latLng.lat, lng: latLng.lng }, info.formatted_address)
           } else {
             this.$msg.warn('未找到相关地址。')
