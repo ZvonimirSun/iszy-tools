@@ -2,7 +2,7 @@ import { Bounds, Browser, DomUtil, TileLayer } from 'leaflet/dist/leaflet-src.es
 
 export const ChineseLayer = TileLayer.extend({
   initialize: function (type, options = {}) { // (type, Object)
-    const providers = ChineseLayer.prototype.providers
+    const providers = this.providers
 
     const parts = type.split('.')
 
@@ -12,7 +12,6 @@ export const ChineseLayer = TileLayer.extend({
 
     const url = providers[providerName][mapName][mapType]
     options.subdomains = providers[providerName].Subdomains
-    options.key = options.key || providers[providerName].key
 
     if ('tms' in providers[providerName]) {
       options.tms = providers[providerName].tms
@@ -130,17 +129,17 @@ ChineseLayer.include({
   },
   csysConvert: {
     /** 百度转84 */
-    bd09_To_gps84: (lng, lat) => {
-      const gcj02 = ChineseLayer.prototype.csysConvert.bd09_To_gcj02(lng, lat)
-      return ChineseLayer.prototype.csysConvert.gcj02_To_gps84(gcj02.lng, gcj02.lat)
+    bd09_To_gps84: function (lng, lat) {
+      const gcj02 = this.bd09_To_gcj02(lng, lat)
+      return this.gcj02_To_gps84(gcj02.lng, gcj02.lat)
     },
     /** 84转百度 */
-    gps84_To_bd09: (lng, lat) => {
-      const gcj02 = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(lng, lat)
-      return ChineseLayer.prototype.csysConvert.gcj02_To_bd09(gcj02.lng, gcj02.lat)
+    gps84_To_bd09: function (lng, lat) {
+      const gcj02 = this.gps84_To_gcj02(lng, lat)
+      return this.gcj02_To_bd09(gcj02.lng, gcj02.lat)
     },
     /** 84转火星 */
-    gps84_To_gcj02: (lng, lat) => {
+    gps84_To_gcj02: function (lng, lat) {
       let dLat = transformLat(lng - 105.0, lat - 35.0)
       let dLng = transformLng(lng - 105.0, lat - 35.0)
       const radLat = lat / 180.0 * pi
@@ -157,7 +156,7 @@ ChineseLayer.include({
       }
     },
     /** 火星转84 */
-    gcj02_To_gps84: (lng, lat) => {
+    gcj02_To_gps84: function (lng, lat) {
       const coord = transform(lng, lat)
       const lontitude = lng * 2 - coord.lng
       const latitude = lat * 2 - coord.lat
@@ -167,7 +166,7 @@ ChineseLayer.include({
       }
     },
     /** 火星转百度 */
-    gcj02_To_bd09: (x, y) => {
+    gcj02_To_bd09: function (x, y) {
       const z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * xPi)
       const theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * xPi)
       const bdLng = z * Math.cos(theta) + 0.0065
@@ -178,7 +177,7 @@ ChineseLayer.include({
       }
     },
     /** 百度转火星 */
-    bd09_To_gcj02: (bdLng, bdLat) => {
+    bd09_To_gcj02: function (bdLng, bdLat) {
       const x = bdLng - 0.0065
       const y = bdLat - 0.006
       const z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * xPi)
@@ -195,9 +194,9 @@ ChineseLayer.include({
     let center = _center
     if (center != null && this.options) {
       if (this.options.csysType === 'gcj02') {
-        center = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
+        center = this.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
       } else if (this.options.csysType === 'bd09') {
-        center = ChineseLayer.prototype.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
+        center = this.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
       }
     }
     const scale = this._map.getZoomScale(zoom, level.zoom)
@@ -214,9 +213,9 @@ ChineseLayer.include({
     let center = _center
     if (center != null && this.options) {
       if (this.options.csysType === 'gcj02') {
-        center = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
+        center = this.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
       } else if (this.options.csysType === 'bd09') {
-        center = ChineseLayer.prototype.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
+        center = this.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
       }
     }
     const map = this._map
