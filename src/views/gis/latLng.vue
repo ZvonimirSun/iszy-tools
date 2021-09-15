@@ -11,7 +11,7 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import Container from '@/components/container.vue'
-import { map, control, layerGroup, marker, Icon } from 'leaflet/dist/leaflet-src.esm.js'
+import { map, control, layerGroup, marker, Icon } from 'leaflet'
 import { chineseLayer, ChineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw } from 'vue'
@@ -157,23 +157,7 @@ export default {
         this.centerMarker.setLatLng(this.map.getCenter()).getPopup().setContent(this.getPopupContent(this.map.getCenter()))
       })
       this.map.on('click', (val) => {
-        if (this.clickMarker) {
-          this.clickMarker
-            .setLatLng(val.latlng)
-            .getPopup()
-            .setContent(this.getPopupContent(val.latlng))
-            .openPopup()
-        } else {
-          this.clickMarker = markRaw(marker(val.latlng, { icon: yellowIcon }))
-            .addTo(this.map)
-            .bindPopup(this.getPopupContent(val.latlng), {
-              autoPan: false,
-              autoClose: false,
-              closeOnEscapeKey: false,
-              closeOnClick: false
-            })
-            .openPopup()
-        }
+        this.locateLatLng(val.latlng, null, false)
       })
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
@@ -230,16 +214,18 @@ export default {
       this.address = this.keyword
       this.locateAddress()
     },
-    async locateLatLng (latLng = {}, address) {
+    async locateLatLng (latLng = {}, address, fly = true) {
       if (latLng.lng != null && latLng.lat != null && latLng.lng !== '' && latLng.lat !== '') {
         try {
           if (!address) {
             try {
+              const gaodeLatLng = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(latLng.lng, latLng.lat)
               const res = await this.$axios.get('https://amapapi.iszy.xyz/v3/geocode/regeo', {
                 params: {
-                  location: `${latLng.lng},${latLng.lat}`,
+                  location: `${gaodeLatLng.lng},${gaodeLatLng.lat}`,
                   output: 'json',
-                  key: this.gaodeToken
+                  key: this.gaodeToken,
+                  homeorcorp: 1
                 }
               })
               if (res.data.status === '1' && res.data.regeocode.formatted_address) {
@@ -269,7 +255,9 @@ export default {
               })
               .openPopup()
           }
-          this.map.setView(latLng, 18)
+          if (fly) {
+            this.map.setView(latLng, 18)
+          }
         } catch (e) {
           this.$msg.error('定位失败!')
         }
@@ -286,9 +274,7 @@ export default {
           })
           if (res.data.status === '1' && Number(res.data.count) > 0) {
             const info = res.data.geocodes[0]
-            const tmpLat = parseFloat(info.location.split(',')[1])
-            const tmpLng = parseFloat(info.location.split(',')[0])
-            const latLng = ChineseLayer.prototype.csysConvert.gcj02_To_gps84(tmpLng, tmpLat)
+            const latLng = ChineseLayer.prototype.csysConvert.gcj02_To_gps84(parseFloat(info.location.split(',')[1]), parseFloat(info.location.split(',')[0]))
             await this.locateLatLng({ lat: latLng.lat, lng: latLng.lng }, info.formatted_address)
           } else {
             this.$msg.warn('未找到相关地址。')
