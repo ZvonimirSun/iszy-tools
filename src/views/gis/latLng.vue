@@ -12,7 +12,7 @@
 import 'leaflet/dist/leaflet.css'
 import Container from '@/components/container.vue'
 import { map, control, layerGroup, marker, Icon } from 'leaflet/dist/leaflet-src.esm.js'
-import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
+import { chineseLayer, ChineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw } from 'vue'
 import { Button, Input, Space } from 'ant-design-vue'
@@ -286,7 +286,10 @@ export default {
           })
           if (res.data.status === '1' && Number(res.data.count) > 0) {
             const info = res.data.geocodes[0]
-            await this.locateLatLng({ lat: parseFloat(info.location.split(',')[1]), lng: parseFloat(info.location.split(',')[0]) }, info.formatted_address)
+            const tmpLat = parseFloat(info.location.split(',')[1])
+            const tmpLng = parseFloat(info.location.split(',')[0])
+            const latLng = ChineseLayer.prototype.csysConvert.gcj02_To_gps84(tmpLng, tmpLat)
+            await this.locateLatLng({ lat: latLng.lat, lng: latLng.lng }, info.formatted_address)
           } else {
             this.$msg.warn('未找到相关地址。')
           }
