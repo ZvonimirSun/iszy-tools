@@ -11,14 +11,14 @@
     <Title v-show="keyword" :level="3">搜索结果（点击查看详情）</Title>
     <Paragraph v-show="keyword">
       <ul>
-        <li v-show="searchResults.length === 0">没有结果</li>
+        <li v-show="searchResults.length === 0"><b>没有结果</b></li>
         <li v-for="(item,index) in searchResults" :key="index" class="resultListItem">
           <Paragraph @click="query(item)"><b>{{ data[item].n }}</b>: {{ data[item].d }}</Paragraph>
         </li>
       </ul>
     </Paragraph>
     <Modal :footer="null" :title="command + ' 命令详情'" v-model:visible="showModal" :width="modalWidth">
-      <Typography v-html="commandDetail" class="commandDetail"></Typography>
+      <Typography v-html="commandDetail"></Typography>
     </Modal>
   </container>
 </template>
@@ -83,11 +83,15 @@ export default {
 
 <style scoped lang="scss">
 .resultListItem {
-  .ant-typography:hover  {
-    cursor: pointer;
-    text-decoration: underline;
+
+  .ant-typography {
+    width: fit-content;
+    font-size: 1.6rem;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 }
-
-.commandDetail {}
 </style>
