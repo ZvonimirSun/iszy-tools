@@ -79,7 +79,6 @@ routes = routes.concat([
     beforeEnter (to, from, next) {
       if (to.query.url) {
         window.location.href = to.query.url
-        next()
       } else {
         next('/')
       }
