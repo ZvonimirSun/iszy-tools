@@ -138,6 +138,10 @@
         "name": "网站设置",
         "link": "/settings",
         "statistics": false
+      },
+      {
+        "name": "留言反馈",
+        "link": "https://github.com/ZvonimirSun/iszy-tools/discussions"
       }
     ]
   }
