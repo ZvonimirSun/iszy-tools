@@ -2,7 +2,7 @@ import { Bounds, Browser, DomUtil, TileLayer } from 'leaflet/dist/leaflet-src.es
 
 export const ChineseLayer = TileLayer.extend({
   initialize: function (type, options = {}) { // (type, Object)
-    const providers = ChineseLayer.providers
+    const providers = ChineseLayer.prototype.providers
 
     const parts = type.split('.')
 
@@ -131,13 +131,13 @@ ChineseLayer.include({
   csysConvert: {
     /** 百度转84 */
     bd09_To_gps84: (lng, lat) => {
-      const gcj02 = ChineseLayer.csysConvert.bd09_To_gcj02(lng, lat)
-      return ChineseLayer.csysConvert.gcj02_To_gps84(gcj02.lng, gcj02.lat)
+      const gcj02 = ChineseLayer.prototype.csysConvert.bd09_To_gcj02(lng, lat)
+      return ChineseLayer.prototype.csysConvert.gcj02_To_gps84(gcj02.lng, gcj02.lat)
     },
     /** 84转百度 */
     gps84_To_bd09: (lng, lat) => {
-      const gcj02 = ChineseLayer.csysConvert.gps84_To_gcj02(lng, lat)
-      return ChineseLayer.csysConvert.gcj02_To_bd09(gcj02.lng, gcj02.lat)
+      const gcj02 = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(lng, lat)
+      return ChineseLayer.prototype.csysConvert.gcj02_To_bd09(gcj02.lng, gcj02.lat)
     },
     /** 84转火星 */
     gps84_To_gcj02: (lng, lat) => {
@@ -191,13 +191,13 @@ ChineseLayer.include({
       }
     }
   },
-  _setZoomTransform: (level, _center, zoom) => {
+  _setZoomTransform: function (level, _center, zoom) {
     let center = _center
     if (center != null && this.options) {
       if (this.options.csysType === 'gcj02') {
-        center = ChineseLayer.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
+        center = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
       } else if (this.options.csysType === 'bd09') {
-        center = ChineseLayer.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
+        center = ChineseLayer.prototype.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
       }
     }
     const scale = this._map.getZoomScale(zoom, level.zoom)
@@ -210,13 +210,13 @@ ChineseLayer.include({
       DomUtil.setPosition(level.el, translate)
     }
   },
-  _getTiledPixelBounds: (_center) => {
+  _getTiledPixelBounds: function (_center) {
     let center = _center
     if (center != null && this.options) {
       if (this.options.csysType === 'gcj02') {
-        center = ChineseLayer.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
+        center = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
       } else if (this.options.csysType === 'bd09') {
-        center = ChineseLayer.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
+        center = ChineseLayer.prototype.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
       }
     }
     const map = this._map

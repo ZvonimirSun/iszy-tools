@@ -54,6 +54,7 @@
 
 <script>
 import 'leaflet/dist/leaflet.css'
+import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import { map, control, tileLayer, layerGroup, geoJSON, GeoJSON } from 'leaflet/dist/leaflet-src.esm.js'
 import Container from '@/components/container.vue'
 import { defineComponent, markRaw, toRaw } from 'vue'
@@ -182,22 +183,19 @@ export default defineComponent({
         onEachFeature: this.onEachFeature
       }).addTo(this.map)
       control.layers({
-        高德矢量: tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-          subdomains: '1234',
+        高德矢量: chineseLayer('GaoDe.Normal.Map', {
           minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20,
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }).addTo(this.map),
         高德影像: layerGroup([
-          tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}', {
-            subdomains: '1234',
+          chineseLayer('GaoDe.Satellite.Map', {
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-            subdomains: '1234',
+          chineseLayer('GaoDe.Satellite.Annotation', {
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20

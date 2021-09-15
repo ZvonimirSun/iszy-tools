@@ -12,6 +12,7 @@
 import 'leaflet/dist/leaflet.css'
 import Container from '@/components/container.vue'
 import { map, control, tileLayer, layerGroup, marker, Icon } from 'leaflet/dist/leaflet-src.esm.js'
+import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw } from 'vue'
 import { Button, Input, Space } from 'ant-design-vue'
@@ -58,22 +59,19 @@ export default {
       this.map = markRaw(map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
       this.map.setView([35, 105], 4)
       control.layers({
-        高德矢量: tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-          subdomains: '1234',
+        高德矢量: chineseLayer('GaoDe.Normal.Map', {
           minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20,
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }).addTo(this.map),
         高德影像: layerGroup([
-          tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}', {
-            subdomains: '1234',
+          chineseLayer('GaoDe.Satellite.Map', {
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-            subdomains: '1234',
+          chineseLayer('GaoDe.Satellite.Annotation', {
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
