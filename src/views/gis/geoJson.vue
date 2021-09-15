@@ -55,7 +55,7 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
-import { map, control, layerGroup, geoJSON, GeoJSON } from 'leaflet/dist/leaflet-src.esm.js'
+import { map, control, layerGroup, geoJSON, GeoJSON } from 'leaflet'
 import Container from '@/components/container.vue'
 import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'

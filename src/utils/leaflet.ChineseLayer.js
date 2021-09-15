@@ -1,4 +1,4 @@
-import { Bounds, Browser, DomUtil, TileLayer } from 'leaflet/dist/leaflet-src.esm.js'
+import { Bounds, Browser, DomUtil, TileLayer } from 'leaflet'
 
 export const ChineseLayer = TileLayer.extend({
   initialize: function (type, options = {}) { // (type, Object)
