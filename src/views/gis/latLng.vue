@@ -11,7 +11,8 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import Container from '@/components/container.vue'
-import { map, control, tileLayer, layerGroup, marker, Icon } from 'leaflet/dist/leaflet-src.esm.js'
+import { map, control, layerGroup, marker, Icon } from 'leaflet/dist/leaflet-src.esm.js'
+import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw } from 'vue'
 import { Button, Input, Space } from 'ant-design-vue'
@@ -58,22 +59,19 @@ export default {
       this.map = markRaw(map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
       this.map.setView([35, 105], 4)
       control.layers({
-        高德矢量: tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-          subdomains: '1234',
+        高德矢量: chineseLayer('GaoDe.Normal.Map', {
           minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20,
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }).addTo(this.map),
         高德影像: layerGroup([
-          tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}', {
-            subdomains: '1234',
+          chineseLayer('GaoDe.Satellite.Map', {
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-            subdomains: '1234',
+          chineseLayer('GaoDe.Satellite.Annotation', {
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
@@ -82,14 +80,14 @@ export default {
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }),
         天地图矢量: layerGroup([
-          tileLayer(`https://t{s}.tianditu.gov.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=vec&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
-            subdomains: '01234567',
+          chineseLayer('TianDiTu.Normal.Map', {
+            key: this.tdtToken,
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer(`https://t{s}.tianditu.gov.cn/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cva&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
-            subdomains: '01234567',
+          chineseLayer('TianDiTu.Normal.Annotation', {
+            key: this.tdtToken,
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
@@ -98,14 +96,14 @@ export default {
           attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
         }),
         天地图影像: layerGroup([
-          tileLayer(`https://t{s}.tianditu.gov.cn/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=img&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
-            subdomains: '01234567',
+          chineseLayer('TianDiTu.Satellite.Map', {
+            key: this.tdtToken,
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
-          tileLayer(`https://t{s}.tianditu.gov.cn/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cia&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
-            subdomains: '01234567',
+          chineseLayer('TianDiTu.Satellite.Annotation', {
+            key: this.tdtToken,
             minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
@@ -114,14 +112,14 @@ export default {
           attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
         }),
         天地图地形: layerGroup([
-          tileLayer(`https://t{s}.tianditu.gov.cn/ter_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=ter&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
-            subdomains: '01234567',
+          chineseLayer('TianDiTu.Terrain.Map', {
+            key: this.tdtToken,
             minZoom: 3,
             maxNativeZoom: 14,
             maxZoom: 20
           }),
-          tileLayer(`https://t{s}.tianditu.gov.cn/cta_w/wmts?service=wmts&request=GetTile&version=1.0.0&layer=cta&style=default&tilematrixset=w&format=tiles&tilematrix={z}&tilerow={y}&tilecol={x}&tk=${this.tdtToken}`, {
-            subdomains: '01234567',
+          chineseLayer('TianDiTu.Terrain.Annotation', {
+            key: this.tdtToken,
             minZoom: 3,
             maxNativeZoom: 14,
             maxZoom: 20
@@ -129,7 +127,7 @@ export default {
         ], {
           attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
         }),
-        OpenStreetMap: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        OpenStreetMap: chineseLayer('OSM.Normal.Map', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
         })
       }, {}, {
