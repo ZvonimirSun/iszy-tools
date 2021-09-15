@@ -16,5 +16,8 @@ message.config({
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
 
+store.$axios = axios
+store.$msg = message
+
 app.use(store).use(router).use(span)
 app.mount('#app')

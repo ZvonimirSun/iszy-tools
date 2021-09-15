@@ -21,5 +21,6 @@ export default {
   idChinese: () => import('@/views/others/idChinese/idChinese.vue'),
   cesiumDemo: () => import('@/views/gis/cesiumDemo/cesiumDemo.vue'),
   screenRecord: () => import('@/views/others/screenRecord.vue'),
-  anyRule: () => import('@/views/program/anyRule.vue')
+  anyRule: () => import('@/views/program/anyRule.vue'),
+  linuxCommand: () => import('@/views/program/linuxCommand.vue')
 }
