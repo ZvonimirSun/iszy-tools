@@ -27,9 +27,8 @@
 
 <script>
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { Layout, ConfigProvider, BackTop, Typography, notification } from 'ant-design-vue'
-import PwaReloadPrompt from '@/components/pwaReloadPrompt.vue'
-import { h, defineComponent } from 'vue'
+import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
+import { defineComponent } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 const {
@@ -39,7 +38,6 @@ const {
 } = useRegisterSW()
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
-const notificationKey = 'pwaNotice'
 
 export default defineComponent({
   data: () => ({
@@ -51,34 +49,19 @@ export default defineComponent({
   watch: {
     offlineReady: function (val) {
       if (val) {
-        notification.close(notificationKey)
-        notification.success({
-          key: notificationKey,
-          message: '离线使用已准备好~',
-          placement: 'bottomRight',
-          description: h(PwaReloadPrompt, {
-            onClose: () => {
-              notification.close(notificationKey)
-            }
-          })
-        })
+        this.$msg.success('离线使用已准备好~')
       }
     },
     needRefresh: function (val) {
       if (val) {
-        notification.close(notificationKey)
-        notification.info({
-          key: notificationKey,
-          message: '存在新内容，请点击按钮重载更新~',
-          placement: 'bottomRight',
-          duration: null,
-          description: h(PwaReloadPrompt, {
-            onReload: () => updateServiceWorker(),
-            onClose: () => {
-              notification.close(notificationKey)
-            },
-            type: 'reload'
-          })
+        Modal.info({
+          title: '存在新内容，请点击 重载 更新~',
+          closable: true,
+          okText: '重载',
+          maskClosable: true,
+          onOk () {
+            updateServiceWorker()
+          }
         })
       }
     }
