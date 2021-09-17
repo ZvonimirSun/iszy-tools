@@ -6,13 +6,14 @@
     <Form layout="vertical">
       <FormItem label="请选择要添加水印的图片">
         <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="upload">
-          <InputSearch readonly placeholder="点击这里上传图片" :value="fileName">
-            <template #enterButton>
-              <Button block :disabled="!file || loading" @click.stop="addWatermark"><span v-if="loading"><Loading
-                theme="outline"/>处理中</span><span
-                v-else>开始处理</span></Button>
+          <Input readonly placeholder="点击这里上传图片" :value="fileName">
+            <template #addonAfter>
+              <Button block :disabled="!file" @click.stop="addWatermark" :loading="loading">
+                <span v-if="loading">处理中</span>
+                <span v-else>开始处理</span>
+              </Button>
             </template>
-          </InputSearch>
+          </Input>
         </Upload>
       </FormItem>
       <FormItem label="请输入水印文字">
@@ -47,22 +48,20 @@
 import Container from '@/components/container.vue'
 import { Buffer } from 'buffer'
 import { Input, Upload, Button, Form, Slider, Typography } from 'ant-design-vue'
-import { Loading } from '@icon-park/vue-next'
 import { Compact } from '@ckpack/vue-color'
+import domToImage from 'dom-to-image'
+import createFile from '@/utils/createFile.js'
 
 const { Paragraph } = Typography
 const { Item: FormItem } = Form
-const { Search: InputSearch } = Input
 
 export default {
   name: 'watermark',
   components: {
     Container,
-    InputSearch,
     Input,
     Upload,
     Button,
-    Loading,
     Form,
     FormItem,
     Slider,
@@ -131,7 +130,15 @@ export default {
       reader.readAsDataURL(img)
       return false
     },
-    addWatermark () {
+    async addWatermark () {
+      this.loading = true
+      try {
+        const result = await domToImage.toBlob(this.$refs.preview, {})
+        createFile(result, 'watermark.png')
+      } catch (e) {
+        this.$msg.error('生成失败')
+      }
+      this.loading = false
     }
   }
 }
@@ -140,6 +147,11 @@ export default {
 <style scoped lang="scss">
 :deep(.ant-upload) {
   width: 100% !important;
+}
+
+:deep(.ant-input-group-addon) {
+  padding: 0;
+  border: unset;
 }
 
 .ant-form-item {
@@ -151,10 +163,8 @@ export default {
 }
 
 .preview {
-  max-width: 70rem;
   width: 100%;
   position: relative;
-  margin: 0 auto;
 
   img {
     max-width: 100%;
