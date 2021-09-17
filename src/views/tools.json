@@ -5,13 +5,11 @@
     "children": [
       {
         "name": "淘宝优惠券精选",
-        "link": "https://taobao.iszy.xyz",
-        "legend": "外部"
+        "link": "https://taobao.iszy.xyz"
       },
       {
         "name": "这是什么动漫",
-        "link": "/others/whatAnimeIsThis",
-        "legend": "在线"
+        "link": "/others/whatAnimeIsThis"
       },
       {
         "name": "哔哩哔哩AV、BV号转换",
@@ -33,8 +31,7 @@
       },
       {
         "name": "资源包",
-        "link": "https://lib.iszy.xyz",
-        "legend": "外部"
+        "link": "https://lib.iszy.xyz"
       }
     ]
   },
@@ -44,8 +41,7 @@
     "children": [
       {
         "name": "地图选择器",
-        "link": "https://datav.aliyun.com/tools/atlas/index.html",
-        "legend": "外部"
+        "link": "https://datav.aliyun.com/tools/atlas/index.html"
       },
       {
         "name": "GeoJSON",
@@ -67,7 +63,8 @@
     "children": [
       {
         "name": "图片加水印",
-        "link": "/image/watermark"
+        "link": "/image/watermark",
+        "legend": "新功能"
       }
     ]
   },
@@ -114,6 +111,11 @@
       {
         "name": "Linux命令查询",
         "link": "/program/linuxCommand"
+      },
+      {
+        "name": "UserAgent解析",
+        "link": "/program/userAgent",
+        "legend": "新功能"
       }
     ]
   },
