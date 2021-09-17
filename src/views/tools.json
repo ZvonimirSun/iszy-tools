@@ -30,6 +30,10 @@
         "legend": "新功能"
       },
       {
+        "name": "WebSSH",
+        "link": "/others/webssh"
+      },
+      {
         "name": "资源包",
         "link": "https://lib.iszy.xyz"
       }
