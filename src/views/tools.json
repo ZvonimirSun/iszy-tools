@@ -49,17 +49,25 @@
       },
       {
         "name": "GeoJSON",
-        "link": "/gis/geoJson",
-        "layout": "wide"
+        "link": "/gis/geoJson"
       },
       {
         "name": "经纬度查询",
-        "link": "/gis/latLng",
-        "layout": "wide"
+        "link": "/gis/latLng"
       },
       {
         "name": "Cesium代码样例",
         "link": "/gis/cesiumDemo"
+      }
+    ]
+  },
+  {
+    "type": "图片相关",
+    "icon": "",
+    "children": [
+      {
+        "name": "图片加水印",
+        "link": "/image/watermark"
       }
     ]
   },
@@ -81,8 +89,7 @@
       },
       {
         "name": "JSON编辑器",
-        "link": "/program/jsonEditor",
-        "layout": "wide"
+        "link": "/program/jsonEditor"
       },
       {
         "name": "URL编码/解码",
