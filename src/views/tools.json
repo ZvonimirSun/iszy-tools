@@ -63,7 +63,7 @@
   },
   {
     "type": "图片相关",
-    "icon": "",
+    "icon": "picture-one",
     "children": [
       {
         "name": "图片加水印",
