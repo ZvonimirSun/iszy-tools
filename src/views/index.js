@@ -22,5 +22,6 @@ export default {
   cesiumDemo: () => import('@/views/gis/cesiumDemo/cesiumDemo.vue'),
   screenRecord: () => import('@/views/others/screenRecord.vue'),
   anyRule: () => import('@/views/program/anyRule.vue'),
-  linuxCommand: () => import('@/views/program/linuxCommand.vue')
+  linuxCommand: () => import('@/views/program/linuxCommand.vue'),
+  watermark: () => import('@/views/image/watermark.vue')
 }

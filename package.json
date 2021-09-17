@@ -15,6 +15,7 @@
     "ali-oss": "^6.15.2",
     "ant-design-vue": "^2.2.6",
     "axios": "^0.21.1",
+    "buffer": "^6.0.3",
     "codemirror": "^5.62.0",
     "core-js": "^3.14.0",
     "file-saver": "^2.0.5",
