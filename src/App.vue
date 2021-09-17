@@ -5,7 +5,8 @@
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
-        <div class="desc">一个轻量的工具集合</div>
+        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合</div>
+        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link></div>
       </Header>
       <Content ref="view">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
@@ -30,6 +31,7 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
 import { defineComponent } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
+import { Return } from '@icon-park/vue-next'
 
 const {
   offlineReady,
@@ -45,7 +47,7 @@ export default defineComponent({
     offlineReady,
     needRefresh
   }),
-  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link },
+  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
   watch: {
     offlineReady: function (val) {
       if (val) {
