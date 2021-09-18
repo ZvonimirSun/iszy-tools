@@ -1,29 +1,34 @@
-# iszy-tools [![Deploy](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml) [![Vue 3.x](https://img.shields.io/badge/vue-3.x-brightgreen)](https://v3.cn.vuejs.org/) [![Vite 2.x](https://img.shields.io/badge/Vite-2.x-blue)](https://cn.vitejs.dev/)
+# ISZY-TOOLS [![Deploy](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml/badge.svg)](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml) [![Vue 3.x](https://img.shields.io/badge/vue-3.x-brightgreen)](https://v3.cn.vuejs.org/) [![Vite 2.x](https://img.shields.io/badge/Vite-2.x-blue)](https://cn.vitejs.dev/)
 
 ISZY 工具集合，基于 Vue 3 开发，使用 vite 2 进行构建。
+
+- JavaScript 框架: [Vue 3](https://v3.cn.vuejs.org/)
+- 开发与构建工具: [Vite 2](https://cn.vitejs.dev/)
+- UI 组件库: [Ant Design Vue 2](https://github.com/vueComponent/ant-design-vue/)
+- 图标库采用: [IconPark](https://github.com/vueComponent/ant-design-vue/)
 
 ## 项目安装
 
 ```
-npm install
+yarn install
 ```
 
 ### 启动开发服务器
 
 ```
-npm run dev
+yarn run dev
 ```
 
 ### 为生产环境构建产物
 
 ```
-npm run build
+yarn run build
 ```
 
 ### 本地预览生产构建产物
 
 ```
-npm run serve
+yarn run serve
 ```
 
 ### 自定义配置
