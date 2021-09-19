@@ -223,6 +223,11 @@ export default {
 
   position: relative;
 
+  @media screen and (max-width: 576px) {
+    box-shadow: unset;
+    border: #999 .1rem solid;
+  }
+
   &.toolCollected {
     padding-right: 1.5rem * 2;
   }
