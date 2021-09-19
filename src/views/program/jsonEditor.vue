@@ -19,7 +19,7 @@
       </div>
       <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight noShowMobile"></div>
     </div>
-    <Space class="showMobile">
+    <Space class="showMobile" align="center">
       <Button type="primary" @click="download">
         下载
       </Button>

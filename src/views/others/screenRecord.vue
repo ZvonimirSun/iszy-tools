@@ -7,7 +7,7 @@
         </video>
         <span class="rec" v-show="showREC">REC</span>
       </div>
-      <Space :size="8" class="operations">
+      <Space :size="8" class="operations" align="center">
         <Button @click="openScreenShare" type="primary" :disabled="disabled.open">开启屏幕共享</Button>
         <Button @click="start" type="primary" :disabled="disabled.start">开始录制</Button>
         <Button @click="pause" type="primary" :disabled="disabled.pause">暂停</Button>

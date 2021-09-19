@@ -120,6 +120,11 @@
         "name": "UserAgent解析",
         "link": "/program/userAgent",
         "legend": "新功能"
+      },
+      {
+        "name": "前端CDN搜索",
+        "link": "/program/cdnQuery",
+        "legend": "新功能"
       }
     ]
   },
