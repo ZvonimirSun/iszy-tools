@@ -25,5 +25,6 @@ export default {
   linuxCommand: () => import('@/views/program/linuxCommand.vue'),
   watermark: () => import('@/views/image/watermark.vue'),
   userAgent: () => import('@/views/program/userAgent.vue'),
-  webssh: () => import('@/views/others/webssh.vue')
+  webssh: () => import('@/views/others/webssh.vue'),
+  cdnQuery: () => import('@/views/program/cdnQuery.vue')
 }

@@ -12,6 +12,7 @@
     "@ckpack/vue-color": "^0.0.3",
     "@highlightjs/vue-plugin": "^2.0.1",
     "@icon-park/vue-next": "^1.3.5",
+    "algoliasearch": "^4.10.5",
     "ali-oss": "^6.15.2",
     "ant-design-vue": "^2.2.6",
     "axios": "^0.21.1",

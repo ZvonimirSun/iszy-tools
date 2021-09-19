@@ -2,6 +2,110 @@
 # yarn lockfile v1
 
 
+"@algolia/cache-browser-local-storage@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/cache-browser-local-storage/download/@algolia/cache-browser-local-storage-4.10.5.tgz?cache=0&sync_timestamp=1629981010015&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fcache-browser-local-storage%2Fdownload%2F%40algolia%2Fcache-browser-local-storage-4.10.5.tgz#961cf07cf59955de17af13bd74f7806bd2119553"
+  integrity sha1-lhzwfPWZVd4XrxO9dPeAa9IRlVM=
+  dependencies:
+    "@algolia/cache-common" "4.10.5"
+
+"@algolia/cache-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/cache-common/download/@algolia/cache-common-4.10.5.tgz?cache=0&sync_timestamp=1629981009451&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fcache-common%2Fdownload%2F%40algolia%2Fcache-common-4.10.5.tgz#9510419e9dfb6d8814582c6b20615196f213a9d6"
+  integrity sha1-lRBBnp37bYgUWCxrIGFRlvITqdY=
+
+"@algolia/cache-in-memory@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/cache-in-memory/download/@algolia/cache-in-memory-4.10.5.tgz?cache=0&sync_timestamp=1629981009172&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fcache-in-memory%2Fdownload%2F%40algolia%2Fcache-in-memory-4.10.5.tgz#de9331cb86734bf7f7624063cdaa639e43509be1"
+  integrity sha1-3pMxy4ZzS/f3YkBjzapjnkNQm+E=
+  dependencies:
+    "@algolia/cache-common" "4.10.5"
+
+"@algolia/client-account@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/client-account/download/@algolia/client-account-4.10.5.tgz?cache=0&sync_timestamp=1629981008943&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fclient-account%2Fdownload%2F%40algolia%2Fclient-account-4.10.5.tgz#82f7c330fc5f0625b5b559afe9c6b1aa6722b6cf"
+  integrity sha1-gvfDMPxfBiW1tVmv6caxqmcits8=
+  dependencies:
+    "@algolia/client-common" "4.10.5"
+    "@algolia/client-search" "4.10.5"
+    "@algolia/transporter" "4.10.5"
+
+"@algolia/client-analytics@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/client-analytics/download/@algolia/client-analytics-4.10.5.tgz?cache=0&sync_timestamp=1629981009180&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fclient-analytics%2Fdownload%2F%40algolia%2Fclient-analytics-4.10.5.tgz#269e47c9de7e53e9e05e4a2d3c380607c3d2631f"
+  integrity sha1-Jp5Hyd5+U+ngXkotPDgGB8PSYx8=
+  dependencies:
+    "@algolia/client-common" "4.10.5"
+    "@algolia/client-search" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
+
+"@algolia/client-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/client-common/download/@algolia/client-common-4.10.5.tgz?cache=0&sync_timestamp=1629981009400&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fclient-common%2Fdownload%2F%40algolia%2Fclient-common-4.10.5.tgz#a7d0833796a9a2da68be16be76b6dc3962bf2f18"
+  integrity sha1-p9CDN5apotpovha+drbcOWK/Lxg=
+  dependencies:
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
+
+"@algolia/client-personalization@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/client-personalization/download/@algolia/client-personalization-4.10.5.tgz?cache=0&sync_timestamp=1629981009681&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fclient-personalization%2Fdownload%2F%40algolia%2Fclient-personalization-4.10.5.tgz#78a8fb8161bdbeaa66b400b3283640ef689e155b"
+  integrity sha1-eKj7gWG9vqpmtACzKDZA72ieFVs=
+  dependencies:
+    "@algolia/client-common" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
+
+"@algolia/client-search@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/client-search/download/@algolia/client-search-4.10.5.tgz?cache=0&sync_timestamp=1629981009928&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Fclient-search%2Fdownload%2F%40algolia%2Fclient-search-4.10.5.tgz#47907232a3e4ecf2aa4459b8de17242afd88147c"
+  integrity sha1-R5ByMqPk7PKqRFm43hckKv2IFHw=
+  dependencies:
+    "@algolia/client-common" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
+
+"@algolia/logger-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/logger-common/download/@algolia/logger-common-4.10.5.tgz?cache=0&sync_timestamp=1629981009758&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Flogger-common%2Fdownload%2F%40algolia%2Flogger-common-4.10.5.tgz#cf807107e755ad4a72c5afc787e968ff1196f1cc"
+  integrity sha1-z4BxB+dVrUpyxa/Hh+lo/xGW8cw=
+
+"@algolia/logger-console@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/logger-console/download/@algolia/logger-console-4.10.5.tgz?cache=0&sync_timestamp=1629981009990&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Flogger-console%2Fdownload%2F%40algolia%2Flogger-console-4.10.5.tgz#f961a7a7c6718c3f3842fb9b522d47b03b9df8ad"
+  integrity sha1-+WGnp8ZxjD84QvubUi1HsDud+K0=
+  dependencies:
+    "@algolia/logger-common" "4.10.5"
+
+"@algolia/requester-browser-xhr@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/requester-browser-xhr/download/@algolia/requester-browser-xhr-4.10.5.tgz?cache=0&sync_timestamp=1629981010193&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Frequester-browser-xhr%2Fdownload%2F%40algolia%2Frequester-browser-xhr-4.10.5.tgz#7063e3bc6d9c72bc535e1794352eddf47459dfe6"
+  integrity sha1-cGPjvG2ccrxTXheUNS7d9HRZ3+Y=
+  dependencies:
+    "@algolia/requester-common" "4.10.5"
+
+"@algolia/requester-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/requester-common/download/@algolia/requester-common-4.10.5.tgz?cache=0&sync_timestamp=1629981010215&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Frequester-common%2Fdownload%2F%40algolia%2Frequester-common-4.10.5.tgz#52abfbf10b743d26afd3ce20f62771bc393ff4f0"
+  integrity sha1-Uqv78Qt0PSav084g9idxvDk/9PA=
+
+"@algolia/requester-node-http@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/requester-node-http/download/@algolia/requester-node-http-4.10.5.tgz?cache=0&sync_timestamp=1629981010258&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Frequester-node-http%2Fdownload%2F%40algolia%2Frequester-node-http-4.10.5.tgz#db7e9ece1fda1b71a28c8e623666aaa096320b5c"
+  integrity sha1-236ezh/aG3GijI5iNmaqoJYyC1w=
+  dependencies:
+    "@algolia/requester-common" "4.10.5"
+
+"@algolia/transporter@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.nlark.com/@algolia/transporter/download/@algolia/transporter-4.10.5.tgz?cache=0&sync_timestamp=1629981010500&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40algolia%2Ftransporter%2Fdownload%2F%40algolia%2Ftransporter-4.10.5.tgz#9354989f12af3e2ce7d3109a94f519d467a960e0"
+  integrity sha1-k1SYnxKvPizn0xCalPUZ1GepYOA=
+  dependencies:
+    "@algolia/cache-common" "4.10.5"
+    "@algolia/logger-common" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+
 "@ant-design/colors@^5.0.0":
   version "5.1.1"
   resolved "https://registry.nlark.com/@ant-design/colors/download/@ant-design/colors-5.1.1.tgz#800b2186b1e27e66432e67d03ed96af3e21d8940"
@@ -1260,6 +1364,26 @@ ajv@^8.0.1, ajv@^8.6.0:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
+
+algoliasearch@^4.10.5:
+  version "4.10.5"
+  resolved "https://registry.nlark.com/algoliasearch/download/algoliasearch-4.10.5.tgz#1faf34a3ae5ac3bef27282eb141251c70c7f5db2"
+  integrity sha1-H680o65aw77ycoLrFBJRxwx/XbI=
+  dependencies:
+    "@algolia/cache-browser-local-storage" "4.10.5"
+    "@algolia/cache-common" "4.10.5"
+    "@algolia/cache-in-memory" "4.10.5"
+    "@algolia/client-account" "4.10.5"
+    "@algolia/client-analytics" "4.10.5"
+    "@algolia/client-common" "4.10.5"
+    "@algolia/client-personalization" "4.10.5"
+    "@algolia/client-search" "4.10.5"
+    "@algolia/logger-common" "4.10.5"
+    "@algolia/logger-console" "4.10.5"
+    "@algolia/requester-browser-xhr" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/requester-node-http" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
 ali-oss@^6.15.2:
   version "6.16.0"
