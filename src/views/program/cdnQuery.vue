@@ -22,7 +22,7 @@
     <keep-alive>
       <template v-if="status==='done'">
         <Divider/>
-        <template v-if="!pkgData">
+        <template v-if="!pkgID">
           <Title :level="4">
             <span>共找到 {{count}} 个库</span>
             <span v-if="count > 1000">，最多展示前 1000 个结果</span>
@@ -60,66 +60,55 @@
           </List>
         </template>
         <template v-else>
-          <Space :size="8" direction="vertical">
-            <Link href="javascript:;" @click="pkgData=null">
-              <return theme="outline"/>
-              返回
-            </Link>
-            <Typography class="metaDetail">
-              <ul>
-                <li v-if="pkgData.name"><b>名称: </b>{{ pkgData.name }}</li>
-                <li v-if="pkgData.homepage">
-                  <b>主页: </b>
-                  <Link :href="pkgData.homepage" target="_blank">{{ pkgData.homepage }}</Link>
-                </li>
-                <li v-if="pkgData.description">
-                  <b>简介: </b>{{ pkgData.description }}
-                </li>
-                <li v-if="pkgData.repository">
-                  <b>仓库: </b>{{ pkgData.repository.type }} /
-                  <Link :href="pkgData.repository.url" target="_blank">{{ pkgData.repository.url }}</Link>
-                </li>
-                <li v-if="pkgData.license">
-                  <b>协议: </b>{{ pkgData.license }}
-                </li>
-                <li v-if="pkgData.owner">
-                  <b>作者: </b>{{ pkgData.owner.name }} /
-                  <Link :href="pkgData.owner.link" target="_blank">{{ pkgData.owner.link }}</Link>
-                </li>
-                <Divider v-if="versions.length"/>
-                <li v-if="versions.length">
-                  <b>版本: </b><Select v-model:value="version" :options="versions" @change="getVersionData"></Select>
-                </li>
-                <li v-if="versionDetail">
-                  <b>默认文件: </b>
-                  <Text :copyable="{
-                    text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${versionDetail.default}`
-                  }">
-                    <Link :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${versionDetail.default}`"
-                          target="_blank">{{ versionDetail.default }}
-                    </Link>
-                  </Text>
-                </li>
-                <li v-if="versionDetail && !showAllfile">
-                  <Button @click="showAllfile=true" type="primary">查看所有文件</Button>
-                </li>
-                <li v-if="versionDetail && showAllfile">
-                  <b>文件列表: </b>
-                  <ul>
-                    <li v-for="(file,index) in versionDetail.files" :key="index">
-                      <Text :copyable="{
-                        text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${file.name}`
-                      }">
-                        <Link :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${file.name}`"
-                              target="_blank">{{ file.name }}
-                        </Link>
-                      </Text>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </Typography>
-          </Space>
+          <Link href="javascript:;" @click="pkgID=null" style="margin-bottom: .8rem;display: block">
+            <return theme="outline"/>
+            返回
+          </Link>
+          <Typography class="metaDetail">
+            <ul>
+              <li v-if="pkgData.name"><b>名称: </b>{{ pkgData.name }}</li>
+              <li v-if="pkgData.homepage">
+                <b>主页: </b>
+                <Link :href="pkgData.homepage" target="_blank">{{ pkgData.homepage }}</Link>
+              </li>
+              <li v-if="pkgData.description">
+                <b>简介: </b>{{ pkgData.description }}
+              </li>
+              <li v-if="pkgData.repository">
+                <b>仓库: </b>{{ pkgData.repository.type }} /
+                <Link :href="pkgData.repository.url" target="_blank">{{ pkgData.repository.url }}</Link>
+              </li>
+              <li v-if="pkgData.license">
+                <b>协议: </b>{{ pkgData.license }}
+              </li>
+              <li v-if="pkgData.owner">
+                <b>作者: </b>{{ pkgData.owner.name }} /
+                <Link :href="pkgData.owner.link" target="_blank">{{ pkgData.owner.link }}</Link>
+              </li>
+              <Divider v-if="versions.length"/>
+              <li v-if="versions.length">
+                <b>版本: </b><Select v-model:value="version" :options="versions" @change="getVersionData"></Select>
+              </li>
+              <li v-if="defaultFile">
+                <b>默认文件: </b>
+                <Text :copyable="{
+                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`
+                }">
+                  <Link :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`"
+                        target="_blank">{{ defaultFile }}
+                  </Link>
+                </Text>
+              </li>
+              <li v-if="files && files.length">
+                <b>文件列表</b><corner-right-down theme="outline"/>
+              </li>
+            </ul>
+          </Typography>
+          <DirectoryTree v-if="files && files.length" :treeData="treeData" :selectable="false">
+            <template #title="{title,dataRef}"><Text :copyable="dataRef.isLeaf?{
+              text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${dataRef.fileName}`
+            }:false">{{title}}</Text></template>
+          </DirectoryTree>
         </template>
       </template>
     </keep-alive>
@@ -128,9 +117,9 @@
 
 <script>
 import Container from '@/components/container.vue'
-import { Input, Typography, Divider, List, Tag, Space, Select, Button } from 'ant-design-vue'
+import { Input, Typography, Divider, List, Tag, Select, Tree } from 'ant-design-vue'
 import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
-import { TagOne, BalanceTwo, Return } from '@icon-park/vue-next'
+import { TagOne, BalanceTwo, Return, CornerRightDown } from '@icon-park/vue-next'
 
 const {
   Title,
@@ -139,6 +128,8 @@ const {
   Text
 } = Typography
 const { Item } = List
+const { DirectoryTree } = Tree
+
 let timeoutIndex = null
 
 export default {
@@ -149,18 +140,18 @@ export default {
     Title,
     Paragraph,
     Typography,
-    Space,
     Link,
     Text,
     Input,
     Select,
-    Button,
     List,
     Item,
     Tag,
     TagOne,
     BalanceTwo,
-    Return
+    Return,
+    DirectoryTree,
+    CornerRightDown
   },
   data: () => ({
     loading: false,
@@ -173,11 +164,12 @@ export default {
     result: [],
     count: 0,
 
-    pkgData: null,
+    pkgID: '',
+    pkgData: {},
     version: null,
     versions: [],
-    versionDetail: {},
-    showAllfile: false
+    defaultFile: null,
+    files: []
   }),
   computed: {
     pagination () {
@@ -189,6 +181,11 @@ export default {
         simple: true,
         total: this.count > 1000 ? 1000 : this.count
       }
+    },
+    treeData () {
+      if (this.files && this.files.length) {
+        return this.handleFileList(this.files)
+      } else { return [] }
     }
   },
   mounted () {
@@ -235,6 +232,13 @@ export default {
       this.search(0)
     },
     async showDetail (objectID) {
+      this.pkgID = objectID
+      this.pkgData = {}
+      this.version = null
+      this.versions = []
+      this.defaultFile = null
+      this.files = []
+
       try {
         this.pkgData = await getByName(objectID)
         this.version = this.pkgData.version
@@ -245,17 +249,34 @@ export default {
     },
     async getVersionData () {
       try {
-        this.showAllfile = false
+        this.versions = []
+        this.defaultFile = null
+        this.files = []
+
         this.versions = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}`)).data.versions.map(item => {
           return {
             label: item,
             value: item
           }
         })
-        this.versionDetail = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}@${this.version}/flat`)).data
+        const { default: defaultFile, files } = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}@${this.version}`)).data
+        this.defaultFile = defaultFile
+        this.files = files
       } catch (e) {
         console.error(e.message)
       }
+    },
+    handleFileList (list, fileName) {
+      return list.map(item => {
+        const name = fileName ? `${fileName}/${item.name}` : `/${item.name}`
+        return {
+          title: item.name,
+          key: item.hash,
+          isLeaf: item.type === 'file',
+          fileName: name,
+          children: ((item.type === 'directory' && item.files) ? this.handleFileList(item.files, name) : undefined)
+        }
+      })
     }
   }
 }
@@ -313,6 +334,10 @@ export default {
     line-height: 3rem;
     margin: .8rem 0;
   }
+}
+
+.ant-tree {
+  border: #16b0f6 solid;
 }
 
 .metaDetail {
