@@ -13,13 +13,12 @@
       </blockquote>
     </Paragraph>
     <Title :level="3">请输入要获取CDN的库名</Title>
-    <Search
+    <Input
       placeholder="jquery"
       v-model:value="keyword"
-      enter-button="搜索"
       :loading="loading"
       allowClear
-      @search="search(0)"/>
+      @change="search(0)"/>
     <keep-alive>
       <template v-if="status==='done'">
         <Divider/>
@@ -47,12 +46,13 @@
                     <template #icon>
                       <balance-two theme="outline"/>
                     </template>
-                    {{ item.license }}</Tag>
+                    {{ item.license }}
+                  </Tag>
                 </div>
-                <div v-if="item.description" class="description">{{item.description}}</div>
+                <div v-if="item.description" class="description">{{ item.description }}</div>
                 <div v-if="item.keywords && item.keywords.length">
                   <Tag v-for="(keyword,index) of item.keywords" :key="index">
-                    {{keyword}}
+                    {{ keyword }}
                   </Tag>
                 </div>
               </Item>
@@ -61,15 +61,62 @@
         </template>
         <template v-else>
           <Space :size="8" direction="vertical">
-            <Link href="javascript:" @click="pkgData=null"><return theme="outline"/>返回</Link>
+            <Link href="javascript:;" @click="pkgData=null">
+              <return theme="outline"/>
+              返回
+            </Link>
             <Typography class="metaDetail">
               <ul>
-                <li v-if="pkgData.name"><b>名称:</b> <code>{{pkgData.name}}</code></li>
-                <li v-if="pkgData.homepage"><b>主页:</b> <code>{{pkgData.homepage}}</code></li>
-                <li v-if="pkgData.description"><b>简介:</b> <code>{{pkgData.description}}</code></li>
-                <li v-if="pkgData.repository"><b>仓库:</b> <code>{{pkgData.repository.type}}</code> / <code><Link :href="pkgData.repository.url">{{pkgData.repository.url}}</Link></code></li>
-                <li v-if="pkgData.license"><b>协议:</b> <code>{{pkgData.license}}</code></li>
-                <li v-if="pkgData.owner"><b>作者:</b> <code>{{pkgData.owner.name}}</code> / <code><Link :href="pkgData.owner.link">{{pkgData.owner.link}}</Link></code></li>
+                <li v-if="pkgData.name"><b>名称: </b>{{ pkgData.name }}</li>
+                <li v-if="pkgData.homepage">
+                  <b>主页: </b>
+                  <Link :href="pkgData.homepage" target="_blank">{{ pkgData.homepage }}</Link>
+                </li>
+                <li v-if="pkgData.description">
+                  <b>简介: </b>{{ pkgData.description }}
+                </li>
+                <li v-if="pkgData.repository">
+                  <b>仓库: </b>{{ pkgData.repository.type }} /
+                  <Link :href="pkgData.repository.url" target="_blank">{{ pkgData.repository.url }}</Link>
+                </li>
+                <li v-if="pkgData.license">
+                  <b>协议: </b>{{ pkgData.license }}
+                </li>
+                <li v-if="pkgData.owner">
+                  <b>作者: </b>{{ pkgData.owner.name }} /
+                  <Link :href="pkgData.owner.link" target="_blank">{{ pkgData.owner.link }}</Link>
+                </li>
+                <Divider v-if="versions.length"/>
+                <li v-if="versions.length">
+                  <b>版本: </b><Select v-model:value="version" :options="versions" @change="getVersionData"></Select>
+                </li>
+                <li v-if="versionDetail">
+                  <b>默认文件: </b>
+                  <Text :copyable="{
+                    text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${versionDetail.default}`
+                  }">
+                    <Link :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${versionDetail.default}`"
+                          target="_blank">{{ versionDetail.default }}
+                    </Link>
+                  </Text>
+                </li>
+                <li v-if="versionDetail && !showAllfile">
+                  <Button @click="showAllfile=true" type="primary">查看所有文件</Button>
+                </li>
+                <li v-if="versionDetail && showAllfile">
+                  <b>文件列表: </b>
+                  <ul>
+                    <li v-for="(file,index) in versionDetail.files" :key="index">
+                      <Text :copyable="{
+                        text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${file.name}`
+                      }">
+                        <Link :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${file.name}`"
+                              target="_blank">{{ file.name }}
+                        </Link>
+                      </Text>
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </Typography>
           </Space>
@@ -81,17 +128,18 @@
 
 <script>
 import Container from '@/components/container.vue'
-import { Input, Typography, Divider, List, Tag, Space } from 'ant-design-vue'
+import { Input, Typography, Divider, List, Tag, Space, Select, Button } from 'ant-design-vue'
 import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
 import { TagOne, BalanceTwo, Return } from '@icon-park/vue-next'
 
-const { Search } = Input
 const {
   Title,
   Paragraph,
-  Link
+  Link,
+  Text
 } = Typography
 const { Item } = List
+let timeoutIndex = null
 
 export default {
   name: 'cdnQuery',
@@ -103,7 +151,10 @@ export default {
     Typography,
     Space,
     Link,
-    Search,
+    Text,
+    Input,
+    Select,
+    Button,
     List,
     Item,
     Tag,
@@ -122,7 +173,11 @@ export default {
     result: [],
     count: 0,
 
-    pkgData: null
+    pkgData: null,
+    version: null,
+    versions: [],
+    versionDetail: {},
+    showAllfile: false
   }),
   computed: {
     pagination () {
@@ -143,30 +198,64 @@ export default {
       if (!this.keyword) {
         return
       }
-      this.loading = true
-      this.pkgData = null
-      const { response } = await cdnQuery(this.keyword, pageIndex, this.pageSize)
-      if (response && Object.keys(response).length > 0) {
-        const {
-          hits,
-          page,
-          nbHits
-        } = response
-        this.result = hits
-        this.count = nbHits
-        this.pageIndex = page
-        this.status = 'done'
-      } else {
-        this.$msg.warn('搜索失败')
+      if (timeoutIndex) {
+        clearTimeout(timeoutIndex)
       }
-      this.loading = false
+      timeoutIndex = setTimeout(async () => {
+        this.loading = true
+        this.pkgData = null
+        this.version = null
+        this.versions = []
+        this.versionDetail = {}
+
+        const {
+          response,
+          query
+        } = await cdnQuery(this.keyword, pageIndex, this.pageSize)
+        if (query === this.keyword) {
+          if (response && Object.keys(response).length > 0) {
+            const {
+              hits,
+              page,
+              nbHits
+            } = response
+            this.result = hits
+            this.count = nbHits
+            this.pageIndex = page
+            this.status = 'done'
+          } else {
+            this.$msg.warn('搜索失败')
+          }
+          this.loading = false
+        }
+      }, 200)
     },
     searchByOwner (owner) {
       this.keyword = 'author:' + owner
       this.search(0)
     },
     async showDetail (objectID) {
-      this.pkgData = await getByName(objectID)
+      try {
+        this.pkgData = await getByName(objectID)
+        this.version = this.pkgData.version
+        await this.getVersionData()
+      } catch (e) {
+        console.error(e.message)
+      }
+    },
+    async getVersionData () {
+      try {
+        this.showAllfile = false
+        this.versions = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}`)).data.versions.map(item => {
+          return {
+            label: item,
+            value: item
+          }
+        })
+        this.versionDetail = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}@${this.version}/flat`)).data
+      } catch (e) {
+        console.error(e.message)
+      }
     }
   }
 }
