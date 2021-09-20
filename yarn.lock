@@ -4010,6 +4010,11 @@ regjsparser@^0.6.4:
   dependencies:
     jsesc "~0.5.0"
 
+relationship.js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.nlark.com/relationship.js/download/relationship.js-1.0.0.tgz#9f2922234af41a37d644978dbf6f22c36f68c435"
+  integrity sha1-nykiI0r0GjfWRJeNv28iw29oxDU=
+
 require-from-string@^2.0.2:
   version "2.0.2"
   resolved "https://registry.nlark.com/require-from-string/download/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"

@@ -31,7 +31,13 @@
       },
       {
         "name": "WebSSH",
-        "link": "/others/webssh"
+        "link": "/others/webssh",
+        "legend": "新功能"
+      },
+      {
+        "name": "亲戚关系计算器",
+        "link": "/others/relationship",
+        "legend": "新功能"
       },
       {
         "name": "资源包",
