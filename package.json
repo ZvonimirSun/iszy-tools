@@ -29,6 +29,7 @@
     "lodash-es": "^4.17.21",
     "marked": "^3.0.4",
     "moment": "^2.29.1",
+    "relationship.js": "^1.0.0",
     "ua-parser-js": "^0.7.28",
     "uuid": "^8.3.2",
     "vue": "^3.1.1",
