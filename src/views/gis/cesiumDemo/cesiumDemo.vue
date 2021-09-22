@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { addCesium } from '@/utils/addExternalScript.js'
 import { defineAsyncComponent } from 'vue'
 import Container from '@/components/container.vue'
 import { Row, Col, Card, Breadcrumb } from 'ant-design-vue'
@@ -48,7 +49,10 @@ export default {
   },
   data: () => ({
     demo: ''
-  })
+  }),
+  created () {
+    addCesium()
+  }
 }
 </script>
 

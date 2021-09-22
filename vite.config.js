@@ -2,7 +2,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import cesium from 'vite-plugin-cesium'
+import externalGlobals from 'rollup-plugin-external-globals'
 import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
 
@@ -102,8 +102,7 @@ export default defineConfig({
           resolveStyle: name => `ant-design-vue/es/${name}/style/index`
         }
       ]
-    }),
-    cesium()
+    })
   ],
   resolve: {
     alias: {
@@ -127,6 +126,12 @@ export default defineConfig({
       keep_classnames: false,
       keep_fnames: false,
       module: false
+    },
+    rollupOptions: {
+      external: ['cesium'],
+      plugins: [
+        externalGlobals({ cesium: 'Cesium' })
+      ]
     }
   },
   css: {
