@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { addCesium } from '@/utils/addExternalScript.js'
+import asyncLoad from '@/utils/asyncLoad.js'
 import { defineAsyncComponent } from 'vue'
 import Container from '@/components/container.vue'
 import { Row, Col, Card, Breadcrumb } from 'ant-design-vue'
@@ -50,8 +50,9 @@ export default {
   data: () => ({
     demo: ''
   }),
-  created () {
-    addCesium()
+  async created () {
+    await asyncLoad('https://cdn.jsdelivr.net/npm/cesium@1.85.0/Build/Cesium/Cesium.js')
+    await asyncLoad('https://cdn.jsdelivr.net/npm/cesium@1.85.0/Build/Cesium/Widgets/widgets.css', 'style')
   }
 }
 </script>
