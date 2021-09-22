@@ -4059,7 +4059,7 @@ rimraf@^3.0.2:
 
 rollup-plugin-external-globals@^0.6.1:
   version "0.6.1"
-  resolved "https://registry.nlark.com/rollup-plugin-external-globals/download/rollup-plugin-external-globals-0.6.1.tgz#861c260b5727144e0fd1b424b103f9f0282fc365"
+  resolved "https://registry.npm.taobao.org/rollup-plugin-external-globals/download/rollup-plugin-external-globals-0.6.1.tgz#861c260b5727144e0fd1b424b103f9f0282fc365"
   integrity sha1-hhwmC1cnFE4P0bQksQP58Cgvw2U=
   dependencies:
     "@rollup/pluginutils" "^4.0.0"
