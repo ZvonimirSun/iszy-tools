@@ -13,6 +13,7 @@ export default async function asyncLoad (url, type = 'script', reload = false) {
       const script = document.createElement('script')
       script.type = 'text/javascript'
       script.src = url
+      script.defer = true
       document.head.appendChild(script)
     }
   } else if (type === 'style') {
