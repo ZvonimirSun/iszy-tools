@@ -32,3 +32,13 @@ jobs:
         with:
           branch: deploy
           folder: dist
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd /root/docker/nginx/html/tools.iszy.xyz
+            git pull --rebase
