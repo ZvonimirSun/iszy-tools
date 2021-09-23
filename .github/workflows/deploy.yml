@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
@@ -14,16 +16,29 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-      - name: Setup node 🔧
-        uses: actions/setup-node@v2
+      - name: Restore cached ./node_modules
+        uses: actions/cache@v2
         with:
-          node-version: '14'
+          path: ./node_modules
+          key: ${{ runner.os }}-yarn-lock-${{ hashFiles('./yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-lock-
       - name: Install dependencies 🔧
         run: yarn install --frozen-lockfile
       - name: Build app 🔧
-        run: yarn run build
+        run: yarn build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
-          branch: gh-pages
+          branch: deploy
           folder: dist
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd /root/docker/nginx/html/tools.iszy.xyz
+            git pull --rebase

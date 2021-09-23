@@ -1,102 +1,110 @@
 <template>
-  <a-row>
-    <a-col :span="24">
-      <span class="tips">计算仅供参考，请以银行数据为准!</span>
-    </a-col>
-  </a-row>
-  <a-row>
-    <a-col :xs="24" :lg="6">
-      <div class="panel">
-        <a-form layout="horizontal" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
-                :colon="false">
-          <a-form-item label="贷款金额">
-            <a-input addon-after="元" v-model:value="loanAmount" type="number"/>
-          </a-form-item>
-          <a-form-item label="贷款期限">
-            <a-select v-model:value="repaymentPeriod" type="number">
-              <a-select-option :value="0">自定义贷款期限</a-select-option>
-              <a-select-option v-for="(n,index) in 30" :key="'repaymentPeriod'+index" :value="n">
-                {{ n }}年({{ n * 12 }}月)
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="贷款月数">
-            <a-input addon-after="月" v-model:value="loanMonth" :disabled="repaymentPeriod!==0"/>
-          </a-form-item>
-          <a-form-item label="贷款利率">
-            <a-input addon-after="%" v-model:value="lendingRates"/>
-          </a-form-item>
-          <a-form-item label="还款方式">
-            <a-select v-model:value="repayment">
-              <a-select-option value="equalLoan">
-                等额本息
-              </a-select-option>
-              <a-select-option value="equalPrincipal">
-                等额本金
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="首次还款">
-            <a-date-picker v-model:value="firstRepaymentDate" :format="dateFormat" style="width: 100%"/>
-          </a-form-item>
-          <a-divider/>
-          <a-form-item>
-            <a-button-group>
-              <a-button type="primary" @click="addPrepayment" :disabled="!firstRepaymentDate">添加提前还款</a-button>
-              <a-button @click="removePrepayment" v-if="prepayment.length > 0">移除</a-button>
-            </a-button-group>
-          </a-form-item>
-          <template v-for="(item, index) of prepayment" :key="index">
-            <a-divider orientation="left">第{{index+1}}次提前还款</a-divider>
-            <a-form-item label="还款日期">
-              <a-date-picker v-model:value="item.repaymentDate" :format="dateFormat" style="width: 100%"/>
-            </a-form-item>
-            <a-form-item label="提前还款金额">
-              <a-input addon-after="元" v-model:value="item.repaymentAmount" type="number"/>
-            </a-form-item>
-            <a-form-item label="调整期数">
-              <a-input addon-after="期" v-model:value="item.adjustLoanMonth" type="number"/>
-            </a-form-item>
-            <a-form-item label="调整利率">
-              <a-input addon-after="%" v-model:value="item.lendingRates"/>
-            </a-form-item>
-          </template>
-        </a-form>
-      </div>
-    </a-col>
-    <a-col :xs="24" :lg="18">
-      <div class="panel">
-        <a-form :label-col="{span:6}" :wrapper-col="{ span: 18}" labelAlign="left" :colon="false">
-          <a-form-item label="累计提前还款">
-            <a-input addon-after="元" v-model:value="cumulativeRepayment" readonly/>
-          </a-form-item>
-          <a-form-item label="累计调整期数">
-            <a-input addon-after="元" v-model:value="cumulativeAdjustLoanMonth" readonly/>
-          </a-form-item>
-          <a-form-item label="原累计利息">
-            <a-input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
-          </a-form-item>
-          <a-form-item label="累计缴息">
-            <a-input addon-after="元" v-model:value="cumulativeInterestPayment" readonly/>
-          </a-form-item>
-          <a-form-item label="累计节省利息">
-            <a-input addon-after="元" v-model:value="savedMoney" readonly/>
-          </a-form-item>
-          <a-form-item :wrapper-col="{span:24}">
-            <a-table :dataSource="dataSource" :columns="columns" bordered size="small" :pagination="false"/>
-          </a-form-item>
-        </a-form>
-      </div>
-    </a-col>
-  </a-row>
+  <container>
+    <Row>
+      <Row :span="24">
+        <span class="tips">计算仅供参考，请以银行数据为准!</span>
+      </Row>
+    </Row>
+    <Row>
+      <Col :xs="24" :lg="6">
+        <div class="panel">
+          <Form layout="horizontal" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
+                  :colon="false">
+            <Item label="贷款金额">
+              <Input addon-after="元" v-model:value="loanAmount" type="number"/>
+            </Item>
+            <Item label="贷款期限">
+              <Select v-model:value="repaymentPeriod" type="number">
+                <Option :value="0">自定义贷款期限</Option>
+                <Option v-for="(n,index) in 30" :key="'repaymentPeriod'+index" :value="n">
+                  {{ n }}年({{ n * 12 }}月)
+                </Option>
+              </Select>
+            </Item>
+            <Item label="贷款月数">
+              <Input addon-after="月" v-model:value="loanMonth" :disabled="repaymentPeriod!==0"/>
+            </Item>
+            <Item label="贷款利率">
+              <Input addon-after="%" v-model:value="lendingRates"/>
+            </Item>
+            <Item label="还款方式">
+              <Select v-model:value="repayment">
+                <Option value="equalLoan">
+                  等额本息
+                </Option>
+                <Option value="equalPrincipal">
+                  等额本金
+                </Option>
+              </Select>
+            </Item>
+            <Item label="首次还款">
+              <DatePicker v-model:value="firstRepaymentDate" :format="dateFormat" style="width: 100%"/>
+            </Item>
+            <Divider/>
+            <Item>
+              <Group>
+                <Button type="primary" @click="addPrepayment" :disabled="!firstRepaymentDate">添加提前还款</Button>
+                <Button @click="removePrepayment" v-if="prepayment.length > 0">移除</Button>
+              </Group>
+            </Item>
+            <template v-for="(item, index) of prepayment" :key="index">
+              <Divider orientation="left">第{{ index + 1 }}次提前还款</Divider>
+              <Item label="还款日期">
+                <DatePicker v-model:value="item.repaymentDate" :format="dateFormat" style="width: 100%"/>
+              </Item>
+              <Item label="提前还款金额">
+                <Input addon-after="元" v-model:value="item.repaymentAmount" type="number"/>
+              </Item>
+              <Item label="调整期数">
+                <Input addon-after="期" v-model:value="item.adjustLoanMonth" type="number"/>
+              </Item>
+              <Item label="调整利率">
+                <Input addon-after="%" v-model:value="item.lendingRates"/>
+              </Item>
+            </template>
+          </Form>
+        </div>
+      </Col>
+      <Col :xs="24" :lg="18">
+        <div class="panel">
+          <Form :label-col="{span:6}" :wrapper-col="{ span: 18}" labelAlign="left" :colon="false">
+            <Item label="累计提前还款">
+              <Input addon-after="元" v-model:value="cumulativeRepayment" readonly/>
+            </Item>
+            <Item label="累计调整期数">
+              <Input addon-after="元" v-model:value="cumulativeAdjustLoanMonth" readonly/>
+            </Item>
+            <Item label="原累计利息">
+              <Input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
+            </Item>
+            <Item label="累计缴息">
+              <Input addon-after="元" v-model:value="cumulativeInterestPayment" readonly/>
+            </Item>
+            <Item label="累计节省利息">
+              <Input addon-after="元" v-model:value="savedMoney" readonly/>
+            </Item>
+            <Item :wrapper-col="{span:24}">
+              <Table :dataSource="dataSource" :columns="columns" bordered size="small" :pagination="false"/>
+            </Item>
+          </Form>
+        </div>
+      </Col>
+    </Row>
+  </container>
 </template>
 
 <script>
 import moment from 'moment'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
+import Container from '@/components/container.vue'
+import { Row, Col, Form, Table, Input, Select, DatePicker, Divider, Button } from 'ant-design-vue'
+const { Item } = Form
+const { Option } = Select
+const { Group } = Button
 
 export default {
   name: '多次提前还贷计算器',
+  components: { Container, Row, Col, Form, Table, Input, Item, Select, Option, DatePicker, Divider, Button, Group },
   data: () => ({
     loanAmount: 150000,
     repaymentPeriod: 2,
@@ -272,17 +280,15 @@ export default {
               if (i > 0) {
                 while (prepayment.length > 0 && prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
                   const a = prepayment.shift()
-                  if (Number(a.repaymentAmount || 0) > 0) {
-                    remain.loanAmount -= Number(a.repaymentAmount)
-                    remain.lendingRates = Number(a.lendingRates || 0)
-                    remain.loanMonth -= Number(a.adjustLoanMonth || 0)
-                    adjustLoanMonth += Number(a.adjustLoanMonth || 0)
-                    result.push({
-                      repaymentDate: a.repaymentDate.format(this.dateFormat),
-                      principalRepayment: a.repaymentAmount,
-                      remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-                    })
-                  }
+                  remain.loanAmount -= Number(a.repaymentAmount)
+                  remain.lendingRates = Number(a.lendingRates || 0)
+                  remain.loanMonth -= Number(a.adjustLoanMonth || 0)
+                  adjustLoanMonth += Number(a.adjustLoanMonth || 0)
+                  result.push({
+                    repaymentDate: a.repaymentDate.format(this.dateFormat),
+                    principalRepayment: a.repaymentAmount,
+                    remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+                  })
                 }
               }
               const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
@@ -318,17 +324,15 @@ export default {
               if (prepayment.length > 0 && i > 1) {
                 if (prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
                   const a = prepayment.shift()
-                  if (Number(a.repaymentAmount || 0) > 0) {
-                    remain.loanAmount -= Number(a.repaymentAmount)
-                    remain.lendingRates = Number(a.lendingRates || 0)
-                    remain.loanMonth -= Number(a.adjustLoanMonth || 0)
-                    adjustLoanMonth += Number(a.adjustLoanMonth || 0)
-                    result.push({
-                      repaymentDate: a.repaymentDate.format(this.dateFormat),
-                      principalRepayment: a.repaymentAmount,
-                      remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-                    })
-                  }
+                  remain.loanAmount -= Number(a.repaymentAmount)
+                  remain.lendingRates = Number(a.lendingRates || 0)
+                  remain.loanMonth -= Number(a.adjustLoanMonth || 0)
+                  adjustLoanMonth += Number(a.adjustLoanMonth || 0)
+                  result.push({
+                    repaymentDate: a.repaymentDate.format(this.dateFormat),
+                    principalRepayment: a.repaymentAmount,
+                    remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+                  })
                 }
               }
               const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
@@ -460,7 +464,7 @@ function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) 
 .tips {
   width: 100%;
   height: 100%;
-  padding: 5px 8px;
+  padding: .5rem .8rem;
 
   color: red;
 }
@@ -468,7 +472,7 @@ function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) 
 .panel {
   width: 100%;
   height: 100%;
-  padding: 5px 8px;
+  padding: .5rem .8rem;
 
   .ant-calendar-picker {
     width: 100%;

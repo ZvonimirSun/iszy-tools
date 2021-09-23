@@ -1,0 +1,176 @@
+[
+  {
+    "type": "其他",
+    "icon": "all-application",
+    "children": [
+      {
+        "name": "淘宝优惠券精选",
+        "link": "https://taobao.iszy.xyz"
+      },
+      {
+        "name": "这是什么动漫",
+        "link": "/others/whatAnimeIsThis"
+      },
+      {
+        "name": "哔哩哔哩AV、BV号转换",
+        "link": "/others/bilibiliBv2av"
+      },
+      {
+        "name": "奥利奥生成器",
+        "link": "/others/oreooo"
+      },
+      {
+        "name": "身份证解析",
+        "link": "/others/idChinese",
+        "legend": "新功能"
+      },
+      {
+        "name": "屏幕录制",
+        "link": "/others/screenRecord",
+        "legend": "新功能"
+      },
+      {
+        "name": "WebSSH",
+        "link": "/others/webssh",
+        "legend": "新功能"
+      },
+      {
+        "name": "亲戚关系计算器",
+        "link": "/others/relationship",
+        "legend": "新功能"
+      },
+      {
+        "name": "资源包",
+        "link": "https://lib.iszy.xyz"
+      }
+    ]
+  },
+  {
+    "type": "地图",
+    "icon": "map-draw",
+    "children": [
+      {
+        "name": "地图选择器",
+        "link": "https://datav.aliyun.com/tools/atlas/index.html"
+      },
+      {
+        "name": "GeoJSON",
+        "link": "/gis/geoJson"
+      },
+      {
+        "name": "经纬度查询",
+        "link": "/gis/latLng"
+      },
+      {
+        "name": "Cesium代码样例",
+        "link": "/gis/cesiumDemo"
+      }
+    ]
+  },
+  {
+    "type": "图片相关",
+    "icon": "picture-one",
+    "children": [
+      {
+        "name": "图片加水印",
+        "link": "/image/watermark",
+        "legend": "新功能"
+      }
+    ]
+  },
+  {
+    "type": "编程开发",
+    "icon": "code",
+    "children": [
+      {
+        "name": "时间计算",
+        "link": "/program/timeCompute"
+      },
+      {
+        "name": "颜色转换",
+        "link": "/program/colorTransform"
+      },
+      {
+        "name": "UUID在线生成",
+        "link": "/program/uuid"
+      },
+      {
+        "name": "JSON编辑器",
+        "link": "/program/jsonEditor"
+      },
+      {
+        "name": "URL编码/解码",
+        "link": "/program/urlEncode"
+      },
+      {
+        "name": "查看网页源码",
+        "link": "/program/viewSourceCode"
+      },
+      {
+        "name": "CSS格式化/压缩",
+        "link": "/program/cssFormatter"
+      },
+      {
+        "name": "TinyEditor",
+        "link": "/program/tinyEditor"
+      },
+      {
+        "name": "正则大全",
+        "link": "/program/anyRule"
+      },
+      {
+        "name": "Linux命令查询",
+        "link": "/program/linuxCommand"
+      },
+      {
+        "name": "UserAgent解析",
+        "link": "/program/userAgent",
+        "legend": "新功能"
+      },
+      {
+        "name": "前端CDN搜索",
+        "link": "/program/cdnQuery",
+        "legend": "新功能"
+      }
+    ]
+  },
+  {
+    "type": "小游戏",
+    "icon": "game",
+    "children": [
+      {
+        "name": "2048",
+        "link": "/games/2048"
+      },
+      {
+        "name": "俄罗斯方块",
+        "link": "/games/tetris"
+      }
+    ]
+  },
+  {
+    "type": "理财",
+    "icon": "financing-one",
+    "children": [
+      {
+        "name": "多次提前还贷计算器",
+        "link": "/money/mtqLoans"
+      }
+    ]
+  },
+  {
+    "type": "网站相关",
+    "icon": "setting-two",
+    "children": [
+      {
+        "name": "网站设置",
+        "link": "/settings",
+        "statistics": false
+      },
+      {
+        "name": "留言反馈",
+        "link": "https://github.com/ZvonimirSun/iszy-tools/discussions"
+      }
+    ]
+  }
+]
