@@ -208,7 +208,7 @@ export default {
       this.$msg.success('清除成功')
     },
     download () {
-      createFile(this.editorLeft.getText(), 'main.json')
+      createFile(this.editorLeft.getText(), 'left.json')
     },
     changeDiff () {
       this.editorLeft.refresh()
