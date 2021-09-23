@@ -16,6 +16,7 @@
             <Save theme="outline"/>
             保存
           </Button>
+          <Checkbox v-model:checked="autoSave" @change="changeAutoSave">自动</Checkbox>
           <Button type="primary" @click="clear" block v-if="getData('jsonEditor')">
             <Clear theme="outline"/>
             清除
@@ -88,6 +89,7 @@ export default {
       },
       String: 'Hello World'
     },
+    autoSave: false,
     diff: true
   }),
   computed: {
@@ -99,8 +101,12 @@ export default {
   methods: {
     init () {
       if (this.getData('jsonEditor')) {
-        this.codeLeft = this.getData('jsonEditor')
-        this.codeRight = this.getData('jsonEditor')
+        if (this.getData('jsonEditor').left) {
+          this.codeLeft = this.getData('jsonEditor').left
+        }
+        if (this.getData('jsonEditor').right) {
+          this.codeRight = this.getData('jsonEditor').right
+        }
       }
       this.editorLeft = markRaw(new JSONEditor(
         this.$refs.jsonEditorLeft,
@@ -109,8 +115,13 @@ export default {
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
-            this.codeLeft = JSON.parse(json)
-            this.editorRight.refresh()
+            try {
+              this.codeLeft = JSON.parse(json)
+              this.editorRight.refresh()
+              if (this.autoSave) {
+                this.save()
+              }
+            } catch (e) {}
           },
           autocomplete: {
             applyTo: ['value'],
@@ -137,8 +148,14 @@ export default {
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
-            this.codeRight = JSON.parse(json)
-            this.editorLeft.refresh()
+            try {
+              this.codeRight = JSON.parse(json)
+              this.editorLeft.refresh()
+              if (this.autoSave) {
+                this.save()
+              }
+            } catch (e) {
+            }
           },
           autocomplete: {
             applyTo: ['value'],
@@ -174,9 +191,11 @@ export default {
       try {
         await this.setData({
           key: 'jsonEditor',
-          val: this.editorLeft.get()
+          val: {
+            left: this.editorLeft.get(),
+            right: this.editorRight.get()
+          }
         })
-        this.$msg.success('保存成功')
       } catch (e) {
         this.$msg.warn('JSON存在错误，保存失败')
       }
@@ -194,6 +213,11 @@ export default {
     changeDiff () {
       this.editorLeft.refresh()
       this.editorRight.refresh()
+    },
+    changeAutoSave () {
+      if (this.autoSave) {
+        this.save()
+      }
     },
 
     onClassName ({ path }) {
