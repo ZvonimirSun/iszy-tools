@@ -220,7 +220,7 @@ export default {
           if (!address) {
             try {
               const gaodeLatLng = ChineseLayer.prototype.csysConvert.gps84_To_gcj02(latLng.lng, latLng.lat)
-              const res = await this.$axios.get('https://amapapi.iszy.xyz/v3/geocode/regeo', {
+              const res = await this.$axios.get('https://amap.api.iszy.xyz/v3/geocode/regeo', {
                 params: {
                   location: `${gaodeLatLng.lng},${gaodeLatLng.lat}`,
                   output: 'json',
@@ -266,7 +266,7 @@ export default {
     async locateAddress () {
       if (this.address) {
         try {
-          const res = await this.$axios.get('https://amapapi.iszy.xyz/v3/geocode/geo', {
+          const res = await this.$axios.get('https://amap.api.iszy.xyz/v3/geocode/geo', {
             params: {
               address: this.address,
               key: this.gaodeToken
