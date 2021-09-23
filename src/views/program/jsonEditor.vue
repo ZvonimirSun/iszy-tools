@@ -4,14 +4,24 @@
       <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
       <div class="controller noShowMobile">
         <Space direction="vertical">
-          <Button type="primary" @click="copyRight" block>复制
+          <Button type="primary" @click="copyRight" block>
             <Right theme="outline"/>
+            复制
           </Button>
           <Button type="primary" @click="copyLeft" block>
             <Left theme="outline"/>
             复制
           </Button>
+          <Button type="primary" @click="save" block>
+            <Save theme="outline"/>
+            保存
+          </Button>
+          <Button type="primary" @click="clear" block v-if="getData('jsonEditor')">
+            <Clear theme="outline"/>
+            清除
+          </Button>
           <Button type="primary" @click="download" block>
+            <CodeDownload theme="outline"/>
             下载
           </Button>
           <Checkbox v-model:checked="diff" @change="changeDiff">Diff</Checkbox>
@@ -28,14 +38,17 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
 import Container from '@/components/container.vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
-import { Right, Left } from '@icon-park/vue-next'
+import { Right, Left, CodeDownload, Save, Clear } from '@icon-park/vue-next'
 import { markRaw } from 'vue'
 import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
+
+const { mapGetters, mapActions } = createNamespacedHelpers('cache')
 
 export default {
   name: 'JsonEditor',
@@ -45,7 +58,10 @@ export default {
     Space,
     Checkbox,
     Right,
-    Left
+    Left,
+    CodeDownload,
+    Save,
+    Clear
   },
   data: () => ({
     editorLeft: null,
@@ -74,11 +90,18 @@ export default {
     },
     diff: true
   }),
+  computed: {
+    ...mapGetters(['getData'])
+  },
   mounted () {
     this.init()
   },
   methods: {
     init () {
+      if (this.getData('jsonEditor')) {
+        this.codeLeft = this.getData('jsonEditor')
+        this.codeRight = this.getData('jsonEditor')
+      }
       this.editorLeft = markRaw(new JSONEditor(
         this.$refs.jsonEditorLeft,
         {
@@ -147,6 +170,24 @@ export default {
       this.editorLeft.update(this.codeLeft)
       this.editorRight.refresh()
     },
+    async save () {
+      try {
+        await this.setData({
+          key: 'jsonEditor',
+          val: this.editorLeft.get()
+        })
+        this.$msg.success('保存成功')
+      } catch (e) {
+        this.$msg.warn('JSON存在错误，保存失败')
+      }
+    },
+    async clear () {
+      await this.setData({
+        key: 'jsonEditor',
+        val: undefined
+      })
+      this.$msg.success('清除成功')
+    },
     download () {
       createFile(this.editorLeft.getText(), 'main.json')
     },
@@ -175,7 +216,8 @@ export default {
           ? [key]
           : [key, String(value)]
       }))
-    }
+    },
+    ...mapActions(['setData'])
   },
   beforeUnmount () {
     if (this.editorLeft) {
