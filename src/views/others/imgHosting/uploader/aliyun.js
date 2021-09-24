@@ -1,6 +1,5 @@
 import hmacSHA1 from 'crypto-js/hmac-sha1.js'
 import Base64 from 'crypto-js/enc-base64'
-import mime from 'mime-types'
 
 /**
  * generate OSS signature
@@ -12,15 +11,15 @@ import mime from 'mime-types'
  * @param options.path {String} 自定义存储路径
  * @param options.customUrl {String} 自定义域名，注意要加 `http://` 或者 `https://`
  * @param options.options {String} 针对图片的一些后缀处理参数
- * @param fileName {String} 文件名
+ * @param file {File} 文件
  * @returns {String} 签名
  */
-const generateSignature = (options, fileName) => {
+const generateSignature = (options, file) => {
   const date = new Date().toUTCString()
-  const mimeType = mime.lookup(fileName)
-  if (!mimeType) throw Error(`No mime type found for file ${fileName}`)
+  const mimeType = file.type
+  if (!mimeType) throw Error(`No mime type found for file ${file.name}`)
 
-  const signString = `PUT\n\n${mimeType}\n${date}\n/${options.bucket}/${options.path}${fileName}`
+  const signString = `PUT\n\n${mimeType}\n${date}\n/${options.bucket}/${options.path}${file.name}`
 
   const signature = Base64.stringify(hmacSHA1(signString, options.accessKeySecret))
   return `OSS ${options.accessKeyId}:${signature}`

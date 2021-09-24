@@ -3,7 +3,16 @@
     <div class="container">
       <Tabs v-model:activeKey="activeKey" type="card" @change="changeModule">
         <TabPane key="home" tab="首页">
-          <Empty/>
+          <Dragger v-model:fileList="fileList" accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
+                   @reject="rejectFile" :showUploadList="false" :customRequest="customRequest">
+            <p class="ant-upload-drag-icon">
+              <UploadOne/>
+            </p>
+            <p class="ant-upload-text">拖拽图片到这里上传<br/>或者点击选择文件上传</p>
+            <p class="ant-upload-hint">
+              暂时仅支持单文件上传。
+            </p>
+          </Dragger>
         </TabPane>
         <TabPane key="uploaded" tab="我的上传">
           <Empty/>
@@ -16,8 +25,10 @@
                   <Form layout="vertical" v-if="currentUploader === name">
                     <Item v-for="(item1) of currentConfig" :key="item1.name" :label="item1.label"
                           :required="item1.required">
-                      <Input v-model:value="item1.default" allow-clear v-if="item1.type==='input'" :placeholder="item1.hint"/>
-                      <Password v-model:value="item1.default" allow-clear v-else-if="item1.type==='password'" :placeholder="item1.hint"/>
+                      <Input v-model:value="item1.default" allow-clear v-if="item1.type==='input'"
+                             :placeholder="item1.hint"/>
+                      <Password v-model:value="item1.default" allow-clear v-else-if="item1.type==='password'"
+                                :placeholder="item1.hint"/>
                     </Item>
                   </Form>
                 </div>
@@ -35,14 +46,16 @@
 
 <script>
 import Container from '@/components/container.vue'
-import { Form, Input, Tabs, Empty, Button } from 'ant-design-vue'
+import { Form, Input, Tabs, Empty, Button, Upload } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from './uploader'
 import { cloneDeep } from 'lodash-es'
+import { UploadOne } from '@icon-park/vue-next'
 
 const { TabPane } = Tabs
 const { Item } = Form
 const { Password } = Input
+const { Dragger } = Upload
 const {
   mapGetters,
   mapState,
@@ -59,15 +72,19 @@ export default {
     Input,
     Password,
     Empty,
-    Button
+    Button,
+    Dragger,
+    UploadOne
   },
   name: '极简图床',
   data: () => ({
     activeKey: 'home',
-    currentUploader: 'aliyun',
 
     uploaders,
-    currentConfig: []
+
+    currentUploader: 'aliyun',
+    currentConfig: [],
+    fileList: []
   }),
   watch: {},
   computed: {
@@ -99,11 +116,21 @@ export default {
         }
         config[c.name] = c.default
       }
-      this.saveConfig({ uploader: this.currentUploader, config })
+      this.saveConfig({
+        uploader: this.currentUploader,
+        config
+      })
       this.$msg.success('保存成功')
     },
-    async beforeUpload (file) {
-      console.log(file)
+    async customRequest (val) {
+      if (this.uploader && this.config(this.uploader)) {
+        uploaders[this.uploader].handle(this.config(this.uploader), val.file)
+      } else {
+        this.$msg.warn('请先进行设置')
+      }
+    },
+    rejectFile () {
+      this.$msg.warning('不支持的文件类型！')
     }
   }
 }
@@ -161,6 +188,12 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .ant-upload-drag-icon {
+    .i-icon {
+      font-size: 4.8rem;
     }
   }
 }
