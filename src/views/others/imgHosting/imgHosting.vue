@@ -1,169 +1,109 @@
 <template>
   <container>
     <div class="container">
-      <Row v-if="setting">
-        <Col :xs="24" :sm="20">
-          <Form :label-col="{xs: 24, sm: 6, md: 5, xl: 3}">
-            <Item label="上传方式" :wrapperCol="{sm: 6, md: 5, xl: 3}">
-              <Select v-model:value="mode" compact>
-                <Option value="aliOss">阿里云 OSS</Option>
-              </Select>
-            </Item>
-            <Divider/>
-            <Item label="设定KeyId" :wrapperCol="{sm: 12, md: 9, xl: 6}" :required="true">
-              <Input v-model:value="aliOssOptions.accessKey" placeholder="AccessKeyId" allow-clear/>
-            </Item>
-            <Item label="设定KeySecret" :wrapperCol="{sm: 11, md: 8, xl: 5}" :required="true">
-              <Password v-model:value="aliOssOptions.secretKey" placeholder="AccessKeySecret" allow-clear/>
-            </Item>
-            <Item label="设定存储空间" :wrapperCol="{sm: 8, md: 6, xl: 4}" :required="true">
-              <Input v-model:value="aliOssOptions.bucket" placeholder="Bucket" allow-clear/>
-            </Item>
-            <Item label="确认存储区域" :wrapperCol="{sm: 18, md: 12, xl: 8}" :required="true">
-              <Input v-model:value="aliOssOptions.endpoint" placeholder="例如oss-cn-shanghai" allow-clear/>
-            </Item>
-            <Item label="指定存储路径" :wrapperCol="{sm: 18, md: 12, xl: 8}">
-              <Input v-model:value="aliOssOptions.path" placeholder="例如img/" allow-clear/>
-            </Item>
-            <Item label="设定网址后缀" :wrapperCol="{sm: 18, md: 12, xl: 8}">
-              <Input v-model:value="aliOssOptions.addon" placeholder="例如?x-oss-process=xxx" allow-clear/>
-            </Item>
-            <Item label="设定自定义域名" :wrapperCol="{sm: 18, md: 12, xl: 8}">
-              <Input v-model:value="aliOssOptions.domain" placeholder="例如https://xxx.com" allow-clear/>
-            </Item>
-          </Form>
-        </Col>
-        <Col :xs="24" :sm="4">
-          <Button type="primary" @click="changeSettings" style="float: right;margin-bottom: 1.6rem;">保存</Button>
-        </Col>
-      </Row>
-      <Row v-else>
-        <Col span="24">
-          <Button shape="circle" style="float: right;margin: 1.6rem;" @click="changeSettings">
-            <template #icon>
-              <SettingTwo theme="outline"/>
-            </template>
-          </Button>
-        </Col>
-      </Row>
-
-      <Dragger
-        v-model:fileList="fileList"
-        accept="image/*"
-        :action="host"
-        :method="httpMethod"
-        :disabled="!isValid"
-        :headers="httpHeaders"
-        @beforeUpload="beforeUpload"
-        @reject="rejectFile"
-      >
-        <div class="imgUploaderContent">
-          <p class="ant-upload-drag-icon">
-            <Inbox theme="outline"/>
-          </p>
-          <p class="ant-upload-text">点击或拖拽图片到这里上传</p>
-        </div>
-      </Dragger>
+      <Tabs v-model:activeKey="activeKey" type="card" @change="changeModule">
+        <TabPane key="home" tab="首页">
+          <Empty/>
+        </TabPane>
+        <TabPane key="uploaded" tab="我的上传">
+          <Empty/>
+        </TabPane>
+        <TabPane key="settings" tab="设置">
+          <Tabs v-model:activeKey="currentUploader" type="card" @change="changeUploader">
+            <TabPane v-for="(item,name) of uploaders" :key="name" :tab="item.name">
+              <div class="configPanel">
+                <div class="configTable">
+                  <Form layout="vertical" v-if="currentUploader === name">
+                    <Item v-for="(item1) of currentConfig" :key="item1.name" :label="item1.name"
+                          :required="item1.required">
+                      <Input v-model:value="item1.default" allow-clear v-if="item1.type==='input'"/>
+                      <Password v-model:value="item1.default" allow-clear v-else-if="item1.type==='password'"/>
+                    </Item>
+                  </Form>
+                </div>
+                <div class="configOperator">
+                  <Button type="primary" @click="save">保存</Button>
+                </div>
+              </div>
+            </TabPane>
+          </Tabs>
+        </TabPane>
+      </Tabs>
     </div>
   </container>
 </template>
 
 <script>
-import { SettingTwo, Inbox } from '@icon-park/vue-next'
 import Container from '@/components/container.vue'
-import { Row, Col, Form, Button, Input, Select, Divider, Upload } from 'ant-design-vue'
+import { Form, Input, Tabs, Empty, Button } from 'ant-design-vue'
+import { createNamespacedHelpers } from 'vuex'
+import * as uploaders from './uploader'
+import { cloneDeep } from 'lodash-es'
 
+const { TabPane } = Tabs
 const { Item } = Form
-const { Option } = Select
 const { Password } = Input
-const { Dragger } = Upload
+const {
+  mapGetters,
+  mapState,
+  mapActions
+} = createNamespacedHelpers('imgHosting')
 
 export default {
   components: {
     Container,
-    Inbox,
-    SettingTwo,
-    Row,
-    Col,
+    Tabs,
+    TabPane,
     Form,
-    Button,
-    Input,
-    Select,
-    Divider,
     Item,
-    Option,
+    Input,
     Password,
-    Dragger
+    Empty,
+    Button
   },
   name: '极简图床',
   data: () => ({
-    mode: 'aliOss',
-    setting: false,
-    fileList: [],
-    aliOssOptions: {
-      bucket: '',
-      endpoint: '',
-      accessKey: '',
-      secretKey: ''
-    }
+    activeKey: 'home',
+    currentUploader: 'aliyun',
+
+    uploaders,
+    currentConfig: []
   }),
+  watch: {},
+  computed: {
+    ...mapGetters(['config']),
+    ...mapState(['uploader'])
+  },
   mounted () {
+    if (this.uploader) {
+      this.currentUploader = this.uploader
+      this.changeUploader()
+    }
   },
   methods: {
-    changeSettings () {
-      this.setting = !this.setting
+    ...mapActions(['saveConfig']),
+    changeModule (activeKey) {
+      if (activeKey === 'settings') {
+        this.changeUploader()
+      }
     },
-    rejectFile () {
-      this.$msg.warning('不支持的文件类型！')
+    changeUploader () {
+      this.currentConfig = cloneDeep(uploaders[this.currentUploader].config(this.config(this.currentUploader)))
+    },
+    save () {
+      const config = {}
+      for (const c of this.currentConfig) {
+        if (c.required && (c.default == null || c.default === '')) {
+          this.$msg.warn('必填项未填写完整')
+          return
+        }
+        config[c.name] = c.default
+      }
+      this.saveConfig({ uploader: this.currentUploader, config })
+      this.$msg.success('保存成功')
     },
     async beforeUpload (file) {
       console.log(file)
-    }
-  },
-  watch: {},
-  computed: {
-    isValid: function () {
-      switch (this.mode) {
-        case 'aliOss':
-          return Boolean(this.aliOssOptions.bucket !== '' && this.aliOssOptions.endpoint !== '' && this.aliOssOptions.accessKey !== '' && this.aliOssOptions.secretKey !== '')
-        default:
-          return false
-      }
-    },
-    host: function () {
-      if (this.isValid) {
-        switch (this.mode) {
-          case 'aliOss':
-            return 'https://' + this.aliOssOptions.bucket + '.' + this.aliOssOptions.endpoint + '.aliyuncs.com'
-          default:
-            break
-        }
-      }
-      return ''
-    },
-    httpMethod: function () {
-      if (this.isValid) {
-        switch (this.mode) {
-          case 'aliOss':
-            return 'post'
-          default:
-            break
-        }
-      }
-      return 'post'
-    },
-    httpHeaders: function () {
-      if (this.isValid) {
-        switch (this.mode) {
-          case 'aliOss':
-            return {
-              OSSAccessKeyId: this.aliOssOptions.accessKey
-            }
-          default:
-            break
-        }
-      }
-      return {}
     }
   }
 }
@@ -173,6 +113,56 @@ export default {
 .container {
   width: 100%;
   height: 100%;
+
+  ::v-deep(.ant-tabs) {
+    width: 100%;
+    height: 100%;
+
+    .ant-tabs-bar {
+      height: 4rem;
+      margin-bottom: .8rem;
+    }
+
+    .ant-tabs-content {
+      width: 100%;
+      height: calc(100% - 4.8rem);
+
+      .ant-tabs-tabpane {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+
+        &.ant-tabs-tabpane-inactive {
+          display: none;
+        }
+
+        .configPanel {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+
+          .configTable {
+            flex: 1;
+            overflow: auto;
+
+            .ant-form-item {
+              margin-bottom: .8rem;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
+
+          .configOperator {
+            text-align: right;
+            margin-top: .8rem;
+          }
+        }
+      }
+    }
+  }
 }
 
 .imgUploaderContent {

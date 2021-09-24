@@ -19,7 +19,7 @@
     "buffer": "^6.0.3",
     "codemirror": "^5.62.0",
     "core-js": "^3.14.0",
-    "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
     "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.2.0",
@@ -77,7 +77,8 @@
       "no-template-curly-in-string": 0,
       "no-eval": 0,
       "no-useless-escape": 0,
-      "no-loss-of-precision": 0
+      "no-loss-of-precision": 0,
+      "no-unused-vars": 0
     }
   },
   "babel": {
