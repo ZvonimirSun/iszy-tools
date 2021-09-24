@@ -5,6 +5,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 import externalGlobals from 'rollup-plugin-external-globals'
 import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
+import Sitemap from './src/plugins/Sitemap.js'
+import tools from './src/views/tools.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -102,7 +104,8 @@ export default defineConfig({
           resolveStyle: name => `ant-design-vue/es/${name}/style/index`
         }
       ]
-    })
+    }),
+    Sitemap({ tools, hostname: 'https://tools.iszy.xyz' })
   ],
   resolve: {
     alias: {

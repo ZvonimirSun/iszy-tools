@@ -1193,10 +1193,22 @@
   resolved "https://registry.nlark.com/@types/node/download/@types/node-16.9.1.tgz?cache=0&sync_timestamp=1631219816055&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-16.9.1.tgz#0611b37db4246c937feef529ddcc018cf8e35708"
   integrity sha1-BhGzfbQkbJN/7vUp3cwBjPjjVwg=
 
+"@types/node@^15.0.1":
+  version "15.14.9"
+  resolved "https://registry.nlark.com/@types/node/download/@types/node-15.14.9.tgz?cache=0&sync_timestamp=1632251068300&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-15.14.9.tgz#bc43c990c3c9be7281868bbc7b8fdd6e2b57adfa"
+  integrity sha1-vEPJkMPJvnKBhou8e4/dbitXrfo=
+
 "@types/resolve@1.17.1":
   version "1.17.1"
   resolved "https://registry.nlark.com/@types/resolve/download/@types/resolve-1.17.1.tgz#3afd6ad8967c77e4376c598a82ddd58f46ec45d6"
   integrity sha1-Ov1q2JZ8d+Q3bFmKgt3Vj0bsRdY=
+  dependencies:
+    "@types/node" "*"
+
+"@types/sax@^1.2.1":
+  version "1.2.3"
+  resolved "https://registry.nlark.com/@types/sax/download/@types/sax-1.2.3.tgz?cache=0&sync_timestamp=1629709149338&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fsax%2Fdownload%2F%40types%2Fsax-1.2.3.tgz#b630ac1403ebd7812e0bf9a10de9bf5077afb348"
+  integrity sha1-tjCsFAPr14EuC/mhDem/UHevs0g=
   dependencies:
     "@types/node" "*"
 
@@ -1474,6 +1486,11 @@ anymatch@~3.1.2:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+arg@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.nlark.com/arg/download/arg-5.0.1.tgz?cache=0&sync_timestamp=1629166537485&other_urls=https%3A%2F%2Fregistry.nlark.com%2Farg%2Fdownload%2Farg-5.0.1.tgz#eb0c9a8f77786cad2af8ff2b862899842d7b6adb"
+  integrity sha1-6wyaj3d4bK0q+P8rhiiZhC17ats=
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -4234,6 +4251,16 @@ sigmund@^1.0.1:
   version "1.0.1"
   resolved "https://registry.nlark.com/sigmund/download/sigmund-1.0.1.tgz#3ff21f198cad2175f9f3b781853fd94d0d19b590"
   integrity sha1-P/IfGYytIXX587eBhT/ZTQ0ZtZA=
+
+sitemap@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.nlark.com/sitemap/download/sitemap-7.0.0.tgz?cache=0&sync_timestamp=1619930161939&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsitemap%2Fdownload%2Fsitemap-7.0.0.tgz#022bef4df8cba42e38e1fe77039f234cab0372b6"
+  integrity sha1-AivvTfjLpC444f53A58jTKsDcrY=
+  dependencies:
+    "@types/node" "^15.0.1"
+    "@types/sax" "^1.2.1"
+    arg "^5.0.0"
+    sax "^1.2.4"
 
 slice-ansi@^4.0.0:
   version "4.0.0"
