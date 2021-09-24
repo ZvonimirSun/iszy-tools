@@ -46,43 +46,57 @@ const config = (options = {}) => {
       name: 'accessKeyId',
       type: 'input',
       default: options.accessKeyId || '',
-      required: true
+      required: true,
+      label: '设定KeyId',
+      hint: 'AccessKeyId'
     },
     {
       name: 'accessKeySecret',
       type: 'password',
       default: options.accessKeySecret || '',
-      required: true
+      required: true,
+      label: '设定KeySecret',
+      hint: 'AccessKeySecret'
     },
     {
       name: 'bucket',
       type: 'input',
       default: options.bucket || '',
-      required: true
+      required: true,
+      label: '设定存储空间名',
+      hint: 'Bucket'
     },
     {
       name: 'area',
       type: 'input',
       default: options.area || '',
-      required: true
+      required: true,
+      label: '确认存储区域',
+      hint: '例如oss-cn-beijing'
     },
     {
       name: 'path',
       type: 'input',
       default: options.path || '',
-      required: false
-    },
-    {
-      name: 'customUrl',
-      type: 'input',
-      default: options.customUrl || '',
-      required: false
+      required: false,
+      label: '指定存储路径',
+      hint: '例如img/'
     },
     {
       name: 'options',
       type: 'input',
       default: options.options || '',
-      required: false
+      required: false,
+      label: '设定网址后缀',
+      hint: '例如?x-oss-process=xxx'
+    },
+    {
+      name: 'customUrl',
+      type: 'input',
+      default: options.customUrl || '',
+      required: false,
+      label: '设定自定义域名',
+      hint: '例如https://example.com'
     }
   ]
 }

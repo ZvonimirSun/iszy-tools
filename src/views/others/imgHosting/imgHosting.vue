@@ -14,10 +14,10 @@
               <div class="configPanel">
                 <div class="configTable">
                   <Form layout="vertical" v-if="currentUploader === name">
-                    <Item v-for="(item1) of currentConfig" :key="item1.name" :label="item1.name"
+                    <Item v-for="(item1) of currentConfig" :key="item1.name" :label="item1.label"
                           :required="item1.required">
-                      <Input v-model:value="item1.default" allow-clear v-if="item1.type==='input'"/>
-                      <Password v-model:value="item1.default" allow-clear v-else-if="item1.type==='password'"/>
+                      <Input v-model:value="item1.default" allow-clear v-if="item1.type==='input'" :placeholder="item1.hint"/>
+                      <Password v-model:value="item1.default" allow-clear v-else-if="item1.type==='password'" :placeholder="item1.hint"/>
                     </Item>
                   </Form>
                 </div>
