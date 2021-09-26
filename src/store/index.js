@@ -6,6 +6,7 @@ import tetris from './modules/tetris'
 import user from './modules/user'
 import linuxCommand from './modules/linuxCommand'
 import cache from './modules/cache'
+import imgHosting from './modules/imgHosting'
 import VuexPersist from '@/plugins/VuexPersist'
 
 export default createStore({
@@ -16,7 +17,8 @@ export default createStore({
     tetris,
     user,
     linuxCommand,
-    cache
+    cache,
+    imgHosting
   },
   plugins: [VuexPersist({
     name: 'iszy_tools',

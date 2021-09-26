@@ -1,6 +1,6 @@
 export default {
   login: () => import('@/views/login/index.vue'),
-  imgHosting: () => import('@/views/common/imgHosting.vue'),
+  imgHosting: () => import('@/views/others/imgHosting/imgHosting.vue'),
   uuid: () => import('@/views/program/uuid.vue'),
   mtqLoans: () => import('@/views/money/mtqLoans.vue'),
   timeCompute: () => import('@/views/program/timeCompute.vue'),
