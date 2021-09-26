@@ -28,7 +28,6 @@
     "localforage": "^1.9.0",
     "lodash-es": "^4.17.21",
     "marked": "^3.0.4",
-    "mime-types": "^2.1.32",
     "moment": "^2.29.1",
     "relationship.js": "^1.0.0",
     "ua-parser-js": "^0.7.28",
