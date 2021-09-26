@@ -1,7 +1,7 @@
 <template>
   <container>
     <div class="container">
-      <Tabs v-model:activeKey="activeKey" type="card" @change="changeModule">
+      <Tabs v-model:activeKey="activeKey" type="card" @change="changeModule" class="totalTab">
         <TabPane key="home" tab="首页">
           <Dragger v-model:fileList="fileList" accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
                    @reject="rejectFile" :showUploadList="false" :customRequest="customRequest">
@@ -15,9 +15,33 @@
           </Dragger>
         </TabPane>
         <TabPane key="uploaded" tab="我的上传">
-          <Empty/>
+          <div class="imgList" v-if="imgList.length">
+            <PreviewGroup>
+              <Space :size="8">
+                <Card v-for="(item) in imgList" :key="item.id">
+                  <template #cover>
+                    <Image :src="item.url" :alt="item.name" width="20rem" height="12.36rem"/>
+                  </template>
+                  <template class="ant-card-actions" #actions>
+                    <CopyLink @click="copyImgUrl(item)"/>
+                    <Delete @click="removeImage(item)"/>
+                  </template>
+                  <Meta :title="item.name"></Meta>
+                </Card>
+              </Space>
+            </PreviewGroup>
+          </div>
+          <Empty v-else/>
         </TabPane>
         <TabPane key="settings" tab="设置">
+          <div class="commonConfigPanel">
+            <Form layout="vertical">
+              <Item label="重命名时间戳">
+                <Switch v-model:checked="currentCommonConfig.renameTimeStamp"
+                        @change="saveCommonConfig(currentCommonConfig)"/>
+              </Item>
+            </Form>
+          </div>
           <Tabs v-model:activeKey="currentUploader" type="card" @change="changeUploader">
             <TabPane v-for="(item,name) of uploaders" :key="name" :tab="item.name">
               <div class="configPanel">
@@ -46,16 +70,18 @@
 
 <script>
 import Container from '@/components/container.vue'
-import { Form, Input, Tabs, Empty, Button, Upload } from 'ant-design-vue'
+import { Form, Input, Tabs, Empty, Button, Upload, Switch, Card, Space, Image } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from './uploader'
 import { cloneDeep } from 'lodash-es'
-import { UploadOne } from '@icon-park/vue-next'
+import { UploadOne, CopyLink, Delete } from '@icon-park/vue-next'
 
 const { TabPane } = Tabs
 const { Item } = Form
 const { Password } = Input
 const { Dragger } = Upload
+const { Meta } = Card
+const { PreviewGroup } = Image
 const {
   mapGetters,
   mapState,
@@ -74,7 +100,15 @@ export default {
     Empty,
     Button,
     Dragger,
-    UploadOne
+    Switch,
+    Card,
+    Meta,
+    Space,
+    Image,
+    PreviewGroup,
+    UploadOne,
+    CopyLink,
+    Delete
   },
   name: '极简图床',
   data: () => ({
@@ -84,21 +118,25 @@ export default {
 
     currentUploader: 'aliyun',
     currentConfig: [],
+    currentCommonConfig: {
+      renameTimeStamp: true
+    },
     fileList: []
   }),
   watch: {},
   computed: {
     ...mapGetters(['config']),
-    ...mapState(['uploader'])
+    ...mapState(['uploader', 'commonConfig', 'imgList'])
   },
   mounted () {
     if (this.uploader) {
       this.currentUploader = this.uploader
       this.changeUploader()
     }
+    this.currentCommonConfig = cloneDeep(this.commonConfig || {})
   },
   methods: {
-    ...mapActions(['saveConfig']),
+    ...mapActions(['saveConfig', 'saveCommonConfig', 'addImage', 'removeImage']),
     changeModule (activeKey) {
       if (activeKey === 'settings') {
         this.changeUploader()
@@ -124,13 +162,36 @@ export default {
     },
     async customRequest (val) {
       if (this.uploader && this.config(this.uploader)) {
-        uploaders[this.uploader].handle(this.config(this.uploader), val.file)
+        if (this.currentCommonConfig.renameTimeStamp) {
+          const tmp = val.file.name || ''
+          val.file = new File([val.file], ((new Date().getTime()) + tmp.substring(tmp.lastIndexOf('.'))).toLowerCase(), {
+            type: val.file.type,
+            lastModified: val.file.lastModified
+          })
+        }
+        try {
+          this.addImage(await uploaders[this.uploader].handle(this.config(this.uploader), val.file))
+          this.$msg.success('上传成功')
+          this.activeKey = 'uploaded'
+        } catch (e) {
+          console.log(e)
+          this.$msg.error('上传失败')
+        }
       } else {
         this.$msg.warn('请先进行设置')
       }
     },
     rejectFile () {
       this.$msg.warning('不支持的文件类型！')
+    },
+
+    async copyImgUrl ({ url }) {
+      try {
+        await navigator.clipboard.writeText(url)
+        this.$msg.success('地址已复制到剪贴板')
+      } catch (e) {
+        this.$msg.error('复制失败')
+      }
     }
   }
 }
@@ -141,9 +202,12 @@ export default {
   width: 100%;
   height: 100%;
 
+  .totalTab {
+    height: 100%;
+  }
+
   ::v-deep(.ant-tabs) {
     width: 100%;
-    height: 100%;
 
     .ant-tabs-bar {
       height: 4rem;
@@ -173,18 +237,23 @@ export default {
             flex: 1;
             overflow: auto;
 
-            .ant-form-item {
-              margin-bottom: .8rem;
-
-              &:last-child {
-                margin-bottom: 0;
-              }
-            }
           }
 
           .configOperator {
             text-align: right;
             margin-top: .8rem;
+          }
+        }
+
+        .commonConfigPanel {
+          margin-bottom: .8rem;
+        }
+
+        .ant-form-item {
+          margin-bottom: .8rem;
+
+          &:last-child {
+            margin-bottom: 0;
           }
         }
       }
@@ -195,6 +264,21 @@ export default {
     .i-icon {
       font-size: 4.8rem;
     }
+  }
+}
+
+.imgList {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  ::v-deep(.ant-image) {
+    cursor: pointer;
+  }
+
+  ::v-deep(.ant-card-body) {
+    padding: .8rem;
+    width: 20rem;
   }
 }
 

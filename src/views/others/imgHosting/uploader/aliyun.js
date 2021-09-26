@@ -1,8 +1,7 @@
-import hmacSHA1 from 'crypto-js/hmac-sha1.js'
-import Base64 from 'crypto-js/enc-base64'
+import OSS from 'ali-oss'
 
 /**
- * generate OSS signature
+ * handle
  * @param options {Object} 阿里云配置
  * @param options.accessKeyId {String}
  * @param options.accessKeySecret {String}
@@ -12,20 +11,28 @@ import Base64 from 'crypto-js/enc-base64'
  * @param options.customUrl {String} 自定义域名，注意要加 `http://` 或者 `https://`
  * @param options.options {String} 针对图片的一些后缀处理参数
  * @param file {File} 文件
- * @returns {String} 签名
+ * @return {Promise<Object>}
  */
-const generateSignature = (options, file) => {
-  const date = new Date().toUTCString()
-  const mimeType = file.type
-  if (!mimeType) throw Error(`No mime type found for file ${file.name}`)
-
-  const signString = `PUT\n\n${mimeType}\n${date}\n/${options.bucket}/${options.path}${file.name}`
-
-  const signature = Base64.stringify(hmacSHA1(signString, options.accessKeySecret))
-  return `OSS ${options.accessKeyId}:${signature}`
-}
-
-const handle = async () => {
+const handle = async (options, file) => {
+  const customUrl = options.customUrl
+  const path = options.path || ''
+  const client = new OSS({
+    region: options.area,
+    accessKeyId: options.accessKeyId,
+    accessKeySecret: options.accessKeySecret,
+    bucket: options.bucket
+  })
+  const result = await client.put(path + file.name, new Blob([file]))
+  if (result.res && result.res.status === 200) {
+    const optionUrl = options.options || ''
+    if (customUrl) {
+      return { name: file.name, url: `${customUrl}/${path}${file.name}${optionUrl}` }
+    } else {
+      return { name: file.name, url: `https://${options.bucket}.${optionUrl.area}.aliyuncs.com/${path}${file.name}${optionUrl}` }
+    }
+  } else {
+    throw new Error('上传失败')
+  }
 }
 /**
  * 获取配置
