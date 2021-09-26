@@ -123,7 +123,6 @@ export default {
     },
     fileList: []
   }),
-  watch: {},
   computed: {
     ...mapGetters(['config']),
     ...mapState(['uploader', 'commonConfig', 'imgList'])
@@ -137,29 +136,7 @@ export default {
   },
   methods: {
     ...mapActions(['saveConfig', 'saveCommonConfig', 'addImage', 'removeImage']),
-    changeModule (activeKey) {
-      if (activeKey === 'settings') {
-        this.changeUploader()
-      }
-    },
-    changeUploader () {
-      this.currentConfig = cloneDeep(uploaders[this.currentUploader].config(this.config(this.currentUploader)))
-    },
-    save () {
-      const config = {}
-      for (const c of this.currentConfig) {
-        if (c.required && (c.default == null || c.default === '')) {
-          this.$msg.warn('必填项未填写完整')
-          return
-        }
-        config[c.name] = c.default
-      }
-      this.saveConfig({
-        uploader: this.currentUploader,
-        config
-      })
-      this.$msg.success('保存成功')
-    },
+
     async customRequest (val) {
       if (this.uploader && this.config(this.uploader)) {
         if (this.currentCommonConfig.renameTimeStamp) {
@@ -192,6 +169,30 @@ export default {
       } catch (e) {
         this.$msg.error('复制失败')
       }
+    },
+
+    changeModule (activeKey) {
+      if (activeKey === 'settings') {
+        this.changeUploader()
+      }
+    },
+    changeUploader () {
+      this.currentConfig = cloneDeep(uploaders[this.currentUploader].config(this.config(this.currentUploader)))
+    },
+    save () {
+      const config = {}
+      for (const c of this.currentConfig) {
+        if (c.required && (c.default == null || c.default === '')) {
+          this.$msg.warn('必填项未填写完整')
+          return
+        }
+        config[c.name] = c.default
+      }
+      this.saveConfig({
+        uploader: this.currentUploader,
+        config
+      })
+      this.$msg.success('保存成功')
     }
   }
 }
@@ -212,6 +213,11 @@ export default {
     .ant-tabs-bar {
       height: 4rem;
       margin-bottom: .8rem;
+
+      .ant-tabs-tab {
+        height: 4rem;
+        line-height: 4rem;
+      }
     }
 
     .ant-tabs-content {
