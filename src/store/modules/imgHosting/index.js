@@ -40,6 +40,9 @@ export default {
           state.imgList.splice(parseInt(i), 1)
         }
       }
+    },
+    importConfig (state, val) {
+      state = val
     }
   },
   actions: {
@@ -54,6 +57,23 @@ export default {
     },
     removeImage ({ commit }, val) {
       commit('removeImage', val)
+    },
+    async importConfig ({ commit }, {
+      uploader = '',
+      imgList = [],
+      configs = {},
+      commonConfig = { renameTimeStamp: true }
+    }) {
+      if (typeof uploader === 'string' && Array.isArray(imgList) && configs && commonConfig) {
+        commit('importConfig', {
+          uploader,
+          imgList,
+          configs,
+          commonConfig
+        })
+      } else {
+        throw new Error('配置有误')
+      }
     }
   }
 }

@@ -1,5 +1,17 @@
 <template>
+  <Space :size="8">
+    <Button type="primary" @click="exportAll">导出所有</Button>
+    <Popconfirm @confirm="handler" title="是否导入所有配置？将会完全覆盖此功能记录" ok-text="是" cancel-text="否"
+                :getPopupContainer="getPopupContainer">
+      <Button type="primary">导入所有</Button>
+    </Popconfirm>
+    <input type="file" v-show="false" ref="file" @click="e => {e.target.value = '';}" @change="importAll"/>
+  </Space>
+  <Divider/>
   <div class="commonConfigPanel">
+    <Typography>
+      <h4>通用配置</h4>
+    </Typography>
     <Form layout="vertical">
       <Item label="重命名时间戳">
         <Switch v-model:checked="currentCommonConfig.renameTimeStamp"
@@ -7,6 +19,7 @@
       </Item>
     </Form>
   </div>
+  <Divider/>
   <Tabs v-model:activeKey="currentUploader" type="card" @change="changeUploader">
     <TabPane v-for="(item,name) of uploaders" :key="name" :tab="item.name">
       <div class="configPanel">
@@ -30,7 +43,8 @@
 </template>
 
 <script>
-import { Form, Input, Tabs, Button, Switch } from 'ant-design-vue'
+import createFile from '@/utils/createFile.js'
+import { Form, Input, Tabs, Button, Switch, Space, Typography, Divider, Popconfirm } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from '../uploader'
 import { cloneDeep } from 'lodash-es'
@@ -54,7 +68,11 @@ export default {
     Input,
     Password,
     Button,
-    Switch
+    Switch,
+    Space,
+    Typography,
+    Divider,
+    Popconfirm
   },
   data: () => ({
     uploaders,
@@ -77,7 +95,7 @@ export default {
     this.currentCommonConfig = cloneDeep(this.commonConfig || {})
   },
   methods: {
-    ...mapActions(['saveConfig', 'saveCommonConfig']),
+    ...mapActions(['saveConfig', 'saveCommonConfig', 'importConfig']),
     changeUploader () {
       this.currentConfig = cloneDeep(uploaders[this.currentUploader].config(this.config(this.currentUploader)))
     },
@@ -95,32 +113,55 @@ export default {
         config
       })
       this.$msg.success('保存成功')
+    },
+
+    exportAll () {
+      const allConfig = JSON.stringify(this.$store.state.imgHosting)
+      createFile(allConfig, 'allConfig.json')
+    },
+    importAll () {
+      if (!this.$refs.file.value || !this.$refs.file.files || !this.$refs.file.files.length) {
+        return
+      }
+      const file = this.$refs.file.files[0]
+      if (file.type === 'application/json' || file.type === 'text/plain') {
+        const reader = new FileReader()
+        reader.onload = async () => {
+          if (reader.result) {
+            try {
+              const allConfig = JSON.parse(reader.result)
+              await this.importConfig(allConfig)
+              this.$msg.success('导入成功')
+            } catch (e) {
+              this.$msg.error('导入失败')
+            }
+          }
+        }
+        reader.readAsText(file)
+      }
+    },
+    handler () {
+      this.$refs.file.click()
+    },
+
+    getPopupContainer () {
+      return document.body
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.ant-divider {
+  margin: .8rem 0;
+}
+
 .configPanel {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .configTable {
-    flex: 1;
-    overflow: auto;
-
-  }
 
   .configOperator {
     text-align: right;
     margin-top: .8rem;
   }
-}
-
-.commonConfigPanel {
-  margin-bottom: .8rem;
 }
 
 .ant-form-item {

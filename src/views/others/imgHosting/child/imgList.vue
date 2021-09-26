@@ -7,8 +7,18 @@
             <Image :src="item.url" :alt="item.name" width="20rem" height="12.36rem"/>
           </template>
           <template class="ant-card-actions" #actions>
-            <CopyLink @click="copyImgUrl(item)"/>
-            <Delete @click="removeImage(item)"/>
+            <Tooltip>
+              <template #title>复制链接</template>
+              <CopyLink @click="copyImgUrl(item)"/>
+            </Tooltip>
+
+            <Tooltip>
+              <template #title>删除</template>
+              <Popconfirm @confirm="removeImage(item)" title="是否确认删除？" ok-text="是" cancel-text="否"
+                          :getPopupContainer="getPopupContainer">
+                <Delete/>
+              </Popconfirm>
+            </Tooltip>
           </template>
           <Meta :title="item.name"></Meta>
         </Card>
@@ -20,7 +30,7 @@
 
 <script>
 import { CopyLink, Delete } from '@icon-park/vue-next'
-import { Empty, Card, Space, Image } from 'ant-design-vue'
+import { Empty, Card, Space, Image, Popconfirm, Tooltip } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 
 const { Meta } = Card
@@ -43,7 +53,9 @@ export default {
     Image,
     PreviewGroup,
     CopyLink,
-    Delete
+    Delete,
+    Popconfirm,
+    Tooltip
   },
   methods: {
     ...mapActions(['removeImage']),
@@ -54,6 +66,9 @@ export default {
       } catch (e) {
         this.$msg.error('复制失败')
       }
+    },
+    getPopupContainer () {
+      return document.body
     }
   }
 }
@@ -72,6 +87,19 @@ export default {
   ::v-deep(.ant-card-body) {
     padding: .8rem;
     width: 20rem;
+  }
+
+  ::v-deep(.ant-card-actions) {
+    & > li {
+      margin: 0;
+    }
+
+    .i-icon {
+      font-size: 1.8rem;
+      width: 100%;
+      display: block;
+      padding: .8rem 0;
+    }
   }
 
   .ant-space {
