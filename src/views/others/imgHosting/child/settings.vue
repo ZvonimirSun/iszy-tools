@@ -90,8 +90,8 @@ export default {
   mounted () {
     if (this.uploader) {
       this.currentUploader = this.uploader
-      this.changeUploader()
     }
+    this.changeUploader()
     this.currentCommonConfig = cloneDeep(this.commonConfig || {})
   },
   methods: {
