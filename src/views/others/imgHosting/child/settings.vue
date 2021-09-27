@@ -1,4 +1,7 @@
 <template>
+  <Typography>
+    <h4>导入导出</h4>
+  </Typography>
   <Space :size="8">
     <Button type="primary" @click="exportAll">导出所有</Button>
     <Popconfirm @confirm="handler" title="是否导入所有配置？将会完全覆盖此功能记录" ok-text="是" cancel-text="否"
@@ -8,10 +11,10 @@
     <input type="file" v-show="false" ref="file" @click="e => {e.target.value = '';}" @change="importAll"/>
   </Space>
   <Divider/>
+  <Typography>
+    <h4>通用配置</h4>
+  </Typography>
   <div class="commonConfigPanel">
-    <Typography>
-      <h4>通用配置</h4>
-    </Typography>
     <Form layout="vertical">
       <Item label="重命名时间戳">
         <Switch v-model:checked="currentCommonConfig.renameTimeStamp"
@@ -20,6 +23,9 @@
     </Form>
   </div>
   <Divider/>
+  <Typography>
+    <h4>图床设置</h4>
+  </Typography>
   <Tabs v-model:activeKey="currentUploader" type="card" @change="changeUploader">
     <TabPane v-for="(item,name) of uploaders" :key="name" :tab="item.name">
       <div class="configPanel">
