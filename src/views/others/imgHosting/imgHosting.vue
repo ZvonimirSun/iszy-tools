@@ -58,12 +58,12 @@ export default {
   width: 100%;
 
   .ant-tabs-bar {
-    height: 4rem;
+    height: 4rem !important;
     margin-bottom: .8rem;
 
     .ant-tabs-tab {
-      height: 4rem;
-      line-height: 4rem;
+      height: 4rem !important;
+      line-height: 4rem !important;
     }
   }
 
