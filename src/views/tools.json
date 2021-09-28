@@ -21,27 +21,24 @@
       },
       {
         "name": "身份证解析",
-        "link": "/others/idChinese",
-        "legend": "新功能"
+        "link": "/others/idChinese"
       },
       {
         "name": "屏幕录制",
-        "link": "/others/screenRecord",
-        "legend": "新功能"
+        "link": "/others/screenRecord"
       },
       {
         "name": "WebSSH",
-        "link": "/others/webssh",
-        "legend": "新功能"
+        "link": "/others/webssh"
       },
       {
         "name": "亲戚关系计算器",
-        "link": "/others/relationship",
-        "legend": "新功能"
+        "link": "/others/relationship"
       },
       {
         "name": "极简图床",
-        "link": "/others/imgHosting"
+        "link": "/others/imgHosting",
+        "legend": "新功能"
       },
       {
         "name": "资源包",
@@ -128,13 +125,11 @@
       },
       {
         "name": "UserAgent解析",
-        "link": "/program/userAgent",
-        "legend": "新功能"
+        "link": "/program/userAgent"
       },
       {
         "name": "前端CDN搜索",
-        "link": "/program/cdnQuery",
-        "legend": "新功能"
+        "link": "/program/cdnQuery"
       }
     ]
   },
