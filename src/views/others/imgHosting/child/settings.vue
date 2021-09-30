@@ -15,9 +15,17 @@
     <h4>通用配置</h4>
   </Typography>
   <div class="commonConfigPanel">
-    <Form layout="vertical">
-      <Item label="重命名时间戳">
+    <Form layout="inline">
+<!--      <Item label="上传前重命名">-->
+<!--        <Switch v-model:checked="currentCommonConfig.renameBeforeUpload"-->
+<!--                @change="saveCommonConfig(currentCommonConfig)"/>-->
+<!--      </Item>-->
+      <Item label="时间戳重命名">
         <Switch v-model:checked="currentCommonConfig.renameTimeStamp"
+                @change="saveCommonConfig(currentCommonConfig)"/>
+      </Item>
+      <Item label="上传后自动复制URL">
+        <Switch v-model:checked="currentCommonConfig.copyUrlAfterUpload"
                 @change="saveCommonConfig(currentCommonConfig)"/>
       </Item>
     </Form>
@@ -86,7 +94,9 @@ export default {
     currentUploader: 'aliyun',
     currentConfig: [],
     currentCommonConfig: {
-      renameTimeStamp: true
+      renameBeforeUpload: false,
+      renameTimeStamp: true,
+      copyUrlAfterUpload: true
     }
   }),
   computed: {

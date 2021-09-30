@@ -9,7 +9,9 @@ export default {
     configs: {
     },
     commonConfig: {
-      renameTimeStamp: true
+      renameBeforeUpload: false,
+      renameTimeStamp: true,
+      copyUrlAfterUpload: true
     }
   }),
   getters: {

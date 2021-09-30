@@ -5,7 +5,7 @@
         <TabPane key="home" tab="首页">
           <Upload :activeKey="activeKey"/>
         </TabPane>
-        <TabPane key="uploaded" tab="我的上传">
+        <TabPane key="uploaded" tab="相册">
           <ImgList/>
         </TabPane>
         <TabPane key="settings" tab="设置">
