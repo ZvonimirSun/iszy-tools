@@ -3,7 +3,7 @@
     <div class="container">
       <Tabs v-model:activeKey="activeKey" type="card" class="totalTab">
         <TabPane key="home" tab="首页">
-          <Upload @success="success" :activeKey="activeKey"/>
+          <Upload :activeKey="activeKey"/>
         </TabPane>
         <TabPane key="uploaded" tab="我的上传">
           <ImgList/>
@@ -35,12 +35,7 @@ export default {
   },
   data: () => ({
     activeKey: 'home'
-  }),
-  methods: {
-    success () {
-      this.activeKey = 'uploaded'
-    }
-  }
+  })
 }
 </script>
 

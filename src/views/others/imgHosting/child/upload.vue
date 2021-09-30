@@ -60,9 +60,14 @@ export default {
           })
         }
         try {
-          this.addImage(await uploaders[this.uploader].handle(this.config(this.uploader), file))
-          this.$msg.success('上传成功')
-          this.$emit('success')
+          const result = await uploaders[this.uploader].handle(this.config(this.uploader), file)
+          this.addImage(result)
+          try {
+            await navigator.clipboard.writeText(result.url)
+            this.$msg.success('上传成功，地址已复制到剪贴板')
+          } catch (e) {
+            this.$msg.error('上传成功，但地址复制失败')
+          }
         } catch (e) {
           console.log(e)
           this.$msg.error('上传失败')
