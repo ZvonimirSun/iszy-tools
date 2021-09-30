@@ -84,6 +84,10 @@ export default {
     cursor: pointer;
   }
 
+  ::v-deep(.ant-image-img) {
+    object-fit: cover;
+  }
+
   ::v-deep(.ant-card-body) {
     padding: .8rem;
     width: 20rem;
