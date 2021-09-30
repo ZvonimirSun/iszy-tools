@@ -33,6 +33,7 @@ export default {
     UploadOne,
     Spin
   },
+  props: ['activeKey'],
   data: () => ({
     spinning: false
   }),
@@ -75,14 +76,16 @@ export default {
       this.$msg.warning('不支持的文件类型！')
     },
     paste (event) {
-      const items = event.clipboardData && event.clipboardData.items
-      let file
-      if (items && items.length) {
-        if (items[0].type.indexOf('image') !== -1) {
-          file = items[0].getAsFile()
-          this.customRequest({ file })
-        } else {
-          this.rejectFile()
+      if (this.activeKey === 'home') {
+        const items = event.clipboardData && event.clipboardData.items
+        let file
+        if (items && items.length) {
+          if (items[0].type.indexOf('image') !== -1) {
+            file = items[0].getAsFile()
+            this.customRequest({ file })
+          } else {
+            this.rejectFile()
+          }
         }
       }
     }

@@ -3,7 +3,7 @@
     <div class="container">
       <Tabs v-model:activeKey="activeKey" type="card" class="totalTab">
         <TabPane key="home" tab="首页">
-          <Upload @success="success"/>
+          <Upload @success="success" :activeKey="activeKey"/>
         </TabPane>
         <TabPane key="uploaded" tab="我的上传">
           <ImgList/>
