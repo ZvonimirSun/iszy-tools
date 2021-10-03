@@ -21,7 +21,7 @@ export default {
             userName: userName.trim(),
             password
           })
-          if (res.data && res.data.code === 200) {
+          if (res.data && res.data.code === '00000') {
             commit('setToken', res.data.data.token)
             return true
           } else {
