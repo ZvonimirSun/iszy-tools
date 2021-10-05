@@ -35,7 +35,8 @@ export default {
   },
   props: ['activeKey'],
   data: () => ({
-    spinning: false
+    spinning: false,
+    timeoutIndex: undefined
   }),
   computed: {
     ...mapGetters(['config']),
@@ -85,7 +86,10 @@ export default {
       this.$msg.warning('不支持的文件类型！')
     },
     paste (event) {
-      if (this.activeKey === 'home') {
+      if (this.activeKey === 'home' && !this.spinning && !this.timeoutIndex) {
+        this.timeoutIndex = setTimeout(() => {
+          this.timeoutIndex = undefined
+        }, 500)
         const items = event.clipboardData && event.clipboardData.items
         let file
         if (items && items.length) {
