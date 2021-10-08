@@ -1019,10 +1019,15 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@ckpack/vue-color@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.nlark.com/@ckpack/vue-color/download/@ckpack/vue-color-0.0.3.tgz#0774f2d2878e5a5833987f2547a9b2cb52c0e855"
-  integrity sha1-B3Ty0oeOWlgzmH8lR6myy1LA6FU=
+"@ckpack/vue-color@^1.1.0":
+  version "1.1.0"
+  resolved "https://r.cnpmjs.org/@ckpack/vue-color/download/@ckpack/vue-color-1.1.0.tgz#58cd5aec7693e973e9367338107f241461bc1934"
+  integrity sha1-WM1a7HaT6XPpNnM4EH8kFGG8GTQ=
+  dependencies:
+    clamp "^1.0.1"
+    lodash.throttle "^4.1.1"
+    material-colors "^1.2.6"
+    tinycolor2 "^1.4.2"
 
 "@ctrl/tinycolor@^3.3.1":
   version "3.4.0"
@@ -1740,6 +1745,11 @@ change-case@^4.1.2:
     readdirp "~3.6.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://r.cnpmjs.org/clamp/download/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+  integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
 
 co-defer@^1.0.0:
   version "1.0.0"
@@ -3186,6 +3196,11 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.npm.taobao.org/lodash.sortby/download/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://r.cnpmjs.org/lodash.throttle/download/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.truncate@^4.4.2:
   version "4.4.2"
   resolved "https://registry.npm.taobao.org/lodash.truncate/download/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
@@ -3251,6 +3266,11 @@ marked@^3.0.4:
   version "3.0.4"
   resolved "https://registry.nlark.com/marked/download/marked-3.0.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmarked%2Fdownload%2Fmarked-3.0.4.tgz#b8a1539e5e05c6ea9e93f15c0bad1d54ce890406"
   integrity sha1-uKFTnl4Fxuqek/FcC60dVM6JBAY=
+
+material-colors@^1.2.6:
+  version "1.2.6"
+  resolved "https://r.cnpmjs.org/material-colors/download/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha1-bRlYhxEmmSzuzHL0vMTY8BCGX0Y=
 
 merge-descriptors@^1.0.1:
   version "1.0.1"
@@ -4412,6 +4432,11 @@ through@~2.3:
   version "2.3.8"
   resolved "https://registry.npm.taobao.org/through/download/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+tinycolor2@^1.4.2:
+  version "1.4.2"
+  resolved "https://r.cnpmjs.org/tinycolor2/download/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
+  integrity sha1-P2pNEHGtB2dtf6Ry4frECnGdiAM=
 
 to-arraybuffer@^1.0.0:
   version "1.0.1"
