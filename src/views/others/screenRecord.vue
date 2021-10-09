@@ -68,7 +68,7 @@
 
 <script>
 import { Typography, Space, Button, Divider, Form, Select, Alert } from 'ant-design-vue'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 
 const { Title, Paragraph } = Typography
 const { Item: FormItem } = Form

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Form, Input, InputNumber, Typography, Space } from 'ant-design-vue'
 
 const { Item: FormItem } = Form

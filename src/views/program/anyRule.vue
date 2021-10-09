@@ -29,7 +29,7 @@
 <script>
 import { v4 as uuidv4 } from 'uuid'
 import { Typography, Form, Input, Divider } from 'ant-design-vue'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import anyRule from '@/utils/anyRule.js'
 
 const { Paragraph, Link } = Typography

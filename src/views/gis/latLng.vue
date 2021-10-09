@@ -10,7 +10,7 @@
 
 <script>
 import 'leaflet/dist/leaflet.css'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { map, control, layerGroup, marker, Icon } from 'leaflet'
 import { chineseLayer, ChineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'

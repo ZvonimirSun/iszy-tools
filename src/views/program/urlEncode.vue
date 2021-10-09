@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Input, Button, Space } from 'ant-design-vue'
 
 const { TextArea } = Input

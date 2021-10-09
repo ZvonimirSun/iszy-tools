@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Buffer } from 'buffer'
 import { Input, Upload, Button, Form, Slider, Typography } from 'ant-design-vue'
 import { Compact } from '@ckpack/vue-color'

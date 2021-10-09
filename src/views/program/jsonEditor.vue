@@ -40,7 +40,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'

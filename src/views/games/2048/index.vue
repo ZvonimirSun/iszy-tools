@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import GameManager from './js/GameManager.js'
 import { createNamespacedHelpers } from 'vuex'
 

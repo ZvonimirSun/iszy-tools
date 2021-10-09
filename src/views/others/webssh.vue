@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 
 export default {
   name: 'webssh',

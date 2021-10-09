@@ -105,7 +105,7 @@ import 'codemirror/addon/comment/comment.js'
 // import 'codemirror/addon/lint/lint.css'
 // import 'codemirror/addon/lint/lint.js'
 // import 'codemirror/addon/lint/css-lint.js'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import CodeMirror from '@/components/vue-codemirror.vue'
 // endregion
 import { Button, Divider } from 'ant-design-vue'

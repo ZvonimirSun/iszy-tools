@@ -29,7 +29,7 @@
 <script>
 import asyncLoad from '@/utils/asyncLoad.js'
 import { defineAsyncComponent } from 'vue'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Row, Col, Card, Breadcrumb } from 'ant-design-vue'
 
 const { Meta } = Card

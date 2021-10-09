@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import relationship from 'relationship.js'
 import { Typography, Input, Button, Radio, Form, Space, Divider } from 'ant-design-vue'
 

@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Input, Typography, Divider, List, Tag, Select, Tree } from 'ant-design-vue'
 import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
 import { TagOne, BalanceTwo, Return, CornerRightDown } from '@icon-park/vue-next'

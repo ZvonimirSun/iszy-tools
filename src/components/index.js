@@ -1,0 +1,5 @@
+export * from './color-picker'
+export { default as Container } from './container.vue'
+export { default as Checkerboard } from './checkerboard.vue'
+export { default as FixedWidgets } from './fixed-widgets.vue'
+export { default as VueCodemirror } from './vue-codemirror.vue'

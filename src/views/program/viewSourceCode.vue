@@ -16,7 +16,7 @@
 
 <script>
 import { Input, Typography } from 'ant-design-vue'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { html_beautify as htmlBeatify } from 'js-beautify'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'

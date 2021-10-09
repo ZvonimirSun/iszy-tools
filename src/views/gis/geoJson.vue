@@ -56,7 +56,7 @@
 import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import { map, control, layerGroup, geoJSON, GeoJSON } from 'leaflet'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'

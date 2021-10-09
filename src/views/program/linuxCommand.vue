@@ -25,7 +25,7 @@
 
 <script>
 import { Typography, Input, Divider, Modal } from 'ant-design-vue'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { createNamespacedHelpers } from 'vuex'
 import moment from 'moment'
 import md from '@/utils/markdown'

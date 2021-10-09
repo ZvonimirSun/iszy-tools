@@ -16,8 +16,9 @@
 import { BackTop } from 'ant-design-vue'
 import toggleFullscreen from '@/utils/toggleFullscreen.js'
 import { FullScreen } from '@icon-park/vue-next'
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   name: 'container',
   props: {
     name: String
@@ -30,7 +31,7 @@ export default {
       toggleFullscreen.bind(this)(this.$refs.container)
     }
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

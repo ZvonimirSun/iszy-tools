@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Input, Typography, Divider } from 'ant-design-vue'
 import UAParser from 'ua-parser-js'
 

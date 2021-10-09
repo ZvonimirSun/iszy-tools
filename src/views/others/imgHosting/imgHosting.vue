@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { defineAsyncComponent } from 'vue'
 import { Tabs } from 'ant-design-vue'
 

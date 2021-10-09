@@ -45,7 +45,7 @@
 
 <script>
 import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Form, Select, Input, InputNumber, Switch, Divider, Button } from 'ant-design-vue'
 const { Item } = Form
 const { Option } = Select

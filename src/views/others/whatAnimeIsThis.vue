@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Input, Upload, Typography, Button, Divider, Image, Descriptions } from 'ant-design-vue'
 import { Loading } from '@icon-park/vue-next'
 

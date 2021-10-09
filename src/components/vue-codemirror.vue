@@ -7,11 +7,11 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { markRaw } from 'vue'
+import { defineComponent, markRaw } from 'vue'
 // lib
 import CodeMirror from 'codemirror'
 // export
-export default {
+export default defineComponent({
   name: 'codemirror',
   data () {
     return {
@@ -183,5 +183,5 @@ export default {
   beforeUnmount () {
     this.destroy()
   }
-}
+})
 </script>

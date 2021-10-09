@@ -21,7 +21,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Typography, Form, Divider, Checkbox } from 'ant-design-vue'
 
 const { mapState, mapActions } = createNamespacedHelpers('settings')

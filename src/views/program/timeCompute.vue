@@ -45,7 +45,7 @@
 
 <script>
 import moment from 'moment'
-import Container from '@/components/container.vue'
+import { Container } from '@/components'
 import { Form, DatePicker, Input, Typography, Select } from 'ant-design-vue'
 
 const { Item } = Form
