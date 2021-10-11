@@ -17,7 +17,7 @@
         <TabPane key="geoJson" tab="GeoJSON">
           <div class="geoJsonContainer" ref="geoJsonContainer"></div>
         </TabPane>
-        <TabPane key="table" tab="Table">
+        <TabPane key="table" tab="表格">
           <Table class="ant-table-striped" v-if="tableColumns" :columns="tableColumns" :data-source="propertyList"
                  :rowKey="(record,index)=>{return index}" :pagination="false" bordered size="small" :scroll="{x:true}"
                  :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
@@ -47,6 +47,21 @@
           </Table>
           <Empty v-else></Empty>
         </TabPane>
+        <TabPane key="addService" tab="添加服务">
+          <Form :colon="false" class="addService">
+            <Item label="服务地址">
+              <Input v-model:value="service.url"/>
+            </Item>
+            <Item label="服务类型">
+              <Select v-model:value="service.type">
+                <SelectOption value="supermap_rest">超图动态</SelectOption>
+              </Select>
+            </Item>
+            <Item class="formBtnItem">
+              <Button @click="addService" type="primary">添加</Button>
+            </Item>
+          </Form>
+        </TabPane>
       </Tabs>
     </div>
   </container>
@@ -60,11 +75,12 @@ import { Container } from '@/components'
 import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
-import { Tabs, Table, Empty, Form, Input } from 'ant-design-vue'
+import { Tabs, Table, Empty, Form, Input, Select, Button } from 'ant-design-vue'
 import { cloneDeep } from 'lodash-es'
 
 const { TabPane } = Tabs
 const { Item } = Form
+const { Option: SelectOption } = Select
 
 export default defineComponent({
   name: 'geoJson',
@@ -76,7 +92,10 @@ export default defineComponent({
     Empty,
     Form,
     Item,
-    Input
+    Input,
+    Select,
+    SelectOption,
+    Button
   },
   data: () => ({
     map: undefined,
@@ -95,7 +114,12 @@ export default defineComponent({
     editableData: {},
 
     tdtToken: 'bed806b1ccb34b268ab1c0700123d444',
-    gaodeToken: '868d6830a7409520ae283cde3a3f84d1'
+    gaodeToken: '868d6830a7409520ae283cde3a3f84d1',
+
+    service: {
+      url: '',
+      type: 'supermap_rest'
+    }
   }),
   computed: {
     tableColumns () {
@@ -344,6 +368,24 @@ export default defineComponent({
       delete this.editableData[index]
     },
 
+    addService () {
+      const serviceUrl = this.service.url
+      const serviceType = this.service.type
+      this.service.url = this.$options.data().service.url
+      this.service.type = this.$options.data().service.type
+      switch (serviceType) {
+        case 'supermap_rest': {
+          try {
+            // const layer = tiledMapLayer(serviceUrl)
+            // layer.addTo(this.map)
+          } catch (e) {}
+          break
+        }
+        default:
+          break
+      }
+    },
+
     rowEvents (record, index) {
       return {
         onClick: () => {
@@ -429,5 +471,24 @@ export default defineComponent({
     }
   }
 
+  .addService {
+    padding: .8rem 0 .8rem .8rem;
+
+    .ant-form-item {
+      margin-bottom: .8rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .formBtnItem {
+      text-align: right;
+
+      .ant-btn {
+        height: 3rem;
+      }
+    }
+  }
 }
 </style>
