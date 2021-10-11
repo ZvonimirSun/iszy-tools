@@ -15,7 +15,7 @@ export default {
   tetris: () => import('@/views/games/tetris/index.vue'),
   viewSourceCode: () => import('@/views/program/viewSourceCode.vue'),
   cssFormatter: () => import('@/views/program/cssFormatter.vue'),
-  geoJson: () => import('@/views/gis/geoJson.vue'),
+  geoJson: () => import('@/views/gis/geoJson/geoJson.vue'),
   latLng: () => import('@/views/gis/latLng.vue'),
   tinyEditor: () => import('@/views/program/tinyEditor.vue'),
   idChinese: () => import('@/views/others/idChinese.vue'),

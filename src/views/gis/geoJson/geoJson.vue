@@ -17,7 +17,7 @@
         <TabPane key="geoJson" tab="GeoJSON">
           <div class="geoJsonContainer" ref="geoJsonContainer"></div>
         </TabPane>
-        <TabPane key="table" tab="Table">
+        <TabPane key="table" tab="表格">
           <Table class="ant-table-striped" v-if="tableColumns" :columns="tableColumns" :data-source="propertyList"
                  :rowKey="(record,index)=>{return index}" :pagination="false" bordered size="small" :scroll="{x:true}"
                  :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
@@ -47,6 +47,22 @@
           </Table>
           <Empty v-else></Empty>
         </TabPane>
+        <TabPane key="addService" tab="添加服务">
+          <Form :colon="false" class="addService">
+            <Item label="服务地址">
+              <Input v-model:value="service.url"/>
+            </Item>
+            <Item label="服务类型">
+              <Select v-model:value="service.type">
+                <SelectOption value="supermap_rest">超图动态</SelectOption>
+                <SelectOption value="supermap_tile">超图切片</SelectOption>
+              </Select>
+            </Item>
+            <Item class="formBtnItem">
+              <Button @click="addService" type="primary">添加</Button>
+            </Item>
+          </Form>
+        </TabPane>
       </Tabs>
     </div>
   </container>
@@ -55,16 +71,24 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
-import { map, control, layerGroup, geoJSON, GeoJSON } from 'leaflet'
+import { map, control, layerGroup, geoJSON, GeoJSON, Control, CRS } from 'leaflet'
 import { Container } from '@/components'
 import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
-import { Tabs, Table, Empty, Form, Input } from 'ant-design-vue'
+import { Tabs, Table, Empty, Form, Input, Select, Button } from 'ant-design-vue'
 import { cloneDeep } from 'lodash-es'
+import { tiledMapLayer } from '@/utils/iclient-leaflet'
 
+const { Layers } = Control
 const { TabPane } = Tabs
 const { Item } = Form
+const { Option: SelectOption } = Select
+
+/**
+ * @type {Layers}
+ */
+let layerControl
 
 export default defineComponent({
   name: 'geoJson',
@@ -76,7 +100,10 @@ export default defineComponent({
     Empty,
     Form,
     Item,
-    Input
+    Input,
+    Select,
+    SelectOption,
+    Button
   },
   data: () => ({
     map: undefined,
@@ -95,7 +122,12 @@ export default defineComponent({
     editableData: {},
 
     tdtToken: 'bed806b1ccb34b268ab1c0700123d444',
-    gaodeToken: '868d6830a7409520ae283cde3a3f84d1'
+    gaodeToken: '868d6830a7409520ae283cde3a3f84d1',
+
+    service: {
+      url: '',
+      type: 'supermap_rest'
+    }
   }),
   computed: {
     tableColumns () {
@@ -182,7 +214,7 @@ export default defineComponent({
       this.geoJsonLayer = geoJSON(undefined, {
         onEachFeature: this.onEachFeature
       }).addTo(this.map)
-      control.layers({
+      layerControl = control.layers({
         高德矢量: chineseLayer('GaoDe.Normal.Map', {
           minZoom: 3,
           maxNativeZoom: 18,
@@ -344,6 +376,30 @@ export default defineComponent({
       delete this.editableData[index]
     },
 
+    addService () {
+      const serviceUrl = this.service.url
+      const serviceType = this.service.type
+      this.service.url = this.$options.data().service.url
+      this.service.type = this.$options.data().service.type
+      switch (serviceType) {
+        case 'supermap_rest':
+        case 'supermap_tile': {
+          try {
+            const layer = tiledMapLayer(serviceUrl, {
+              prjCoordSys: { epsgCode: 3857 },
+              crs: CRS.EPSG3857
+            }).addTo(this.map)
+            layerControl.addOverlay(layer, '测试')
+          } catch (e) {
+            this.$msg.error('添加服务失败')
+          }
+          break
+        }
+        default:
+          break
+      }
+    },
+
     rowEvents (record, index) {
       return {
         onClick: () => {
@@ -429,5 +485,24 @@ export default defineComponent({
     }
   }
 
+  .addService {
+    padding: .8rem 0 .8rem .8rem;
+
+    .ant-form-item {
+      margin-bottom: .8rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .formBtnItem {
+      text-align: right;
+
+      .ant-btn {
+        height: 3rem;
+      }
+    }
+  }
 }
 </style>
