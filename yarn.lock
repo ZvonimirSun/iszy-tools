@@ -1166,6 +1166,18 @@
     ejs "^2.6.1"
     magic-string "^0.25.0"
 
+"@terraformer/arcgis@^2.0.7":
+  version "2.1.0"
+  resolved "https://r.cnpmjs.org/@terraformer/arcgis/download/@terraformer/arcgis-2.1.0.tgz#23d5822bd71e3d940da3e62d391b42628d35d2ef"
+  integrity sha1-I9WCK9cePZQNo+YtORtCYo010u8=
+  dependencies:
+    "@terraformer/common" "^2.0.7"
+
+"@terraformer/common@^2.0.7":
+  version "2.0.7"
+  resolved "https://r.cnpmjs.org/@terraformer/common/download/@terraformer/common-2.0.7.tgz#bec626f331b9f0cc3aefb16f9f88e2d3684107ff"
+  integrity sha1-vsYm8zG58Mw677Fvn4ji02hBB/8=
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://r.cnpmjs.org/@tootallnate/once/download/@tootallnate/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -2462,6 +2474,14 @@ esrecurse@^4.3.0:
   integrity sha1-eteWTWeauyi+5yzsY3WLHF0smSE=
   dependencies:
     estraverse "^5.2.0"
+
+esri-leaflet@^3.0.3:
+  version "3.0.3"
+  resolved "https://r.cnpmjs.org/esri-leaflet/download/esri-leaflet-3.0.3.tgz#5fa42c47df1e266653ed9cb7d9919eb012b48829"
+  integrity sha1-X6QsR98eJmZT7Zy32ZGesBK0iCk=
+  dependencies:
+    "@terraformer/arcgis" "^2.0.7"
+    tiny-binary-search "^1.0.3"
 
 estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.3.0"
@@ -4596,6 +4616,11 @@ through@~2.3:
   version "2.3.8"
   resolved "https://r.cnpmjs.org/through/download/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+tiny-binary-search@^1.0.3:
+  version "1.0.3"
+  resolved "https://r.cnpmjs.org/tiny-binary-search/download/tiny-binary-search-1.0.3.tgz#9d52e3d16dd1171eb74486caf704ba08c0c62186"
+  integrity sha1-nVLj0W3RFx63RIbK9wS6CMDGIYY=
 
 tinycolor2@^1.4.2:
   version "1.4.2"

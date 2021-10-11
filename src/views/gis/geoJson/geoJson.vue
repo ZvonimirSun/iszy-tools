@@ -49,6 +49,9 @@
         </TabPane>
         <TabPane key="addService" tab="添加服务">
           <Form :colon="false" class="addService">
+            <Item label="服务名称">
+              <Input v-model:value="service.name"/>
+            </Item>
             <Item label="服务地址">
               <Input v-model:value="service.url"/>
             </Item>
@@ -56,6 +59,8 @@
               <Select v-model:value="service.type">
                 <SelectOption value="supermap_rest">超图动态</SelectOption>
                 <SelectOption value="supermap_tile">超图切片</SelectOption>
+                <SelectOption value="arcgis_rest">ArcGIS 动态</SelectOption>
+                <SelectOption value="arcgis_tile">ArcGIS 切片</SelectOption>
               </Select>
             </Item>
             <Item class="formBtnItem">
@@ -77,8 +82,9 @@ import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import { Tabs, Table, Empty, Form, Input, Select, Button } from 'ant-design-vue'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, uniqueId } from 'lodash-es'
 import { tiledMapLayer } from '@/utils/iclient-leaflet'
+import { tiledMapLayer as esriTiledMapLayer, dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet'
 
 const { Layers } = Control
 const { TabPane } = Tabs
@@ -125,6 +131,8 @@ export default defineComponent({
     gaodeToken: '868d6830a7409520ae283cde3a3f84d1',
 
     service: {
+      id: 1,
+      name: '服务 1',
       url: '',
       type: 'supermap_rest'
     }
@@ -379,8 +387,9 @@ export default defineComponent({
     addService () {
       const serviceUrl = this.service.url
       const serviceType = this.service.type
-      this.service.url = this.$options.data().service.url
-      this.service.type = this.$options.data().service.type
+      const serviceName = this.service.name
+      this.service.id++
+      this.service.name = '服务 ' + this.service.id
       switch (serviceType) {
         case 'supermap_rest':
         case 'supermap_tile': {
@@ -389,8 +398,35 @@ export default defineComponent({
               prjCoordSys: { epsgCode: 3857 },
               crs: CRS.EPSG3857
             }).addTo(this.map)
-            layerControl.addOverlay(layer, '测试')
+            layerControl.addOverlay(layer, serviceName)
           } catch (e) {
+            this.$msg.error('添加服务失败')
+          }
+          break
+        }
+        case 'arcgis_rest': {
+          try {
+            const layer = esriDynamicMapLayer({
+              url: serviceUrl,
+              f: 'image'
+            })
+            layer.addTo(this.map)
+            layerControl.addOverlay(layer, serviceName)
+          } catch (e) {
+            console.log(e)
+            this.$msg.error('添加服务失败')
+          }
+          break
+        }
+        case 'arcgis_tile': {
+          try {
+            const layer = esriTiledMapLayer({
+              url: serviceUrl
+            })
+            layer.addTo(this.map)
+            layerControl.addOverlay(layer, serviceName)
+          } catch (e) {
+            console.log(e)
             this.$msg.error('添加服务失败')
           }
           break
