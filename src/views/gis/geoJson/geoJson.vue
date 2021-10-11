@@ -55,6 +55,7 @@
             <Item label="服务类型">
               <Select v-model:value="service.type">
                 <SelectOption value="supermap_rest">超图动态</SelectOption>
+                <SelectOption value="supermap_tile">超图切片</SelectOption>
               </Select>
             </Item>
             <Item class="formBtnItem">
@@ -70,17 +71,24 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
-import { map, control, layerGroup, geoJSON, GeoJSON } from 'leaflet'
+import { map, control, layerGroup, geoJSON, GeoJSON, Control, CRS } from 'leaflet'
 import { Container } from '@/components'
 import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import { Tabs, Table, Empty, Form, Input, Select, Button } from 'ant-design-vue'
 import { cloneDeep } from 'lodash-es'
+import { tiledMapLayer } from '@/utils/iclient-leaflet'
 
+const { Layers } = Control
 const { TabPane } = Tabs
 const { Item } = Form
 const { Option: SelectOption } = Select
+
+/**
+ * @type {Layers}
+ */
+let layerControl
 
 export default defineComponent({
   name: 'geoJson',
@@ -206,7 +214,7 @@ export default defineComponent({
       this.geoJsonLayer = geoJSON(undefined, {
         onEachFeature: this.onEachFeature
       }).addTo(this.map)
-      control.layers({
+      layerControl = control.layers({
         高德矢量: chineseLayer('GaoDe.Normal.Map', {
           minZoom: 3,
           maxNativeZoom: 18,
@@ -374,11 +382,17 @@ export default defineComponent({
       this.service.url = this.$options.data().service.url
       this.service.type = this.$options.data().service.type
       switch (serviceType) {
-        case 'supermap_rest': {
+        case 'supermap_rest':
+        case 'supermap_tile': {
           try {
-            // const layer = tiledMapLayer(serviceUrl)
-            // layer.addTo(this.map)
-          } catch (e) {}
+            const layer = tiledMapLayer(serviceUrl, {
+              prjCoordSys: { epsgCode: 3857 },
+              crs: CRS.EPSG3857
+            }).addTo(this.map)
+            layerControl.addOverlay(layer, '测试')
+          } catch (e) {
+            this.$msg.error('添加服务失败')
+          }
           break
         }
         default:

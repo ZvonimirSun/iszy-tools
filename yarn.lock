@@ -1068,18 +1068,6 @@
   resolved "https://registry.nlark.com/@icon-park/vue-next/download/@icon-park/vue-next-1.3.5.tgz#4c9cbe6c77c4f4dadbe60fd26b86b10ed4ad186b"
   integrity sha1-TJy+bHfE9Nrb5g/Sa4axDtStGGs=
 
-"@mapbox/point-geometry@~0.1.0":
-  version "0.1.0"
-  resolved "https://r.cnpmjs.org/@mapbox/point-geometry/download/@mapbox/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
-  integrity sha1-ioP5M1x4YO/6Lu7KJUMyqgru2PI=
-
-"@mapbox/vector-tile@1.3.1":
-  version "1.3.1"
-  resolved "https://r.cnpmjs.org/@mapbox/vector-tile/download/@mapbox/vector-tile-1.3.1.tgz#d3a74c90402d06e89ec66de49ec817ff53409666"
-  integrity sha1-06dMkEAtBuiexm3knsgX/1NAlmY=
-  dependencies:
-    "@mapbox/point-geometry" "~0.1.0"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.nlark.com/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1159,9 +1147,9 @@
   resolved "https://registry.npm.taobao.org/@sphinxxxx/color-conversion/download/@sphinxxxx/color-conversion-2.2.2.tgz#03ecc29279e3c0c832f6185a5bfa3497858ac8ca"
   integrity sha1-A+zCknnjwMgy9hhaW/o0l4WKyMo=
 
-"@supermap/iclient-common@10.2.0":
+"@supermap/iclient-common@^10.2.0":
   version "10.2.0"
-  resolved "https://r.cnpmjs.org/@supermap/iclient-common/download/@supermap/iclient-common-10.2.0.tgz#987cd81fa6cf44f8e2559af439325bb18788a341"
+  resolved "http://192.168.2.58:4873/@supermap%2ficlient-common/-/iclient-common-10.2.0.tgz#987cd81fa6cf44f8e2559af439325bb18788a341"
   integrity sha1-mHzYH6bPRPjiVZr0OTJbsYeIo0E=
   dependencies:
     elasticsearch "16.7.2"
@@ -1169,22 +1157,6 @@
     fetch-jsonp "1.1.3"
     lodash.topairs "4.3.0"
     promise-polyfill "8.2.0"
-
-"@supermap/iclient-leaflet@^10.2.0":
-  version "10.2.0"
-  resolved "https://r.cnpmjs.org/@supermap/iclient-leaflet/download/@supermap/iclient-leaflet-10.2.0.tgz#a0dce446f0f81fc789d6da3af5aa3bf89e857db0"
-  integrity sha1-oNzkRvD4H8eJ1to69ao7+J6FfbA=
-  dependencies:
-    "@mapbox/vector-tile" "1.3.1"
-    "@supermap/iclient-common" "10.2.0"
-    "@turf/turf" "6.5.0"
-    echarts "4.9.0"
-    jsonsql "0.2.5"
-    leaflet "1.7.1"
-    mapv "2.0.62"
-    pbf "3.2.1"
-    proj4 "2.7.5"
-    xlsx "0.17.2"
 
 "@surma/rollup-plugin-off-main-thread@^1.4.1":
   version "1.4.2"
@@ -1199,1143 +1171,6 @@
   resolved "https://registry.npmmirror.com/@tootallnate/once/download/@tootallnate/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha1-zLkURTYBeaBOf+av94wA/8Hur4I=
 
-"@turf/along@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/along/download/@turf/along-6.5.0.tgz#ab12eec58a14de60fe243a62d31a474f415c8fef"
-  integrity sha1-qxLuxYoU3mD+JDpi0xpHT0Fcj+8=
-  dependencies:
-    "@turf/bearing" "^6.5.0"
-    "@turf/destination" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/angle@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/angle/download/@turf/angle-6.5.0.tgz#985934171284e109d41e19ed48ad91cf9709a928"
-  integrity sha1-mFk0FxKE4QnUHhntSK2Rz5cJqSg=
-  dependencies:
-    "@turf/bearing" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/rhumb-bearing" "^6.5.0"
-
-"@turf/area@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/area/download/@turf/area-6.5.0.tgz#1d0d7aee01d8a4a3d4c91663ed35cc615f36ad56"
-  integrity sha1-HQ167gHYpKPUyRZj7TXMYV82rVY=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/bbox-clip@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/bbox-clip/download/@turf/bbox-clip-6.5.0.tgz#8e07d51ef8c875f9490d5c8699a2e51918587c94"
-  integrity sha1-jgfVHvjIdflJDVyGmaLlGRhYfJQ=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/bbox-polygon@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/bbox-polygon/download/@turf/bbox-polygon-6.5.0.tgz#f18128b012eedfa860a521d8f2b3779cc0801032"
-  integrity sha1-8YEosBLu36hgpSHY8rN3nMCAEDI=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/bbox@*", "@turf/bbox@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/bbox/download/@turf/bbox-6.5.0.tgz#bec30a744019eae420dac9ea46fb75caa44d8dc5"
-  integrity sha1-vsMKdEAZ6uQg2snqRvt1yqRNjcU=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/bearing@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/bearing/download/@turf/bearing-6.5.0.tgz#462a053c6c644434bdb636b39f8f43fb0cd857b0"
-  integrity sha1-RioFPGxkRDS9tjazn49D+wzYV7A=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/bezier-spline@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/bezier-spline/download/@turf/bezier-spline-6.5.0.tgz#d1b1764948b0fa3d9aa6e4895aebeba24048b11f"
-  integrity sha1-0bF2SUiw+j2apuSJWuvrokBIsR8=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/boolean-clockwise@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-clockwise/download/@turf/boolean-clockwise-6.5.0.tgz#34573ecc18f900080f00e4ff364631a8b1135794"
-  integrity sha1-NFc+zBj5AAgPAOT/NkYxqLETV5Q=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/boolean-contains@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-contains/download/@turf/boolean-contains-6.5.0.tgz#f802e7432fb53109242d5bf57393ef2f53849bbf"
-  integrity sha1-+ALnQy+1MQkkLVv1c5PvL1OEm78=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/boolean-point-on-line" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/boolean-crosses@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-crosses/download/@turf/boolean-crosses-6.5.0.tgz#4a1981475b9d6e23b25721f9fb8ef20696ff1648"
-  integrity sha1-ShmBR1udbiOyVyH5+47yBpb/Fkg=
-  dependencies:
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-intersect" "^6.5.0"
-    "@turf/polygon-to-line" "^6.5.0"
-
-"@turf/boolean-disjoint@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-disjoint/download/@turf/boolean-disjoint-6.5.0.tgz#e291d8f8f8cce7f7bb3c11e23059156a49afc5e4"
-  integrity sha1-4pHY+PjM5/e7PBHiMFkVakmvxeQ=
-  dependencies:
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/line-intersect" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/polygon-to-line" "^6.5.0"
-
-"@turf/boolean-equal@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-equal/download/@turf/boolean-equal-6.5.0.tgz#b1c0ce14e9d9fb7778cddcf22558c9f523fe9141"
-  integrity sha1-scDOFOnZ+3d4zdzyJVjJ9SP+kUE=
-  dependencies:
-    "@turf/clean-coords" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    geojson-equality "0.1.6"
-
-"@turf/boolean-intersects@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-intersects/download/@turf/boolean-intersects-6.5.0.tgz#df2b831ea31a4574af6b2fefe391f097a926b9d6"
-  integrity sha1-3yuDHqMaRXSvay/v45Hwl6kmudY=
-  dependencies:
-    "@turf/boolean-disjoint" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/boolean-overlap@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-overlap/download/@turf/boolean-overlap-6.5.0.tgz#f27c85888c3665d42d613a91a83adf1657cd1385"
-  integrity sha1-8nyFiIw2ZdQtYTqRqDrfFlfNE4U=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-intersect" "^6.5.0"
-    "@turf/line-overlap" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    geojson-equality "0.1.6"
-
-"@turf/boolean-parallel@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-parallel/download/@turf/boolean-parallel-6.5.0.tgz#4e8a9dafdccaf18aca95f1265a5eade3f330173f"
-  integrity sha1-Toqdr9zK8YrKlfEmWl6t4/MwFz8=
-  dependencies:
-    "@turf/clean-coords" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/line-segment" "^6.5.0"
-    "@turf/rhumb-bearing" "^6.5.0"
-
-"@turf/boolean-point-in-polygon@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-point-in-polygon/download/@turf/boolean-point-in-polygon-6.5.0.tgz#6d2e9c89de4cd2e4365004c1e51490b7795a63cf"
-  integrity sha1-bS6cid5M0uQ2UATB5RSQt3laY88=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/boolean-point-on-line@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-point-on-line/download/@turf/boolean-point-on-line-6.5.0.tgz#a8efa7bad88760676f395afb9980746bc5b376e9"
-  integrity sha1-qO+nutiHYGdvOVr7mYB0a8Wzduk=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/boolean-within@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/boolean-within/download/@turf/boolean-within-6.5.0.tgz#31a749d3be51065da8c470a1e5613f4d2efdee06"
-  integrity sha1-MadJ075RBl2oxHCh5WE/TS797gY=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/boolean-point-on-line" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/buffer@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/buffer/download/@turf/buffer-6.5.0.tgz#22bd0d05b4e1e73eaebc69b8f574a410ff704842"
-  integrity sha1-Ir0NBbTh5z6uvGm49XSkEP9wSEI=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/center" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/projection" "^6.5.0"
-    d3-geo "1.7.1"
-    turf-jsts "*"
-
-"@turf/center-mean@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/center-mean/download/@turf/center-mean-6.5.0.tgz#2dc329c003f8012ba9ae7812a61b5647e1ae86a2"
-  integrity sha1-LcMpwAP4ASuprngSphtWR+GuhqI=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/center-median@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/center-median/download/@turf/center-median-6.5.0.tgz#1b68e3f288af47f76c247d6bf671f30d8c25c974"
-  integrity sha1-G2jj8oivR/dsJH1r9nHzDYwlyXQ=
-  dependencies:
-    "@turf/center-mean" "^6.5.0"
-    "@turf/centroid" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/center-of-mass@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/center-of-mass/download/@turf/center-of-mass-6.5.0.tgz#f9e6988bc296b7f763a0137ad6095f54843cf06a"
-  integrity sha1-+eaYi8KWt/djoBN61glfVIQ88Go=
-  dependencies:
-    "@turf/centroid" "^6.5.0"
-    "@turf/convex" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/center@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/center/download/@turf/center-6.5.0.tgz#3bcb6bffcb8ba147430cfea84aabaed5dbdd4f07"
-  integrity sha1-O8tr/8uLoUdDDP6oSquu1dvdTwc=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/centroid@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/centroid/download/@turf/centroid-6.5.0.tgz#ecaa365412e5a4d595bb448e7dcdacfb49eb0009"
-  integrity sha1-7Ko2VBLlpNWVu0SOfc2s+0nrAAk=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/circle@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/circle/download/@turf/circle-6.5.0.tgz#dc017d8c0131d1d212b7c06f76510c22bbeb093c"
-  integrity sha1-3AF9jAEx0dISt8BvdlEMIrvrCTw=
-  dependencies:
-    "@turf/destination" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/clean-coords@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/clean-coords/download/@turf/clean-coords-6.5.0.tgz#6690adf764ec4b649710a8a20dab7005efbea53f"
-  integrity sha1-ZpCt92TsS2SXEKiiDatwBe++pT8=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/clone@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/clone/download/@turf/clone-6.5.0.tgz#895860573881ae10a02dfff95f274388b1cda51a"
-  integrity sha1-iVhgVziBrhCgLf/5XydDiLHNpRo=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/clusters-dbscan@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/clusters-dbscan/download/@turf/clusters-dbscan-6.5.0.tgz#e01f854d24fac4899009fc6811854424ea8f0985"
-  integrity sha1-4B+FTST6xImQCfxoEYVEJOqPCYU=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    density-clustering "1.3.0"
-
-"@turf/clusters-kmeans@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/clusters-kmeans/download/@turf/clusters-kmeans-6.5.0.tgz#aca6f66858af6476b7352a2bbbb392f9ddb7f5b4"
-  integrity sha1-rKb2aFivZHa3NSoru7OS+d239bQ=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    skmeans "0.9.7"
-
-"@turf/clusters@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/clusters/download/@turf/clusters-6.5.0.tgz#a5ee7b62cdf345db2f1eafe2eb382adc186163e1"
-  integrity sha1-pe57Ys3zRdsvHq/i6zgq3BhhY+E=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/collect@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/collect/download/@turf/collect-6.5.0.tgz#3749ca7d4b91fbcbe1b9b8858ed70df8b6290910"
-  integrity sha1-N0nKfUuR+8vhubiFjtcN+LYpCRA=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    rbush "2.x"
-
-"@turf/combine@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/combine/download/@turf/combine-6.5.0.tgz#e0f3468ac9c09c24fa7184ebbd8a79d2e595ef81"
-  integrity sha1-4PNGisnAnCT6cYTrvYp50uWV74E=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/concave@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/concave/download/@turf/concave-6.5.0.tgz#19ab1a3f04087c478cebc5e631293f3eeb2e7ce4"
-  integrity sha1-GasaPwQIfEeM68XmMSk/PusufOQ=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/tin" "^6.5.0"
-    topojson-client "3.x"
-    topojson-server "3.x"
-
-"@turf/convex@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/convex/download/@turf/convex-6.5.0.tgz#a7613e0d3795e2f5b9ce79a39271e86f54a3d354"
-  integrity sha1-p2E+DTeV4vW5znmjknHob1Sj01Q=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    concaveman "*"
-
-"@turf/destination@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/destination/download/@turf/destination-6.5.0.tgz#30a84702f9677d076130e0440d3223ae503fdae1"
-  integrity sha1-MKhHAvlnfQdhMOBEDTIjrlA/2uE=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/difference@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/difference/download/@turf/difference-6.5.0.tgz#677b0d5641a93bba2e82f2c683f0d880105b3197"
-  integrity sha1-Z3sNVkGpO7ougvLGg/DYgBBbMZc=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    polygon-clipping "^0.15.3"
-
-"@turf/dissolve@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/dissolve/download/@turf/dissolve-6.5.0.tgz#65debed7ef185087d842b450ebd01e81cc2e80f6"
-  integrity sha1-Zd6+1+8YUIfYQrRQ69AegcwugPY=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    polygon-clipping "^0.15.3"
-
-"@turf/distance-weight@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/distance-weight/download/@turf/distance-weight-6.5.0.tgz#fe1fb45b5ae5ca4e09a898cb0a15c6c79ed0849e"
-  integrity sha1-/h+0W1rlyk4JqJjLChXGx57QhJ4=
-  dependencies:
-    "@turf/centroid" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/distance@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/distance/download/@turf/distance-6.5.0.tgz#21f04d5f86e864d54e2abde16f35c15b4f36149a"
-  integrity sha1-IfBNX4boZNVOKr3hbzXBW082FJo=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/ellipse@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/ellipse/download/@turf/ellipse-6.5.0.tgz#1e20cc9eb968f35ab891572892a0bffcef5e552a"
-  integrity sha1-HiDMnrlo81q4kVcokqC//O9eVSo=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/rhumb-destination" "^6.5.0"
-    "@turf/transform-rotate" "^6.5.0"
-
-"@turf/envelope@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/envelope/download/@turf/envelope-6.5.0.tgz#73e81b9b7ed519bd8a614d36322d6f9fbeeb0579"
-  integrity sha1-c+gbm37VGb2KYU02Mi1vn77rBXk=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/bbox-polygon" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/explode@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/explode/download/@turf/explode-6.5.0.tgz#02c292cc143dd629643da5b70bb5b19b9f0f1c6b"
-  integrity sha1-AsKSzBQ91ilkPaW3C7Wxm58PHGs=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/flatten@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/flatten/download/@turf/flatten-6.5.0.tgz#0bd26161f4f1759bbad6ba9485e8ee65f3fa72a7"
-  integrity sha1-C9JhYfTxdZu61rqUhejuZfP6cqc=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/flip@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/flip/download/@turf/flip-6.5.0.tgz#04b38eae8a78f2cf9240140b25401b16b37d20e2"
-  integrity sha1-BLOOrop48s+SQBQLJUAbFrN9IOI=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/great-circle@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/great-circle/download/@turf/great-circle-6.5.0.tgz#2daccbdd1c609a13b00d566ea0ad95457cfc87c2"
-  integrity sha1-LazL3RxgmhOwDVZuoK2VRXz8h8I=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/helpers@6.x", "@turf/helpers@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/helpers/download/@turf/helpers-6.5.0.tgz#f79af094bd6b8ce7ed2bd3e089a8493ee6cae82e"
-  integrity sha1-95rwlL1rjOftK9PgiahJPubK6C4=
-
-"@turf/hex-grid@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/hex-grid/download/@turf/hex-grid-6.5.0.tgz#aa5ee46e291839d4405db74b7516c6da89ee56f7"
-  integrity sha1-ql7kbikYOdRAXbdLdRbG2onuVvc=
-  dependencies:
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/intersect" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/interpolate@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/interpolate/download/@turf/interpolate-6.5.0.tgz#9120def5d4498dd7b7d5e92a263aac3e1fd92886"
-  integrity sha1-kSDe9dRJjde31ekqJjqsPh/ZKIY=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/centroid" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/hex-grid" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/point-grid" "^6.5.0"
-    "@turf/square-grid" "^6.5.0"
-    "@turf/triangle-grid" "^6.5.0"
-
-"@turf/intersect@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/intersect/download/@turf/intersect-6.5.0.tgz#a14e161ddd0264d0f07ac4e325553c70c421f9e6"
-  integrity sha1-oU4WHd0CZNDwesTjJVU8cMQh+eY=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    polygon-clipping "^0.15.3"
-
-"@turf/invariant@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/invariant/download/@turf/invariant-6.5.0.tgz#970afc988023e39c7ccab2341bd06979ddc7463f"
-  integrity sha1-lwr8mIAj45x8yrI0G9Bped3HRj8=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/isobands@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/isobands/download/@turf/isobands-6.5.0.tgz#5e0929d9d8d53147074a5cfe4533768782e2a2ce"
-  integrity sha1-Xgkp2djVMUcHSlz+RTN2h4Lios4=
-  dependencies:
-    "@turf/area" "^6.5.0"
-    "@turf/bbox" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/explode" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    object-assign "*"
-
-"@turf/isolines@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/isolines/download/@turf/isolines-6.5.0.tgz#3435c7cb5a79411207a5657aa4095357cfd35831"
-  integrity sha1-NDXHy1p5QRIHpWV6pAlTV8/TWDE=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    object-assign "*"
-
-"@turf/kinks@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/kinks/download/@turf/kinks-6.5.0.tgz#80e7456367535365012f658cf1a988b39a2c920b"
-  integrity sha1-gOdFY2dTU2UBL2WM8amIs5oskgs=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/length@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/length/download/@turf/length-6.5.0.tgz#ff4e9072d5f997e1c32a1311d214d184463f83fa"
-  integrity sha1-/06QctX5l+HDKhMR0hTRhEY/g/o=
-  dependencies:
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/line-arc@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-arc/download/@turf/line-arc-6.5.0.tgz#5ca35516ccf1f3a01149889d9facb39a77b07431"
-  integrity sha1-XKNVFszx86ARSYidn6yzmnewdDE=
-  dependencies:
-    "@turf/circle" "^6.5.0"
-    "@turf/destination" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/line-chunk@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-chunk/download/@turf/line-chunk-6.5.0.tgz#02cefa74564b9cf533a3ac8a5109c97cb7170d10"
-  integrity sha1-As76dFZLnPUzo6yKUQnJfLcXDRA=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/length" "^6.5.0"
-    "@turf/line-slice-along" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/line-intersect@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-intersect/download/@turf/line-intersect-6.5.0.tgz#dea48348b30c093715d2195d2dd7524aee4cf020"
-  integrity sha1-3qSDSLMMCTcV0hldLddSSu5M8CA=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-segment" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    geojson-rbush "3.x"
-
-"@turf/line-offset@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-offset/download/@turf/line-offset-6.5.0.tgz#2bbd8fcf9ff82009b72890863da444b190e53689"
-  integrity sha1-K72Pz5/4IAm3KJCGPaREsZDlNok=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/line-overlap@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-overlap/download/@turf/line-overlap-6.5.0.tgz#10ebb805c2d047463379fc1f997785fa8f3f4cc1"
-  integrity sha1-EOu4BcLQR0YzefwfmXeF+o8/TME=
-  dependencies:
-    "@turf/boolean-point-on-line" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-segment" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/nearest-point-on-line" "^6.5.0"
-    deep-equal "1.x"
-    geojson-rbush "3.x"
-
-"@turf/line-segment@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-segment/download/@turf/line-segment-6.5.0.tgz#ee73f3ffcb7c956203b64ed966d96af380a4dd65"
-  integrity sha1-7nPz/8t8lWIDtk7ZZtlq84Ck3WU=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/line-slice-along@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-slice-along/download/@turf/line-slice-along-6.5.0.tgz#6e7a861d72c6f80caba2c4418b69a776f0292953"
-  integrity sha1-bnqGHXLG+AyrosRBi2mndvApKVM=
-  dependencies:
-    "@turf/bearing" "^6.5.0"
-    "@turf/destination" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/line-slice@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-slice/download/@turf/line-slice-6.5.0.tgz#7b6e0c8e8e93fdb4e65c3b9a123a2ec93a21bdb0"
-  integrity sha1-e24Mjo6T/bTmXDuaEjouyTohvbA=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/nearest-point-on-line" "^6.5.0"
-
-"@turf/line-split@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-split/download/@turf/line-split-6.5.0.tgz#116d7fbf714457878225187f5820ef98db7b02c2"
-  integrity sha1-EW1/v3FEV4eCJRh/WCDvmNt7AsI=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-intersect" "^6.5.0"
-    "@turf/line-segment" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/nearest-point-on-line" "^6.5.0"
-    "@turf/square" "^6.5.0"
-    "@turf/truncate" "^6.5.0"
-    geojson-rbush "3.x"
-
-"@turf/line-to-polygon@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/line-to-polygon/download/@turf/line-to-polygon-6.5.0.tgz#c919a03064a1cd5cef4c4e4d98dc786e12ffbc89"
-  integrity sha1-yRmgMGShzVzvTE5NmNx4bhL/vIk=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/mask@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/mask/download/@turf/mask-6.5.0.tgz#a97f355ee071ac60d8d3782ae39e5bb4b4e26857"
-  integrity sha1-qX81XuBxrGDY03gq455btLTiaFc=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    polygon-clipping "^0.15.3"
-
-"@turf/meta@6.x", "@turf/meta@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/meta/download/@turf/meta-6.5.0.tgz#b725c3653c9f432133eaa04d3421f7e51e0418ca"
-  integrity sha1-tyXDZTyfQyEz6qBNNCH35R4EGMo=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/midpoint@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/midpoint/download/@turf/midpoint-6.5.0.tgz#5f9428959309feccaf3f55873a8de70d4121bdce"
-  integrity sha1-X5QolZMJ/syvP1WHOo3nDUEhvc4=
-  dependencies:
-    "@turf/bearing" "^6.5.0"
-    "@turf/destination" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/moran-index@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/moran-index/download/@turf/moran-index-6.5.0.tgz#456264bfb014a7b5f527807c9dcf25df3c6b2efd"
-  integrity sha1-RWJkv7AUp7X1J4B8nc8l3zxrLv0=
-  dependencies:
-    "@turf/distance-weight" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/nearest-point-on-line@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/nearest-point-on-line/download/@turf/nearest-point-on-line-6.5.0.tgz#8e1cd2cdc0b5acaf4c8d8b3b33bb008d3cb99e7b"
-  integrity sha1-jhzSzcC1rK9MjYs7M7sAjTy5nns=
-  dependencies:
-    "@turf/bearing" "^6.5.0"
-    "@turf/destination" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-intersect" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/nearest-point-to-line@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/nearest-point-to-line/download/@turf/nearest-point-to-line-6.5.0.tgz#5549b48690d523f9af4765fe64a3cbebfbc6bb75"
-  integrity sha1-VUm0hpDVI/mvR2X+ZKPL6/vGu3U=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/point-to-line-distance" "^6.5.0"
-    object-assign "*"
-
-"@turf/nearest-point@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/nearest-point/download/@turf/nearest-point-6.5.0.tgz#2f1781c26ff3f054005d4ff352042973318b92f1"
-  integrity sha1-LxeBwm/z8FQAXU/zUgQpczGLkvE=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/planepoint@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/planepoint/download/@turf/planepoint-6.5.0.tgz#5cb788670c31a6b064ae464180d51b4d550d87de"
-  integrity sha1-XLeIZwwxprBkrkZBgNUbTVUNh94=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/point-grid@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/point-grid/download/@turf/point-grid-6.5.0.tgz#f628d30afe29d60dcbf54b195e46eab48a4fbfaa"
-  integrity sha1-9ijTCv4p1g3L9UsZXkbqtIpPv6o=
-  dependencies:
-    "@turf/boolean-within" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/point-on-feature@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/point-on-feature/download/@turf/point-on-feature-6.5.0.tgz#37d07afeb31896e53c0833aa404993ba7d500f0c"
-  integrity sha1-N9B6/rMYluU8CDOqQEmTun1QDww=
-  dependencies:
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/center" "^6.5.0"
-    "@turf/explode" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/nearest-point" "^6.5.0"
-
-"@turf/point-to-line-distance@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/point-to-line-distance/download/@turf/point-to-line-distance-6.5.0.tgz#bc46fe09ea630aaf73f13c40b38a7df79050fff8"
-  integrity sha1-vEb+CepjCq9z8TxAs4p995BQ//g=
-  dependencies:
-    "@turf/bearing" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/projection" "^6.5.0"
-    "@turf/rhumb-bearing" "^6.5.0"
-    "@turf/rhumb-distance" "^6.5.0"
-
-"@turf/points-within-polygon@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/points-within-polygon/download/@turf/points-within-polygon-6.5.0.tgz#d49f4d7cf19b7a440bf1e06f771ff4e1df13107f"
-  integrity sha1-1J9NfPGbekQL8eBvdx/04d8TEH8=
-  dependencies:
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/polygon-smooth@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/polygon-smooth/download/@turf/polygon-smooth-6.5.0.tgz#00ca366871cb6ea3bee44ff3ea870aaf75711733"
-  integrity sha1-AMo2aHHLbqO+5E/z6ocKr3VxFzM=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/polygon-tangents@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/polygon-tangents/download/@turf/polygon-tangents-6.5.0.tgz#dc025202727ba2f3347baa95dbca4e0ffdb2ddf5"
-  integrity sha1-3AJSAnJ7ovM0e6qV28pOD/2y3fU=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/boolean-within" "^6.5.0"
-    "@turf/explode" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/nearest-point" "^6.5.0"
-
-"@turf/polygon-to-line@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/polygon-to-line/download/@turf/polygon-to-line-6.5.0.tgz#4dc86db66168b32bb83ce448cf966208a447d952"
-  integrity sha1-TchttmFosyu4PORIz5ZiCKRH2VI=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/polygonize@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/polygonize/download/@turf/polygonize-6.5.0.tgz#8aa0f1e386e96c533a320c426aaf387020320fa3"
-  integrity sha1-iqDx44bpbFM6MgxCaq84cCAyD6M=
-  dependencies:
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/envelope" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/projection@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/projection/download/@turf/projection-6.5.0.tgz#d2aad862370bf03f2270701115464a8406c144b2"
-  integrity sha1-0qrYYjcL8D8icHARFUZKhAbBRLI=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/random@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/random/download/@turf/random-6.5.0.tgz#b19672cf4549557660034d4a303911656df7747e"
-  integrity sha1-sZZyz0VJVXZgA01KMDkRZW33dH4=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/rectangle-grid@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/rectangle-grid/download/@turf/rectangle-grid-6.5.0.tgz#c3ef38e8cfdb763012beb1f22e2b77288a37a5cf"
-  integrity sha1-w+846M/bdjASvrHyLit3KIo3pc8=
-  dependencies:
-    "@turf/boolean-intersects" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/rewind@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/rewind/download/@turf/rewind-6.5.0.tgz#bc0088f8ec56f00c8eacd902bbe51e3786cb73a0"
-  integrity sha1-vACI+OxW8AyOrNkCu+UeN4bLc6A=
-  dependencies:
-    "@turf/boolean-clockwise" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/rhumb-bearing@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/rhumb-bearing/download/@turf/rhumb-bearing-6.5.0.tgz#8c41ad62b44fb4e57c14fe790488056684eee7b9"
-  integrity sha1-jEGtYrRPtOV8FP55BIgFZoTu57k=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/rhumb-destination@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/rhumb-destination/download/@turf/rhumb-destination-6.5.0.tgz#12da8c85e674b182e8b0ec8ea9c5fe2186716dae"
-  integrity sha1-EtqMheZ0sYLosOyOqcX+IYZxba4=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/rhumb-distance@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/rhumb-distance/download/@turf/rhumb-distance-6.5.0.tgz#ed068004b1469512b857070fbf5cb7b7eabbe592"
-  integrity sha1-7QaABLFGlRK4VwcPv1y3t+q75ZI=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-
-"@turf/sample@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/sample/download/@turf/sample-6.5.0.tgz#00cca024514989448e57fb1bf34e9a33ed3f0755"
-  integrity sha1-AMygJFFJiUSOV/sb806aM+0/B1U=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/sector@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/sector/download/@turf/sector-6.5.0.tgz#599a87ebbe6ee613b4e04c5928e0ef1fc78fc16c"
-  integrity sha1-WZqH675u5hO04ExZKODvH8ePwWw=
-  dependencies:
-    "@turf/circle" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/line-arc" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/shortest-path@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/shortest-path/download/@turf/shortest-path-6.5.0.tgz#e1fdf9b4758bd20caf845fdc03d0dc2eede2ff0e"
-  integrity sha1-4f35tHWL0gyvhF/cA9DcLu3i/w4=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/bbox-polygon" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/clean-coords" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/transform-scale" "^6.5.0"
-
-"@turf/simplify@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/simplify/download/@turf/simplify-6.5.0.tgz#ec435460bde0985b781618b05d97146c32c8bc16"
-  integrity sha1-7ENUYL3gmFt4FhiwXZcUbDLIvBY=
-  dependencies:
-    "@turf/clean-coords" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/square-grid@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/square-grid/download/@turf/square-grid-6.5.0.tgz#3a517301b42ed98aa62d727786dc5290998ddbae"
-  integrity sha1-OlFzAbQu2YqmLXJ3htxSkJmN264=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/rectangle-grid" "^6.5.0"
-
-"@turf/square@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/square/download/@turf/square-6.5.0.tgz#ab43eef99d39c36157ab5b80416bbeba1f6b2122"
-  integrity sha1-q0Pu+Z05w2FXq1uAQWu+uh9rISI=
-  dependencies:
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-
-"@turf/standard-deviational-ellipse@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/standard-deviational-ellipse/download/@turf/standard-deviational-ellipse-6.5.0.tgz#775c7b9a2be6546bf64ea8ac08cdcd80563f2935"
-  integrity sha1-d1x7mivmVGv2TqisCM3NgFY/KTU=
-  dependencies:
-    "@turf/center-mean" "^6.5.0"
-    "@turf/ellipse" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/points-within-polygon" "^6.5.0"
-
-"@turf/tag@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/tag/download/@turf/tag-6.5.0.tgz#13eae85f36f9fd8c4e076714a894cb5b7716d381"
-  integrity sha1-E+roXzb5/YxOB2cUqJTLW3cW04E=
-  dependencies:
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/tesselate@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/tesselate/download/@turf/tesselate-6.5.0.tgz#de45b778f8e6a45535d8eb2aacea06f86c6b73fb"
-  integrity sha1-3kW3ePjmpFU12OsqrOoG+Gxrc/s=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    earcut "^2.0.0"
-
-"@turf/tin@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/tin/download/@turf/tin-6.5.0.tgz#b77bebb48237e6613ac6bc0e37a6658be8c17a09"
-  integrity sha1-t3vrtII35mE6xrwON6Zli+jBegk=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-
-"@turf/transform-rotate@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/transform-rotate/download/@turf/transform-rotate-6.5.0.tgz#e50e96a8779af91d58149eedb00ffd7f6395c804"
-  integrity sha1-5Q6WqHea+R1YFJ7tsA/9f2OVyAQ=
-  dependencies:
-    "@turf/centroid" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/rhumb-bearing" "^6.5.0"
-    "@turf/rhumb-destination" "^6.5.0"
-    "@turf/rhumb-distance" "^6.5.0"
-
-"@turf/transform-scale@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/transform-scale/download/@turf/transform-scale-6.5.0.tgz#dcccd8b0f139de32e32225a29c107a1279137120"
-  integrity sha1-3MzYsPE53jLjIiWinBB6EnkTcSA=
-  dependencies:
-    "@turf/bbox" "^6.5.0"
-    "@turf/center" "^6.5.0"
-    "@turf/centroid" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/rhumb-bearing" "^6.5.0"
-    "@turf/rhumb-destination" "^6.5.0"
-    "@turf/rhumb-distance" "^6.5.0"
-
-"@turf/transform-translate@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/transform-translate/download/@turf/transform-translate-6.5.0.tgz#631b13aca6402898029e03fc2d1f4bc1c667fc3e"
-  integrity sha1-YxsTrKZAKJgCngP8LR9LwcZn/D4=
-  dependencies:
-    "@turf/clone" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/rhumb-destination" "^6.5.0"
-
-"@turf/triangle-grid@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/triangle-grid/download/@turf/triangle-grid-6.5.0.tgz#75664e8b9d9c7ca4c845673134a1e0d82b5e6887"
-  integrity sha1-dWZOi52cfKTIRWcxNKHg2CteaIc=
-  dependencies:
-    "@turf/distance" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/intersect" "^6.5.0"
-
-"@turf/truncate@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/truncate/download/@turf/truncate-6.5.0.tgz#c3a16cad959f1be1c5156157d5555c64b19185d8"
-  integrity sha1-w6FsrZWfG+HFFWFX1VVcZLGRhdg=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-
-"@turf/turf@6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/turf/download/@turf/turf-6.5.0.tgz#49cd07b942a757f3ebbdba6cb294bbb864825a83"
-  integrity sha1-Sc0HuUKnV/PrvbpsspS7uGSCWoM=
-  dependencies:
-    "@turf/along" "^6.5.0"
-    "@turf/angle" "^6.5.0"
-    "@turf/area" "^6.5.0"
-    "@turf/bbox" "^6.5.0"
-    "@turf/bbox-clip" "^6.5.0"
-    "@turf/bbox-polygon" "^6.5.0"
-    "@turf/bearing" "^6.5.0"
-    "@turf/bezier-spline" "^6.5.0"
-    "@turf/boolean-clockwise" "^6.5.0"
-    "@turf/boolean-contains" "^6.5.0"
-    "@turf/boolean-crosses" "^6.5.0"
-    "@turf/boolean-disjoint" "^6.5.0"
-    "@turf/boolean-equal" "^6.5.0"
-    "@turf/boolean-intersects" "^6.5.0"
-    "@turf/boolean-overlap" "^6.5.0"
-    "@turf/boolean-parallel" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/boolean-point-on-line" "^6.5.0"
-    "@turf/boolean-within" "^6.5.0"
-    "@turf/buffer" "^6.5.0"
-    "@turf/center" "^6.5.0"
-    "@turf/center-mean" "^6.5.0"
-    "@turf/center-median" "^6.5.0"
-    "@turf/center-of-mass" "^6.5.0"
-    "@turf/centroid" "^6.5.0"
-    "@turf/circle" "^6.5.0"
-    "@turf/clean-coords" "^6.5.0"
-    "@turf/clone" "^6.5.0"
-    "@turf/clusters" "^6.5.0"
-    "@turf/clusters-dbscan" "^6.5.0"
-    "@turf/clusters-kmeans" "^6.5.0"
-    "@turf/collect" "^6.5.0"
-    "@turf/combine" "^6.5.0"
-    "@turf/concave" "^6.5.0"
-    "@turf/convex" "^6.5.0"
-    "@turf/destination" "^6.5.0"
-    "@turf/difference" "^6.5.0"
-    "@turf/dissolve" "^6.5.0"
-    "@turf/distance" "^6.5.0"
-    "@turf/distance-weight" "^6.5.0"
-    "@turf/ellipse" "^6.5.0"
-    "@turf/envelope" "^6.5.0"
-    "@turf/explode" "^6.5.0"
-    "@turf/flatten" "^6.5.0"
-    "@turf/flip" "^6.5.0"
-    "@turf/great-circle" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/hex-grid" "^6.5.0"
-    "@turf/interpolate" "^6.5.0"
-    "@turf/intersect" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    "@turf/isobands" "^6.5.0"
-    "@turf/isolines" "^6.5.0"
-    "@turf/kinks" "^6.5.0"
-    "@turf/length" "^6.5.0"
-    "@turf/line-arc" "^6.5.0"
-    "@turf/line-chunk" "^6.5.0"
-    "@turf/line-intersect" "^6.5.0"
-    "@turf/line-offset" "^6.5.0"
-    "@turf/line-overlap" "^6.5.0"
-    "@turf/line-segment" "^6.5.0"
-    "@turf/line-slice" "^6.5.0"
-    "@turf/line-slice-along" "^6.5.0"
-    "@turf/line-split" "^6.5.0"
-    "@turf/line-to-polygon" "^6.5.0"
-    "@turf/mask" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    "@turf/midpoint" "^6.5.0"
-    "@turf/moran-index" "^6.5.0"
-    "@turf/nearest-point" "^6.5.0"
-    "@turf/nearest-point-on-line" "^6.5.0"
-    "@turf/nearest-point-to-line" "^6.5.0"
-    "@turf/planepoint" "^6.5.0"
-    "@turf/point-grid" "^6.5.0"
-    "@turf/point-on-feature" "^6.5.0"
-    "@turf/point-to-line-distance" "^6.5.0"
-    "@turf/points-within-polygon" "^6.5.0"
-    "@turf/polygon-smooth" "^6.5.0"
-    "@turf/polygon-tangents" "^6.5.0"
-    "@turf/polygon-to-line" "^6.5.0"
-    "@turf/polygonize" "^6.5.0"
-    "@turf/projection" "^6.5.0"
-    "@turf/random" "^6.5.0"
-    "@turf/rewind" "^6.5.0"
-    "@turf/rhumb-bearing" "^6.5.0"
-    "@turf/rhumb-destination" "^6.5.0"
-    "@turf/rhumb-distance" "^6.5.0"
-    "@turf/sample" "^6.5.0"
-    "@turf/sector" "^6.5.0"
-    "@turf/shortest-path" "^6.5.0"
-    "@turf/simplify" "^6.5.0"
-    "@turf/square" "^6.5.0"
-    "@turf/square-grid" "^6.5.0"
-    "@turf/standard-deviational-ellipse" "^6.5.0"
-    "@turf/tag" "^6.5.0"
-    "@turf/tesselate" "^6.5.0"
-    "@turf/tin" "^6.5.0"
-    "@turf/transform-rotate" "^6.5.0"
-    "@turf/transform-scale" "^6.5.0"
-    "@turf/transform-translate" "^6.5.0"
-    "@turf/triangle-grid" "^6.5.0"
-    "@turf/truncate" "^6.5.0"
-    "@turf/union" "^6.5.0"
-    "@turf/unkink-polygon" "^6.5.0"
-    "@turf/voronoi" "^6.5.0"
-
-"@turf/union@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/union/download/@turf/union-6.5.0.tgz#82d28f55190608f9c7d39559b7f543393b03b82d"
-  integrity sha1-gtKPVRkGCPnH05VZt/VDOTsDuC0=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    polygon-clipping "^0.15.3"
-
-"@turf/unkink-polygon@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/unkink-polygon/download/@turf/unkink-polygon-6.5.0.tgz#9e54186dcce08d7e62f608c8fa2d3f0342ebe826"
-  integrity sha1-nlQYbczgjX5i9gjI+i0/A0Lr6CY=
-  dependencies:
-    "@turf/area" "^6.5.0"
-    "@turf/boolean-point-in-polygon" "^6.5.0"
-    "@turf/helpers" "^6.5.0"
-    "@turf/meta" "^6.5.0"
-    rbush "^2.0.1"
-
-"@turf/voronoi@^6.5.0":
-  version "6.5.0"
-  resolved "https://r.cnpmjs.org/@turf/voronoi/download/@turf/voronoi-6.5.0.tgz#afe6715a5c7eff687434010cde45cd4822489434"
-  integrity sha1-r+ZxWlx+/2h0NAEM3kXNSCJIlDQ=
-  dependencies:
-    "@turf/helpers" "^6.5.0"
-    "@turf/invariant" "^6.5.0"
-    d3-voronoi "1.1.2"
-
 "@types/estree@*":
   version "0.0.50"
   resolved "https://registry.nlark.com/@types/estree/download/@types/estree-0.0.50.tgz#1e0caa9364d3fccd2931c3ed96fdbeaa5d4cca83"
@@ -2345,11 +1180,6 @@
   version "0.0.39"
   resolved "https://registry.nlark.com/@types/estree/download/@types/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha1-4Xfmme4bjCLSMXTKqnQiZEOJUJ8=
-
-"@types/geojson@7946.0.8":
-  version "7946.0.8"
-  resolved "https://r.cnpmjs.org/@types/geojson/download/@types/geojson-7946.0.8.tgz#30744afdb385e2945e22f3b033f897f76b1f12ca"
-  integrity sha1-MHRK/bOF4pReIvOwM/iX92sfEso=
 
 "@types/json5@^0.0.29":
   version "0.0.29"
@@ -2490,11 +1320,6 @@
   resolved "https://registry.npmmirror.com/@vue/shared/download/@vue/shared-3.2.19.tgz?cache=0&sync_timestamp=1632596763718&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fshared%2Fdownload%2F%40vue%2Fshared-3.2.19.tgz#111ec3da18337d86274446984c49925b1b2b2dd7"
   integrity sha1-ER7D2hgzfYYnREaYTEmSWxsrLdc=
 
-abab@^2.0.3, abab@^2.0.5:
-  version "2.0.5"
-  resolved "https://r.cnpmjs.org/abab/download/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
-  integrity sha1-wLZ4+zLWD8EhnHhNaoJv44Wut5o=
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.nlark.com/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -2505,53 +1330,20 @@ ace-builds@^1.4.12:
   resolved "https://registry.npm.taobao.org/ace-builds/download/ace-builds-1.4.12.tgz#888efa386e36f4345f40b5233fcc4fe4c588fae7"
   integrity sha1-iI76OG429DRfQLUjP8xP5MWI+uc=
 
-acorn-globals@^6.0.0:
-  version "6.0.0"
-  resolved "https://r.cnpmjs.org/acorn-globals/download/acorn-globals-6.0.0.tgz#46cdd39f0f8ff08a876619b55f5ac8a6dc770b45"
-  integrity sha1-Rs3Tnw+P8IqHZhm1X1rIptx3C0U=
-  dependencies:
-    acorn "^7.1.1"
-    acorn-walk "^7.1.1"
-
 acorn-jsx@^5.2.0, acorn-jsx@^5.3.1:
   version "5.3.2"
   resolved "https://registry.nlark.com/acorn-jsx/download/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
   integrity sha1-ftW7VZCLOy8bxVxq8WU7rafweTc=
-
-acorn-walk@^7.1.1:
-  version "7.2.0"
-  resolved "https://r.cnpmjs.org/acorn-walk/download/acorn-walk-7.2.0.tgz#0de889a601203909b0fbe07b8938dc21d2e967bc"
-  integrity sha1-DeiJpgEgOQmw++B7iTjcIdLpZ7w=
 
 acorn@^7.1.1, acorn@^7.4.0:
   version "7.4.1"
   resolved "https://registry.nlark.com/acorn/download/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha1-/q7SVZc9LndVW4PbwIhRpsY1IPo=
 
-acorn@^8.2.4:
-  version "8.5.0"
-  resolved "https://r.cnpmjs.org/acorn/download/acorn-8.5.0.tgz#4512ccb99b3698c752591e9bb4472e38ad43cee2"
-  integrity sha1-RRLMuZs2mMdSWR6btEcuOK1DzuI=
-
 address@>=0.0.1, address@^1.0.0:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/address/download/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
   integrity sha1-vxEWycdYxRt6kz0pa3LCIe2UKLY=
-
-adler-32@~1.2.0:
-  version "1.2.0"
-  resolved "https://r.cnpmjs.org/adler-32/download/adler-32-1.2.0.tgz#6a3e6bf0a63900ba15652808cb15c6813d1a5f25"
-  integrity sha1-aj5r8KY5ALoVZSgIyxXGgT0aXyU=
-  dependencies:
-    exit-on-epipe "~1.0.1"
-    printj "~1.1.0"
-
-adler-32@~1.3.0:
-  version "1.3.0"
-  resolved "https://r.cnpmjs.org/adler-32/download/adler-32-1.3.0.tgz#3cad1b71cdfa69f6c8a91f3e3615d31a4fdedc72"
-  integrity sha1-PK0bcc36afbIqR8+NhXTGk/e3HI=
-  dependencies:
-    printj "~1.2.2"
 
 agent-base@6, agent-base@^6.0.0, agent-base@^6.0.2:
   version "6.0.2"
@@ -2761,11 +1553,6 @@ async-validator@^3.3.0:
   resolved "https://registry.nlark.com/async-validator/download/async-validator-3.5.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fasync-validator%2Fdownload%2Fasync-validator-3.5.2.tgz#68e866a96824e8b2694ff7a831c1a25c44d5e500"
   integrity sha1-aOhmqWgk6LJpT/eoMcGiXETV5QA=
 
-asynckit@^0.4.0:
-  version "0.4.0"
-  resolved "https://r.cnpmjs.org/asynckit/download/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
-  integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
-
 at-least-node@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/at-least-node/download/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
@@ -2784,13 +1571,6 @@ babel-plugin-dynamic-import-node@^2.3.3:
   integrity sha1-hP2hnJduxcbe/vV/lCez3vZuF6M=
   dependencies:
     object.assign "^4.1.0"
-
-babel-plugin-external-helpers@^6.22.0:
-  version "6.22.0"
-  resolved "https://r.cnpmjs.org/babel-plugin-external-helpers/download/babel-plugin-external-helpers-6.22.0.tgz#2285f48b02bd5dede85175caf8c62e86adccefa1"
-  integrity sha1-IoX0iwK9Xe3oUXXK+MYuhq3M76E=
-  dependencies:
-    babel-runtime "^6.22.0"
 
 babel-plugin-polyfill-corejs2@^0.2.2:
   version "0.2.2"
@@ -2815,14 +1595,6 @@ babel-plugin-polyfill-regenerator@^0.2.2:
   integrity sha1-sxDI1kKsraNIwfo7Pmzg6FG+4Hc=
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.2.2"
-
-babel-runtime@^6.22.0:
-  version "6.26.0"
-  resolved "https://r.cnpmjs.org/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
-  integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
-  dependencies:
-    core-js "^2.4.0"
-    regenerator-runtime "^0.11.0"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -2858,11 +1630,6 @@ braces@^3.0.1, braces@~3.0.2:
   integrity sha1-NFThpGLujVmeI23zNs2epPiv4Qc=
   dependencies:
     fill-range "^7.0.1"
-
-browser-process-hrtime@^1.0.0:
-  version "1.0.0"
-  resolved "https://r.cnpmjs.org/browser-process-hrtime/download/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
-  integrity sha1-PJtLfXgsgSHlbxAQbYTA0P/JRiY=
 
 browserslist@^4.16.6, browserslist@^4.17.0:
   version "4.17.1"
@@ -2945,15 +1712,6 @@ cesium@^1.85.0:
   resolved "https://registry.nlark.com/cesium/download/cesium-1.85.0.tgz#00d983648710f13a925c20504548879eac38e902"
   integrity sha1-ANmDZIcQ8TqSXCBQRUiHnqw46QI=
 
-cfb@^1.1.4, cfb@^1.2.0:
-  version "1.2.1"
-  resolved "https://r.cnpmjs.org/cfb/download/cfb-1.2.1.tgz#209429e4c68efd30641f6fc74b2d6028bd202402"
-  integrity sha1-IJQp5MaO/TBkH2/HSy1gKL0gJAI=
-  dependencies:
-    adler-32 "~1.3.0"
-    crc-32 "~1.2.0"
-    printj "~1.3.0"
-
 chalk@^1.0.0:
   version "1.1.3"
   resolved "https://r.cnpmjs.org/chalk/download/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
@@ -3030,11 +1788,6 @@ codemirror@^5.62.0:
   resolved "https://registry.nlark.com/codemirror/download/codemirror-5.63.0.tgz#070a699108badd9c118b7261ac2e9793acdbb149"
   integrity sha1-BwppkQi63ZwRi3JhrC6Xk6zbsUk=
 
-codepage@~1.15.0:
-  version "1.15.0"
-  resolved "https://r.cnpmjs.org/codepage/download/codepage-1.15.0.tgz#2e00519024b39424ec66eeb3ec07227e692618ab"
-  integrity sha1-LgBRkCSzlCTsZu6z7AcifmkmGKs=
-
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.npm.taobao.org/color-convert/download/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -3059,22 +1812,10 @@ color-name@~1.1.4:
   resolved "https://registry.npm.taobao.org/color-name/download/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha1-wqCah6y95pVD3m9j+jmVyCbFNqI=
 
-combined-stream@^1.0.8:
-  version "1.0.8"
-  resolved "https://r.cnpmjs.org/combined-stream/download/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
-  integrity sha1-w9RaizT9cwYxoRCoolIGgrMdWn8=
-  dependencies:
-    delayed-stream "~1.0.0"
-
-commander@2, commander@^2.19.0, commander@^2.20.0:
+commander@^2.19.0, commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.nlark.com/commander/download/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha1-/UhehMA+tIgcIHIrpIA16FMa6zM=
-
-commander@~2.17.1:
-  version "2.17.1"
-  resolved "https://r.cnpmjs.org/commander/download/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
-  integrity sha1-vXerfebelCBc6sxy8XFtKfIKd78=
 
 common-tags@^1.8.0:
   version "1.8.0"
@@ -3090,16 +1831,6 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.nlark.com/concat-map/download/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
-
-concaveman@*:
-  version "1.2.1"
-  resolved "https://r.cnpmjs.org/concaveman/download/concaveman-1.2.1.tgz#47d20b4521125c15fabf453653c2696d9ee41e0b"
-  integrity sha1-R9ILRSESXBX6v0U2U8JpbZ7kHgs=
-  dependencies:
-    point-in-polygon "^1.1.0"
-    rbush "^3.0.1"
-    robust-predicates "^2.0.4"
-    tinyqueue "^2.0.3"
 
 config-chain@^1.1.12:
   version "1.1.13"
@@ -3150,11 +1881,6 @@ core-js-compat@^3.16.0, core-js-compat@^3.16.2:
     browserslist "^4.17.0"
     semver "7.0.0"
 
-core-js@^2.4.0:
-  version "2.6.12"
-  resolved "https://r.cnpmjs.org/core-js/download/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
-  integrity sha1-2TM9+nsGXjR8xWgiGdb2kIWcwuw=
-
 core-js@^3.15.1:
   version "3.18.0"
   resolved "https://registry.nlark.com/core-js/download/core-js-3.18.0.tgz?cache=0&sync_timestamp=1632078258639&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-js%2Fdownload%2Fcore-js-3.18.0.tgz#9af3f4a6df9ba3428a3fb1b171f1503b3f40cc49"
@@ -3170,14 +1896,6 @@ core-util-is@^1.0.2, core-util-is@~1.0.0:
   resolved "https://registry.nlark.com/core-util-is/download/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha1-pgQtNjTCsn6TKPg3uWX6yDgI24U=
 
-crc-32@~1.2.0:
-  version "1.2.0"
-  resolved "https://r.cnpmjs.org/crc-32/download/crc-32-1.2.0.tgz#cb2db6e29b88508e32d9dd0ec1693e7b41a18208"
-  integrity sha1-yy224puIUI4y2d0OwWk+e0Ghggg=
-  dependencies:
-    exit-on-epipe "~1.0.1"
-    printj "~1.1.0"
-
 cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.nlark.com/cross-spawn/download/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
@@ -3192,58 +1910,15 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npm.taobao.org/crypto-random-string/download/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha1-7yp6lm7BEIM4g2m6oC6+rSKbMNU=
 
-cssom@^0.4.4:
-  version "0.4.4"
-  resolved "https://r.cnpmjs.org/cssom/download/cssom-0.4.4.tgz#5a66cf93d2d0b661d80bf6a44fb65f5c2e4e0a10"
-  integrity sha1-WmbPk9LQtmHYC/akT7ZfXC5OChA=
-
-cssom@~0.3.6:
-  version "0.3.8"
-  resolved "https://r.cnpmjs.org/cssom/download/cssom-0.3.8.tgz#9f1276f5b2b463f2114d3f2c75250af8c1a36f4a"
-  integrity sha1-nxJ29bK0Y/IRTT8sdSUK+MGjb0o=
-
-cssstyle@^2.3.0:
-  version "2.3.0"
-  resolved "https://r.cnpmjs.org/cssstyle/download/cssstyle-2.3.0.tgz#ff665a0ddbdc31864b09647f34163443d90b0852"
-  integrity sha1-/2ZaDdvcMYZLCWR/NBY0Q9kLCFI=
-  dependencies:
-    cssom "~0.3.6"
-
 csstype@^2.6.8:
   version "2.6.18"
   resolved "https://registry.nlark.com/csstype/download/csstype-2.6.18.tgz#980a8b53085f34af313410af064f2bd241784218"
   integrity sha1-mAqLUwhfNK8xNBCvBk8r0kF4Qhg=
 
-d3-array@1:
-  version "1.2.4"
-  resolved "https://r.cnpmjs.org/d3-array/download/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
-  integrity sha1-Y1zk1e6nWfb2BYY9vPww7cc39x8=
-
-d3-geo@1.7.1:
-  version "1.7.1"
-  resolved "https://r.cnpmjs.org/d3-geo/download/d3-geo-1.7.1.tgz#44bbc7a218b1fd859f3d8fd7c443ca836569ce99"
-  integrity sha1-RLvHohix/YWfPY/XxEPKg2Vpzpk=
-  dependencies:
-    d3-array "1"
-
-d3-voronoi@1.1.2:
-  version "1.1.2"
-  resolved "https://r.cnpmjs.org/d3-voronoi/download/d3-voronoi-1.1.2.tgz#1687667e8f13a2d158c80c1480c5a29cb0d8973c"
-  integrity sha1-Fodmfo8TotFYyAwUgMWinLDYlzw=
-
 data-uri-to-buffer@3:
   version "3.0.1"
   resolved "https://registry.nlark.com/data-uri-to-buffer/download/data-uri-to-buffer-3.0.1.tgz#594b8973938c5bc2c33046535785341abc4f3636"
   integrity sha1-WUuJc5OMW8LDMEZTV4U0GrxPNjY=
-
-data-urls@^2.0.0:
-  version "2.0.0"
-  resolved "https://r.cnpmjs.org/data-urls/download/data-urls-2.0.0.tgz#156485a72963a970f5d5821aaf642bef2bf2db9b"
-  integrity sha1-FWSFpyljqXD11YIar2Qr7yvy25s=
-  dependencies:
-    abab "^2.0.3"
-    whatwg-mimetype "^2.3.0"
-    whatwg-url "^8.0.0"
 
 dateformat@^2.0.0:
   version "2.2.0"
@@ -3270,23 +1945,6 @@ debug@^3.2.6, debug@^3.2.7:
   integrity sha1-clgLfpFF+zm2Z2+cXl+xALk0F5o=
   dependencies:
     ms "^2.1.1"
-
-decimal.js@^10.2.1:
-  version "10.3.1"
-  resolved "https://r.cnpmjs.org/decimal.js/download/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
-  integrity sha1-2MOkRKnGd0umDKatcmHDqU/V54M=
-
-deep-equal@1.x, deep-equal@^1.0.0:
-  version "1.1.1"
-  resolved "https://r.cnpmjs.org/deep-equal/download/deep-equal-1.1.1.tgz#b5c98c942ceffaf7cb051e24e1434a25a2e6076a"
-  integrity sha1-tcmMlCzv+vfLBR4k4UNKJaLmB2o=
-  dependencies:
-    is-arguments "^1.0.4"
-    is-date-object "^1.0.1"
-    is-regex "^1.0.4"
-    object-is "^1.0.1"
-    object-keys "^1.1.1"
-    regexp.prototype.flags "^1.2.0"
 
 deep-is@^0.1.3, deep-is@~0.1.3:
   version "0.1.4"
@@ -3321,16 +1979,6 @@ degenerator@^3.0.1:
     escodegen "^1.8.1"
     esprima "^4.0.0"
     vm2 "^3.9.3"
-
-delayed-stream@~1.0.0:
-  version "1.0.0"
-  resolved "https://r.cnpmjs.org/delayed-stream/download/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
-  integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
-
-density-clustering@1.3.0:
-  version "1.3.0"
-  resolved "https://r.cnpmjs.org/density-clustering/download/density-clustering-1.3.0.tgz#dc9f59c8f0ab97e1624ac64930fd3194817dcac5"
-  integrity sha1-3J9ZyPCrl+FiSsZJMP0xlIF9ysU=
 
 depd@~1.1.2:
   version "1.1.2"
@@ -3378,13 +2026,6 @@ dom-to-image@^2.6.0:
   resolved "https://registry.npm.taobao.org/dom-to-image/download/dom-to-image-2.6.0.tgz#8a503608088c87b1c22f9034ae032e1898955867"
   integrity sha1-ilA2CAiMh7HCL5A0rgMuGJiVWGc=
 
-domexception@^2.0.1:
-  version "2.0.1"
-  resolved "https://r.cnpmjs.org/domexception/download/domexception-2.0.1.tgz#fb44aefba793e1574b0af6aed2801d057529f304"
-  integrity sha1-+0Su+6eT4VdLCvau0oAdBXUp8wQ=
-  dependencies:
-    webidl-conversions "^5.0.0"
-
 dot-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npm.taobao.org/dot-case/download/dot-case-3.0.4.tgz?cache=0&sync_timestamp=1606867327042&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdot-case%2Fdownload%2Fdot-case-3.0.4.tgz#9b2b670d00a431667a8a75ba29cd1b98809ce751"
@@ -3392,18 +2033,6 @@ dot-case@^3.0.4:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
-
-earcut@^2.0.0:
-  version "2.2.3"
-  resolved "https://r.cnpmjs.org/earcut/download/earcut-2.2.3.tgz#d44ced2ff5a18859568e327dd9c7d46b16f55cf4"
-  integrity sha1-1EztL/WhiFlWjjJ92cfUaxb1XPQ=
-
-echarts@4.9.0:
-  version "4.9.0"
-  resolved "https://r.cnpmjs.org/echarts/download/echarts-4.9.0.tgz#a9b9baa03f03a2a731e6340c55befb57a9e1347d"
-  integrity sha1-qbm6oD8Doqcx5jQMVb77V6nhNH0=
-  dependencies:
-    zrender "4.3.2"
 
 editorconfig@^0.15.3:
   version "0.15.3"
@@ -3552,18 +2181,6 @@ escodegen@^1.8.1:
   dependencies:
     esprima "^4.0.1"
     estraverse "^4.2.0"
-    esutils "^2.0.2"
-    optionator "^0.8.1"
-  optionalDependencies:
-    source-map "~0.6.1"
-
-escodegen@^2.0.0:
-  version "2.0.0"
-  resolved "https://r.cnpmjs.org/escodegen/download/escodegen-2.0.0.tgz#5e32b12833e8aa8fa35e1bf0befa89380484c7dd"
-  integrity sha1-XjKxKDPoqo+jXhvwvvqJOASEx90=
-  dependencies:
-    esprima "^4.0.1"
-    estraverse "^5.2.0"
     esutils "^2.0.2"
     optionator "^0.8.1"
   optionalDependencies:
@@ -3784,11 +2401,6 @@ etag@~1.8.1:
   resolved "https://registry.nlark.com/etag/download/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-exit-on-epipe@~1.0.1:
-  version "1.0.1"
-  resolved "https://r.cnpmjs.org/exit-on-epipe/download/exit-on-epipe-1.0.1.tgz#0bdd92e87d5285d267daa8171d0eb06159689692"
-  integrity sha1-C92S6H1ShdJn2qgXHQ6wYVlolpI=
-
 extend-shallow@^2.0.1:
   version "2.0.1"
   resolved "https://registry.nlark.com/extend-shallow/download/extend-shallow-2.0.1.tgz#51af7d614ad9a9f610ea1bafbb989d6b1c56890f"
@@ -3839,11 +2451,6 @@ fetch-jsonp@1.1.3:
   resolved "https://r.cnpmjs.org/fetch-jsonp/download/fetch-jsonp-1.1.3.tgz#9eb9e585ba08aaf700563538d17bbebbcd5a3db2"
   integrity sha1-nrnlhboIqvcAVjU40Xu+u81aPbI=
 
-fflate@^0.3.8:
-  version "0.3.11"
-  resolved "https://r.cnpmjs.org/fflate/download/fflate-0.3.11.tgz#2c440d7180fdeb819e64898d8858af327b042a5d"
-  integrity sha1-LEQNcYD964GeZImNiFivMnsEKl0=
-
 file-entry-cache@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npm.taobao.org/file-entry-cache/download/file-entry-cache-6.0.1.tgz?cache=0&sync_timestamp=1613794357372&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffile-entry-cache%2Fdownload%2Ffile-entry-cache-6.0.1.tgz#211b2dd9659cb0394b073e7323ac3c933d522027"
@@ -3893,15 +2500,6 @@ follow-redirects@^1.14.0:
   resolved "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.4.tgz?cache=0&sync_timestamp=1631622163078&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
   integrity sha1-g4/fSKi73XnlLuUfsclOPtmLk3k=
 
-form-data@^3.0.0:
-  version "3.0.1"
-  resolved "https://r.cnpmjs.org/form-data/download/form-data-3.0.1.tgz#ebd53791b78356a99af9a300d4282c4d5eb9755f"
-  integrity sha1-69U3kbeDVqma+aMA1CgsTV65dV8=
-  dependencies:
-    asynckit "^0.4.0"
-    combined-stream "^1.0.8"
-    mime-types "^2.1.12"
-
 formstream@^1.1.0:
   version "1.1.1"
   resolved "https://registry.nlark.com/formstream/download/formstream-1.1.1.tgz#17259d2440c35ca9736db9f45fb3ba3f8669c750"
@@ -3910,11 +2508,6 @@ formstream@^1.1.0:
     destroy "^1.0.4"
     mime "^2.5.2"
     pause-stream "~0.0.11"
-
-frac@~1.1.2:
-  version "1.1.2"
-  resolved "https://r.cnpmjs.org/frac/download/frac-1.1.2.tgz#3d74f7f6478c88a1b5020306d747dc6313c74d0b"
-  integrity sha1-PXT39keMiKG1AgMG10fcYxPHTQs=
 
 fresh@0.5.2:
   version "0.5.2"
@@ -3972,24 +2565,6 @@ gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.npm.taobao.org/gensync/download/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
   integrity sha1-MqbudsPX9S1GsrGuXZP+qFgKJeA=
-
-geojson-equality@0.1.6:
-  version "0.1.6"
-  resolved "https://r.cnpmjs.org/geojson-equality/download/geojson-equality-0.1.6.tgz#a171374ef043e5d4797995840bae4648e0752d72"
-  integrity sha1-oXE3TvBD5dR5eZWEC65GSOB1LXI=
-  dependencies:
-    deep-equal "^1.0.0"
-
-geojson-rbush@3.x:
-  version "3.2.0"
-  resolved "https://r.cnpmjs.org/geojson-rbush/download/geojson-rbush-3.2.0.tgz#8b543cf0d56f99b78faf1da52bb66acad6dfc290"
-  integrity sha1-i1Q88NVvmbePrx2lK7ZqytbfwpA=
-  dependencies:
-    "@turf/bbox" "*"
-    "@turf/helpers" "6.x"
-    "@turf/meta" "6.x"
-    "@types/geojson" "7946.0.8"
-    rbush "^3.0.1"
 
 get-intrinsic@^1.0.2, get-intrinsic@^1.1.0, get-intrinsic@^1.1.1:
   version "1.1.1"
@@ -4125,13 +2700,6 @@ hosted-git-info@^2.1.4:
   resolved "https://registry.nlark.com/hosted-git-info/download/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
   integrity sha1-3/wL+aIcAiCQkPKqaUKeFBTa8/k=
 
-html-encoding-sniffer@^2.0.1:
-  version "2.0.1"
-  resolved "https://r.cnpmjs.org/html-encoding-sniffer/download/html-encoding-sniffer-2.0.1.tgz#42a6dc4fd33f00281176e8b23759ca4e4fa185f3"
-  integrity sha1-QqbcT9M/ACgRduiyN1nKTk+hhfM=
-  dependencies:
-    whatwg-encoding "^1.0.5"
-
 http-errors@1.7.3, http-errors@~1.7.2:
   version "1.7.3"
   resolved "https://registry.npm.taobao.org/http-errors/download/http-errors-1.7.3.tgz#6c619e4f9c60308c38519498c14fbb10aacebb06"
@@ -4179,7 +2747,7 @@ idb@^6.0.0:
   resolved "https://registry.nlark.com/idb/download/idb-6.1.4.tgz#ec77519fe2591be616eaf3bbdedc3662bb558a99"
   integrity sha1-7HdRn+JZG+YW6vO73tw2YrtVipk=
 
-ieee754@^1.1.12, ieee754@^1.2.1:
+ieee754@^1.2.1:
   version "1.2.1"
   resolved "https://registry.nlark.com/ieee754/download/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
   integrity sha1-jrehCmP/8l0VpXsAFYbRd9Gw01I=
@@ -4248,14 +2816,6 @@ ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.nlark.com/ip/download/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
   integrity sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=
-
-is-arguments@^1.0.4:
-  version "1.1.1"
-  resolved "https://r.cnpmjs.org/is-arguments/download/is-arguments-1.1.1.tgz#15b3f88fda01f2a97fec84ca761a560f123efa9b"
-  integrity sha1-FbP4j9oB8ql/7ITKdhpWDxI++ps=
-  dependencies:
-    call-bind "^1.0.2"
-    has-tostringtag "^1.0.0"
 
 is-arrayish@^0.2.1:
   version "0.2.1"
@@ -4362,11 +2922,6 @@ is-plain-object@3.0.1:
   resolved "https://registry.nlark.com/is-plain-object/download/is-plain-object-3.0.1.tgz#662d92d24c0aa4302407b0d45d21f2251c85f85b"
   integrity sha1-Zi2S0kwKpDAkB7DUXSHyJRyF+Fs=
 
-is-potential-custom-element-name@^1.0.1:
-  version "1.0.1"
-  resolved "https://r.cnpmjs.org/is-potential-custom-element-name/download/is-potential-custom-element-name-1.0.1.tgz#171ed6f19e3ac554394edf78caa05784a45bebb5"
-  integrity sha1-Fx7W8Z46xVQ5Tt94yqBXhKRb67U=
-
 is-reference@^1.2.1:
   version "1.2.1"
   resolved "https://registry.nlark.com/is-reference/download/is-reference-1.2.1.tgz#8b2dac0b371f4bc994fdeaba9eb542d03002d0b7"
@@ -4374,7 +2929,7 @@ is-reference@^1.2.1:
   dependencies:
     "@types/estree" "*"
 
-is-regex@^1.0.4, is-regex@^1.1.4:
+is-regex@^1.1.4:
   version "1.1.4"
   resolved "https://registry.nlark.com/is-regex/download/is-regex-1.1.4.tgz?cache=0&sync_timestamp=1628221905423&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fis-regex%2Fdownload%2Fis-regex-1.1.4.tgz#eef5663cd59fa4c0ae339505323df6854bb15958"
   integrity sha1-7vVmPNWfpMCuM5UFMj32hUuxWVg=
@@ -4487,39 +3042,6 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsdom@^16.2.2:
-  version "16.7.0"
-  resolved "https://r.cnpmjs.org/jsdom/download/jsdom-16.7.0.tgz#918ae71965424b197c819f8183a754e18977b710"
-  integrity sha1-kYrnGWVCSxl8gZ+Bg6dU4Yl3txA=
-  dependencies:
-    abab "^2.0.5"
-    acorn "^8.2.4"
-    acorn-globals "^6.0.0"
-    cssom "^0.4.4"
-    cssstyle "^2.3.0"
-    data-urls "^2.0.0"
-    decimal.js "^10.2.1"
-    domexception "^2.0.1"
-    escodegen "^2.0.0"
-    form-data "^3.0.0"
-    html-encoding-sniffer "^2.0.1"
-    http-proxy-agent "^4.0.1"
-    https-proxy-agent "^5.0.0"
-    is-potential-custom-element-name "^1.0.1"
-    nwsapi "^2.2.0"
-    parse5 "6.0.1"
-    saxes "^5.0.1"
-    symbol-tree "^3.2.4"
-    tough-cookie "^4.0.0"
-    w3c-hr-time "^1.0.2"
-    w3c-xmlserializer "^2.0.0"
-    webidl-conversions "^6.1.0"
-    whatwg-encoding "^1.0.5"
-    whatwg-mimetype "^2.3.0"
-    whatwg-url "^8.5.0"
-    ws "^7.4.6"
-    xml-name-validator "^3.0.0"
-
 jsesc@^2.5.1:
   version "2.5.2"
   resolved "https://registry.nlark.com/jsesc/download/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
@@ -4615,11 +3137,6 @@ jsonrepair@^2.2.1:
   resolved "https://registry.nlark.com/jsonrepair/download/jsonrepair-2.2.1.tgz#7c6257c36550a310150c41ab7d5d4cab71828456"
   integrity sha1-fGJXw2VQoxAVDEGrfV1Mq3GChFY=
 
-jsonsql@0.2.5:
-  version "0.2.5"
-  resolved "https://r.cnpmjs.org/jsonsql/download/jsonsql-0.2.5.tgz#6940d0eaf4acd2247099a4299d6b4c9b2b43a661"
-  integrity sha1-aUDQ6vSs0iRwmaQpnWtMmytDpmE=
-
 jstoxml@^0.2.3:
   version "0.2.4"
   resolved "https://registry.nlark.com/jstoxml/download/jstoxml-0.2.4.tgz#ff3fb67856883a032953c7ce8ce7486210f48447"
@@ -4632,7 +3149,7 @@ ko-sleep@^1.0.3:
   dependencies:
     ms "^2.0.0"
 
-leaflet@1.7.1, leaflet@^1.7.1:
+leaflet@^1.7.1:
   version "1.7.1"
   resolved "https://registry.npm.taobao.org/leaflet/download/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"
   integrity sha1-ENaEkW7f4b9B1oijuXEnwDIqKhk=
@@ -4742,7 +3259,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.npm.taobao.org/lodash.truncate/download/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@^4.17.10, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
+lodash@^4.17.10, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.nlark.com/lodash/download/lodash-4.17.21.tgz?cache=0&sync_timestamp=1624543041613&other_urls=https%3A%2F%2Fregistry.nlark.com%2Flodash%2Fdownload%2Flodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha1-Z5WRxWTDv/quhFTPCz3zcMPWkRw=
@@ -4798,13 +3315,6 @@ make-dir@^2.1.0:
     pify "^4.0.1"
     semver "^5.6.0"
 
-mapv@2.0.62:
-  version "2.0.62"
-  resolved "https://r.cnpmjs.org/mapv/download/mapv-2.0.62.tgz#02489df3814b278839e0d73431ef807e647ca693"
-  integrity sha1-Akid84FLJ4g54Nc0Me+AfmR8ppM=
-  dependencies:
-    babel-plugin-external-helpers "^6.22.0"
-
 marked@^3.0.4:
   version "3.0.4"
   resolved "https://registry.nlark.com/marked/download/marked-3.0.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmarked%2Fdownload%2Fmarked-3.0.4.tgz#b8a1539e5e05c6ea9e93f15c0bad1d54ce890406"
@@ -4825,11 +3335,6 @@ merge2@^1.3.0:
   resolved "https://registry.npm.taobao.org/merge2/download/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha1-Q2iJL4hekHRVpv19xVwMnUBJkK4=
 
-mgrs@1.0.0:
-  version "1.0.0"
-  resolved "https://r.cnpmjs.org/mgrs/download/mgrs-1.0.0.tgz#fb91588e78c90025672395cb40b25f7cd6ad1829"
-  integrity sha1-+5FYjnjJACVnI5XLQLJffNatGCk=
-
 micromatch@^4.0.4:
   version "4.0.4"
   resolved "https://registry.npm.taobao.org/micromatch/download/micromatch-4.0.4.tgz?cache=0&sync_timestamp=1618054740956&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmicromatch%2Fdownload%2Fmicromatch-4.0.4.tgz#896d519dfe9db25fce94ceb7a500919bf881ebf9"
@@ -4837,18 +3342,6 @@ micromatch@^4.0.4:
   dependencies:
     braces "^3.0.1"
     picomatch "^2.2.3"
-
-mime-db@1.50.0:
-  version "1.50.0"
-  resolved "https://r.cnpmjs.org/mime-db/download/mime-db-1.50.0.tgz#abd4ac94e98d3c0e185016c67ab45d5fde40c11f"
-  integrity sha1-q9SslOmNPA4YUBbGerRdX95AwR8=
-
-mime-types@^2.1.12:
-  version "2.1.33"
-  resolved "https://r.cnpmjs.org/mime-types/download/mime-types-2.1.33.tgz#1fa12a904472fafd068e48d9e8401f74d3f70edb"
-  integrity sha1-H6EqkERy+v0GjkjZ6EAfdNP3Dts=
-  dependencies:
-    mime-db "1.50.0"
 
 mime@1.6.0, mime@^1.4.1:
   version "1.6.0"
@@ -5003,12 +3496,7 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.npm.taobao.org/normalize-path/download/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha1-Dc1p/yOhybEf0JeDFmRKA4ghamU=
 
-nwsapi@^2.2.0:
-  version "2.2.0"
-  resolved "https://r.cnpmjs.org/nwsapi/download/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
-  integrity sha1-IEh5qePQaP8qVROcLHcngGgaOLc=
-
-object-assign@*, object-assign@^4.0.1:
+object-assign@^4.0.1:
   version "4.1.1"
   resolved "https://registry.nlark.com/object-assign/download/object-assign-4.1.1.tgz?cache=0&sync_timestamp=1618847043548&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fobject-assign%2Fdownload%2Fobject-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -5017,14 +3505,6 @@ object-inspect@^1.11.0, object-inspect@^1.9.0:
   version "1.11.0"
   resolved "https://registry.nlark.com/object-inspect/download/object-inspect-1.11.0.tgz?cache=0&sync_timestamp=1626120241132&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fobject-inspect%2Fdownload%2Fobject-inspect-1.11.0.tgz#9dceb146cedd4148a0d9e51ab88d34cf509922b1"
   integrity sha1-nc6xRs7dQUig2eUauI00z1CZIrE=
-
-object-is@^1.0.1:
-  version "1.1.5"
-  resolved "https://r.cnpmjs.org/object-is/download/object-is-1.1.5.tgz#b9deeaa5fc7f1846a0faecdceec138e5778f53ac"
-  integrity sha1-ud7qpfx/GEag+uzc7sE45XePU6w=
-  dependencies:
-    call-bind "^1.0.2"
-    define-properties "^1.1.3"
 
 object-keys@^1.0.12, object-keys@^1.1.1:
   version "1.1.1"
@@ -5179,11 +3659,6 @@ parse-node-version@^1.0.1:
   resolved "https://registry.npm.taobao.org/parse-node-version/download/parse-node-version-1.0.1.tgz#e2b5dbede00e7fa9bc363607f53327e8b073189b"
   integrity sha1-4rXb7eAOf6m8NjYH9TMn6LBzGJs=
 
-parse5@6.0.1:
-  version "6.0.1"
-  resolved "https://r.cnpmjs.org/parse5/download/parse5-6.0.1.tgz#e1a1c085c569b3dc08321184f19a39cc27f7c30b"
-  integrity sha1-4aHAhcVps9wIMhGE8Zo5zCf3wws=
-
 parseurl@~1.3.3:
   version "1.3.3"
   resolved "https://registry.nlark.com/parseurl/download/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
@@ -5239,14 +3714,6 @@ pause-stream@~0.0.11:
   dependencies:
     through "~2.3"
 
-pbf@3.2.1:
-  version "3.2.1"
-  resolved "https://r.cnpmjs.org/pbf/download/pbf-3.2.1.tgz#b4c1b9e72af966cd82c6531691115cc0409ffe2a"
-  integrity sha1-tMG55yr5Zs2CxlMWkRFcwECf/io=
-  dependencies:
-    ieee754 "^1.1.12"
-    resolve-protobuf-schema "^2.1.0"
-
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3:
   version "2.3.0"
   resolved "https://registry.nlark.com/picomatch/download/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
@@ -5286,18 +3753,6 @@ platform@^1.3.1:
   resolved "https://registry.nlark.com/platform/download/platform-1.3.6.tgz#48b4ce983164b209c2d45a107adb31f473a6e7a7"
   integrity sha1-SLTOmDFksgnC1FoQetsx9HOm56c=
 
-point-in-polygon@^1.1.0:
-  version "1.1.0"
-  resolved "https://r.cnpmjs.org/point-in-polygon/download/point-in-polygon-1.1.0.tgz#b0af2616c01bdee341cbf2894df643387ca03357"
-  integrity sha1-sK8mFsAb3uNBy/KJTfZDOHygM1c=
-
-polygon-clipping@^0.15.3:
-  version "0.15.3"
-  resolved "https://r.cnpmjs.org/polygon-clipping/download/polygon-clipping-0.15.3.tgz#0215840438470ba2e9e6593625e4ea5c1087b4b7"
-  integrity sha1-AhWEBDhHC6Lp5lk2JeTqXBCHtLc=
-  dependencies:
-    splaytree "^3.1.0"
-
 postcss@^8.1.10, postcss@^8.3.6:
   version "8.3.8"
   resolved "https://registry.npmmirror.com/postcss/download/postcss-8.3.8.tgz?cache=0&sync_timestamp=1632555308410&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fpostcss%2Fdownload%2Fpostcss-8.3.8.tgz#9ebe2a127396b4b4570ae9f7770e7fb83db2bac1"
@@ -5322,21 +3777,6 @@ pretty-bytes@^5.3.0, pretty-bytes@^5.6.0:
   resolved "https://registry.npm.taobao.org/pretty-bytes/download/pretty-bytes-5.6.0.tgz#356256f643804773c82f64723fe78c92c62beaeb"
   integrity sha1-NWJW9kOAR3PIL2RyP+eMksYr6us=
 
-printj@~1.1.0:
-  version "1.1.2"
-  resolved "https://r.cnpmjs.org/printj/download/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
-  integrity sha1-2Q3rKXWoufYA+zoclOP0xTx4oiI=
-
-printj@~1.2.2:
-  version "1.2.3"
-  resolved "https://r.cnpmjs.org/printj/download/printj-1.2.3.tgz#2cfb2b192a1e5385dbbe5b46658ac34aa828508a"
-  integrity sha1-LPsrGSoeU4XbvltGZYrDSqgoUIo=
-
-printj@~1.3.0:
-  version "1.3.0"
-  resolved "https://r.cnpmjs.org/printj/download/printj-1.3.0.tgz#9018a918a790e43707f10625d6e10187a367cff6"
-  integrity sha1-kBipGKeQ5DcH8QYl1uEBh6Nnz/Y=
-
 process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/process-nextick-args/download/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
@@ -5347,14 +3787,6 @@ progress@^2.0.0:
   resolved "https://registry.nlark.com/progress/download/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha1-foz42PW48jnBvGi+tOt4Vn1XLvg=
 
-proj4@2.7.5:
-  version "2.7.5"
-  resolved "https://r.cnpmjs.org/proj4/download/proj4-2.7.5.tgz#46c3ef841a9df57470d791f221160a9d68951945"
-  integrity sha1-RsPvhBqd9XRw15HyIRYKnWiVGUU=
-  dependencies:
-    mgrs "1.0.0"
-    wkt-parser "^1.3.1"
-
 promise-polyfill@8.2.0:
   version "8.2.0"
   resolved "https://r.cnpmjs.org/promise-polyfill/download/promise-polyfill-8.2.0.tgz#367394726da7561457aba2133c9ceefbd6267da0"
@@ -5364,11 +3796,6 @@ proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://registry.nlark.com/proto-list/download/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
   integrity sha1-IS1b/hMYMGpCD2QCuOJv85ZHqEk=
-
-protocol-buffers-schema@^3.3.1:
-  version "3.6.0"
-  resolved "https://r.cnpmjs.org/protocol-buffers-schema/download/protocol-buffers-schema-3.6.0.tgz#77bc75a48b2ff142c1ad5b5b90c94cd0fa2efd03"
-  integrity sha1-d7x1pIsv8ULBrVtbkMlM0Pou/QM=
 
 proxy-agent@^5.0.0:
   version "5.0.0"
@@ -5399,11 +3826,6 @@ pseudomap@^1.0.2:
   resolved "https://registry.npm.taobao.org/pseudomap/download/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
   integrity sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
 
-psl@^1.1.33:
-  version "1.8.0"
-  resolved "https://r.cnpmjs.org/psl/download/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
-  integrity sha1-kyb4vPsBOtzABf3/BWrM4CDlHCQ=
-
 pump@^3.0.0:
   version "3.0.0"
   resolved "https://registry.nlark.com/pump/download/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
@@ -5412,9 +3834,9 @@ pump@^3.0.0:
     end-of-stream "^1.1.0"
     once "^1.3.1"
 
-punycode@^2.1.0, punycode@^2.1.1:
+punycode@^2.1.0:
   version "2.1.1"
-  resolved "https://registry.nlark.com/punycode/download/punycode-2.1.1.tgz?cache=0&sync_timestamp=1622604519710&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fpunycode%2Fdownload%2Fpunycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
+  resolved "http://192.168.2.58:4873/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha1-tYsBCsQMIsVldhbI0sLALHv0eew=
 
 qs@^6.4.0:
@@ -5428,16 +3850,6 @@ queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.nlark.com/queue-microtask/download/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha1-SSkii7xyTfrEPg77BYyve2z7YkM=
-
-quickselect@^1.0.1:
-  version "1.1.1"
-  resolved "https://r.cnpmjs.org/quickselect/download/quickselect-1.1.1.tgz#852e412ce418f237ad5b660d70cffac647ae94c2"
-  integrity sha1-hS5BLOQY8jetW2YNcM/6xkeulMI=
-
-quickselect@^2.0.0:
-  version "2.0.0"
-  resolved "https://r.cnpmjs.org/quickselect/download/quickselect-2.0.0.tgz#f19680a486a5eefb581303e023e98faaf25dd018"
-  integrity sha1-8ZaApIal7vtYEwPgI+mPqvJd0Bg=
 
 randombytes@^2.1.0:
   version "2.1.0"
@@ -5460,20 +3872,6 @@ raw-body@^2.2.0:
     http-errors "1.7.3"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
-
-rbush@2.x, rbush@^2.0.1:
-  version "2.0.2"
-  resolved "https://r.cnpmjs.org/rbush/download/rbush-2.0.2.tgz#bb6005c2731b7ba1d5a9a035772927d16a614605"
-  integrity sha1-u2AFwnMbe6HVqaA1dykn0WphRgU=
-  dependencies:
-    quickselect "^1.0.1"
-
-rbush@^3.0.1:
-  version "3.0.1"
-  resolved "https://r.cnpmjs.org/rbush/download/rbush-3.0.1.tgz#5fafa8a79b3b9afdfe5008403a720cc1de882ecf"
-  integrity sha1-X6+op5s7mv3+UAhAOnIMwd6ILs8=
-  dependencies:
-    quickselect "^2.0.0"
 
 read-pkg-up@^3.0.0:
   version "3.0.0"
@@ -5534,11 +3932,6 @@ regenerate@^1.4.2:
   resolved "https://registry.npm.taobao.org/regenerate/download/regenerate-1.4.2.tgz?cache=0&sync_timestamp=1604218353677&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fregenerate%2Fdownload%2Fregenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
   integrity sha1-uTRtiCfo9aMve6KWN9OYtpAUhIo=
 
-regenerator-runtime@^0.11.0:
-  version "0.11.1"
-  resolved "https://r.cnpmjs.org/regenerator-runtime/download/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
-  integrity sha1-vgWtf5v30i4Fb5cmzuUBf78Z4uk=
-
 regenerator-runtime@^0.13.4:
   version "0.13.9"
   resolved "https://registry.nlark.com/regenerator-runtime/download/regenerator-runtime-0.13.9.tgz?cache=0&sync_timestamp=1626993001371&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fregenerator-runtime%2Fdownload%2Fregenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
@@ -5550,14 +3943,6 @@ regenerator-transform@^0.14.2:
   integrity sha1-yY2hVGg2ccnE3LFuznNlF+G3/rQ=
   dependencies:
     "@babel/runtime" "^7.8.4"
-
-regexp.prototype.flags@^1.2.0:
-  version "1.3.1"
-  resolved "https://r.cnpmjs.org/regexp.prototype.flags/download/regexp.prototype.flags-1.3.1.tgz#7ef352ae8d159e758c0eadca6f8fcb4eef07be26"
-  integrity sha1-fvNSro0VnnWMDq3Kb4/LTu8HviY=
-  dependencies:
-    call-bind "^1.0.2"
-    define-properties "^1.1.3"
 
 regexpp@^3.0.0, regexpp@^3.1.0:
   version "3.2.0"
@@ -5608,13 +3993,6 @@ resolve-from@^4.0.0:
   resolved "https://registry.nlark.com/resolve-from/download/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
   integrity sha1-SrzYUq0y3Xuqv+m0DgCjbbXzkuY=
 
-resolve-protobuf-schema@^2.1.0:
-  version "2.1.0"
-  resolved "https://r.cnpmjs.org/resolve-protobuf-schema/download/resolve-protobuf-schema-2.1.0.tgz#9ca9a9e69cf192bbdaf1006ec1973948aa4a3758"
-  integrity sha1-nKmp5pzxkrva8QBuwZc5SKpKN1g=
-  dependencies:
-    protocol-buffers-schema "^3.3.1"
-
 resolve@^1.10.0, resolve@^1.10.1, resolve@^1.14.2, resolve@^1.19.0, resolve@^1.20.0:
   version "1.20.0"
   resolved "https://registry.npm.taobao.org/resolve/download/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
@@ -5641,11 +4019,6 @@ rimraf@^3.0.2:
   integrity sha1-8aVAK6YiCtUswSgrrBrjqkn9Bho=
   dependencies:
     glob "^7.1.3"
-
-robust-predicates@^2.0.4:
-  version "2.0.4"
-  resolved "https://r.cnpmjs.org/robust-predicates/download/robust-predicates-2.0.4.tgz#0a2367a93abd99676d075981707f29cfb402248b"
-  integrity sha1-CiNnqTq9mWdtB1mBcH8pz7QCJIs=
 
 rollup-plugin-external-globals@^0.6.1:
   version "0.6.1"
@@ -5707,13 +4080,6 @@ sax@>=0.6.0, sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.npm.taobao.org/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha1-KBYjTiN4vdxOU1T6tcqold9xANk=
-
-saxes@^5.0.1:
-  version "5.0.1"
-  resolved "https://r.cnpmjs.org/saxes/download/saxes-5.0.1.tgz#eebab953fa3b7608dbe94e5dadb15c888fa6696d"
-  integrity sha1-7rq5U/o7dgjb6U5drbFciI+maW0=
-  dependencies:
-    xmlchars "^2.2.0"
 
 scroll-into-view-if-needed@^2.2.25:
   version "2.2.28"
@@ -5842,11 +4208,6 @@ sitemap@^7.0.0:
     arg "^5.0.0"
     sax "^1.2.4"
 
-skmeans@0.9.7:
-  version "0.9.7"
-  resolved "https://r.cnpmjs.org/skmeans/download/skmeans-0.9.7.tgz#72670cebb728508f56e29c0e10d11e623529ce5d"
-  integrity sha1-cmcM67coUI9W4pwOENEeYjUpzl0=
-
 slice-ansi@^4.0.0:
   version "4.0.0"
   resolved "https://registry.nlark.com/slice-ansi/download/slice-ansi-4.0.0.tgz#500e8dd0fd55b05815086255b3195adf2a45fe6b"
@@ -5957,22 +4318,10 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.nlark.com/spdx-license-ids/download/spdx-license-ids-3.0.10.tgz?cache=0&sync_timestamp=1628483278047&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fspdx-license-ids%2Fdownload%2Fspdx-license-ids-3.0.10.tgz#0d9becccde7003d6c658d487dd48a32f0bf3014b"
   integrity sha1-DZvszN5wA9bGWNSH3UijLwvzAUs=
 
-splaytree@^3.1.0:
-  version "3.1.0"
-  resolved "https://r.cnpmjs.org/splaytree/download/splaytree-3.1.0.tgz#17d4a0108a6da3627579690b7b847241e18ddec8"
-  integrity sha1-F9SgEIpto2J1eWkLe4RyQeGN3sg=
-
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.nlark.com/sprintf-js/download/sprintf-js-1.0.3.tgz?cache=0&sync_timestamp=1618847174560&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsprintf-js%2Fdownload%2Fsprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
-
-ssf@~0.11.2:
-  version "0.11.2"
-  resolved "https://r.cnpmjs.org/ssf/download/ssf-0.11.2.tgz#0b99698b237548d088fc43cdf2b70c1a7512c06c"
-  integrity sha1-C5lpiyN1SNCI/EPN8rcMGnUSwGw=
-  dependencies:
-    frac "~1.1.2"
 
 "statuses@>= 1.5.0 < 2", statuses@^1.3.1, statuses@~1.5.0:
   version "1.5.0"
@@ -6089,11 +4438,6 @@ supports-color@^7.0.0, supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-symbol-tree@^3.2.4:
-  version "3.2.4"
-  resolved "https://r.cnpmjs.org/symbol-tree/download/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
-  integrity sha1-QwY30ki6d+B4iDlR+5qg7tfGP6I=
-
 table@^6.0.9:
   version "6.7.1"
   resolved "https://registry.nlark.com/table/download/table-6.7.1.tgz#ee05592b7143831a8c94f3cee6aae4c1ccef33e2"
@@ -6159,11 +4503,6 @@ tinycolor2@^1.4.2:
   resolved "https://r.cnpmjs.org/tinycolor2/download/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
   integrity sha1-P2pNEHGtB2dtf6Ry4frECnGdiAM=
 
-tinyqueue@^2.0.3:
-  version "2.0.3"
-  resolved "https://r.cnpmjs.org/tinyqueue/download/tinyqueue-2.0.3.tgz#64d8492ebf39e7801d7bd34062e29b45b2035f08"
-  integrity sha1-ZNhJLr8554Ade9NAYuKbRbIDXwg=
-
 to-arraybuffer@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/to-arraybuffer/download/to-arraybuffer-1.0.1.tgz#7d229b1fcc637e466ca081180836a7aabff83f43"
@@ -6186,42 +4525,12 @@ toidentifier@1.0.0:
   resolved "https://registry.nlark.com/toidentifier/download/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha1-fhvjRw8ed5SLxD2Uo8j013UrpVM=
 
-topojson-client@3.x:
-  version "3.1.0"
-  resolved "https://r.cnpmjs.org/topojson-client/download/topojson-client-3.1.0.tgz#22e8b1ed08a2b922feeb4af6f53b6ef09a467b99"
-  integrity sha1-Iuix7QiiuSL+60r29Ttu8JpGe5k=
-  dependencies:
-    commander "2"
-
-topojson-server@3.x:
-  version "3.0.1"
-  resolved "https://r.cnpmjs.org/topojson-server/download/topojson-server-3.0.1.tgz#d2b3ec095b6732299be76a48406111b3201a34f5"
-  integrity sha1-0rPsCVtnMimb52pIQGERsyAaNPU=
-  dependencies:
-    commander "2"
-
-tough-cookie@^4.0.0:
-  version "4.0.0"
-  resolved "https://r.cnpmjs.org/tough-cookie/download/tough-cookie-4.0.0.tgz#d822234eeca882f991f0f908824ad2622ddbece4"
-  integrity sha1-2CIjTuyogvmR8PkIgkrSYi3b7OQ=
-  dependencies:
-    psl "^1.1.33"
-    punycode "^2.1.1"
-    universalify "^0.1.2"
-
 tr46@^1.0.1:
   version "1.0.1"
   resolved "https://registry.nlark.com/tr46/download/tr46-1.0.1.tgz?cache=0&sync_timestamp=1621678122275&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftr46%2Fdownload%2Ftr46-1.0.1.tgz#a8b13fd6bfd2489519674ccde55ba3693b706d09"
   integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
   dependencies:
     punycode "^2.1.0"
-
-tr46@^2.1.0:
-  version "2.1.0"
-  resolved "https://r.cnpmjs.org/tr46/download/tr46-2.1.0.tgz#fa87aa81ca5d5941da8cbf1f9b749dc969a4e240"
-  integrity sha1-+oeqgcpdWUHajL8fm3SdyWmk4kA=
-  dependencies:
-    punycode "^2.1.1"
 
 tsconfig-paths@^3.11.0:
   version "3.11.0"
@@ -6242,11 +4551,6 @@ tslib@^2.0.1, tslib@^2.0.3:
   version "2.3.1"
   resolved "https://registry.nlark.com/tslib/download/tslib-2.3.1.tgz?cache=0&sync_timestamp=1628722556410&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=
-
-turf-jsts@*:
-  version "1.2.3"
-  resolved "https://r.cnpmjs.org/turf-jsts/download/turf-jsts-1.2.3.tgz#59757f542afbff9a577bbf411f183b8f48d38aa4"
-  integrity sha1-WXV/VCr7/5pXe79BHxg7j0jTiqQ=
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
@@ -6324,9 +4628,9 @@ unique-string@^2.0.0:
   dependencies:
     crypto-random-string "^2.0.0"
 
-universalify@^0.1.0, universalify@^0.1.2:
+universalify@^0.1.0:
   version "0.1.2"
-  resolved "https://registry.nlark.com/universalify/download/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
+  resolved "http://192.168.2.58:4873/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
   integrity sha1-tkb2m+OULavOzJ1mOcgNwQXvqmY=
 
 universalify@^2.0.0:
@@ -6528,20 +4832,6 @@ vuex@^4.0.1:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.11"
 
-w3c-hr-time@^1.0.2:
-  version "1.0.2"
-  resolved "https://r.cnpmjs.org/w3c-hr-time/download/w3c-hr-time-1.0.2.tgz#0a89cdf5cc15822df9c360543676963e0cc308cd"
-  integrity sha1-ConN9cwVgi35w2BUNnaWPgzDCM0=
-  dependencies:
-    browser-process-hrtime "^1.0.0"
-
-w3c-xmlserializer@^2.0.0:
-  version "2.0.0"
-  resolved "https://r.cnpmjs.org/w3c-xmlserializer/download/w3c-xmlserializer-2.0.0.tgz#3e7104a05b75146cc60f564380b7f683acf1020a"
-  integrity sha1-PnEEoFt1FGzGD1ZDgLf2g6zxAgo=
-  dependencies:
-    xml-name-validator "^3.0.0"
-
 warning@^4.0.0:
   version "4.0.3"
   resolved "https://registry.nlark.com/warning/download/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
@@ -6554,28 +4844,6 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.nlark.com/webidl-conversions/download/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha1-qFWYCx8LazWbodXZ+zmulB+qY60=
 
-webidl-conversions@^5.0.0:
-  version "5.0.0"
-  resolved "https://r.cnpmjs.org/webidl-conversions/download/webidl-conversions-5.0.0.tgz#ae59c8a00b121543a2acc65c0434f57b0fc11aff"
-  integrity sha1-rlnIoAsSFUOirMZcBDT1ew/BGv8=
-
-webidl-conversions@^6.1.0:
-  version "6.1.0"
-  resolved "https://r.cnpmjs.org/webidl-conversions/download/webidl-conversions-6.1.0.tgz#9111b4d7ea80acd40f5270d666621afa78b69514"
-  integrity sha1-kRG01+qArNQPUnDWZmIa+ni2lRQ=
-
-whatwg-encoding@^1.0.5:
-  version "1.0.5"
-  resolved "https://r.cnpmjs.org/whatwg-encoding/download/whatwg-encoding-1.0.5.tgz#5abacf777c32166a51d085d6b4f3e7d27113ddb0"
-  integrity sha1-WrrPd3wyFmpR0IXWtPPn0nET3bA=
-  dependencies:
-    iconv-lite "0.4.24"
-
-whatwg-mimetype@^2.3.0:
-  version "2.3.0"
-  resolved "https://r.cnpmjs.org/whatwg-mimetype/download/whatwg-mimetype-2.3.0.tgz#3d4b1e0312d2079879f826aff18dbeeca5960fbf"
-  integrity sha1-PUseAxLSB5h5+Cav8Y2+7KWWD78=
-
 whatwg-url@^7.0.0:
   version "7.1.0"
   resolved "https://registry.nlark.com/whatwg-url/download/whatwg-url-7.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fwhatwg-url%2Fdownload%2Fwhatwg-url-7.1.0.tgz#c2c492f1eca612988efd3d2266be1b9fc6170d06"
@@ -6584,15 +4852,6 @@ whatwg-url@^7.0.0:
     lodash.sortby "^4.7.0"
     tr46 "^1.0.1"
     webidl-conversions "^4.0.2"
-
-whatwg-url@^8.0.0, whatwg-url@^8.5.0:
-  version "8.7.0"
-  resolved "https://r.cnpmjs.org/whatwg-url/download/whatwg-url-8.7.0.tgz#656a78e510ff8f3937bc0bcbe9f5c0ac35941b77"
-  integrity sha1-ZWp45RD/jzk3vAvL6fXArDWUG3c=
-  dependencies:
-    lodash "^4.7.0"
-    tr46 "^2.1.0"
-    webidl-conversions "^6.1.0"
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
@@ -6619,28 +4878,10 @@ win-release@^1.0.0:
   dependencies:
     semver "^5.0.1"
 
-wkt-parser@^1.3.1:
-  version "1.3.1"
-  resolved "https://r.cnpmjs.org/wkt-parser/download/wkt-parser-1.3.1.tgz#a569678eb28f82f6739f736319be073e32bf8191"
-  integrity sha1-pWlnjrKPgvZzn3NjGb4HPjK/gZE=
-
-wmf@~1.0.1:
-  version "1.0.2"
-  resolved "https://r.cnpmjs.org/wmf/download/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
-  integrity sha1-fRnWIQcaCMK9xrfmiKnENSmMwto=
-
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://registry.nlark.com/word-wrap/download/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha1-YQY29rH3A4kb00dxzLF/uTtHB5w=
-
-word@~0.4.0:
-  version "0.4.0"
-  resolved "https://r.cnpmjs.org/word/download/word-0.4.0.tgz#691272aaecb9da96388fc873d2ecb48a17cbee54"
-  integrity sha1-aRJyquy52pY4j8hz0uy0ihfL7lQ=
-  dependencies:
-    cfb "^1.2.0"
-    jsdom "^16.2.2"
 
 workbox-background-sync@6.3.0:
   version "6.3.0"
@@ -6806,32 +5047,6 @@ wrappy@1:
   resolved "https://registry.nlark.com/wrappy/download/wrappy-1.0.2.tgz?cache=0&sync_timestamp=1619133505879&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fwrappy%2Fdownload%2Fwrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-ws@^7.4.6:
-  version "7.5.5"
-  resolved "https://r.cnpmjs.org/ws/download/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
-  integrity sha1-i0vEr1GM+r0Ec65PmRRCh7M+uIE=
-
-xlsx@0.17.2:
-  version "0.17.2"
-  resolved "https://r.cnpmjs.org/xlsx/download/xlsx-0.17.2.tgz#032bcca02ca01b5ebf7da93dcb035891f2c092af"
-  integrity sha1-AyvMoCygG16/fak9ywNYkfLAkq8=
-  dependencies:
-    adler-32 "~1.2.0"
-    cfb "^1.1.4"
-    codepage "~1.15.0"
-    commander "~2.17.1"
-    crc-32 "~1.2.0"
-    exit-on-epipe "~1.0.1"
-    fflate "^0.3.8"
-    ssf "~0.11.2"
-    wmf "~1.0.1"
-    word "~0.4.0"
-
-xml-name-validator@^3.0.0:
-  version "3.0.0"
-  resolved "https://r.cnpmjs.org/xml-name-validator/download/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
-  integrity sha1-auc+Bt5NjG5H+fsYH3jWSK1FfGo=
-
 xml2js@^0.4.16:
   version "0.4.23"
   resolved "https://registry.npm.taobao.org/xml2js/download/xml2js-0.4.23.tgz?cache=0&sync_timestamp=1599054229598&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fxml2js%2Fdownload%2Fxml2js-0.4.23.tgz#a0c69516752421eb2ac758ee4d4ccf58843eac66"
@@ -6844,11 +5059,6 @@ xmlbuilder@~11.0.0:
   version "11.0.1"
   resolved "https://registry.nlark.com/xmlbuilder/download/xmlbuilder-11.0.1.tgz#be9bae1c8a046e76b31127726347d0ad7002beb3"
   integrity sha1-vpuuHIoEbnazESdyY0fQrXACvrM=
-
-xmlchars@^2.2.0:
-  version "2.2.0"
-  resolved "https://r.cnpmjs.org/xmlchars/download/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
-  integrity sha1-Bg/hvLf5x2/ioX24apvDq4lCEMs=
 
 xregexp@2.0.0:
   version "2.0.0"
@@ -6874,8 +5084,3 @@ yallist@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/yallist/download/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha1-m7knkNnA7/7GO+c1GeEaNQGaOnI=
-
-zrender@4.3.2:
-  version "4.3.2"
-  resolved "https://r.cnpmjs.org/zrender/download/zrender-4.3.2.tgz#ec7432f9415c82c73584b6b7b8c47e1b016209c6"
-  integrity sha1-7HQy+UFcgsc1hLa3uMR+GwFiCcY=
