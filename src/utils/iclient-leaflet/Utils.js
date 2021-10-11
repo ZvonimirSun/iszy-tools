@@ -9,21 +9,23 @@ import { getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common/
  * @namespace L.Util
  * @category BaseTypes Util
  */
-export var supermap_callbacks = {}
+// eslint-disable-next-line camelcase
+export const supermap_callbacks = {}
+// eslint-disable-next-line camelcase
 L.Util.supermap_callbacks = supermap_callbacks
-export var toGeoJSON = function (feature) {
+export const toGeoJSON = function (feature) {
   if (!feature) {
     return feature
   }
   return new GeoJSONFormat().toGeoJSON(feature)
 }
-export var toSuperMapGeometry = function (geometry) {
+export const toSuperMapGeometry = function (geometry) {
   if (!geometry) {
     return geometry
   }
   let result
   const format = new GeoJSONFormat()
-  if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) != -1) {
+  if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) !== -1) {
     result = format.read(geometry, geometry.type)
   } else if (typeof geometry.toGeoJSON === 'function') {
     const geojson = geometry.toGeoJSON()
@@ -45,9 +47,9 @@ export var toSuperMapGeometry = function (geometry) {
 
   return serverResult && serverResult.geometry ? serverResult.geometry : serverResult
 }
-export var getMeterPerMapUnit = MeterPerMapUnit
+export const getMeterPerMapUnit = MeterPerMapUnit
 
-export var resolutionToScale = function (resolution, dpi, mapUnit) {
+export const resolutionToScale = function (resolution, dpi, mapUnit) {
   const inchPerMeter = 1 / 0.0254
   // 地球半径。
   const meterPerMapUnit = getMeterPerMapUnit(mapUnit)
@@ -55,7 +57,7 @@ export var resolutionToScale = function (resolution, dpi, mapUnit) {
   scale = 1 / scale
   return scale
 }
-export var scaleToResolution = function (scale, dpi, mapUnit) {
+export const scaleToResolution = function (scale, dpi, mapUnit) {
   const inchPerMeter = 1 / 0.0254
   const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit)
   let resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue
@@ -63,7 +65,7 @@ export var scaleToResolution = function (scale, dpi, mapUnit) {
   return resolution
 }
 
-export var GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+export const GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
   let resolution = null
   const ratio = 10000
   // 用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
@@ -86,7 +88,7 @@ export var GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxi
   }
   return -1
 }
-export var NormalizeScale = function (scale) {
+export const NormalizeScale = function (scale) {
   return scale > 1.0 ? 1.0 / scale : scale
 }
 
