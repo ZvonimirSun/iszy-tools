@@ -1,3 +1,4 @@
+import EventBus from '@/plugins/EventBus.js'
 import { createApp } from 'vue'
 import { message } from 'ant-design-vue'
 import App from '@/App.vue'
@@ -15,6 +16,7 @@ message.config({
 
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
+app.config.globalProperties.$eventBus = EventBus
 
 store.$axios = axios
 store.$msg = message
