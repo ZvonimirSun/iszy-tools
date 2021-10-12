@@ -76,15 +76,16 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
-import { map, control, layerGroup, geoJSON, GeoJSON, Control, CRS } from 'leaflet'
+import { map, control, layerGroup, geoJSON, GeoJSON, Control, CRS, marker, Icon, Marker } from 'leaflet'
 import { Container } from '@/components'
 import { defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import { Tabs, Table, Empty, Form, Input, Select, Button } from 'ant-design-vue'
-import { cloneDeep, uniqueId } from 'lodash-es'
+import { cloneDeep } from 'lodash-es'
 import { tiledMapLayer } from '@/utils/iclient-leaflet'
 import { tiledMapLayer as esriTiledMapLayer, dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 const { Layers } = Control
 const { TabPane } = Tabs
@@ -95,6 +96,22 @@ const { Option: SelectOption } = Select
  * @type {Layers}
  */
 let layerControl
+const blueIcon = new Icon({
+  iconUrl: 'https://cdn.jsdelivr.net/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+})
+const yellowIcon = new Icon({
+  iconUrl: 'https://cdn.jsdelivr.net/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+})
 
 export default defineComponent({
   name: 'geoJson',
@@ -120,10 +137,6 @@ export default defineComponent({
     },
     geoJsonLayer: undefined,
     selectedFeature: undefined,
-
-    // flags
-    editorUpdated: false,
-    editorUpdateTimeout: undefined,
 
     editableData: {},
 
@@ -188,28 +201,7 @@ export default defineComponent({
       this.$refs.geoJsonContainer,
       {
         mode: 'code',
-        onChangeText: () => {
-          this.editorUpdated = true
-          if (this.editorUpdateTimeout) {
-            clearTimeout(this.editorUpdateTimeout)
-            this.editorUpdateTimeout = undefined
-          }
-          this.editorUpdateTimeout = setTimeout(() => {
-            this.updateGeoJsonLayer()
-            this.editorUpdated = false
-            this.editorUpdateTimeout = undefined
-          }, 5000)
-        },
-        onBlur: () => {
-          if (this.editorUpdateTimeout) {
-            clearTimeout(this.editorUpdateTimeout)
-            this.editorUpdateTimeout = undefined
-          }
-          if (this.editorUpdated) {
-            this.updateGeoJsonLayer()
-            this.editorUpdated = false
-          }
-        }
+        onChangeText: this.updateGeoJsonLayer
       },
       this.geoJson
     ))
@@ -220,7 +212,10 @@ export default defineComponent({
       this.map = markRaw(map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
       this.map.setView([35, 105], 4)
       this.geoJsonLayer = geoJSON(undefined, {
-        onEachFeature: this.onEachFeature
+        onEachFeature: this.onEachFeature,
+        pointToLayer: (feature, latLng) => {
+          return marker(latLng, { icon: blueIcon })
+        }
       }).addTo(this.map)
       layerControl = control.layers({
         高德矢量: chineseLayer('GaoDe.Normal.Map', {
@@ -311,21 +306,17 @@ export default defineComponent({
       }).addTo(this.map)
     },
     updateGeoJsonLayer () {
-      if (this.geoJsonLayer && this.geoJsonLayer instanceof GeoJSON) {
-        this.geoJsonLayer.clearLayers()
-      }
       try {
         this.geoJson = this.editor.get()
-        try {
+        if (this.geoJsonLayer && this.geoJsonLayer instanceof GeoJSON) {
+          this.geoJsonLayer.clearLayers()
           this.geoJsonLayer.addData(this.geoJson)
           const bounds = this.geoJsonLayer.getBounds()
           const center = bounds.getCenter()
           const zoom = this.map.getBoundsZoom(bounds)
           this.map.setView(center, zoom)
-        } catch (e) {
         }
       } catch (e) {
-        this.geoJson = undefined
       }
     },
     locationGeo (geoJson) {
@@ -342,14 +333,22 @@ export default defineComponent({
       if (feature.properties) {
         layer.bindPopup(this.$refs.propertyPopup).on('popupopen', () => {
           this.selectedFeature = feature
-          layer.setStyle({
-            color: '#ff7800',
-            weight: 5,
-            opacity: 0.65
-          })
+          if (layer instanceof Marker) {
+            layer.setIcon(yellowIcon)
+          } else {
+            layer.setStyle({
+              color: '#ffff00',
+              weight: 5,
+              opacity: 0.65
+            })
+          }
         }).on('popupclose', () => {
           this.selectedFeature = undefined
-          this.geoJsonLayer.resetStyle()
+          if (layer instanceof Marker) {
+            layer.setIcon(blueIcon)
+          } else {
+            this.geoJsonLayer.resetStyle(layer)
+          }
         })
       }
     },
