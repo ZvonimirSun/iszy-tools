@@ -81,7 +81,7 @@ export default defineComponent({
     }
   }
 
-  @media (max-width: 576px) {
+  @media (max-width: 992px) {
     :deep(.mapContainer) {
       width: 100%;
       height: calc(50% - .4rem);
