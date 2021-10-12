@@ -1,38 +1,50 @@
 const EventBus = {
-  events: {},
+  /**
+   * @type Map<String,Array>
+   */
+  events: new Map(),
+  /**
+   * 注册事件
+   * @param {String} name 事件名称
+   * @param {Function} event 事件内容
+   */
   on (name, event) {
     if (name && typeof event === 'function') {
-      if (this.events[name]) {
-        this.events[name].push(event)
+      if (this.events.get(name)) {
+        this.events.get(name).push(event)
       } else {
-        this.events[name] = [event]
+        this.events.set(name, [event])
       }
     }
   },
+  /**
+   * 注销事件
+   * @param {String} name 事件名称
+   * @param {Function} [event] 事件内容
+   */
   off (name, event) {
-    if (name && this.events[name]) {
+    const tmp = this.events.get(name)
+    if (tmp) {
       if (typeof event === 'function') {
-        for (let i = this.events[name].length - 1; i >= 0; i--) {
-          if (event === this.events[name][i]) {
-            this.events[name].splice(i, 1)
+        for (let i = tmp.length - 1; i >= 0; i--) {
+          if (event === tmp[i]) {
+            tmp.splice(i, 1)
           }
         }
-        if (this.events[name].length === 0) {
-          delete this.events[name]
+        if (tmp.length === 0) {
+          this.events.delete(name)
         }
       } else {
-        delete this.events[name]
+        this.events.delete(name)
       }
     }
   },
-  emit (name, data, callback = () => {}) {
-    if (name && this.events[name]) {
-      for (const fun of this.events[name]) {
-        // eslint-disable-next-line node/no-callback-literal
-        callback(fun(data))
+  emit (name, ...payload) {
+    const tmp = this.events.get(name)
+    if (tmp) {
+      for (const fn of tmp) {
+        fn(...payload)
       }
-    } else {
-      callback()
     }
   }
 }

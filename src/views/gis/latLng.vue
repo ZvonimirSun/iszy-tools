@@ -161,7 +161,7 @@ export default {
       })
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
-          this.map.setView([position.coords.latitude, position.coords.longitude], 18)
+          this.map.setView([position.coords.latitude, position.coords.longitude], 16)
         })
       }
     },
@@ -256,7 +256,7 @@ export default {
               .openPopup()
           }
           if (fly) {
-            this.map.setView(latLng, 18)
+            this.map.setView(latLng, 16)
           }
         } catch (e) {
           this.$msg.error('定位失败!')

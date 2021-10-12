@@ -149,7 +149,10 @@ export default {
             attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
           }),
           OpenStreetMap: chineseLayer('OSM.Normal.Map', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
+            minZoom: 3,
+            maxNativeZoom: 19,
+            maxZoom: 20
           })
         },
         {
@@ -214,7 +217,7 @@ export default {
         const bounds = layer.getBounds()
         const center = bounds.getCenter()
         const zoom = _map.getBoundsZoom(bounds)
-        _map.setView(center, zoom)
+        _map.setView(center, zoom > 16 ? 16 : zoom)
       } catch (e) {
       }
     },
@@ -226,7 +229,7 @@ export default {
           const bounds = this.geoJsonLayer.getBounds()
           const center = bounds.getCenter()
           const zoom = _map.getBoundsZoom(bounds)
-          _map.setView(center, zoom)
+          _map.setView(center, zoom > 16 ? 16 : zoom)
         } catch (e) {
           console.log(e)
         }
