@@ -105,10 +105,6 @@ export default defineComponent({
 
   .formBtnItem {
     text-align: right;
-
-    .ant-btn {
-      height: 3rem;
-    }
   }
 }
 </style>

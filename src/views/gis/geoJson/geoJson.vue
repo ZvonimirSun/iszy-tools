@@ -37,9 +37,7 @@ export default defineComponent({
   },
   data: () => ({
     geoJsonLayer: undefined
-  }),
-  methods: {
-  }
+  })
 })
 </script>
 
@@ -48,8 +46,10 @@ export default defineComponent({
   height: 100%;
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
 
-  .mapContainer {
+  :deep(.mapContainer) {
     height: 100%;
     width: 60%;
   }
@@ -60,6 +60,11 @@ export default defineComponent({
 
     .ant-tabs-bar {
       margin: 0;
+    }
+
+    .ant-tabs-nav-container, .ant-tabs-bar, .ant-tabs-tab {
+      height: 4rem;
+      line-height: 4rem;
     }
 
     .ant-tabs-content {
@@ -73,6 +78,19 @@ export default defineComponent({
           display: none;
         }
       }
+    }
+  }
+
+  @media (max-width: 576px) {
+    :deep(.mapContainer) {
+      width: 100%;
+      height: calc(50% - .4rem);
+    }
+
+    :deep(.ant-tabs) {
+      margin-top: .8rem;
+      width: 100%;
+      height: calc(50% - .4rem);
     }
   }
 }

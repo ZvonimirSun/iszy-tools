@@ -49,7 +49,7 @@ export default {
   }
 }
 
-::v-deep(.ant-tabs) {
+:deep(.ant-tabs) {
   width: 100%;
 
   .ant-tabs-bar {

@@ -112,7 +112,7 @@ export default {
   height: 100%;
 }
 
-::v-deep(.ant-upload-drag-icon) {
+:deep(.ant-upload-drag-icon) {
   .i-icon {
     font-size: 4.8rem;
   }
@@ -121,12 +121,12 @@ export default {
 .ant-spin-nested-loading {
   height: 100% !important;
 
-  ::v-deep(.ant-spin) {
+  :deep(.ant-spin) {
     height: 100%;
     max-height: unset;
   }
 
-  ::v-deep(.ant-spin-container) {
+  :deep(.ant-spin-container) {
     height: 100%;
   }
 }

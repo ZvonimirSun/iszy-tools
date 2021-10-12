@@ -70,7 +70,7 @@ export default {
 @import "./style/helpers";
 @import "./style/clear-sans";
 
-::v-deep(.panel) {
+:deep(.panel) {
 
   $field-width: 50rem;
   $grid-spacing: 1.5rem;

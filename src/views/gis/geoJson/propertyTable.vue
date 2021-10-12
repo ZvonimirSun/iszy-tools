@@ -123,7 +123,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
-::v-deep(.ant-table) {
+:deep(.ant-table) {
   th {
     background-color: #e6e6e6;
   }
@@ -137,7 +137,7 @@ export default defineComponent({
   }
 }
 
-::v-deep(.ant-table-striped) .table-striped {
+:deep(.ant-table-striped) .table-striped {
   background-color: #fafafa;
 }
 </style>

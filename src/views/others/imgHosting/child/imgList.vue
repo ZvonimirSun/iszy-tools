@@ -80,20 +80,20 @@ export default {
   height: 100%;
   overflow: auto;
 
-  ::v-deep(.ant-image) {
+  :deep(.ant-image) {
     cursor: pointer;
   }
 
-  ::v-deep(.ant-image-img) {
+  :deep(.ant-image-img) {
     object-fit: cover;
   }
 
-  ::v-deep(.ant-card-body) {
+  :deep(.ant-card-body) {
     padding: .8rem;
     width: 20rem;
   }
 
-  ::v-deep(.ant-card-actions) {
+  :deep(.ant-card-actions) {
     & > li {
       margin: 0;
     }

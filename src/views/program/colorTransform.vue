@@ -255,13 +255,13 @@ function colorChange (data, oldHue) {
   padding: .8rem;
 
   &.light {
-    ::v-deep(.ant-form-item-label) > label {
+    :deep(.ant-form-item-label) > label {
       color: #333;
     }
   }
 
   &.dark {
-    ::v-deep(.ant-form-item-label) > label {
+    :deep(.ant-form-item-label) > label {
       color: #fff;
     }
   }
