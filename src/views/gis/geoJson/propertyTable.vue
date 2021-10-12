@@ -31,22 +31,38 @@
 
 <script>
 import { Table, Empty, Input } from 'ant-design-vue'
-import { geoJSON } from 'leaflet'
 import { cloneDeep } from 'lodash-es'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'propertyTable',
   components: { Table, Empty, Input },
-  emits: ['change'],
   props: {
-    geoJsonLayer: Object,
-    map: Object
+    geoJsonLayer: Object
   },
   data: () => ({
     editableData: {}
   }),
   computed: {
+    features () {
+      if (this.geoJsonLayer) {
+        try {
+          const tmp = this.geoJsonLayer.toGeoJSON()
+          return tmp.features
+        } catch (e) {
+          return null
+        }
+      }
+      return null
+    },
+    propertyList () {
+      if (this.features) {
+        return this.features.map(item => {
+          return item.properties
+        })
+      }
+      return null
+    },
     tableColumns () {
       if (this.propertyList && this.propertyList.length > 0) {
         const keys = Object.keys(this.propertyList[0])
@@ -71,39 +87,9 @@ export default defineComponent({
       } else {
         return null
       }
-    },
-    propertyList () {
-      if (this.features) {
-        return this.features.map(item => {
-          return item.properties
-        })
-      }
-      return null
-    },
-    features () {
-      if (this.geoJsonLayer) {
-        try {
-          const tmp = this.geoJsonLayer.toGeoJSON()
-          return tmp.features
-        } catch (e) {
-          return null
-        }
-      }
-      return null
     }
   },
   methods: {
-    locationGeo (geoJson) {
-      try {
-        const layer = geoJSON(geoJson)
-        const bounds = layer.getBounds()
-        const center = bounds.getCenter()
-        const zoom = this.map.getBoundsZoom(bounds)
-        this.map.setView(center, zoom)
-      } catch (e) {
-      }
-    },
-
     saveToEditableData (val, property, key) {
       if (val instanceof InputEvent && property && key) {
         try {
@@ -119,16 +105,15 @@ export default defineComponent({
     save (index) {
       Object.assign(this.propertyList[index], this.editableData[index])
       delete this.editableData[index]
-      this.$emit('change')
+      this.$eventBus.emit('updateEditor')
     },
     cancel (index) {
       delete this.editableData[index]
     },
-
     rowEvents (record, index) {
       return {
         onClick: () => {
-          this.locationGeo(this.features[index])
+          this.$eventBus.emit('locationGeo', this.features[index])
         }
       }
     }
@@ -138,4 +123,21 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
+::v-deep(.ant-table) {
+  th {
+    background-color: #e6e6e6;
+  }
+
+  td {
+    white-space: nowrap;
+
+    .editable-cell-input-wrapper, .editable-cell-text-wrapper {
+      width: max-content;
+    }
+  }
+}
+
+::v-deep(.ant-table-striped) .table-striped {
+  background-color: #fafafa;
+}
 </style>
