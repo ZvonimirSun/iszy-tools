@@ -46,10 +46,33 @@ import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
 import { Right, Left, CodeDownload, Save, Clear } from '@icon-park/vue-next'
-import { markRaw } from 'vue'
 import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('cache')
+
+let editorLeft, editorRight
+let codeLeft = {
+  Array: [1, 2, 3],
+  Boolean: true,
+  Null: null,
+  Number: 123,
+  Object: {
+    a: 'b',
+    c: 'd'
+  },
+  String: 'Hello World'
+}
+let codeRight = {
+  Array: [1, 2, 3],
+  Boolean: true,
+  Null: null,
+  Number: 123,
+  Object: {
+    a: 'b',
+    c: 'd'
+  },
+  String: 'Hello World'
+}
 
 export default {
   name: 'JsonEditor',
@@ -65,30 +88,6 @@ export default {
     Clear
   },
   data: () => ({
-    editorLeft: null,
-    editorRight: null,
-    codeLeft: {
-      Array: [1, 2, 3],
-      Boolean: true,
-      Null: null,
-      Number: 123,
-      Object: {
-        a: 'b',
-        c: 'd'
-      },
-      String: 'Hello World'
-    },
-    codeRight: {
-      Array: [1, 2, 3],
-      Boolean: true,
-      Null: null,
-      Number: 123,
-      Object: {
-        a: 'b',
-        c: 'd'
-      },
-      String: 'Hello World'
-    },
     autoSave: false,
     diff: true
   }),
@@ -101,23 +100,24 @@ export default {
   methods: {
     init () {
       if (this.getData('jsonEditor')) {
+        this.autoSave = Boolean(this.getData('jsonEditor').autoSave)
         if (this.getData('jsonEditor').left) {
-          this.codeLeft = this.getData('jsonEditor').left
+          codeLeft = this.getData('jsonEditor').left
         }
         if (this.getData('jsonEditor').right) {
-          this.codeRight = this.getData('jsonEditor').right
+          codeRight = this.getData('jsonEditor').right
         }
       }
-      this.editorLeft = markRaw(new JSONEditor(
+      editorLeft = new JSONEditor(
         this.$refs.jsonEditorLeft,
         {
           mode: 'code',
-          modes: ['code', 'tree'],
+          modes: ['code', 'tree', 'text', 'preview'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
             try {
-              this.codeLeft = JSON.parse(json)
-              this.editorRight.refresh()
+              codeLeft = JSON.parse(json)
+              editorRight.refresh()
               if (this.autoSave) {
                 this.save()
               }
@@ -139,18 +139,18 @@ export default {
             }
           }
         },
-        this.codeLeft
-      ))
-      this.editorRight = markRaw(new JSONEditor(
+        codeLeft
+      )
+      editorRight = new JSONEditor(
         this.$refs.jsonEditorRight,
         {
           mode: 'tree',
-          modes: ['code', 'tree'],
+          modes: ['code', 'tree', 'text', 'preview'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
             try {
-              this.codeRight = JSON.parse(json)
-              this.editorLeft.refresh()
+              codeRight = JSON.parse(json)
+              editorLeft.refresh()
               if (this.autoSave) {
                 this.save()
               }
@@ -173,31 +173,51 @@ export default {
             }
           }
         },
-        this.codeRight
-      ))
+        codeRight
+      )
     },
 
     copyRight () {
-      this.codeRight = cloneDeep(this.codeLeft)
-      this.editorRight.update(this.codeRight)
-      this.editorLeft.refresh()
+      codeRight = cloneDeep(codeLeft)
+      editorRight.update(codeRight)
+      editorLeft.refresh()
     },
     copyLeft () {
-      this.codeLeft = cloneDeep(this.codeRight)
-      this.editorLeft.update(this.codeLeft)
-      this.editorRight.refresh()
+      codeLeft = cloneDeep(codeRight)
+      editorLeft.update(codeLeft)
+      editorRight.refresh()
     },
     async save () {
-      try {
+      if (this.autoSave) {
+        try {
+          await this.setData({
+            key: 'jsonEditor',
+            val: {
+              autoSave: true,
+              left: editorLeft.get(),
+              right: editorRight.get()
+            }
+          })
+        } catch (e) {
+          this.$msg.warn('JSON存在错误，保存失败')
+          await this.setData({
+            key: 'jsonEditor',
+            val: {
+              autoSave: true,
+              left: this.getData('jsonEditor').left,
+              right: this.getData('jsonEditor').right
+            }
+          })
+        }
+      } else {
         await this.setData({
           key: 'jsonEditor',
           val: {
-            left: this.editorLeft.get(),
-            right: this.editorRight.get()
+            autoSave: false,
+            left: this.getData('jsonEditor').left,
+            right: this.getData('jsonEditor').right
           }
         })
-      } catch (e) {
-        this.$msg.warn('JSON存在错误，保存失败')
       }
     },
     async clear () {
@@ -205,24 +225,23 @@ export default {
         key: 'jsonEditor',
         val: undefined
       })
+      this.autoSave = false
       this.$msg.success('清除成功')
     },
     download () {
-      createFile(this.editorLeft.getText(), 'left.json')
+      createFile(editorLeft.getText(), 'left.json')
     },
     changeDiff () {
-      this.editorLeft.refresh()
-      this.editorRight.refresh()
+      editorLeft.refresh()
+      editorRight.refresh()
     },
     changeAutoSave () {
-      if (this.autoSave) {
-        this.save()
-      }
+      this.save()
     },
 
     onClassName ({ path }) {
-      const leftValue = get(this.codeLeft, path)
-      const rightValue = get(this.codeRight, path)
+      const leftValue = get(codeLeft, path)
+      const rightValue = get(codeRight, path)
 
       if (this.diff) {
         if (isEqual(leftValue, rightValue)) {
@@ -244,11 +263,11 @@ export default {
     ...mapActions(['setData'])
   },
   beforeUnmount () {
-    if (this.editorLeft) {
-      this.editorLeft.destroy()
+    if (editorLeft) {
+      editorLeft.destroy()
     }
-    if (this.editorRight) {
-      this.editorRight.destroy()
+    if (editorRight) {
+      editorRight.destroy()
     }
   }
 }
