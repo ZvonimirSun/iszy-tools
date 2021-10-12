@@ -18,34 +18,7 @@
           <div class="geoJsonContainer" ref="geoJsonContainer"></div>
         </TabPane>
         <TabPane key="table" tab="表格">
-          <Table class="ant-table-striped" v-if="tableColumns" :columns="tableColumns" :data-source="propertyList"
-                 :rowKey="(record,index)=>{return index}" :pagination="false" bordered size="small" :scroll="{x:true}"
-                 :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
-                 :customRow="rowEvents">
-            <template #property="{text, column, index}">
-              <div v-if="editableData[index]" class="editable-cell-input-wrapper">
-                <Input v-model:value="editableData[index][column.dataIndex]"
-                       v-if="typeof editableData[index][column.dataIndex] === 'string'" @change="saveToEditor"/>
-                <Input v-model:value.number="editableData[index][column.dataIndex]"
-                       v-else-if="typeof editableData[index][column.dataIndex] === 'number'" @change="saveToEditor"/>
-                <Input :value="JSON.stringify(editableData[index][column.dataIndex])" v-else
-                       @change="saveToEditableData($event, editableData[index], column.dataIndex)"/>
-              </div>
-              <div v-else class="editable-cell-text-wrapper">
-                {{ typeof text === 'object' ? JSON.stringify(text) : text }}
-              </div>
-            </template>
-            <template #operation="{ index }">
-              <span v-if="editableData[index]">
-                <a @click.stop="save(index)"> 保存属性 </a>
-                <a @click.stop="cancel(index)"> 取消编辑 </a>
-              </span>
-              <span v-else>
-                <a @click.stop="edit(index)"> 编辑属性 </a>
-              </span>
-            </template>
-          </Table>
-          <Empty v-else></Empty>
+          <PropertyTable :map="map" :geo-json-layer="geoJsonLayer" @change="saveToEditor"/>
         </TabPane>
         <TabPane key="addService" tab="添加服务">
           <AddService :layer-control="layerControl" :map="map"/>
@@ -57,14 +30,13 @@
 
 <script>
 import 'leaflet/dist/leaflet.css'
+import 'jsoneditor/dist/jsoneditor.min.css'
+import { Tabs, Form, Input } from 'ant-design-vue'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import { map, control, layerGroup, geoJSON, GeoJSON, marker, Icon, Marker } from 'leaflet'
 import { Container } from '@/components'
 import { defineAsyncComponent, defineComponent, markRaw, toRaw } from 'vue'
 import JSONEditor from 'jsoneditor'
-import 'jsoneditor/dist/jsoneditor.min.css'
-import { Tabs, Table, Empty, Form, Input } from 'ant-design-vue'
-import { cloneDeep } from 'lodash-es'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 const { TabPane } = Tabs
@@ -90,12 +62,11 @@ const yellowIcon = new Icon({
 export default defineComponent({
   name: 'geoJson',
   components: {
+    PropertyTable: defineAsyncComponent(() => import('./propertyTable.vue')),
     AddService: defineAsyncComponent(() => import('./addService.vue')),
     Container,
     Tabs,
     TabPane,
-    Table,
-    Empty,
     Form,
     Item,
     Input
@@ -109,8 +80,6 @@ export default defineComponent({
     },
     geoJsonLayer: undefined,
     selectedFeature: undefined,
-
-    editableData: {},
 
     tdtToken: 'bed806b1ccb34b268ab1c0700123d444',
     gaodeToken: '868d6830a7409520ae283cde3a3f84d1',
@@ -319,43 +288,9 @@ export default defineComponent({
         })
       }
     },
-    saveToEditor (val, feature, key) {
-      if (val instanceof InputEvent && feature && key) {
-        try {
-          feature.properties[key] = JSON.parse(val.currentTarget.value)
-        } catch (e) {
-          feature.properties[key] = val.currentTarget.value
-        }
-      }
+    saveToEditor () {
       this.geoJson = this.geoJsonLayer.toGeoJSON()
       this.editor.update(this.geoJson)
-    },
-    saveToEditableData (val, property, key) {
-      if (val instanceof InputEvent && property && key) {
-        try {
-          property[key] = JSON.parse(val.currentTarget.value)
-        } catch (e) {
-          property[key] = val.currentTarget.value
-        }
-      }
-    },
-    edit (index) {
-      this.editableData[index] = cloneDeep(this.propertyList[index])
-    },
-    save (index) {
-      Object.assign(this.propertyList[index], this.editableData[index])
-      delete this.editableData[index]
-    },
-    cancel (index) {
-      delete this.editableData[index]
-    },
-
-    rowEvents (record, index) {
-      return {
-        onClick: () => {
-          this.locationGeo(this.features[index])
-        }
-      }
     }
   },
   beforeUnmount () {
