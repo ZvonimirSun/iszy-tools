@@ -1,3 +1,13 @@
 /.yarn/cache/** binary
 /.yarn/releases/** binary
 /.yarn/plugins/** binary
+* text=auto
+*.vue text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.gif binary
+*.jpg binary
