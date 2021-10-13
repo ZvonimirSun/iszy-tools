@@ -24,6 +24,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-lock-
       - name: Install dependencies 🔧
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable --immutable-cache
       - name: Eslint Fix 🔧
         run: yarn lint
