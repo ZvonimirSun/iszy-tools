@@ -25,6 +25,8 @@ jobs:
             ${{ runner.os }}-yarn-lock-
       - name: Install dependencies 🔧
         run: yarn install --frozen-lockfile
+      - name: Eslint Fix 🔧
+        run: yarn lint
       - name: Build app 🔧
         run: yarn build
       - name: Deploy 🚀
