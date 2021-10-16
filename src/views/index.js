@@ -27,5 +27,6 @@ export default {
   userAgent: () => import('@/views/program/userAgent.vue'),
   webssh: () => import('@/views/others/webssh.vue'),
   cdnQuery: () => import('@/views/program/cdnQuery.vue'),
-  relationship: () => import('@/views/others/relationship.vue')
+  relationship: () => import('@/views/others/relationship.vue'),
+  chromeDownload: () => import('@/views/others/chromeDownload/chromeDownload.vue')
 }
