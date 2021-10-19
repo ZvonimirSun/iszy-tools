@@ -41,6 +41,10 @@
         "legend": "新功能"
       },
       {
+        "name": "在线流程图",
+        "link": "https://draw.iszy.xyz"
+      },
+      {
         "name": "资源包",
         "link": "https://lib.iszy.xyz"
       }
