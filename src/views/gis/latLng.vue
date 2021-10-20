@@ -1,7 +1,8 @@
 <template>
   <container>
     <Space :size="8" align="center">
-      <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler" allow-clear/>
+      <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler"
+             allow-clear/>
       <Button @click="handler" type="primary">解析</Button>
     </Space>
     <div class="mapContainer" ref="mapContainer"></div>
@@ -36,7 +37,12 @@ const yellowIcon = new Icon({
 
 export default {
   name: 'latLng',
-  components: { Container, Button, Input, Space },
+  components: {
+    Container,
+    Button,
+    Input,
+    Space
+  },
   data: () => ({
     map: undefined,
     centerMarker: undefined,
@@ -56,7 +62,10 @@ export default {
   },
   methods: {
     initMap () {
-      this.map = markRaw(map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
+      this.map = markRaw(map(this.$refs.mapContainer, {
+        attributionControl: true,
+        zoomControl: false
+      }))
       this.map.setView([35, 105], 4)
       control.layers({
         高德矢量: chineseLayer('GaoDe.Normal.Map', {
@@ -151,6 +160,11 @@ export default {
           autoClose: false,
           closeOnEscapeKey: false,
           closeOnClick: false
+        })
+        .on('popupopen', () => {
+          if (this.clickMarker) {
+            this.clickMarker.closePopup()
+          }
         })
         .openPopup()
       this.map.on('move', () => {
@@ -253,6 +267,11 @@ export default {
                 closeOnClick: false,
                 maxWidth: 350
               })
+              .on('popupopen', () => {
+                if (this.centerMarker) {
+                  this.centerMarker.closePopup()
+                }
+              })
               .openPopup()
           }
           if (fly) {
@@ -275,7 +294,10 @@ export default {
           if (res.data.status === '1' && Number(res.data.count) > 0) {
             const info = res.data.geocodes[0]
             const latLng = ChineseLayer.prototype.csysConvert.gcj02_To_gps84(parseFloat(info.location.split(',')[0]), parseFloat(info.location.split(',')[1]))
-            await this.locateLatLng({ lat: latLng.lat, lng: latLng.lng }, info.formatted_address)
+            await this.locateLatLng({
+              lat: latLng.lat,
+              lng: latLng.lng
+            }, info.formatted_address)
           } else {
             this.$msg.warn('未找到相关地址。')
           }
@@ -313,6 +335,11 @@ export default {
   :deep(.leaflet-popup-content) {
     p {
       font-size: 1.4rem;
+      margin: 0 0 .8rem 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
