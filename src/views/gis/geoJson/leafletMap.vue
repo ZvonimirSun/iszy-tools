@@ -1,7 +1,10 @@
 <template>
   <div class="mapContainer" ref="mapContainer"></div>
   <div class="propertyPopup" v-show="false" ref="propertyPopup">
-    <Form v-if="selectedFeature?.properties" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" :colon="false">
+    <div class="title">
+      <span>属性</span>
+    </div>
+    <Form v-if="selectedFeature?.properties" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" :colon="false">
       <Item v-for="(val,key,index) of selectedFeature.properties" :label="key" :key="'prop'+index">
         <Input v-model:value="selectedFeature.properties[key]"
                v-if="typeof selectedFeature.properties[key] === 'string'" @change="saveToEditor"/>
@@ -49,7 +52,11 @@ export default {
     geoJsonLayer: Object
   },
   emits: ['update:geoJsonLayer'],
-  components: { Form, Item, Input },
+  components: {
+    Form,
+    Item,
+    Input
+  },
   data: () => ({
     selectedFeature: undefined
   }),
@@ -65,7 +72,10 @@ export default {
   methods: {
     initMap () {
       // 初始化地图
-      _map = markRaw(map(this.$refs.mapContainer, { attributionControl: true, zoomControl: false }))
+      _map = markRaw(map(this.$refs.mapContainer, {
+        attributionControl: true,
+        zoomControl: false
+      }))
       _map.setView([35, 105], 4)
 
       // 添加GeoJson图层
@@ -253,12 +263,55 @@ export default {
   width: 100%;
 }
 
-.leaflet-popup-content {
-  .propertyPopup {
-    display: block !important;
-    width: 25rem;
-    height: 20rem;
-    overflow-y: auto;
+::v-deep(.leaflet-popup) {
+
+  .leaflet-popup-close-button {
+    color: #fff;
+    padding: .6rem .6rem 0 0;
+    font-size: 1.8rem;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 0;
+    padding: 0;
+
+    .leaflet-popup-content {
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+
+      .propertyPopup {
+        display: flex !important;
+        flex-direction: column;
+        width: 30rem;
+        height: 20rem;
+
+        .title {
+          display: block;
+          width: 100%;
+          height: 3rem;
+          line-height: 3rem;
+          background: #38f;
+          color: #fff;
+          font-size: 1.6rem;
+          padding: 0 .8rem;
+        }
+
+        .ant-form {
+          flex: 1;
+          padding: .8rem;
+          overflow-y: auto;
+
+          .ant-form-item {
+            margin-bottom: .8rem;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>
