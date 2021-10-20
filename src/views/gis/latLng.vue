@@ -171,10 +171,14 @@ export default {
         this.centerMarker.setLatLng(this.map.getCenter()).getPopup().setContent(this.getPopupContent(this.map.getCenter()))
       })
       this.map.on('click', (val) => {
+        this.keyword = `${val.latlng.lng},${val.latlng.lat}`
         this.locateLatLng(val.latlng, null, false)
       })
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
+          if (!this.keyword) {
+            this.keyword = `${position.coords.longitude},${position.coords.latitude}`
+          }
           this.map.setView([position.coords.latitude, position.coords.longitude], 16)
         })
       }
