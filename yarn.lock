@@ -4510,6 +4510,11 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+three@^0.133.1:
+  version "0.133.1"
+  resolved "https://r.cnpmjs.org/three/download/three-0.133.1.tgz#5606f4817d67a09d9212d4ccbd6826564774f8f4"
+  integrity sha1-Vgb0gX1noJ2SEtTMvWgmVkd0+PQ=
+
 through@~2.3:
   version "2.3.8"
   resolved "https://r.cnpmjs.org/through/download/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
