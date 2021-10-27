@@ -42,5 +42,5 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.KEY }}
           script: |
-            cd /root/docker/nginx/html/tools.iszy.xyz
+            cd ${{ secrets.PATH }}
             git pull --rebase
