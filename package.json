@@ -55,11 +55,13 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^7.17.0",
+    "ghooks": "^2.0.4",
     "less": "^4.1.1",
     "rollup": "^2.52.0",
     "rollup-plugin-external-globals": "^0.6.1",
     "sass": "^1.35.1",
     "sitemap": "^7.0.0",
+    "validate-commit-msg": "^2.14.0",
     "vite": "^2.5.6",
     "vite-plugin-cesium": "^1.2.9",
     "vite-plugin-pwa": "^0.8.1",
@@ -85,6 +87,40 @@
       "no-useless-escape": 0,
       "no-loss-of-precision": 0,
       "no-unused-vars": 0
+    }
+  },
+  "config": {
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "perf",
+        "test",
+        "build",
+        "ci",
+        "chore",
+        "revert"
+      ],
+      "scope": {
+        "required": false,
+        "allowed": [
+          "*"
+        ],
+        "validate": false,
+        "multiple": false
+      },
+      "warnOnFail": false,
+      "maxSubjectLength": 100,
+      "subjectPattern": ".+",
+      "subjectPatternErrorMsg": "subject does not match subject pattern!",
+      "helpMessage": "",
+      "autoFix": false
+    },
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
     }
   },
   "babel": {
