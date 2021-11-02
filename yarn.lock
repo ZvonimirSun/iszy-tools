@@ -1019,10 +1019,15 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@ckpack/vue-color@^0.0.3":
-  version "0.0.3"
-  resolved "https://r.cnpmjs.org/@ckpack/vue-color/download/@ckpack/vue-color-0.0.3.tgz#0774f2d2878e5a5833987f2547a9b2cb52c0e855"
-  integrity sha1-B3Ty0oeOWlgzmH8lR6myy1LA6FU=
+"@ckpack/vue-color@^1.1.4":
+  version "1.1.4"
+  resolved "https://r.cnpmjs.org/@ckpack/vue-color/download/@ckpack/vue-color-1.1.4.tgz#3603755d5f7af7dec383ee156415e88ae5cf556c"
+  integrity sha1-NgN1XV96997Dg+4VZBXoiuXPVWw=
+  dependencies:
+    clamp "^1.0.1"
+    lodash.throttle "^4.1.1"
+    material-colors "^1.2.6"
+    tinycolor2 "^1.4.2"
 
 "@ctrl/tinycolor@^3.3.1":
   version "3.4.0"
@@ -1782,6 +1787,11 @@ change-case@^4.1.2:
     readdirp "~3.6.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://r.cnpmjs.org/clamp/download/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+  integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
 
 co-defer@^1.0.0:
   version "1.0.0"
@@ -3346,6 +3356,11 @@ lodash.sortby@^4.7.0:
   resolved "https://r.cnpmjs.org/lodash.sortby/download/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://r.cnpmjs.org/lodash.throttle/download/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.topairs@4.3.0:
   version "4.3.0"
   resolved "https://r.cnpmjs.org/lodash.topairs/download/lodash.topairs-4.3.0.tgz#3b6deaa37d60fb116713c46c5f17ea190ec48d64"
@@ -3416,6 +3431,11 @@ marked@^3.0.4:
   version "3.0.7"
   resolved "https://r.cnpmjs.org/marked/download/marked-3.0.7.tgz#343aad9e91b96249b495c99c512ea09cfe06de1e"
   integrity sha1-NDqtnpG5Ykm0lcmcUS6gnP4G3h4=
+
+material-colors@^1.2.6:
+  version "1.2.6"
+  resolved "https://r.cnpmjs.org/material-colors/download/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha1-bRlYhxEmmSzuzHL0vMTY8BCGX0Y=
 
 merge-descriptors@^1.0.1:
   version "1.0.1"
