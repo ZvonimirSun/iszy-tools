@@ -49,12 +49,16 @@
         "link": "/others/3dView"
       },
       {
-        "name": "资源包",
-        "link": "https://lib.iszy.xyz"
+        "name": "随机数",
+        "link": "/other/random"
       },
       {
         "name": "Chromium下载",
         "link": "https://chromium.cypress.io/"
+      },
+      {
+        "name": "资源包",
+        "link": "https://lib.iszy.xyz"
       }
     ]
   },
