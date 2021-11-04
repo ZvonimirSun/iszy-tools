@@ -26,7 +26,7 @@ import { createNamespacedHelpers } from 'vuex'
 import { defineComponent } from 'vue'
 import { Radio, Space, Button, Modal, Input, Popconfirm } from 'ant-design-vue'
 import { v4 as uuid } from 'uuid'
-import TagCloud from 'TagCloud'
+import TagCloud from '@/utils/tagCloud.js'
 
 let tagCloud
 const {
