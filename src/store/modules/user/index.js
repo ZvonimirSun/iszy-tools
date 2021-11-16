@@ -35,6 +35,17 @@ export default {
         commit('clearToken')
         return false
       }
+    },
+    async getProfiles ({ state }) {
+      if (state.token) {
+        try {
+          return (await axios.get('https://api.iszy.xyz/auth/profile')).data.data
+        } catch (e) {
+          return null
+        }
+      } else {
+        return null
+      }
     }
   }
 }

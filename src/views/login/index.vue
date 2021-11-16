@@ -3,12 +3,12 @@
     <div class="main">
       <Form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
         <Item required>
-          <Input v-model:value="form.userName" placeholder="账户" size="large">
+          <Input v-model:value="form.userName" placeholder="账户" size="large" @keypress.enter="login">
             <template #prefix><User theme="outline" style="color:rgba(0,0,0,.25)"/></template>
           </Input>
         </Item>
         <Item required>
-          <Password v-model:value="form.password" placeholder="密码" size="large">
+          <Password v-model:value="form.password" placeholder="密码" size="large" @keypress.enter="login">
             <template #prefix><Lock theme="outline" style="color:rgba(0,0,0,.25)"/></template>
           </Password>
         </Item>
@@ -75,7 +75,6 @@ export default {
           if (result) {
             this.$msg.success('登录成功！')
             this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-            this.loading = false
           } else {
             this.$msg.error('用户名或密码错误！')
           }

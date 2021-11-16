@@ -5,8 +5,8 @@
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
-        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合</div>
-        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link></div>
+        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合<template v-if="nickName"> · <router-link to="/settings">{{nickName}}</router-link></template></div>
+        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link><template v-if="nickName"> · <router-link to="/settings">{{nickName}}</router-link></template></div>
       </Header>
       <Content ref="view">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
@@ -32,6 +32,7 @@ import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-v
 import { defineComponent } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { Return } from '@icon-park/vue-next'
+import { createNamespacedHelpers } from 'vuex'
 
 const {
   offlineReady,
@@ -40,14 +41,20 @@ const {
 } = useRegisterSW()
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
+const { mapState, mapActions } = createNamespacedHelpers('user')
 
 export default defineComponent({
   data: () => ({
     locale: zhCN,
     offlineReady,
-    needRefresh
+    needRefresh,
+
+    nickName: undefined
   }),
   components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
+  computed: {
+    ...mapState(['token'])
+  },
   watch: {
     offlineReady: function (val) {
       if (val) {
@@ -66,9 +73,20 @@ export default defineComponent({
           }
         })
       }
+    },
+    token: {
+      handler: async function (val) {
+        if (!val) {
+          this.nickName = undefined
+        } else {
+          this.nickName = ((await this.getProfiles()) || {}).nickName
+        }
+      },
+      immediate: true
     }
   },
   methods: {
+    ...mapActions(['getProfiles']),
     getPopupContainer (node) {
       if (node) {
         return node.parentNode
