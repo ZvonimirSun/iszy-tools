@@ -45,8 +45,16 @@ export default (options = {}) => {
           const tmp = mutation.type.split('/')
           if (tmp.length <= 1) {
             _mutex.enqueue(setState('root', omit(state, modules)))
+            if (mutation.type === 'importConfig') {
+              for (const module of modules) {
+                _mutex.enqueue(setState(module, state[module]))
+              }
+            }
           } else {
             _mutex.enqueue(setState(tmp[0], state[tmp[0]]))
+          }
+          if (state?.settings?.settings?.autoSync) {
+            _mutex.enqueue(_store.dispatch('uploadSettings'))
           }
         }
       })

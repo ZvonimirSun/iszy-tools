@@ -7,43 +7,19 @@ export default {
 
       showSearch: true,
       showType: true,
-      openInNewTab: false
+      openInNewTab: false,
+
+      autoSync: false
     }
   }),
   mutations: {
-    triggerMost (state) {
-      state.settings.showMost = !state.settings.showMost
-    },
-    triggerRecent (state) {
-      state.settings.showRecent = !state.settings.showRecent
-    },
-
-    triggerSearch (state) {
-      state.settings.showSearch = !state.settings.showSearch
-    },
-    triggerType (state) {
-      state.settings.showType = !state.settings.showType
-    },
-    triggerNewTab (state) {
-      state.settings.openInNewTab = !state.settings.openInNewTab
+    triggerSetting (state, setting) {
+      state.settings[setting] = !state.settings[setting]
     }
   },
   actions: {
-    triggerMost ({ commit }) {
-      commit('triggerMost')
-    },
-    triggerRecent ({ commit }) {
-      commit('triggerRecent')
-    },
-
-    triggerSearch ({ commit }) {
-      commit('triggerSearch')
-    },
-    triggerType ({ commit }) {
-      commit('triggerType')
-    },
-    triggerNewTab ({ commit }) {
-      commit('triggerNewTab')
+    triggerSetting ({ commit }, setting) {
+      commit('triggerSetting', setting)
     }
   }
 }
