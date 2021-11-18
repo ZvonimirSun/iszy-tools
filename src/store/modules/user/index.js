@@ -17,7 +17,7 @@ export default {
     async login ({ commit }, { userName, password }) {
       try {
         if (userName != null && password != null) {
-          const res = await axios.post('https://api.iszy.xyz/auth/login', {
+          const res = await axios.post(`${this.$apiBase}/auth/login`, {
             userName: userName.trim(),
             password
           })
@@ -39,7 +39,7 @@ export default {
     async getProfiles ({ state, commit }) {
       if (state.token) {
         try {
-          return (await axios.get('https://api.iszy.xyz/auth/profile')).data.data
+          return (await axios.get(`${this.$apiBase}/auth/profile`)).data.data
         } catch (e) {
           commit('clearToken')
           return null

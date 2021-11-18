@@ -17,9 +17,12 @@ message.config({
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
 app.config.globalProperties.$eventBus = EventBus
+app.config.globalProperties.$apiBase = 'https://api.iszy.xyz'
 
-store.$axios = axios
-store.$msg = message
+store.$axios = app.config.globalProperties.$axios
+store.$msg = app.config.globalProperties.$msg
+store.$apiBase = app.config.globalProperties.$apiBase
+axios.$apiBase = app.config.globalProperties.$apiBase
 
 app.use(store).use(router).use(span)
 app.mount('#app')

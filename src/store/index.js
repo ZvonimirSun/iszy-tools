@@ -23,7 +23,7 @@ export default createStore({
         const settings = cloneDeep(state)
         delete settings.user.token
         try {
-          const res = (await axios.post('https://api.iszy.xyz/iszy_tools/settings', settings)).data
+          const res = (await axios.post(`${this.$apiBase}/iszy_tools/settings`, settings)).data
           return res.code === '00000' && res.data
         } catch (e) {
           return false
@@ -37,7 +37,7 @@ export default createStore({
         const settings = cloneDeep(state)
         delete settings.user.token
         try {
-          const res = (await axios.get('https://api.iszy.xyz/iszy_tools/settings')).data
+          const res = (await axios.get(`${this.$apiBase}/iszy_tools/settings`)).data
           if (res.code === '00000' && res.data) {
             commit('importConfig', res.data)
             return true
