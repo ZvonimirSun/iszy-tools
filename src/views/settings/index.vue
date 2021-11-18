@@ -67,14 +67,14 @@ export default {
     ...mapActionsUser(['getProfiles']),
     async uploadToCloud () {
       if (await this.uploadSettings()) {
-        this.msg.success('同步成功')
+        this.$msg.success('同步成功')
       } else {
         this.$msg.error('同步失败')
       }
     },
     async downloadFromCloud () {
       if (await this.downloadSettings()) {
-        this.msg.success('同步成功')
+        this.$msg.success('同步成功')
       } else {
         this.$msg.error('同步失败')
       }
