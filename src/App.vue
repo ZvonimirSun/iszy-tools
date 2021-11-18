@@ -75,12 +75,8 @@ export default defineComponent({
       }
     },
     token: {
-      handler: async function (val) {
-        if (!val) {
-          this.nickName = undefined
-        } else {
-          this.nickName = ((await this.getProfiles()) || {}).nickName
-        }
+      handler: function () {
+        this.updateProfile()
       },
       immediate: true
     }
@@ -92,6 +88,13 @@ export default defineComponent({
         return node.parentNode
       }
       return document.body
+    },
+    async updateProfile () {
+      if (this.token) {
+        this.nickName = ((await this.getProfiles()) || {}).nickName
+      } else {
+        this.nickName = undefined
+      }
     }
   }
 })

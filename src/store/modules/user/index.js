@@ -1,5 +1,7 @@
 import axios from '@/plugins/Axios'
 
+let source = axios.CancelToken.source()
+
 export default {
   namespaced: true,
   state: () => ({
@@ -37,16 +39,27 @@ export default {
       }
     },
     async getProfiles ({ state, commit }) {
+      source.cancel()
+      source = axios.CancelToken.source()
       if (state.token) {
         try {
-          return (await axios.get(`${this.$apiBase}/auth/profile`)).data.data
+          return (await axios.get(`${this.$apiBase}/auth/profile`, {
+            cancelToken: source.token
+          })).data.data
         } catch (e) {
-          commit('clearToken')
+          if (!axios.isCancel(e)) {
+            commit('clearToken')
+          }
           return null
         }
       } else {
         return null
       }
+    },
+    logout ({ commit }) {
+      source.cancel()
+      source = axios.CancelToken.source()
+      commit('clearToken')
     }
   }
 }

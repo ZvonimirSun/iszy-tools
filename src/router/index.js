@@ -62,6 +62,14 @@ routes = routes.concat([
     }
   },
   {
+    path: '/logout',
+    name: '登出',
+    beforeEnter (to, from, next) {
+      store.dispatch('user/logout')
+      next('/')
+    }
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('@/views/error-page/404.vue'),

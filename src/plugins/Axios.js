@@ -4,6 +4,7 @@ import store from '@/store'
 const axiosInstance = Axios.create()
 axiosInstance.$apiBase = ''
 axiosInstance.CancelToken = Axios.CancelToken
+axiosInstance.isCancel = Axios.isCancel
 axiosInstance.interceptors.request.use(
   configs => {
     if (store.state.user.token && configs.url.includes(axiosInstance.$apiBase)) {

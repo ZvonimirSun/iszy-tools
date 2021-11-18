@@ -1,10 +1,16 @@
 <template>
   <container>
+    <Title :level="3">用户</Title>
+    <Space>
+      <Button type="primary" @click="login" v-if="!token">登录</Button>
+      <Button type="primary" @click="logout" v-else>登出</Button>
+    </Space>
+    <Divider/>
     <template v-if="token">
       <Title :level="3">云端同步</Title>
       <Space>
-        <Button type="primary" @click="uploadSettings">同步到云端</Button>
-        <Button type="primary" @click="downloadSettings">从云端同步</Button>
+        <Button type="primary" @click="uploadToCloud">同步到云端</Button>
+        <Button type="primary" @click="downloadFromCloud">从云端同步</Button>
         <Checkbox :checked="settings.autoSync" @change="triggerSetting('autoSync')">自动同步</Checkbox>
       </Space>
       <Divider/>
@@ -58,7 +64,27 @@ export default {
   methods: {
     ...mapActions(['uploadSettings', 'downloadSettings']),
     ...mapActionSettings(['triggerSetting']),
-    ...mapActionsUser(['getProfiles'])
+    ...mapActionsUser(['getProfiles']),
+    async uploadToCloud () {
+      if (await this.uploadSettings()) {
+        this.msg.success('同步成功')
+      } else {
+        this.$msg.error('同步失败')
+      }
+    },
+    async downloadFromCloud () {
+      if (await this.downloadSettings()) {
+        this.msg.success('同步成功')
+      } else {
+        this.$msg.error('同步失败')
+      }
+    },
+    login () {
+      window.location.href = 'login'
+    },
+    logout () {
+      window.location.href = '/logout'
+    }
   }
 }
 </script>
