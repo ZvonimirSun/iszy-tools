@@ -1,17 +1,5 @@
 <template>
   <Typography>
-    <h4>导入导出</h4>
-  </Typography>
-  <Space :size="8">
-    <Button type="primary" @click="exportAll">导出所有</Button>
-    <Popconfirm @confirm="handler" title="是否导入所有配置？将会完全覆盖此功能记录" ok-text="是" cancel-text="否"
-                :getPopupContainer="getPopupContainer">
-      <Button type="primary">导入所有</Button>
-    </Popconfirm>
-    <input type="file" v-show="false" ref="file" @click="e => {e.target.value = '';}" @change="importAll"/>
-  </Space>
-  <Divider/>
-  <Typography>
     <h4>通用配置</h4>
   </Typography>
   <div class="commonConfigPanel">
@@ -57,8 +45,7 @@
 </template>
 
 <script>
-import createFile from '@/utils/createFile.js'
-import { Form, Input, Tabs, Button, Switch, Space, Typography, Divider, Popconfirm } from 'ant-design-vue'
+import { Form, Input, Tabs, Button, Switch, Typography, Divider } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from '../uploader'
 import { cloneDeep } from 'lodash-es'
@@ -83,10 +70,8 @@ export default {
     Password,
     Button,
     Switch,
-    Space,
     Typography,
-    Divider,
-    Popconfirm
+    Divider
   },
   data: () => ({
     uploaders,
@@ -130,38 +115,8 @@ export default {
       })
       this.$msg.success('保存成功')
     },
-
-    exportAll () {
-      const allConfig = JSON.stringify(this.$store.state.imgHosting)
-      createFile(allConfig, 'allConfig.json')
-    },
-    importAll () {
-      if (!this.$refs.file.value || !this.$refs.file.files || !this.$refs.file.files.length) {
-        return
-      }
-      const file = this.$refs.file.files[0]
-      if (file.type === 'application/json' || file.type === 'text/plain') {
-        const reader = new FileReader()
-        reader.onload = async () => {
-          if (reader.result) {
-            try {
-              const allConfig = JSON.parse(reader.result)
-              await this.importConfig(allConfig)
-              this.$msg.success('导入成功')
-            } catch (e) {
-              this.$msg.error('导入失败')
-            }
-          }
-        }
-        reader.readAsText(file)
-      }
-    },
     handler () {
       this.$refs.file.click()
-    },
-
-    getPopupContainer () {
-      return document.body
     }
   }
 }
