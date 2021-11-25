@@ -181,11 +181,17 @@ export default {
       codeRight = cloneDeep(codeLeft)
       editorRight.update(codeRight)
       editorLeft.refresh()
+      if (this.autoSave) {
+        this.save()
+      }
     },
     copyLeft () {
       codeLeft = cloneDeep(codeRight)
       editorLeft.update(codeLeft)
       editorRight.refresh()
+      if (this.autoSave) {
+        this.save()
+      }
     },
     async save () {
       if (this.autoSave) {
