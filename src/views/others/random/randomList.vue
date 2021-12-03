@@ -1,157 +1,147 @@
 <template>
-  <Modal v-model:visible="listModalVisible" title="列表名称" @ok="addList">
-    <Input v-model:value="listName"/>
-  </Modal>
-  <Modal v-model:visible="contentModalVisible" title="内容" @ok="addContent">
-    <TextArea v-model:value="content"/>
-  </Modal>
-  <Space direction="vertical">
-    <Space>
-      <Button @click="listModalVisible = true" type="primary">添加列表</Button>
-      <Popconfirm title="确认删除" v-if="selected" @confirm="deleteList">
-        <Button type="primary" danger>删除列表</Button>
-      </Popconfirm>
-    </Space>
-    <RadioGroup v-model:value="selected" v-if="lists.length">
-      <RadioButton v-for="(item) in lists" :value="item.value" :key="item.value">{{ item.name }}</RadioButton>
-    </RadioGroup>
-
-    <Button @click="contentModalVisible = true" type="primary" v-if="selectedList">添加内容</Button>
-    <div ref="cloud" class="cloud" v-if="selectedList"></div>
-  </Space>
+  <Typography>
+    <h4>随机列表</h4>
+  </Typography>
+  <template v-for="(tag, index) in tags" :key="index">
+    <Tooltip v-if="tag.length > 20" :title="tag">
+      <Tag closable @close="handleClose(tag)">
+        {{ `${tag.slice(0, 20)}...` }}
+      </Tag>
+    </Tooltip>
+    <Tag v-else closable @close="handleClose(tag)">
+      {{ tag }}
+    </Tag>
+  </template>
+  <Input
+    v-if="inputVisible"
+    ref="inputRef"
+    type="text"
+    size="small"
+    :style="{ width: '78px' }"
+    v-model:value="inputValue"
+    @blur="handleInputConfirm"
+    @keyup.enter="handleInputConfirm"
+  />
+  <Tag v-else @click="showInput" style="background: #fff; border-style: dashed">
+    <Plus theme="outline"/>
+    新内容
+  </Tag>
+  <template v-if="tags.length">
+    <Divider/>
+    <LuckyWheel
+      ref="myLucky"
+      width="200px"
+      height="200px"
+      :blocks="blocks"
+      :prizes="prizes"
+      :buttons="buttons"
+      @start="startCallBack"
+      @end="endCallBack"
+    />
+  </template>
 </template>
 
 <script>
+import { random } from 'lodash-es'
 import { createNamespacedHelpers } from 'vuex'
 import { defineComponent } from 'vue'
-import { Radio, Space, Button, Modal, Input, Popconfirm } from 'ant-design-vue'
-import { v4 as uuid } from 'uuid'
-import TagCloud from '@/utils/tagCloud.js'
+import { Tag, Tooltip, Input, Typography, Divider, Modal } from 'ant-design-vue'
+import { Plus } from '@icon-park/vue-next'
+import { LuckyWheel } from '@lucky-canvas/vue'
 
-let tagCloud
 const {
   mapGetters,
   mapActions
 } = createNamespacedHelpers('cache')
-const {
-  Group: RadioGroup,
-  Button: RadioButton
-} = Radio
-const { TextArea } = Input
 
 export default defineComponent({
   name: 'randomList',
-  components: {
-    RadioGroup,
-    RadioButton,
-    Space,
-    Button,
-    Modal,
-    Input,
-    Popconfirm,
-    TextArea
-  },
+  components: { Tag, Tooltip, Input, Typography, Divider, Plus, LuckyWheel },
   data: () => ({
-    lists: [],
-    selected: '',
-    listModalVisible: false,
-    listName: '',
-    contentModalVisible: false,
-    content: ''
+    tags: [],
+    inputValue: '',
+    inputVisible: false,
+
+    blocks: [{ padding: '10px', background: '#869cfa' }],
+    buttons: [
+      { radius: '40%', background: '#617df2' },
+      { radius: '35%', background: '#afc8ff' },
+      {
+        radius: '30%',
+        background: '#869cfa',
+        pointer: true,
+        fonts: [{ text: '开始', top: '-10px' }]
+      }
+    ]
   }),
   computed: {
     ...mapGetters(['getData']),
-    selectedList () {
-      return this.lists.find(item => (item.value === this.selected))
+    prizes: function () {
+      const colors = ['#e9e8fe', '#b8c5f2']
+      return this.tags.map((item, index) => {
+        return {
+          background: colors[index % 2],
+          fonts: [{ text: item }]
+        }
+      })
     }
   },
   mounted () {
-    this.lists = (this.getData('randomList') || {}).lists || []
-    if (this.lists.length) {
-      this.selected = this.lists[0].value
-    }
+    this.tags = (this.getData('randomList') || {}).tags || []
   },
   watch: {
-    selected: function (val) {
-      if (val) {
-        this.updateCloud()
-      } else {
-        if (tagCloud) {
-          tagCloud.destroy()
-          tagCloud = undefined
-        }
-      }
-    }
   },
   beforeUnmount () {
-    this.$refs.cloud.removeEventListener('click', this.cloudClick)
-    if (tagCloud) {
-      tagCloud.destroy()
-      tagCloud = undefined
-    }
   },
   methods: {
     ...mapActions(['setData']),
-    addList () {
-      const key = uuid()
-      this.lists.push({
-        name: this.listName,
-        value: key,
-        contents: []
-      })
-      this.updateCache()
-      this.listModalVisible = false
-      this.listName = ''
-      if (this.lists.length === 1) {
-        this.selected = key
-      }
+
+    startCallBack () {
+      // 开始游戏
+      this.$refs.myLucky.play()
+      // 假设接口的请求速度是5s
+      setTimeout(() => {
+        // 5s后拿到后端返回的中奖索引
+        // 然后停止游戏 (缓慢停止)
+        this.$refs.myLucky.stop(random(this.tags.length))
+      }, 5000)
     },
-    deleteList () {
-      if (this.selectedList) {
-        const index = this.lists.findIndex(item => (item.value === this.selected))
-        this.lists.splice(index, 1)
-        this.updateCache()
-        if (this.lists.length) {
-          this.selected = this.lists[0].value
-        } else {
-          this.selected = ''
+    endCallBack (prize) {
+      Modal.success({
+        title: () => `抽中了 ${prize.fonts[0].text}`,
+        onOk: () => {
+          // 当完全停止时, 触发回调函数
+          this.$refs.myLucky.init()
         }
-      }
+      })
     },
+
     updateCache () {
       this.setData({
         key: 'randomList',
         val: {
-          lists: this.lists
+          tags: this.tags
         }
       })
     },
-
-    addContent () {
-      this.selectedList.contents.push(this.content)
+    handleClose  (removedTag) {
+      this.tags = this.tags.filter(tag => tag !== removedTag)
       this.updateCache()
-      this.updateCloud()
-      this.contentModalVisible = false
-      this.content = ''
     },
-    updateCloud () {
+    showInput () {
+      this.inputVisible = true
       this.$nextTick(() => {
-        if (!tagCloud) {
-          tagCloud = TagCloud(this.$refs.cloud, this.selectedList.contents, {
-            radius: 200
-          })
-          this.$refs.cloud.addEventListener('click', this.cloudClick)
-        } else {
-          tagCloud.update(this.selectedList.contents)
-        }
+        this.$refs.inputRef.focus()
       })
     },
-    cloudClick (e) {
-      if (e.target.className === 'tagcloud--item') {
-        const index = this.selectedList.contents.findIndex((item) => (item === e.target.innerText))
-        this.selectedList.contents.splice(index, 1)
-        tagCloud.update(this.selectedList.contents)
+    handleInputConfirm () {
+      const inputValue = this.inputValue
+      if (inputValue && this.tags.indexOf(inputValue) === -1) {
+        this.tags = [...this.tags, inputValue]
       }
+      this.inputVisible = false
+      this.inputValue = ''
+      this.updateCache()
     }
   }
 })
@@ -163,30 +153,16 @@ export default defineComponent({
   flex-wrap: wrap;
 }
 
-::v-deep(.cloud) {
-  width: 400px;
-  height: 400px;
-  //margin: 0 auto;
-  user-select: none;
-  border-radius: .5rem;
-  border: solid #999;
+.ant-tag {
+  font-size: 16px;
+  line-height: 24px;
 
-  .tagcloud--item {
-    padding: 2px 4px;
-    background-color: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
-    font-size: 1.6rem;
+  ::v-deep(.ant-tag-close-icon) {
+    font-size: 14px;
   }
 
-  .tagcloud--item:hover {
-    background-color: rgba(0, 0, 0, .1);
-    border: 1px solid #333;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    opacity: 1 !important;
-    z-index: 100 !important;
+  .i-icon {
+    font-size: 14px;
   }
 }
 </style>
