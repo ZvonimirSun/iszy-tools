@@ -4,28 +4,30 @@
   </Typography>
   <template v-for="(tag, index) in tags" :key="index">
     <Tooltip v-if="tag.length > 20" :title="tag">
-      <Tag closable @close="handleClose(tag)">
+      <Tag :closable="!loading" @close="handleClose(tag)">
         {{ `${tag.slice(0, 20)}...` }}
       </Tag>
     </Tooltip>
-    <Tag v-else closable @close="handleClose(tag)">
+    <Tag v-else :closable="!loading" @close="handleClose(tag)">
       {{ tag }}
     </Tag>
   </template>
-  <Input
-    v-if="inputVisible"
-    ref="inputRef"
-    type="text"
-    size="small"
-    :style="{ width: '78px' }"
-    v-model:value="inputValue"
-    @blur="handleInputConfirm"
-    @keyup.enter="handleInputConfirm"
-  />
-  <Tag v-else @click="showInput" style="background: #fff; border-style: dashed">
-    <Plus theme="outline"/>
-    新内容
-  </Tag>
+  <template v-if="!loading">
+    <Input
+      v-if="inputVisible"
+      ref="inputRef"
+      type="text"
+      size="small"
+      :style="{ width: '78px' }"
+      v-model:value="inputValue"
+      @blur="handleInputConfirm"
+      @keyup.enter="handleInputConfirm"
+    />
+    <Tag v-else @click="showInput" style="background: #fff; border-style: dashed">
+      <Plus theme="outline"/>
+      新内容
+    </Tag>
+  </template>
   <template v-if="tags.length">
     <Divider/>
     <LuckyWheel
@@ -62,6 +64,8 @@ export default defineComponent({
     inputValue: '',
     inputVisible: false,
 
+    loading: false,
+
     blocks: [{ padding: '10px', background: '#869cfa' }],
     buttons: [
       { radius: '40%', background: '#617df2' },
@@ -97,6 +101,7 @@ export default defineComponent({
     ...mapActions(['setData']),
 
     startCallBack () {
+      this.loading = true
       // 开始游戏
       this.$refs.myLucky.play()
       // 假设接口的请求速度是5s
@@ -104,14 +109,15 @@ export default defineComponent({
         // 5s后拿到后端返回的中奖索引
         // 然后停止游戏 (缓慢停止)
         this.$refs.myLucky.stop(random(this.tags.length))
-      }, 5000)
+      }, 3000)
     },
     endCallBack (prize) {
       Modal.success({
-        title: () => `抽中了 ${prize.fonts[0].text}`,
+        title: () => `抽中了 『${prize.fonts[0].text}』`,
         onOk: () => {
           // 当完全停止时, 触发回调函数
           this.$refs.myLucky.init()
+          this.loading = false
         }
       })
     },
