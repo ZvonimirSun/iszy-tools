@@ -1081,6 +1081,15 @@
   resolved "https://r.cnpmjs.org/@icon-park/vue-next/download/@icon-park/vue-next-1.3.5.tgz#4c9cbe6c77c4f4dadbe60fd26b86b10ed4ad186b"
   integrity sha1-TJy+bHfE9Nrb5g/Sa4axDtStGGs=
 
+"@lucky-canvas/vue@^0.1.3":
+  version "0.1.3"
+  resolved "http://192.168.2.58:4873/@lucky-canvas%2fvue/-/vue-0.1.3.tgz#dc126173b7a7d2cff1a62e39209140c51ed28139"
+  integrity sha512-T0M/sCYp81RquHk7RtZTqEtzhn2Jpb47VH4NU9OLeTeOumCxsYpswoIM33kICCns7Mod5Fc4kzYtAhQPliMb+A==
+  dependencies:
+    "@vue/composition-api" "^1.0.0"
+    lucky-canvas "^1.7.6"
+    vue-demi "^0.7.4"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://r.cnpmjs.org/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1291,6 +1300,13 @@
   dependencies:
     "@vue/compiler-dom" "3.2.21"
     "@vue/shared" "3.2.21"
+
+"@vue/composition-api@^1.0.0":
+  version "1.4.1"
+  resolved "http://192.168.2.58:4873/@vue%2fcomposition-api/-/composition-api-1.4.1.tgz#2b4a6bfabc5e8277c4b890e0c9ca55d1252ca5b8"
+  integrity sha512-ZTat9ru/rwecveRnFzlO2mduOBpGfnBdXn+WtBcFLV9UsL/D+6nX47RWuLiVdNxNDX0qphGZRC+JDjwt+YTnRA==
+  dependencies:
+    tslib "^2.3.1"
 
 "@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.18":
   version "6.0.0-beta.19"
@@ -3489,6 +3505,11 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+lucky-canvas@^1.7.6:
+  version "1.7.6"
+  resolved "http://192.168.2.58:4873/lucky-canvas/-/lucky-canvas-1.7.6.tgz#6da922f249740e8842c041a78db349db06fa957c"
+  integrity sha512-GQdICNJYq1OG/NnkwGoYSxh4415526ZO0CgIIW0FsZr5rPfl4VmevN06rEmE2dejeC+5RD+Fezi1Iqusk6dORw==
+
 magic-string@^0.25.0, magic-string@^0.25.7:
   version "0.25.7"
   resolved "https://r.cnpmjs.org/magic-string/download/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
@@ -4691,7 +4712,7 @@ tsconfig-paths@^3.11.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^2.0.1, tslib@^2.0.3, tslib@^2.3.0:
+tslib@^2.0.1, tslib@^2.0.3, tslib@^2.3.0, tslib@^2.3.1:
   version "2.3.1"
   resolved "https://r.cnpmjs.org/tslib/download/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=
@@ -4932,6 +4953,11 @@ vm2@^3.9.3:
   version "3.9.5"
   resolved "https://r.cnpmjs.org/vm2/download/vm2-3.9.5.tgz#5288044860b4bbace443101fcd3bddb2a0aa2496"
   integrity sha1-UogESGC0u6zkQxAfzTvdsqCqJJY=
+
+vue-demi@^0.7.4:
+  version "0.7.5"
+  resolved "http://192.168.2.58:4873/vue-demi/-/vue-demi-0.7.5.tgz#88dee7492fc99a0f911ff03fc02c658fa2a79af8"
+  integrity sha1-iN7nSS/Jmg+RH/A/wCxlj6Knmvg=
 
 vue-eslint-parser@^7.10.0:
   version "7.11.0"

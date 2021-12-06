@@ -28,5 +28,6 @@ export default {
   webssh: () => import('@/views/others/webssh.vue'),
   cdnQuery: () => import('@/views/program/cdnQuery.vue'),
   relationship: () => import('@/views/others/relationship.vue'),
-  '3dView': () => import('@/views/others/3dView/3dView.vue')
+  '3dView': () => import('@/views/others/3dView/3dView.vue'),
+  random: () => import('@/views/others/random/random.vue')
 }

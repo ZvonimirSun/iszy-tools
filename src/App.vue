@@ -1,5 +1,5 @@
 <template>
-  <config-provider :locale="locale"  :getPopupContainer="getPopupContainer">
+  <config-provider :locale="locale">
     <Layout>
       <Header>
         <div class="header">
