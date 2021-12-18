@@ -29,5 +29,6 @@ export default {
   cdnQuery: () => import('@/views/program/cdnQuery.vue'),
   relationship: () => import('@/views/others/relationship.vue'),
   '3dView': () => import('@/views/others/3dView/3dView.vue'),
-  random: () => import('@/views/others/random/random.vue')
+  random: () => import('@/views/others/random/random.vue'),
+  ascii: () => import('@/views/program/ascii.vue')
 }
