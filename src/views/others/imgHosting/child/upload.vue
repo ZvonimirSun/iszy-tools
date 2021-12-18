@@ -93,12 +93,18 @@ export default {
         const items = event.clipboardData && event.clipboardData.items
         let file
         if (items && items.length) {
-          if (items[0].type.indexOf('image') !== -1) {
-            file = items[0].getAsFile()
-            this.customRequest({ file })
-          } else {
-            this.rejectFile()
+          for (const item of items) {
+            if (item.type.indexOf('image') !== -1) {
+              file = item.getAsFile()
+            }
           }
+        }
+        if (file) {
+          this.customRequest({ file })
+        } else {
+          this.rejectFile()
+          clearTimeout(this.timeoutIndex)
+          this.timeoutIndex = undefined
         }
       }
     }
