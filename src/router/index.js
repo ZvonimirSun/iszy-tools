@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import widgets from '@/views'
 import tools from '@/views/tools.json'
-import priTools from '@/views/priTools.json'
 import store from '@/store'
 
 let routes = [
@@ -35,20 +34,6 @@ for (const tmp of tools) {
       }
     }
   }
-}
-
-// 加入私有工具路由
-for (const tool of priTools) {
-  const tmp = tool.link.match('[^/]+(?!.*/)')
-  routes.push({
-    path: tool.link,
-    name: tool.name,
-    component: widgets[tmp[0]],
-    meta: {
-      statistics: false,
-      layout: tool.layout
-    }
-  })
 }
 
 // 加入固定页面路由
