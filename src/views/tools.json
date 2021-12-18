@@ -146,6 +146,10 @@
       {
         "name": "前端CDN搜索",
         "link": "/program/cdnQuery"
+      },
+      {
+        "name": "在线ASCII码对照表",
+        "link": "/program/ascii"
       }
     ]
   },
