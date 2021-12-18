@@ -113,7 +113,7 @@ export default {
       if (this.searchStr) {
         tmp = tmp.map(item => {
           const a = cloneDeep(item)
-          a.children = a.children.filter(item => (item.name.includes(this.searchStr)))
+          a.children = a.children.filter(item => (item.name.toLowerCase().includes(this.searchStr.toLowerCase())))
           return a
         })
       }
