@@ -27,8 +27,11 @@
 import { Typography, Input, Divider, Modal } from 'ant-design-vue'
 import { Container } from '@/components'
 import { createNamespacedHelpers } from 'vuex'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import md from '@/utils/markdown'
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(duration)
 
 const { mapActions, mapState } = createNamespacedHelpers('linuxCommand')
 
@@ -57,9 +60,9 @@ export default {
   },
   mounted () {
     if (this.time) {
-      const currentDate = moment()
-      const storageDate = moment(this.time)
-      if (moment.duration(currentDate.diff(storageDate)).asDays() <= 1) {
+      const currentDate = dayjs()
+      const storageDate = dayjs(this.time)
+      if (dayjs.duration(currentDate.diff(storageDate)).asDays() <= 1) {
         return
       }
     }

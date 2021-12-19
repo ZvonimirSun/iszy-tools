@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export default {
   namespaced: true,
@@ -9,7 +9,7 @@ export default {
   mutations: {
     setData (state, val) {
       state.data = val
-      state.time = moment().format()
+      state.time = dayjs().format()
     }
   },
   actions: {

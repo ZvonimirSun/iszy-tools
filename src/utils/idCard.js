@@ -1,7 +1,10 @@
 import zodiac from '@/utils/12zodiac.js'
 import chineseLunar from '@/utils/chinese-lunar.js'
 import dataAddress from '@/utils/data.json'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(duration)
 
 // 字典
 const dict = {
@@ -133,7 +136,7 @@ function address (idCard) {
 
 function age (idCard) {
   const date = birthDay(idCard).date.replace(/\//g, '-')
-  const duration = moment.duration(moment().diff(moment(date)))
+  const duration = dayjs.duration(dayjs().diff(dayjs(date)))
   return Math.floor(duration.asYears())
 }
 

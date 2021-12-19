@@ -94,10 +94,14 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import { Container } from '@/components'
 import { Row, Col, Form, Table, Input, Select, DatePicker, Divider, Button } from 'ant-design-vue'
+import isBetween from 'dayjs/plugin/isBetween'
+
+dayjs.extend(isBetween)
+
 const { Item } = Form
 const { Option } = Select
 const { Group } = Button
@@ -111,7 +115,7 @@ export default {
     loanMonth: 24,
     lendingRates: 4.5,
     repayment: 'equalLoan',
-    firstRepaymentDate: moment(),
+    firstRepaymentDate: dayjs(),
 
     prepayment: [],
 
@@ -170,7 +174,7 @@ export default {
       if (!isNaN(parseFloat(this.lendingRates)) && parseFloat(this.lendingRates) > 0) {
         newOptions.lendingRates = parseFloat(this.lendingRates)
       }
-      if (moment.isMoment(this.firstRepaymentDate)) {
+      if (dayjs.isDayjs(this.firstRepaymentDate)) {
         newOptions.firstRepaymentDate = this.firstRepaymentDate
         if (this.prepayment.length === 0) {
           newOptions.prepayment = this.prepayment
@@ -178,12 +182,12 @@ export default {
           let flag = true
           for (const i in this.prepayment) {
             if (i === '0') {
-              if (!(moment.isMoment(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.firstRepaymentDate.clone().subtract(1, 'M'), 'days') >= 0)) {
+              if (!(dayjs.isDayjs(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.firstRepaymentDate.clone().subtract(1, 'M'), 'days') >= 0)) {
                 flag = false
                 break
               }
             } else {
-              if (!(moment.isMoment(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.prepayment[i - 1].repaymentDate, 'days') >= 0)) {
+              if (!(dayjs.isDayjs(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.prepayment[i - 1].repaymentDate, 'days') >= 0)) {
                 flag = false
                 break
               }
@@ -259,107 +263,103 @@ export default {
       }
     },
     dataSource: function () {
-      try {
-        if (this.isValidOptions) {
-          const result = []
-          result.push({
-            key: 0,
-            times: 0,
-            remainingPrincipal: this.options.loanAmount
-          })
-          if (this.repayment === 'equalLoan') {
-            const remain = {
-              loanAmount: this.options.loanAmount,
-              loanMonth: this.options.loanMonth,
-              lendingRates: this.options.lendingRates
-            }
-            let adjustLoanMonth = 0
-            let moreInterest = 0
-            const prepayment = cloneDeep(this.options.prepayment)
-            for (let i = 1; i <= this.options.loanMonth - adjustLoanMonth; i++) {
-              if (i > 0) {
-                while (prepayment.length > 0 && prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
-                  const a = prepayment.shift()
-                  remain.loanAmount -= Number(a.repaymentAmount)
-                  remain.lendingRates = Number(a.lendingRates || 0)
-                  remain.loanMonth -= Number(a.adjustLoanMonth || 0)
-                  adjustLoanMonth += Number(a.adjustLoanMonth || 0)
-                  result.push({
-                    repaymentDate: a.repaymentDate.format(this.dateFormat),
-                    principalRepayment: a.repaymentAmount,
-                    remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-                  })
-                }
-              }
-              const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
-              let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
-              moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
-              const principal = Number((amount - interest).toFixed(2))
-              remain.loanAmount -= principal
-              remain.loanMonth--
-              if (remain.loanMonth === 0) {
-                interest = Number((interest + moreInterest).toFixed(2))
-              }
-              result.push({
-                key: i,
-                times: i,
-                repaymentDate: this.options.firstRepaymentDate.clone().add(i - 1, 'M').format(this.dateFormat),
-                monthlyAmount: amount,
-                interestRepayment: interest,
-                principalRepayment: principal,
-                remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-              })
-            }
+      if (this.isValidOptions) {
+        const result = []
+        result.push({
+          key: 0,
+          times: 0,
+          remainingPrincipal: this.options.loanAmount
+        })
+        if (this.repayment === 'equalLoan') {
+          const remain = {
+            loanAmount: this.options.loanAmount,
+            loanMonth: this.options.loanMonth,
+            lendingRates: this.options.lendingRates
           }
-          if (this.repayment === 'equalPrincipal') {
-            const remain = {
-              loanAmount: this.options.loanAmount,
-              loanMonth: this.options.loanMonth,
-              lendingRates: this.options.lendingRates
-            }
-            let adjustLoanMonth = 0
-            let moreInterest = 0
-            const prepayment = cloneDeep(this.options.prepayment)
-            for (let i = 1; i <= this.options.loanMonth - adjustLoanMonth; i++) {
-              if (prepayment.length > 0 && i > 1) {
-                if (prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
-                  const a = prepayment.shift()
-                  remain.loanAmount -= Number(a.repaymentAmount)
-                  remain.lendingRates = Number(a.lendingRates || 0)
-                  remain.loanMonth -= Number(a.adjustLoanMonth || 0)
-                  adjustLoanMonth += Number(a.adjustLoanMonth || 0)
-                  result.push({
-                    repaymentDate: a.repaymentDate.format(this.dateFormat),
-                    principalRepayment: a.repaymentAmount,
-                    remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-                  })
-                }
+          let adjustLoanMonth = 0
+          let moreInterest = 0
+          const prepayment = cloneDeep(this.options.prepayment)
+          for (let i = 1; i <= this.options.loanMonth - adjustLoanMonth; i++) {
+            if (i > 0) {
+              while (prepayment.length > 0 && prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
+                const a = prepayment.shift()
+                remain.loanAmount -= Number(a.repaymentAmount)
+                remain.lendingRates = Number(a.lendingRates || 0)
+                remain.loanMonth -= Number(a.adjustLoanMonth || 0)
+                adjustLoanMonth += Number(a.adjustLoanMonth || 0)
+                result.push({
+                  repaymentDate: a.repaymentDate.format(this.dateFormat),
+                  principalRepayment: a.repaymentAmount,
+                  remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+                })
               }
-              const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
-              let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
-              moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
-              const amount = Number((principal + interest).toFixed(2))
-              remain.loanAmount -= principal
-              remain.loanMonth--
-              if (remain.loanMonth === 0) {
-                interest = Number((interest + moreInterest).toFixed(2))
-              }
-              result.push({
-                key: i,
-                times: i,
-                repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
-                monthlyAmount: amount,
-                interestRepayment: interest,
-                principalRepayment: principal,
-                remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-              })
             }
+            const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
+            let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
+            moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
+            const principal = Number((amount - interest).toFixed(2))
+            remain.loanAmount -= principal
+            remain.loanMonth--
+            if (remain.loanMonth === 0) {
+              interest = Number((interest + moreInterest).toFixed(2))
+            }
+            result.push({
+              key: i,
+              times: i,
+              repaymentDate: this.options.firstRepaymentDate.clone().add(i - 1, 'M').format(this.dateFormat),
+              monthlyAmount: amount,
+              interestRepayment: interest,
+              principalRepayment: principal,
+              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+            })
           }
-          return result
-        } else {
-          return []
         }
-      } catch (e) {
+        if (this.repayment === 'equalPrincipal') {
+          const remain = {
+            loanAmount: this.options.loanAmount,
+            loanMonth: this.options.loanMonth,
+            lendingRates: this.options.lendingRates
+          }
+          let adjustLoanMonth = 0
+          let moreInterest = 0
+          const prepayment = cloneDeep(this.options.prepayment)
+          for (let i = 1; i <= this.options.loanMonth - adjustLoanMonth; i++) {
+            if (prepayment.length > 0 && i > 1) {
+              if (prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
+                const a = prepayment.shift()
+                remain.loanAmount -= Number(a.repaymentAmount)
+                remain.lendingRates = Number(a.lendingRates || 0)
+                remain.loanMonth -= Number(a.adjustLoanMonth || 0)
+                adjustLoanMonth += Number(a.adjustLoanMonth || 0)
+                result.push({
+                  repaymentDate: a.repaymentDate.format(this.dateFormat),
+                  principalRepayment: a.repaymentAmount,
+                  remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+                })
+              }
+            }
+            const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
+            let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
+            moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
+            const amount = Number((principal + interest).toFixed(2))
+            remain.loanAmount -= principal
+            remain.loanMonth--
+            if (remain.loanMonth === 0) {
+              interest = Number((interest + moreInterest).toFixed(2))
+            }
+            result.push({
+              key: i,
+              times: i,
+              repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
+              monthlyAmount: amount,
+              interestRepayment: interest,
+              principalRepayment: principal,
+              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+            })
+          }
+        }
+        return result
+      } else {
         return []
       }
     },
@@ -408,10 +408,10 @@ export default {
     addPrepayment () {
       let date, lendingRates
       if (this.prepayment.length === 0) {
-        date = this.firstRepaymentDate || moment()
+        date = this.firstRepaymentDate || dayjs()
         lendingRates = this.lendingRates || 0
       } else {
-        date = this.prepayment[this.prepayment.length - 1].repaymentDate || moment()
+        date = this.prepayment[this.prepayment.length - 1].repaymentDate || dayjs()
         lendingRates = this.prepayment[this.prepayment.length - 1].lendingRates || 0
       }
       this.prepayment.push({

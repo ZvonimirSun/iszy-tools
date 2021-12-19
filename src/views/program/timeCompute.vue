@@ -4,7 +4,7 @@
       <Title :level="3">转换时间戳</Title>
       <Item label="时间">
         <DatePicker v-model:value="time" :showTime="true" style="width: 100%" @change="toTimeStamp"
-                    @ok="toTimeStamp" :getCalendarContainer="getContainer"/>
+                    @ok="toTimeStamp" :getPopupContainer="getContainer"/>
       </Item>
       <Item label="时间戳">
         <Input v-model:value="timestamp" @change="toTime">
@@ -19,7 +19,7 @@
       <Title :level="3">计算几天后的日期</Title>
       <Item label="日期">
         <DatePicker v-model:value="baseTime" style="width: 100%" @change="calculateDate" @ok="calculateDate"
-                    :getCalendarContainer="getContainer"/>
+                    :getPopupContainer="getContainer"/>
       </Item>
       <Item label="相差天数（输入负数向前计算）">
         <Input v-model:value="addDays" addon-after="天" @change="calculateDate"/>
@@ -30,11 +30,11 @@
       <Title :level="3">计算日期差</Title>
       <Item label="开始日期">
         <DatePicker v-model:value="startTime" style="width: 100%" @change="calculateDuration"
-                    @ok="calculateDuration" :getCalendarContainer="getContainer"/>
+                    @ok="calculateDuration" :getPopupContainer="getContainer"/>
       </Item>
       <Item label="结束日期">
         <DatePicker v-model:value="endTime" style="width: 100%" @change="calculateDuration" @ok="calculateDuration"
-                    :getCalendarContainer="getContainer"/>
+                    :getPopupContainer="getContainer"/>
       </Item>
       <Item label="相差天数">
         <Input v-model:value="duration" addon-after="天" readonly/>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Container } from '@/components'
 import { Form, DatePicker, Input, Typography, Select } from 'ant-design-vue'
 
@@ -57,18 +57,18 @@ export default {
   components: { Container, Form, DatePicker, Input, Item, Select, Title, Option },
   data () {
     return {
-      moment: moment,
+      dayjs: dayjs,
 
-      time: moment(),
-      timestamp: moment().valueOf(),
+      time: dayjs(),
+      timestamp: dayjs().valueOf(),
       timestampUnit: 'ms',
 
-      baseTime: moment(),
+      baseTime: dayjs(),
       addDays: 100,
-      resultTime: moment().add(100, 'days').format('YYYY-MM-DD'),
+      resultTime: dayjs().add(100, 'days').format('YYYY-MM-DD'),
 
-      startTime: moment(),
-      endTime: moment().add(100, 'days'),
+      startTime: dayjs(),
+      endTime: dayjs().add(100, 'days'),
       duration: 100
     }
   },
@@ -78,7 +78,7 @@ export default {
     },
     toTime () {
       if (this.timestamp && !isNaN(parseInt(this.timestamp))) {
-        const time = moment(parseInt(this.timestamp + (this.timestampUnit === 's' ? '000' : '')))
+        const time = dayjs(parseInt(this.timestamp + (this.timestampUnit === 's' ? '000' : '')))
         if (time.isValid()) {
           this.time = time
         } else {
@@ -89,7 +89,7 @@ export default {
       }
     },
     toTimeStamp () {
-      if (moment.isMoment(this.time)) {
+      if (dayjs.isDayjs(this.time)) {
         switch (this.timestampUnit) {
           case 'ms':
             this.timestamp = this.time.format('x')
@@ -106,14 +106,14 @@ export default {
       }
     },
     calculateDate () {
-      if (moment.isMoment(this.baseTime) && !isNaN(parseInt(this.addDays))) {
+      if (dayjs.isDayjs(this.baseTime) && !isNaN(parseInt(this.addDays))) {
         this.resultTime = this.baseTime.clone().add(parseInt(this.addDays), 'days').format('YYYY-MM-DD')
       } else {
         this.resultTime = ''
       }
     },
     calculateDuration () {
-      if (moment.isMoment(this.startTime) && moment.isMoment(this.endTime)) {
+      if (dayjs.isDayjs(this.startTime) && dayjs.isDayjs(this.endTime)) {
         this.duration = this.endTime.diff(this.startTime, 'days')
       } else {
         this.duration = ''
