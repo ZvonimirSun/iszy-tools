@@ -3,7 +3,7 @@
 $grid-row-cells: 20;
 $grid-col-cells: 10;
 
-$height: max(min(calc(100vh - 32rem), calc(100vw - 8rem)), 29.7rem);
+$height: max(min(calc(100vh - 22rem), calc(100vw - 8rem)), 29.7rem);
 $width: $height;
 
 $cell-height: calc(#{$height} * 0.96 / (#{$grid-row-cells} + 2));

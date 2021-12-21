@@ -64,7 +64,7 @@ export default defineComponent({
     }
 
     .ant-tabs-content {
-      height: calc(100% - 4rem);
+      height: calc(100%);
 
       .ant-tabs-tabpane {
         height: 100%;
