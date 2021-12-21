@@ -1,22 +1,19 @@
 <template>
-  <container>
-    <Title :level="3">7 Bit ASCII Codes</Title>
-    <Table :columns="columns" :dataSource="data1" :pagination="false" rowKey="dec"/>
-    <Divider/>
-    <Title :level="3">Extended ASCII Codes</Title>
-    <Table :columns="columns" :dataSource="data2" :pagination="false" rowKey="dec"/>
-  </container>
+  <Title :level="3">7 Bit ASCII Codes</Title>
+  <Table :columns="columns" :dataSource="data1" :pagination="false" rowKey="dec"/>
+  <Divider/>
+  <Title :level="3">Extended ASCII Codes</Title>
+  <Table :columns="columns" :dataSource="data2" :pagination="false" rowKey="dec"/>
 </template>
 
 <script>
-import { Container } from '@/components'
 import { Typography, Divider, Table } from 'ant-design-vue'
 
 const { Title } = Typography
 
 export default {
   name: 'ascii',
-  components: { Container, Title, Divider, Table },
+  components: { Title, Divider, Table },
   data: () => ({
     columns: [
       {

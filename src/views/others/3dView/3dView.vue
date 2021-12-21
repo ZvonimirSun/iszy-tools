@@ -1,21 +1,18 @@
 <template>
-  <container>
-    <Upload :fileList="[]" :showUploadList="false" :before-upload="getFileList" :directory="true">
-      <Input readonly placeholder="点击这里选择 gltf 文件所在文件夹" :value="fileName">
-        <template #addonAfter>
-          <Button block :disabled="!fileName" :loading="loading" @click.stop="loadScene">
-            <span v-if="loading">加载中</span>
-            <span v-else>加载</span>
-          </Button>
-        </template>
-      </Input>
-    </Upload>
-    <div class="threeContainer" ref="treeContainer"></div>
-  </container>
+  <Upload :fileList="[]" :showUploadList="false" :before-upload="getFileList" :directory="true">
+    <Input readonly placeholder="点击这里选择 gltf 文件所在文件夹" :value="fileName">
+      <template #addonAfter>
+        <Button block :disabled="!fileName" :loading="loading" @click.stop="loadScene">
+          <span v-if="loading">加载中</span>
+          <span v-else>加载</span>
+        </Button>
+      </template>
+    </Input>
+  </Upload>
+  <div class="threeContainer" ref="treeContainer"></div>
 </template>
 
 <script>
-import { Container } from '@/components'
 import { WebGLRenderer, PerspectiveCamera, AmbientLight, Scene, Color, LoaderUtils, LoadingManager } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -46,7 +43,6 @@ const animate = () => {
 export default {
   name: '3dView',
   components: {
-    Container,
     Upload,
     Input,
     Button

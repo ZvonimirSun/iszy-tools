@@ -26,7 +26,8 @@ for (const tmp of tools) {
               component: widgets[tmp1[0]],
               meta: {
                 statistics: tool.statistics !== false,
-                layout: tool.layout
+                layout: tool.layout,
+                type: 'tool'
               }
             })
           }

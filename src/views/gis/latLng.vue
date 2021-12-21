@@ -1,17 +1,14 @@
 <template>
-  <container>
-    <Space :size="8" align="center">
-      <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler"
-             allow-clear/>
-      <Button @click="handler" type="primary">解析</Button>
-    </Space>
-    <div class="mapContainer" ref="mapContainer"></div>
-  </container>
+  <Space :size="8" align="center">
+    <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler"
+           allow-clear/>
+    <Button @click="handler" type="primary">解析</Button>
+  </Space>
+  <div class="mapContainer" ref="mapContainer"></div>
 </template>
 
 <script>
 import 'leaflet/dist/leaflet.css'
-import { Container } from '@/components'
 import { map, control, layerGroup, marker, Icon } from 'leaflet'
 import { chineseLayer, ChineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -38,7 +35,6 @@ const yellowIcon = new Icon({
 export default {
   name: 'latLng',
   components: {
-    Container,
     Button,
     Input,
     Space

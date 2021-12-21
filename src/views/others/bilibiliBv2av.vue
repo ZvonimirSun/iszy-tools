@@ -1,27 +1,24 @@
 <template>
-  <container>
-    <Title :level="3">转换</Title>
-    <Paragraph>
-      <blockquote>实时计算，直接输入即可</blockquote>
-    </Paragraph>
-    <Form layout="vertical">
-      <FormItem label="AV号">
-        <InputNumber v-model:value="aid" @change="enc(aid)"/>
-      </FormItem>
-      <FormItem label="BV号">
-        <Input v-model:value="bvid" @change="dec(bvid)"/>
-      </FormItem>
-    </Form>
-    <Title :level="3">信息</Title>
-    <Space direction="vertical">
-      <Link :href="'https://www.bilibili.com/video/av' + aid">{{ 'https://www.bilibili.com/video/av' + aid }}</Link>
-      <Link :href="'https://www.bilibili.com/video/' + bvid">{{ 'https://www.bilibili.com/video/' + bvid }}</Link>
-    </Space>
-  </container>
+  <Title :level="3">转换</Title>
+  <Paragraph>
+    <blockquote>实时计算，直接输入即可</blockquote>
+  </Paragraph>
+  <Form layout="vertical">
+    <FormItem label="AV号">
+      <InputNumber v-model:value="aid" @change="enc(aid)"/>
+    </FormItem>
+    <FormItem label="BV号">
+      <Input v-model:value="bvid" @change="dec(bvid)"/>
+    </FormItem>
+  </Form>
+  <Title :level="3">信息</Title>
+  <Space direction="vertical">
+    <Link :href="'https://www.bilibili.com/video/av' + aid">{{ 'https://www.bilibili.com/video/av' + aid }}</Link>
+    <Link :href="'https://www.bilibili.com/video/' + bvid">{{ 'https://www.bilibili.com/video/' + bvid }}</Link>
+  </Space>
 </template>
 
 <script>
-import { Container } from '@/components'
 import { Form, Input, InputNumber, Typography, Space } from 'ant-design-vue'
 
 const { Item: FormItem } = Form
@@ -30,7 +27,6 @@ const { Title, Paragraph, Link } = Typography
 export default {
   name: 'bilibiliBv2av',
   components: {
-    Container,
     Input,
     InputNumber,
     Form,

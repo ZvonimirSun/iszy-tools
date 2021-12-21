@@ -1,51 +1,48 @@
 <template>
-  <container>
-    <Form layout="inline" :model="formState">
-      <Item label="版本">
-        <Select v-model:value="formState.version">
-          <Option value="v1">Version 1</Option>
-          <Option value="v4">Version 4</Option>
-          <Option value="nil">NIL</Option>
-        </Select>
-      </Item>
-      <Item label="数量" v-show="formState.version!=='nil'">
-        <InputNumber v-model:value="formState.count" :max="500" :min="1" :step="1">
-        </InputNumber>
-      </Item>
-      <Item label="连字符">
-        <Switch v-model:checked="formState.hasHyphen"/>
-      </Item>
-      <Item label="自动生成">
-        <Switch v-model:checked="auto"/>
-      </Item>
-    </Form>
-    <Divider/>
-    <div class="btnGroup">
-      <Button
-        type="primary"
-        @click="generate"
-      >
-        生成
-      </Button>
-      <Button
-        @click="reset"
-      >
-        重置
-      </Button>
-    </div>
-    <div class="resultPanel">
-      <TextArea
-        v-model:value="result"
-        placeholder="结果栏"
-        :auto-size="{ minRows: 10,maxRows:50 }"
-      />
-    </div>
-  </container>
+  <Form layout="inline" :model="formState">
+    <Item label="版本">
+      <Select v-model:value="formState.version">
+        <Option value="v1">Version 1</Option>
+        <Option value="v4">Version 4</Option>
+        <Option value="nil">NIL</Option>
+      </Select>
+    </Item>
+    <Item label="数量" v-show="formState.version!=='nil'">
+      <InputNumber v-model:value="formState.count" :max="500" :min="1" :step="1">
+      </InputNumber>
+    </Item>
+    <Item label="连字符">
+      <Switch v-model:checked="formState.hasHyphen"/>
+    </Item>
+    <Item label="自动生成">
+      <Switch v-model:checked="auto"/>
+    </Item>
+  </Form>
+  <Divider/>
+  <div class="btnGroup">
+    <Button
+      type="primary"
+      @click="generate"
+    >
+      生成
+    </Button>
+    <Button
+      @click="reset"
+    >
+      重置
+    </Button>
+  </div>
+  <div class="resultPanel">
+    <TextArea
+      v-model:value="result"
+      placeholder="结果栏"
+      :auto-size="{ minRows: 10,maxRows:50 }"
+    />
+  </div>
 </template>
 
 <script>
 import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
-import { Container } from '@/components'
 import { Form, Select, Input, InputNumber, Switch, Divider, Button } from 'ant-design-vue'
 const { Item } = Form
 const { Option } = Select
@@ -53,7 +50,7 @@ const { TextArea } = Input
 
 export default {
   name: 'UUID在线生成',
-  components: { Container, Form, Select, InputNumber, Switch, Divider, Button, Item, Option, TextArea },
+  components: { Form, Select, InputNumber, Switch, Divider, Button, Item, Option, TextArea },
   watch: {
     formState: {
       handler (val) {

@@ -10,7 +10,10 @@
       </Header>
       <Content ref="view">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
-        <router-view/>
+        <router-view v-if="$route.meta?.type !== 'tool'"/>
+        <Container v-else>
+          <router-view/>
+        </Container>
       </Content>
       <Footer>
         <span>© 2021&nbsp;</span>
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import { Container } from '@/components'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
 import { defineComponent } from 'vue'
@@ -51,7 +55,7 @@ export default defineComponent({
 
     nickName: undefined
   }),
-  components: { Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
+  components: { Container, Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
   computed: {
     ...mapState(['token'])
   },

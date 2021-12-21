@@ -1,5 +1,4 @@
 <template>
-<container>
   <Search
     v-model:value="url"
     placeholder="填入网址"
@@ -11,12 +10,10 @@
   <Paragraph v-show="data">
     <highlight-js autodetect :code="data"></highlight-js>
   </Paragraph>
-</container>
 </template>
 
 <script>
 import { Input, Typography } from 'ant-design-vue'
-import { Container } from '@/components'
 import { html_beautify as htmlBeatify } from 'js-beautify'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
@@ -26,7 +23,7 @@ const { Search } = Input
 const { Paragraph } = Typography
 export default {
   name: 'viewSourceCode',
-  components: { Container, Search, Paragraph, highlightJs: hljsVuePlugin.component },
+  components: { Search, Paragraph, highlightJs: hljsVuePlugin.component },
   data: () => ({
     url: undefined,
     data: '',

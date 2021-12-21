@@ -1,31 +1,28 @@
 <template>
-  <container>
-    <Paragraph>
-      <blockquote>数据来源：
-        <Link href="https://github.com/jaywcjlove/linux-command" target="_blank">jaywcjlove/linux-command</Link>
-      </blockquote>
-    </Paragraph>
-    <Title :level="3">请输入要查询的命令</Title>
-    <Input v-model:value.trim="keyword" placeholder="man"/>
-    <Divider v-show="keyword"/>
-    <Title v-show="keyword" :level="3">搜索结果（点击查看详情）</Title>
-    <Paragraph v-show="keyword">
-      <ul>
-        <li v-show="searchResults.length === 0"><b>没有结果</b></li>
-        <li v-for="(item,index) in searchResults" :key="index" class="resultListItem">
-          <Paragraph @click="query(item)"><b>{{ data[item].n }}</b>: {{ data[item].d }}</Paragraph>
-        </li>
-      </ul>
-    </Paragraph>
-    <Modal :footer="null" :title="command + ' 命令详情'" v-model:visible="showModal" :width="modalWidth">
-      <Typography v-html="commandDetail"></Typography>
-    </Modal>
-  </container>
+  <Paragraph>
+    <blockquote>数据来源：
+      <Link href="https://github.com/jaywcjlove/linux-command" target="_blank">jaywcjlove/linux-command</Link>
+    </blockquote>
+  </Paragraph>
+  <Title :level="3">请输入要查询的命令</Title>
+  <Input v-model:value.trim="keyword" placeholder="man"/>
+  <Divider v-show="keyword"/>
+  <Title v-show="keyword" :level="3">搜索结果（点击查看详情）</Title>
+  <Paragraph v-show="keyword">
+    <ul>
+      <li v-show="searchResults.length === 0"><b>没有结果</b></li>
+      <li v-for="(item,index) in searchResults" :key="index" class="resultListItem">
+        <Paragraph @click="query(item)"><b>{{ data[item].n }}</b>: {{ data[item].d }}</Paragraph>
+      </li>
+    </ul>
+  </Paragraph>
+  <Modal :footer="null" :title="command + ' 命令详情'" v-model:visible="showModal" :width="modalWidth">
+    <Typography v-html="commandDetail"></Typography>
+  </Modal>
 </template>
 
 <script>
 import { Typography, Input, Divider, Modal } from 'ant-design-vue'
-import { Container } from '@/components'
 import { createNamespacedHelpers } from 'vuex'
 import dayjs from 'dayjs'
 import md from '@/utils/markdown'
@@ -39,7 +36,7 @@ const { Paragraph, Link, Title } = Typography
 
 export default {
   name: 'linuxCommand',
-  components: { Container, Paragraph, Link, Title, Input, Divider, Modal, Typography },
+  components: { Paragraph, Link, Title, Input, Divider, Modal, Typography },
   data: () => ({
     keyword: '',
     command: '',

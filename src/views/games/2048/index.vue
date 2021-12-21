@@ -1,35 +1,32 @@
 <template>
-  <container>
-    <div class="panel">
-      <div class="container">
-        <div class="above-game">
-          <div class="scores-container">
-            <div class="score-container" ref="scoreContainer">0</div>
-            <div class="best-container" ref="bestContainer">0</div>
-          </div>
-          <a class="restart-button" ref="restartButton">新游戏</a>
+  <div class="panel">
+    <div class="container">
+      <div class="above-game">
+        <div class="scores-container">
+          <div class="score-container" ref="scoreContainer">0</div>
+          <div class="best-container" ref="bestContainer">0</div>
         </div>
-        <div class="game-container" ref="gameContainer">
-          <div class="game-message" ref="messageContainer">
-            <p></p>
-            <div class="lower">
-              <a class="keep-playing-button" ref="keepPlayingButton">继续挑战</a>
-              <a class="retry-button" ref="retryButton">重新开始</a>
-            </div>
+        <a class="restart-button" ref="restartButton">新游戏</a>
+      </div>
+      <div class="game-container" ref="gameContainer">
+        <div class="game-message" ref="messageContainer">
+          <p></p>
+          <div class="lower">
+            <a class="keep-playing-button" ref="keepPlayingButton">继续挑战</a>
+            <a class="retry-button" ref="retryButton">重新开始</a>
           </div>
-          <div class="grid-container">
-            <div class="grid-cell" v-for="item in 16" :key="item"></div>
-          </div>
-          <div class="tile-container" ref="tileContainer">
-          </div>
+        </div>
+        <div class="grid-container">
+          <div class="grid-cell" v-for="item in 16" :key="item"></div>
+        </div>
+        <div class="tile-container" ref="tileContainer">
         </div>
       </div>
     </div>
-  </container>
+  </div>
 </template>
 
 <script>
-import { Container } from '@/components'
 import GameManager from './js/GameManager.js'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -39,7 +36,6 @@ let gameManager
 
 export default {
   name: '2048',
-  components: { Container },
   data: () => ({
     state: {}
   }),

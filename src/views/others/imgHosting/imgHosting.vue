@@ -1,23 +1,20 @@
 <template>
-  <container>
-    <div class="container">
-      <Tabs v-model:activeKey="activeKey" type="card" class="totalTab">
-        <TabPane key="home" tab="上传区">
-          <Upload :activeKey="activeKey"/>
-        </TabPane>
-        <TabPane key="uploaded" tab="相册">
-          <ImgList/>
-        </TabPane>
-        <TabPane key="settings" tab="设置">
-          <Settings/>
-        </TabPane>
-      </Tabs>
-    </div>
-  </container>
+  <div class="container">
+    <Tabs v-model:activeKey="activeKey" type="card" class="totalTab">
+      <TabPane key="home" tab="上传区">
+        <Upload :activeKey="activeKey"/>
+      </TabPane>
+      <TabPane key="uploaded" tab="相册">
+        <ImgList/>
+      </TabPane>
+      <TabPane key="settings" tab="设置">
+        <Settings/>
+      </TabPane>
+    </Tabs>
+  </div>
 </template>
 
 <script>
-import { Container } from '@/components'
 import { defineAsyncComponent } from 'vue'
 import { Tabs } from 'ant-design-vue'
 
@@ -26,7 +23,6 @@ const { TabPane } = Tabs
 export default {
   name: '极简图床',
   components: {
-    Container,
     ImgList: defineAsyncComponent(() => import('./child/imgList.vue')),
     Upload: defineAsyncComponent(() => import('./child/upload.vue')),
     Settings: defineAsyncComponent(() => import('./child/settings.vue')),
@@ -64,7 +60,7 @@ export default {
 
   .ant-tabs-content {
     width: 100%;
-    height: calc(100% - 4.8rem);
+    height: 100%;
 
     .ant-tabs-tabpane {
       width: 100%;

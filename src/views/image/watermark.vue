@@ -1,51 +1,48 @@
 <template>
-  <container>
-    <Paragraph>
-      <blockquote>全部过程均在本地进行，本工具可离线使用</blockquote>
-    </Paragraph>
-    <Form layout="vertical">
-      <FormItem label="请选择要添加水印的图片">
-        <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="upload">
-          <Input readonly placeholder="点击这里上传图片" :value="fileName">
-            <template #addonAfter>
-              <Button block :disabled="!file" @click.stop="addWatermark" :loading="loading">
-                <span v-if="loading">处理中</span>
-                <span v-else>开始处理</span>
-              </Button>
-            </template>
-          </Input>
-        </Upload>
-      </FormItem>
-      <FormItem label="请输入水印文字">
-        <Input placeholder="仅供 xxx 验证使用" v-model:value="options.text"/>
-      </FormItem>
-      <FormItem label="字体大小">
-        <Slider :max="30" :min="10" v-model:value="options.fontSize"/>
-      </FormItem>
-      <FormItem label="透明度">
-        <Slider :max="10" :min="1" :step="0.1" v-model:value="options.alpha"/>
-      </FormItem>
-      <FormItem label="旋转角度">
-        <Slider :max="365" :min="0" v-model:value="options.rotate"/>
-      </FormItem>
-      <FormItem label="文本间距">
-        <Slider :max="100" :min="0" v-model:value="options.width"/>
-      </FormItem>
-      <FormItem label="文字颜色">
-        <Compact v-model="color"/>
-      </FormItem>
-      <FormItem label="预览" v-show="file">
-        <div class="preview" ref="preview">
-          <img :src="file" alt="preview">
-          <div class="watermark" :style="{ background: `url(${svg})` }"></div>
-        </div>
-      </FormItem>
-    </Form>
-  </container>
+  <Paragraph>
+    <blockquote>全部过程均在本地进行，本工具可离线使用</blockquote>
+  </Paragraph>
+  <Form layout="vertical">
+    <FormItem label="请选择要添加水印的图片">
+      <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="upload">
+        <Input readonly placeholder="点击这里上传图片" :value="fileName">
+          <template #addonAfter>
+            <Button block :disabled="!file" @click.stop="addWatermark" :loading="loading">
+              <span v-if="loading">处理中</span>
+              <span v-else>开始处理</span>
+            </Button>
+          </template>
+        </Input>
+      </Upload>
+    </FormItem>
+    <FormItem label="请输入水印文字">
+      <Input placeholder="仅供 xxx 验证使用" v-model:value="options.text"/>
+    </FormItem>
+    <FormItem label="字体大小">
+      <Slider :max="30" :min="10" v-model:value="options.fontSize"/>
+    </FormItem>
+    <FormItem label="透明度">
+      <Slider :max="10" :min="1" :step="0.1" v-model:value="options.alpha"/>
+    </FormItem>
+    <FormItem label="旋转角度">
+      <Slider :max="365" :min="0" v-model:value="options.rotate"/>
+    </FormItem>
+    <FormItem label="文本间距">
+      <Slider :max="100" :min="0" v-model:value="options.width"/>
+    </FormItem>
+    <FormItem label="文字颜色">
+      <Compact v-model="color"/>
+    </FormItem>
+    <FormItem label="预览" v-show="file">
+      <div class="preview" ref="preview">
+        <img :src="file" alt="preview">
+        <div class="watermark" :style="{ background: `url(${svg})` }"></div>
+      </div>
+    </FormItem>
+  </Form>
 </template>
 
 <script>
-import { Container } from '@/components'
 import { Buffer } from 'buffer'
 import { Input, Upload, Button, Form, Slider, Typography } from 'ant-design-vue'
 import { Compact } from '@ckpack/vue-color'
@@ -58,7 +55,6 @@ const { Item: FormItem } = Form
 export default {
   name: 'watermark',
   components: {
-    Container,
     Input,
     Upload,
     Button,

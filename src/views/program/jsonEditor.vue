@@ -1,46 +1,43 @@
 <template>
-  <container>
-    <div class="editorPanel">
-      <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
-      <div class="controller noShowMobile">
-        <Space direction="vertical">
-          <Button type="primary" @click="copyRight" block>
-            <Right theme="outline"/>
-            复制
-          </Button>
-          <Button type="primary" @click="copyLeft" block>
-            <Left theme="outline"/>
-            复制
-          </Button>
-          <Button type="primary" @click="save" block>
-            <Save theme="outline"/>
-            保存
-          </Button>
-          <Checkbox v-model:checked="autoSave" @change="changeAutoSave">自动</Checkbox>
-          <Button type="primary" @click="clear" block v-if="getData('jsonEditor')">
-            <Clear theme="outline"/>
-            清除
-          </Button>
-          <Button type="primary" @click="download" block>
-            <CodeDownload theme="outline"/>
-            下载
-          </Button>
-          <Checkbox v-model:checked="diff" @change="changeDiff">Diff</Checkbox>
-        </Space>
-      </div>
-      <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight noShowMobile"></div>
+  <div class="editorPanel">
+    <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
+    <div class="controller noShowMobile">
+      <Space direction="vertical">
+        <Button type="primary" @click="copyRight" block>
+          <Right theme="outline"/>
+          复制
+        </Button>
+        <Button type="primary" @click="copyLeft" block>
+          <Left theme="outline"/>
+          复制
+        </Button>
+        <Button type="primary" @click="save" block>
+          <Save theme="outline"/>
+          保存
+        </Button>
+        <Checkbox v-model:checked="autoSave" @change="changeAutoSave">自动</Checkbox>
+        <Button type="primary" @click="clear" block v-if="getData('jsonEditor')">
+          <Clear theme="outline"/>
+          清除
+        </Button>
+        <Button type="primary" @click="download" block>
+          <CodeDownload theme="outline"/>
+          下载
+        </Button>
+        <Checkbox v-model:checked="diff" @change="changeDiff">Diff</Checkbox>
+      </Space>
     </div>
-    <Space class="showMobile" align="center">
-      <Button type="primary" @click="download">
-        下载
-      </Button>
-    </Space>
-  </container>
+    <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight noShowMobile"></div>
+  </div>
+  <Space class="showMobile" align="center">
+    <Button type="primary" @click="download">
+      下载
+    </Button>
+  </Space>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { Container } from '@/components'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
@@ -77,7 +74,6 @@ let codeRight = {
 export default {
   name: 'JsonEditor',
   components: {
-    Container,
     Button,
     Space,
     Checkbox,

@@ -1,18 +1,15 @@
 <template>
-  <container>
-    <Tabs>
-      <TabPane key="common" tab="随机数字">
-        <RandomNumber/>
-      </TabPane>
-      <TabPane key="advanced" tab="随机列表">
-        <RandomList/>
-      </TabPane>
-    </Tabs>
-  </container>
+  <Tabs>
+    <TabPane key="common" tab="随机数字">
+      <RandomNumber/>
+    </TabPane>
+    <TabPane key="advanced" tab="随机列表">
+      <RandomList/>
+    </TabPane>
+  </Tabs>
 </template>
 
 <script>
-import Container from '@/components/container.vue'
 import { Tabs } from 'ant-design-vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
 
@@ -23,7 +20,6 @@ export default defineComponent({
   components: {
     RandomNumber: defineAsyncComponent(() => import('./randomNumber.vue')),
     RandomList: defineAsyncComponent(() => import('./randomList.vue')),
-    Container,
     Tabs,
     TabPane
   }

@@ -1,15 +1,11 @@
 <template>
-  <container>
-    <iframe src="https://webssh.iszy.xyz/" class="webssh" title="webssh"></iframe>
-  </container>
+  <iframe src="https://webssh.iszy.xyz/" class="webssh" title="webssh"></iframe>
 </template>
 
 <script>
-import { Container } from '@/components'
 
 export default {
-  name: 'webssh',
-  components: { Container }
+  name: 'webssh'
 }
 </script>
 

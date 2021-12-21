@@ -1,102 +1,99 @@
 <template>
-  <container>
-    <Row>
-      <Row :span="24">
-        <span class="tips">计算仅供参考，请以银行数据为准!</span>
-      </Row>
+  <Row>
+    <Row :span="24">
+      <span class="tips">计算仅供参考，请以银行数据为准!</span>
     </Row>
-    <Row>
-      <Col :xs="24" :lg="6">
-        <div class="panel">
-          <Form layout="horizontal" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
-                  :colon="false">
-            <Item label="贷款金额">
-              <Input addon-after="元" v-model:value="loanAmount" type="number"/>
+  </Row>
+  <Row>
+    <Col :xs="24" :lg="6">
+      <div class="panel">
+        <Form layout="horizontal" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
+                :colon="false">
+          <Item label="贷款金额">
+            <Input addon-after="元" v-model:value="loanAmount" type="number"/>
+          </Item>
+          <Item label="贷款期限">
+            <Select v-model:value="repaymentPeriod" type="number">
+              <Option :value="0">自定义贷款期限</Option>
+              <Option v-for="(n,index) in 30" :key="'repaymentPeriod'+index" :value="n">
+                {{ n }}年({{ n * 12 }}月)
+              </Option>
+            </Select>
+          </Item>
+          <Item label="贷款月数">
+            <Input addon-after="月" v-model:value="loanMonth" :disabled="repaymentPeriod!==0"/>
+          </Item>
+          <Item label="贷款利率">
+            <Input addon-after="%" v-model:value="lendingRates"/>
+          </Item>
+          <Item label="还款方式">
+            <Select v-model:value="repayment">
+              <Option value="equalLoan">
+                等额本息
+              </Option>
+              <Option value="equalPrincipal">
+                等额本金
+              </Option>
+            </Select>
+          </Item>
+          <Item label="首次还款">
+            <DatePicker v-model:value="firstRepaymentDate" :format="dateFormat" style="width: 100%"/>
+          </Item>
+          <Divider/>
+          <Item>
+            <Group>
+              <Button type="primary" @click="addPrepayment" :disabled="!firstRepaymentDate">添加提前还款</Button>
+              <Button @click="removePrepayment" v-if="prepayment.length > 0">移除</Button>
+            </Group>
+          </Item>
+          <template v-for="(item, index) of prepayment" :key="index">
+            <Divider orientation="left">第{{ index + 1 }}次提前还款</Divider>
+            <Item label="还款日期">
+              <DatePicker v-model:value="item.repaymentDate" :format="dateFormat" style="width: 100%"/>
             </Item>
-            <Item label="贷款期限">
-              <Select v-model:value="repaymentPeriod" type="number">
-                <Option :value="0">自定义贷款期限</Option>
-                <Option v-for="(n,index) in 30" :key="'repaymentPeriod'+index" :value="n">
-                  {{ n }}年({{ n * 12 }}月)
-                </Option>
-              </Select>
+            <Item label="提前还款金额">
+              <Input addon-after="元" v-model:value="item.repaymentAmount" type="number"/>
             </Item>
-            <Item label="贷款月数">
-              <Input addon-after="月" v-model:value="loanMonth" :disabled="repaymentPeriod!==0"/>
+            <Item label="调整期数">
+              <Input addon-after="期" v-model:value="item.adjustLoanMonth" type="number"/>
             </Item>
-            <Item label="贷款利率">
-              <Input addon-after="%" v-model:value="lendingRates"/>
+            <Item label="调整利率">
+              <Input addon-after="%" v-model:value="item.lendingRates"/>
             </Item>
-            <Item label="还款方式">
-              <Select v-model:value="repayment">
-                <Option value="equalLoan">
-                  等额本息
-                </Option>
-                <Option value="equalPrincipal">
-                  等额本金
-                </Option>
-              </Select>
-            </Item>
-            <Item label="首次还款">
-              <DatePicker v-model:value="firstRepaymentDate" :format="dateFormat" style="width: 100%"/>
-            </Item>
-            <Divider/>
-            <Item>
-              <Group>
-                <Button type="primary" @click="addPrepayment" :disabled="!firstRepaymentDate">添加提前还款</Button>
-                <Button @click="removePrepayment" v-if="prepayment.length > 0">移除</Button>
-              </Group>
-            </Item>
-            <template v-for="(item, index) of prepayment" :key="index">
-              <Divider orientation="left">第{{ index + 1 }}次提前还款</Divider>
-              <Item label="还款日期">
-                <DatePicker v-model:value="item.repaymentDate" :format="dateFormat" style="width: 100%"/>
-              </Item>
-              <Item label="提前还款金额">
-                <Input addon-after="元" v-model:value="item.repaymentAmount" type="number"/>
-              </Item>
-              <Item label="调整期数">
-                <Input addon-after="期" v-model:value="item.adjustLoanMonth" type="number"/>
-              </Item>
-              <Item label="调整利率">
-                <Input addon-after="%" v-model:value="item.lendingRates"/>
-              </Item>
-            </template>
-          </Form>
-        </div>
-      </Col>
-      <Col :xs="24" :lg="18">
-        <div class="panel">
-          <Form :label-col="{span:6}" :wrapper-col="{ span: 18}" labelAlign="left" :colon="false">
-            <Item label="累计提前还款">
-              <Input addon-after="元" v-model:value="cumulativeRepayment" readonly/>
-            </Item>
-            <Item label="累计调整期数">
-              <Input addon-after="元" v-model:value="cumulativeAdjustLoanMonth" readonly/>
-            </Item>
-            <Item label="原累计利息">
-              <Input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
-            </Item>
-            <Item label="累计缴息">
-              <Input addon-after="元" v-model:value="cumulativeInterestPayment" readonly/>
-            </Item>
-            <Item label="累计节省利息">
-              <Input addon-after="元" v-model:value="savedMoney" readonly/>
-            </Item>
-            <Item :wrapper-col="{span:24}">
-              <Table :dataSource="dataSource" :columns="columns" bordered size="small" :pagination="false"/>
-            </Item>
-          </Form>
-        </div>
-      </Col>
-    </Row>
-  </container>
+          </template>
+        </Form>
+      </div>
+    </Col>
+    <Col :xs="24" :lg="18">
+      <div class="panel">
+        <Form :label-col="{span:6}" :wrapper-col="{ span: 18}" labelAlign="left" :colon="false">
+          <Item label="累计提前还款">
+            <Input addon-after="元" v-model:value="cumulativeRepayment" readonly/>
+          </Item>
+          <Item label="累计调整期数">
+            <Input addon-after="元" v-model:value="cumulativeAdjustLoanMonth" readonly/>
+          </Item>
+          <Item label="原累计利息">
+            <Input addon-after="元" v-model:value="originalCumulativeInterestPayment" readonly/>
+          </Item>
+          <Item label="累计缴息">
+            <Input addon-after="元" v-model:value="cumulativeInterestPayment" readonly/>
+          </Item>
+          <Item label="累计节省利息">
+            <Input addon-after="元" v-model:value="savedMoney" readonly/>
+          </Item>
+          <Item :wrapper-col="{span:24}">
+            <Table :dataSource="dataSource" :columns="columns" bordered size="small" :pagination="false"/>
+          </Item>
+        </Form>
+      </div>
+    </Col>
+  </Row>
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import { cloneDeep } from 'lodash-es'
-import { Container } from '@/components'
 import { Row, Col, Form, Table, Input, Select, DatePicker, Divider, Button } from 'ant-design-vue'
 import isBetween from 'dayjs/plugin/isBetween'
 
@@ -108,7 +105,7 @@ const { Group } = Button
 
 export default {
   name: '多次提前还贷计算器',
-  components: { Container, Row, Col, Form, Table, Input, Item, Select, Option, DatePicker, Divider, Button, Group },
+  components: { Row, Col, Form, Table, Input, Item, Select, Option, DatePicker, Divider, Button, Group },
   data: () => ({
     loanAmount: 150000,
     repaymentPeriod: 2,

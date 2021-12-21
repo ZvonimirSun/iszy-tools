@@ -1,62 +1,60 @@
 <template>
-  <container>
-    <div class="codePanel">
-      <div class="header">
-        <Button type="primary" @click="format" title="格式化">
-          <template #icon>
-            <indent-right theme="outline"/>
-          </template>
-        </Button>
-        <Button type="primary" @click="compact" title="压缩">
-          <template #icon>
-            <compression theme="outline"/>
-          </template>
-        </Button>
-        <Divider type="vertical"/>
-        <Button type="primary" @click="foldAll" title="折叠所有">
-          <template #icon>
-            <collapse-text-input theme="outline"/>
-          </template>
-        </Button>
-        <Button type="primary" @click="unfoldAll" title="展开所有">
-          <template #icon>
-            <expand-text-input theme="outline"/>
-          </template>
-        </Button>
-        <Divider type="vertical"/>
-        <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
-          <template #icon>
-            <undo theme="outline"/>
-          </template>
-        </Button>
-        <Button type="primary" @click="redo" title="重做" :disabled="historySize.redo === 0">
-          <template #icon>
-            <redo theme="outline"/>
-          </template>
-        </Button>
-        <Divider type="vertical"/>
-        <Button type="primary" title="前往顶部" @click="goTop">
-          <template #icon>
-            <to-top theme="outline"/>
-          </template>
-        </Button>
-        <Button type="primary" title="前往底部" @click="goBottom">
-          <template #icon>
-            <to-bottom theme="outline"/>
-          </template>
-        </Button>
-      </div>
-      <CodeMirror ref="cmEditor" class="cmEditor" v-model:value="code" :options="cmOptions"
-                  @changes="onChanges"
-                  @cursorActivity="onCursorActivity"
-      />
-      <div class="footer">
-        <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
-            cursor.ch + 1
-          }}</span>
-      </div>
+  <div class="codePanel">
+    <div class="header">
+      <Button type="primary" @click="format" title="格式化">
+        <template #icon>
+          <indent-right theme="outline"/>
+        </template>
+      </Button>
+      <Button type="primary" @click="compact" title="压缩">
+        <template #icon>
+          <compression theme="outline"/>
+        </template>
+      </Button>
+      <Divider type="vertical"/>
+      <Button type="primary" @click="foldAll" title="折叠所有">
+        <template #icon>
+          <collapse-text-input theme="outline"/>
+        </template>
+      </Button>
+      <Button type="primary" @click="unfoldAll" title="展开所有">
+        <template #icon>
+          <expand-text-input theme="outline"/>
+        </template>
+      </Button>
+      <Divider type="vertical"/>
+      <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
+        <template #icon>
+          <undo theme="outline"/>
+        </template>
+      </Button>
+      <Button type="primary" @click="redo" title="重做" :disabled="historySize.redo === 0">
+        <template #icon>
+          <redo theme="outline"/>
+        </template>
+      </Button>
+      <Divider type="vertical"/>
+      <Button type="primary" title="前往顶部" @click="goTop">
+        <template #icon>
+          <to-top theme="outline"/>
+        </template>
+      </Button>
+      <Button type="primary" title="前往底部" @click="goBottom">
+        <template #icon>
+          <to-bottom theme="outline"/>
+        </template>
+      </Button>
     </div>
-  </container>
+    <CodeMirror ref="cmEditor" class="cmEditor" v-model:value="code" :options="cmOptions"
+                @changes="onChanges"
+                @cursorActivity="onCursorActivity"
+    />
+    <div class="footer">
+      <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
+          cursor.ch + 1
+        }}</span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -105,7 +103,6 @@ import 'codemirror/addon/comment/comment.js'
 // import 'codemirror/addon/lint/lint.css'
 // import 'codemirror/addon/lint/lint.js'
 // import 'codemirror/addon/lint/css-lint.js'
-import { Container } from '@/components'
 import CodeMirror from '@/components/vue-codemirror.vue'
 // endregion
 import { Button, Divider } from 'ant-design-vue'
@@ -169,7 +166,6 @@ export default {
   },
   components: {
     CodeMirror,
-    Container,
     Button,
     Divider,
     IndentRight,

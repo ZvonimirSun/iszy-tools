@@ -1,16 +1,13 @@
 <template>
-  <container>
-    <div class="panel">
-      <TextArea class="inputPanel" placeholder="请输入HTML内容" title="HTML" v-model:value="html"/>
-      <TextArea class="inputPanel" placeholder="请输入CSS内容" title="CSS" v-model:value="css"/>
-      <TextArea class="inputPanel" placeholder="请输入JS内容" title="JS" v-model:value="js"/>
-      <iframe class="displayPanel" :srcdoc="doc" seamless title="展示面板"/>
-    </div>
-  </container>
+  <div class="panel">
+    <TextArea class="inputPanel" placeholder="请输入HTML内容" title="HTML" v-model:value="html"/>
+    <TextArea class="inputPanel" placeholder="请输入CSS内容" title="CSS" v-model:value="css"/>
+    <TextArea class="inputPanel" placeholder="请输入JS内容" title="JS" v-model:value="js"/>
+    <iframe class="displayPanel" :srcdoc="doc" seamless title="展示面板"/>
+  </div>
 </template>
 
 <script>
-import { Container } from '@/components'
 import { Input } from 'ant-design-vue'
 
 const { TextArea } = Input
@@ -18,7 +15,6 @@ const { TextArea } = Input
 export default {
   name: 'tinyEditor',
   components: {
-    Container,
     TextArea
   },
   data: () => ({
