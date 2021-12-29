@@ -11,15 +11,6 @@
           <Left theme="outline"/>
           复制
         </Button>
-        <Button type="primary" @click="save" block>
-          <Save theme="outline"/>
-          保存
-        </Button>
-        <Checkbox v-model:checked="autoSave" @change="changeAutoSave">自动</Checkbox>
-        <Button type="primary" @click="clear" block v-if="getData('jsonEditor')">
-          <Clear theme="outline"/>
-          清除
-        </Button>
         <Button type="primary" @click="download" block>
           <CodeDownload theme="outline"/>
           下载
@@ -37,15 +28,13 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
-import { Right, Left, CodeDownload, Save, Clear } from '@icon-park/vue-next'
+import { Right, Left, CodeDownload } from '@icon-park/vue-next'
 import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
-
-const { mapGetters, mapActions } = createNamespacedHelpers('cache')
 
 let editorLeft, editorRight
 let codeLeft = {
@@ -79,13 +68,10 @@ export default {
     Checkbox,
     Right,
     Left,
-    CodeDownload,
-    Save,
-    Clear
+    CodeDownload
   },
   data: () => ({
-    autoSave: false,
-    diff: true
+    diff: false
   }),
   computed: {
     ...mapGetters(['getData'])
@@ -96,7 +82,6 @@ export default {
   methods: {
     init () {
       if (this.getData('jsonEditor')) {
-        this.autoSave = Boolean(this.getData('jsonEditor').autoSave)
         if (this.getData('jsonEditor').left) {
           codeLeft = this.getData('jsonEditor').left
         }
@@ -114,9 +99,7 @@ export default {
             try {
               codeLeft = JSON.parse(json)
               editorRight.refresh()
-              if (this.autoSave) {
-                this.save()
-              }
+              this.save()
             } catch (e) {}
           },
           autocomplete: {
@@ -147,9 +130,7 @@ export default {
             try {
               codeRight = JSON.parse(json)
               editorLeft.refresh()
-              if (this.autoSave) {
-                this.save()
-              }
+              this.save()
             } catch (e) {
             }
           },
@@ -177,58 +158,25 @@ export default {
       codeRight = cloneDeep(codeLeft)
       editorRight.update(codeRight)
       editorLeft.refresh()
-      if (this.autoSave) {
-        this.save()
-      }
+      this.save()
     },
     copyLeft () {
       codeLeft = cloneDeep(codeRight)
       editorLeft.update(codeLeft)
       editorRight.refresh()
-      if (this.autoSave) {
-        this.save()
-      }
+      this.save()
     },
     async save () {
-      if (this.autoSave) {
-        try {
-          await this.setData({
-            key: 'jsonEditor',
-            val: {
-              autoSave: true,
-              left: editorLeft.get(),
-              right: editorRight.get()
-            }
-          })
-        } catch (e) {
-          this.$msg.warn('JSON存在错误，保存失败')
-          await this.setData({
-            key: 'jsonEditor',
-            val: {
-              autoSave: true,
-              left: this.getData('jsonEditor').left,
-              right: this.getData('jsonEditor').right
-            }
-          })
-        }
-      } else {
+      try {
         await this.setData({
           key: 'jsonEditor',
           val: {
-            autoSave: false,
-            left: this.getData('jsonEditor').left,
-            right: this.getData('jsonEditor').right
+            left: editorLeft.get(),
+            right: editorRight.get()
           }
         })
+      } catch (e) {
       }
-    },
-    async clear () {
-      await this.setData({
-        key: 'jsonEditor',
-        val: undefined
-      })
-      this.autoSave = false
-      this.$msg.success('清除成功')
     },
     download () {
       createFile(editorLeft.getText(), 'left.json')
@@ -236,9 +184,6 @@ export default {
     changeDiff () {
       editorLeft.refresh()
       editorRight.refresh()
-    },
-    changeAutoSave () {
-      this.save()
     },
 
     onClassName ({ path }) {
@@ -262,7 +207,7 @@ export default {
           : [key, String(value)]
       }))
     },
-    ...mapActions(['setData'])
+    ...mapMutations(['setData'])
   },
   beforeUnmount () {
     if (editorLeft) {

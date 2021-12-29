@@ -71,8 +71,7 @@ import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash-es'
 
 const { Paragraph } = Typography
-const { mapActions, mapGetters, mapState: favMapState } = createNamespacedHelpers('favorite')
-const { mapState: settingsMapState } = createNamespacedHelpers('settings')
+const { mapActions, mapGetters, mapState } = createNamespacedHelpers('user')
 
 export default {
   name: '首页',
@@ -124,8 +123,7 @@ export default {
         return item.children
       }))
     },
-    ...settingsMapState(['settings']),
-    ...favMapState(['favorite']),
+    ...mapState(['settings', 'favorite']),
     ...mapGetters([
       'most',
       'recent',

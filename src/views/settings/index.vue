@@ -32,14 +32,11 @@
 import { createNamespacedHelpers, mapActions } from 'vuex'
 import { Typography, Divider, Checkbox, Space, Button } from 'ant-design-vue'
 
-const {
-  mapState: mapStateSettings,
-  mapActions: mapActionSettings
-} = createNamespacedHelpers('settings')
 const { Title } = Typography
 const {
   mapState: mapStateUser,
-  mapActions: mapActionsUser
+  mapActions: mapActionsUser,
+  mapMutations: mapMutationsUser
 } = createNamespacedHelpers('user')
 
 export default {
@@ -52,14 +49,11 @@ export default {
     Button
   },
   computed: {
-    ...mapStateSettings({
-      settings: state => state.settings
-    }),
-    ...mapStateUser(['token'])
+    ...mapStateUser(['token', 'settings'])
   },
   methods: {
     ...mapActions(['uploadSettings', 'downloadSettings']),
-    ...mapActionSettings(['triggerSetting']),
+    ...mapMutationsUser(['triggerSetting']),
     ...mapActionsUser(['getProfiles']),
     async uploadToCloud () {
       if (await this.uploadSettings()) {

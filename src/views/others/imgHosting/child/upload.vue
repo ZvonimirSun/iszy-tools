@@ -22,7 +22,6 @@ import { createNamespacedHelpers } from 'vuex'
 const { Dragger } = Upload
 const {
   mapGetters,
-  mapState,
   mapActions
 } = createNamespacedHelpers('imgHosting')
 
@@ -39,8 +38,7 @@ export default {
     timeoutIndex: undefined
   }),
   computed: {
-    ...mapGetters(['config']),
-    ...mapState(['uploader', 'commonConfig'])
+    ...mapGetters(['config', 'uploader', 'commonConfig'])
   },
   mounted () {
     document.addEventListener('paste', this.paste.bind(this))

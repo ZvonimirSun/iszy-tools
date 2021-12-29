@@ -52,9 +52,11 @@ export default (options = {}) => {
             }
           } else {
             _mutex.enqueue(setState(tmp[0], state[tmp[0]]))
-          }
-          if (state?.settings?.settings?.autoSync) {
-            _mutex.enqueue(_store.dispatch('uploadSettings'))
+            if (tmp[0] === 'user') {
+              if (state?.user?.settings?.autoSync) {
+                _mutex.enqueue(_store.dispatch('uploadSettings'))
+              }
+            }
           }
         }
       })

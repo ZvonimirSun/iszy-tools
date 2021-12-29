@@ -1,16 +1,17 @@
 export default {
   namespaced: true,
-  state: () => ({
-    bestScore: 0
-  }),
-  mutations: {
-    setBestScore (state, bestScore) {
-      state.bestScore = bestScore
+  getters: {
+    bestScore (state, getters, rootState) {
+      return rootState.user.modules.tetris.bestScore
     }
   },
   actions: {
     setBestScore ({ commit }, bestScore) {
-      commit('setBestScore', bestScore || 0)
+      commit('user/updateModuleState', {
+        module: 'tetris',
+        key: 'bestScore',
+        value: bestScore || 0
+      }, { root: true })
     }
   }
 }

@@ -32,7 +32,7 @@
 import GameManager from './js/GameManager.js'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapActions, mapState } = createNamespacedHelpers('g2048')
+const { mapActions, mapState, mapGetters } = createNamespacedHelpers('g2048')
 
 let gameManager
 
@@ -43,9 +43,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      gameState: state => state.gameState,
-      bestScore: state => state.bestScore
-    })
+      gameState: state => state.gameState
+    }),
+    ...mapGetters(['bestScore'])
   },
   mounted () {
     gameManager = new GameManager(4, this)

@@ -67,7 +67,7 @@ import { range, shuffle, cloneDeep } from 'lodash-es'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('tetris')
+const { mapGetters, mapActions } = createNamespacedHelpers('tetris')
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {
@@ -137,7 +137,7 @@ export default {
       const level = this.level <= 20 ? this.level : 20
       return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
     },
-    ...mapState(['bestScore'])
+    ...mapGetters(['bestScore'])
   },
   mounted () {
     this.resetGame()

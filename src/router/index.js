@@ -51,8 +51,9 @@ routes = routes.concat([
     path: '/logout',
     name: '登出',
     beforeEnter (to, from, next) {
-      store.dispatch('user/logout')
-      next('/')
+      store.dispatch('user/logout').then(() => {
+        next('/')
+      })
     }
   },
   {
@@ -102,7 +103,7 @@ router.beforeEach(async (to, from, next) => {
   if (currentUser || whiteList.indexOf(to.path) !== -1 || !to.meta.requiresAuth) {
     document.title = getPageTitle(to.meta.title || to.name)
     if (to.name && to.meta.statistics) {
-      await store.dispatch('favorite/access', { name: to.name, link: to.path })
+      await store.dispatch('user/access', { name: to.name, link: to.path })
     }
     next()
   } else {

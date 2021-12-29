@@ -59,6 +59,34 @@ export default defineConfig({
             }
           },
           {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'googleapis',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
             urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
             handler: 'StaleWhileRevalidate',
             options: {

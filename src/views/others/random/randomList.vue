@@ -45,16 +45,11 @@
 
 <script>
 import { random } from 'lodash-es'
-import { createNamespacedHelpers } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { defineComponent } from 'vue'
 import { Tag, Tooltip, Input, Typography, Divider, Modal } from 'ant-design-vue'
 import { Plus } from '@icon-park/vue-next'
 import { LuckyWheel } from '@lucky-canvas/vue'
-
-const {
-  mapGetters,
-  mapActions
-} = createNamespacedHelpers('cache')
 
 export default defineComponent({
   name: 'randomList',
@@ -98,7 +93,7 @@ export default defineComponent({
   beforeUnmount () {
   },
   methods: {
-    ...mapActions(['setData']),
+    ...mapMutations(['setData']),
 
     startCallBack () {
       this.loading = true

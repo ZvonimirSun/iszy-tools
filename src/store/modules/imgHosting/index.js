@@ -4,31 +4,20 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   namespaced: true,
   state: () => ({
-    uploader: '',
-    imgList: [],
-    configs: {
-    },
-    commonConfig: {
-      renameBeforeUpload: false,
-      renameTimeStamp: true,
-      copyUrlAfterUpload: true
-    }
+    imgList: []
   }),
   getters: {
-    config: (state) => (uploader) => {
-      return state.configs[uploader]
+    uploader: (state, getters, rootState) => {
+      return rootState.user.modules.imgHosting.uploader
+    },
+    config: (state, getters, rootState) => (uploader) => {
+      return rootState.user.modules.imgHosting.configs[uploader]
+    },
+    commonConfig: (state, getters, rootState) => {
+      return rootState.user.modules.imgHosting.commonConfig
     }
   },
   mutations: {
-    saveConfig (state, { uploader, config }) {
-      if (uploader) {
-        state.uploader = uploader
-        state.configs[uploader] = config
-      }
-    },
-    saveCommonConfig (state, val) {
-      state.commonConfig = cloneDeep(val)
-    },
     addImage (state, { name, url }) {
       if (name && url) {
         state.imgList.unshift({
@@ -48,11 +37,24 @@ export default {
     }
   },
   actions: {
-    saveConfig ({ commit }, val) {
-      commit('saveConfig', val)
+    saveConfig ({ commit }, { uploader, config }) {
+      commit('user/updateModuleState', {
+        module: 'imgHosting',
+        key: 'uploader',
+        value: uploader
+      }, { root: true })
+      commit('user/updateModuleState', {
+        module: 'imgHosting',
+        key: 'configs/' + uploader,
+        value: config
+      }, { root: true })
     },
     saveCommonConfig ({ commit }, val) {
-      commit('saveCommonConfig', val)
+      commit('user/updateModuleState', {
+        module: 'imgHosting',
+        key: 'commonConfig',
+        value: cloneDeep(val)
+      }, { root: true })
     },
     addImage ({ commit }, val) {
       commit('addImage', val)

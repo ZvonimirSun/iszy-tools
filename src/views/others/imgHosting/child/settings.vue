@@ -55,7 +55,6 @@ const { Item } = Form
 const { Password } = Input
 const {
   mapGetters,
-  mapState,
   mapActions
 } = createNamespacedHelpers('imgHosting')
 
@@ -85,8 +84,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters(['config']),
-    ...mapState(['uploader', 'commonConfig'])
+    ...mapGetters(['config', 'uploader', 'commonConfig'])
   },
   mounted () {
     if (this.uploader) {
