@@ -1521,7 +1521,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-ant-design-vue@^3.0.0-alpha.16:
+ant-design-vue@^3.0.0-beta.4:
   version "3.0.0-beta.4"
   resolved "https://registry.npmmirror.com/ant-design-vue/download/ant-design-vue-3.0.0-beta.4.tgz#e6f7861682875d77220d02ffe561b2b2022cd15b"
   integrity sha512-WUkA8LyXw35vi1OOHTzvtcet0lEhNGCQNF85zEOHpPlA1Xf8KWCricFeiA38fgg2AHWvE1mrVw/wqB1kXBJM1Q==

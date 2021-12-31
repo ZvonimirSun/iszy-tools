@@ -45,6 +45,12 @@ export default (options = {}) => {
 
       // 订阅 store 的 mutation。handler 会在每个 mutation 完成后调用，接收 mutation 和经过 mutation 后的状态作为参数
       _store.subscribe((mutation, state) => {
+        if (mutation.type === 'clearOfflineCache') {
+          localforage.clear().then(() => {
+            window.location.reload()
+          })
+          return
+        }
         if (filter(mutation)) {
           const tmp = mutation.type.split('/')
           if (tmp.length <= 1) {

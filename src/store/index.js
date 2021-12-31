@@ -34,7 +34,9 @@ export default createStore({
     },
     clear (state) {
       state._cache = {}
-    }
+    },
+
+    clearOfflineCache () {}
   },
   actions: {
     async uploadSettings ({ state }) {

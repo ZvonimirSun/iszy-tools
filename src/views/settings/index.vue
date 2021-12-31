@@ -3,6 +3,13 @@
   <Space>
     <Button type="primary" @click="login" v-if="!_user.token">登录</Button>
     <Button type="primary" @click="logout" v-else>登出</Button>
+    <Popconfirm
+      title="您是否确定要清空本地缓存？"
+      okText="清空"
+      @confirm="clearOfflineCache"
+    >
+      <Button danger>清空本地缓存</Button>
+    </Popconfirm>
   </Space>
   <Divider/>
   <template v-if="_user.token">
@@ -29,8 +36,8 @@
 </template>
 
 <script>
-import { createNamespacedHelpers, mapActions } from 'vuex'
-import { Typography, Divider, Checkbox, Space, Button } from 'ant-design-vue'
+import { createNamespacedHelpers, mapActions, mapMutations } from 'vuex'
+import { Typography, Divider, Checkbox, Space, Button, Popconfirm } from 'ant-design-vue'
 
 const { Title } = Typography
 const {
@@ -45,12 +52,14 @@ export default {
     Checkbox,
     Title,
     Space,
-    Button
+    Button,
+    Popconfirm
   },
   computed: {
     ...mapStateUser(['_user', 'settings'])
   },
   methods: {
+    ...mapMutations(['clearOfflineCache']),
     ...mapActions(['uploadSettings', 'downloadSettings']),
     ...mapMutationsUser(['triggerSetting']),
     async uploadToCloud () {
