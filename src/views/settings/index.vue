@@ -35,7 +35,6 @@ import { Typography, Divider, Checkbox, Space, Button } from 'ant-design-vue'
 const { Title } = Typography
 const {
   mapState: mapStateUser,
-  mapActions: mapActionsUser,
   mapMutations: mapMutationsUser
 } = createNamespacedHelpers('user')
 
@@ -54,7 +53,6 @@ export default {
   methods: {
     ...mapActions(['uploadSettings', 'downloadSettings']),
     ...mapMutationsUser(['triggerSetting']),
-    ...mapActionsUser(['getProfiles']),
     async uploadToCloud () {
       if (await this.uploadSettings()) {
         this.$msg.success('同步成功')
@@ -70,10 +68,10 @@ export default {
       }
     },
     login () {
-      window.location.href = 'login'
+      this.$router.push('/login')
     },
     logout () {
-      window.location.href = '/logout'
+      this.$router.push('/logout')
     }
   }
 }

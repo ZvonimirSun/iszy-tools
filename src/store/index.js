@@ -1,5 +1,5 @@
 import axios from '@/plugins/Axios'
-import { cloneDeep, merge } from 'lodash-es'
+import { merge } from 'lodash-es'
 import { toRaw } from 'vue'
 import { createStore } from 'vuex'
 import g2048 from './modules/2048'
@@ -39,7 +39,7 @@ export default createStore({
   actions: {
     async uploadSettings ({ state }) {
       if (state.user.token) {
-        const { token, ...settings } = toRaw(state.user)
+        const { token, profile, ...settings } = toRaw(state.user)
         try {
           const res = (await axios.post(`${this.$apiBase}/iszy_tools/settings`, settings)).data
           return res.code === '00000' && res.data
@@ -50,19 +50,20 @@ export default createStore({
         return false
       }
     },
-    async downloadSettings ({ state, commit }) {
+    async downloadSettings ({ state, commit, dispatch }) {
       if (state.user.token) {
         try {
-          const res = (await axios.get(`${this.$apiBase}/iszy_tools/settings`)).data
-          if (res.code === '00000' && res.data) {
-            commit('importConfig', res.data)
-            return true
-          } else {
-            return false
+          if (await dispatch('user/checkToken')) {
+            const res = (await axios.get(`${this.$apiBase}/iszy_tools/settings`)).data
+            if (res.code === '00000' && res.data) {
+              commit('importConfig', res.data)
+              return true
+            }
           }
         } catch (e) {
-          return false
+          console.log(e)
         }
+        return false
       } else {
         return false
       }

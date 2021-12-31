@@ -2,12 +2,13 @@ import axios from '@/plugins/Axios'
 import tools from '@/views/tools.json'
 import { flatten } from 'lodash-es'
 
-let source = axios.CancelToken.source()
-
 export default {
   namespaced: true,
   state: () => ({
     token: null,
+    profile: {
+      nickName: undefined
+    },
 
     settings: {
       showMost: false,
@@ -63,6 +64,10 @@ export default {
     },
     clearToken (state) {
       state.token = null
+      state.profile = {}
+    },
+    updateProfile (state, profile) {
+      state.profile = profile || {}
     },
 
     triggerSetting (state, setting) {
@@ -137,6 +142,7 @@ export default {
           if (res.data && res.data.code === '00000') {
             commit('setToken', res.data.data.token)
             await dispatch('downloadSettings', null, { root: true })
+            await dispatch('getProfiles')
             return true
           } else {
             commit('clearToken')
@@ -151,66 +157,59 @@ export default {
       }
     },
     logout ({ commit }) {
-      source.cancel()
-      source = axios.CancelToken.source()
       commit('clearToken')
     },
-    async getProfiles ({ state, commit }) {
-      source.cancel()
-      source = axios.CancelToken.source()
+    async getProfiles ({ state, commit, dispatch }) {
       if (state.token) {
         try {
-          return (await axios.get(`${this.$apiBase}/auth/profile`, {
-            cancelToken: source.token
-          })).data.data
+          if (await dispatch('checkToken')) {
+            commit('updateProfile', (await axios.get(`${this.$apiBase}/auth/profile`)).data.data)
+          }
+        } catch (e) {
+          if (!axios.isCancel(e)) {
+            console.log(e)
+          }
+        }
+      }
+    },
+    async checkToken ({ state, commit }) {
+      if (state.token) {
+        try {
+          await axios.head(`${this.$apiBase}/auth/profile`)
+          return true
         } catch (e) {
           if (!axios.isCancel(e)) {
             commit('clearToken')
           }
-          return null
+          return false
         }
       } else {
-        return null
+        return false
       }
     },
 
-    addFav ({ commit }, { name, link }) {
-      commit('updateFav', { name, link, add: true })
-    },
-    removeFav ({ commit }, { name }) {
-      commit('updateFav', { name })
-    },
-    access ({ commit }, { name, link }) {
-      commit('access', { name, link })
-    },
     clearHistory ({ commit }) {
       commit('clearHistory')
     },
-    updateHistory ({ commit }, { name, link }) {
-      commit('updateHistory', { name, link })
-    },
-    removeHistory ({ commit }, { name }) {
-      commit('removeHistory', { name })
-    },
 
-    fixFavorite ({ dispatch, state }) {
+    fixFavorite ({ state, commit }) {
       const allTools = flatten([...(tools || [])].map(item => {
         return item.children
       }))
       for (const tool of state.favorite) {
         const tmp = allTools.filter(item => (item.name === tool.name))
         if (tmp.length === 0) {
-          dispatch('removeFav', { name: tool.name })
+          commit('updateFav', { name: tool.name })
         } else if (tmp[0].link !== tool.link) {
-          dispatch('addFav', { name: tool.name, link: tmp[0].link })
+          commit('updateFav', { name: tool.name, link: tmp[0].link, add: true })
         }
       }
       for (const tool of state.statistics) {
         const tmp = allTools.filter(item => (item.name === tool.name))
         if (tmp.length === 0) {
-          dispatch('removeHistory', { name: tool.name })
+          commit('removeHistory', { name: tool.name })
         } else if (tmp[0].link !== tool.link) {
-          dispatch('updateHistory', { name: tool.name, link: tmp[0].link })
+          commit('updateHistory', { name: tool.name, link: tmp[0].link })
         }
       }
     }

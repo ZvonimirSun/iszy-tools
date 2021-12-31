@@ -37,6 +37,10 @@ export default (options = {}) => {
       }
       if (data) {
         _store.replaceState(data)
+        if (_store.state.user.token) {
+          _store.dispatch('downloadSettings')
+          _store.dispatch('user/getProfiles')
+        }
       }
 
       // 订阅 store 的 mutation。handler 会在每个 mutation 完成后调用，接收 mutation 和经过 mutation 后的状态作为参数

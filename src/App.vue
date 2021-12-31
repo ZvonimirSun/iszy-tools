@@ -5,8 +5,8 @@
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
-        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合<template v-if="nickName"> · <router-link to="/settings">{{nickName}}</router-link></template></div>
-        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link><template v-if="nickName"> · <router-link to="/settings">{{nickName}}</router-link></template></div>
+        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合<template v-if="profile.nickName"> · <router-link to="/settings">{{profile.nickName}}</router-link></template></div>
+        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link><template v-if="profile.nickName"> · <router-link to="/settings">{{profile.nickName}}</router-link></template></div>
       </Header>
       <Content ref="view">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
@@ -45,19 +45,17 @@ const {
 } = useRegisterSW()
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
-const { mapState, mapActions } = createNamespacedHelpers('user')
+const { mapState } = createNamespacedHelpers('user')
 
 export default defineComponent({
   data: () => ({
     locale: zhCN,
     offlineReady,
-    needRefresh,
-
-    nickName: undefined
+    needRefresh
   }),
   components: { Container, Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
   computed: {
-    ...mapState(['token'])
+    ...mapState(['profile'])
   },
   watch: {
     offlineReady: function (val) {
@@ -77,28 +75,14 @@ export default defineComponent({
           }
         })
       }
-    },
-    token: {
-      handler: function () {
-        this.updateProfile()
-      },
-      immediate: true
     }
   },
   methods: {
-    ...mapActions(['getProfiles']),
     getPopupContainer (node) {
       if (node) {
         return node.parentNode
       }
       return document.body
-    },
-    async updateProfile () {
-      if (this.token) {
-        this.nickName = ((await this.getProfiles()) || {}).nickName
-      } else {
-        this.nickName = undefined
-      }
     }
   }
 })

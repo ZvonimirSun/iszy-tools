@@ -19,9 +19,6 @@
         </Item>
       </Form>
     </div>
-    <div class="footer">
-      <div class="copyright"> Copyright © 2020 ISZY</div>
-    </div>
   </div>
 </template>
 

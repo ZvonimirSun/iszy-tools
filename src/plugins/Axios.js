@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 
 const axiosInstance = Axios.create()
 axiosInstance.$apiBase = ''
@@ -17,7 +18,7 @@ axiosInstance.interceptors.response.use(
   response => {
     if (response.config.url.includes(axiosInstance.$apiBase)) {
       if (response.data && response.data.code === 'A0401') {
-        window.location.href = '/'
+        router.push('/login')
       }
     }
     return response

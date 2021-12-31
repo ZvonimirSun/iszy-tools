@@ -23,8 +23,8 @@
             <template #title>{{ tool.name }}</template>
             <div class="tool" :class="{toolCollected:isFav(tool.name)}">
               <span class="toolName">{{ tool.name }}</span>
-              <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="removeFav({name:tool.name})"><Star theme="filled"/></span>
-              <span class="fav" @click.prevent="addFav({name:tool.name,link:tool.link||''})" v-else>
+              <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="updateFav({name:tool.name})"><Star theme="filled"/></span>
+              <span class="fav" @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})" v-else>
                 <span class="nonHover"><Star theme="outline"/></span>
                 <span class="hovered"><Star theme="filled"/></span>
               </span>
@@ -71,7 +71,7 @@ import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash-es'
 
 const { Paragraph } = Typography
-const { mapActions, mapGetters, mapState } = createNamespacedHelpers('user')
+const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpers('user')
 
 export default {
   name: '首页',
@@ -146,9 +146,8 @@ export default {
         return ''
       }
     },
+    ...mapMutations(['updateFav']),
     ...mapActions([
-      'addFav',
-      'removeFav',
       'fixFavorite'
     ])
   }
