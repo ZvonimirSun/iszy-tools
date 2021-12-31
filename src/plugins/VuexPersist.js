@@ -37,7 +37,7 @@ export default (options = {}) => {
       }
       if (data) {
         _store.replaceState(data)
-        if (_store.state.user.token) {
+        if (_store.state.user._user.token) {
           _store.dispatch('downloadSettings')
           _store.dispatch('user/getProfiles')
         }

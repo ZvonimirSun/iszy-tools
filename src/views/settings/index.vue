@@ -1,11 +1,11 @@
 <template>
   <Title :level="3">用户</Title>
   <Space>
-    <Button type="primary" @click="login" v-if="!token">登录</Button>
+    <Button type="primary" @click="login" v-if="!_user.token">登录</Button>
     <Button type="primary" @click="logout" v-else>登出</Button>
   </Space>
   <Divider/>
-  <template v-if="token">
+  <template v-if="_user.token">
     <Title :level="3">云端同步</Title>
     <Space>
       <Button type="primary" @click="uploadToCloud">同步到云端</Button>
@@ -48,7 +48,7 @@ export default {
     Button
   },
   computed: {
-    ...mapStateUser(['token', 'settings'])
+    ...mapStateUser(['_user', 'settings'])
   },
   methods: {
     ...mapActions(['uploadSettings', 'downloadSettings']),

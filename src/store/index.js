@@ -38,8 +38,8 @@ export default createStore({
   },
   actions: {
     async uploadSettings ({ state }) {
-      if (state.user.token) {
-        const { token, profile, ...settings } = toRaw(state.user)
+      if (state.user._user.token) {
+        const { _user, ...settings } = toRaw(state.user)
         try {
           const res = (await axios.post(`${this.$apiBase}/iszy_tools/settings`, settings)).data
           return res.code === '00000' && res.data
@@ -51,7 +51,7 @@ export default createStore({
       }
     },
     async downloadSettings ({ state, commit, dispatch }) {
-      if (state.user.token) {
+      if (state.user._user.token) {
         try {
           if (await dispatch('user/checkToken')) {
             const res = (await axios.get(`${this.$apiBase}/iszy_tools/settings`)).data

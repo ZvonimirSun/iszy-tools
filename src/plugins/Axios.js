@@ -8,8 +8,8 @@ axiosInstance.CancelToken = Axios.CancelToken
 axiosInstance.isCancel = Axios.isCancel
 axiosInstance.interceptors.request.use(
   configs => {
-    if (store.state.user.token && configs.url.includes(axiosInstance.$apiBase)) {
-      configs.headers.Authorization = 'Bearer ' + store.state.user.token
+    if (store.state.user._user.token && configs.url.includes(axiosInstance.$apiBase)) {
+      configs.headers.Authorization = 'Bearer ' + store.state.user._user.token
     }
     return configs
   }

@@ -5,8 +5,8 @@
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
-        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合<template v-if="profile.nickName"> · <router-link to="/settings">{{profile.nickName}}</router-link></template></div>
-        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link><template v-if="profile.nickName"> · <router-link to="/settings">{{profile.nickName}}</router-link></template></div>
+        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合<template v-if="_user.profile.nickName"> · <router-link to="/settings">{{_user.profile.nickName}}</router-link></template></div>
+        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link><template v-if="_user.profile.nickName"> · <router-link to="/settings">{{_user.profile.nickName}}</router-link></template></div>
       </Header>
       <Content ref="view">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
@@ -55,7 +55,7 @@ export default defineComponent({
   }),
   components: { Container, Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
   computed: {
-    ...mapState(['profile'])
+    ...mapState(['_user'])
   },
   watch: {
     offlineReady: function (val) {

@@ -5,9 +5,11 @@ import { flatten } from 'lodash-es'
 export default {
   namespaced: true,
   state: () => ({
-    token: null,
-    profile: {
-      nickName: undefined
+    _user: {
+      token: null,
+      profile: {
+        nickName: undefined
+      }
     },
 
     settings: {
@@ -60,14 +62,14 @@ export default {
   },
   mutations: {
     setToken (state, token) {
-      state.token = token
+      state._user.token = token
     },
     clearToken (state) {
-      state.token = null
-      state.profile = {}
+      state._user.token = null
+      state._user.profile = {}
     },
     updateProfile (state, profile) {
-      state.profile = profile || {}
+      state._user.profile = profile || {}
     },
 
     triggerSetting (state, setting) {
@@ -141,8 +143,8 @@ export default {
           })
           if (res.data && res.data.code === '00000') {
             commit('setToken', res.data.data.token)
-            await dispatch('downloadSettings', null, { root: true })
-            await dispatch('getProfiles')
+            dispatch('downloadSettings', null, { root: true })
+            dispatch('getProfiles')
             return true
           } else {
             commit('clearToken')
@@ -160,7 +162,7 @@ export default {
       commit('clearToken')
     },
     async getProfiles ({ state, commit, dispatch }) {
-      if (state.token) {
+      if (state._user.token) {
         try {
           if (await dispatch('checkToken')) {
             commit('updateProfile', (await axios.get(`${this.$apiBase}/auth/profile`)).data.data)
@@ -173,7 +175,7 @@ export default {
       }
     },
     async checkToken ({ state, commit }) {
-      if (state.token) {
+      if (state._user.token) {
         try {
           await axios.head(`${this.$apiBase}/auth/profile`)
           return true
