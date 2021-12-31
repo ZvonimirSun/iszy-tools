@@ -14,7 +14,7 @@ export default function VitePluginSiteMap ({ hostname, tools } = {}) {
     },
     async closeBundle () {
       const sitemap = new SitemapStream({ hostname })
-      const writeStream = createWriteStream(`./${outDir}/sitemap.xml`)
+      const writeStream = createWriteStream(`${outDir}/sitemap.xml`)
       sitemap.pipe(writeStream)
       sitemap.write(`${base}/`.replace(/\/\//g, '/'))
       for (const tmp of tools) {
