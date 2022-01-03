@@ -49,15 +49,15 @@ export default {
     isFav: state => name => {
       return state.favorite.filter(item => (item.name === name)).length > 0
     },
-    recent (state) {
+    recent: state => count => {
       return [...state.statistics].sort(function (a, b) {
         return b.lastAccessTime - a.lastAccessTime
-      }).slice(0, 3)
+      }).slice(0, count)
     },
-    most (state) {
+    most: state => count => {
       return [...state.statistics].sort(function (a, b) {
         return b.times - a.times
-      }).slice(0, 3)
+      }).slice(0, count)
     }
   },
   mutations: {

@@ -92,14 +92,14 @@ export default {
         tmp.unshift({
           type: '最近访问',
           icon: 'history',
-          children: this.recent
+          children: this.recent(this.count)
         })
       }
       if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
           icon: 'concern',
-          children: this.most
+          children: this.most(this.count)
         })
       }
       if (this.favorite.length > 0) {
@@ -132,7 +132,9 @@ export default {
   },
   data: () => ({
     searchStr: '',
-    legends: legends
+    legends: legends,
+
+    count: 6
   }),
   mounted () {
     this.fixFavorite()
