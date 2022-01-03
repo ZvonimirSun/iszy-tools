@@ -1,5 +1,7 @@
 import axios from '@/plugins/Axios'
 import tools from '@/views/tools.json'
+import settings from './settings'
+import modules from './modules'
 import { flatten } from 'lodash-es'
 
 export default {
@@ -12,38 +14,8 @@ export default {
       }
     },
 
-    settings: {
-      showMost: false,
-      showRecent: false,
-
-      showSearch: true,
-      showType: true,
-      openInNewTab: false,
-
-      autoSync: false
-    },
-
     favorite: [],
-    statistics: [],
-
-    modules: {
-      2048: {
-        bestScore: 0
-      },
-      tetris: {
-        bestScore: 0
-      },
-      imgHosting: {
-        uploader: '',
-        configs: {
-        },
-        commonConfig: {
-          renameBeforeUpload: false,
-          renameTimeStamp: true,
-          copyUrlAfterUpload: true
-        }
-      }
-    }
+    statistics: []
   }),
   getters: {
     isFav: state => name => {
@@ -70,10 +42,6 @@ export default {
     },
     updateProfile (state, profile) {
       state._user.profile = profile || {}
-    },
-
-    triggerSetting (state, setting) {
-      state.settings[setting] = !state.settings[setting]
     },
 
     // 收藏相关
@@ -118,19 +86,6 @@ export default {
     },
     removeHistory (state, { name }) {
       state.statistics = state.statistics.filter(item => (item.name !== name))
-    },
-
-    updateModuleState (state, { module, key, value }) {
-      const k = key.split('/')
-      try {
-        let s = state.modules[module]
-        for (let i = 0; i < k.length - 1; i++) {
-          s = s[k[i]]
-        }
-        s[k[k.length - 1]] = value
-      } catch (e) {
-        console.error(e)
-      }
     }
   },
   actions: {
@@ -215,5 +170,9 @@ export default {
         }
       }
     }
+  },
+  modules: {
+    settings,
+    modules
   }
 }
