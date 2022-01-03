@@ -150,6 +150,10 @@
       {
         "name": "在线ASCII码对照表",
         "link": "/program/ascii"
+      },
+      {
+        "name": "在线JWT解密",
+        "link": "/program/jwt"
       }
     ]
   },
