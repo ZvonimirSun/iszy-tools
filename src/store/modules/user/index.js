@@ -3,6 +3,7 @@ import tools from '@/views/tools.json'
 import settings from './settings'
 import modules from './modules'
 import { flatten } from 'lodash-es'
+import dayjs from 'dayjs'
 
 export default {
   namespaced: true,
@@ -142,6 +143,22 @@ export default {
         }
       } else {
         return false
+      }
+    },
+    async updateToken ({ state, commit }) {
+      if (state._user.token) {
+        try {
+          const strings = state._user.token.split('.')
+          if (strings.length === 3) {
+            const payload = JSON.parse(window.atob(strings[1].replace(/-/g, '+').replace(/_/g, '/')))
+            if (dayjs(payload.exp * 1000).diff(dayjs(), 'h') < 5 * 24) {
+              const res = await axios.post(`${this.$apiBase}/auth/token`)
+              if (res.data && res.data.code === '00000') {
+                commit('setToken', res.data.data.token)
+              }
+            }
+          }
+        } catch (e) {}
       }
     },
 

@@ -21,7 +21,7 @@ import { ref } from 'vue'
 const { TextArea } = Input
 const { Title } = Typography
 
-const token = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFkbWluIiwic3ViIjoyLCJpYXQiOjE2NDExODcyNzksImV4cCI6MTY0MTc5MjA3OX0.qRqDfflWnCqbX1860ZFAuXN2Gs7WmTyhz-C8AlVXsO')
+const token = ref('')
 const header = ref('')
 const payload = ref('')
 
