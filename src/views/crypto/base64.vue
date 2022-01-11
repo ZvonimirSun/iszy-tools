@@ -20,7 +20,6 @@ const { TextArea } = Input
 
 const data1 = ref('')
 const data2 = ref('')
-const data = ref(null)
 
 function encode () {
   data2.value = Base64.stringify(Utf8.parse(data1.value))
@@ -36,3 +35,9 @@ function exchange () {
   data2.value = tmp
 }
 </script>
+
+<style lang="scss">
+textarea.ant-input {
+  resize: none;
+}
+</style>

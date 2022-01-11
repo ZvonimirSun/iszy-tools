@@ -110,6 +110,10 @@
       {
         "name": "Base64编解码",
         "link": "/crypto/base64"
+      },
+      {
+        "name": "MD5编码",
+        "link": "/crypto/md5"
       }
     ]
   },

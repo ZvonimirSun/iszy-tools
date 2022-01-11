@@ -32,5 +32,6 @@ export default {
   random: () => import('@/views/others/random/random.vue'),
   ascii: () => import('@/views/program/ascii.vue'),
   jwt: () => import('@/views/program/jwt.vue'),
-  base64: () => import('@/views/crypto/base64.vue')
+  base64: () => import('@/views/crypto/base64.vue'),
+  md5: () => import('@/views/crypto/md5.vue')
 }
