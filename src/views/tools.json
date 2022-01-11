@@ -36,11 +36,6 @@
         "link": "/others/relationship"
       },
       {
-        "name": "极简图床",
-        "link": "/others/imgHosting",
-        "legend": "新功能"
-      },
-      {
         "name": "在线流程图",
         "link": "https://draw.iszy.xyz"
       },
@@ -49,12 +44,12 @@
         "link": "/others/3dView"
       },
       {
-        "name": "随机数",
-        "link": "/other/random"
-      },
-      {
         "name": "Chromium下载",
         "link": "https://chromium.cypress.io/"
+      },
+      {
+        "name": "Linux命令查询",
+        "link": "/program/linuxCommand"
       },
       {
         "name": "资源包",
@@ -63,7 +58,7 @@
     ]
   },
   {
-    "type": "地图",
+    "type": "地图工具",
     "icon": "map-draw",
     "children": [
       {
@@ -85,19 +80,38 @@
     ]
   },
   {
-    "type": "图片相关",
+    "type": "图片工具",
     "icon": "picture-one",
     "children": [
       {
         "name": "图片加水印",
         "link": "/image/watermark",
         "legend": "新功能"
+      },
+      {
+        "name": "极简图床",
+        "link": "/others/imgHosting",
+        "legend": "新功能"
       }
     ]
   },
   {
-    "type": "编程开发",
-    "icon": "code",
+    "type": "编解码工具",
+    "icon": "file-lock",
+    "children": [
+      {
+        "name": "URL编码/解码",
+        "link": "/program/urlEncode"
+      },
+      {
+        "name": "在线JWT解密",
+        "link": "/program/jwt"
+      }
+    ]
+  },
+  {
+    "type": "转换工具",
+    "icon": "file-conversion",
     "children": [
       {
         "name": "时间计算",
@@ -108,17 +122,33 @@
         "link": "/program/colorTransform"
       },
       {
-        "name": "UUID在线生成",
-        "link": "/program/uuid"
-      },
-      {
         "name": "JSON编辑器",
         "link": "/program/jsonEditor"
       },
       {
-        "name": "URL编码/解码",
-        "link": "/program/urlEncode"
+        "name": "在线ASCII码对照表",
+        "link": "/program/ascii"
+      }
+    ]
+  },
+  {
+    "type": "生成工具",
+    "icon": "",
+    "children": [
+      {
+        "name": "UUID在线生成",
+        "link": "/program/uuid"
       },
+      {
+        "name": "随机数",
+        "link": "/other/random"
+      }
+    ]
+  },
+  {
+    "type": "代码工具",
+    "icon": "code",
+    "children": [
       {
         "name": "查看网页源码",
         "link": "/program/viewSourceCode"
@@ -136,24 +166,12 @@
         "link": "/program/anyRule"
       },
       {
-        "name": "Linux命令查询",
-        "link": "/program/linuxCommand"
-      },
-      {
         "name": "UserAgent解析",
         "link": "/program/userAgent"
       },
       {
         "name": "前端CDN搜索",
         "link": "/program/cdnQuery"
-      },
-      {
-        "name": "在线ASCII码对照表",
-        "link": "/program/ascii"
-      },
-      {
-        "name": "在线JWT解密",
-        "link": "/program/jwt"
       }
     ]
   },
