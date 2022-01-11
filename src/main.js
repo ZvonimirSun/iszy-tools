@@ -19,6 +19,11 @@ app.config.globalProperties.$msg = message
 app.config.globalProperties.$eventBus = EventBus
 app.config.globalProperties.$apiBase = 'https://api.iszy.xyz'
 
+app.provide('$axios', axios)
+app.provide('$msg', message)
+app.provide('$eventBus', EventBus)
+app.provide('$apiBase', 'https://api.iszy.xyz')
+
 store.$axios = app.config.globalProperties.$axios
 store.$msg = app.config.globalProperties.$msg
 store.$apiBase = app.config.globalProperties.$apiBase

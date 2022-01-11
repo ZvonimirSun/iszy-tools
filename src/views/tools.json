@@ -114,6 +114,10 @@
       {
         "name": "MD5编码",
         "link": "/crypto/md5"
+      },
+      {
+        "name": "图片Base64编码",
+        "link": "/crypto/imageBase64"
       }
     ]
   },

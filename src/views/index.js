@@ -33,5 +33,6 @@ export default {
   ascii: () => import('@/views/program/ascii.vue'),
   jwt: () => import('@/views/program/jwt.vue'),
   base64: () => import('@/views/crypto/base64.vue'),
-  md5: () => import('@/views/crypto/md5.vue')
+  md5: () => import('@/views/crypto/md5.vue'),
+  imageBase64: () => import('@/views/crypto/imageBase64.vue')
 }
