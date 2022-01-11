@@ -112,7 +112,10 @@ export default {
       if (this.searchStr) {
         tmp = tmp.map(item => {
           const a = cloneDeep(item)
-          a.children = a.children.filter(item => (item.name.toLowerCase().includes(this.searchStr.toLowerCase())))
+          a.children = a.children.filter(item => {
+            const tags = item.tags || []
+            return (item.name.toLowerCase().includes(this.searchStr.toLowerCase()) || tags.some((tag) => { return tag.includes(this.searchStr.toLowerCase()) }))
+          })
           return a
         })
       }
