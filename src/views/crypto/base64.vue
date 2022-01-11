@@ -13,7 +13,8 @@
 <script setup>
 import { Input, Space, Button } from 'ant-design-vue'
 import { ref } from 'vue'
-import CryptoJS from 'crypto-js'
+import Base64 from 'crypto-js/enc-base64.js'
+import Utf8 from 'crypto-js/enc-utf8.js'
 
 const { TextArea } = Input
 
@@ -22,11 +23,11 @@ const data2 = ref('')
 const data = ref(null)
 
 function encode () {
-  data2.value = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(data1.value))
+  data2.value = Base64.stringify(Utf8.parse(data1.value))
 }
 
 function decode () {
-  data2.value = CryptoJS.enc.Base64.parse(data1.value).toString(CryptoJS.enc.Utf8)
+  data2.value = Base64.parse(data1.value).toString(Utf8)
 }
 
 function exchange () {
