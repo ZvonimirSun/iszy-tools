@@ -32,7 +32,7 @@
     "leaflet": "^1.7.1",
     "localforage": "^1.9.0",
     "lodash-es": "^4.17.21",
-    "marked": "^3.0.4",
+    "marked": "^4.0.10",
     "relationship.js": "^1.0.0",
     "three": "^0.133.1",
     "tinycolor2": "^1.4.2",

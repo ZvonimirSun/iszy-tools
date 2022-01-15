@@ -1997,11 +1997,6 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmmirror.com/crypto-random-string/download/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha1-7yp6lm7BEIM4g2m6oC6+rSKbMNU=
 
-cryptojs@^2.5.3:
-  version "2.5.3"
-  resolved "https://registry.npmmirror.com/cryptojs/download/cryptojs-2.5.3.tgz#909547ecf15bac456e275459b39f2ef45d7fcbb9"
-  integrity sha512-+rdPl1UCxE8s3R94NNn+zMKOiI4MJ7dyh3X0c5uBL3btDr4zQ6acd7f9mY7Wb5MrccZEi2Rrha3OEtLcc5XXog==
-
 csstype@^2.6.8:
   version "2.6.19"
   resolved "https://registry.npmmirror.com/csstype/download/csstype-2.6.19.tgz?cache=0&sync_timestamp=1637224446963&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcsstype%2Fdownload%2Fcsstype-2.6.19.tgz#feeb5aae89020bb389e1f63669a5ed490e391caa"
@@ -3593,10 +3588,10 @@ manage-path@2.0.0:
   resolved "https://registry.npmmirror.com/manage-path/download/manage-path-2.0.0.tgz#f4cf8457b926eeee2a83b173501414bc76eb9597"
   integrity sha1-9M+EV7km7u4qg7FzUBQUvHbrlZc=
 
-marked@^3.0.4:
-  version "3.0.8"
-  resolved "https://registry.npmmirror.com/marked/download/marked-3.0.8.tgz#2785f0dc79cbdc6034be4bb4f0f0a396bd3f8aeb"
-  integrity sha512-0gVrAjo5m0VZSJb4rpL59K1unJAMb/hm8HRXqasD8VeC8m91ytDPMritgFSlKonfdt+rRYYpP/JfLxgIX8yoSw==
+marked@^4.0.10:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.10.tgz#423e295385cc0c3a70fa495e0df68b007b879423"
+  integrity sha512-+QvuFj0nGgO970fySghXGmuw+Fd0gD2x3+MqCWLIPf5oxdv1Ka6b2q+z9RP01P/IaKPMEramy+7cNy/Lw8c3hw==
 
 material-colors@^1.2.6:
   version "1.2.6"
