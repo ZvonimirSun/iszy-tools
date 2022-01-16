@@ -127,5 +127,5 @@
       "@babel/preset-env"
     ]
   },
-  "license": "MIT"
+  "license": "GPL-3.0"
 }
