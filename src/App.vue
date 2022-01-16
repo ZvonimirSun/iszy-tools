@@ -1,5 +1,5 @@
 <template>
-  <config-provider :locale="locale">
+  <config-provider :locale="zhCN">
     <Layout>
       <Header>
         <div class="header">
@@ -29,14 +29,14 @@
   </config-provider>
 </template>
 
-<script>
+<script setup>
 import { Container } from '@/components'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
-import { defineComponent } from 'vue'
+import { watch, computed, inject } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { Return } from '@icon-park/vue-next'
-import { createNamespacedHelpers } from 'vuex'
+import { useStore } from 'vuex'
 
 const {
   offlineReady,
@@ -45,45 +45,27 @@ const {
 } = useRegisterSW()
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
-const { mapState } = createNamespacedHelpers('user')
+const store = useStore()
+const _user = computed(() => store.state.user._user)
+const $msg = inject('$msg')
 
-export default defineComponent({
-  data: () => ({
-    locale: zhCN,
-    offlineReady,
-    needRefresh
-  }),
-  components: { Container, Layout, Header, Content, Footer, ConfigProvider, BackTop, Link, Return },
-  computed: {
-    ...mapState(['_user'])
-  },
-  watch: {
-    offlineReady: function (val) {
-      if (val) {
-        this.$msg.success('离线使用已准备好~')
+watch(offlineReady, function (val) {
+  if (val) {
+    $msg.success('离线使用已准备好~')
+  }
+})
+
+watch(needRefresh, function (val) {
+  if (val) {
+    Modal.info({
+      title: '存在新内容，请点击 重载 更新~',
+      closable: true,
+      okText: '重载',
+      maskClosable: true,
+      onOk () {
+        updateServiceWorker()
       }
-    },
-    needRefresh: function (val) {
-      if (val) {
-        Modal.info({
-          title: '存在新内容，请点击 重载 更新~',
-          closable: true,
-          okText: '重载',
-          maskClosable: true,
-          onOk () {
-            updateServiceWorker()
-          }
-        })
-      }
-    }
-  },
-  methods: {
-    getPopupContainer (node) {
-      if (node) {
-        return node.parentNode
-      }
-      return document.body
-    }
+    })
   }
 })
 </script>
