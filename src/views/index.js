@@ -19,7 +19,6 @@ export default {
   latLng: () => import('@/views/gis/latLng.vue'),
   tinyEditor: () => import('@/views/program/tinyEditor.vue'),
   idChinese: () => import('@/views/others/idChinese.vue'),
-  cesiumDemo: () => import('@/views/gis/cesiumDemo/cesiumDemo.vue'),
   screenRecord: () => import('@/views/others/screenRecord.vue'),
   anyRule: () => import('@/views/program/anyRule.vue'),
   linuxCommand: () => import('@/views/program/linuxCommand.vue'),

@@ -2,7 +2,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import externalGlobals from 'rollup-plugin-external-globals'
 import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
 import Sitemap from './src/plugins/Sitemap.js'
@@ -157,12 +156,6 @@ export default defineConfig({
       keep_classnames: false,
       keep_fnames: false,
       module: false
-    },
-    rollupOptions: {
-      external: ['cesium'],
-      plugins: [
-        externalGlobals({ cesium: 'Cesium' })
-      ]
     }
   },
   css: {
