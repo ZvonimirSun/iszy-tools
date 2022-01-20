@@ -15,7 +15,7 @@
           <CodeDownload theme="outline"/>
           下载
         </Button>
-        <Checkbox v-model:checked="diff" @change="changeDiff">Diff</Checkbox>
+        <Checkbox v-model:checked="diff" @change="changeDiff">对比</Checkbox>
       </Space>
     </div>
     <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight noShowMobile"></div>
@@ -182,6 +182,11 @@ export default {
       createFile(editorLeft.getText(), 'left.json')
     },
     changeDiff () {
+      if (this.diff) {
+        if (editorLeft.getMode() !== 'tree' || editorRight.getMode() !== 'tree') {
+          this.$msg.warn('对比模式仅在「树」模式下生效，请切换为树模式')
+        }
+      }
       editorLeft.refresh()
       editorRight.refresh()
     },

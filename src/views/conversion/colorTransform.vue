@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { Container, Hue, Saturation, Alpha } from '@/components'
+import { Container, Hue, Saturation, Alpha } from '@/components/index.js'
 
 import tinyColor from 'tinycolor2'
 import { Form, Input, InputNumber, Row, Col } from 'ant-design-vue'

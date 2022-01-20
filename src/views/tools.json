@@ -123,19 +123,19 @@
     "children": [
       {
         "name": "时间计算",
-        "link": "/program/timeCompute"
+        "link": "/conversion/timeCompute"
       },
       {
         "name": "颜色转换",
-        "link": "/program/colorTransform"
+        "link": "/conversion/colorTransform"
       },
       {
         "name": "JSON编辑器",
-        "link": "/program/jsonEditor"
+        "link": "/conversion/jsonEditor"
       },
       {
         "name": "在线ASCII码对照表",
-        "link": "/program/ascii"
+        "link": "/conversion/ascii"
       }
     ]
   },
