@@ -44,38 +44,10 @@ export default defineConfig({
         globPatterns: ['**/*'],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/fonts\.iszy\.xyz/,
+            urlPattern: /^https:\/\/.*cdn\.iszy\.xyz/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-google-fonts-webfonts',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'googleapis',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'gstatic',
+              cacheName: 'iszy-cdn',
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
