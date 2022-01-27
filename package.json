@@ -34,7 +34,7 @@
     "lodash-es": "^4.17.21",
     "marked": "^4.0.10",
     "relationship.js": "^1.0.0",
-    "three": "^0.133.1",
+    "three": "^0.137.0",
     "tinycolor2": "^1.4.2",
     "ua-parser-js": "^0.7.28",
     "uuid": "^8.3.2",
