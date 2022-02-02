@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import * as uploaders from '../uploader'
+import * as uploaders from '../uploader/index.js'
 import { UploadOne } from '@icon-park/vue-next'
 import { Upload, Spin } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'

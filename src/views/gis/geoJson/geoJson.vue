@@ -24,10 +24,10 @@ const { TabPane } = Tabs
 export default defineComponent({
   name: 'geoJson',
   components: {
-    LeafletMap: defineAsyncComponent(() => import('./leafletMap.vue')),
-    GeoJsonEditor: defineAsyncComponent(() => import('./geoJsonEditor.vue')),
-    PropertyTable: defineAsyncComponent(() => import('./propertyTable.vue')),
-    AddService: defineAsyncComponent(() => import('./addService.vue')),
+    LeafletMap: defineAsyncComponent(() => import('./child/leafletMap.vue')),
+    GeoJsonEditor: defineAsyncComponent(() => import('./child/geoJsonEditor.vue')),
+    PropertyTable: defineAsyncComponent(() => import('./child/propertyTable.vue')),
+    AddService: defineAsyncComponent(() => import('./child/addService.vue')),
     Tabs,
     TabPane
   },

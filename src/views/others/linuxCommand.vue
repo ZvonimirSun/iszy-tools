@@ -25,7 +25,7 @@
 import { Typography, Input, Divider, Modal } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import dayjs from 'dayjs'
-import md from '@/utils/markdown'
+import md from '@/utils/markdown.js'
 import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(duration)

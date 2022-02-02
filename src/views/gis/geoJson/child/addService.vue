@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { tiledMapLayer } from '@/utils/iclient-leaflet'
+import { tiledMapLayer } from '@/utils/iclient-leaflet/index.js'
 import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/DynamicMapLayer.js'
 import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
 import { CRS } from 'leaflet'

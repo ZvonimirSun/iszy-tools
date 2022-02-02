@@ -18,8 +18,8 @@ const { TabPane } = Tabs
 export default defineComponent({
   name: 'random',
   components: {
-    RandomNumber: defineAsyncComponent(() => import('./randomNumber.vue')),
-    RandomList: defineAsyncComponent(() => import('./randomList.vue')),
+    RandomNumber: defineAsyncComponent(() => import('./child/randomNumber.vue')),
+    RandomList: defineAsyncComponent(() => import('./child/randomList.vue')),
     Tabs,
     TabPane
   }

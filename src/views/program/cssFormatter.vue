@@ -241,7 +241,7 @@ export default {
 <style scoped lang="scss">
 .codePanel {
   width: 100%;
-  height: calc(100vh - 31.5rem);
+  height: 100%;
   border: .1rem solid #ddd;
   font-size: 1.4rem;
   overflow: hidden;

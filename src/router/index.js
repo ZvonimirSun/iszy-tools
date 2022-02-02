@@ -1,52 +1,61 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import widgets from '@/views'
 import tools from '@/views/tools.json'
 import store from '@/store'
+import { merge } from 'lodash-es'
 
-let routes = [
-  {
-    path: '/',
-    name: 'ISZY工具集合',
-    component: () => import('@/views/Home.vue')
+const vueFiles = import.meta.glob('../views/**/*.vue')
+// const modules = import.meta.glob('../views/**[!child]**/*.vue')
+
+const modules = {}
+
+for (const key in vueFiles) {
+  if (!key.includes('/child/')) {
+    let tmpKey = key.slice(8)
+    if (tmpKey.endsWith('index.vue')) {
+      tmpKey = tmpKey.slice(0, tmpKey.length - 10)
+      if (!tmpKey) {
+        tmpKey = '/'
+      }
+    } else {
+      tmpKey = tmpKey.slice(0, tmpKey.length - 4)
+      const tmp1 = tmpKey.split('/')
+      if (tmp1.length > 2 && tmp1[tmp1.length - 1] === tmp1[tmp1.length - 2]) {
+        tmpKey = tmpKey.slice(0, tmpKey.length - tmp1[tmp1.length - 1].length - 1)
+      }
+    }
+    modules[tmpKey] = { path: tmpKey, component: vueFiles[key] }
   }
-]
+}
 
 // 加入所有工具路由
 for (const tmp of tools) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
       if (!/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link)) {
-        if (routes.filter(item => (item.name === tool.name)).length === 0) {
-          const path = (tmp.link || '') + (tool.link || '')
-          const tmp1 = path.match('[^/]+(?!.*/)')
-          if (tmp1.length > 0 && widgets[tmp1[0]]) {
-            routes.push({
-              path: path,
-              name: tool.name,
-              component: widgets[tmp1[0]],
-              meta: {
-                statistics: tool.statistics !== false,
-                layout: tool.layout,
-                type: 'tool'
-              }
-            })
-          }
+        const path = (tmp.link || '') + (tool.link || '')
+        if (modules[path]) {
+          modules[path] = merge(modules[path], {
+            name: tool.name,
+            meta: {
+              statistics: tool.statistics !== false,
+              layout: tool.layout,
+              type: 'tool'
+            }
+          })
         }
       }
     }
   }
 }
 
+let routes = []
+
+for (const item in modules) {
+  routes.push(modules[item])
+}
+
 // 加入固定页面路由
 routes = routes.concat([
-  {
-    path: '/login',
-    name: '登录',
-    component: () => import('@/views/login/index.vue'),
-    meta: {
-      title: 'ISZY 工具集合'
-    }
-  },
   {
     path: '/logout',
     name: '登出',
@@ -57,33 +66,18 @@ routes = routes.concat([
     }
   },
   {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/error-page/404.vue'),
-    hidden: true
-  },
-  {
-    path: '/401',
-    name: '401',
-    redirect: '/login',
-    hidden: true
-  },
-  {
     path: '/redirect',
-    name: 'redirect',
     beforeEnter (to, from, next) {
       if (to.query.url) {
         window.location.href = to.query.url
       } else {
         next('/')
       }
-    },
-    hidden: true
+    }
   },
   {
     path: '/:catchAll(.*)',
-    redirect: '/404',
-    hidden: true
+    redirect: '/404'
   }
 ])
 
@@ -93,7 +87,7 @@ const router = createRouter({
 })
 
 // 路由白名单
-const whiteList = ['/login', '/auth-redirect']
+const whiteList = ['/login', '/logout']
 
 router.beforeEach(async (to, from, next) => {
   // 恢复持久化数据

@@ -47,7 +47,7 @@
 <script>
 import { Form, Input, Tabs, Button, Switch, Typography, Divider } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
-import * as uploaders from '../uploader'
+import * as uploaders from '../uploader/index.js'
 import { cloneDeep } from 'lodash-es'
 
 const { TabPane } = Tabs

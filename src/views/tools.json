@@ -49,7 +49,7 @@
       },
       {
         "name": "Linux命令查询",
-        "link": "/program/linuxCommand"
+        "link": "/others/linuxCommand"
       },
       {
         "name": "资源包",
@@ -81,13 +81,11 @@
     "children": [
       {
         "name": "图片加水印",
-        "link": "/image/watermark",
-        "legend": "新功能"
+        "link": "/image/watermark"
       },
       {
         "name": "极简图床",
-        "link": "/others/imgHosting",
-        "legend": "新功能"
+        "link": "/image/imgHosting"
       }
     ]
   },
@@ -97,11 +95,11 @@
     "children": [
       {
         "name": "URL编码/解码",
-        "link": "/program/urlEncode"
+        "link": "/crypto/urlEncode"
       },
       {
         "name": "在线JWT解密",
-        "link": "/program/jwt"
+        "link": "/crypto/jwt"
       },
       {
         "name": "Base64编解码",
@@ -145,7 +143,7 @@
     "children": [
       {
         "name": "UUID在线生成",
-        "link": "/program/uuid",
+        "link": "/generate/uuid",
         "tags": [
           "uuid",
           "guid"
@@ -153,7 +151,7 @@
       },
       {
         "name": "随机数",
-        "link": "/other/random"
+        "link": "/generate/random"
       }
     ]
   },

@@ -18,7 +18,7 @@ axiosInstance.interceptors.response.use(
   response => {
     if (response.config.url.includes(axiosInstance.$apiBase)) {
       if (response.data && response.data.code === 'A0401') {
-        router.push('/login')
+        router.push('/403')
       }
     }
     return response

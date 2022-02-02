@@ -29,7 +29,7 @@ const { Item } = Form
 const { Password } = Input
 
 export default {
-  name: 'Login',
+  name: '登录',
   components: {
     User,
     Lock,

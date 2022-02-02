@@ -28,54 +28,26 @@
                 <span class="nonHover"><Star theme="outline"/></span>
                 <span class="hovered"><Star theme="filled"/></span>
               </span>
-              <sup :style="{background:getLegendColor(tool.legend)}" v-if="tool.legend"></sup>
             </div>
           </Tooltip>
         </router-link>
       </Col>
     </Row>
   </template>
-  <Row :gutter="{ xs: 8, sm: 16, md: 24}">
-    <Col :span="24" class="typeNameCol">
-      <div class="typeName">
-        <notes theme="outline"/>
-        <div>公告</div>
-      </div>
-    </Col>
-    <Col :span="24">
-      <div class="announcement">
-        <Typography>
-          <Paragraph>
-            <ul>
-              <li>
-                <div class="legendInfo">图例：
-                  <template v-for="(item,index) in legends" :key="index">
-                    <span class="legendName">{{ item.label }}</span><sup :style="{background:item.color}"></sup>
-                  </template>
-                </div>
-              </li>
-            </ul>
-          </Paragraph>
-        </Typography>
-      </div>
-    </Col>
-  </Row>
 </template>
 
 <script>
-import { Search, Notes, Star } from '@icon-park/vue-next'
-import { Row, Col, Typography, Tooltip } from 'ant-design-vue'
+import { Search, Star } from '@icon-park/vue-next'
+import { Row, Col, Tooltip } from 'ant-design-vue'
 import tools from '@/views/tools.json'
-import legends from '@/views/legends.json'
 import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash-es'
 
-const { Paragraph } = Typography
 const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpers('user')
 
 export default {
   name: '首页',
-  components: { Star, Row, Col, Paragraph, Typography, Search, Notes, Tooltip },
+  components: { Star, Row, Col, Search, Tooltip },
   computed: {
     tools () {
       let tmp
@@ -135,7 +107,6 @@ export default {
   },
   data: () => ({
     searchStr: '',
-    legends: legends,
 
     count: 6
   }),
@@ -143,14 +114,6 @@ export default {
     this.fixFavorite()
   },
   methods: {
-    getLegendColor (label) {
-      const tmp = legends.filter(item => (item.label === label))
-      if (tmp.length > 0) {
-        return tmp[0].color
-      } else {
-        return ''
-      }
-    },
     ...mapMutations(['updateFav']),
     ...mapActions([
       'fixFavorite'
