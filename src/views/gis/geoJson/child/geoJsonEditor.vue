@@ -6,6 +6,7 @@
 import 'jsoneditor/dist/jsoneditor.min.css'
 import JSONEditor from 'jsoneditor'
 import { defineComponent } from 'vue'
+import { debounce } from 'lodash-es'
 
 let editor
 let geoJson = {
@@ -23,11 +24,11 @@ export default defineComponent({
       this.$refs.geoJsonContainer,
       {
         mode: 'code',
-        onChangeText: this.onChangeText
+        onChangeText: debounce(this.onChangeText, 500)
       },
       geoJson
     )
-    this.$eventBus.on('updateEditor', this.updateEditor)
+    this.$eventBus.on('updateEditor', debounce(this.updateEditor, 500))
   },
   methods: {
     onChangeText () {
