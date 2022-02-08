@@ -1,0 +1,1 @@
+import{u as t,y as e,_ as s,o as r}from"./vendor.c45c2a3c.js";/* empty css              */const p={setup(a){return(c,o)=>(r(),t(e(s),{status:"404",title:"404","sub-title":"\u5BF9\u4E0D\u8D77\uFF0C\u4F60\u8BBF\u95EE\u7684\u9875\u9762\u4E0D\u5B58\u5728\u3002"}))}};export{p as default};
