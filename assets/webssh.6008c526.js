@@ -1,0 +1,1 @@
+import{_ as e}from"./index.5f07a1c8.js";import{c as s,o as t}from"./vendor.ac2e8219.js";const _={name:"webssh"},a={src:"https://webssh.iszy.xyz/",class:"webssh",title:"webssh"};function o(r,c,n,p,d,i){return t(),s("iframe",a)}var l=e(_,[["render",o],["__scopeId","data-v-4eb6a763"]]);export{l as default};
