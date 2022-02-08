@@ -31,9 +31,10 @@
 
 <script setup>
 import { Container } from '@/components'
+import asyncLoad from '@/utils/asyncLoad.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
-import { watch, computed, inject } from 'vue'
+import { watch, computed, inject, onMounted } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { Return } from '@icon-park/vue-next'
 import { useStore } from 'vuex'
@@ -48,6 +49,11 @@ const { Link } = Typography
 const store = useStore()
 const _user = computed(() => store.state.user._user)
 const $msg = inject('$msg')
+
+onMounted(() => {
+  asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
+  asyncLoad('https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_3367_12.fac13c124005c66063399b5fd8543bed.js')
+})
 
 watch(offlineReady, function (val) {
   if (val) {
