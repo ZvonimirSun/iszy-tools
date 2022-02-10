@@ -1,21 +1,23 @@
 <template>
-  <div class="containerAll">
-    <div class="containerTitle">
-      <div class="typeName">
-        <span>{{ name || ($route.meta || {}).title || $route.name }}</span>
-        <FullScreen class="fullScreen" title="全屏" @click="fullScreen" theme="outline"/>
+  <div class="containerBase" ref="container">
+    <div class="containerAll">
+      <div class="containerTitle">
+        <div class="typeName">
+          <span>{{ name || ($route.meta || {}).title || $route.name }}</span>
+          <FullScreen class="fullScreen" title="全屏" @click="fullScreen" theme="outline"/>
+        </div>
       </div>
-    </div>
-    <div class="main" ref="container">
-      <slot></slot>
-      <BackTop :target="()=>$refs.container" :visibilityHeight="100"/>
+      <div class="main">
+        <slot></slot>
+        <BackTop :target="()=>$refs.container" :visibilityHeight="100"/>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { BackTop } from 'ant-design-vue'
 import toggleFullscreen from '@/utils/toggleFullscreen.js'
-import { FullScreen } from '@icon-park/vue-next'
+import { FullScreen, OffScreen } from '@icon-park/vue-next'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -35,6 +37,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.containerBase {
+  overflow: auto;
+  height: 100%;
+}
+
 .containerAll {
   height: calc(100% - 2.4rem);
   margin-top: 2.4rem;

@@ -1,11 +1,13 @@
 <template>
   <div class="editorPanel">
-    <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
+    <div class="editorPanelContainer editorPanelContainerLeft">
+      <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
+    </div>
     <div class="controller noShowMobile">
       <Space direction="vertical">
         <Button type="primary" @click="copyRight" block>
-          <Right theme="outline"/>
           复制
+          <Right theme="outline"/>
         </Button>
         <Button type="primary" @click="copyLeft" block>
           <Left theme="outline"/>
@@ -18,7 +20,9 @@
         <Checkbox v-model:checked="diff" @change="changeDiff">对比</Checkbox>
       </Space>
     </div>
-    <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight noShowMobile"></div>
+    <div class="editorPanelContainer editorPanelContainerRight noShowMobile">
+      <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
+    </div>
   </div>
   <Space class="showMobile" align="center">
     <Button type="primary" @click="download">
@@ -29,6 +33,9 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+/**
+ * @type {Function}
+ */
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
@@ -38,27 +45,22 @@ import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
 
 let editorLeft, editorRight
 let codeLeft = {
-  Array: [1, 2, 3],
-  Boolean: true,
-  Null: null,
-  Number: 123,
-  Object: {
+  array: [
+    1,
+    2,
+    3
+  ],
+  boolean: true,
+  color: 'gold',
+  null: null,
+  number: 123,
+  object: {
     a: 'b',
     c: 'd'
   },
-  String: 'Hello World'
+  string: 'Hello World'
 }
-let codeRight = {
-  Array: [1, 2, 3],
-  Boolean: true,
-  Null: null,
-  Number: 123,
-  Object: {
-    a: 'b',
-    c: 'd'
-  },
-  String: 'Hello World'
-}
+let codeRight = {}
 
 export default {
   name: 'JsonEditor',
@@ -93,7 +95,7 @@ export default {
         this.$refs.jsonEditorLeft,
         {
           mode: 'code',
-          modes: ['code', 'tree', 'text', 'preview'],
+          modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
             try {
@@ -124,7 +126,7 @@ export default {
         this.$refs.jsonEditorRight,
         {
           mode: 'tree',
-          modes: ['code', 'tree', 'text', 'preview'],
+          modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: (json) => {
             try {
@@ -231,64 +233,68 @@ export default {
   height: 100%;
 
   @media (max-width: 1024px) {
-    height: calc(100% - 3.2rem - 1.2rem);
+    height: calc(100% - 32px - 1.2rem);
   }
+}
 
-  .controller {
-    height: 100%;
-    width: 10rem;
-    text-align: center;
+.controller {
+  height: 100%;
+  width: 10rem;
+  text-align: center;
 
-    .ant-space {
-      margin-top: 10rem;
-      width: 80%;
+  .ant-space {
+    margin-top: 10rem;
+    width: 80%;
 
-      :deep(.ant-btn) {
-        display: flex;
-        align-items: center;
+    :deep(.ant-btn) {
+      display: flex;
+      align-items: center;
 
-        .i-icon {
-          font-size: 1.8rem;
-        }
-
-        .i-icon + span, span + .i-icon {
-          margin-left: 0;
-        }
-      }
-    }
-  }
-
-  :deep(.jsonEditor) {
-    height: 100%;
-    width: calc(50% - 5rem);
-
-    .ace-jsoneditor *, textarea.jsoneditor-text *, code, pre {
-      font-family: JetBrains Mono, monospace;
-    }
-
-    &.jsonEditorLeft {
-      @media (max-width: 1024px) {
-        width: 100%;
+      .i-icon {
+        font-size: 1.8rem;
       }
 
-      .differentElement {
-        background-color: pink;
-
-        .jsoneditor-field, .jsoneditor-value {
-          color: red;
-        }
-      }
-    }
-
-    &.jsonEditorRight .differentElement {
-      background-color: #acee61;
-
-      .jsoneditor-field, .jsoneditor-value {
-        color: red;
+      .i-icon + span, span + .i-icon {
+        margin-left: 0;
       }
     }
   }
+}
 
+.editorPanelContainer {
+  height: 100%;
+  width: calc(50% - 5rem);
+
+  &Left {
+    @media (max-width: 1024px) {
+      width: 100%;
+    }
+  }
+}
+
+:deep(.jsonEditor) {
+  height: 100%;
+  width: 100%;
+
+  .ace-jsoneditor *, textarea.jsoneditor-text *, code, pre {
+    font-family: JetBrains Mono, monospace;
+  }
+
+  &.jsonEditorLeft .differentElement {
+    background-color: pink;
+
+    .jsoneditor-field, .jsoneditor-value {
+      color: red;
+    }
+  }
+
+  &.jsonEditorRight .differentElement {
+    background-color: #acee61;
+
+    .jsoneditor-field, .jsoneditor-value {
+      color: red;
+    }
+  }
 }
 
 .noShowMobile {
