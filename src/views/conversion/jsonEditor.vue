@@ -17,7 +17,7 @@
           <CodeDownload theme="outline"/>
           下载
         </Button>
-        <Checkbox v-model:checked="diff" @change="changeDiff">对比</Checkbox>
+        <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
       </Space>
     </div>
     <div class="editorPanelContainer editorPanelContainerRight noShowMobile">
@@ -41,7 +41,7 @@ import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
 import { Right, Left, CodeDownload } from '@icon-park/vue-next'
-import { cloneDeep, get, isEqual, uniq, flatMapDeep, isObject } from 'lodash-es'
+import { get, isEqual, debounce } from 'lodash-es'
 
 let editorLeft, editorRight
 let codeLeft = {
@@ -83,12 +83,33 @@ export default {
   },
   methods: {
     init () {
+      let tmpLeft, tmpRight
       if (this.getData('jsonEditor')) {
         if (this.getData('jsonEditor').left) {
-          codeLeft = this.getData('jsonEditor').left
+          tmpLeft = this.getData('jsonEditor').left
+          try {
+            if (typeof tmpLeft === 'string') {
+              codeLeft = JSON.parse(tmpLeft)
+            } else {
+              codeLeft = tmpLeft
+            }
+            tmpLeft = JSON.stringify(codeLeft, null, 2)
+          } catch (e) {
+            codeLeft = tmpLeft
+          }
         }
         if (this.getData('jsonEditor').right) {
-          codeRight = this.getData('jsonEditor').right
+          tmpRight = this.getData('jsonEditor').right
+          try {
+            if (typeof tmpRight === 'string') {
+              codeRight = JSON.parse(tmpRight)
+            } else {
+              codeRight = tmpRight
+            }
+            tmpRight = JSON.stringify(codeRight, null, 2)
+          } catch (e) {
+            codeRight = tmpRight
+          }
         }
       }
       editorLeft = new JSONEditor(
@@ -97,30 +118,25 @@ export default {
           mode: 'code',
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
-          onChangeText: (json) => {
+          onChangeText: debounce((json) => {
             try {
               codeLeft = JSON.parse(json)
-              editorRight.refresh()
-              this.save()
-            } catch (e) {}
-          },
-          autocomplete: {
-            applyTo: ['value'],
-            filter: 'contain',
-            trigger: 'focus',
-            getOptions: (text, path, input, editor) => {
-              return new Promise((resolve, reject) => {
-                const options = this.extractUniqueWords(editor.get())
-                if (options.length > 0) {
-                  resolve(options)
-                } else {
-                  reject(new Error('noOptions'))
-                }
-              })
+            } catch (e) {
+              codeLeft = json
             }
+            editorLeft.refresh()
+            editorRight.refresh()
+            this.save()
+          }, 500),
+          onModeChange: (mode) => {
+            if (mode === 'code' && typeof codeLeft !== 'string') {
+              editorLeft.updateText(JSON.stringify(codeLeft, null, 2))
+            }
+          },
+          onError: (e) => {
+            this.$msg.error(e.message)
           }
-        },
-        codeLeft
+        }
       )
       editorRight = new JSONEditor(
         this.$refs.jsonEditorRight,
@@ -128,67 +144,89 @@ export default {
           mode: 'tree',
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
-          onChangeText: (json) => {
+          onChangeText: debounce((json) => {
             try {
               codeRight = JSON.parse(json)
               editorLeft.refresh()
-              this.save()
+              editorRight.refresh()
             } catch (e) {
+              codeRight = json
+            }
+            this.save()
+          }, 500),
+          onModeChange: (mode) => {
+            if (mode === 'code' && typeof codeRight !== 'string') {
+              editorRight.updateText(JSON.stringify(codeRight, null, 2))
             }
           },
-          autocomplete: {
-            applyTo: ['value'],
-            filter: 'contain',
-            trigger: 'focus',
-            getOptions: (text, path, input, editor) => {
-              return new Promise((resolve, reject) => {
-                const options = this.extractUniqueWords(editor.get())
-                if (options.length > 0) {
-                  resolve(options)
-                } else {
-                  reject(new Error('noOptions'))
-                }
-              })
-            }
+          onError: (e) => {
+            this.$msg.error(e.message)
           }
-        },
-        codeRight
+        }
       )
+      if (typeof codeLeft === 'string') {
+        editorLeft.setMode('code')
+      }
+      if (typeof codeRight === 'string') {
+        editorRight.setMode('code')
+      }
+      editorLeft.setText(tmpLeft)
+      editorRight.setText(tmpRight)
     },
 
     copyRight () {
-      codeRight = cloneDeep(codeLeft)
-      editorRight.update(codeRight)
+      const content = editorLeft.getText()
+      let tmp
+      try {
+        tmp = JSON.parse(content)
+        editorRight.updateText(JSON.stringify(tmp, null, 2))
+      } catch (e) {
+        editorRight.setMode('code')
+        editorRight.updateText(content)
+      }
       editorLeft.refresh()
+      editorRight.refresh()
+      codeRight = tmp || codeLeft
       this.save()
     },
     copyLeft () {
-      codeLeft = cloneDeep(codeRight)
-      editorLeft.update(codeLeft)
+      const content = editorRight.getText()
+      let tmp
+      try {
+        tmp = JSON.parse(content)
+        editorLeft.updateText(JSON.stringify(tmp, null, 2))
+      } catch (e) {
+        editorLeft.setMode('code')
+        editorLeft.updateText(content)
+      }
+      editorLeft.refresh()
       editorRight.refresh()
+      codeLeft = tmp || codeRight
       this.save()
     },
-    async save () {
-      try {
-        await this.setData({
-          key: 'jsonEditor',
-          val: {
-            left: editorLeft.get(),
-            right: editorRight.get()
-          }
-        })
-      } catch (e) {
-      }
+    save () {
+      this.setData({
+        key: 'jsonEditor',
+        val: {
+          left: editorLeft.getText(),
+          right: editorRight.getText()
+        }
+      })
     },
     download () {
       createFile(editorLeft.getText(), 'left.json')
     },
     changeDiff () {
-      if (this.diff) {
+      if (!this.diff) {
+        if (typeof codeLeft === 'string' || typeof codeRight === 'string') {
+          this.$msg.error('JSON存在错误')
+          return
+        }
         if (editorLeft.getMode() !== 'tree' || editorRight.getMode() !== 'tree') {
           this.$msg.warn('对比模式仅在「树」模式下生效，请切换为树模式')
         }
       }
+      this.diff = !this.diff
       editorLeft.refresh()
       editorRight.refresh()
     },
@@ -206,13 +244,6 @@ export default {
       } else {
         return ''
       }
-    },
-    extractUniqueWords (json) {
-      return uniq(flatMapDeep(json, function (value, key) {
-        return isObject(value)
-          ? [key]
-          : [key, String(value)]
-      }))
     },
     ...mapMutations(['setData'])
   },
@@ -275,10 +306,6 @@ export default {
 :deep(.jsonEditor) {
   height: 100%;
   width: 100%;
-
-  .ace-jsoneditor *, textarea.jsoneditor-text *, code, pre {
-    font-family: JetBrains Mono, monospace;
-  }
 
   &.jsonEditorLeft .differentElement {
     background-color: pink;
