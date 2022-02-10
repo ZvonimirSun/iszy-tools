@@ -4,7 +4,6 @@
       <div class="containerTitle">
         <div class="typeName">
           <span>{{ name || ($route.meta || {}).title || $route.name }}</span>
-          <FullScreen class="fullScreen" title="全屏" @click="fullScreen" theme="outline"/>
         </div>
       </div>
       <div class="main">
@@ -16,8 +15,6 @@
 </template>
 <script>
 import { BackTop } from 'ant-design-vue'
-import toggleFullscreen from '@/utils/toggleFullscreen.js'
-import { FullScreen, OffScreen } from '@icon-park/vue-next'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -25,14 +22,7 @@ export default defineComponent({
   props: {
     name: String
   },
-  components: {
-    FullScreen, BackTop
-  },
-  methods: {
-    fullScreen () {
-      toggleFullscreen.bind(this)(this.$refs.container)
-    }
-  }
+  components: { BackTop }
 })
 </script>
 
@@ -82,14 +72,6 @@ export default defineComponent({
 
       * + .i-icon {
         margin-left: .5rem;
-      }
-
-      .fullScreen {
-        cursor: pointer;
-
-        &.i-icon {
-          font-size: 1.8rem;
-        }
       }
     }
   }
