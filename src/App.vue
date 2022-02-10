@@ -120,7 +120,6 @@ watch(needRefresh, function (val) {
   }
 
   &-content {
-    max-width: 180rem;
     width: 100%;
     margin: 0 auto;
     padding: 0 1.6rem 1.6rem;
