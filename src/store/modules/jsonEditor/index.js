@@ -41,6 +41,13 @@ export default {
         if (right) {
           state.rightId = id
         }
+      } else {
+        if (left) {
+          state.leftId = undefined
+        }
+        if (right) {
+          state.rightId = undefined
+        }
       }
     }
   },

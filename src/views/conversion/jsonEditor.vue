@@ -1,6 +1,25 @@
 <template>
   <div class="editorPanel">
     <div class="editorPanelContainer editorPanelContainerLeft">
+      <div class="editorController editorControllerLeft">
+        <div class="editorTitle">{{leftData?.name}}</div>
+        <Space class="editorControlButtons">
+          <Button size="small" type="primary" @click="create('left')">新建</Button>
+          <Dropdown>
+            <template #overlay>
+              <Menu @click="open($event,'left')">
+                <MenuItem key="recent">打开最近记录</MenuItem>
+                <MenuItem key="file">打开本地文件</MenuItem>
+                <MenuItem key="url">打开URL</MenuItem>
+              </Menu>
+            </template>
+            <Button size="small" type="primary">
+              <span class="buttonWithIcon">打开<Down theme="outline"/></span>
+            </Button>
+          </Dropdown>
+          <Button size="small" type="primary" @click="download('left')">保存</Button>
+        </Space>
+      </div>
       <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
     </div>
     <div class="controller noShowMobile">
@@ -13,22 +32,32 @@
           <Left theme="outline"/>
           复制
         </Button>
-        <Button type="primary" @click="download" block>
-          <CodeDownload theme="outline"/>
-          下载
-        </Button>
         <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
       </Space>
     </div>
     <div class="editorPanelContainer editorPanelContainerRight noShowMobile">
+      <div class="editorController editorControllerRight">
+        <div class="editorTitle">{{rightData?.name}}</div>
+        <Space class="editorControlButtons">
+          <Button size="small" type="primary" @click="create('right')">新建</Button>
+          <Dropdown>
+            <template #overlay>
+              <Menu @click="open($event,'right')">
+                <MenuItem key="recent">打开最近记录</MenuItem>
+                <MenuItem key="file">打开本地文件</MenuItem>
+                <MenuItem key="url">打开URL</MenuItem>
+              </Menu>
+            </template>
+            <Button size="small" type="primary">
+              <span class="buttonWithIcon">打开<Down theme="outline"/></span>
+            </Button>
+          </Dropdown>
+          <Button size="small" type="primary" @click="download('right')">保存</Button>
+        </Space>
+      </div>
       <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
     </div>
   </div>
-  <Space class="showMobile" align="center">
-    <Button type="primary" @click="download">
-      下载
-    </Button>
-  </Space>
 </template>
 
 <script>
@@ -39,10 +68,11 @@ import { createNamespacedHelpers } from 'vuex'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
-import { Button, Space, Checkbox } from 'ant-design-vue'
-import { Right, Left, CodeDownload } from '@icon-park/vue-next'
+import { Button, Space, Checkbox, Dropdown, Menu } from 'ant-design-vue'
+import { Right, Left, Down } from '@icon-park/vue-next'
 import { get, isEqual, debounce } from 'lodash-es'
 
+const { Item: MenuItem } = Menu
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
 
 let editorLeft, editorRight
@@ -72,7 +102,10 @@ export default {
     Checkbox,
     Right,
     Left,
-    CodeDownload
+    Dropdown,
+    Menu,
+    MenuItem,
+    Down
   },
   data: () => ({
     diff: false
@@ -238,8 +271,31 @@ export default {
         }
       }
     },
-    download () {
-      createFile(editorLeft.getText(), 'left.json')
+    create (leftOrRight) {
+      if (leftOrRight === 'left') {
+        editorLeft.set({})
+        codeLeft = {}
+        this.saveData({
+          left: true
+        })
+      } else if (leftOrRight === 'right') {
+        editorRight.set({})
+        codeRight = {}
+        this.saveData({
+          right: true
+        })
+      }
+    },
+    open (key, leftOrRight) {
+      console.log(key, leftOrRight)
+      this.$msg.info('正在建设中')
+    },
+    download (leftOrRight) {
+      if (leftOrRight === 'left') {
+        createFile(editorLeft.getText(), `${this.leftData?.name || 'left'}.json`)
+      } else if (leftOrRight === 'right') {
+        createFile(editorRight.getText(), `${this.rightData?.name || 'right'}.json`)
+      }
     },
     changeDiff () {
       if (!this.diff) {
@@ -287,10 +343,6 @@ export default {
 .editorPanel {
   display: flex;
   height: 100%;
-
-  @media (max-width: 1024px) {
-    height: calc(100% - 32px - 1.2rem);
-  }
 }
 
 .controller {
@@ -328,8 +380,32 @@ export default {
   }
 }
 
+.editorController {
+  display: inline-flex;
+  width: 100%;
+  height: 35px;
+  background: #71a8ff;
+  align-items: center;
+  justify-content: space-between;
+
+  .editorTitle {
+    color: white;
+    padding: .8rem;
+  }
+
+  .editorControlButtons {
+    margin: 0 .8rem;
+    height: 100%;
+  }
+}
+
+.buttonWithIcon {
+  display: inline-flex;
+  align-items: center;
+}
+
 :deep(.jsonEditor) {
-  height: 100%;
+  height: calc(100% - 35px);
   width: 100%;
 
   &.jsonEditorLeft .differentElement {
@@ -368,6 +444,8 @@ export default {
 }
 
 :deep(.jsoneditor-poweredBy) {
-  display: none;
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }
 </style>
