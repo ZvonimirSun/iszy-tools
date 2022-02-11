@@ -356,6 +356,7 @@ export default {
         }
         reader.readAsText(file)
       }
+      e.target.value = ''
     },
     download (leftOrRight) {
       if (leftOrRight === 'left') {
