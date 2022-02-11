@@ -58,6 +58,10 @@
       <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
     </div>
   </div>
+  <Modal :visible="modalStatus.type === 'openUrl'" title="打开URL" @cancel="closeModal" @ok="openUrl(url)">
+    <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
+    <Input v-model:value="url"/>
+  </Modal>
 </template>
 
 <script>
@@ -68,11 +72,12 @@ import { createNamespacedHelpers } from 'vuex'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
-import { Button, Space, Checkbox, Dropdown, Menu } from 'ant-design-vue'
+import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography } from 'ant-design-vue'
 import { Right, Left, Down } from '@icon-park/vue-next'
 import { get, isEqual, debounce } from 'lodash-es'
 
 const { Item: MenuItem } = Menu
+const { Paragraph } = Typography
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
 
 let editorLeft, editorRight
@@ -105,10 +110,20 @@ export default {
     Dropdown,
     Menu,
     MenuItem,
-    Down
+    Down,
+    Modal,
+    Input,
+    Paragraph
   },
   data: () => ({
-    diff: false
+    diff: false,
+
+    modalStatus: {
+      type: '',
+      leftOrRight: ''
+    },
+
+    url: ''
   }),
   computed: {
     ...mapState(['leftId', 'rightId']),
@@ -286,9 +301,41 @@ export default {
         })
       }
     },
-    open (key, leftOrRight) {
-      console.log(key, leftOrRight)
-      this.$msg.info('正在建设中')
+    open (e, leftOrRight) {
+      this.modalStatus.leftOrRight = leftOrRight
+      switch (e.key) {
+        case 'file':
+          this.$msg.info('正在建设中')
+          break
+        case 'recent':
+          this.$msg.info('正在建设中')
+          break
+        case 'url': {
+          this.modalStatus.type = 'openUrl'
+          break
+        }
+      }
+    },
+    async openUrl (url) {
+      try {
+        const res = (await this.$axios.get(url)).data
+        if (res) {
+          this.create(this.modalStatus.leftOrRight)
+          if (this.modalStatus.leftOrRight === 'left') {
+            codeLeft = res
+            editorLeft.set(res)
+            this.save('left')
+          } else if (this.modalStatus.leftOrRight === 'right') {
+            codeRight = res
+            editorRight.update(res)
+            this.save('right')
+          }
+          this.url = ''
+          this.closeModal()
+        }
+      } catch (e) {
+        this.$msg.error(e.message)
+      }
     },
     download (leftOrRight) {
       if (leftOrRight === 'left') {
@@ -325,6 +372,10 @@ export default {
       } else {
         return ''
       }
+    },
+    closeModal () {
+      this.modalStatus.type = ''
+      this.modalStatus.leftOrRight = ''
     },
     ...mapMutations(['saveData'])
   },
