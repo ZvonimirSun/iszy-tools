@@ -62,6 +62,7 @@
     <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
     <Input v-model:value="url"/>
   </Modal>
+  <input type="file" v-show="false" ref="uploader" @change="openFile" accept=".json,.JSON"/>
 </template>
 
 <script>
@@ -304,16 +305,15 @@ export default {
     open (e, leftOrRight) {
       this.modalStatus.leftOrRight = leftOrRight
       switch (e.key) {
-        case 'file':
-          this.$msg.info('正在建设中')
-          break
         case 'recent':
           this.$msg.info('正在建设中')
           break
-        case 'url': {
+        case 'file':
+          this.$refs.uploader.click()
+          break
+        case 'url':
           this.modalStatus.type = 'openUrl'
           break
-        }
       }
     },
     async openUrl (url) {
@@ -327,7 +327,7 @@ export default {
             this.save('left')
           } else if (this.modalStatus.leftOrRight === 'right') {
             codeRight = res
-            editorRight.update(res)
+            editorRight.set(res)
             this.save('right')
           }
           this.url = ''
@@ -335,6 +335,26 @@ export default {
         }
       } catch (e) {
         this.$msg.error(e.message)
+      }
+    },
+    openFile (e) {
+      if (e.target.files.length) {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        reader.onload = () => {
+          if (reader.result) {
+            if (this.modalStatus.leftOrRight === 'left') {
+              codeLeft = reader.result
+              editorLeft.setText(reader.result)
+              this.save('left')
+            } else if (this.modalStatus.leftOrRight === 'right') {
+              codeRight = reader.result
+              editorRight.setText(reader.result)
+              this.save('right')
+            }
+          }
+        }
+        reader.readAsText(file)
       }
     },
     download (leftOrRight) {
