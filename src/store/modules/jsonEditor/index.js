@@ -1,5 +1,6 @@
 import randomString from '@/utils/randomString.js'
 import dayjs from 'dayjs'
+import { markRaw } from 'vue'
 
 export default {
   namespaced: true,
@@ -9,6 +10,21 @@ export default {
     $_data: {}
   }),
   getters: {
+    dataList: (state) => (keyword) => {
+      const result = []
+      for (const key in state.$_data) {
+        result.push({
+          _id: key,
+          name: state.$_data[key].name,
+          updated: dayjs(state.$_data[key].updated).format('YYYY-MM-DD HH:mm')
+        })
+      }
+      if (keyword) {
+        return result.filter(item => (item.name.includes(keyword)))
+      } else {
+        return result
+      }
+    },
     data: (state) => (id) => {
       return state.$_data[id]
     },
@@ -31,10 +47,17 @@ export default {
           }
         } else {
           state.$_data[id].content = {
-            json: content
+            json: markRaw(content)
           }
         }
         state.$_data[id].updated = dayjs().format()
+        if (left) {
+          state.leftId = id
+        }
+        if (right) {
+          state.rightId = id
+        }
+      } else if (id && state.$_data[id]) {
         if (left) {
           state.leftId = id
         }
@@ -48,6 +71,17 @@ export default {
         if (right) {
           state.rightId = undefined
         }
+      }
+    },
+    deleteData (state, { id }) {
+      if (state.leftId === id) {
+        state.leftId = undefined
+      }
+      if (state.rightId === id) {
+        state.rightId = undefined
+      }
+      if (state.$_data[id]) {
+        delete (state.$_data[id])
       }
     }
   },

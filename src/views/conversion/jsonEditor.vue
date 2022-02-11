@@ -7,7 +7,10 @@
           <Button size="small" type="primary" @click="create('left')">新建</Button>
           <Dropdown>
             <template #overlay>
-              <Menu @click="open($event,'left')">
+              <Menu
+                @click="open($event,'left')"
+                :trigger="['click','hover']"
+              >
                 <MenuItem key="recent">打开最近记录</MenuItem>
                 <MenuItem key="file">打开本地文件</MenuItem>
                 <MenuItem key="url">打开URL</MenuItem>
@@ -42,7 +45,10 @@
           <Button size="small" type="primary" @click="create('right')">新建</Button>
           <Dropdown>
             <template #overlay>
-              <Menu @click="open($event,'right')">
+              <Menu
+                @click="open($event,'right')"
+                :trigger="['click','hover']"
+              >
                 <MenuItem key="recent">打开最近记录</MenuItem>
                 <MenuItem key="file">打开本地文件</MenuItem>
                 <MenuItem key="url">打开URL</MenuItem>
@@ -58,11 +64,40 @@
       <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
     </div>
   </div>
+  <Modal :visible="modalStatus.type === 'openRecent'" title="打开最近" @cancel="closeModal" @ok="openRecent">
+    <Paragraph>搜索</Paragraph>
+    <Input v-model:value="keyword" placeholder="请输入文档名称"/>
+
+    <List
+      class="dataList"
+      item-layout="horizontal"
+      :data-source="dataListAfterSearch"
+    >
+      <template #renderItem="{ item }">
+        <ListItem @click="selectId=item._id" :class="{selected: item._id === selectId}">
+          <template #actions>
+            <Button
+              @click="deleteData({id:item._id})"
+              type="primary"
+              danger
+            >删除</Button>
+          </template>
+          <ListItemMeta
+            :description="'最后修改: '+item.updated"
+          >
+            <template #title>
+              {{item.name}}
+            </template>
+          </ListItemMeta>
+        </ListItem>
+      </template>
+    </List>
+  </Modal>
+  <input type="file" v-show="false" ref="uploader" @change="openFile" accept=".json,.JSON"/>
   <Modal :visible="modalStatus.type === 'openUrl'" title="打开URL" @cancel="closeModal" @ok="openUrl(url)">
     <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
     <Input v-model:value="url"/>
   </Modal>
-  <input type="file" v-show="false" ref="uploader" @change="openFile" accept=".json,.JSON"/>
 </template>
 
 <script>
@@ -73,12 +108,14 @@ import { createNamespacedHelpers } from 'vuex'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
-import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography } from 'ant-design-vue'
+import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography, List } from 'ant-design-vue'
 import { Right, Left, Down } from '@icon-park/vue-next'
 import { get, isEqual, debounce } from 'lodash-es'
 
 const { Item: MenuItem } = Menu
 const { Paragraph } = Typography
+const { Item: ListItem } = List
+const { Meta: ListItemMeta } = ListItem
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
 
 let editorLeft, editorRight
@@ -114,7 +151,10 @@ export default {
     Down,
     Modal,
     Input,
-    Paragraph
+    Paragraph,
+    List,
+    ListItem,
+    ListItemMeta
   },
   data: () => ({
     diff: false,
@@ -124,11 +164,17 @@ export default {
       leftOrRight: ''
     },
 
-    url: ''
+    url: '',
+
+    keyword: '',
+    selectId: ''
   }),
   computed: {
+    dataListAfterSearch: function () {
+      return this.dataList(this.keyword)
+    },
     ...mapState(['leftId', 'rightId']),
-    ...mapGetters(['data', 'leftData', 'rightData'])
+    ...mapGetters(['dataList', 'data', 'leftData', 'rightData'])
   },
   mounted () {
     this.init()
@@ -306,7 +352,7 @@ export default {
       this.modalStatus.leftOrRight = leftOrRight
       switch (e.key) {
         case 'recent':
-          this.$msg.info('正在建设中')
+          this.modalStatus.type = 'openRecent'
           break
         case 'file':
           this.$refs.uploader.click()
@@ -315,6 +361,72 @@ export default {
           this.modalStatus.type = 'openUrl'
           break
       }
+    },
+    openRecent () {
+      if (this.selectId && this.data(this.selectId) && this.data(this.selectId).content) {
+        const data = this.data(this.selectId).content
+        if (this.modalStatus.leftOrRight === 'left') {
+          this.saveData({
+            left: true,
+            id: this.selectId
+          })
+          if (data.json) {
+            codeLeft = data.json
+            editorLeft.set(data.json)
+            editorLeft.setMode('tree')
+          } else if (data.text) {
+            try {
+              codeLeft = JSON.parse(data.text)
+            } catch (e) {
+              codeLeft = data.text
+            }
+            editorLeft.setText(data.text)
+            editorLeft.setMode('code')
+          }
+        } else if (this.modalStatus.leftOrRight === 'right') {
+          this.saveData({
+            right: true,
+            id: this.selectId
+          })
+          if (data.json) {
+            codeRight = data.json
+            editorRight.set(data.json)
+            editorRight.setMode('tree')
+          } else if (data.text) {
+            try {
+              codeRight = JSON.parse(data.text)
+            } catch (e) {
+              codeRight = data.text
+            }
+            editorRight.setText(data.text)
+            editorRight.setMode('code')
+          }
+        }
+      }
+      this.selectId = ''
+      this.closeModal()
+    },
+    openFile (e) {
+      if (e.target.files.length) {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        reader.onload = () => {
+          if (reader.result) {
+            this.create(this.modalStatus.leftOrRight)
+            if (this.modalStatus.leftOrRight === 'left') {
+              codeLeft = reader.result
+              editorLeft.setText(reader.result)
+              this.save('left')
+            } else if (this.modalStatus.leftOrRight === 'right') {
+              codeRight = reader.result
+              editorRight.setText(reader.result)
+              this.save('right')
+            }
+          }
+        }
+        reader.readAsText(file)
+      }
+      e.target.value = ''
     },
     async openUrl (url) {
       try {
@@ -336,27 +448,6 @@ export default {
       } catch (e) {
         this.$msg.error(e.message)
       }
-    },
-    openFile (e) {
-      if (e.target.files.length) {
-        const file = e.target.files[0]
-        const reader = new FileReader()
-        reader.onload = () => {
-          if (reader.result) {
-            if (this.modalStatus.leftOrRight === 'left') {
-              codeLeft = reader.result
-              editorLeft.setText(reader.result)
-              this.save('left')
-            } else if (this.modalStatus.leftOrRight === 'right') {
-              codeRight = reader.result
-              editorRight.setText(reader.result)
-              this.save('right')
-            }
-          }
-        }
-        reader.readAsText(file)
-      }
-      e.target.value = ''
     },
     download (leftOrRight) {
       if (leftOrRight === 'left') {
@@ -398,7 +489,7 @@ export default {
       this.modalStatus.type = ''
       this.modalStatus.leftOrRight = ''
     },
-    ...mapMutations(['saveData'])
+    ...mapMutations(['saveData', 'deleteData'])
   },
   beforeUnmount () {
     if (editorLeft) {
@@ -512,6 +603,26 @@ export default {
 .ant-space {
   @media (max-width: 1024px) {
     margin-top: 1.2rem;
+  }
+}
+
+.dataList {
+  max-height: 50vh;
+  overflow: auto;
+  margin-top: .8rem;
+  padding: 0 .8rem;
+  border: 1px solid #dedede;
+
+  .ant-list-item {
+    cursor: pointer;
+
+    &.selected {
+      background: #dedede;
+    }
+
+    &:hover {
+      background: #dedede;
+    }
   }
 }
 
