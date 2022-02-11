@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 /**
  * @type {Function}
  */
@@ -42,6 +42,8 @@ import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox } from 'ant-design-vue'
 import { Right, Left, CodeDownload } from '@icon-park/vue-next'
 import { get, isEqual, debounce } from 'lodash-es'
+
+const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
 
 let editorLeft, editorRight
 let codeLeft = {
@@ -76,42 +78,14 @@ export default {
     diff: false
   }),
   computed: {
-    ...mapGetters(['getData'])
+    ...mapState(['leftId', 'rightId']),
+    ...mapGetters(['data', 'leftData', 'rightData'])
   },
   mounted () {
     this.init()
   },
   methods: {
     init () {
-      let tmpLeft, tmpRight
-      if (this.getData('jsonEditor')) {
-        if (this.getData('jsonEditor').left) {
-          tmpLeft = this.getData('jsonEditor').left
-          try {
-            if (typeof tmpLeft === 'string') {
-              codeLeft = JSON.parse(tmpLeft)
-            } else {
-              codeLeft = tmpLeft
-            }
-            tmpLeft = JSON.stringify(codeLeft, null, 2)
-          } catch (e) {
-            codeLeft = tmpLeft
-          }
-        }
-        if (this.getData('jsonEditor').right) {
-          tmpRight = this.getData('jsonEditor').right
-          try {
-            if (typeof tmpRight === 'string') {
-              codeRight = JSON.parse(tmpRight)
-            } else {
-              codeRight = tmpRight
-            }
-            tmpRight = JSON.stringify(codeRight, null, 2)
-          } catch (e) {
-            codeRight = tmpRight
-          }
-        }
-      }
       editorLeft = new JSONEditor(
         this.$refs.jsonEditorLeft,
         {
@@ -126,12 +100,13 @@ export default {
             }
             editorLeft.refresh()
             editorRight.refresh()
-            this.save()
-          }, 500),
+            this.save('left')
+          }, 100),
           onModeChange: (mode) => {
             if (mode === 'code' && typeof codeLeft !== 'string') {
               editorLeft.updateText(JSON.stringify(codeLeft, null, 2))
             }
+            this.save('left')
           },
           onError: (e) => {
             this.$msg.error(e.message)
@@ -147,31 +122,58 @@ export default {
           onChangeText: debounce((json) => {
             try {
               codeRight = JSON.parse(json)
-              editorLeft.refresh()
-              editorRight.refresh()
             } catch (e) {
               codeRight = json
             }
-            this.save()
-          }, 500),
+            editorLeft.refresh()
+            editorRight.refresh()
+            this.save('right')
+          }, 100),
           onModeChange: (mode) => {
             if (mode === 'code' && typeof codeRight !== 'string') {
               editorRight.updateText(JSON.stringify(codeRight, null, 2))
             }
+            this.save('right')
           },
           onError: (e) => {
             this.$msg.error(e.message)
           }
         }
       )
-      if (typeof codeLeft === 'string') {
-        editorLeft.setMode('code')
+      if (this.leftData && this.leftData.content) {
+        if (this.leftData.content.json) {
+          codeLeft = this.leftData.content.json
+          editorLeft.set(this.leftData.content.json)
+          editorLeft.setMode('tree')
+        } else if (this.leftData.content.text) {
+          try {
+            codeLeft = JSON.parse(this.leftData.content.text)
+          } catch (e) {
+            codeLeft = this.leftData.content.text
+          }
+          editorLeft.setText(this.leftData.content.text)
+          editorLeft.setMode('code')
+        }
+      } else {
+        editorLeft.set(codeLeft)
       }
-      if (typeof codeRight === 'string') {
-        editorRight.setMode('code')
+      if (this.rightData && this.rightData.content) {
+        if (this.rightData.content.json) {
+          codeRight = this.rightData.content.json
+          editorRight.set(this.rightData.content.json)
+          editorRight.setMode('tree')
+        } else if (this.rightData.content.text) {
+          try {
+            codeRight = JSON.parse(this.rightData.content.text)
+          } catch (e) {
+            codeRight = this.rightData.content.text
+          }
+          editorRight.setText(this.rightData.content.text)
+          editorRight.setMode('code')
+        }
+      } else {
+        editorRight.set(codeRight)
       }
-      editorLeft.setText(tmpLeft)
-      editorRight.setText(tmpRight)
     },
 
     copyRight () {
@@ -187,7 +189,7 @@ export default {
       editorLeft.refresh()
       editorRight.refresh()
       codeRight = tmp || codeLeft
-      this.save()
+      this.save('right')
     },
     copyLeft () {
       const content = editorRight.getText()
@@ -202,16 +204,39 @@ export default {
       editorLeft.refresh()
       editorRight.refresh()
       codeLeft = tmp || codeRight
-      this.save()
+      this.save('left')
     },
-    save () {
-      this.setData({
-        key: 'jsonEditor',
-        val: {
-          left: editorLeft.getText(),
-          right: editorRight.getText()
+    save (leftOrRight) {
+      if (!leftOrRight || leftOrRight === 'left') {
+        if (editorLeft.getMode() === 'tree') {
+          this.saveData({
+            left: true,
+            id: this.leftId,
+            content: editorLeft.get()
+          })
+        } else {
+          this.saveData({
+            left: true,
+            id: this.leftId,
+            content: editorLeft.getText()
+          })
         }
-      })
+      }
+      if (!leftOrRight || leftOrRight === 'right') {
+        if (editorRight.getMode() === 'tree') {
+          this.saveData({
+            right: true,
+            id: this.rightId,
+            content: editorRight.get()
+          })
+        } else {
+          this.saveData({
+            right: true,
+            id: this.rightId,
+            content: editorRight.getText()
+          })
+        }
+      }
     },
     download () {
       createFile(editorLeft.getText(), 'left.json')
@@ -245,7 +270,7 @@ export default {
         return ''
       }
     },
-    ...mapMutations(['setData'])
+    ...mapMutations(['saveData'])
   },
   beforeUnmount () {
     if (editorLeft) {
