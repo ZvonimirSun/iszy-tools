@@ -1,72 +1,70 @@
 <template>
-  <container>
-    <div class="panel" :style="{background: activeColor}" :class="{light:isLight,dark:!isLight}">
-      <Row>
-        <Col :md="12" :xl="8" :span="24">
-          <Form layout="vertical">
-            <FormItem label="HEX" class="hex">
-              <Input v-model:value="hex" @change="inputChange({hex})"/>
-            </FormItem>
-            <FormItem label="RGBA" class="rgba">
-              <InputGroup compact>
-                <InputNumber placeholder="R" v-model:value="rgba.r" @change="inputChange({rgba})" :max="255" :min="0"
-                             :step="1"/>
-                <InputNumber placeholder="G" v-model:value="rgba.g" @change="inputChange({rgba})" :max="255" :min="0"
-                             :step="1"/>
-                <InputNumber placeholder="B" v-model:value="rgba.b" @change="inputChange({rgba})" :max="255" :min="0"
-                             :step="1"/>
-                <InputNumber placeholder="A" v-model:value="rgba.a" @change="inputChange({rgba})" :max="1"
-                             :min="0" :step="0.01"/>
-              </InputGroup>
-            </FormItem>
-            <FormItem label="HSLA" class="hsla">
-              <InputGroup compact>
-                <InputNumber placeholder="H" v-model:value="hsla.h" @change="inputChange({hsla})" :max="360" :min="0"
-                             :step="0.01" :precision="2"/>
-                <InputNumber placeholder="S" v-model:value="hsla.s" @change="inputChange({hsla})" :max="1" :min="0"
-                             :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-                <InputNumber placeholder="L" v-model:value="hsla.l" @change="inputChange({hsla})" :max="1" :min="0"
-                             :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-                <InputNumber placeholder="A" v-model:value="hsla.a" @change="inputChange({hsla})" :max="1"
-                             :min="0" :step="0.01" :precision="2"/>
-              </InputGroup>
-            </FormItem>
-            <FormItem label="HSVA" class="hsva">
-              <InputGroup compact>
-                <InputNumber placeholder="H" v-model:value="hsva.h" @change="inputChange({hsva})" :max="360" :min="0"
-                             :step="0.01" :precision="2"/>
-                <InputNumber placeholder="S" v-model:value="hsva.s" @change="inputChange({hsva})" :max="1" :min="0"
-                             :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-                <InputNumber placeholder="V" v-model:value="hsva.v" @change="inputChange({hsva})" :max="1" :min="0"
-                             :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-                <InputNumber placeholder="A" v-model:value="hsva.a" @change="inputChange({hsva})" :max="1"
-                             :min="0" :step="0.01" :precision="2"/>
-              </InputGroup>
-            </FormItem>
-          </Form>
-        </Col>
-        <Col :md="12" :xl="8" :span="24">
-          <Form layout="vertical">
-            <FormItem label="颜色选择">
-              <div class="saturation">
-                <Saturation :value="colors" @change="childChange"/>
-              </div>
-              <div class="hue">
-                <Hue :value="colors" @change="childChange"/>
-              </div>
-              <div class="alpha">
-                <Alpha :value="colors" @change="childChange"/>
-              </div>
-            </FormItem>
-          </Form>
-        </Col>
-      </Row>
-    </div>
-  </container>
+  <div class="panel" :style="{background: activeColor}" :class="{light:isLight,dark:!isLight}">
+    <Row>
+      <Col :md="12" :xl="8" :span="24">
+        <Form layout="vertical">
+          <FormItem label="HEX" class="hex">
+            <Input v-model:value="hex" @change="inputChange({hex})"/>
+          </FormItem>
+          <FormItem label="RGBA" class="rgba">
+            <InputGroup compact>
+              <InputNumber placeholder="R" v-model:value="rgba.r" @change="inputChange({rgba})" :max="255" :min="0"
+                           :step="1"/>
+              <InputNumber placeholder="G" v-model:value="rgba.g" @change="inputChange({rgba})" :max="255" :min="0"
+                           :step="1"/>
+              <InputNumber placeholder="B" v-model:value="rgba.b" @change="inputChange({rgba})" :max="255" :min="0"
+                           :step="1"/>
+              <InputNumber placeholder="A" v-model:value="rgba.a" @change="inputChange({rgba})" :max="1"
+                           :min="0" :step="0.01"/>
+            </InputGroup>
+          </FormItem>
+          <FormItem label="HSLA" class="hsla">
+            <InputGroup compact>
+              <InputNumber placeholder="H" v-model:value="hsla.h" @change="inputChange({hsla})" :max="360" :min="0"
+                           :step="0.01" :precision="2"/>
+              <InputNumber placeholder="S" v-model:value="hsla.s" @change="inputChange({hsla})" :max="1" :min="0"
+                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
+              <InputNumber placeholder="L" v-model:value="hsla.l" @change="inputChange({hsla})" :max="1" :min="0"
+                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
+              <InputNumber placeholder="A" v-model:value="hsla.a" @change="inputChange({hsla})" :max="1"
+                           :min="0" :step="0.01" :precision="2"/>
+            </InputGroup>
+          </FormItem>
+          <FormItem label="HSVA" class="hsva">
+            <InputGroup compact>
+              <InputNumber placeholder="H" v-model:value="hsva.h" @change="inputChange({hsva})" :max="360" :min="0"
+                           :step="0.01" :precision="2"/>
+              <InputNumber placeholder="S" v-model:value="hsva.s" @change="inputChange({hsva})" :max="1" :min="0"
+                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
+              <InputNumber placeholder="V" v-model:value="hsva.v" @change="inputChange({hsva})" :max="1" :min="0"
+                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
+              <InputNumber placeholder="A" v-model:value="hsva.a" @change="inputChange({hsva})" :max="1"
+                           :min="0" :step="0.01" :precision="2"/>
+            </InputGroup>
+          </FormItem>
+        </Form>
+      </Col>
+      <Col :md="12" :xl="8" :span="24">
+        <Form layout="vertical">
+          <FormItem label="颜色选择">
+            <div class="saturation">
+              <Saturation :value="colors" @change="childChange"/>
+            </div>
+            <div class="hue">
+              <Hue :value="colors" @change="childChange"/>
+            </div>
+            <div class="alpha">
+              <Alpha :value="colors" @change="childChange"/>
+            </div>
+          </FormItem>
+        </Form>
+      </Col>
+    </Row>
+  </div>
 </template>
 
 <script>
-import { Container, Hue, Saturation, Alpha } from '@/components/index.js'
+import { Hue, Saturation, Alpha } from '@/components/index.js'
 
 import tinyColor from 'tinycolor2'
 import { Form, Input, InputNumber, Row, Col } from 'ant-design-vue'
@@ -113,7 +111,6 @@ export default {
     }
   },
   components: {
-    Container,
     Saturation,
     Hue,
     Alpha,
