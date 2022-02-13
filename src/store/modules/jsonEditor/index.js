@@ -26,13 +26,28 @@ export default {
       }
     },
     data: (state) => (id) => {
-      return state.$_data[id]
+      if (state.$_data[id]) {
+        return { ...state.$_data[id], updated: dayjs(state.$_data[id].updated).format('YYYY-MM-DD HH:mm') }
+      } else {
+        return null
+      }
     },
     leftData: (state) => {
-      return state.$_data[state.leftId]
+      if (state.$_data[state.leftId]) {
+        return { ...state.$_data[state.leftId], updated: dayjs(state.$_data[state.leftId].updated).format('YYYY-MM-DD HH:mm') }
+      } else {
+        return null
+      }
     },
     rightData: (state) => {
-      return state.$_data[state.rightId]
+      if (state.$_data[state.rightId]) {
+        return {
+          ...state.$_data[state.rightId],
+          updated: dayjs(state.$_data[state.rightId].updated).format('YYYY-MM-DD HH:mm')
+        }
+      } else {
+        return null
+      }
     }
   },
   mutations: {

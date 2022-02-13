@@ -31,6 +31,27 @@
           <Button size="small" type="primary" @click="download('left')">
             <span class="buttonWithIcon"><Save theme="outline"/>&nbsp;保存</span>
           </Button>
+          <Dropdown>
+            <template #overlay>
+              <Menu
+                @click="changeOption($event,'left')"
+                :trigger="['click','hover']"
+              >
+                <MenuItem key="indentation">
+                  <span class="buttonWithIcon"><IndentRight theme="outline"/>&nbsp;缩进({{indent}})</span>
+                </MenuItem>
+                <MenuItem key="properties">
+                  <span class="buttonWithIcon"><Info theme="outline"/>&nbsp;文档属性</span>
+                </MenuItem>
+                <MenuItem key="delete" :disabled="!Boolean(leftId)">
+                  <span class="buttonWithIcon"><Delete theme="outline"/>&nbsp;删除文档</span>
+                </MenuItem>
+              </Menu>
+            </template>
+            <Button size="small" type="primary">
+              <span class="buttonWithIcon"><SettingTwo theme="outline"/>&nbsp;选项<Down theme="outline"/></span>
+            </Button>
+          </Dropdown>
         </Space>
       </div>
       <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
@@ -79,6 +100,27 @@
           <Button size="small" type="primary" @click="download('right')">
             <span class="buttonWithIcon"><Save theme="outline"/>&nbsp;保存</span>
           </Button>
+          <Dropdown>
+            <template #overlay>
+              <Menu
+                @click="changeOption($event,'right')"
+                :trigger="['click','hover']"
+              >
+                <MenuItem key="indentation">
+                  <span class="buttonWithIcon"><IndentRight theme="outline"/>&nbsp;缩进({{indent}})</span>
+                </MenuItem>
+                <MenuItem key="properties">
+                  <span class="buttonWithIcon"><Info theme="outline"/>&nbsp;文档属性</span>
+                </MenuItem>
+                <MenuItem key="delete" :disabled="!Boolean(rightId)">
+                  <span class="buttonWithIcon"><Delete theme="outline"/>&nbsp;删除文档</span>
+                </MenuItem>
+              </Menu>
+            </template>
+            <Button size="small" type="primary">
+              <span class="buttonWithIcon"><SettingTwo theme="outline"/>&nbsp;选项<Down theme="outline"/></span>
+            </Button>
+          </Dropdown>
         </Space>
       </div>
       <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
@@ -118,6 +160,16 @@
     <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
     <Input v-model:value="url" placeholder="请输入URL地址"/>
   </Modal>
+  <Modal :visible="modalStatus.type === 'setIndentation'" title="设置缩进" @cancel="closeModal" @ok="changeIndentation">
+    <Paragraph>配置代码模式下用于缩进的空格数。 缩进同时应用于两个面板。</Paragraph>
+    <Input v-model:value.number="indent"/>
+  </Modal>
+  <Modal :visible="modalStatus.type === 'documentProperties'" title="文档属性" @cancel="closeModal" @ok="closeModal">
+    <Paragraph><strong>名称：</strong>{{documentProperties.name}}</Paragraph>
+    <Paragraph><strong>存储：</strong>{{documentProperties.storage}}</Paragraph>
+    <Paragraph><strong>更新：</strong>{{documentProperties.updated}}</Paragraph>
+    <Paragraph><strong>大小：</strong>{{documentProperties.size}} B</Paragraph>
+  </Modal>
 </template>
 
 <script>
@@ -129,8 +181,8 @@ import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography, List } from 'ant-design-vue'
-import { Right, Left, Down, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree } from '@icon-park/vue-next'
-import { get, isEqual, debounce } from 'lodash-es'
+import { Right, Left, Down, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
+import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 
 const { Item: MenuItem } = Menu
 const { Paragraph } = Typography
@@ -139,23 +191,6 @@ const { Meta: ListItemMeta } = ListItem
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
 
 let editorLeft, editorRight
-let codeLeft = {
-  array: [
-    1,
-    2,
-    3
-  ],
-  boolean: true,
-  color: 'gold',
-  null: null,
-  number: 123,
-  object: {
-    a: 'b',
-    c: 'd'
-  },
-  string: 'Hello World'
-}
-let codeRight = {}
 
 export default {
   name: 'JsonEditor',
@@ -180,9 +215,31 @@ export default {
     Save,
     History,
     Computer,
-    LinkThree
+    LinkThree,
+    SettingTwo,
+    Info,
+    Delete,
+    IndentRight
   },
   data: () => ({
+    codeLeft: {
+      array: [
+        1,
+        2,
+        3
+      ],
+      boolean: true,
+      color: 'gold',
+      null: null,
+      number: 123,
+      object: {
+        a: 'b',
+        c: 'd'
+      },
+      string: 'Hello World'
+    },
+    codeRight: {},
+
     diff: false,
 
     modalStatus: {
@@ -193,11 +250,46 @@ export default {
     url: '',
 
     keyword: '',
-    selectId: ''
+    selectId: '',
+
+    indent: 2
   }),
   computed: {
     dataListAfterSearch: function () {
       return this.dataList(this.keyword)
+    },
+    codeLeftString: function () {
+      if (typeof this.codeLeft === 'string') {
+        return this.codeLeft
+      } else {
+        return JSON.stringify(this.codeLeft, null, this.indent)
+      }
+    },
+    codeRightString: function () {
+      if (typeof this.codeRight === 'string') {
+        return this.codeRight
+      } else {
+        return JSON.stringify(this.codeRight, null, this.indent)
+      }
+    },
+    documentProperties: function () {
+      if (this.modalStatus.leftOrRight === 'left') {
+        return {
+          name: this.leftData?.name,
+          storage: this.leftData ? '浏览器本地' : '',
+          updated: this.leftData?.updated,
+          size: this.codeLeftString.length
+        }
+      } else if (this.modalStatus.leftOrRight === 'right') {
+        return {
+          name: this.rightData?.name,
+          storage: this.rightData ? '浏览器本地' : '',
+          updated: this.rightData?.updated,
+          size: this.codeRightString.length
+        }
+      } else {
+        return {}
+      }
     },
     ...mapState(['leftId', 'rightId']),
     ...mapGetters(['dataList', 'data', 'leftData', 'rightData'])
@@ -215,17 +307,17 @@ export default {
           onClassName: this.onClassName,
           onChangeText: debounce((json) => {
             try {
-              codeLeft = JSON.parse(json)
+              this.codeLeft = JSON.parse(json)
             } catch (e) {
-              codeLeft = json
+              this.codeLeft = json
             }
             editorLeft.refresh()
             editorRight.refresh()
             this.save('left')
           }, 100),
           onModeChange: (mode) => {
-            if (mode === 'code' && typeof codeLeft !== 'string') {
-              editorLeft.updateText(JSON.stringify(codeLeft, null, 2))
+            if (mode === 'code' && typeof this.codeLeft !== 'string') {
+              editorLeft.updateText(this.codeLeftString)
             }
             this.save('left')
           },
@@ -242,17 +334,17 @@ export default {
           onClassName: this.onClassName,
           onChangeText: debounce((json) => {
             try {
-              codeRight = JSON.parse(json)
+              this.codeRight = JSON.parse(json)
             } catch (e) {
-              codeRight = json
+              this.codeRight = json
             }
             editorLeft.refresh()
             editorRight.refresh()
             this.save('right')
           }, 100),
           onModeChange: (mode) => {
-            if (mode === 'code' && typeof codeRight !== 'string') {
-              editorRight.updateText(JSON.stringify(codeRight, null, 2))
+            if (mode === 'code' && typeof this.codeRight !== 'string') {
+              editorRight.updateText(this.codeRightString)
             }
             this.save('right')
           },
@@ -263,68 +355,72 @@ export default {
       )
       if (this.leftData && this.leftData.content) {
         if (this.leftData.content.json) {
-          codeLeft = this.leftData.content.json
+          this.codeLeft = this.leftData.content.json
           editorLeft.set(this.leftData.content.json)
           editorLeft.setMode('tree')
         } else if (this.leftData.content.text) {
           try {
-            codeLeft = JSON.parse(this.leftData.content.text)
+            this.codeLeft = JSON.parse(this.leftData.content.text)
           } catch (e) {
-            codeLeft = this.leftData.content.text
+            this.codeLeft = this.leftData.content.text
           }
           editorLeft.setText(this.leftData.content.text)
           editorLeft.setMode('code')
         }
       } else {
-        editorLeft.set(codeLeft)
+        editorLeft.set(this.codeLeft)
       }
       if (this.rightData && this.rightData.content) {
         if (this.rightData.content.json) {
-          codeRight = this.rightData.content.json
+          this.codeRight = this.rightData.content.json
           editorRight.set(this.rightData.content.json)
           editorRight.setMode('tree')
         } else if (this.rightData.content.text) {
           try {
-            codeRight = JSON.parse(this.rightData.content.text)
+            this.codeRight = JSON.parse(this.rightData.content.text)
           } catch (e) {
-            codeRight = this.rightData.content.text
+            this.codeRight = this.rightData.content.text
           }
           editorRight.setText(this.rightData.content.text)
           editorRight.setMode('code')
         }
       } else {
-        editorRight.set(codeRight)
+        editorRight.set(this.codeRight)
       }
     },
 
     copyRight () {
-      const content = editorLeft.getText()
-      let tmp
-      try {
-        tmp = JSON.parse(content)
-        editorRight.updateText(JSON.stringify(tmp, null, 2))
-      } catch (e) {
+      if (typeof this.codeLeft === 'string') {
         editorRight.setMode('code')
-        editorRight.updateText(content)
+        editorRight.updateText(this.codeLeft)
+        this.codeRight = this.codeLeft
+      } else {
+        if (editorLeft.getMode === 'code') {
+          editorRight.updateText(editorLeft.getText())
+        } else {
+          editorRight.updateText(this.codeLeftString)
+        }
+        this.codeRight = cloneDeep(this.codeLeft)
       }
       editorLeft.refresh()
       editorRight.refresh()
-      codeRight = tmp || codeLeft
       this.save('right')
     },
     copyLeft () {
-      const content = editorRight.getText()
-      let tmp
-      try {
-        tmp = JSON.parse(content)
-        editorLeft.updateText(JSON.stringify(tmp, null, 2))
-      } catch (e) {
+      if (typeof this.codeRight === 'string') {
         editorLeft.setMode('code')
-        editorLeft.updateText(content)
+        editorLeft.updateText(this.codeRight)
+        this.codeLeft = this.codeRight
+      } else {
+        if (editorRight.getMode === 'code') {
+          editorLeft.updateText(editorRight.getText())
+        } else {
+          editorLeft.updateText(this.codeRightString)
+        }
+        this.codeLeft = cloneDeep(this.codeRight)
       }
       editorLeft.refresh()
       editorRight.refresh()
-      codeLeft = tmp || codeRight
       this.save('left')
     },
     save (leftOrRight) {
@@ -362,13 +458,13 @@ export default {
     create (leftOrRight) {
       if (leftOrRight === 'left') {
         editorLeft.set({})
-        codeLeft = {}
+        this.codeLeft = {}
         this.saveData({
           left: true
         })
       } else if (leftOrRight === 'right') {
         editorRight.set({})
-        codeRight = {}
+        this.codeRight = {}
         this.saveData({
           right: true
         })
@@ -397,14 +493,14 @@ export default {
             id: this.selectId
           })
           if (data.json) {
-            codeLeft = data.json
+            this.codeLeft = data.json
             editorLeft.set(data.json)
             editorLeft.setMode('tree')
           } else if (data.text) {
             try {
-              codeLeft = JSON.parse(data.text)
+              this.codeLeft = JSON.parse(data.text)
             } catch (e) {
-              codeLeft = data.text
+              this.codeLeft = data.text
             }
             editorLeft.setText(data.text)
             editorLeft.setMode('code')
@@ -415,14 +511,14 @@ export default {
             id: this.selectId
           })
           if (data.json) {
-            codeRight = data.json
+            this.codeRight = data.json
             editorRight.set(data.json)
             editorRight.setMode('tree')
           } else if (data.text) {
             try {
-              codeRight = JSON.parse(data.text)
+              this.codeRight = JSON.parse(data.text)
             } catch (e) {
-              codeRight = data.text
+              this.codeRight = data.text
             }
             editorRight.setText(data.text)
             editorRight.setMode('code')
@@ -440,11 +536,11 @@ export default {
           if (reader.result) {
             this.create(this.modalStatus.leftOrRight)
             if (this.modalStatus.leftOrRight === 'left') {
-              codeLeft = reader.result
+              this.codeLeft = reader.result
               editorLeft.setText(reader.result)
               this.save('left')
             } else if (this.modalStatus.leftOrRight === 'right') {
-              codeRight = reader.result
+              this.codeRight = reader.result
               editorRight.setText(reader.result)
               this.save('right')
             }
@@ -460,11 +556,11 @@ export default {
         if (res) {
           this.create(this.modalStatus.leftOrRight)
           if (this.modalStatus.leftOrRight === 'left') {
-            codeLeft = res
+            this.codeLeft = res
             editorLeft.set(res)
             this.save('left')
           } else if (this.modalStatus.leftOrRight === 'right') {
-            codeRight = res
+            this.codeRight = res
             editorRight.set(res)
             this.save('right')
           }
@@ -482,9 +578,39 @@ export default {
         createFile(editorRight.getText(), `${this.rightData?.name || 'right'}.json`)
       }
     },
+    changeOption (e, leftOrRight) {
+      this.modalStatus.leftOrRight = leftOrRight
+      switch (e.key) {
+        case 'indentation':
+          this.modalStatus.type = 'setIndentation'
+          break
+        case 'properties':
+          this.modalStatus.type = 'documentProperties'
+          break
+        case 'delete':
+          if (leftOrRight === 'left') {
+            this.deleteData({ id: this.leftId })
+          } else if (leftOrRight === 'right') {
+            this.deleteData({ id: this.rightId })
+          }
+          break
+      }
+    },
+    changeIndentation () {
+      editorLeft.indentation = this.indent
+      editorRight.indentation = this.indent
+      if (typeof this.codeLeft === 'object') {
+        editorLeft.updateText(this.codeLeftString)
+      }
+      if (typeof this.codeRight === 'object') {
+        editorRight.updateText(this.codeRightString)
+      }
+      this.closeModal()
+    },
+
     changeDiff () {
       if (!this.diff) {
-        if (typeof codeLeft === 'string' || typeof codeRight === 'string') {
+        if (typeof this.codeLeft === 'string' || typeof this.codeRight === 'string') {
           this.$msg.error('JSON存在错误')
           return
         }
@@ -498,8 +624,8 @@ export default {
     },
 
     onClassName ({ path }) {
-      const leftValue = get(codeLeft, path)
-      const rightValue = get(codeRight, path)
+      const leftValue = get(this.codeLeft, path)
+      const rightValue = get(this.codeRight, path)
 
       if (this.diff) {
         if (isEqual(leftValue, rightValue)) {
