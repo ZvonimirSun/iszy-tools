@@ -4,23 +4,33 @@
       <div class="editorController editorControllerLeft">
         <div class="editorTitle">{{leftData?.name}}</div>
         <Space class="editorControlButtons">
-          <Button size="small" type="primary" @click="create('left')">新建</Button>
+          <Button size="small" type="primary" @click="create('left')">
+            <span class="buttonWithIcon"><FileAdditionOne theme="outline"/>&nbsp;新建</span>
+          </Button>
           <Dropdown>
             <template #overlay>
               <Menu
                 @click="open($event,'left')"
                 :trigger="['click','hover']"
               >
-                <MenuItem key="recent">打开最近记录</MenuItem>
-                <MenuItem key="file">打开本地文件</MenuItem>
-                <MenuItem key="url">打开URL</MenuItem>
+                <MenuItem key="recent">
+                  <span class="buttonWithIcon"><History theme="outline"/>&nbsp;打开最近记录</span>
+                </MenuItem>
+                <MenuItem key="file">
+                  <span class="buttonWithIcon"><Computer theme="outline"/>&nbsp;打开本地文件</span>
+                </MenuItem>
+                <MenuItem key="url">
+                  <span class="buttonWithIcon"><LinkThree theme="outline"/>&nbsp;打开URL</span>
+                </MenuItem>
               </Menu>
             </template>
             <Button size="small" type="primary">
-              <span class="buttonWithIcon">打开<Down theme="outline"/></span>
+              <span class="buttonWithIcon"><FolderOpen theme="outline"/>&nbsp;打开<Down theme="outline"/></span>
             </Button>
           </Dropdown>
-          <Button size="small" type="primary" @click="download('left')">保存</Button>
+          <Button size="small" type="primary" @click="download('left')">
+            <span class="buttonWithIcon"><Save theme="outline"/>&nbsp;保存</span>
+          </Button>
         </Space>
       </div>
       <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
@@ -42,23 +52,33 @@
       <div class="editorController editorControllerRight">
         <div class="editorTitle">{{rightData?.name}}</div>
         <Space class="editorControlButtons">
-          <Button size="small" type="primary" @click="create('right')">新建</Button>
+          <Button size="small" type="primary" @click="create('right')">
+            <span class="buttonWithIcon"><FileAdditionOne theme="outline"/>&nbsp;新建</span>
+          </Button>
           <Dropdown>
             <template #overlay>
               <Menu
                 @click="open($event,'right')"
                 :trigger="['click','hover']"
               >
-                <MenuItem key="recent">打开最近记录</MenuItem>
-                <MenuItem key="file">打开本地文件</MenuItem>
-                <MenuItem key="url">打开URL</MenuItem>
+                <MenuItem key="recent">
+                  <span class="buttonWithIcon"><History theme="outline"/>&nbsp;打开最近记录</span>
+                </MenuItem>
+                <MenuItem key="file">
+                  <span class="buttonWithIcon"><Computer theme="outline"/>&nbsp;打开本地文件</span>
+                </MenuItem>
+                <MenuItem key="url">
+                  <span class="buttonWithIcon"><LinkThree theme="outline"/>&nbsp;打开URL</span>
+                </MenuItem>
               </Menu>
             </template>
             <Button size="small" type="primary">
-              <span class="buttonWithIcon">打开<Down theme="outline"/></span>
+              <span class="buttonWithIcon"><FolderOpen theme="outline"/>&nbsp;打开<Down theme="outline"/></span>
             </Button>
           </Dropdown>
-          <Button size="small" type="primary" @click="download('right')">保存</Button>
+          <Button size="small" type="primary" @click="download('right')">
+            <span class="buttonWithIcon"><Save theme="outline"/>&nbsp;保存</span>
+          </Button>
         </Space>
       </div>
       <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
@@ -96,7 +116,7 @@
   <input type="file" v-show="false" ref="uploader" @change="openFile" accept=".json,.JSON"/>
   <Modal :visible="modalStatus.type === 'openUrl'" title="打开URL" @cancel="closeModal" @ok="openUrl(url)">
     <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
-    <Input v-model:value="url"/>
+    <Input v-model:value="url" placeholder="请输入URL地址"/>
   </Modal>
 </template>
 
@@ -109,7 +129,7 @@ import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography, List } from 'ant-design-vue'
-import { Right, Left, Down } from '@icon-park/vue-next'
+import { Right, Left, Down, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree } from '@icon-park/vue-next'
 import { get, isEqual, debounce } from 'lodash-es'
 
 const { Item: MenuItem } = Menu
@@ -154,7 +174,13 @@ export default {
     Paragraph,
     List,
     ListItem,
-    ListItemMeta
+    ListItemMeta,
+    FileAdditionOne,
+    FolderOpen,
+    Save,
+    History,
+    Computer,
+    LinkThree
   },
   data: () => ({
     diff: false,
