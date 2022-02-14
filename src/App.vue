@@ -32,6 +32,7 @@
 <script setup>
 import { Container } from '@/components'
 import asyncLoad from '@/utils/asyncLoad.js'
+import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
 import { watch, computed, inject, onMounted, ref } from 'vue'
@@ -60,6 +61,11 @@ onMounted(() => {
 })
 
 function fullScreen () {
+  if (fullScreenStatus.value && hasParam('fullScreen')) {
+    deleteParam('fullScreen')
+  } else if (!fullScreenStatus.value && !hasParam('fullScreen')) {
+    setParam('fullScreen')
+  }
   fullScreenStatus.value = !fullScreenStatus.value
 }
 
@@ -84,7 +90,7 @@ watch(needRefresh, function (val) {
 })
 
 watch(() => route.path, () => {
-  fullScreenStatus.value = false
+  fullScreenStatus.value = hasParam('fullScreen')
 })
 </script>
 
