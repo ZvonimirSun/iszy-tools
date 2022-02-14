@@ -1,7 +1,7 @@
 <template>
   <config-provider :locale="zhCN">
     <Layout>
-      <Header>
+      <Header v-show="!fullScreenStatus">
         <div class="header">
           <router-link to="/">ISZY工具集合</router-link>
         </div>
@@ -11,11 +11,11 @@
       <Content ref="view">
         <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
         <router-view v-if="$route.meta?.type !== 'tool'"/>
-        <Container v-else>
+        <Container v-else @fullScreen="fullScreen" :fullScreenStatus="fullScreenStatus">
           <router-view/>
         </Container>
       </Content>
-      <Footer>
+      <Footer v-show="!fullScreenStatus">
         <span>© 2021&nbsp;</span>
         <Link href="https://www.iszy.cc" target="_blank">
           随遇而安Blog
@@ -34,10 +34,11 @@ import { Container } from '@/components'
 import asyncLoad from '@/utils/asyncLoad.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
-import { watch, computed, inject, onMounted } from 'vue'
+import { watch, computed, inject, onMounted, ref } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { Return } from '@icon-park/vue-next'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 
 const {
   offlineReady,
@@ -47,13 +48,20 @@ const {
 const { Header, Content, Footer } = Layout
 const { Link } = Typography
 const store = useStore()
+const route = useRoute()
 const _user = computed(() => store.state.user._user)
 const $msg = inject('$msg')
+
+const fullScreenStatus = ref(false)
 
 onMounted(() => {
   asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
   asyncLoad('https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_3367_12.fac13c124005c66063399b5fd8543bed.js')
 })
+
+function fullScreen () {
+  fullScreenStatus.value = !fullScreenStatus.value
+}
 
 watch(offlineReady, function (val) {
   if (val) {
@@ -73,6 +81,10 @@ watch(needRefresh, function (val) {
       }
     })
   }
+})
+
+watch(() => route.path, () => {
+  fullScreenStatus.value = false
 })
 </script>
 

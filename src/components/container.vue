@@ -3,7 +3,9 @@
     <div class="containerAll">
       <div class="containerTitle">
         <div class="typeName">
-          <span>{{ name || ($route.meta || {}).title || $route.name }}</span>
+          <span>{{ name || $route.meta?.title || $route.name }}</span>
+          <OffScreen class="fullScreen" title="取消全屏" @click="fullScreen" theme="outline" v-if="fullScreenStatus"/>
+          <FullScreen class="fullScreen" title="全屏" @click="fullScreen" theme="outline" v-else/>
         </div>
       </div>
       <div class="main">
@@ -13,17 +15,21 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import { BackTop } from 'ant-design-vue'
-import { defineComponent } from 'vue'
+import { defineProps, defineEmits } from 'vue'
+import { FullScreen, OffScreen } from '@icon-park/vue-next'
 
-export default defineComponent({
-  name: 'container',
-  props: {
-    name: String
-  },
-  components: { BackTop }
+const props = defineProps({
+  name: String,
+  fullScreenStatus: Boolean
 })
+
+const emit = defineEmits(['fullScreen'])
+
+function fullScreen () {
+  emit('fullScreen')
+}
 </script>
 
 <style scoped lang="scss">
@@ -72,6 +78,14 @@ export default defineComponent({
 
       * + .i-icon {
         margin-left: .5rem;
+      }
+
+      .fullScreen {
+        cursor: pointer;
+
+        &.i-icon {
+          font-size: 1.8rem;
+        }
       }
     }
   }
