@@ -173,6 +173,7 @@
 </template>
 
 <script>
+import { deleteParam, getParam, setParam } from '@/utils/hashHandler.js'
 import { createNamespacedHelpers } from 'vuex'
 /**
  * @type {Function}
@@ -254,6 +255,26 @@ export default {
 
     indent: 2
   }),
+  watch: {
+    leftId: {
+      handler: function (val) {
+        if (val != null) {
+          setParam('left', val)
+        } else {
+          deleteParam('left')
+        }
+      }
+    },
+    rightId: {
+      handler: function (val) {
+        if (val != null) {
+          setParam('right', val)
+        } else {
+          deleteParam('right')
+        }
+      }
+    }
+  },
   computed: {
     dataListAfterSearch: function () {
       return this.dataList(this.keyword)
@@ -386,6 +407,18 @@ export default {
         }
       } else {
         editorRight.set(this.codeRight)
+      }
+      const left = getParam('left')
+      const right = getParam('right')
+      if (left && left !== this.leftId) {
+        this.selectId = left
+        this.modalStatus.leftOrRight = 'left'
+        this.openRecent()
+      }
+      if (right && left !== this.rightId) {
+        this.selectId = right
+        this.modalStatus.leftOrRight = 'right'
+        this.openRecent()
       }
     },
 

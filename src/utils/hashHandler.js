@@ -47,7 +47,7 @@ function setParam (key, value) {
 function deleteParam (key) {
   const list = getParamList()
   const tmp = list.findIndex(item => item.key === key)
-  if (tmp != null) {
+  if (tmp !== -1) {
     list.splice(tmp, 1)
   }
   updateHash(list)
