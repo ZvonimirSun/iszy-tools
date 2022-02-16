@@ -720,6 +720,8 @@ export default {
 .editorPanelContainer {
   height: 100%;
   width: calc(50% - 5rem);
+  display: flex;
+  flex-direction: column;
 
   &Left {
     @media (max-width: 1024px) {
@@ -729,21 +731,22 @@ export default {
 }
 
 .editorController {
-  display: inline-flex;
+  display: flex;
   width: 100%;
-  height: 35px;
   background: #71a8ff;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 
   .editorTitle {
     color: white;
     padding: .8rem;
+    margin-right: auto;
   }
 
   .editorControlButtons {
     margin: 0 .8rem;
-    height: 100%;
+    height: 35px;
   }
 }
 
@@ -753,7 +756,7 @@ export default {
 }
 
 :deep(.jsonEditor) {
-  height: calc(100% - 35px);
+  flex: 1;
   width: 100%;
 
   &.jsonEditorLeft .differentElement {
