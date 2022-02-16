@@ -832,6 +832,7 @@ export default {
 :deep(.jsonEditor) {
   flex: 1;
   width: 100%;
+  overflow: auto;
 
   &.jsonEditorLeft .differentElement {
     background-color: pink;
