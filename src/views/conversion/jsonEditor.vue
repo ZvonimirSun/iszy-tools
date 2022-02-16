@@ -76,6 +76,7 @@
           复制
         </Button>
         <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
+        <div class="drag"></div>
       </Space>
     </div>
     <div class="editorPanelContainer editorPanelContainerRight noShowMobile">
@@ -758,11 +759,12 @@ export default {
   width: 10rem;
   text-align: center;
 
-  .ant-space {
+  :deep(.ant-space) {
     margin-top: 10rem;
-    width: 80%;
+    width: calc(100% - 1.6rem);
+    height: calc(100% - 10rem);
 
-    :deep(.ant-btn) {
+    .ant-btn {
       display: flex;
       align-items: center;
 
@@ -772,6 +774,19 @@ export default {
 
       .i-icon + span, span + .i-icon {
         margin-left: 0;
+      }
+    }
+
+    .ant-space-item:last-child {
+      flex: 1;
+    }
+
+    .drag {
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        background: #dedede;
       }
     }
   }
