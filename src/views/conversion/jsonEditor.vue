@@ -2,7 +2,16 @@
   <div class="editorPanel">
     <div class="editorPanelContainer editorPanelContainerLeft">
       <div class="editorController editorControllerLeft">
-        <div class="editorTitle">{{leftData?.name}}</div>
+        <div class="editorTitle">
+          <Text
+            :content="leftData?.name"
+            :editable="leftData?.name ? {
+              onStart:onEditStartLeft,
+              onChange:onEditChange,
+              onEnd:onEditEnd
+            }:false"
+          />
+        </div>
         <Space class="editorControlButtons">
           <Button size="small" type="primary" @click="create('left')">
             <span class="buttonWithIcon"><FileAdditionOne theme="outline"/>&nbsp;新建</span>
@@ -71,7 +80,16 @@
     </div>
     <div class="editorPanelContainer editorPanelContainerRight noShowMobile">
       <div class="editorController editorControllerRight">
-        <div class="editorTitle">{{rightData?.name}}</div>
+        <div class="editorTitle">
+          <Text
+            :content="rightData?.name"
+            :editable="rightData?.name ? {
+              onStart:onEditStartRight,
+              onChange:onEditChange,
+              onEnd:onEditEnd
+            }:false"
+          />
+        </div>
         <Space class="editorControlButtons">
           <Button size="small" type="primary" @click="create('right')">
             <span class="buttonWithIcon"><FileAdditionOne theme="outline"/>&nbsp;新建</span>
@@ -275,20 +293,12 @@ export default {
   watch: {
     leftId: {
       handler: function (val) {
-        if (val != null) {
-          setParam('left', val)
-        } else {
-          deleteParam('left')
-        }
+        this.handleHashParams('left', val)
       }
     },
     rightId: {
       handler: function (val) {
-        if (val != null) {
-          setParam('right', val)
-        } else {
-          deleteParam('right')
-        }
+        this.handleHashParams('right', val)
       }
     }
   },
@@ -432,11 +442,15 @@ export default {
         this.modalStatus.leftOrRight = 'left'
         this.openRecent()
       }
-      if (right && left !== this.rightId) {
+      if (right && right !== this.rightId) {
         this.selectId = right
         this.modalStatus.leftOrRight = 'right'
         this.openRecent()
       }
+      this.$nextTick(() => {
+        this.handleHashParams('left', this.leftId)
+        this.handleHashParams('right', this.rightId)
+      })
     },
 
     copyRight () {
@@ -658,8 +672,15 @@ export default {
       this.closeModal()
     },
 
-    onEditStart () {
+    onEditStartLeft () {
+      this.onEditStart('left')
+    },
+    onEditStartRight () {
+      this.onEditStart('right')
+    },
+    onEditStart (leftOrRight, val) {
       this.currentName = this.documentProperties.name
+      this.modalStatus.leftOrRight = leftOrRight || this.modalStatus.leftOrRight
     },
     onEditChange (val) {
       this.currentName = val
@@ -705,6 +726,13 @@ export default {
     closeModal () {
       this.modalStatus.type = ''
       this.modalStatus.leftOrRight = ''
+    },
+    handleHashParams (leftOrRight, val) {
+      if (val != null) {
+        setParam(leftOrRight, val)
+      } else {
+        deleteParam(leftOrRight)
+      }
     },
     ...mapMutations(['saveData', 'deleteData'])
   },
@@ -774,6 +802,20 @@ export default {
     color: white;
     padding: .8rem;
     margin-right: auto;
+
+    .ant-typography-edit-content {
+      left: unset;
+      margin: 0;
+      display: inline-block;
+    }
+
+    :deep(.ant-typography) {
+      color: white;
+
+      .ant-typography-edit {
+        color: white;
+      }
+    }
   }
 
   .editorControlButtons {
