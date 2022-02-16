@@ -164,11 +164,11 @@
     <Paragraph>配置代码模式下用于缩进的空格数。 缩进同时应用于两个面板。</Paragraph>
     <Input v-model:value.number="indent"/>
   </Modal>
-  <Modal :visible="modalStatus.type === 'documentProperties'" title="文档属性" @cancel="closeModal" @ok="closeModal">
-    <Paragraph><strong>名称：</strong>{{documentProperties.name}}</Paragraph>
-    <Paragraph><strong>存储：</strong>{{documentProperties.storage}}</Paragraph>
-    <Paragraph><strong>更新：</strong>{{documentProperties.updated}}</Paragraph>
-    <Paragraph><strong>大小：</strong>{{documentProperties.size}} B</Paragraph>
+  <Modal :visible="modalStatus.type === 'documentProperties'" title="文档属性" @cancel="closeModal" @ok="closeModal" class="documentProperties">
+    <Paragraph><strong>名称：</strong><Text underline :editable="{onStart:onEditStart,onChange:onEditChange,onEnd:onEditEnd}" :content="documentProperties.name"></Text></Paragraph>
+    <Paragraph><strong>存储：</strong><Text underline>{{documentProperties.storage}}</Text></Paragraph>
+    <Paragraph><strong>更新：</strong><Text underline>{{documentProperties.updated}}</Text></Paragraph>
+    <Paragraph><strong>大小：</strong><Text underline>{{documentProperties.size}} B</Text></Paragraph>
   </Modal>
 </template>
 
@@ -186,7 +186,7 @@ import { Right, Left, Down, FileAdditionOne, FolderOpen, Save, History, Computer
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 
 const { Item: MenuItem } = Menu
-const { Paragraph } = Typography
+const { Paragraph, Text } = Typography
 const { Item: ListItem } = List
 const { Meta: ListItemMeta } = ListItem
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
@@ -220,7 +220,8 @@ export default {
     SettingTwo,
     Info,
     Delete,
-    IndentRight
+    IndentRight,
+    Text
   },
   data: () => ({
     codeLeft: {
@@ -253,7 +254,9 @@ export default {
     keyword: '',
     selectId: '',
 
-    indent: 2
+    indent: 2,
+
+    currentName: ''
   }),
   watch: {
     leftId: {
@@ -641,6 +644,21 @@ export default {
       this.closeModal()
     },
 
+    onEditStart () {
+      this.currentName = this.documentProperties.name
+    },
+    onEditChange (val) {
+      this.currentName = val
+    },
+    onEditEnd () {
+      if (this.modalStatus.leftOrRight === 'left') {
+        this.saveData({ id: this.leftId, name: this.currentName })
+      } else if (this.modalStatus.leftOrRight === 'right') {
+        this.saveData({ id: this.rightId, name: this.currentName })
+      }
+      this.currentName = ''
+    },
+
     changeDiff () {
       if (!this.diff) {
         if (typeof this.codeLeft === 'string' || typeof this.codeRight === 'string') {
@@ -817,6 +835,15 @@ export default {
 :deep(.jsoneditor-poweredBy) {
   @media (max-width: 1024px) {
     display: none;
+  }
+}
+
+.documentProperties {
+  .ant-typography-edit-content {
+    left: unset;
+    margin: 0;
+    display: inline-block;
+    width: calc(100% - 42px);
   }
 }
 </style>

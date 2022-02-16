@@ -79,6 +79,7 @@ export default {
         if (right) {
           state.rightId = id
         }
+        state.$_data[id].name = name || state.$_data[id].name
       } else {
         if (left) {
           state.leftId = undefined
