@@ -165,10 +165,23 @@
     <Input v-model:value.number="indent"/>
   </Modal>
   <Modal :visible="modalStatus.type === 'documentProperties'" title="文档属性" @cancel="closeModal" @ok="closeModal" class="documentProperties">
-    <Paragraph><strong>名称：</strong><Text underline :editable="{onStart:onEditStart,onChange:onEditChange,onEnd:onEditEnd}" :content="documentProperties.name"></Text></Paragraph>
-    <Paragraph><strong>存储：</strong><Text underline>{{documentProperties.storage}}</Text></Paragraph>
-    <Paragraph><strong>更新：</strong><Text underline>{{documentProperties.updated}}</Text></Paragraph>
-    <Paragraph><strong>大小：</strong><Text underline>{{documentProperties.size}} B</Text></Paragraph>
+    <Paragraph><strong>名称：</strong><Text
+      v-show="documentProperties.name"
+      :editable="{onStart:onEditStart,onChange:onEditChange,onEnd:onEditEnd}"
+      :content="documentProperties.name"
+    /></Paragraph>
+    <Paragraph><strong>存储：</strong><Text
+      v-show="documentProperties.storage"
+      :content="documentProperties.storage"
+    /></Paragraph>
+    <Paragraph><strong>更新：</strong><Text
+      v-show="documentProperties.updated"
+      :content="documentProperties.updated"
+    /></Paragraph>
+    <Paragraph><strong>大小：</strong><Text
+      v-show="documentProperties.size"
+      :content="documentProperties.size"
+    /></Paragraph>
   </Modal>
 </template>
 
@@ -184,6 +197,7 @@ import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography, List } from 'ant-design-vue'
 import { Right, Left, Down, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
+import formatBytes from '@/utils/formatBytes.js'
 
 const { Item: MenuItem } = Menu
 const { Paragraph, Text } = Typography
@@ -302,14 +316,14 @@ export default {
           name: this.leftData?.name,
           storage: this.leftData ? '浏览器本地' : '',
           updated: this.leftData?.updated,
-          size: this.codeLeftString.length
+          size: formatBytes(this.codeLeftString.length)
         }
       } else if (this.modalStatus.leftOrRight === 'right') {
         return {
           name: this.rightData?.name,
           storage: this.rightData ? '浏览器本地' : '',
           updated: this.rightData?.updated,
-          size: this.codeRightString.length
+          size: formatBytes(this.codeRightString.length)
         }
       } else {
         return {}
