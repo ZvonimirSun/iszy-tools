@@ -1,6 +1,6 @@
 <template>
-  <div class="editorPanel">
-    <div class="editorPanelContainer editorPanelContainerLeft">
+  <div class="editorPanel" ref="editorPanel">
+    <div class="editorPanelContainer editorPanelContainerLeft" :class="{full:fullPanel==='left',hide:fullPanel==='right'}" ref="editorPanelContainerLeft">
       <div class="editorController editorControllerLeft">
         <div class="editorTitle">
           <Text
@@ -65,20 +65,30 @@
       </div>
       <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
     </div>
-    <div class="controller noShowMobile">
+    <div class="controller noShowMobile" :class="{full:fullPanel}">
       <Space direction="vertical">
-        <Button type="primary" @click="copyRight" block>
-          复制
-          <Right theme="outline"/>
-        </Button>
-        <Button type="primary" @click="copyLeft" block>
-          <Left theme="outline"/>
-          复制
-        </Button>
-        <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
+        <template v-if="!fullPanel">
+          <div class="emptySpace"></div>
+          <Button type="primary" @click="copyRight" block>
+            复制
+            <Right theme="outline"/>
+          </Button>
+          <Button type="primary" @click="copyLeft" block>
+            <Left theme="outline"/>
+            复制
+          </Button>
+          <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
+        </template>
+        <div class="drag" @mousedown="startDrag" @click="clickDragger" @touchstart="startDrag">
+          <div class="dragIcon">
+            <svg v-if="fullPanel==='right'" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path></svg>
+            <svg v-else-if="fullPanel==='left'" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"></path></svg>
+            <svg v-else aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-vertical" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512"><path fill="currentColor" d="M64 360C94.93 360 120 385.1 120 416C120 446.9 94.93 472 64 472C33.07 472 8 446.9 8 416C8 385.1 33.07 360 64 360zM64 200C94.93 200 120 225.1 120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200zM64 152C33.07 152 8 126.9 8 96C8 65.07 33.07 40 64 40C94.93 40 120 65.07 120 96C120 126.9 94.93 152 64 152z"></path></svg>
+          </div>
+        </div>
       </Space>
     </div>
-    <div class="editorPanelContainer editorPanelContainerRight noShowMobile">
+    <div class="editorPanelContainer editorPanelContainerRight noShowMobile" :class="{full:fullPanel==='right',hide:fullPanel==='left'}">
       <div class="editorController editorControllerRight">
         <div class="editorTitle">
           <Text
@@ -225,6 +235,9 @@ const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEdit
 
 let editorLeft, editorRight
 
+let startX = 0
+let originWidth = 0
+
 export default {
   name: 'JsonEditor',
   components: {
@@ -288,7 +301,12 @@ export default {
 
     indent: 2,
 
-    currentName: ''
+    currentName: '',
+
+    leftMode: 'code',
+    rightMode: 'tree',
+
+    fullPanel: ''
   }),
   watch: {
     leftId: {
@@ -364,6 +382,7 @@ export default {
             this.save('left')
           }, 100),
           onModeChange: (mode) => {
+            this.leftMode = mode
             if (mode === 'code' && typeof this.codeLeft !== 'string') {
               editorLeft.updateText(this.codeLeftString)
             }
@@ -391,6 +410,7 @@ export default {
             this.save('right')
           }, 100),
           onModeChange: (mode) => {
+            this.rightMode = mode
             if (mode === 'code' && typeof this.codeRight !== 'string') {
               editorRight.updateText(this.codeRightString)
             }
@@ -460,7 +480,7 @@ export default {
         editorRight.updateText(this.codeLeft)
         this.codeRight = this.codeLeft
       } else {
-        if (editorLeft.getMode === 'code') {
+        if (this.leftMode === 'code') {
           editorRight.updateText(editorLeft.getText())
         } else {
           editorRight.updateText(this.codeLeftString)
@@ -477,7 +497,7 @@ export default {
         editorLeft.updateText(this.codeRight)
         this.codeLeft = this.codeRight
       } else {
-        if (editorRight.getMode === 'code') {
+        if (this.rightMode === 'code') {
           editorLeft.updateText(editorRight.getText())
         } else {
           editorLeft.updateText(this.codeRightString)
@@ -490,7 +510,7 @@ export default {
     },
     save (leftOrRight) {
       if (!leftOrRight || leftOrRight === 'left') {
-        if (editorLeft.getMode() === 'tree') {
+        if (this.leftMode === 'tree') {
           this.saveData({
             left: true,
             id: this.leftId,
@@ -505,7 +525,7 @@ export default {
         }
       }
       if (!leftOrRight || leftOrRight === 'right') {
-        if (editorRight.getMode() === 'tree') {
+        if (this.rightMode === 'tree') {
           this.saveData({
             right: true,
             id: this.rightId,
@@ -701,7 +721,7 @@ export default {
           this.$msg.error('JSON存在错误')
           return
         }
-        if (editorLeft.getMode() !== 'tree' || editorRight.getMode() !== 'tree') {
+        if (this.leftMode !== 'tree' || this.rightMode !== 'tree') {
           this.$msg.warn('对比模式仅在「树」模式下生效，请切换为树模式')
         }
       }
@@ -749,6 +769,53 @@ export default {
         this.openRecent()
       }
     },
+    startDrag (e) {
+      if (!this.fullPanel) {
+        originWidth = parseFloat(window.getComputedStyle(this.$refs.editorPanelContainerLeft).width)
+        if (e.touches) {
+          startX = e.touches[0].clientX
+          document.addEventListener('touchend', this.endDrag)
+          document.addEventListener('touchmove', this.dragMove)
+        } else {
+          startX = e.clientX
+          document.addEventListener('mouseup', this.endDrag)
+          document.addEventListener('mousemove', this.dragMove)
+        }
+      }
+    },
+    dragMove (e) {
+      let clientX = 0
+      if (e.touches) {
+        clientX = e.touches[0].clientX
+      } else {
+        clientX = e.clientX
+      }
+      const width = originWidth - startX + clientX
+      const editorPanelWidth = parseFloat(window.getComputedStyle(this.$refs.editorPanel).width)
+      if (width < 435) {
+        this.fullPanel = 'right'
+      } else if (editorPanelWidth - 100 - width < 435) {
+        this.fullPanel = 'left'
+      } else {
+        this.fullPanel = ''
+        this.$refs.editorPanelContainerLeft.style.width = originWidth - startX + clientX + 'px'
+      }
+    },
+    endDrag () {
+      document.removeEventListener('mousemove', this.dragMove)
+      document.removeEventListener('touchmove', this.dragMove)
+      document.removeEventListener('mouseup', this.endDrag)
+      document.removeEventListener('touchend', this.endDrag)
+    },
+    clickDragger () {
+      if (this.fullPanel === 'left') {
+        this.$refs.editorPanelContainerLeft.style.width = 'calc(100% - 10rem - 435px)'
+        this.fullPanel = ''
+      } else if (this.fullPanel === 'right') {
+        this.$refs.editorPanelContainerLeft.style.width = '435px'
+        this.fullPanel = ''
+      }
+    },
     ...mapMutations(['saveData', 'deleteData'])
   },
   beforeUnmount () {
@@ -773,12 +840,23 @@ export default {
   height: 100%;
   width: 10rem;
   text-align: center;
+  user-select: none;
 
-  .ant-space {
-    margin-top: 10rem;
-    width: 80%;
+  &.full {
+    width: 5rem;
+  }
 
-    :deep(.ant-btn) {
+  > :deep(.ant-space) {
+    width: calc(100% - 1.6rem);
+    height: 100%;
+
+    .emptySpace {
+      display: block;
+      width: 100%;
+      height: 9.2rem;
+    }
+
+    .ant-btn {
       display: flex;
       align-items: center;
 
@@ -790,19 +868,65 @@ export default {
         margin-left: 0;
       }
     }
+
+    .ant-space-item:last-child {
+      flex: 1;
+    }
+
+    .drag {
+      width: 100%;
+      height: 100%;
+      cursor: col-resize;
+      display: inline-flex;
+      border-radius: .3rem;
+      flex: 4 1;
+      align-items: center;
+
+      &:hover {
+        background: #dedede;
+      }
+
+      .dragIcon {
+        color: #a8a8a8;
+        width: 100%;
+        text-align: center;
+
+        svg {
+          width: 3rem;
+          height: 2.4rem;
+        }
+      }
+    }
   }
 }
 
 .editorPanelContainer {
   height: 100%;
-  width: calc(50% - 5rem);
   display: flex;
   flex-direction: column;
 
+  &.full {
+    @media (min-width: 1024px) {
+      width: calc(100% - 5rem) !important;
+    }
+  }
+
+  &.hide {
+    @media (min-width: 1024px) {
+      display: none !important;
+    }
+  }
+
   &Left {
+    width: calc(50% - 5rem);
+
     @media (max-width: 1024px) {
       width: 100%;
     }
+  }
+
+  &Right {
+    flex: 1;
   }
 }
 
