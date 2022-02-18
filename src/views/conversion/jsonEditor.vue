@@ -451,6 +451,7 @@ export default {
       this.$nextTick(() => {
         this.handleHashParams('left', this.leftId)
         this.handleHashParams('right', this.rightId)
+        window.addEventListener('hashchange', this.hashChange)
       })
     },
 
@@ -735,6 +736,20 @@ export default {
         deleteParam(leftOrRight)
       }
     },
+    hashChange () {
+      const left = getParam('left')
+      const right = getParam('right')
+      if (left && left !== this.leftId) {
+        this.selectId = left
+        this.modalStatus.leftOrRight = 'left'
+        this.openRecent()
+      }
+      if (right && right !== this.rightId) {
+        this.selectId = right
+        this.modalStatus.leftOrRight = 'right'
+        this.openRecent()
+      }
+    },
     ...mapMutations(['saveData', 'deleteData'])
   },
   beforeUnmount () {
@@ -744,6 +759,7 @@ export default {
     if (editorRight) {
       editorRight.destroy()
     }
+    window.removeEventListener('hashchange', this.hashChange)
   }
 }
 </script>
