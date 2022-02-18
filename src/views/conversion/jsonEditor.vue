@@ -78,6 +78,10 @@
             复制
           </Button>
           <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
+          <Space v-if="diff">
+            <Button type="primary" class="diffBtn"><Up theme="outline"/></Button>
+            <Button type="primary" class="diffBtn"><Down theme="outline"/></Button>
+          </Space>
         </template>
         <div class="drag" @mousedown="startDrag" @click="clickDragger" @touchstart="startDrag">
           <div class="dragIcon">
@@ -223,7 +227,7 @@ import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
 import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography, List } from 'ant-design-vue'
-import { Right, Left, Down, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
+import { Right, Left, Down, Up, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
 
@@ -266,7 +270,8 @@ export default {
     Info,
     Delete,
     IndentRight,
-    Text
+    Text,
+    Up
   },
   data: () => ({
     codeLeft: {
@@ -302,6 +307,8 @@ export default {
     indent: 2,
 
     currentName: '',
+
+    diffMap: {},
 
     leftMode: 'code',
     rightMode: 'tree',
@@ -372,6 +379,7 @@ export default {
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: debounce((json) => {
+            this.diffMap = {}
             try {
               this.codeLeft = JSON.parse(json)
             } catch (e) {
@@ -400,6 +408,7 @@ export default {
           modes: ['code', 'tree'],
           onClassName: this.onClassName,
           onChangeText: debounce((json) => {
+            this.diffMap = {}
             try {
               this.codeRight = JSON.parse(json)
             } catch (e) {
@@ -731,13 +740,14 @@ export default {
     },
 
     onClassName ({ path }) {
-      const leftValue = get(this.codeLeft, path)
-      const rightValue = get(this.codeRight, path)
-
-      if (this.diff) {
+      if (this.diff && !this.fullPanel) {
+        const leftValue = get(this.codeLeft, path)
+        const rightValue = get(this.codeRight, path)
         if (isEqual(leftValue, rightValue)) {
+          delete this.diffMap[path]
           return ''
         } else {
+          this.diffMap[path] = true
           return 'differentElement'
         }
       } else {
@@ -896,6 +906,10 @@ export default {
           height: 2.4rem;
         }
       }
+    }
+
+    .diffBtn {
+      padding: 4px 0.9rem;
     }
   }
 }
