@@ -1,5 +1,6 @@
 import randomString from '@/utils/randomString.js'
 import dayjs from 'dayjs'
+import { clamp } from 'lodash-es'
 import { markRaw } from 'vue'
 
 export default {
@@ -7,6 +8,7 @@ export default {
   state: () => ({
     leftId: undefined,
     rightId: undefined,
+    splitterValue: 0.5,
     $_data: {}
   }),
   getters: {
@@ -99,6 +101,9 @@ export default {
       if (state.$_data[id]) {
         delete (state.$_data[id])
       }
+    },
+    setSplitter (state, val = 0.5) {
+      state.splitterValue = clamp(val, 0, 1)
     }
   },
   actions: {}

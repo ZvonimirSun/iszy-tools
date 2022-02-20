@@ -1,6 +1,11 @@
 <template>
   <div class="editorPanel" ref="editorPanel">
-    <div class="editorPanelContainer editorPanelContainerLeft" :class="{full:fullPanel==='left',hide:fullPanel==='right'}" ref="editorPanelContainerLeft">
+    <div
+      class="editorPanelContainer editorPanelContainerLeft"
+      :class="{full:fullPanel==='left',hide:fullPanel==='right'}"
+      ref="editorPanelContainerLeft"
+      :style="{flex: splitterValue + ' 1 0'}"
+    >
       <div class="editorController editorControllerLeft">
         <div class="editorTitle">
           <Text
@@ -92,7 +97,11 @@
         </div>
       </Space>
     </div>
-    <div class="editorPanelContainer editorPanelContainerRight noShowMobile" :class="{full:fullPanel==='right',hide:fullPanel==='left'}">
+    <div
+      class="editorPanelContainer editorPanelContainerRight noShowMobile"
+      :class="{full:fullPanel==='right',hide:fullPanel==='left'}"
+      :style="{flex: (1-splitterValue) + ' 1 0'}"
+    >
       <div class="editorController editorControllerRight">
         <div class="editorTitle">
           <Text
@@ -364,7 +373,7 @@ export default {
         return {}
       }
     },
-    ...mapState(['leftId', 'rightId']),
+    ...mapState(['leftId', 'rightId', 'splitterValue']),
     ...mapGetters(['dataList', 'data', 'leftData', 'rightData'])
   },
   mounted () {
@@ -808,7 +817,7 @@ export default {
         this.fullPanel = 'left'
       } else {
         this.fullPanel = ''
-        this.$refs.editorPanelContainerLeft.style.width = originWidth - startX + clientX + 'px'
+        this.setSplitter(width / (editorPanelWidth - 100))
       }
     },
     endDrag () {
@@ -819,14 +828,14 @@ export default {
     },
     clickDragger () {
       if (this.fullPanel === 'left') {
-        this.$refs.editorPanelContainerLeft.style.width = 'calc(100% - 10rem - 435px)'
+        this.setSplitter(1 - 435 / (parseFloat(window.getComputedStyle(this.$refs.editorPanel).width) - 100))
         this.fullPanel = ''
       } else if (this.fullPanel === 'right') {
-        this.$refs.editorPanelContainerLeft.style.width = '435px'
+        this.setSplitter(435 / (parseFloat(window.getComputedStyle(this.$refs.editorPanel).width) - 100))
         this.fullPanel = ''
       }
     },
-    ...mapMutations(['saveData', 'deleteData'])
+    ...mapMutations(['saveData', 'deleteData', 'setSplitter'])
   },
   beforeUnmount () {
     if (editorLeft) {
@@ -844,6 +853,7 @@ export default {
 .editorPanel {
   display: flex;
   height: 100%;
+  flex: 1 1;
 }
 
 .controller {
@@ -921,7 +931,7 @@ export default {
 
   &.full {
     @media (min-width: 1024px) {
-      width: calc(100% - 5rem) !important;
+      flex: 1 !important;
     }
   }
 
@@ -932,15 +942,9 @@ export default {
   }
 
   &Left {
-    width: calc(50% - 5rem);
-
     @media (max-width: 1024px) {
       width: 100%;
     }
-  }
-
-  &Right {
-    flex: 1;
   }
 }
 

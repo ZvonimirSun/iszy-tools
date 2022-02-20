@@ -6,7 +6,7 @@
           <template #cover>
             <Image :src="item.url" :alt="item.name" width="20rem" height="12.36rem"/>
           </template>
-          <template class="ant-card-actions" #actions>
+          <template #actions>
             <Tooltip>
               <template #title>复制链接</template>
               <CopyLink @click="copyImgUrl(item)"/>

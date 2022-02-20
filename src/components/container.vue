@@ -17,14 +17,15 @@
 </template>
 <script setup>
 import { BackTop } from 'ant-design-vue'
-import { defineProps, defineEmits } from 'vue'
 import { FullScreen, OffScreen } from '@icon-park/vue-next'
 
+// eslint-disable-next-line no-undef
 const props = defineProps({
   name: String,
   fullScreenStatus: Boolean
 })
 
+// eslint-disable-next-line no-undef
 const emit = defineEmits(['fullScreen'])
 
 function fullScreen () {
