@@ -9,6 +9,7 @@ export default {
     leftId: undefined,
     rightId: undefined,
     splitterValue: 0.5,
+    fullStatus: '',
     $_data: {}
   }),
   getters: {
@@ -104,6 +105,18 @@ export default {
     },
     setSplitter (state, val = 0.5) {
       state.splitterValue = clamp(val, 0, 1)
+    },
+    /**
+     * 设置全屏状态
+     * @param state
+     * @param [val]
+     */
+    setFullStatus (state, val) {
+      if (val === 'left' || val === 'right') {
+        state.fullStatus = val
+      } else {
+        state.fullStatus = ''
+      }
     }
   },
   actions: {}

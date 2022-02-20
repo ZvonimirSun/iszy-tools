@@ -88,7 +88,7 @@
             <Button type="primary" class="diffBtn"><Down theme="outline"/></Button>
           </Space>
         </template>
-        <div class="drag" @mousedown="startDrag" @click="clickDragger" @touchstart="startDrag">
+        <div class="drag" @mousedown="startDrag" @touchstart="startDrag" @click="clickDragger">
           <div class="dragIcon">
             <svg v-if="fullPanel==='right'" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path></svg>
             <svg v-else-if="fullPanel==='left'" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"></path></svg>
@@ -250,6 +250,7 @@ let editorLeft, editorRight
 
 let startX = 0
 let originWidth = 0
+let moved = false
 
 export default {
   name: 'JsonEditor',
@@ -373,7 +374,7 @@ export default {
         return {}
       }
     },
-    ...mapState(['leftId', 'rightId', 'splitterValue']),
+    ...mapState(['leftId', 'rightId', 'splitterValue', 'fullStatus']),
     ...mapGetters(['dataList', 'data', 'leftData', 'rightData'])
   },
   mounted () {
@@ -381,6 +382,7 @@ export default {
   },
   methods: {
     init () {
+      this.fullPanel = this.fullStatus
       editorLeft = new JSONEditor(
         this.$refs.jsonEditorLeft,
         {
@@ -789,20 +791,23 @@ export default {
       }
     },
     startDrag (e) {
-      if (!this.fullPanel) {
-        originWidth = parseFloat(window.getComputedStyle(this.$refs.editorPanelContainerLeft).width)
-        if (e.touches) {
-          startX = e.touches[0].clientX
-          document.addEventListener('touchend', this.endDrag)
-          document.addEventListener('touchmove', this.dragMove)
-        } else {
-          startX = e.clientX
-          document.addEventListener('mouseup', this.endDrag)
-          document.addEventListener('mousemove', this.dragMove)
-        }
+      moved = false
+      originWidth = parseFloat(window.getComputedStyle(this.$refs.editorPanelContainerLeft).width)
+      if (isNaN(originWidth)) {
+        originWidth = 0
+      }
+      if (e.touches) {
+        startX = e.touches[0].clientX
+        document.addEventListener('touchend', this.endDrag)
+        document.addEventListener('touchmove', this.dragMove)
+      } else {
+        startX = e.clientX
+        document.addEventListener('mouseup', this.endDrag)
+        document.addEventListener('mousemove', this.dragMove)
       }
     },
     dragMove (e) {
+      moved = true
       let clientX = 0
       if (e.touches) {
         clientX = e.touches[0].clientX
@@ -813,11 +818,16 @@ export default {
       const editorPanelWidth = parseFloat(window.getComputedStyle(this.$refs.editorPanel).width)
       if (width < 435) {
         this.fullPanel = 'right'
+        if (this.fullPanel !== this.fullStatus) { this.setFullStatus('right') }
       } else if (editorPanelWidth - 100 - width < 435) {
         this.fullPanel = 'left'
+        if (this.fullPanel !== this.fullStatus) { this.setFullStatus('left') }
       } else {
         this.fullPanel = ''
         this.setSplitter(width / (editorPanelWidth - 100))
+        if (this.fullPanel !== this.fullStatus) {
+          this.setFullStatus()
+        }
       }
     },
     endDrag () {
@@ -827,6 +837,7 @@ export default {
       document.removeEventListener('touchend', this.endDrag)
     },
     clickDragger () {
+      if (moved) { return }
       if (this.fullPanel === 'left') {
         this.setSplitter(1 - 435 / (parseFloat(window.getComputedStyle(this.$refs.editorPanel).width) - 100))
         this.fullPanel = ''
@@ -835,7 +846,7 @@ export default {
         this.fullPanel = ''
       }
     },
-    ...mapMutations(['saveData', 'deleteData', 'setSplitter'])
+    ...mapMutations(['saveData', 'deleteData', 'setSplitter', 'setFullStatus'])
   },
   beforeUnmount () {
     if (editorLeft) {
@@ -943,7 +954,7 @@ export default {
 
   &Left {
     @media (max-width: 1024px) {
-      width: 100%;
+      flex: 1 !important;
     }
   }
 }
