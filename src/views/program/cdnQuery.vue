@@ -90,10 +90,10 @@
               </div>
               <div v-if="item.keywords && item.keywords.length">
                 <Tag
-                  v-for="(keyword,index) of item.keywords"
+                  v-for="(key,index) of item.keywords"
                   :key="index"
                 >
-                  {{ keyword }}
+                  {{ key }}
                 </Tag>
               </div>
             </Item>

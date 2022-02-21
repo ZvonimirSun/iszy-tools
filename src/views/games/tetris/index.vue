@@ -2,16 +2,29 @@
   <div>
     <div class="gamePanel">
       <div class="tetrisPanel">
-        <div v-for="item in (gridCells.col*2+gridCells.row*2+4)" :class="['tetrisCell','tetrisCellGrid']"
-             :key="'tetrisFrameGrid'+item"></div>
+        <div
+          v-for="item in (gridCells.col*2+gridCells.row*2+4)"
+          :key="'tetrisFrameGrid'+item"
+          :class="['tetrisCell','tetrisCellGrid']"
+        />
         <div class="tetrisMainPanel">
           <template v-if="inited">
-            <template v-for="x in gridCells.row" :key="x">
-              <template v-for="y in gridCells.col" :key="y">
+            <template
+              v-for="x in gridCells.row"
+              :key="x"
+            >
+              <template
+                v-for="y in gridCells.col"
+                :key="y"
+              >
                 <div
+                  v-if="currentMatrix[x-1][y-1]"
                   :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
-                  v-if="currentMatrix[x-1][y-1]"></div>
-                <div class="tetrisCell" v-else></div>
+                />
+                <div
+                  v-else
+                  class="tetrisCell"
+                />
               </template>
             </template>
           </template>
@@ -19,43 +32,109 @@
       </div>
       <div class="otherPanel">
         <div class="infoPanel">
-          <div class="info">最高分: <span class="digital">{{ bestScore }}</span></div>
           <div class="info">
-            <template v-if="!start">上轮</template>
-            得分: <span class="digital">{{ score }}</span></div>
-          <div class="info">消除行: <span class="digital">{{ lines }}</span></div>
-          <div class="info">级别: <span class="digital">{{ level }}</span></div>
-          <div class="info">下一个</div>
+            最高分: <span class="digital">{{ bestScore }}</span>
+          </div>
+          <div class="info">
+            <template v-if="!start">
+              上轮
+            </template>
+            得分: <span class="digital">{{ score }}</span>
+          </div>
+          <div class="info">
+            消除行: <span class="digital">{{ lines }}</span>
+          </div>
+          <div class="info">
+            级别: <span class="digital">{{ level }}</span>
+          </div>
+          <div class="info">
+            下一个
+          </div>
           <div class="nextTetrimino">
             <template v-if="inited">
-              <template v-for="x in 2" :key="x">
-                <template v-for="y in 4" :key="y">
-                  <div :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
-                       v-if="nextTetriminoMatrixLegend[x-1][y-1]"></div>
-                  <div class="tetrisCell" v-else></div>
+              <template
+                v-for="x in 2"
+                :key="x"
+              >
+                <template
+                  v-for="y in 4"
+                  :key="y"
+                >
+                  <div
+                    v-if="nextTetriminoMatrixLegend[x-1][y-1]"
+                    :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
+                  />
+                  <div
+                    v-else
+                    class="tetrisCell"
+                  />
                 </template>
               </template>
             </template>
           </div>
-
         </div>
         <div class="controlPanel">
-          <div class="controlButton pause" @click="pauseGame"></div>
-          <div class="controlInfo pause">暂停P</div>
-          <div class="controlButton restart" @click="resetGame" v-if="start"></div>
-          <div class="controlButton restart" @click="playGame" v-else></div>
-          <div class="controlInfo restart">重玩R</div>
-          <div class="controlButton drop" @click="moveBottom" v-if="start"></div>
-          <div class="controlButton drop" @click="playGame" v-else></div>
-          <div class="controlInfo drop">掉落Space</div>
-          <div class="controlButton up" @click="rotateRight"></div>
-          <div class="controlInfo up">旋转</div>
-          <div class="controlButton left" @click="moveLeft"></div>
-          <div class="controlInfo left">左移</div>
-          <div class="controlButton right" @click="moveRight"></div>
-          <div class="controlInfo right">右移</div>
-          <div class="controlButton down" @click="moveDown"></div>
-          <div class="controlInfo down">下移</div>
+          <div
+            class="controlButton pause"
+            @click="pauseGame"
+          />
+          <div class="controlInfo pause">
+            暂停P
+          </div>
+          <div
+            v-if="start"
+            class="controlButton restart"
+            @click="resetGame"
+          />
+          <div
+            v-else
+            class="controlButton restart"
+            @click="playGame"
+          />
+          <div class="controlInfo restart">
+            重玩R
+          </div>
+          <div
+            v-if="start"
+            class="controlButton drop"
+            @click="moveBottom"
+          />
+          <div
+            v-else
+            class="controlButton drop"
+            @click="playGame"
+          />
+          <div class="controlInfo drop">
+            掉落Space
+          </div>
+          <div
+            class="controlButton up"
+            @click="rotateRight"
+          />
+          <div class="controlInfo up">
+            旋转
+          </div>
+          <div
+            class="controlButton left"
+            @click="moveLeft"
+          />
+          <div class="controlInfo left">
+            左移
+          </div>
+          <div
+            class="controlButton right"
+            @click="moveRight"
+          />
+          <div class="controlInfo right">
+            右移
+          </div>
+          <div
+            class="controlButton down"
+            @click="moveDown"
+          />
+          <div class="controlInfo down">
+            下移
+          </div>
         </div>
       </div>
     </div>
@@ -71,7 +150,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('tetris')
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {
-  name: 'tetris',
+  name: 'TetrisGame',
   data: () => ({
     inited: false,
     gridCells: {
@@ -144,6 +223,9 @@ export default {
     this.getNextTetrimino()
     this.addListener()
     this.inited = true
+  },
+  beforeUnmount () {
+    this.removeListener()
   },
   methods: {
     playGame () {
@@ -439,9 +521,6 @@ export default {
       return false
     },
     ...mapActions(['setBestScore'])
-  },
-  beforeUnmount () {
-    this.removeListener()
   }
 }
 </script>

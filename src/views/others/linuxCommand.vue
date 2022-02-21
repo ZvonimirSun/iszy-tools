@@ -46,6 +46,7 @@
     :title="command + ' 命令详情'"
     :width="modalWidth"
   >
+    <!-- eslint-disable vue/no-v-html -->
     <Typography v-html="commandDetail" />
   </Modal>
 </template>
