@@ -1,23 +1,52 @@
 <template>
   <Paragraph>
-    <blockquote>数据来源：
-      <Link href="https://github.com/jaywcjlove/linux-command" target="_blank">jaywcjlove/linux-command</Link>
+    <blockquote>
+      数据来源：
+      <Link
+        href="https://github.com/jaywcjlove/linux-command"
+        target="_blank"
+      >
+        jaywcjlove/linux-command
+      </Link>
     </blockquote>
   </Paragraph>
-  <Title :level="3">请输入要查询的命令</Title>
-  <Input v-model:value.trim="keyword" placeholder="man"/>
-  <Divider v-show="keyword"/>
-  <Title v-show="keyword" :level="3">搜索结果（点击查看详情）</Title>
+  <Title :level="3">
+    请输入要查询的命令
+  </Title>
+  <Input
+    v-model:value.trim="keyword"
+    placeholder="man"
+  />
+  <Divider v-show="keyword" />
+  <Title
+    v-show="keyword"
+    :level="3"
+  >
+    搜索结果（点击查看详情）
+  </Title>
   <Paragraph v-show="keyword">
     <ul>
-      <li v-show="searchResults.length === 0"><b>没有结果</b></li>
-      <li v-for="(item,index) in searchResults" :key="index" class="resultListItem">
-        <Paragraph @click="query(item)"><b>{{ data[item].n }}</b>: {{ data[item].d }}</Paragraph>
+      <li v-show="searchResults.length === 0">
+        <b>没有结果</b>
+      </li>
+      <li
+        v-for="(item,index) in searchResults"
+        :key="index"
+        class="resultListItem"
+      >
+        <Paragraph @click="query(item)">
+          <b>{{ data[item].n }}</b>: {{ data[item].d }}
+        </Paragraph>
       </li>
     </ul>
   </Paragraph>
-  <Modal :footer="null" :title="command + ' 命令详情'" v-model:visible="showModal" :width="modalWidth">
-    <Typography v-html="commandDetail"></Typography>
+  <Modal
+    v-model:visible="showModal"
+    :footer="null"
+    :title="command + ' 命令详情'"
+    :width="modalWidth"
+  >
+    <Typography v-html="commandDetail" />
   </Modal>
 </template>
 
@@ -35,7 +64,7 @@ const { mapActions, mapState } = createNamespacedHelpers('linuxCommand')
 const { Paragraph, Link, Title } = Typography
 
 export default {
-  name: 'linuxCommand',
+  name: 'LinuxCommand',
   components: { Paragraph, Link, Title, Input, Divider, Modal, Typography },
   data: () => ({
     keyword: '',

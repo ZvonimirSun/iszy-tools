@@ -1,51 +1,120 @@
 <template>
   <div class="oreooo">
-    <div class="content-loading" v-show="loading">
-      <img :src="assets.Oreo" alt="" class="loading-img">
+    <div
+      v-show="loading"
+      class="content-loading"
+    >
+      <img
+        :src="assets.Oreo"
+        alt=""
+        class="loading-img"
+      >
     </div>
     <div class="imgContainer">
-      <img :src="assets.O" ref="O">
-      <img :src="assets.R" ref="R">
-      <img :src="assets.Ob" ref="Ob">
+      <img
+        ref="O"
+        :src="assets.O"
+      >
+      <img
+        ref="R"
+        :src="assets.R"
+      >
+      <img
+        ref="Ob"
+        :src="assets.Ob"
+      >
     </div>
-    <div class="container" v-show="!loading && !output">
+    <div
+      v-show="!loading && !output"
+      class="container"
+    >
       <div class="title">
-        <div class="meta">我想要：</div>
-        <div class="input str" v-show="oreoStr"><span>{{ oreoStr }}</span></div>
-        <div class="input str placeholder" v-show="!oreoStr">
+        <div class="meta">
+          我想要：
+        </div>
+        <div
+          v-show="oreoStr"
+          class="input str"
+        >
+          <span>{{ oreoStr }}</span>
+        </div>
+        <div
+          v-show="!oreoStr"
+          class="input str placeholder"
+        >
           <span>奥利奥...</span>
-          <img :src="assets.random" class="icon" @click="getRandom()">
+          <img
+            :src="assets.random"
+            class="icon"
+            @click="getRandom()"
+          >
         </div>
       </div>
       <div class="control">
-        <div class="btn" @click="strAdd('o')">
+        <div
+          class="btn"
+          @click="strAdd('o')"
+        >
           +奥
         </div>
-        <div class="btn" @click="strAdd('r')">
+        <div
+          class="btn"
+          @click="strAdd('r')"
+        >
           +利
         </div>
-        <div class="btn" @click="strAdd('-')">
+        <div
+          class="btn"
+          @click="strAdd('-')"
+        >
           +与
         </div>
-        <div class="btn" @click="strAdd('-1')">
+        <div
+          class="btn"
+          @click="strAdd('-1')"
+        >
           -1
         </div>
       </div>
-      <div class="index-btn" @click="generateImage">
+      <div
+        class="index-btn"
+        @click="generateImage"
+      >
         生成
       </div>
     </div>
-    <div class="container" v-show="!loading && output">
+    <div
+      v-show="!loading && output"
+      class="container"
+    >
       <div class="title">
-        <div class="meta">这是你的</div>
-        <div class="output str">{{ oreoStr }}</div>
+        <div class="meta">
+          这是你的
+        </div>
+        <div class="output str">
+          {{ oreoStr }}
+        </div>
       </div>
       <div class="output-image">
-        <canvas ref="oreo_canvas" width="240" height="500">您的浏览器不支持 HTML5 canvas 标签。</canvas>
+        <canvas
+          ref="oreo_canvas"
+          width="240"
+          height="500"
+        >您的浏览器不支持 HTML5 canvas 标签。</canvas>
       </div>
-      <div class="btn"><a :href="imgUrl" target="_blank">查看图片</a></div>
-<!--      <div v-else @click="downloadImage" class="btn">保存图片</div>-->
-      <div @click="backToInput" class="btn">返回</div>
+      <div class="btn">
+        <a
+          :href="imgUrl"
+          target="_blank"
+        >查看图片</a>
+      </div>
+      <!--      <div v-else @click="downloadImage" class="btn">保存图片</div>-->
+      <div
+        class="btn"
+        @click="backToInput"
+      >
+        返回
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +128,7 @@ import random from './assets/image/random.png'
 import Axios from 'axios'
 
 export default {
-  name: 'index.vue',
+  name: 'GameOreooo',
   data: () => ({
     output: false,
     loading: true,

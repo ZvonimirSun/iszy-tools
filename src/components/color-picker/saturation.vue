@@ -1,13 +1,20 @@
 <template>
   <div class="saturationContainer">
-    <div class="saturation" :style="{background: bgColor}" ref="container"
-         @mousedown="handleMouseDown"
-         @touchmove="handleChange"
-         @touchstart="handleChange">
-      <div class="saturationWhite"></div>
-      <div class="saturationBlack"></div>
-      <div class="saturationPointer" :style="{top: pointerTop, left: pointerLeft}">
-        <div class="saturationCircle"></div>
+    <div
+      ref="container"
+      class="saturation"
+      :style="{background: bgColor}"
+      @mousedown="handleMouseDown"
+      @touchmove="handleChange"
+      @touchstart="handleChange"
+    >
+      <div class="saturationWhite" />
+      <div class="saturationBlack" />
+      <div
+        class="saturationPointer"
+        :style="{top: pointerTop, left: pointerLeft}"
+      >
+        <div class="saturationCircle" />
       </div>
     </div>
   </div>
@@ -18,9 +25,9 @@ import { throttle, clamp } from 'lodash-es'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'Saturation',
+  name: 'SaturationPicker',
   props: {
-    value: Object
+    value: { type: Object, default: undefined }
   },
   emits: ['change'],
   computed: {

@@ -1,12 +1,33 @@
 <template>
-  <Space direction="vertical" style="width: 100%">
-    <TextArea :rows="5" v-model:value="data1" placeholder="请输入要进行 Base64 编码或解码的字符"/>
+  <Space
+    direction="vertical"
+    style="width: 100%"
+  >
+    <TextArea
+      v-model:value="data1"
+      :rows="5"
+      placeholder="请输入要进行 Base64 编码或解码的字符"
+    />
     <Space style="flex-wrap: wrap">
-      <Button type="primary" @click="encode">编码 (Encode)</Button>
-      <Button @click="decode">解码 (Decode)</Button>
-      <Button @click="exchange">↕交换</Button>
+      <Button
+        type="primary"
+        @click="encode"
+      >
+        编码 (Encode)
+      </Button>
+      <Button @click="decode">
+        解码 (Decode)
+      </Button>
+      <Button @click="exchange">
+        ↕交换
+      </Button>
     </Space>
-    <TextArea :rows="5" v-model:value="data2" readonly placeholder="Base64 编码或解码的结果"/>
+    <TextArea
+      v-model:value="data2"
+      :rows="5"
+      readonly
+      placeholder="Base64 编码或解码的结果"
+    />
   </Space>
 </template>
 

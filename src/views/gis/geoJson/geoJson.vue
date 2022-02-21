@@ -1,15 +1,27 @@
 <template>
   <div class="container">
-    <LeafletMap v-model:geo-json-layer="geoJsonLayer"/>
+    <LeafletMap v-model:geo-json-layer="geoJsonLayer" />
     <Tabs type="card">
-      <TabPane key="geoJson" tab="GeoJSON">
-        <GeoJsonEditor ref="geoJsonEditor" :geo-json-layer="geoJsonLayer"/>
+      <TabPane
+        key="geoJson"
+        tab="GeoJSON"
+      >
+        <GeoJsonEditor
+          ref="geoJsonEditor"
+          :geo-json-layer="geoJsonLayer"
+        />
       </TabPane>
-      <TabPane key="table" tab="表格">
-        <PropertyTable :geo-json-layer="geoJsonLayer"/>
+      <TabPane
+        key="table"
+        tab="表格"
+      >
+        <PropertyTable :geo-json-layer="geoJsonLayer" />
       </TabPane>
-      <TabPane key="addService" tab="添加服务">
-        <AddService/>
+      <TabPane
+        key="addService"
+        tab="添加服务"
+      >
+        <AddService />
       </TabPane>
     </Tabs>
   </div>
@@ -22,7 +34,7 @@ import { defineAsyncComponent, defineComponent } from 'vue'
 const { TabPane } = Tabs
 
 export default defineComponent({
-  name: 'geoJson',
+  name: 'GeoJson',
   components: {
     LeafletMap: defineAsyncComponent(() => import('./child/leafletMap.vue')),
     GeoJsonEditor: defineAsyncComponent(() => import('./child/geoJsonEditor.vue')),

@@ -1,11 +1,21 @@
 <template>
   <div class="hueContainer">
-    <div class="hue" aria-valuemin="0" aria-valuemax="360" :aria-valuenow="colors.hsl.h" ref="container"
-         @mousedown="handleMouseDown"
-         @touchmove="handleChange"
-         @touchstart="handleChange">
-      <div class="huePointer" :style="{top: 0, left: pointerLeft}" role="presentation">
-        <div class="huePicker"></div>
+    <div
+      ref="container"
+      class="hue"
+      aria-valuemin="0"
+      aria-valuemax="360"
+      :aria-valuenow="colors.hsl.h"
+      @mousedown="handleMouseDown"
+      @touchmove="handleChange"
+      @touchstart="handleChange"
+    >
+      <div
+        class="huePointer"
+        :style="{top: 0, left: pointerLeft}"
+        role="presentation"
+      >
+        <div class="huePicker" />
       </div>
     </div>
   </div>
@@ -15,23 +25,15 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'hue',
+  name: 'HuePicker',
   props: {
-    value: Object
+    value: { type: Object, default: undefined }
   },
   emits: ['change'],
   data () {
     return {
       oldHue: 0,
       pullDirection: ''
-    }
-  },
-  watch: {
-    colors: function (val) {
-      const { h } = val.hsl
-      if (h !== 0 && h - this.oldHue > 0) this.pullDirection = 'right'
-      if (h !== 0 && h - this.oldHue < 0) this.pullDirection = 'left'
-      this.oldHue = h
     }
   },
   computed: {
@@ -41,6 +43,14 @@ export default defineComponent({
     pointerLeft () {
       if (this.colors.hsl.h === 0 && this.pullDirection === 'right') return '100%'
       return `${(this.colors.hsl.h * 100) / 360}%`
+    }
+  },
+  watch: {
+    colors: function (val) {
+      const { h } = val.hsl
+      if (h !== 0 && h - this.oldHue > 0) this.pullDirection = 'right'
+      if (h !== 0 && h - this.oldHue < 0) this.pullDirection = 'left'
+      this.oldHue = h
     }
   },
   methods: {

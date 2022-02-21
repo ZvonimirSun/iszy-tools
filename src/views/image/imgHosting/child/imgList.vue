@@ -1,31 +1,51 @@
 <template>
-  <div class="imgList" v-if="imgList.length">
+  <div
+    v-if="imgList.length"
+    class="imgList"
+  >
     <PreviewGroup>
       <Space :size="8">
-        <Card v-for="(item) in imgList" :key="item.id">
+        <Card
+          v-for="(item) in imgList"
+          :key="item.id"
+        >
           <template #cover>
-            <Image :src="item.url" :alt="item.name" width="20rem" height="12.36rem"/>
+            <Image
+              :src="item.url"
+              :alt="item.name"
+              width="20rem"
+              height="12.36rem"
+            />
           </template>
           <template #actions>
             <Tooltip>
-              <template #title>复制链接</template>
-              <CopyLink @click="copyImgUrl(item)"/>
+              <template #title>
+                复制链接
+              </template>
+              <CopyLink @click="copyImgUrl(item)" />
             </Tooltip>
 
             <Tooltip>
-              <template #title>删除</template>
-              <Popconfirm @confirm="removeImage(item)" title="是否确认删除？" ok-text="是" cancel-text="否"
-                          :getPopupContainer="getPopupContainer">
-                <Delete/>
+              <template #title>
+                删除
+              </template>
+              <Popconfirm
+                title="是否确认删除？"
+                ok-text="是"
+                cancel-text="否"
+                :get-popup-container="getPopupContainer"
+                @confirm="removeImage(item)"
+              >
+                <Delete />
               </Popconfirm>
             </Tooltip>
           </template>
-          <Meta :title="item.name"></Meta>
+          <Meta :title="item.name" />
         </Card>
       </Space>
     </PreviewGroup>
   </div>
-  <Empty v-else/>
+  <Empty v-else />
 </template>
 
 <script>
@@ -41,10 +61,7 @@ const {
 } = createNamespacedHelpers('imgHosting')
 
 export default {
-  name: 'imgList',
-  computed: {
-    ...mapState(['imgList'])
-  },
+  name: 'ImgHostingList',
   components: {
     Empty,
     Card,
@@ -56,6 +73,9 @@ export default {
     Delete,
     Popconfirm,
     Tooltip
+  },
+  computed: {
+    ...mapState(['imgList'])
   },
   methods: {
     ...mapActions(['removeImage']),

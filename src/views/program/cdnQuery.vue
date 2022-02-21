@@ -2,55 +2,97 @@
   <Paragraph>
     <blockquote>
       <ul>
-        <li>数据来自:
-          <Link href="https://www.jsdelivr.com/" target="_blank">jsDelivr</Link>
+        <li>
+          数据来自:
+          <Link
+            href="https://www.jsdelivr.com/"
+            target="_blank"
+          >
+            jsDelivr
+          </Link>
         </li>
-        <li>搜索接口来自:
-          <Link href="https://www.algolia.com/" target="_blank">Algolia</Link>
+        <li>
+          搜索接口来自:
+          <Link
+            href="https://www.algolia.com/"
+            target="_blank"
+          >
+            Algolia
+          </Link>
         </li>
       </ul>
     </blockquote>
   </Paragraph>
-  <Title :level="3">请输入要获取CDN的库名</Title>
+  <Title :level="3">
+    请输入要获取CDN的库名
+  </Title>
   <Input
-    placeholder="jquery"
     v-model:value="keyword"
+    placeholder="jquery"
     :loading="loading"
-    allowClear
-    @change="search(0)"/>
+    allow-clear
+    @change="search(0)"
+  />
   <keep-alive>
     <template v-if="status==='done'">
-      <Divider/>
+      <Divider />
       <template v-if="!pkgID">
         <Title :level="4">
-          <span>共找到 {{count}} 个库</span>
+          <span>共找到 {{ count }} 个库</span>
           <span v-if="count > 1000">，最多展示前 1000 个结果</span>
         </Title>
-        <List item-layout="vertical" size="large" :data-source="result" :pagination="pagination" :loading="loading">
+        <List
+          item-layout="vertical"
+          size="large"
+          :data-source="result"
+          :pagination="pagination"
+          :loading="loading"
+        >
           <template #renderItem="{ item }">
             <Item :key="item.objectID">
-              <Title :level="4" class="pkgName" @click="showDetail(item.objectID)">{{item.name}}</Title>
+              <Title
+                :level="4"
+                class="pkgName"
+                @click="showDetail(item.objectID)"
+              >
+                {{ item.name }}
+              </Title>
               <div class="meta">
-                <div class="owner" v-if="item.owner" @click="searchByOwner(item.owner.name)">
-                  <img :src="item.owner.avatar" :alt="item.owner.name"/>
+                <div
+                  v-if="item.owner"
+                  class="owner"
+                  @click="searchByOwner(item.owner.name)"
+                >
+                  <img
+                    :src="item.owner.avatar"
+                    :alt="item.owner.name"
+                  >
                   <div>{{ item.owner.name }}</div>
                 </div>
                 <Tag v-if="item.version">
                   <template #icon>
-                    <tag-one theme="filled"/>
+                    <tag-one theme="filled" />
                   </template>
                   <span :title="item.version">{{ item.version }}</span>
                 </Tag>
                 <Tag v-if="item.license">
                   <template #icon>
-                    <balance-two theme="outline"/>
+                    <balance-two theme="outline" />
                   </template>
                   {{ item.license }}
                 </Tag>
               </div>
-              <div v-if="item.description" class="description">{{ item.description }}</div>
+              <div
+                v-if="item.description"
+                class="description"
+              >
+                {{ item.description }}
+              </div>
               <div v-if="item.keywords && item.keywords.length">
-                <Tag v-for="(keyword,index) of item.keywords" :key="index">
+                <Tag
+                  v-for="(keyword,index) of item.keywords"
+                  :key="index"
+                >
                   {{ keyword }}
                 </Tag>
               </div>
@@ -59,54 +101,94 @@
         </List>
       </template>
       <template v-else>
-        <Link href="javascript:;" @click="pkgID=null" style="margin-bottom: .8rem;display: block">
-          <return theme="outline"/>
+        <Link
+          href="javascript:;"
+          style="margin-bottom: .8rem;display: block"
+          @click="pkgID=null"
+        >
+          <return theme="outline" />
           返回
         </Link>
         <Typography class="metaDetail">
           <ul>
-            <li v-if="pkgData.name"><b>名称: </b>{{ pkgData.name }}</li>
+            <li v-if="pkgData.name">
+              <b>名称: </b>{{ pkgData.name }}
+            </li>
             <li v-if="pkgData.homepage">
               <b>主页: </b>
-              <Link :href="pkgData.homepage" target="_blank">{{ pkgData.homepage }}</Link>
+              <Link
+                :href="pkgData.homepage"
+                target="_blank"
+              >
+                {{ pkgData.homepage }}
+              </Link>
             </li>
             <li v-if="pkgData.description">
               <b>简介: </b>{{ pkgData.description }}
             </li>
             <li v-if="pkgData.repository">
               <b>仓库: </b>{{ pkgData.repository.type }} /
-              <Link :href="pkgData.repository.url" target="_blank">{{ pkgData.repository.url }}</Link>
+              <Link
+                :href="pkgData.repository.url"
+                target="_blank"
+              >
+                {{ pkgData.repository.url }}
+              </Link>
             </li>
             <li v-if="pkgData.license">
               <b>协议: </b>{{ pkgData.license }}
             </li>
             <li v-if="pkgData.owner">
               <b>作者: </b>{{ pkgData.owner.name }} /
-              <Link :href="pkgData.owner.link" target="_blank">{{ pkgData.owner.link }}</Link>
+              <Link
+                :href="pkgData.owner.link"
+                target="_blank"
+              >
+                {{ pkgData.owner.link }}
+              </Link>
             </li>
-            <Divider v-if="versions.length"/>
+            <Divider v-if="versions.length" />
             <li v-if="versions.length">
-              <b>版本: </b><Select v-model:value="version" :options="versions" @change="getVersionData"></Select>
+              <b>版本: </b><Select
+                v-model:value="version"
+                :options="versions"
+                @change="getVersionData"
+              />
             </li>
             <li v-if="defaultFile">
               <b>默认文件: </b>
-              <Text :copyable="{
-                text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`
-              }">
-                <Link :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`"
-                      target="_blank">{{ defaultFile }}
+              <Text
+                :copyable="{
+                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`
+                }"
+              >
+                <Link
+                  :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`"
+                  target="_blank"
+                >
+                  {{ defaultFile }}
                 </Link>
               </Text>
             </li>
             <li v-if="files && files.length">
-              <b>文件列表</b><corner-right-down theme="outline"/>
+              <b>文件列表</b><corner-right-down theme="outline" />
             </li>
           </ul>
         </Typography>
-        <DirectoryTree v-if="files && files.length" :treeData="treeData" :selectable="false">
-          <template #title="{title,dataRef}"><Text :copyable="dataRef.isLeaf?{
-            text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${dataRef.fileName}`
-          }:false">{{title}}</Text></template>
+        <DirectoryTree
+          v-if="files && files.length"
+          :tree-data="treeData"
+          :selectable="false"
+        >
+          <template #title="{title,dataRef}">
+            <Text
+              :copyable="dataRef.isLeaf?{
+                text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${dataRef.fileName}`
+              }:false"
+            >
+              {{ title }}
+            </Text>
+          </template>
         </DirectoryTree>
       </template>
     </template>
@@ -130,7 +212,7 @@ const { DirectoryTree } = Tree
 let timeoutIndex = null
 
 export default {
-  name: 'cdnQuery',
+  name: 'CdnQuery',
   components: {
     Divider,
     Title,

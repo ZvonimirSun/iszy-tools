@@ -8,7 +8,10 @@
     @search="getContent"
   />
   <Paragraph v-show="data">
-    <highlight-js autodetect :code="data"></highlight-js>
+    <highlight-js
+      autodetect
+      :code="data"
+    />
   </Paragraph>
 </template>
 
@@ -22,7 +25,7 @@ import 'highlight.js/styles/idea.css'
 const { Search } = Input
 const { Paragraph } = Typography
 export default {
-  name: 'viewSourceCode',
+  name: 'ViewSourceCode',
   components: { Search, Paragraph, highlightJs: hljsVuePlugin.component },
   data: () => ({
     url: undefined,

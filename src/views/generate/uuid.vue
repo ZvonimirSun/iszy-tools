@@ -1,24 +1,40 @@
 <template>
-  <Form layout="inline" :model="formState">
+  <Form
+    layout="inline"
+    :model="formState"
+  >
     <Item label="版本">
       <Select v-model:value="formState.version">
-        <Option value="v1">Version 1</Option>
-        <Option value="v4">Version 4</Option>
-        <Option value="nil">NIL</Option>
+        <Option value="v1">
+          Version 1
+        </Option>
+        <Option value="v4">
+          Version 4
+        </Option>
+        <Option value="nil">
+          NIL
+        </Option>
       </Select>
     </Item>
-    <Item label="数量" v-show="formState.version!=='nil'">
-      <InputNumber v-model:value="formState.count" :max="500" :min="1" :step="1">
-      </InputNumber>
+    <Item
+      v-show="formState.version!=='nil'"
+      label="数量"
+    >
+      <InputNumber
+        v-model:value="formState.count"
+        :max="500"
+        :min="1"
+        :step="1"
+      />
     </Item>
     <Item label="连字符">
-      <Switch v-model:checked="formState.hasHyphen"/>
+      <Switch v-model:checked="formState.hasHyphen" />
     </Item>
     <Item label="自动生成">
-      <Switch v-model:checked="auto"/>
+      <Switch v-model:checked="auto" />
     </Item>
   </Form>
-  <Divider/>
+  <Divider />
   <div class="btnGroup">
     <Button
       type="primary"
@@ -51,6 +67,16 @@ const { TextArea } = Input
 export default {
   name: 'UUID在线生成',
   components: { Form, Select, InputNumber, Switch, Divider, Button, Item, Option, TextArea },
+  data: () => ({
+    formState: {
+      count: 1,
+      version: 'v4',
+      hasHyphen: true
+    },
+    auto: true,
+    times: 0,
+    result: ''
+  }),
   watch: {
     formState: {
       handler (val) {
@@ -72,16 +98,6 @@ export default {
       immediate: true
     }
   },
-  data: () => ({
-    formState: {
-      count: 1,
-      version: 'v4',
-      hasHyphen: true
-    },
-    auto: true,
-    times: 0,
-    result: ''
-  }),
   methods: {
     generate () {
       this.times++

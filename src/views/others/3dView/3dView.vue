@@ -1,15 +1,32 @@
 <template>
-  <Upload :fileList="[]" :showUploadList="false" :before-upload="getFileList" :directory="true">
-    <Input readonly placeholder="点击这里选择 gltf 文件所在文件夹" :value="fileName">
+  <Upload
+    :file-list="[]"
+    :show-upload-list="false"
+    :before-upload="getFileList"
+    :directory="true"
+  >
+    <Input
+      readonly
+      placeholder="点击这里选择 gltf 文件所在文件夹"
+      :value="fileName"
+    >
       <template #addonAfter>
-        <Button block :disabled="!fileName" :loading="loading" @click.stop="loadScene">
+        <Button
+          block
+          :disabled="!fileName"
+          :loading="loading"
+          @click.stop="loadScene"
+        >
           <span v-if="loading">加载中</span>
           <span v-else>加载</span>
         </Button>
       </template>
     </Input>
   </Upload>
-  <div class="threeContainer" ref="treeContainer"></div>
+  <div
+    ref="treeContainer"
+    class="threeContainer"
+  />
 </template>
 
 <script>

@@ -1,24 +1,53 @@
 <template>
   <Paragraph>
-    <blockquote>正则数据来源：<Link href="https://any86.github.io/any-rule/" target="_blank">正则大全</Link></blockquote>
+    <blockquote>
+      正则数据来源：<Link
+        href="https://any86.github.io/any-rule/"
+        target="_blank"
+      >
+        正则大全
+      </Link>
+    </blockquote>
   </Paragraph>
   <Form layout="vertical">
     <FormItem>
       <template #label>
         <strong>搜索</strong>
       </template>
-      <Input v-model:value="keyword" placeholder="搜索关键词，如'手机'"/>
+      <Input
+        v-model:value="keyword"
+        placeholder="搜索关键词，如'手机'"
+      />
     </FormItem>
-    <template v-for="(item,index) in rules" :key="index">
-      <Divider v-show="isShow(item)"/>
-      <FormItem :rules="{trigger:['change', 'blur'],validator:validator}" hasFeedback :name="item.key" v-show="isShow(item)">
+    <template
+      v-for="(item,index) in rules"
+      :key="index"
+    >
+      <Divider v-show="isShow(item)" />
+      <FormItem
+        v-show="isShow(item)"
+        :rules="{trigger:['change', 'blur'],validator:validator}"
+        has-feedback
+        :name="item.key"
+      >
         <template #label>
-          <strong>{{item.title}}</strong>&nbsp;<Link :href="'https://github.com/any86/any-rule/issues/new?title=我有更好的正则: '+item.title" target="_blank"><strong>反馈</strong></Link>
+          <strong>{{ item.title }}</strong>&nbsp;<Link
+            :href="'https://github.com/any86/any-rule/issues/new?title=我有更好的正则: '+item.title"
+            target="_blank"
+          >
+            <strong>反馈</strong>
+          </Link>
         </template>
-        <Input v-model:value="item.test" :placeholder="'例如: '+item.examples.join(', ') + (item.counterExamples ? '; 反例: ' + item.counterExamples.join(', '): '')"/>
+        <Input
+          v-model:value="item.test"
+          :placeholder="'例如: '+item.examples.join(', ') + (item.counterExamples ? '; 反例: ' + item.counterExamples.join(', '): '')"
+        />
       </FormItem>
-      <Paragraph :copyable="{text:item.rule.toString()}" v-show="isShow(item)">
-        <pre>{{item.rule.toString()}}</pre>
+      <Paragraph
+        v-show="isShow(item)"
+        :copyable="{text:item.rule.toString()}"
+      >
+        <pre>{{ item.rule.toString() }}</pre>
       </Paragraph>
     </template>
   </Form>
@@ -33,7 +62,7 @@ const { Paragraph, Link } = Typography
 const { Item: FormItem } = Form
 
 export default {
-  name: 'anyRule',
+  name: 'AnyRule',
   components: { Paragraph, Link, Form, FormItem, Input, Divider },
   data: () => ({
     rules: [],

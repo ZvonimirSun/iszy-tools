@@ -1,16 +1,38 @@
 <template>
   <div class="container">
     <div class="encoded">
-      <Title :level="3">Encoded</Title>
-      <Title :level="4">Token</Title>
-      <TextArea v-model:value="token" label="Token" @change="tokenChange"/>
+      <Title :level="3">
+        Encoded
+      </Title>
+      <Title :level="4">
+        Token
+      </Title>
+      <TextArea
+        v-model:value="token"
+        label="Token"
+        @change="tokenChange"
+      />
     </div>
     <div class="decoded">
-      <Title :level="3">Decoded</Title>
-      <Title :level="4">Header</Title>
-      <TextArea v-model:value="header" label="Header" readonly/>
-      <Title :level="4">Payload</Title>
-      <TextArea v-model:value="payload" label="Payload" readonly/>
+      <Title :level="3">
+        Decoded
+      </Title>
+      <Title :level="4">
+        Header
+      </Title>
+      <TextArea
+        v-model:value="header"
+        label="Header"
+        readonly
+      />
+      <Title :level="4">
+        Payload
+      </Title>
+      <TextArea
+        v-model:value="payload"
+        label="Payload"
+        readonly
+      />
     </div>
   </div>
 </template>

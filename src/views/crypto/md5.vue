@@ -1,8 +1,22 @@
 <template>
-  <Space direction="vertical" style="width: 100%">
-    <TextArea :rows="5" v-model:value="data1" placeholder="请输入要进行 MD5 编码的字符"/>
-    <Title :level="4">结果</Title>
-    <TextArea :rows="5" v-model:value="data2" readonly placeholder="MD5 编码的结果"/>
+  <Space
+    direction="vertical"
+    style="width: 100%"
+  >
+    <TextArea
+      v-model:value="data1"
+      :rows="5"
+      placeholder="请输入要进行 MD5 编码的字符"
+    />
+    <Title :level="4">
+      结果
+    </Title>
+    <TextArea
+      v-model:value="data2"
+      :rows="5"
+      readonly
+      placeholder="MD5 编码的结果"
+    />
   </Space>
 </template>
 

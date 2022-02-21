@@ -1,21 +1,37 @@
 <template>
-  <Form :colon="false" class="addService">
+  <Form
+    :colon="false"
+    class="addService"
+  >
     <Item label="服务名称">
-      <Input v-model:value="name"/>
+      <Input v-model:value="name" />
     </Item>
     <Item label="服务地址">
-      <Input v-model:value="url"/>
+      <Input v-model:value="url" />
     </Item>
     <Item label="服务类型">
       <Select v-model:value="type">
-        <SelectOption value="supermap_rest">超图动态</SelectOption>
-        <SelectOption value="supermap_tile">超图切片</SelectOption>
-        <SelectOption value="arcgis_rest">ArcGIS 动态</SelectOption>
-        <SelectOption value="arcgis_tile">ArcGIS 切片</SelectOption>
+        <SelectOption value="supermap_rest">
+          超图动态
+        </SelectOption>
+        <SelectOption value="supermap_tile">
+          超图切片
+        </SelectOption>
+        <SelectOption value="arcgis_rest">
+          ArcGIS 动态
+        </SelectOption>
+        <SelectOption value="arcgis_tile">
+          ArcGIS 切片
+        </SelectOption>
       </Select>
     </Item>
     <Item class="formBtnItem">
-      <Button @click="addService" type="primary">添加</Button>
+      <Button
+        type="primary"
+        @click="addService"
+      >
+        添加
+      </Button>
     </Item>
   </Form>
 </template>
@@ -32,12 +48,12 @@ const { Item } = Form
 const { Option: SelectOption } = Select
 
 export default defineComponent({
-  name: 'addService',
-  props: {
-    map: Object,
-    layerControl: Object
-  },
+  name: 'AddService',
   components: { Button, Form, Select, Input, Item, SelectOption },
+  props: {
+    map: { type: Object, default: undefined },
+    layerControl: { type: Object, default: undefined }
+  },
   data: () => ({
     id: 1,
     name: '服务 1',

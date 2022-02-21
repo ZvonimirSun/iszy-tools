@@ -3,25 +3,60 @@
     <Layout>
       <Header v-show="!fullScreenStatus">
         <div class="header">
-          <router-link to="/">ISZY工具集合</router-link>
+          <router-link to="/">
+            ISZY工具集合
+          </router-link>
         </div>
-        <div class="desc" v-if="$route.path === '/'">一个轻量的工具集合<template v-if="_user.profile.nickName"> · <router-link to="/settings">{{_user.profile.nickName}}</router-link></template></div>
-        <div class="desc" v-else><router-link to="/"><return theme="outline"/>返回首页</router-link><template v-if="_user.profile.nickName"> · <router-link to="/settings">{{_user.profile.nickName}}</router-link></template></div>
+        <div
+          v-if="$route.path === '/'"
+          class="desc"
+        >
+          一个轻量的工具集合<template v-if="_user.profile.nickName">
+            · <router-link to="/settings">
+              {{ _user.profile.nickName }}
+            </router-link>
+          </template>
+        </div>
+        <div
+          v-else
+          class="desc"
+        >
+          <router-link to="/">
+            <return theme="outline" />返回首页
+          </router-link><template v-if="_user.profile.nickName">
+            · <router-link to="/settings">
+              {{ _user.profile.nickName }}
+            </router-link>
+          </template>
+        </div>
       </Header>
       <Content ref="view">
-        <BackTop :target="()=>$refs.view.$el" :visibilityHeight="100"/>
-        <router-view v-if="$route.meta?.type !== 'tool'"/>
-        <Container v-else @fullScreen="fullScreen" :fullScreenStatus="fullScreenStatus">
-          <router-view/>
+        <BackTop
+          :target="()=>$refs.view.$el"
+          :visibility-height="100"
+        />
+        <router-view v-if="$route.meta?.type !== 'tool'" />
+        <Container
+          v-else
+          :full-screen-status="fullScreenStatus"
+          @full-screen="fullScreen"
+        >
+          <router-view />
         </Container>
       </Content>
       <Footer v-show="!fullScreenStatus">
         <span>© 2021&nbsp;</span>
-        <Link href="https://www.iszy.cc" target="_blank">
+        <Link
+          href="https://www.iszy.cc"
+          target="_blank"
+        >
           随遇而安Blog
         </Link>
-        <br/>
-        <Link href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_blank">
+        <br>
+        <Link
+          href="https://beian.miit.gov.cn/#/Integrated/recordQuery"
+          target="_blank"
+        >
           苏ICP备18047890号-2
         </Link>
       </Footer>

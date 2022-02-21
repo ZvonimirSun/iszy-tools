@@ -1,17 +1,35 @@
 <template>
   <div class="container">
     <Space>
-      <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="upload">
-        <Button type="primary">点击上传</Button>
+      <Upload
+        :file-list="[]"
+        :show-upload-list="false"
+        accept="image/*"
+        :before-upload="upload"
+      >
+        <Button type="primary">
+          点击上传
+        </Button>
       </Upload>
-      <Button v-if="file" @click="copy">复制</Button>
+      <Button
+        v-if="file"
+        @click="copy"
+      >
+        复制
+      </Button>
     </Space>
     <Paragraph v-if="file">
-      <pre>{{file}}</pre>
+      <pre>{{ file }}</pre>
     </Paragraph>
     <template v-if="file">
-      <Title :level="4">预览</Title>
-      <img class="preview" :src="file" alt="preview"/>
+      <Title :level="4">
+        预览
+      </Title>
+      <img
+        class="preview"
+        :src="file"
+        alt="preview"
+      >
     </template>
   </div>
 </template>

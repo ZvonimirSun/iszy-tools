@@ -1,11 +1,15 @@
 <template>
-  <iframe src="https://webssh.iszy.xyz/" class="webssh" title="webssh"></iframe>
+  <iframe
+    src="https://webssh.iszy.xyz/"
+    class="webssh"
+    title="webssh"
+  />
 </template>
 
 <script>
 
 export default {
-  name: 'webssh'
+  name: 'WebsshPage'
 }
 </script>
 

@@ -2,13 +2,26 @@
   <Typography>
     <h4>随机列表</h4>
   </Typography>
-  <template v-for="(tag, index) in tags" :key="index">
-    <Tooltip v-if="tag.length > 20" :title="tag">
-      <Tag :closable="!loading" @close="handleClose(tag)">
+  <template
+    v-for="(tag, index) in tags"
+    :key="index"
+  >
+    <Tooltip
+      v-if="tag.length > 20"
+      :title="tag"
+    >
+      <Tag
+        :closable="!loading"
+        @close="handleClose(tag)"
+      >
         {{ `${tag.slice(0, 20)}...` }}
       </Tag>
     </Tooltip>
-    <Tag v-else :closable="!loading" @close="handleClose(tag)">
+    <Tag
+      v-else
+      :closable="!loading"
+      @close="handleClose(tag)"
+    >
       {{ tag }}
     </Tag>
   </template>
@@ -16,20 +29,24 @@
     <Input
       v-if="inputVisible"
       ref="inputRef"
+      v-model:value="inputValue"
       type="text"
       size="small"
       :style="{ width: '78px' }"
-      v-model:value="inputValue"
       @blur="handleInputConfirm"
       @keyup.enter="handleInputConfirm"
     />
-    <Tag v-else @click="showInput" style="background: #fff; border-style: dashed">
-      <Plus theme="outline"/>
+    <Tag
+      v-else
+      style="background: #fff; border-style: dashed"
+      @click="showInput"
+    >
+      <Plus theme="outline" />
       新内容
     </Tag>
   </template>
   <template v-if="tags.length">
-    <Divider/>
+    <Divider />
     <LuckyWheel
       ref="myLucky"
       width="200px"
@@ -52,7 +69,7 @@ import { Plus } from '@icon-park/vue-next'
 import { LuckyWheel } from '@lucky-canvas/vue'
 
 export default defineComponent({
-  name: 'randomList',
+  name: 'RandomList',
   components: { Tag, Tooltip, Input, Typography, Divider, Plus, LuckyWheel },
   data: () => ({
     tags: [],
@@ -85,10 +102,10 @@ export default defineComponent({
       })
     }
   },
+  watch: {
+  },
   mounted () {
     this.tags = (this.getData('randomList') || {}).tags || []
-  },
-  watch: {
   },
   beforeUnmount () {
   },

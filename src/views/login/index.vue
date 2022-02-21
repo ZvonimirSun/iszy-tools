@@ -1,19 +1,49 @@
 <template>
   <div class="login-container">
     <div class="main">
-      <Form :layout="form.layout" :model="form" v-bind="{wrapperCol: { span: 24 }}">
+      <Form
+        :layout="form.layout"
+        :model="form"
+        v-bind="{wrapperCol: { span: 24 }}"
+      >
         <Item required>
-          <Input v-model:value="form.userName" placeholder="账户" size="large" @keypress.enter="login">
-            <template #prefix><User theme="outline" style="color:rgba(0,0,0,.25)"/></template>
+          <Input
+            v-model:value="form.userName"
+            placeholder="账户"
+            size="large"
+            @keypress.enter="login"
+          >
+            <template #prefix>
+              <User
+                theme="outline"
+                style="color:rgba(0,0,0,.25)"
+              />
+            </template>
           </Input>
         </Item>
         <Item required>
-          <Password v-model:value="form.password" placeholder="密码" size="large" @keypress.enter="login">
-            <template #prefix><Lock theme="outline" style="color:rgba(0,0,0,.25)"/></template>
+          <Password
+            v-model:value="form.password"
+            placeholder="密码"
+            size="large"
+            @keypress.enter="login"
+          >
+            <template #prefix>
+              <Lock
+                theme="outline"
+                style="color:rgba(0,0,0,.25)"
+              />
+            </template>
           </Password>
         </Item>
         <Item>
-          <Button type="primary" block size="large" @click="login" :loading="loading">
+          <Button
+            type="primary"
+            block
+            size="large"
+            :loading="loading"
+            @click="login"
+          >
             确定
           </Button>
         </Item>
@@ -29,7 +59,7 @@ const { Item } = Form
 const { Password } = Input
 
 export default {
-  name: '登录',
+  name: 'PageLogin',
   components: {
     User,
     Lock,
@@ -39,6 +69,16 @@ export default {
     Item,
     Password
   },
+  data: () => ({
+    form: {
+      layout: 'horizontal',
+      userName: '',
+      password: ''
+    },
+    redirect: undefined,
+    otherQuery: {},
+    loading: false
+  }),
   watch: {
     $route: {
       handler: function (route) {
@@ -51,16 +91,6 @@ export default {
       immediate: true
     }
   },
-  data: () => ({
-    form: {
-      layout: 'horizontal',
-      userName: '',
-      password: ''
-    },
-    redirect: undefined,
-    otherQuery: {},
-    loading: false
-  }),
   methods: {
     login () {
       if (this.form.userName != null && this.form.password != null) {

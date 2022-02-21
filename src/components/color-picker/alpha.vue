@@ -1,18 +1,27 @@
 <template>
-<div class="alphaContainer">
-  <div class="alphaCheckerboardWrap">
-    <Checkerboard/>
-  </div>
-  <div class="alphaGradient" :style="{background: gradientColor}"></div>
-  <div class="alpha" ref="container"
-       @mousedown="handleMouseDown"
-       @touchmove="handleChange"
-       @touchstart="handleChange">
-    <div class="alphaPointer" :style="{left: colors.a * 100 + '%'}">
-      <div class="alphaPicker"></div>
+  <div class="alphaContainer">
+    <div class="alphaCheckerboardWrap">
+      <Checkerboard />
+    </div>
+    <div
+      class="alphaGradient"
+      :style="{background: gradientColor}"
+    />
+    <div
+      ref="container"
+      class="alpha"
+      @mousedown="handleMouseDown"
+      @touchmove="handleChange"
+      @touchstart="handleChange"
+    >
+      <div
+        class="alphaPointer"
+        :style="{left: colors.a * 100 + '%'}"
+      >
+        <div class="alphaPicker" />
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -20,12 +29,12 @@ import Checkerboard from '@/components/checkerboard.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'alpha',
-  props: {
-    value: Object
-  },
+  name: 'AlphaPicker',
   components: {
     Checkerboard
+  },
+  props: {
+    value: { type: Object, default: undefined }
   },
   emits: ['change'],
   data: () => ({

@@ -1,58 +1,96 @@
 <template>
   <div class="codePanel">
     <div class="header">
-      <Button type="primary" @click="format" title="格式化">
+      <Button
+        type="primary"
+        title="格式化"
+        @click="format"
+      >
         <template #icon>
-          <indent-right theme="outline"/>
+          <indent-right theme="outline" />
         </template>
       </Button>
-      <Button type="primary" @click="compact" title="压缩">
+      <Button
+        type="primary"
+        title="压缩"
+        @click="compact"
+      >
         <template #icon>
-          <compression theme="outline"/>
+          <compression theme="outline" />
         </template>
       </Button>
-      <Divider type="vertical"/>
-      <Button type="primary" @click="foldAll" title="折叠所有">
+      <Divider type="vertical" />
+      <Button
+        type="primary"
+        title="折叠所有"
+        @click="foldAll"
+      >
         <template #icon>
-          <collapse-text-input theme="outline"/>
+          <collapse-text-input theme="outline" />
         </template>
       </Button>
-      <Button type="primary" @click="unfoldAll" title="展开所有">
+      <Button
+        type="primary"
+        title="展开所有"
+        @click="unfoldAll"
+      >
         <template #icon>
-          <expand-text-input theme="outline"/>
+          <expand-text-input theme="outline" />
         </template>
       </Button>
-      <Divider type="vertical"/>
-      <Button type="primary" @click="undo" title="撤销" :disabled="historySize.undo === 0">
+      <Divider type="vertical" />
+      <Button
+        type="primary"
+        title="撤销"
+        :disabled="historySize.undo === 0"
+        @click="undo"
+      >
         <template #icon>
-          <undo theme="outline"/>
+          <undo theme="outline" />
         </template>
       </Button>
-      <Button type="primary" @click="redo" title="重做" :disabled="historySize.redo === 0">
+      <Button
+        type="primary"
+        title="重做"
+        :disabled="historySize.redo === 0"
+        @click="redo"
+      >
         <template #icon>
-          <redo theme="outline"/>
+          <redo theme="outline" />
         </template>
       </Button>
-      <Divider type="vertical"/>
-      <Button type="primary" title="前往顶部" @click="goTop">
+      <Divider type="vertical" />
+      <Button
+        type="primary"
+        title="前往顶部"
+        @click="goTop"
+      >
         <template #icon>
-          <to-top theme="outline"/>
+          <to-top theme="outline" />
         </template>
       </Button>
-      <Button type="primary" title="前往底部" @click="goBottom">
+      <Button
+        type="primary"
+        title="前往底部"
+        @click="goBottom"
+      >
         <template #icon>
-          <to-bottom theme="outline"/>
+          <to-bottom theme="outline" />
         </template>
       </Button>
     </div>
-    <CodeMirror ref="cmEditor" class="cmEditor" v-model:value="code" :options="cmOptions"
-                @changes="onChanges"
-                @cursorActivity="onCursorActivity"
+    <CodeMirror
+      ref="cmEditor"
+      v-model:value="code"
+      class="cmEditor"
+      :options="cmOptions"
+      @changes="onChanges"
+      @cursor-activity="onCursorActivity"
     />
     <div class="footer">
       <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
-          cursor.ch + 1
-        }}</span>
+        cursor.ch + 1
+      }}</span>
     </div>
   </div>
 </template>
@@ -110,7 +148,20 @@ import { css_beautify as cssBeautify } from 'js-beautify'
 // window.CSSLint = CSSLint
 
 export default {
-  name: 'cssFormatter',
+  name: 'CssFormatter',
+  components: {
+    CodeMirror,
+    Button,
+    Divider,
+    IndentRight,
+    Compression,
+    Undo,
+    Redo,
+    ToTop,
+    ToBottom,
+    ExpandTextInput,
+    CollapseTextInput
+  },
   data: () => ({
     code: '',
     cursor: {
@@ -163,19 +214,6 @@ export default {
     codemirror: function () {
       return this.$refs.cmEditor.codemirror
     }
-  },
-  components: {
-    CodeMirror,
-    Button,
-    Divider,
-    IndentRight,
-    Compression,
-    Undo,
-    Redo,
-    ToTop,
-    ToBottom,
-    ExpandTextInput,
-    CollapseTextInput
   },
   mounted () {
     this.codemirror.setSize('100%', '100%')

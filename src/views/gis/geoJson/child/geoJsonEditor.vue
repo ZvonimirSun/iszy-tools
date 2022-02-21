@@ -1,5 +1,8 @@
 <template>
-  <div class="geoJsonContainer" ref="geoJsonContainer"></div>
+  <div
+    ref="geoJsonContainer"
+    class="geoJsonContainer"
+  />
 </template>
 
 <script>
@@ -15,9 +18,9 @@ let geoJson = {
 }
 
 export default defineComponent({
-  name: 'geoJsonEditor',
+  name: 'GeoJsonEditor',
   props: {
-    geoJsonLayer: Object
+    geoJsonLayer: { type: Object, default: undefined }
   },
   mounted () {
     editor = new JSONEditor(
@@ -29,6 +32,13 @@ export default defineComponent({
       geoJson
     )
     this.$eventBus.on('updateEditor', debounce(this.updateEditor, 500))
+  },
+  beforeUnmount () {
+    this.$eventBus.off('updateEditor', this.updateEditor)
+    if (editor) {
+      editor.destroy()
+      editor = undefined
+    }
   },
   methods: {
     onChangeText () {
@@ -43,13 +53,6 @@ export default defineComponent({
         geoJson = this.geoJsonLayer.toGeoJSON()
         editor.update(geoJson)
       } catch (e) {}
-    }
-  },
-  beforeUnmount () {
-    this.$eventBus.off('updateEditor', this.updateEditor)
-    if (editor) {
-      editor.destroy()
-      editor = undefined
     }
   }
 })

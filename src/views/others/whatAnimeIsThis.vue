@@ -1,25 +1,52 @@
 <template>
-  <Title :level="3">请选择要识别动漫截图</Title>
-  <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="beforeUpload">
-    <Input readonly placeholder="点击这里上传图片" :value="fileName">
+  <Title :level="3">
+    请选择要识别动漫截图
+  </Title>
+  <Upload
+    :file-list="[]"
+    :show-upload-list="false"
+    accept="image/*"
+    :before-upload="beforeUpload"
+  >
+    <Input
+      readonly
+      placeholder="点击这里上传图片"
+      :value="fileName"
+    >
       <template #addonAfter>
-        <Button block :disabled="!file || quota===0 || quota-quotaUsed<=0" @click.stop="start"><span v-if="loading"><Loading theme="outline"/>识别中</span><span
-          v-else>开始识别</span></Button>
+        <Button
+          block
+          :disabled="!file || quota===0 || quota-quotaUsed<=0"
+          @click.stop="start"
+        >
+          <span v-if="loading"><Loading theme="outline" />识别中</span><span
+            v-else
+          >开始识别</span>
+        </Button>
       </template>
     </Input>
   </Upload>
   <Paragraph>
-    <blockquote>使用 trace.moe API，有使用次数限制。用户ID：
-      <Text code>{{ id }}</Text>
+    <blockquote>
+      使用 trace.moe API，有使用次数限制。用户ID：
+      <Text code>
+        {{ id }}
+      </Text>
       ，每月次数剩余：
-      <Text code>{{ quota }}</Text>
+      <Text code>
+        {{ quota }}
+      </Text>
       ，已使用次数：
-      <Text code>{{ quotaUsed }}</Text>
+      <Text code>
+        {{ quotaUsed }}
+      </Text>
     </blockquote>
   </Paragraph>
   <template v-if="file">
-    <Divider/>
-    <Title :level="3">预览</Title>
+    <Divider />
+    <Title :level="3">
+      预览
+    </Title>
     <Image
       style="max-width: 100%"
       :src="file"
@@ -27,23 +54,49 @@
     />
   </template>
   <template v-if="result.length>0">
-    <Divider/>
-    <Title :level="3">结果</Title>
-    <template v-for="(item,index) in result" :key="index">
-      <Divider/>
-      <Descriptions :title="item.anilist.title.native + (item.episode ? ' EP#' + item.episode: '')" bordered size="small" layout="vertical">
-        <Item label="罗马音">{{ item.anilist.title.romaji }}</Item>
-        <Item label="文件名">{{ item.filename }}</Item>
-        <Item label="相似度">{{ (item.similarity * 100).toFixed(2) + '%' }}</Item>
-        <Item label="匹配位置">
-          <Text code>{{ secondToDate(item.from) }}</Text>
-          ~
-          <Text code>{{ secondToDate(item.to) }}</Text>
+    <Divider />
+    <Title :level="3">
+      结果
+    </Title>
+    <template
+      v-for="(item,index) in result"
+      :key="index"
+    >
+      <Divider />
+      <Descriptions
+        :title="item.anilist.title.native + (item.episode ? ' EP#' + item.episode: '')"
+        bordered
+        size="small"
+        layout="vertical"
+      >
+        <Item label="罗马音">
+          {{ item.anilist.title.romaji }}
         </Item>
-        <Item label="预览" :span="3">
-          <video controls style="max-width: 100%"
-                 :src="item.video"
-                 :poster="item.image"></video>
+        <Item label="文件名">
+          {{ item.filename }}
+        </Item>
+        <Item label="相似度">
+          {{ (item.similarity * 100).toFixed(2) + '%' }}
+        </Item>
+        <Item label="匹配位置">
+          <Text code>
+            {{ secondToDate(item.from) }}
+          </Text>
+          ~
+          <Text code>
+            {{ secondToDate(item.to) }}
+          </Text>
+        </Item>
+        <Item
+          label="预览"
+          :span="3"
+        >
+          <video
+            controls
+            style="max-width: 100%"
+            :src="item.video"
+            :poster="item.image"
+          />
         </Item>
       </Descriptions>
     </template>
@@ -58,7 +111,7 @@ const { Item } = Descriptions
 const { Title, Paragraph, Text } = Typography
 
 export default {
-  name: 'what_anime_is_this',
+  name: 'WhatAnimeIsThis',
   components: {
     Input,
     Upload,

@@ -1,18 +1,43 @@
 <template>
-  <Table class="ant-table-striped" v-if="tableColumns" :columns="tableColumns" :data-source="propertyList"
-         :rowKey="(record,index)=>{return index}" :pagination="false" bordered size="small" :scroll="{x:true}"
-         :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
-         :customRow="rowEvents">
+  <Table
+    v-if="tableColumns"
+    class="ant-table-striped"
+    :columns="tableColumns"
+    :data-source="propertyList"
+    :row-key="(record,index)=>{return index}"
+    :pagination="false"
+    bordered
+    size="small"
+    :scroll="{x:true}"
+    :row-class-name="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+    :custom-row="rowEvents"
+  >
     <template #property="{text, column, index}">
-      <div v-if="editableData[index]" class="editable-cell-input-wrapper">
-        <Input v-model:value="editableData[index][column.dataIndex]" @click.stop
-               v-if="typeof editableData[index][column.dataIndex] === 'string'"/>
-        <Input v-model:value.number="editableData[index][column.dataIndex]" @click.stop
-               v-else-if="typeof editableData[index][column.dataIndex] === 'number'"/>
-        <Input :value="JSON.stringify(editableData[index][column.dataIndex])" v-else @click.stop
-               @change="saveToEditableData($event, editableData[index], column.dataIndex)"/>
+      <div
+        v-if="editableData[index]"
+        class="editable-cell-input-wrapper"
+      >
+        <Input
+          v-if="typeof editableData[index][column.dataIndex] === 'string'"
+          v-model:value="editableData[index][column.dataIndex]"
+          @click.stop
+        />
+        <Input
+          v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
+          v-model:value.number="editableData[index][column.dataIndex]"
+          @click.stop
+        />
+        <Input
+          v-else
+          :value="JSON.stringify(editableData[index][column.dataIndex])"
+          @click.stop
+          @change="saveToEditableData($event, editableData[index], column.dataIndex)"
+        />
       </div>
-      <div v-else class="editable-cell-text-wrapper">
+      <div
+        v-else
+        class="editable-cell-text-wrapper"
+      >
         {{ typeof text === 'object' ? JSON.stringify(text) : text }}
       </div>
     </template>
@@ -26,7 +51,7 @@
       </span>
     </template>
   </Table>
-  <Empty v-else></Empty>
+  <Empty v-else />
 </template>
 
 <script>
@@ -35,10 +60,10 @@ import { cloneDeep } from 'lodash-es'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'propertyTable',
+  name: 'PropertyTable',
   components: { Table, Empty, Input },
   props: {
-    geoJsonLayer: Object
+    geoJsonLayer: { type: Object, default: undefined }
   },
   data: () => ({
     editableData: {}

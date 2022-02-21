@@ -1,16 +1,42 @@
 <template>
-  <div class="mapContainer" ref="mapContainer"></div>
-  <div class="propertyPopup" v-show="false" ref="propertyPopup">
+  <div
+    ref="mapContainer"
+    class="mapContainer"
+  />
+  <div
+    v-show="false"
+    ref="propertyPopup"
+    class="propertyPopup"
+  >
     <div class="title">
       <span>属性</span>
     </div>
-    <Form v-if="selectedFeature?.properties" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" :colon="false">
-      <Item v-for="(val,key,index) of selectedFeature.properties" :label="key" :key="'prop'+index">
-        <Input v-model:value="selectedFeature.properties[key]"
-               v-if="typeof selectedFeature.properties[key] === 'string'" @change="saveToEditor"/>
-        <Input v-model:value.number="selectedFeature.properties[key]"
-               v-else-if="typeof selectedFeature.properties[key] === 'number'" @change="saveToEditor"/>
-        <Input :value="JSON.stringify(val)" v-else @change="saveToEditor($event, selectedFeature, key)"/>
+    <Form
+      v-if="selectedFeature?.properties"
+      :label-col="{ span: 8 }"
+      :wrapper-col="{ span: 16 }"
+      :colon="false"
+    >
+      <Item
+        v-for="(val,key,index) of selectedFeature.properties"
+        :key="'prop'+index"
+        :label="key"
+      >
+        <Input
+          v-if="typeof selectedFeature.properties[key] === 'string'"
+          v-model:value="selectedFeature.properties[key]"
+          @change="saveToEditor"
+        />
+        <Input
+          v-else-if="typeof selectedFeature.properties[key] === 'number'"
+          v-model:value.number="selectedFeature.properties[key]"
+          @change="saveToEditor"
+        />
+        <Input
+          v-else
+          :value="JSON.stringify(val)"
+          @change="saveToEditor($event, selectedFeature, key)"
+        />
       </Item>
     </Form>
   </div>
@@ -47,16 +73,16 @@ const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 let layerControl, _map
 
 export default {
-  name: 'leafletMap',
-  props: {
-    geoJsonLayer: Object
-  },
-  emits: ['update:geoJsonLayer'],
+  name: 'LeafletMap',
   components: {
     Form,
     Item,
     Input
   },
+  props: {
+    geoJsonLayer: { type: Object, default: undefined }
+  },
+  emits: ['update:geoJsonLayer'],
   data: () => ({
     selectedFeature: undefined
   }),
@@ -68,6 +94,14 @@ export default {
       this.addBaseMaps()
       this.addControls()
     })
+  },
+  beforeUnmount () {
+    this.$eventBus.off('locationGeo', this.locationGeo)
+    this.$eventBus.off('updateGeojsonLayer', this.updateGeojsonLayer)
+    if (_map) {
+      _map.remove()
+      _map = undefined
+    }
   },
   methods: {
     initMap () {
@@ -244,14 +278,6 @@ export default {
           console.log(e)
         }
       }
-    }
-  },
-  beforeUnmount () {
-    this.$eventBus.off('locationGeo', this.locationGeo)
-    this.$eventBus.off('updateGeojsonLayer', this.updateGeojsonLayer)
-    if (_map) {
-      _map.remove()
-      _map = undefined
     }
   }
 }

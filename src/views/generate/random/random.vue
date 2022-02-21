@@ -1,10 +1,16 @@
 <template>
   <Tabs>
-    <TabPane key="common" tab="随机数字">
-      <RandomNumber/>
+    <TabPane
+      key="common"
+      tab="随机数字"
+    >
+      <RandomNumber />
     </TabPane>
-    <TabPane key="advanced" tab="随机列表">
-      <RandomList/>
+    <TabPane
+      key="advanced"
+      tab="随机列表"
+    >
+      <RandomList />
     </TabPane>
   </Tabs>
 </template>
@@ -16,7 +22,7 @@ import { defineAsyncComponent, defineComponent } from 'vue'
 const { TabPane } = Tabs
 
 export default defineComponent({
-  name: 'random',
+  name: 'RandomTool',
   components: {
     RandomNumber: defineAsyncComponent(() => import('./child/randomNumber.vue')),
     RandomList: defineAsyncComponent(() => import('./child/randomList.vue')),

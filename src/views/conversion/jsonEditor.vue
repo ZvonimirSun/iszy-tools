@@ -1,9 +1,12 @@
 <template>
-  <div class="editorPanel" ref="editorPanel">
+  <div
+    ref="editorPanel"
+    class="editorPanel"
+  >
     <div
+      ref="editorPanelContainerLeft"
       class="editorPanelContainer editorPanelContainerLeft"
       :class="{full:fullPanel==='left',hide:fullPanel==='right'}"
-      ref="editorPanelContainerLeft"
       :style="{flex: splitterValue + ' 1 0'}"
     >
       <div class="editorController editorControllerLeft">
@@ -18,81 +21,168 @@
           />
         </div>
         <Space class="editorControlButtons">
-          <Button size="small" type="primary" @click="create('left')">
-            <span class="buttonWithIcon"><FileAdditionOne theme="outline"/>&nbsp;新建</span>
+          <Button
+            size="small"
+            type="primary"
+            @click="create('left')"
+          >
+            <span class="buttonWithIcon"><FileAdditionOne theme="outline" />&nbsp;新建</span>
           </Button>
           <Dropdown>
             <template #overlay>
               <Menu
-                @click="open($event,'left')"
                 :trigger="['click','hover']"
+                @click="open($event,'left')"
               >
                 <MenuItem key="recent">
-                  <span class="buttonWithIcon"><History theme="outline"/>&nbsp;打开最近记录</span>
+                  <span class="buttonWithIcon"><History theme="outline" />&nbsp;打开最近记录</span>
                 </MenuItem>
                 <MenuItem key="file">
-                  <span class="buttonWithIcon"><Computer theme="outline"/>&nbsp;打开本地文件</span>
+                  <span class="buttonWithIcon"><Computer theme="outline" />&nbsp;打开本地文件</span>
                 </MenuItem>
                 <MenuItem key="url">
-                  <span class="buttonWithIcon"><LinkThree theme="outline"/>&nbsp;打开URL</span>
+                  <span class="buttonWithIcon"><LinkThree theme="outline" />&nbsp;打开URL</span>
                 </MenuItem>
               </Menu>
             </template>
-            <Button size="small" type="primary">
-              <span class="buttonWithIcon"><FolderOpen theme="outline"/>&nbsp;打开<Down theme="outline"/></span>
+            <Button
+              size="small"
+              type="primary"
+            >
+              <span class="buttonWithIcon"><FolderOpen theme="outline" />&nbsp;打开<Down theme="outline" /></span>
             </Button>
           </Dropdown>
-          <Button size="small" type="primary" @click="download('left')">
-            <span class="buttonWithIcon"><Save theme="outline"/>&nbsp;保存</span>
+          <Button
+            size="small"
+            type="primary"
+            @click="download('left')"
+          >
+            <span class="buttonWithIcon"><Save theme="outline" />&nbsp;保存</span>
           </Button>
           <Dropdown>
             <template #overlay>
               <Menu
-                @click="changeOption($event,'left')"
                 :trigger="['click','hover']"
+                @click="changeOption($event,'left')"
               >
                 <MenuItem key="indentation">
-                  <span class="buttonWithIcon"><IndentRight theme="outline"/>&nbsp;缩进({{indent}})</span>
+                  <span class="buttonWithIcon"><IndentRight theme="outline" />&nbsp;缩进({{ indent }})</span>
                 </MenuItem>
                 <MenuItem key="properties">
-                  <span class="buttonWithIcon"><Info theme="outline"/>&nbsp;文档属性</span>
+                  <span class="buttonWithIcon"><Info theme="outline" />&nbsp;文档属性</span>
                 </MenuItem>
-                <MenuItem key="delete" :disabled="!Boolean(leftId)">
-                  <span class="buttonWithIcon"><Delete theme="outline"/>&nbsp;删除文档</span>
+                <MenuItem
+                  key="delete"
+                  :disabled="!Boolean(leftId)"
+                >
+                  <span class="buttonWithIcon"><Delete theme="outline" />&nbsp;删除文档</span>
                 </MenuItem>
               </Menu>
             </template>
-            <Button size="small" type="primary">
-              <span class="buttonWithIcon"><SettingTwo theme="outline"/>&nbsp;选项<Down theme="outline"/></span>
+            <Button
+              size="small"
+              type="primary"
+            >
+              <span class="buttonWithIcon"><SettingTwo theme="outline" />&nbsp;选项<Down theme="outline" /></span>
             </Button>
           </Dropdown>
         </Space>
       </div>
-      <div ref="jsonEditorLeft" class="jsonEditor jsonEditorLeft"></div>
+      <div
+        ref="jsonEditorLeft"
+        class="jsonEditor jsonEditorLeft"
+      />
     </div>
-    <div class="controller noShowMobile" :class="{full:fullPanel}">
+    <div
+      class="controller noShowMobile"
+      :class="{full:fullPanel}"
+    >
       <Space direction="vertical">
         <template v-if="!fullPanel">
-          <div class="emptySpace"></div>
-          <Button type="primary" @click="copyRight" block>
+          <div class="emptySpace" />
+          <Button
+            type="primary"
+            block
+            @click="copyRight"
+          >
             复制
-            <Right theme="outline"/>
+            <Right theme="outline" />
           </Button>
-          <Button type="primary" @click="copyLeft" block>
-            <Left theme="outline"/>
+          <Button
+            type="primary"
+            block
+            @click="copyLeft"
+          >
+            <Left theme="outline" />
             复制
           </Button>
-          <Checkbox :checked="diff" @change="changeDiff">对比</Checkbox>
+          <Checkbox
+            :checked="diff"
+            @change="changeDiff"
+          >
+            对比
+          </Checkbox>
           <Space v-if="diff">
-            <Button type="primary" class="diffBtn"><Up theme="outline"/></Button>
-            <Button type="primary" class="diffBtn"><Down theme="outline"/></Button>
+            <Button
+              type="primary"
+              class="diffBtn"
+            >
+              <Up theme="outline" />
+            </Button>
+            <Button
+              type="primary"
+              class="diffBtn"
+            >
+              <Down theme="outline" />
+            </Button>
           </Space>
         </template>
-        <div class="drag" @mousedown="startDrag" @touchstart="startDrag" @click="clickDragger">
+        <div
+          class="drag"
+          @mousedown="startDrag"
+          @touchstart="startDrag"
+          @click="clickDragger"
+        >
           <div class="dragIcon">
-            <svg v-if="fullPanel==='right'" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path></svg>
-            <svg v-else-if="fullPanel==='left'" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"></path></svg>
-            <svg v-else aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-vertical" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512"><path fill="currentColor" d="M64 360C94.93 360 120 385.1 120 416C120 446.9 94.93 472 64 472C33.07 472 8 446.9 8 416C8 385.1 33.07 360 64 360zM64 200C94.93 200 120 225.1 120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200zM64 152C33.07 152 8 126.9 8 96C8 65.07 33.07 40 64 40C94.93 40 120 65.07 120 96C120 126.9 94.93 152 64 152z"></path></svg>
+            <svg
+              v-if="fullPanel==='right'"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="chevron-right"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+            ><path
+              fill="currentColor"
+              d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
+            /></svg>
+            <svg
+              v-else-if="fullPanel==='left'"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="chevron-left"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+            ><path
+              fill="currentColor"
+              d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
+            /></svg>
+            <svg
+              v-else
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="ellipsis-vertical"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 128 512"
+            ><path
+              fill="currentColor"
+              d="M64 360C94.93 360 120 385.1 120 416C120 446.9 94.93 472 64 472C33.07 472 8 446.9 8 416C8 385.1 33.07 360 64 360zM64 200C94.93 200 120 225.1 120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200zM64 152C33.07 152 8 126.9 8 96C8 65.07 33.07 40 64 40C94.93 40 120 65.07 120 96C120 126.9 94.93 152 64 152z"
+            /></svg>
           </div>
         </div>
       </Space>
@@ -114,62 +204,90 @@
           />
         </div>
         <Space class="editorControlButtons">
-          <Button size="small" type="primary" @click="create('right')">
-            <span class="buttonWithIcon"><FileAdditionOne theme="outline"/>&nbsp;新建</span>
+          <Button
+            size="small"
+            type="primary"
+            @click="create('right')"
+          >
+            <span class="buttonWithIcon"><FileAdditionOne theme="outline" />&nbsp;新建</span>
           </Button>
           <Dropdown>
             <template #overlay>
               <Menu
-                @click="open($event,'right')"
                 :trigger="['click','hover']"
+                @click="open($event,'right')"
               >
                 <MenuItem key="recent">
-                  <span class="buttonWithIcon"><History theme="outline"/>&nbsp;打开最近记录</span>
+                  <span class="buttonWithIcon"><History theme="outline" />&nbsp;打开最近记录</span>
                 </MenuItem>
                 <MenuItem key="file">
-                  <span class="buttonWithIcon"><Computer theme="outline"/>&nbsp;打开本地文件</span>
+                  <span class="buttonWithIcon"><Computer theme="outline" />&nbsp;打开本地文件</span>
                 </MenuItem>
                 <MenuItem key="url">
-                  <span class="buttonWithIcon"><LinkThree theme="outline"/>&nbsp;打开URL</span>
+                  <span class="buttonWithIcon"><LinkThree theme="outline" />&nbsp;打开URL</span>
                 </MenuItem>
               </Menu>
             </template>
-            <Button size="small" type="primary">
-              <span class="buttonWithIcon"><FolderOpen theme="outline"/>&nbsp;打开<Down theme="outline"/></span>
+            <Button
+              size="small"
+              type="primary"
+            >
+              <span class="buttonWithIcon"><FolderOpen theme="outline" />&nbsp;打开<Down theme="outline" /></span>
             </Button>
           </Dropdown>
-          <Button size="small" type="primary" @click="download('right')">
-            <span class="buttonWithIcon"><Save theme="outline"/>&nbsp;保存</span>
+          <Button
+            size="small"
+            type="primary"
+            @click="download('right')"
+          >
+            <span class="buttonWithIcon"><Save theme="outline" />&nbsp;保存</span>
           </Button>
           <Dropdown>
             <template #overlay>
               <Menu
-                @click="changeOption($event,'right')"
                 :trigger="['click','hover']"
+                @click="changeOption($event,'right')"
               >
                 <MenuItem key="indentation">
-                  <span class="buttonWithIcon"><IndentRight theme="outline"/>&nbsp;缩进({{indent}})</span>
+                  <span class="buttonWithIcon"><IndentRight theme="outline" />&nbsp;缩进({{ indent }})</span>
                 </MenuItem>
                 <MenuItem key="properties">
-                  <span class="buttonWithIcon"><Info theme="outline"/>&nbsp;文档属性</span>
+                  <span class="buttonWithIcon"><Info theme="outline" />&nbsp;文档属性</span>
                 </MenuItem>
-                <MenuItem key="delete" :disabled="!Boolean(rightId)">
-                  <span class="buttonWithIcon"><Delete theme="outline"/>&nbsp;删除文档</span>
+                <MenuItem
+                  key="delete"
+                  :disabled="!Boolean(rightId)"
+                >
+                  <span class="buttonWithIcon"><Delete theme="outline" />&nbsp;删除文档</span>
                 </MenuItem>
               </Menu>
             </template>
-            <Button size="small" type="primary">
-              <span class="buttonWithIcon"><SettingTwo theme="outline"/>&nbsp;选项<Down theme="outline"/></span>
+            <Button
+              size="small"
+              type="primary"
+            >
+              <span class="buttonWithIcon"><SettingTwo theme="outline" />&nbsp;选项<Down theme="outline" /></span>
             </Button>
           </Dropdown>
         </Space>
       </div>
-      <div ref="jsonEditorRight" class="jsonEditor jsonEditorRight"></div>
+      <div
+        ref="jsonEditorRight"
+        class="jsonEditor jsonEditorRight"
+      />
     </div>
   </div>
-  <Modal :visible="modalStatus.type === 'openRecent'" title="打开最近" @cancel="closeModal" @ok="openRecent">
+  <Modal
+    :visible="modalStatus.type === 'openRecent'"
+    title="打开最近"
+    @cancel="closeModal"
+    @ok="openRecent"
+  >
     <Paragraph>搜索</Paragraph>
-    <Input v-model:value="keyword" placeholder="请输入文档名称"/>
+    <Input
+      v-model:value="keyword"
+      placeholder="请输入文档名称"
+    />
 
     <List
       class="dataList"
@@ -177,52 +295,90 @@
       :data-source="dataListAfterSearch"
     >
       <template #renderItem="{ item }">
-        <ListItem @click="selectId=item._id" :class="{selected: item._id === selectId}">
+        <ListItem
+          :class="{selected: item._id === selectId}"
+          @click="selectId=item._id"
+        >
           <template #actions>
             <Button
-              @click="deleteData({id:item._id})"
               type="primary"
               danger
-            >删除</Button>
+              @click="deleteData({id:item._id})"
+            >
+              删除
+            </Button>
           </template>
           <ListItemMeta
             :description="'最后修改: '+item.updated"
           >
             <template #title>
-              {{item.name}}
+              {{ item.name }}
             </template>
           </ListItemMeta>
         </ListItem>
       </template>
     </List>
   </Modal>
-  <input type="file" v-show="false" ref="uploader" @change="openFile" accept=".json,.JSON"/>
-  <Modal :visible="modalStatus.type === 'openUrl'" title="打开URL" @cancel="closeModal" @ok="openUrl(url)">
+  <input
+    v-show="false"
+    ref="uploader"
+    type="file"
+    accept=".json,.JSON"
+    @change="openFile"
+  >
+  <Modal
+    :visible="modalStatus.type === 'openUrl'"
+    title="打开URL"
+    @cancel="closeModal"
+    @ok="openUrl(url)"
+  >
     <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
-    <Input v-model:value="url" placeholder="请输入URL地址"/>
+    <Input
+      v-model:value="url"
+      placeholder="请输入URL地址"
+    />
   </Modal>
-  <Modal :visible="modalStatus.type === 'setIndentation'" title="设置缩进" @cancel="closeModal" @ok="changeIndentation">
+  <Modal
+    :visible="modalStatus.type === 'setIndentation'"
+    title="设置缩进"
+    @cancel="closeModal"
+    @ok="changeIndentation"
+  >
     <Paragraph>配置代码模式下用于缩进的空格数。 缩进同时应用于两个面板。</Paragraph>
-    <Input v-model:value.number="indent"/>
+    <Input v-model:value.number="indent" />
   </Modal>
-  <Modal :visible="modalStatus.type === 'documentProperties'" title="文档属性" @cancel="closeModal" @ok="closeModal" class="documentProperties">
-    <Paragraph><strong>名称：</strong><Text
-      v-show="documentProperties.name"
-      :editable="{onStart:onEditStart,onChange:onEditChange,onEnd:onEditEnd}"
-      :content="documentProperties.name"
-    /></Paragraph>
-    <Paragraph><strong>存储：</strong><Text
-      v-show="documentProperties.storage"
-      :content="documentProperties.storage"
-    /></Paragraph>
-    <Paragraph><strong>更新：</strong><Text
-      v-show="documentProperties.updated"
-      :content="documentProperties.updated"
-    /></Paragraph>
-    <Paragraph><strong>大小：</strong><Text
-      v-show="documentProperties.size"
-      :content="documentProperties.size"
-    /></Paragraph>
+  <Modal
+    :visible="modalStatus.type === 'documentProperties'"
+    title="文档属性"
+    class="documentProperties"
+    @cancel="closeModal"
+    @ok="closeModal"
+  >
+    <Paragraph>
+      <strong>名称：</strong><Text
+        v-show="documentProperties.name"
+        :editable="{onStart:onEditStart,onChange:onEditChange,onEnd:onEditEnd}"
+        :content="documentProperties.name"
+      />
+    </Paragraph>
+    <Paragraph>
+      <strong>存储：</strong><Text
+        v-show="documentProperties.storage"
+        :content="documentProperties.storage"
+      />
+    </Paragraph>
+    <Paragraph>
+      <strong>更新：</strong><Text
+        v-show="documentProperties.updated"
+        :content="documentProperties.updated"
+      />
+    </Paragraph>
+    <Paragraph>
+      <strong>大小：</strong><Text
+        v-show="documentProperties.size"
+        :content="documentProperties.size"
+      />
+    </Paragraph>
   </Modal>
 </template>
 
@@ -325,18 +481,6 @@ export default {
 
     fullPanel: ''
   }),
-  watch: {
-    leftId: {
-      handler: function (val) {
-        this.handleHashParams('left', val)
-      }
-    },
-    rightId: {
-      handler: function (val) {
-        this.handleHashParams('right', val)
-      }
-    }
-  },
   computed: {
     dataListAfterSearch: function () {
       return this.dataList(this.keyword)
@@ -377,8 +521,29 @@ export default {
     ...mapState(['leftId', 'rightId', 'splitterValue', 'fullStatus']),
     ...mapGetters(['dataList', 'data', 'leftData', 'rightData'])
   },
+  watch: {
+    leftId: {
+      handler: function (val) {
+        this.handleHashParams('left', val)
+      }
+    },
+    rightId: {
+      handler: function (val) {
+        this.handleHashParams('right', val)
+      }
+    }
+  },
   mounted () {
     this.init()
+  },
+  beforeUnmount () {
+    if (editorLeft) {
+      editorLeft.destroy()
+    }
+    if (editorRight) {
+      editorRight.destroy()
+    }
+    window.removeEventListener('hashchange', this.hashChange)
   },
   methods: {
     init () {
@@ -847,15 +1012,6 @@ export default {
       }
     },
     ...mapMutations(['saveData', 'deleteData', 'setSplitter', 'setFullStatus'])
-  },
-  beforeUnmount () {
-    if (editorLeft) {
-      editorLeft.destroy()
-    }
-    if (editorRight) {
-      editorRight.destroy()
-    }
-    window.removeEventListener('hashchange', this.hashChange)
   }
 }
 </script>

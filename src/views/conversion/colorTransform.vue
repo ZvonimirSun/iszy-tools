@@ -1,60 +1,184 @@
 <template>
-  <div class="panel" :style="{background: activeColor}" :class="{light:isLight,dark:!isLight}">
+  <div
+    class="panel"
+    :style="{background: activeColor}"
+    :class="{light:isLight,dark:!isLight}"
+  >
     <Row>
-      <Col :md="12" :xl="8" :span="24">
+      <Col
+        :md="12"
+        :xl="8"
+        :span="24"
+      >
         <Form layout="vertical">
-          <FormItem label="HEX" class="hex">
-            <Input v-model:value="hex" @change="inputChange({hex})"/>
+          <FormItem
+            label="HEX"
+            class="hex"
+          >
+            <Input
+              v-model:value="hex"
+              @change="inputChange({hex})"
+            />
           </FormItem>
-          <FormItem label="RGBA" class="rgba">
+          <FormItem
+            label="RGBA"
+            class="rgba"
+          >
             <InputGroup compact>
-              <InputNumber placeholder="R" v-model:value="rgba.r" @change="inputChange({rgba})" :max="255" :min="0"
-                           :step="1"/>
-              <InputNumber placeholder="G" v-model:value="rgba.g" @change="inputChange({rgba})" :max="255" :min="0"
-                           :step="1"/>
-              <InputNumber placeholder="B" v-model:value="rgba.b" @change="inputChange({rgba})" :max="255" :min="0"
-                           :step="1"/>
-              <InputNumber placeholder="A" v-model:value="rgba.a" @change="inputChange({rgba})" :max="1"
-                           :min="0" :step="0.01"/>
+              <InputNumber
+                v-model:value="rgba.r"
+                placeholder="R"
+                :max="255"
+                :min="0"
+                :step="1"
+                @change="inputChange({rgba})"
+              />
+              <InputNumber
+                v-model:value="rgba.g"
+                placeholder="G"
+                :max="255"
+                :min="0"
+                :step="1"
+                @change="inputChange({rgba})"
+              />
+              <InputNumber
+                v-model:value="rgba.b"
+                placeholder="B"
+                :max="255"
+                :min="0"
+                :step="1"
+                @change="inputChange({rgba})"
+              />
+              <InputNumber
+                v-model:value="rgba.a"
+                placeholder="A"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                @change="inputChange({rgba})"
+              />
             </InputGroup>
           </FormItem>
-          <FormItem label="HSLA" class="hsla">
+          <FormItem
+            label="HSLA"
+            class="hsla"
+          >
             <InputGroup compact>
-              <InputNumber placeholder="H" v-model:value="hsla.h" @change="inputChange({hsla})" :max="360" :min="0"
-                           :step="0.01" :precision="2"/>
-              <InputNumber placeholder="S" v-model:value="hsla.s" @change="inputChange({hsla})" :max="1" :min="0"
-                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-              <InputNumber placeholder="L" v-model:value="hsla.l" @change="inputChange({hsla})" :max="1" :min="0"
-                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-              <InputNumber placeholder="A" v-model:value="hsla.a" @change="inputChange({hsla})" :max="1"
-                           :min="0" :step="0.01" :precision="2"/>
+              <InputNumber
+                v-model:value="hsla.h"
+                placeholder="H"
+                :max="360"
+                :min="0"
+                :step="0.01"
+                :precision="2"
+                @change="inputChange({hsla})"
+              />
+              <InputNumber
+                v-model:value="hsla.s"
+                placeholder="S"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                :formatter="formatterPercentage"
+                :parser="parserPercentage"
+                :precision="2"
+                @change="inputChange({hsla})"
+              />
+              <InputNumber
+                v-model:value="hsla.l"
+                placeholder="L"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                :formatter="formatterPercentage"
+                :parser="parserPercentage"
+                :precision="2"
+                @change="inputChange({hsla})"
+              />
+              <InputNumber
+                v-model:value="hsla.a"
+                placeholder="A"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                :precision="2"
+                @change="inputChange({hsla})"
+              />
             </InputGroup>
           </FormItem>
-          <FormItem label="HSVA" class="hsva">
+          <FormItem
+            label="HSVA"
+            class="hsva"
+          >
             <InputGroup compact>
-              <InputNumber placeholder="H" v-model:value="hsva.h" @change="inputChange({hsva})" :max="360" :min="0"
-                           :step="0.01" :precision="2"/>
-              <InputNumber placeholder="S" v-model:value="hsva.s" @change="inputChange({hsva})" :max="1" :min="0"
-                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-              <InputNumber placeholder="V" v-model:value="hsva.v" @change="inputChange({hsva})" :max="1" :min="0"
-                           :step="0.01" :formatter="formatterPercentage" :parser="parserPercentage" :precision="2"/>
-              <InputNumber placeholder="A" v-model:value="hsva.a" @change="inputChange({hsva})" :max="1"
-                           :min="0" :step="0.01" :precision="2"/>
+              <InputNumber
+                v-model:value="hsva.h"
+                placeholder="H"
+                :max="360"
+                :min="0"
+                :step="0.01"
+                :precision="2"
+                @change="inputChange({hsva})"
+              />
+              <InputNumber
+                v-model:value="hsva.s"
+                placeholder="S"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                :formatter="formatterPercentage"
+                :parser="parserPercentage"
+                :precision="2"
+                @change="inputChange({hsva})"
+              />
+              <InputNumber
+                v-model:value="hsva.v"
+                placeholder="V"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                :formatter="formatterPercentage"
+                :parser="parserPercentage"
+                :precision="2"
+                @change="inputChange({hsva})"
+              />
+              <InputNumber
+                v-model:value="hsva.a"
+                placeholder="A"
+                :max="1"
+                :min="0"
+                :step="0.01"
+                :precision="2"
+                @change="inputChange({hsva})"
+              />
             </InputGroup>
           </FormItem>
         </Form>
       </Col>
-      <Col :md="12" :xl="8" :span="24">
+      <Col
+        :md="12"
+        :xl="8"
+        :span="24"
+      >
         <Form layout="vertical">
           <FormItem label="颜色选择">
             <div class="saturation">
-              <Saturation :value="colors" @change="childChange"/>
+              <Saturation
+                :value="colors"
+                @change="childChange"
+              />
             </div>
             <div class="hue">
-              <Hue :value="colors" @change="childChange"/>
+              <Hue
+                :value="colors"
+                @change="childChange"
+              />
             </div>
             <div class="alpha">
-              <Alpha :value="colors" @change="childChange"/>
+              <Alpha
+                :value="colors"
+                @change="childChange"
+              />
             </div>
           </FormItem>
         </Form>
@@ -73,7 +197,19 @@ const { Item: FormItem } = Form
 const { Group: InputGroup } = Input
 
 export default {
-  name: '颜色转换',
+  name: 'ColorTransform',
+  components: {
+    Saturation,
+    Hue,
+    Alpha,
+    Form,
+    FormItem,
+    Input,
+    InputGroup,
+    InputNumber,
+    Row,
+    Col
+  },
   data: () => ({
     hex: '16b0f6',
     rgba: {
@@ -109,18 +245,6 @@ export default {
         return true
       }
     }
-  },
-  components: {
-    Saturation,
-    Hue,
-    Alpha,
-    Form,
-    FormItem,
-    Input,
-    InputGroup,
-    InputNumber,
-    Row,
-    Col
   },
   mounted () {
     this.inputChange({ hex: this.hex })

@@ -4,40 +4,72 @@
   </Typography>
   <div class="commonConfigPanel">
     <Form layout="inline">
-<!--      <Item label="上传前重命名">-->
-<!--        <Switch v-model:checked="currentCommonConfig.renameBeforeUpload"-->
-<!--                @change="saveCommonConfig(currentCommonConfig)"/>-->
-<!--      </Item>-->
+      <!--      <Item label="上传前重命名">-->
+      <!--        <Switch v-model:checked="currentCommonConfig.renameBeforeUpload"-->
+      <!--                @change="saveCommonConfig(currentCommonConfig)"/>-->
+      <!--      </Item>-->
       <Item label="时间戳重命名">
-        <Switch v-model:checked="currentCommonConfig.renameTimeStamp"
-                @change="saveCommonConfig(currentCommonConfig)"/>
+        <Switch
+          v-model:checked="currentCommonConfig.renameTimeStamp"
+          @change="saveCommonConfig(currentCommonConfig)"
+        />
       </Item>
       <Item label="上传后自动复制URL">
-        <Switch v-model:checked="currentCommonConfig.copyUrlAfterUpload"
-                @change="saveCommonConfig(currentCommonConfig)"/>
+        <Switch
+          v-model:checked="currentCommonConfig.copyUrlAfterUpload"
+          @change="saveCommonConfig(currentCommonConfig)"
+        />
       </Item>
     </Form>
   </div>
-  <Divider/>
+  <Divider />
   <Typography>
     <h4>图床设置</h4>
   </Typography>
-  <Tabs v-model:activeKey="currentUploader" type="card" @change="changeUploader">
-    <TabPane v-for="(item,name) of uploaders" :key="name" :tab="item.name">
+  <Tabs
+    v-model:activeKey="currentUploader"
+    type="card"
+    @change="changeUploader"
+  >
+    <TabPane
+      v-for="(item,name) of uploaders"
+      :key="name"
+      :tab="item.name"
+    >
       <div class="configPanel">
         <div class="configTable">
-          <Form layout="vertical" v-if="currentUploader === name">
-            <Item v-for="(item1) of currentConfig" :key="item1.name" :label="item1.label"
-                  :required="item1.required">
-              <Input v-model:value="item1.default" allow-clear v-if="item1.type==='input'"
-                     :placeholder="item1.hint"/>
-              <Password v-model:value="item1.default" allow-clear v-else-if="item1.type==='password'"
-                        :placeholder="item1.hint"/>
+          <Form
+            v-if="currentUploader === name"
+            layout="vertical"
+          >
+            <Item
+              v-for="(item1) of currentConfig"
+              :key="item1.name"
+              :label="item1.label"
+              :required="item1.required"
+            >
+              <Input
+                v-if="item1.type==='input'"
+                v-model:value="item1.default"
+                allow-clear
+                :placeholder="item1.hint"
+              />
+              <Password
+                v-else-if="item1.type==='password'"
+                v-model:value="item1.default"
+                allow-clear
+                :placeholder="item1.hint"
+              />
             </Item>
           </Form>
         </div>
         <div class="configOperator">
-          <Button type="primary" @click="save">保存</Button>
+          <Button
+            type="primary"
+            @click="save"
+          >
+            保存
+          </Button>
         </div>
       </div>
     </TabPane>
@@ -59,7 +91,7 @@ const {
 } = createNamespacedHelpers('imgHosting')
 
 export default {
-  name: 'settings',
+  name: 'ImgHostingSettings',
   components: {
     Tabs,
     TabPane,

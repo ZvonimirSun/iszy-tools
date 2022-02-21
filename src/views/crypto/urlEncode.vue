@@ -6,9 +6,24 @@
       :auto-size="{ minRows: 5, maxRows: 8 }"
     />
     <Group>
-      <Button type="primary" @click="encode">UrlEncode编码</Button>
-      <Button type="primary" @click="decode">UrlDecode解码</Button>
-      <Button type="link" @click="clear">清空结果</Button>
+      <Button
+        type="primary"
+        @click="encode"
+      >
+        UrlEncode编码
+      </Button>
+      <Button
+        type="primary"
+        @click="decode"
+      >
+        UrlDecode解码
+      </Button>
+      <Button
+        type="link"
+        @click="clear"
+      >
+        清空结果
+      </Button>
     </Group>
   </Space>
 </template>
@@ -20,7 +35,7 @@ const { TextArea } = Input
 const { Group } = Button
 
 export default {
-  name: 'URL编码/解码',
+  name: 'URLEncode',
   components: {
     TextArea,
     Button,

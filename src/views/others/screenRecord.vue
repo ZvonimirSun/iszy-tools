@@ -1,66 +1,162 @@
 <template>
   <template v-if="isSupported">
-    <Title :level="3">实时预览</Title>
+    <Title :level="3">
+      实时预览
+    </Title>
     <div class="previewVideo">
-      <video autoplay ref="screenShare">
-      </video>
-      <span class="rec" v-show="showREC">REC</span>
+      <video
+        ref="screenShare"
+        autoplay
+      />
+      <span
+        v-show="showREC"
+        class="rec"
+      >REC</span>
     </div>
-    <Space :size="8" class="operations" align="center">
-      <Button @click="openScreenShare" type="primary" :disabled="disabled.open">开启屏幕共享</Button>
-      <Button @click="start" type="primary" :disabled="disabled.start">开始录制</Button>
-      <Button @click="pause" type="primary" :disabled="disabled.pause">暂停</Button>
-      <Button @click="resume" type="primary" :disabled="disabled.resume">继续</Button>
-      <Button @click="stop" type="primary" :disabled="disabled.stop">停止</Button>
-      <Button @click="download" type="primary" :disabled="disabled.download">下载</Button>
+    <Space
+      :size="8"
+      class="operations"
+      align="center"
+    >
+      <Button
+        type="primary"
+        :disabled="disabled.open"
+        @click="openScreenShare"
+      >
+        开启屏幕共享
+      </Button>
+      <Button
+        type="primary"
+        :disabled="disabled.start"
+        @click="start"
+      >
+        开始录制
+      </Button>
+      <Button
+        type="primary"
+        :disabled="disabled.pause"
+        @click="pause"
+      >
+        暂停
+      </Button>
+      <Button
+        type="primary"
+        :disabled="disabled.resume"
+        @click="resume"
+      >
+        继续
+      </Button>
+      <Button
+        type="primary"
+        :disabled="disabled.stop"
+        @click="stop"
+      >
+        停止
+      </Button>
+      <Button
+        type="primary"
+        :disabled="disabled.download"
+        @click="download"
+      >
+        下载
+      </Button>
     </Space>
     <template v-if="!!blobUrl">
-      <Divider/>
-      <Title :level="3">结果</Title>
+      <Divider />
+      <Title :level="3">
+        结果
+      </Title>
       <div class="previewVideo">
-        <video controls :src="blobUrl"></video>
+        <video
+          controls
+          :src="blobUrl"
+        />
       </div>
     </template>
-    <Divider/>
-    <Title :level="3">设置</Title>
-    <Alert message="由于浏览器限制，部分设置可能无法生效" type="warning" show-icon closable style="margin-bottom: .8rem;"/>
-    <Form :labelCol="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}" v-if="!disabled.open">
+    <Divider />
+    <Title :level="3">
+      设置
+    </Title>
+    <Alert
+      message="由于浏览器限制，部分设置可能无法生效"
+      type="warning"
+      show-icon
+      closable
+      style="margin-bottom: .8rem;"
+    />
+    <Form
+      v-if="!disabled.open"
+      :label-col="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}"
+    >
       <FormItem label="系统音频">
-        <Select v-model:value="recordAudio" :options="recordAudioOptions" @change="selectAudio"/>
+        <Select
+          v-model:value="recordAudio"
+          :options="recordAudioOptions"
+          @change="selectAudio"
+        />
       </FormItem>
       <FormItem label="麦克风">
-        <Select v-model:value="recordMicro" :options="recordMicroOptions" @change="selectMicro"/>
+        <Select
+          v-model:value="recordMicro"
+          :options="recordMicroOptions"
+          @change="selectMicro"
+        />
       </FormItem>
-      <FormItem label="选择长宽比" v-if="supportedConstraints.aspectRatio">
-        <Select v-model:value="aspectRatio" :options="aspectRatioList"/>
+      <FormItem
+        v-if="supportedConstraints.aspectRatio"
+        label="选择长宽比"
+      >
+        <Select
+          v-model:value="aspectRatio"
+          :options="aspectRatioList"
+        />
       </FormItem>
-      <FormItem label="选择帧率" v-if="supportedConstraints.frameRate">
-        <Select v-model:value="frameRate" :options="frameRateList"/>
+      <FormItem
+        v-if="supportedConstraints.frameRate"
+        label="选择帧率"
+      >
+        <Select
+          v-model:value="frameRate"
+          :options="frameRateList"
+        />
       </FormItem>
-      <FormItem label="选择分辨率" v-if="supportedConstraints.width && supportedConstraints.height">
-        <Select v-model:value="resolutions" :options="resolutionsList"/>
+      <FormItem
+        v-if="supportedConstraints.width && supportedConstraints.height"
+        label="选择分辨率"
+      >
+        <Select
+          v-model:value="resolutions"
+          :options="resolutionsList"
+        />
       </FormItem>
       <FormItem label="是否显示光标">
-        <Select v-model:value="cursor" :options="cursorList"/>
+        <Select
+          v-model:value="cursor"
+          :options="cursorList"
+        />
       </FormItem>
     </Form>
     <template v-else>
-      <Title :level="4">当前设置</Title>
+      <Title :level="4">
+        当前设置
+      </Title>
       <Paragraph>
         <ul>
-          <li>系统音频: {{currentDisplayMediaOptions.video.recordAudio}}</li>
-          <li>麦克风: {{currentDisplayMediaOptions.video.recordMicro}}</li>
-          <li>长宽比: {{currentDisplayMediaOptions.video.aspectRatio}}</li>
-          <li>帧率: {{currentDisplayMediaOptions.video.frameRate}}</li>
-          <li>视频宽度: {{currentDisplayMediaOptions.video.width}}</li>
-          <li>视频高度: {{currentDisplayMediaOptions.video.height}}</li>
-          <li>显示鼠标: {{currentDisplayMediaOptions.video.cursor}}</li>
+          <li>系统音频: {{ currentDisplayMediaOptions.video.recordAudio }}</li>
+          <li>麦克风: {{ currentDisplayMediaOptions.video.recordMicro }}</li>
+          <li>长宽比: {{ currentDisplayMediaOptions.video.aspectRatio }}</li>
+          <li>帧率: {{ currentDisplayMediaOptions.video.frameRate }}</li>
+          <li>视频宽度: {{ currentDisplayMediaOptions.video.width }}</li>
+          <li>视频高度: {{ currentDisplayMediaOptions.video.height }}</li>
+          <li>显示鼠标: {{ currentDisplayMediaOptions.video.cursor }}</li>
         </ul>
       </Paragraph>
     </template>
   </template>
   <template v-else>
-    <Title :level="3">你的浏览器不支持WebRTC，请安装最新版本Chrome后重试。</Title>
+    <Title :level="3">
+      你的浏览器不支持WebRTC，请安装最新版本Chrome后重试。
+    </Title>
   </template>
 </template>
 
@@ -76,7 +172,7 @@ const RECORD_STATUS_PAUSED = 'paused'
 const RECORD_STATUS_STOPPED = 'stopped'
 
 export default {
-  name: 'screenRecord',
+  name: 'ScreenRecord',
   components: { Title, Paragraph, Space, Button, Divider, Form, FormItem, Select, Alert },
   data: () => ({
     recorder: null,
@@ -309,6 +405,9 @@ export default {
   mounted () {
     this.screenShareVideoElement = this.$refs.screenShare
   },
+  beforeUnmount () {
+    this.stop()
+  },
   methods: {
     async openScreenShare () {
       try {
@@ -410,9 +509,6 @@ export default {
         this.recordAudio = 'never'
       }
     }
-  },
-  beforeUnmount () {
-    this.stop()
   }
 }
 </script>

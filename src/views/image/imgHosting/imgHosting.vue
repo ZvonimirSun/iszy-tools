@@ -1,14 +1,27 @@
 <template>
   <div class="container">
-    <Tabs v-model:activeKey="activeKey" type="card" class="totalTab">
-      <TabPane key="home" tab="上传区">
-        <Upload :activeKey="activeKey"/>
+    <Tabs
+      v-model:activeKey="activeKey"
+      type="card"
+      class="totalTab"
+    >
+      <TabPane
+        key="home"
+        tab="上传区"
+      >
+        <Upload :active-key="activeKey" />
       </TabPane>
-      <TabPane key="uploaded" tab="相册">
-        <ImgList/>
+      <TabPane
+        key="uploaded"
+        tab="相册"
+      >
+        <ImgList />
       </TabPane>
-      <TabPane key="settings" tab="设置">
-        <Settings/>
+      <TabPane
+        key="settings"
+        tab="设置"
+      >
+        <Settings />
       </TabPane>
     </Tabs>
   </div>
@@ -21,7 +34,7 @@ import { Tabs } from 'ant-design-vue'
 const { TabPane } = Tabs
 
 export default {
-  name: '极简图床',
+  name: 'ImgHosting',
   components: {
     ImgList: defineAsyncComponent(() => import('./child/imgList.vue')),
     Upload: defineAsyncComponent(() => import('./child/upload.vue')),

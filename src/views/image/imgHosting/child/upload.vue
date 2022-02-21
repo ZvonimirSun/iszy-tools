@@ -1,11 +1,18 @@
 <template>
   <Spin :spinning="spinning">
-    <Dragger :fileList="[]" accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
-             @reject="rejectFile" :showUploadList="false" :customRequest="customRequest">
+    <Dragger
+      :file-list="[]"
+      accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
+      :show-upload-list="false"
+      :custom-request="customRequest"
+      @reject="rejectFile"
+    >
       <p class="ant-upload-drag-icon">
-        <UploadOne/>
+        <UploadOne />
       </p>
-      <p class="ant-upload-text">直接粘贴图片或拖拽图片到这里上传<br/>或者直接点击选择文件上传</p>
+      <p class="ant-upload-text">
+        直接粘贴图片或拖拽图片到这里上传<br>或者直接点击选择文件上传
+      </p>
       <p class="ant-upload-hint">
         暂时仅支持单文件上传。
       </p>
@@ -26,13 +33,18 @@ const {
 } = createNamespacedHelpers('imgHosting')
 
 export default {
-  name: 'upload',
+  name: 'ImgHostingUpload',
   components: {
     Dragger,
     UploadOne,
     Spin
   },
-  props: ['activeKey'],
+  props: {
+    activeKey: {
+      type: String,
+      default: ''
+    }
+  },
   data: () => ({
     spinning: false,
     timeoutIndex: undefined

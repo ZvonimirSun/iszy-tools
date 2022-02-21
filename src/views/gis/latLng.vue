@@ -1,10 +1,25 @@
 <template>
-  <Space :size="8" align="center">
-    <Input v-model:value="keyword" placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')" @keypress.enter="handler"
-           allow-clear/>
-    <Button @click="handler" type="primary">解析</Button>
+  <Space
+    :size="8"
+    align="center"
+  >
+    <Input
+      v-model:value="keyword"
+      placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')"
+      allow-clear
+      @keypress.enter="handler"
+    />
+    <Button
+      type="primary"
+      @click="handler"
+    >
+      解析
+    </Button>
   </Space>
-  <div class="mapContainer" ref="mapContainer"></div>
+  <div
+    ref="mapContainer"
+    class="mapContainer"
+  />
 </template>
 
 <script>
@@ -33,7 +48,7 @@ const yellowIcon = new Icon({
 })
 
 export default {
-  name: 'latLng',
+  name: 'LatLng',
   components: {
     Button,
     Input,

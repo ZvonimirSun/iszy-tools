@@ -4,10 +4,24 @@
   </Paragraph>
   <Form layout="vertical">
     <FormItem label="请选择要添加水印的图片">
-      <Upload :fileList="[]" :showUploadList="false" accept="image/*" :before-upload="upload">
-        <Input readonly placeholder="点击这里上传图片" :value="fileName">
+      <Upload
+        :file-list="[]"
+        :show-upload-list="false"
+        accept="image/*"
+        :before-upload="upload"
+      >
+        <Input
+          readonly
+          placeholder="点击这里上传图片"
+          :value="fileName"
+        >
           <template #addonAfter>
-            <Button block :disabled="!file" @click.stop="addWatermark" :loading="loading">
+            <Button
+              block
+              :disabled="!file"
+              :loading="loading"
+              @click.stop="addWatermark"
+            >
               <span v-if="loading">处理中</span>
               <span v-else>开始处理</span>
             </Button>
@@ -16,27 +30,59 @@
       </Upload>
     </FormItem>
     <FormItem label="请输入水印文字">
-      <Input placeholder="仅供 xxx 验证使用" v-model:value="options.text"/>
+      <Input
+        v-model:value="options.text"
+        placeholder="仅供 xxx 验证使用"
+      />
     </FormItem>
     <FormItem label="字体大小">
-      <Slider :max="30" :min="10" v-model:value="options.fontSize"/>
+      <Slider
+        v-model:value="options.fontSize"
+        :max="30"
+        :min="10"
+      />
     </FormItem>
     <FormItem label="透明度">
-      <Slider :max="10" :min="1" :step="0.1" v-model:value="options.alpha"/>
+      <Slider
+        v-model:value="options.alpha"
+        :max="10"
+        :min="1"
+        :step="0.1"
+      />
     </FormItem>
     <FormItem label="旋转角度">
-      <Slider :max="365" :min="0" v-model:value="options.rotate"/>
+      <Slider
+        v-model:value="options.rotate"
+        :max="365"
+        :min="0"
+      />
     </FormItem>
     <FormItem label="文本间距">
-      <Slider :max="100" :min="0" v-model:value="options.width"/>
+      <Slider
+        v-model:value="options.width"
+        :max="100"
+        :min="0"
+      />
     </FormItem>
     <FormItem label="文字颜色">
-      <Compact v-model="color"/>
+      <Compact v-model="color" />
     </FormItem>
-    <FormItem label="预览" v-show="file">
-      <div class="preview" ref="preview">
-        <img :src="file" alt="preview">
-        <div class="watermark" :style="{ background: `url(${svg})` }"></div>
+    <FormItem
+      v-show="file"
+      label="预览"
+    >
+      <div
+        ref="preview"
+        class="preview"
+      >
+        <img
+          :src="file"
+          alt="preview"
+        >
+        <div
+          class="watermark"
+          :style="{ background: `url(${svg})` }"
+        />
       </div>
     </FormItem>
   </Form>
@@ -53,7 +99,7 @@ const { Paragraph } = Typography
 const { Item: FormItem } = Form
 
 export default {
-  name: 'watermark',
+  name: 'WatermarkTool',
   components: {
     Input,
     Upload,
