@@ -1,16 +1,34 @@
 <template>
-  <div class="containerBase" ref="container">
+  <div
+    ref="container"
+    class="containerBase"
+  >
     <div class="containerAll">
       <div class="containerTitle">
         <div class="typeName">
           <span>{{ name || $route.meta?.title || $route.name }}</span>
-          <OffScreen class="fullScreen" title="取消全屏" @click="fullScreen" theme="outline" v-if="fullScreenStatus"/>
-          <FullScreen class="fullScreen" title="全屏" @click="fullScreen" theme="outline" v-else/>
+          <OffScreen
+            v-if="fullScreenStatus"
+            class="fullScreen"
+            title="取消全屏"
+            theme="outline"
+            @click="fullScreen"
+          />
+          <FullScreen
+            v-else
+            class="fullScreen"
+            title="全屏"
+            theme="outline"
+            @click="fullScreen"
+          />
         </div>
       </div>
       <div class="main">
-        <slot></slot>
-        <BackTop :target="()=>$refs.container" :visibilityHeight="100"/>
+        <slot />
+        <BackTop
+          :target="()=>$refs.container"
+          :visibility-height="100"
+        />
       </div>
     </div>
   </div>
@@ -21,7 +39,7 @@ import { FullScreen, OffScreen } from '@icon-park/vue-next'
 
 // eslint-disable-next-line no-undef
 const props = defineProps({
-  name: String,
+  name: { type: String, default: '' },
   fullScreenStatus: Boolean
 })
 

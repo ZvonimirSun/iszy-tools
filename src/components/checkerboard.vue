@@ -1,5 +1,8 @@
 <template>
-  <div class="checkerboard" :style="bgStyle"></div>
+  <div
+    class="checkerboard"
+    :style="bgStyle"
+  />
 </template>
 
 <script>
@@ -8,7 +11,7 @@ import { defineComponent } from 'vue'
 const _checkerboardCache = {}
 
 export default defineComponent({
-  name: 'checkerboard',
+  name: 'TextureCheckerboard',
   props: {
     size: {
       type: [Number, String],

@@ -1,16 +1,22 @@
 <template>
-<div class="fixedWidgets" :style="style">
-  <div v-for="(item,index) of widgets" :key="'widget'+index">
-<!--    <IconFont :type="item.icon" @click="item.callback"/>-->
+  <div
+    class="fixedWidgets"
+    :style="style"
+  >
+    <div
+      v-for="(item,index) of widgets"
+      :key="'widget'+index"
+    >
+      <!--    <IconFont :type="item.icon" @click="item.callback"/>-->
+    </div>
   </div>
-</div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'fixedWidgets',
+  name: 'FixedWidgets',
   props: {
     target: {
       type: Function,

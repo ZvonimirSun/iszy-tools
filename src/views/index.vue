@@ -1,32 +1,74 @@
 <template>
-  <Row :gutter="{ xs: 8, sm: 16, md: 24}" v-if="settings.showSearch" class="noName">
+  <Row
+    v-if="settings.showSearch"
+    :gutter="{ xs: 8, sm: 16, md: 24}"
+    class="noName"
+  >
     <Col :span="24">
       <div class="search">
-        <search theme="outline"/>
-        <input type="search" placeholder="搜索工具" v-model="searchStr">
+        <search theme="outline" />
+        <input
+          v-model="searchStr"
+          type="search"
+          placeholder="搜索工具"
+        >
       </div>
     </Col>
   </Row>
-  <template v-for="(item,index) in tools" :key="'type'+ index">
+  <template
+    v-for="(item,index) in tools"
+    :key="'type'+ index"
+  >
     <Row :gutter="{ xs: 8, sm: 16}">
-      <Col :span="24" class="typeNameCol">
+      <Col
+        :span="24"
+        class="typeNameCol"
+      >
         <div class="typeName">
-          <iconpark-icon class="i-icon" :name="item.icon" color="#fff" v-if="item.icon"/>
+          <iconpark-icon
+            v-if="item.icon"
+            class="i-icon"
+            :name="item.icon"
+            color="#fff"
+          />
           <div>{{ item.type }}</div>
         </div>
       </Col>
-      <Col :xs="12" :sm="12" :md="8" :lg="6" :xl="4" :xxl="3" v-for="(tool,i) in item.children" :key="'tool'+i">
+      <Col
+        v-for="(tool,i) in item.children"
+        :key="'tool'+i"
+        :xs="12"
+        :sm="12"
+        :md="8"
+        :lg="6"
+        :xl="4"
+        :xxl="3"
+      >
         <router-link
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
-          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')">
+          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')"
+        >
           <Tooltip>
-            <template #title>{{ tool.name }}</template>
-            <div class="tool" :class="{toolCollected:isFav(tool.name)}">
+            <template #title>
+              {{ tool.name }}
+            </template>
+            <div
+              class="tool"
+              :class="{toolCollected:isFav(tool.name)}"
+            >
               <span class="toolName">{{ tool.name }}</span>
-              <span class="fav collected" v-if="isFav(tool.name)" @click.prevent="updateFav({name:tool.name})"><Star theme="filled"/></span>
-              <span class="fav" @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})" v-else>
-                <span class="nonHover"><Star theme="outline"/></span>
-                <span class="hovered"><Star theme="filled"/></span>
+              <span
+                v-if="isFav(tool.name)"
+                class="fav collected"
+                @click.prevent="updateFav({name:tool.name})"
+              ><Star theme="filled" /></span>
+              <span
+                v-else
+                class="fav"
+                @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})"
+              >
+                <span class="nonHover"><Star theme="outline" /></span>
+                <span class="hovered"><Star theme="filled" /></span>
               </span>
             </div>
           </Tooltip>
@@ -46,8 +88,13 @@ import { cloneDeep, flatten } from 'lodash-es'
 const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpers('user')
 
 export default {
-  name: '首页',
+  name: 'HomePage',
   components: { Star, Row, Col, Search, Tooltip },
+  data: () => ({
+    searchStr: '',
+
+    count: 6
+  }),
   computed: {
     tools () {
       let tmp
@@ -105,11 +152,6 @@ export default {
       'isFav'
     ])
   },
-  data: () => ({
-    searchStr: '',
-
-    count: 6
-  }),
   mounted () {
     this.fixFavorite()
   },

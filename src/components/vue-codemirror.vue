@@ -1,7 +1,18 @@
 <template>
-  <div class="vue-codemirror" :class="{ merge }">
-    <div ref="mergeview" v-if="merge"></div>
-    <textarea ref="textarea" :name="name" :placeholder="placeholder" v-else></textarea>
+  <div
+    class="vue-codemirror"
+    :class="{ merge }"
+  >
+    <div
+      v-if="merge"
+      ref="mergeview"
+    />
+    <textarea
+      v-else
+      ref="textarea"
+      :name="name"
+      :placeholder="placeholder"
+    />
   </div>
 </template>
 
@@ -12,20 +23,12 @@ import { defineComponent, markRaw } from 'vue'
 import CodeMirror from 'codemirror'
 // export
 export default defineComponent({
-  name: 'codemirror',
-  data () {
-    return {
-      content: '',
-      codemirror: null,
-      cminstance: null,
-      cloneOptions: {}
-    }
-  },
+  name: 'VueCodemirror',
   props: {
-    code: String,
-    value: String,
-    marker: Function,
-    unseenLines: Array,
+    code: { type: String, default: '' },
+    value: { type: String, default: '' },
+    marker: { type: Function, default: undefined },
+    unseenLines: { type: Array, default: undefined },
     name: {
       type: String,
       default: 'codemirror'
@@ -55,7 +58,14 @@ export default defineComponent({
       default: () => ([])
     }
   },
-  emits: ['update:code', 'update:value', 'update:options'],
+  emits: ['update:code', 'update:value', 'update:options', 'ready'],
+  data: () => ({
+    content: '',
+    codemirror: null,
+    cminstance: null,
+    cloneOptions: {
+    }
+  }),
   watch: {
     options: {
       deep: true,
@@ -75,6 +85,12 @@ export default defineComponent({
     value (newVal) {
       this.handerCodeChange(newVal)
     }
+  },
+  mounted () {
+    this.initialize()
+  },
+  beforeUnmount () {
+    this.destroy()
   },
   methods: {
     initialize () {
@@ -176,12 +192,6 @@ export default defineComponent({
       this.cminstance.doc.history = history
       this.cminstance.doc.cleanGeneration = cleanGeneration
     }
-  },
-  mounted () {
-    this.initialize()
-  },
-  beforeUnmount () {
-    this.destroy()
   }
 })
 </script>
