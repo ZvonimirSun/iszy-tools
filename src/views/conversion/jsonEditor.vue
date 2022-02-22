@@ -374,6 +374,12 @@
       />
     </Paragraph>
     <Paragraph>
+      <strong>内容：</strong><Text
+        v-show="documentProperties.content"
+        :content="documentProperties.content"
+      />
+    </Paragraph>
+    <Paragraph>
       <strong>大小：</strong><Text
         v-show="documentProperties.size"
         :content="documentProperties.size"
@@ -501,17 +507,43 @@ export default {
     },
     documentProperties: function () {
       if (this.modalStatus.leftOrRight === 'left') {
+        let content
+        if (typeof this.codeLeft === 'string') {
+          content = '字符串类型'
+        } else if (typeof this.codeLeft === 'number') {
+          content = '数字类型'
+        } else if (typeof this.codeLeft === 'boolean') {
+          content = '布尔类型'
+        } else if (Array.isArray(this.codeLeft)) {
+          content = `数组类型，包含 ${this.codeLeft.length} 个对象`
+        } else if (typeof this.codeLeft === 'object') {
+          content = `对象类型，包含 ${Object.keys(this.codeLeft).length} 个属性`
+        }
         return {
           name: this.leftData?.name,
           storage: this.leftData ? '浏览器本地' : '',
           updated: this.leftData?.updated,
+          content,
           size: formatBytes(this.codeLeftString.length)
         }
       } else if (this.modalStatus.leftOrRight === 'right') {
+        let content
+        if (typeof this.codeRight === 'string') {
+          content = '字符串类型'
+        } else if (typeof this.codeRight === 'number') {
+          content = '数字类型'
+        } else if (typeof this.codeRight === 'boolean') {
+          content = '布尔类型'
+        } else if (Array.isArray(this.codeRight)) {
+          content = `数组类型，包含 ${this.codeRight.length} 个对象`
+        } else if (typeof this.codeRight === 'object') {
+          content = `对象类型，包含 ${Object.keys(this.codeRight).length} 个属性`
+        }
         return {
           name: this.rightData?.name,
           storage: this.rightData ? '浏览器本地' : '',
           updated: this.rightData?.updated,
+          content,
           size: formatBytes(this.codeRightString.length)
         }
       } else {
