@@ -99,7 +99,7 @@ export default {
     ...mapActions(['getData']),
     async query (command) {
       try {
-        const res = await this.$axios.get(`https://cdn.jsdelivr.net/gh/jaywcjlove/linux-command@1.8.1/command/${command}.md`)
+        const res = await this.$axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${command}.md`)
         this.command = command
         this.commandData = res.data
         this.showModal = true
