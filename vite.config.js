@@ -115,23 +115,10 @@ export default defineConfig({
     include: ['@icon-park/vue-next']
   },
   build: {
-    sourcemap: false,
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        dead_code: false,
-        drop_debugger: true,
-        keep_classnames: false,
-        keep_fnames: false,
-        module: false
-      },
-      keep_classnames: false,
-      keep_fnames: false,
-      module: false
-    }
   },
   css: {
     preprocessorOptions: {
+      scss: { charset: false },
       less: {
         javascriptEnabled: true
       }
