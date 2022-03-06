@@ -9,31 +9,31 @@
       },
       {
         "name": "这是什么动漫",
-        "link": "/others/whatAnimeIsThis"
+        "link": "/whatAnimeIsThis"
       },
       {
         "name": "哔哩哔哩AV、BV号转换",
-        "link": "/others/bilibiliBv2av"
+        "link": "/bilibiliBv2av"
       },
       {
         "name": "奥利奥生成器",
-        "link": "/others/oreooo"
+        "link": "/oreooo"
       },
       {
         "name": "身份证解析",
-        "link": "/others/idChinese"
+        "link": "/idChinese"
       },
       {
         "name": "屏幕录制",
-        "link": "/others/screenRecord"
+        "link": "/screenRecord"
       },
       {
         "name": "WebSSH",
-        "link": "/others/webssh"
+        "link": "/webssh"
       },
       {
         "name": "亲戚关系计算器",
-        "link": "/others/relationship"
+        "link": "/relationship"
       },
       {
         "name": "在线流程图",
@@ -41,7 +41,7 @@
       },
       {
         "name": "3D模型浏览",
-        "link": "/others/3dView"
+        "link": "/3dView"
       },
       {
         "name": "Chromium下载",
@@ -49,7 +49,7 @@
       },
       {
         "name": "Linux命令查询",
-        "link": "/others/linuxCommand"
+        "link": "/linuxCommand"
       },
       {
         "name": "资源包",
@@ -67,11 +67,11 @@
       },
       {
         "name": "GeoJSON",
-        "link": "/gis/geoJson"
+        "link": "/geoJson"
       },
       {
         "name": "经纬度查询",
-        "link": "/gis/latLng"
+        "link": "/latLng"
       }
     ]
   },
@@ -81,11 +81,11 @@
     "children": [
       {
         "name": "图片加水印",
-        "link": "/image/watermark"
+        "link": "/watermark"
       },
       {
         "name": "极简图床",
-        "link": "/image/imgHosting"
+        "link": "/imgHosting"
       }
     ]
   },
@@ -95,23 +95,23 @@
     "children": [
       {
         "name": "URL编码/解码",
-        "link": "/crypto/urlEncode"
+        "link": "/urlEncode"
       },
       {
         "name": "在线JWT解密",
-        "link": "/crypto/jwt"
+        "link": "/jwt"
       },
       {
         "name": "Base64编解码",
-        "link": "/crypto/base64"
+        "link": "/base64"
       },
       {
         "name": "MD5编码",
-        "link": "/crypto/md5"
+        "link": "/md5"
       },
       {
         "name": "图片Base64编码",
-        "link": "/crypto/imageBase64"
+        "link": "/imageBase64"
       }
     ]
   },
@@ -121,19 +121,19 @@
     "children": [
       {
         "name": "时间计算",
-        "link": "/conversion/timeCompute"
+        "link": "/timeCompute"
       },
       {
         "name": "颜色转换",
-        "link": "/conversion/colorTransform"
+        "link": "/colorTransform"
       },
       {
         "name": "JSON编辑器",
-        "link": "/conversion/jsonEditor"
+        "link": "/jsonEditor"
       },
       {
         "name": "在线ASCII码对照表",
-        "link": "/conversion/ascii"
+        "link": "/ascii"
       }
     ]
   },
@@ -143,7 +143,7 @@
     "children": [
       {
         "name": "UUID在线生成",
-        "link": "/generate/uuid",
+        "link": "/uuid",
         "tags": [
           "uuid",
           "guid"
@@ -151,7 +151,7 @@
       },
       {
         "name": "随机数",
-        "link": "/generate/random"
+        "link": "/random"
       }
     ]
   },
@@ -161,27 +161,27 @@
     "children": [
       {
         "name": "查看网页源码",
-        "link": "/program/viewSourceCode"
+        "link": "/viewSourceCode"
       },
       {
         "name": "CSS格式化/压缩",
-        "link": "/program/cssFormatter"
+        "link": "/cssFormatter"
       },
       {
         "name": "TinyEditor",
-        "link": "/program/tinyEditor"
+        "link": "/tinyEditor"
       },
       {
         "name": "正则大全",
-        "link": "/program/anyRule"
+        "link": "/anyRule"
       },
       {
         "name": "UserAgent解析",
-        "link": "/program/userAgent"
+        "link": "/userAgent"
       },
       {
         "name": "前端CDN搜索",
-        "link": "/program/cdnQuery"
+        "link": "/cdnQuery"
       }
     ]
   },
@@ -191,11 +191,11 @@
     "children": [
       {
         "name": "2048",
-        "link": "/games/2048"
+        "link": "/2048"
       },
       {
         "name": "俄罗斯方块",
-        "link": "/games/tetris"
+        "link": "/tetris"
       }
     ]
   },
@@ -205,7 +205,7 @@
     "children": [
       {
         "name": "多次提前还贷计算器",
-        "link": "/money/mtqLoans"
+        "link": "/mtqLoans"
       },
       {
         "name": "基金股票信息查询",

@@ -4,26 +4,21 @@ import store from '@/store'
 import { merge } from 'lodash-es'
 
 const vueFiles = import.meta.glob('../views/**/*.vue')
-// const modules = import.meta.glob('../views/**[!child]**/*.vue')
 
 const modules = {}
 
 for (const key in vueFiles) {
   if (!key.includes('/child/')) {
-    let tmpKey = key.slice(8)
-    if (tmpKey.endsWith('index.vue')) {
-      tmpKey = tmpKey.slice(0, tmpKey.length - 10)
-      if (!tmpKey) {
-        tmpKey = '/'
-      }
-    } else {
-      tmpKey = tmpKey.slice(0, tmpKey.length - 4)
-      const tmp1 = tmpKey.split('/')
-      if (tmp1.length > 2 && tmp1[tmp1.length - 1] === tmp1[tmp1.length - 2]) {
-        tmpKey = tmpKey.slice(0, tmpKey.length - tmp1[tmp1.length - 1].length - 1)
-      }
+    let tmpKey = key.slice(8, -4)
+    let path = '/'
+    if (tmpKey.endsWith('index')) {
+      tmpKey = tmpKey.slice(0, -6)
     }
-    modules[tmpKey] = { path: tmpKey, component: vueFiles[key] }
+    if (tmpKey) {
+      const tmp1 = tmpKey.split('/')
+      path += tmp1[tmp1.length - 1]
+    }
+    modules[path] = { path, component: vueFiles[key] }
   }
 }
 
