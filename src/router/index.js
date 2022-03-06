@@ -71,6 +71,12 @@ routes = routes.concat([
     }
   },
   {
+    path: '/:any(.*)/:catchAll(.*)',
+    beforeEnter (to, from, next) {
+      if (to?.params?.catchAll) { next(to.params.catchAll) } else { next('/404') }
+    }
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/404'
   }
