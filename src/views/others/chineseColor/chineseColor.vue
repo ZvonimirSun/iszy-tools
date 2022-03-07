@@ -216,6 +216,8 @@ function resize () {
 
   .selectedColorDataWrapper {
     width: 50%;
+    height: 50%;
+    overflow: auto;
   }
 }
 
