@@ -13,7 +13,8 @@ export default {
       commonConfig: {
         renameBeforeUpload: false,
         renameTimeStamp: true,
-        copyUrlAfterUpload: true
+        copyUrlAfterUpload: true,
+        customCopyContent: '$url'
       }
     }
   }),

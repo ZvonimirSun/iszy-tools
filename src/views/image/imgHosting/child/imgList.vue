@@ -57,7 +57,8 @@ const { Meta } = Card
 const { PreviewGroup } = Image
 const {
   mapState,
-  mapActions
+  mapActions,
+  mapGetters
 } = createNamespacedHelpers('imgHosting')
 
 export default {
@@ -79,9 +80,14 @@ export default {
   },
   methods: {
     ...mapActions(['removeImage']),
+    ...mapGetters(['commonConfig']),
     async copyImgUrl ({ url }) {
       try {
-        await navigator.clipboard.writeText(url)
+        if (this.commonConfig.customCopyContent) {
+          await navigator.clipboard.writeText(this.commonConfig.customCopyContent.replace(/\$url/g, url))
+        } else {
+          await navigator.clipboard.writeText(url)
+        }
         this.$msg.success('地址已复制到剪贴板')
       } catch (e) {
         this.$msg.error('复制失败')

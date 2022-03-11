@@ -75,7 +75,11 @@ export default {
           this.addImage(result)
           if (this.commonConfig.copyUrlAfterUpload) {
             try {
-              await navigator.clipboard.writeText(result.url)
+              if (this.commonConfig.customCopyContent) {
+                await navigator.clipboard.writeText(this.commonConfig.customCopyContent.replace(/\$url/g, result.url))
+              } else {
+                await navigator.clipboard.writeText(result.url)
+              }
               this.$msg.success('上传成功，地址已复制到剪贴板')
             } catch (e) {
               this.$msg.error('上传成功，但地址复制失败')

@@ -3,7 +3,7 @@
     <h4>通用配置</h4>
   </Typography>
   <div class="commonConfigPanel">
-    <Form layout="inline">
+    <Space layout="inline">
       <!--      <Item label="上传前重命名">-->
       <!--        <Switch v-model:checked="currentCommonConfig.renameBeforeUpload"-->
       <!--                @change="saveCommonConfig(currentCommonConfig)"/>-->
@@ -11,16 +11,22 @@
       <Item label="时间戳重命名">
         <Switch
           v-model:checked="currentCommonConfig.renameTimeStamp"
-          @change="saveCommonConfig(currentCommonConfig)"
+          @change="updateConfig"
         />
       </Item>
       <Item label="上传后自动复制URL">
         <Switch
           v-model:checked="currentCommonConfig.copyUrlAfterUpload"
-          @change="saveCommonConfig(currentCommonConfig)"
+          @change="updateConfig"
         />
       </Item>
-    </Form>
+      <Item label="自定义复制内容">
+        <Input
+          v-model:value="currentCommonConfig.customCopyContent"
+          @change="updateConfig"
+        />
+      </Item>
+    </Space>
   </div>
   <Divider />
   <Typography>
@@ -77,10 +83,10 @@
 </template>
 
 <script>
-import { Form, Input, Tabs, Button, Switch, Typography, Divider } from 'ant-design-vue'
+import { Form, Input, Tabs, Button, Switch, Typography, Divider, Space } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from '../uploader/index.js'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, debounce, merge } from 'lodash-es'
 
 const { TabPane } = Tabs
 const { Item } = Form
@@ -102,7 +108,8 @@ export default {
     Button,
     Switch,
     Typography,
-    Divider
+    Divider,
+    Space
   },
   data: () => ({
     uploaders,
@@ -112,7 +119,8 @@ export default {
     currentCommonConfig: {
       renameBeforeUpload: false,
       renameTimeStamp: true,
-      copyUrlAfterUpload: true
+      copyUrlAfterUpload: true,
+      customCopyContent: '$url'
     }
   }),
   computed: {
@@ -123,7 +131,7 @@ export default {
       this.currentUploader = this.uploader
     }
     this.changeUploader()
-    this.currentCommonConfig = cloneDeep(this.commonConfig || {})
+    this.currentCommonConfig = merge(this.currentCommonConfig, cloneDeep(this.commonConfig || {}))
   },
   methods: {
     ...mapActions(['saveConfig', 'saveCommonConfig', 'importConfig']),
@@ -147,7 +155,8 @@ export default {
     },
     handler () {
       this.$refs.file.click()
-    }
+    },
+    updateConfig: debounce(() => { this.saveCommonConfig(this.currentCommonConfig) }, 100)
   }
 }
 </script>
@@ -162,6 +171,12 @@ export default {
   .configOperator {
     text-align: right;
     margin-top: .8rem;
+  }
+}
+
+.commonConfigPanel {
+  .ant-space {
+    flex-wrap: wrap;
   }
 }
 
