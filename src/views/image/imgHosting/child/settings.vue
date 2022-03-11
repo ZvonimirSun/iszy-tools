@@ -1,37 +1,61 @@
 <template>
-  <Typography>
-    <h4>通用配置</h4>
-  </Typography>
+  <Title :level="4">
+    通用配置
+  </Title>
   <div class="commonConfigPanel">
-    <Space layout="inline">
-      <!--      <Item label="上传前重命名">-->
-      <!--        <Switch v-model:checked="currentCommonConfig.renameBeforeUpload"-->
-      <!--                @change="saveCommonConfig(currentCommonConfig)"/>-->
-      <!--      </Item>-->
-      <Item label="时间戳重命名">
-        <Switch
-          v-model:checked="currentCommonConfig.renameTimeStamp"
-          @change="updateConfig"
+    <Item label="时间戳重命名">
+      <Switch
+        v-model:checked="currentCommonConfig.renameTimeStamp"
+        @change="updateConfig"
+      />
+    </Item>
+    <Item label="上传后自动复制URL">
+      <Switch
+        v-model:checked="currentCommonConfig.copyUrlAfterUpload"
+        @change="updateConfig"
+      />
+    </Item>
+    <Title :level="5">
+      链接复制格式
+    </Title>
+    <Space>
+      <Radio
+        :style="radioStyle"
+        :checked="currentCommonConfig.customCopyContent==='$url'"
+        @change="updateCustomCopyContent('$url')"
+      >
+        标准<Text
+          code
+          content="$url"
         />
-      </Item>
-      <Item label="上传后自动复制URL">
-        <Switch
-          v-model:checked="currentCommonConfig.copyUrlAfterUpload"
-          @change="updateConfig"
+      </Radio>
+      <Radio
+        :style="radioStyle"
+        :checked="currentCommonConfig.customCopyContent==='![]($url)'"
+        @change="updateCustomCopyContent('![]($url)')"
+      >
+        MarkDown<Text
+          code
+          content="![]($url)"
         />
-      </Item>
-      <Item label="自定义复制内容">
-        <Input
-          v-model:value="currentCommonConfig.customCopyContent"
-          @change="updateConfig"
+      </Radio>
+      <Radio
+        :style="radioStyle"
+        :checked="currentCommonConfig.customCopyContent===customContent"
+        @change="updateCustomCopyContent(customContent)"
+      >
+        自定义<Input
+          v-model:value="customContent"
+          style="width: 100px; margin-left: 10px"
+          @change="updateCustomCopyContent($event.target.value)"
         />
-      </Item>
+      </Radio>
     </Space>
   </div>
   <Divider />
-  <Typography>
-    <h4>图床设置</h4>
-  </Typography>
+  <Title :level="4">
+    图床设置
+  </Title>
   <Tabs
     v-model:activeKey="currentUploader"
     type="card"
@@ -83,11 +107,12 @@
 </template>
 
 <script>
-import { Form, Input, Tabs, Button, Switch, Typography, Divider, Space } from 'ant-design-vue'
+import { Form, Input, Tabs, Button, Switch, Typography, Divider, Space, Radio } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from '../uploader/index.js'
 import { cloneDeep, debounce, merge } from 'lodash-es'
 
+const { Title, Text } = Typography
 const { TabPane } = Tabs
 const { Item } = Form
 const { Password } = Input
@@ -107,9 +132,11 @@ export default {
     Password,
     Button,
     Switch,
-    Typography,
     Divider,
-    Space
+    Space,
+    Radio,
+    Title,
+    Text
   },
   data: () => ({
     uploaders,
@@ -121,7 +148,15 @@ export default {
       renameTimeStamp: true,
       copyUrlAfterUpload: true,
       customCopyContent: '$url'
-    }
+    },
+
+    radioStyle: {
+      display: 'flex',
+      height: '32px',
+      lineHeight: '32px'
+    },
+
+    customContent: '$url'
   }),
   computed: {
     ...mapGetters(['config', 'uploader', 'commonConfig'])
@@ -156,10 +191,13 @@ export default {
     handler () {
       this.$refs.file.click()
     },
-    updateConfig () {
-      debounce(() => {
-        this.saveCommonConfig(this.currentCommonConfig)
-      }, 100)()
+    updateConfig: debounce(function () {
+      debugger
+      this.saveCommonConfig(this.currentCommonConfig)
+    }, 100),
+    updateCustomCopyContent (val) {
+      this.currentCommonConfig.customCopyContent = val
+      this.updateConfig()
     }
   }
 }
