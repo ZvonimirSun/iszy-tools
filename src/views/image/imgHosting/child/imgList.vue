@@ -76,11 +76,11 @@ export default {
     Tooltip
   },
   computed: {
-    ...mapState(['imgList'])
+    ...mapState(['imgList']),
+    ...mapGetters(['commonConfig'])
   },
   methods: {
     ...mapActions(['removeImage']),
-    ...mapGetters(['commonConfig']),
     async copyImgUrl ({ url }) {
       try {
         if (this.commonConfig.customCopyContent) {
