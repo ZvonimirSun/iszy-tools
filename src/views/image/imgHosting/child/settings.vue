@@ -156,7 +156,11 @@ export default {
     handler () {
       this.$refs.file.click()
     },
-    updateConfig: debounce(() => { this.saveCommonConfig(this.currentCommonConfig) }, 100)
+    updateConfig () {
+      debounce(() => {
+        this.saveCommonConfig(this.currentCommonConfig)
+      }, 100)()
+    }
   }
 }
 </script>
