@@ -192,7 +192,6 @@ export default {
       this.$refs.file.click()
     },
     updateConfig: debounce(function () {
-      debugger
       this.saveCommonConfig(this.currentCommonConfig)
     }, 100),
     updateCustomCopyContent (val) {

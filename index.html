@@ -12,13 +12,17 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
     <link rel="mask-icon" href="/images/safari-logo.svg" color="#222">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSFH1TGJMM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-LSFH1TGJMM');
+      window.addEventListener('load', function(){
+        const s = document.createElement('script');
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-LSFH1TGJMM";
+        document.body.appendChild(s);
+      });
     </script>
     <title>ISZY工具集合</title>
 </head>
