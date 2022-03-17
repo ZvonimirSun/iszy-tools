@@ -4,14 +4,14 @@
   </Title>
   <Space>
     <Button
-      v-if="!_user.token"
+      v-show="!_user.token"
       type="primary"
       @click="login"
     >
       登录
     </Button>
     <Button
-      v-else
+      v-show="_user.token"
       type="primary"
       @click="logout"
     >
@@ -139,7 +139,12 @@ export default {
       }
     },
     login () {
-      this.$router.push('/login')
+      this.$router.push({
+        path: '/login',
+        query: {
+          redirect: this.$route.fullPath
+        }
+      })
     },
     logout () {
       this.$router.push('/logout')
