@@ -167,6 +167,9 @@ export default {
     }
     this.changeUploader()
     this.currentCommonConfig = merge(this.currentCommonConfig, cloneDeep(this.commonConfig || {}))
+    if (this.currentCommonConfig.customCopyContent !== '$url' && this.currentCommonConfig.customCopyContent !== '![]($url)') {
+      this.customContent = this.currentCommonConfig.customCopyContent
+    }
   },
   methods: {
     ...mapActions(['saveConfig', 'saveCommonConfig', 'importConfig']),
