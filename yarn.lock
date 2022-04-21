@@ -113,13 +113,6 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ant-design/colors@^5.0.0":
-  version "5.1.1"
-  resolved "https://registry.npmmirror.com/@ant-design/colors/-/colors-5.1.1.tgz#800b2186b1e27e66432e67d03ed96af3e21d8940"
-  integrity sha512-Txy4KpHrp3q4XZdfgOBqLl+lkQIc3tEvHXOimRN1giX1AEC7mGtyrO9p8iRGJ3FLuVMGa2gNEzQyghVymLttKQ==
-  dependencies:
-    "@ctrl/tinycolor" "^3.3.1"
-
 "@ant-design/colors@^6.0.0":
   version "6.0.0"
   resolved "https://registry.npmmirror.com/@ant-design/colors/-/colors-6.0.0.tgz#9b9366257cffcc47db42b9d0203bb592c13c0298"
@@ -127,20 +120,18 @@
   dependencies:
     "@ctrl/tinycolor" "^3.4.0"
 
-"@ant-design/icons-svg@^4.0.0":
+"@ant-design/icons-svg@^4.2.1":
   version "4.2.1"
   resolved "https://registry.npmmirror.com/@ant-design/icons-svg/-/icons-svg-4.2.1.tgz#8630da8eb4471a4aabdaed7d1ff6a97dcb2cf05a"
   integrity sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==
 
-"@ant-design/icons-vue@^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.npmmirror.com/@ant-design/icons-vue/-/icons-vue-6.0.1.tgz#9d804c3c74d2cfaf97cb18e582d3b9400934f5fd"
-  integrity sha512-HigIgEVV6bbcrz2A92/qDzi/aKWB5EC6b6E1mxMB6aQA7ksiKY+gi4U94TpqyEIIhR23uaDrjufJ+xCZQ+vx6Q==
+"@ant-design/icons-vue@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.npmmirror.com/@ant-design/icons-vue/-/icons-vue-6.1.0.tgz#f9324fdc0eb4cea943cf626d2bf3db9a4ff4c074"
+  integrity sha512-EX6bYm56V+ZrKN7+3MT/ubDkvJ5rK/O2t380WFRflDcVFgsvl3NLH7Wxeau6R8DbrO5jWR6DSTC3B6gYFp77AA==
   dependencies:
-    "@ant-design/colors" "^5.0.0"
-    "@ant-design/icons-svg" "^4.0.0"
-    "@types/lodash" "^4.14.165"
-    lodash "^4.17.15"
+    "@ant-design/colors" "^6.0.0"
+    "@ant-design/icons-svg" "^4.2.1"
 
 "@apideck/better-ajv-errors@^0.3.1":
   version "0.3.3"
@@ -1055,7 +1046,7 @@
     lodash-es "^4.17.21"
     material-colors "^1.2.6"
 
-"@ctrl/tinycolor@^3.3.1", "@ctrl/tinycolor@^3.4.0":
+"@ctrl/tinycolor@^3.4.0":
   version "3.4.0"
   resolved "https://registry.npmmirror.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
   integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
@@ -1252,11 +1243,6 @@
   version "0.0.29"
   resolved "https://registry.npmmirror.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
-
-"@types/lodash@^4.14.165":
-  version "4.14.179"
-  resolved "https://registry.npmmirror.com/@types/lodash/-/lodash-4.14.179.tgz#490ec3288088c91295780237d2497a3aa9dfb5c5"
-  integrity sha512-uwc1x90yCKqGcIOAT6DwOSuxnrAbpkdPsUOZtwrXb4D/6wZs+6qG7QnIawDuZWg0sWpxl+ltIKCaLoMlna678w==
 
 "@types/node@*", "@types/node@^17.0.5":
   version "17.0.21"
@@ -1530,14 +1516,15 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-ant-design-vue@^3.0.0-beta.4:
-  version "3.0.0-beta.13"
-  resolved "https://registry.npmmirror.com/ant-design-vue/-/ant-design-vue-3.0.0-beta.13.tgz#6c0ba3fe4b262e68ca96129e1b1671deea74a3a4"
-  integrity sha512-+8AoxRqLaoP77Tt9eLvNwe3MY2c646APYEQ4Q/pSg5BWW/Jj2S5N+hdUSI1TZB19sEGjPdZ2wvdJxZppfyGadg==
+ant-design-vue@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npmmirror.com/ant-design-vue/-/ant-design-vue-3.2.0.tgz#ede49b1d3039ace98d0dae92b2b381512fe9094f"
+  integrity sha512-qY9f/kF9YqfzV/vJ9/GKj7s1wmpCuNwWVRyQ3qsG8P4Was/u5WTKG5hz9huUY/cNle2nBTDacvMBIOkfxPeUiQ==
   dependencies:
     "@ant-design/colors" "^6.0.0"
-    "@ant-design/icons-vue" "^6.0.0"
+    "@ant-design/icons-vue" "^6.1.0"
     "@babel/runtime" "^7.10.5"
+    "@ctrl/tinycolor" "^3.4.0"
     "@simonwep/pickr" "~1.8.0"
     array-tree-filter "^2.1.0"
     async-validator "^4.0.0"
@@ -3421,7 +3408,7 @@ lodash.topairs@4.3.0:
   resolved "https://registry.npmmirror.com/lodash.topairs/-/lodash.topairs-4.3.0.tgz#3b6deaa37d60fb116713c46c5f17ea190ec48d64"
   integrity sha512-qrRMbykBSEGdOgQLJJqVSdPWMD7Q+GJJ5jMRfQYb+LTLsw3tYVIabnCzRqTJb2WTo17PG5gNzXuFaZgYH/9SAQ==
 
-lodash@^4.17.10, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21:
+lodash@^4.17.10, lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmmirror.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

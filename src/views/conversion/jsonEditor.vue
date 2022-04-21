@@ -988,6 +988,10 @@ export default {
       }
     },
     startDrag (e) {
+      // 只允许左键
+      if (e.button !== 0) {
+        return
+      }
       moved = false
       originWidth = parseFloat(window.getComputedStyle(this.$refs.editorPanelContainerLeft).width)
       if (isNaN(originWidth)) {
