@@ -3,15 +3,23 @@
     用户
   </Title>
   <Space>
-    <Button
-      v-show="!_user.token"
-      type="primary"
-      @click="login"
+    <template
+      v-if="!_user.token"
     >
-      登录
-    </Button>
+      <Button
+        type="primary"
+        @click="login"
+      >
+        登录
+      </Button>
+      <Button
+        @click="register"
+      >
+        注册
+      </Button>
+    </template>
     <Button
-      v-show="_user.token"
+      v-else
       type="primary"
       @click="logout"
     >
@@ -145,6 +153,9 @@ export default {
           redirect: this.$route.fullPath
         }
       })
+    },
+    register () {
+      this.$router.push('/register')
     },
     logout () {
       this.$router.push('/logout')
