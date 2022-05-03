@@ -222,7 +222,7 @@
     "icon": "setting-two",
     "children": [
       {
-        "name": "网站设置",
+        "name": "网站管理",
         "link": "/settings",
         "statistics": false
       },
