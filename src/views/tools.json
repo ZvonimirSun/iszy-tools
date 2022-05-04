@@ -70,8 +70,12 @@
         "link": "https://datav.aliyun.com/tools/atlas/index.html"
       },
       {
-        "name": "GeoJSON",
-        "link": "/geoJson"
+        "name": "GeoJSON.io",
+        "link": "/geoJson",
+        "tags": [
+          "geojson",
+          "gis"
+        ]
       },
       {
         "name": "经纬度查询",

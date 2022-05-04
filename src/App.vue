@@ -1,7 +1,7 @@
 <template>
-  <config-provider :locale="zhCN">
-    <Layout>
-      <Header v-show="!fullScreenStatus">
+  <a-config-provider :locale="zhCN">
+    <a-layout>
+      <a-layout-header v-show="!fullScreenStatus">
         <div class="header">
           <router-link to="/">
             ISZY工具集合
@@ -29,9 +29,9 @@
             </router-link>
           </template>
         </div>
-      </Header>
-      <Content ref="view">
-        <BackTop
+      </a-layout-header>
+      <a-layout-content ref="view">
+        <a-back-top
           :target="()=>$refs.view.$el"
           :visibility-height="100"
         />
@@ -43,25 +43,25 @@
         >
           <router-view />
         </Container>
-      </Content>
-      <Footer v-show="!fullScreenStatus">
+      </a-layout-content>
+      <a-layout-footer v-show="!fullScreenStatus">
         <span>© 2021&nbsp;</span>
-        <Link
+        <a-typography-link
           href="https://www.iszy.cc"
           target="_blank"
         >
           随遇而安Blog
-        </Link>
+        </a-typography-link>
         <br>
-        <Link
+        <a-typography-link
           href="https://beian.miit.gov.cn/#/Integrated/recordQuery"
           target="_blank"
         >
           苏ICP备18047890号-2
-        </Link>
-      </Footer>
-    </Layout>
-  </config-provider>
+        </a-typography-link>
+      </a-layout-footer>
+    </a-layout>
+  </a-config-provider>
 </template>
 
 <script setup>
@@ -69,7 +69,7 @@ import { Container } from '@/components'
 import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
+import { Modal } from 'ant-design-vue'
 import { watch, computed, inject, onMounted, ref } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { Return } from '@icon-park/vue-next'
@@ -81,8 +81,6 @@ const {
   needRefresh,
   updateServiceWorker
 } = useRegisterSW()
-const { Header, Content, Footer } = Layout
-const { Link } = Typography
 const store = useStore()
 const route = useRoute()
 const _user = computed(() => store.state.user._user)
