@@ -70,6 +70,10 @@ export default defineComponent({
       margin: 0;
     }
 
+    .ant-tabs-nav {
+      margin: 0;
+    }
+
     .ant-tabs-nav-container, .ant-tabs-bar, .ant-tabs-tab {
       height: 4rem;
       line-height: 4rem;
