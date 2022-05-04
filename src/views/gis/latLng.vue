@@ -152,16 +152,16 @@ export default {
         })
       }, {}, {
         hideSingleBase: true,
-        position: 'topright'
+        position: 'bottomleft'
       }).addTo(this.map)
       control.scale({
         imperial: false,
-        position: 'bottomleft'
+        position: 'bottomright'
       }).addTo(this.map)
       control.zoom({
         zoomInTitle: '放大',
         zoomOutTitle: '缩小',
-        position: 'bottomright'
+        position: 'topright'
       }).addTo(this.map)
 
       this.centerMarker = markRaw(marker(this.map.getCenter(), { icon: greenIcon }))

@@ -203,19 +203,19 @@ function addBaseMaps () {
     },
     {
       hideSingleBase: true,
-      position: 'topright'
+      position: 'bottomleft'
     }
   ).addTo(_map)
 }
 function addControls () {
   control.scale({
     imperial: false,
-    position: 'bottomleft'
+    position: 'bottomright'
   }).addTo(_map)
   control.zoom({
     zoomInTitle: '放大',
     zoomOutTitle: '缩小',
-    position: 'bottomright'
+    position: 'topright'
   }).addTo(_map)
 }
 
