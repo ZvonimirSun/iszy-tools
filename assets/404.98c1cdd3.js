@@ -1,1 +1,0 @@
-import{c as t,u as e,o as s}from"./index.72d94db8.js";import{R as r}from"./index.7f4aac79.js";const l={setup(o){return(a,c)=>(s(),t(e(r),{status:"404",title:"404","sub-title":"\u5BF9\u4E0D\u8D77\uFF0C\u4F60\u8BBF\u95EE\u7684\u9875\u9762\u4E0D\u5B58\u5728\u3002"}))}};export{l as default};

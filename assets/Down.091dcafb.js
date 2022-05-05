@@ -1,1 +1,0 @@
-import{I as i,b as t}from"./index.72d94db8.js";var n=i("down",!1,function(e){return t("svg",{width:e.size,height:e.size,viewBox:"0 0 48 48",fill:"none"},[t("path",{d:"M37 18L25 30L13 18",stroke:e.colors[0],"stroke-width":e.strokeWidth,"stroke-linecap":e.strokeLinecap,"stroke-linejoin":e.strokeLinejoin},null)])});export{n as D};
