@@ -25,11 +25,9 @@
         class="typeNameCol"
       >
         <div class="typeName">
-          <iconpark-icon
+          <span
             v-if="item.icon"
-            class="i-icon"
-            :name="item.icon"
-            color="#fff"
+            :class="item.icon"
           />
           <div>{{ item.type }}</div>
         </div>
@@ -103,28 +101,28 @@ export default {
       } else {
         tmp = [{
           type: '工具',
-          icon: 'all-application',
+          icon: 'i-icon-park:all-application',
           children: this.allTools
         }]
       }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
-          icon: 'history',
+          icon: 'i-icon-park:history',
           children: this.recent(this.count)
         })
       }
       if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
-          icon: 'concern',
+          icon: 'i-icon-park:concern',
           children: this.most(this.count)
         })
       }
       if (this.favorite.length > 0) {
         tmp.unshift({
           type: '收藏',
-          icon: 'folder-focus',
+          icon: 'i-icon-park:folder-focus',
           children: this.favorite
         })
       }
@@ -196,15 +194,15 @@ export default {
     box-shadow: 0 0.8rem 1rem #16B0F64D;
     border-radius: .8rem;
 
-    .i-icon {
-      font-size: 2.4rem;
+    [class^="i-"] {
+      font-size: 2.2rem;
 
       & + * {
         margin-left: .5rem;
       }
     }
 
-    * + .i-icon {
+    * + [class^="i-"] {
       margin-left: .5rem;
     }
   }
@@ -365,9 +363,9 @@ export default {
   padding: 1.6rem .8rem;
   color: #666666;
 
-  .i-icon {
-    font-size: 2.4rem;
-    margin-right: 1.6rem;
+  [class^="i-"] {
+    font-size: 2.2rem;
+    margin-right: 1.4rem;
   }
 
   input {

@@ -8,6 +8,10 @@ import Sitemap from './src/plugins/Sitemap.js'
 import tools from './src/views/tools.json'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import Unocss from 'unocss/vite'
+import { presetUno, presetAttributify, presetIcons } from 'unocss'
+
+const iconClass = tools.map(item => item.icon).filter(item => item)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +23,13 @@ export default defineConfig({
           isCustomElement: tag => tag === 'iconpark-icon'
         }
       }
+    }),
+    Unocss({
+      mode: 'vue-scoped',
+      presets: [presetUno(), presetAttributify(), presetIcons({
+        mode: 'auto'
+      })],
+      safelist: [...iconClass]
     }),
     Components({
       resolvers: [
