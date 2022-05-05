@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <div class="encoded">
       <Title :level="3">
         Encoded
@@ -82,7 +82,7 @@ h3.ant-typography {
   height: 32px;
 }
 
-.container {
+.wrapper {
   display: flex;
   height: 100%;
   width: 100%;

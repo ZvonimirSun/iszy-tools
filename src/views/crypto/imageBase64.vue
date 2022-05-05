@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <Space>
       <Upload
         :file-list="[]"
@@ -63,7 +63,7 @@ async function copy () {
 </script>
 
 <style scoped lang="scss">
-.container {
+.wrapper {
   overflow: auto;
   width: 100%;
   height: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <Tabs
       v-model:activeKey="activeKey"
       type="card"
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
+.wrapper {
   width: 100%;
   height: 100%;
 

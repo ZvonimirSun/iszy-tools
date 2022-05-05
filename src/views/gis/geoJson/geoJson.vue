@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <LeafletMap v-model:geo-json-layer="geoJsonLayer"/>
     <a-tabs type="card">
       <a-tab-pane
@@ -49,7 +49,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.container {
+.wrapper {
   height: 100%;
   width: 100%;
   display: flex;

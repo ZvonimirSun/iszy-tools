@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container"
+    class="wrapper"
     :style="{background: selectedColor?.hex || '#fff'}"
   >
     <div class="wrapper">
@@ -186,7 +186,7 @@ function resize () {
 </script>
 
 <style scoped lang="scss">
-.container {
+.wrapper {
   width: 100%;
   height: 100%;
 
