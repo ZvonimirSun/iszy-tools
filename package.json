@@ -34,7 +34,6 @@
     "lodash-es": "^4.17.21",
     "marked": "^4.0.10",
     "relationship.js": "^1.0.0",
-    "shp-write": "0.3.2",
     "three": "^0.138.3",
     "tinycolor2": "^1.4.2",
     "ua-parser-js": "^1.0.2",
