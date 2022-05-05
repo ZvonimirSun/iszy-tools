@@ -48,10 +48,15 @@ export default defineComponent({
       } catch (e) {
       }
     },
-    updateEditor () {
+    updateEditor (val) {
       try {
-        geoJson = this.geoJsonLayer.toGeoJSON()
-        editor.update(geoJson)
+        if (val) {
+          editor.update(val)
+          this.$eventBus.emit('updateGeojsonLayer', editor.get())
+        } else {
+          geoJson = this.geoJsonLayer.toGeoJSON()
+          editor.update(geoJson)
+        }
       } catch (e) {}
     }
   }

@@ -50,7 +50,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw, onMounted, ref, toRaw, nextTick, onBeforeUnmount, inject } from 'vue'
 
 const blueIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
+  iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -58,7 +58,7 @@ const blueIcon = new Icon({
   shadowSize: [41, 41]
 })
 const yellowIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
+  iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -203,19 +203,19 @@ function addBaseMaps () {
     },
     {
       hideSingleBase: true,
-      position: 'topright'
+      position: 'bottomleft'
     }
   ).addTo(_map)
 }
 function addControls () {
   control.scale({
     imperial: false,
-    position: 'bottomleft'
+    position: 'bottomright'
   }).addTo(_map)
   control.zoom({
     zoomInTitle: '放大',
     zoomOutTitle: '缩小',
-    position: 'bottomright'
+    position: 'topright'
   }).addTo(_map)
 }
 
@@ -284,6 +284,7 @@ function updateGeojsonLayer (geoJson) {
 .mapContainer {
   height: 100%;
   width: 100%;
+  z-index: 0;
 }
 
 ::v-deep(.leaflet-popup) {

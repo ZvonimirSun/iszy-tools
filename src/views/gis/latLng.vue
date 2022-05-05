@@ -31,7 +31,7 @@ import { markRaw } from 'vue'
 import { Button, Input, Space } from 'ant-design-vue'
 
 const greenIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-green.png',
+  iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-green.png',
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -39,7 +39,7 @@ const greenIcon = new Icon({
   shadowSize: [41, 41]
 })
 const yellowIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
+  iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -152,16 +152,16 @@ export default {
         })
       }, {}, {
         hideSingleBase: true,
-        position: 'topright'
+        position: 'bottomleft'
       }).addTo(this.map)
       control.scale({
         imperial: false,
-        position: 'bottomleft'
+        position: 'bottomright'
       }).addTo(this.map)
       control.zoom({
         zoomInTitle: '放大',
         zoomOutTitle: '缩小',
-        position: 'bottomright'
+        position: 'topright'
       }).addTo(this.map)
 
       this.centerMarker = markRaw(marker(this.map.getCenter(), { icon: greenIcon }))

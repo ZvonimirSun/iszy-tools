@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <LeafletMap v-model:geo-json-layer="geoJsonLayer" />
-    <Tabs type="card">
-      <TabPane
+    <LeafletMap v-model:geo-json-layer="geoJsonLayer"/>
+    <a-tabs type="card">
+      <a-tab-pane
         key="geoJson"
         tab="GeoJSON"
       >
@@ -10,28 +10,28 @@
           ref="geoJsonEditor"
           :geo-json-layer="geoJsonLayer"
         />
-      </TabPane>
-      <TabPane
+      </a-tab-pane>
+      <a-tab-pane
         key="table"
         tab="表格"
       >
         <PropertyTable :geo-json-layer="geoJsonLayer" />
-      </TabPane>
-      <TabPane
+      </a-tab-pane>
+      <a-tab-pane
         key="addService"
         tab="添加服务"
       >
         <AddService />
-      </TabPane>
-    </Tabs>
+      </a-tab-pane>
+    </a-tabs>
+    <ControlMenu
+      :geo-json-layer="geoJsonLayer"
+    />
   </div>
 </template>
 
 <script>
-import { Tabs } from 'ant-design-vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
-
-const { TabPane } = Tabs
 
 export default defineComponent({
   name: 'GeoJson',
@@ -40,8 +40,7 @@ export default defineComponent({
     GeoJsonEditor: defineAsyncComponent(() => import('./child/geoJsonEditor.vue')),
     PropertyTable: defineAsyncComponent(() => import('./child/propertyTable.vue')),
     AddService: defineAsyncComponent(() => import('./child/addService.vue')),
-    Tabs,
-    TabPane
+    ControlMenu: defineAsyncComponent(() => import('./child/ControlMenu.vue'))
   },
   data: () => ({
     geoJsonLayer: undefined
@@ -56,6 +55,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   overflow: auto;
+  position: relative;
 
   :deep(.mapContainer) {
     height: 100%;
@@ -105,5 +105,11 @@ export default defineComponent({
       height: calc(50% - .4rem);
     }
   }
+}
+
+.controlMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
