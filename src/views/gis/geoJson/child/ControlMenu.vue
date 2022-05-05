@@ -17,7 +17,10 @@
       <a-dropdown>
         <template #overlay>
           <a-menu @click="exportFile">
-            <a-menu-item key="shp">
+            <a-menu-item key="geojson">
+              GeoJSON
+            </a-menu-item>
+            <a-menu-item key="shapefile">
               Shapefile
             </a-menu-item>
           </a-menu>
@@ -34,9 +37,17 @@
 
 <script setup>
 import { Down } from '@icon-park/vue-next'
+import { GeoJSON } from 'leaflet'
 import { inject } from 'vue'
+import '@/utils/shpwrite.js'
+import createFile from '@/utils/createFile.js'
 
 const $eventBus = inject('$eventBus')
+const $msg = inject('$msg')
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  geoJsonLayer: { type: GeoJSON, default: undefined }
+})
 
 function openFile (e) {
   if (e.target.files.length) {
@@ -57,8 +68,54 @@ function openFile (e) {
   e.target.value = ''
 }
 
-function exportFile (type) {
-  console.log(type)
+function exportFile (e = {}) {
+  switch (e.key) {
+    case 'shapefile':
+      exportShapefile()
+      break
+    case 'geojson':
+      exportGeoJson()
+      break
+  }
+}
+
+function exportShapefile () {
+  if (typeof ArrayBuffer === 'undefined') {
+    $msg.error('当前浏览器不支持导出成Shapefile')
+    return
+  }
+  const data = props.geoJsonLayer?.toGeoJSON()
+  if (data) {
+    try {
+      window.process = window.process || {}
+      Object.assign(window.process, {
+        browser: true
+      })
+      // todo 修复不支持multiPolygon等问题
+      // eslint-disable-next-line no-undef
+      shpwrite.download(data, {
+        folder: 'geojson',
+        types: {
+          point: 'points',
+          polygon: 'polygons',
+          line: 'lines'
+        }
+      })
+    } catch (e) {
+      $msg.error('导出失败，' + e.message)
+    }
+  } else {
+    $msg.warn('无可导出数据')
+  }
+}
+
+function exportGeoJson () {
+  const data = props.geoJsonLayer?.toGeoJSON()
+  if (data) {
+    createFile(data, 'exportFile.geojson')
+  } else {
+    $msg.warn('无可导出数据')
+  }
 }
 </script>
 

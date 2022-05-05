@@ -50,7 +50,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { markRaw, onMounted, ref, toRaw, nextTick, onBeforeUnmount, inject } from 'vue'
 
 const blueIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
+  iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -58,7 +58,7 @@ const blueIcon = new Icon({
   shadowSize: [41, 41]
 })
 const yellowIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
+  iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
