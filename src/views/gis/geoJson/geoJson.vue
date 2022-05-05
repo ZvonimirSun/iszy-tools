@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <ControlMenu
-      :geo-json-layer="geoJsonLayer"
-      class="controlMenu"
-    />
-    <LeafletMap v-model:geo-json-layer="geoJsonLayer" />
+    <LeafletMap v-model:geo-json-layer="geoJsonLayer"/>
     <a-tabs type="card">
       <a-tab-pane
         key="geoJson"
@@ -28,6 +24,9 @@
         <AddService />
       </a-tab-pane>
     </a-tabs>
+    <ControlMenu
+      :geo-json-layer="geoJsonLayer"
+    />
   </div>
 </template>
 
@@ -106,10 +105,11 @@ export default defineComponent({
       height: calc(50% - .4rem);
     }
   }
+}
 
-  .controlMenu {
-    position: absolute;
-    z-index: 1;
-  }
+.controlMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

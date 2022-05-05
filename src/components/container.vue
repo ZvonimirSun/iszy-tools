@@ -115,6 +115,7 @@ function fullScreen () {
     flex: 1;
     overflow-y: auto;
     border-radius: .8rem;
+    position: relative;
   }
 }
 </style>

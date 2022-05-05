@@ -284,6 +284,7 @@ function updateGeojsonLayer (geoJson) {
 .mapContainer {
   height: 100%;
   width: 100%;
+  z-index: 0;
 }
 
 ::v-deep(.leaflet-popup) {
