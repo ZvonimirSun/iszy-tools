@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import { defineAsyncComponent, defineComponent } from 'vue'
-
 export default defineComponent({
   name: 'GeoJson',
   components: {

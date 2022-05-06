@@ -152,7 +152,6 @@
 
 <script setup>
 import { nextTick } from '@vue/runtime-dom'
-import { ref, watch } from 'vue'
 import colors from './colors.json'
 import { Progress, Space, Typography } from 'ant-design-vue'
 

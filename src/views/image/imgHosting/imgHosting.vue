@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
 import { Tabs } from 'ant-design-vue'
 
 const { TabPane } = Tabs

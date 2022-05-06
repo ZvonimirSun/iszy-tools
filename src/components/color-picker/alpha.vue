@@ -26,7 +26,6 @@
 
 <script>
 import Checkerboard from '@/components/checkerboard.vue'
-import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'AlphaPicker',

@@ -36,7 +36,6 @@
 
 <script setup>
 import { Typography, Upload, Button, Space } from 'ant-design-vue'
-import { ref, inject } from 'vue'
 
 const { Paragraph, Title } = Typography
 

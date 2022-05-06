@@ -17,7 +17,6 @@
 
 <script>
 import { Tabs } from 'ant-design-vue'
-import { defineAsyncComponent, defineComponent } from 'vue'
 
 const { TabPane } = Tabs
 

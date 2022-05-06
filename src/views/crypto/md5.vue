@@ -22,7 +22,6 @@
 
 <script setup>
 import { Input, Space, Typography } from 'ant-design-vue'
-import { ref, watch } from 'vue'
 import MD5 from 'crypto-js/md5.js'
 
 const { TextArea } = Input

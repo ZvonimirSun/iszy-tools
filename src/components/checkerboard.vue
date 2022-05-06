@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-
 const _checkerboardCache = {}
 
 export default defineComponent({

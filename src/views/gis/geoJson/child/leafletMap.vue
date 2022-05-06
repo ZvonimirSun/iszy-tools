@@ -47,7 +47,6 @@ import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import { map, control, layerGroup, geoJSON, marker, Icon, Marker, GeoJSON } from 'leaflet'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import { markRaw, onMounted, ref, toRaw, nextTick, onBeforeUnmount, inject } from 'vue'
 
 const blueIcon = new Icon({
   iconUrl: 'https://jsdelivr.cdn.iszy.cc/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',

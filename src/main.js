@@ -1,5 +1,4 @@
 import EventBus from '@/plugins/EventBus.js'
-import { createApp } from 'vue'
 import { message } from 'ant-design-vue'
 import App from '@/App.vue'
 import router from '@/router'

@@ -27,7 +27,6 @@ import 'leaflet/dist/leaflet.css'
 import { map, control, layerGroup, marker, Icon } from 'leaflet'
 import { chineseLayer, ChineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import { markRaw } from 'vue'
 import { Button, Input, Space } from 'ant-design-vue'
 
 const greenIcon = new Icon({

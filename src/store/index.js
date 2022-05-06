@@ -1,6 +1,5 @@
 import axios from '@/plugins/Axios'
 import { merge } from 'lodash-es'
-import { toRaw } from 'vue'
 import { createStore } from 'vuex'
 import g2048 from './modules/2048'
 import tetris from './modules/tetris'

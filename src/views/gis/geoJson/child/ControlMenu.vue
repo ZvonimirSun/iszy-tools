@@ -38,7 +38,6 @@
 <script setup>
 import { Down } from '@icon-park/vue-next'
 import { GeoJSON } from 'leaflet'
-import { inject } from 'vue'
 import '@/utils/shpwrite.js'
 import createFile from '@/utils/createFile.js'
 

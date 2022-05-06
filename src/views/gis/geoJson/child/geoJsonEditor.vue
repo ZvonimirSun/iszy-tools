@@ -8,7 +8,6 @@
 <script>
 import 'jsoneditor/dist/jsoneditor.min.css'
 import JSONEditor from 'jsoneditor'
-import { defineComponent } from 'vue'
 import { debounce } from 'lodash-es'
 
 let editor

@@ -44,7 +44,6 @@
 <script>
 import { Form, InputNumber, Switch, Button, Input, Space } from 'ant-design-vue'
 import { random } from 'lodash-es'
-import { defineComponent } from 'vue'
 
 const { Item: FormItem } = Form
 const { TextArea } = Input

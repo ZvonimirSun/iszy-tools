@@ -38,11 +38,16 @@ export default defineConfig({
     Unocss({
       mode: 'vue-scoped',
       presets: [presetUno(), presetAttributify(), presetIcons({
-        mode: 'auto'
+        mode: 'auto',
+        extraProperties: {
+          display: 'inline-block'
+        }
       })],
       safelist: [...iconClass]
     }),
     Components({
+      dirs: ['src/components'],
+      extensions: ['vue'],
       resolvers: [
         AntDesignVueResolver()
       ]

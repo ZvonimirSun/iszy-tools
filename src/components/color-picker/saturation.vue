@@ -22,7 +22,6 @@
 
 <script>
 import { throttle, clamp } from 'lodash-es'
-import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SaturationPicker',

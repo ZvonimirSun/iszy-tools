@@ -41,7 +41,6 @@ import { tiledMapLayer } from '@/utils/iclient-leaflet/index.js'
 import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/DynamicMapLayer.js'
 import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
 import { CRS } from 'leaflet'
-import { defineComponent } from 'vue'
 import { Button, Form, Select, Input } from 'ant-design-vue'
 
 const { Item } = Form

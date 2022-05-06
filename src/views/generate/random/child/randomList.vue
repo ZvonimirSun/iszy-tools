@@ -63,7 +63,6 @@
 <script>
 import { random } from 'lodash-es'
 import { mapGetters, mapMutations } from 'vuex'
-import { defineComponent } from 'vue'
 import { Tag, Tooltip, Input, Typography, Divider, Modal } from 'ant-design-vue'
 import { Plus } from '@icon-park/vue-next'
 import { LuckyWheel } from '@lucky-canvas/vue'

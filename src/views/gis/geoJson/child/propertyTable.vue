@@ -57,7 +57,6 @@
 <script>
 import { Table, Empty, Input } from 'ant-design-vue'
 import { cloneDeep } from 'lodash-es'
-import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PropertyTable',

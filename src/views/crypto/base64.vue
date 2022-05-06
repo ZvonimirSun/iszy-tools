@@ -33,7 +33,6 @@
 
 <script setup>
 import { Input, Space, Button } from 'ant-design-vue'
-import { ref, inject } from 'vue'
 
 const { TextArea } = Input
 

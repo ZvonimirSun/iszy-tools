@@ -22,7 +22,7 @@
           class="desc"
         >
           <router-link to="/">
-            <return theme="outline" />返回首页
+            <span class="i-icon-park-outline:return" />返回首页
           </router-link><template v-if="_user.profile.nickName">
             · <router-link to="/settings">
               {{ _user.profile.nickName }}
@@ -35,7 +35,10 @@
           :target="()=>$refs.view.$el"
           :visibility-height="100"
         />
-        <div class="container" v-if="$route.meta?.type !== 'tool'">
+        <div
+          v-if="$route.meta?.type !== 'tool'"
+          class="container"
+        >
           <router-view />
         </div>
         <Container
@@ -67,13 +70,11 @@
 </template>
 
 <script setup>
-import { Container } from '@/components'
 import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Modal } from 'ant-design-vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { Return } from '@icon-park/vue-next'
 
 const {
   offlineReady,
