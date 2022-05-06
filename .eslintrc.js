@@ -1,7 +1,8 @@
 module.exports = {
   extends: [
     'plugin:vue/vue3-recommended',
-    'standard'
+    'standard',
+    './.eslintrc-auto-import.json'
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {

@@ -35,7 +35,9 @@
           :target="()=>$refs.view.$el"
           :visibility-height="100"
         />
-        <router-view v-if="$route.meta?.type !== 'tool'" />
+        <div class="container" v-if="$route.meta?.type !== 'tool'">
+          <router-view />
+        </div>
         <Container
           v-else
           :full-screen-status="fullScreenStatus"
@@ -70,11 +72,8 @@ import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Modal } from 'ant-design-vue'
-import { watch, computed, inject, onMounted, ref } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { Return } from '@icon-park/vue-next'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
 
 const {
   offlineReady,
@@ -132,6 +131,9 @@ watch(() => route.path, () => {
 </style>
 
 <style lang="scss" scoped>
+.container {
+  margin: 0 auto;
+}
 .ant-layout {
   background: transparent;
   height: 100%;

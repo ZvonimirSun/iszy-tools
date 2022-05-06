@@ -10,6 +10,7 @@ import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
 import { presetUno, presetAttributify, presetIcons } from 'unocss'
+import AutoImport from 'unplugin-auto-import/vite'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
@@ -22,6 +23,16 @@ export default defineConfig({
         compilerOptions: {
           isCustomElement: tag => tag === 'iconpark-icon'
         }
+      }
+    }),
+    AutoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'vuex'
+      ],
+      eslintrc: {
+        enabled: true
       }
     }),
     Unocss({

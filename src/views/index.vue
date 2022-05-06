@@ -1,10 +1,10 @@
 <template>
-  <Row
+  <a-row
     v-if="settings.showSearch"
     :gutter="{ xs: 8, sm: 16, md: 24}"
     class="noName"
   >
-    <Col :span="24">
+    <a-col :span="24">
       <div class="search">
         <search theme="outline" />
         <input
@@ -13,14 +13,14 @@
           placeholder="搜索工具"
         >
       </div>
-    </Col>
-  </Row>
+    </a-col>
+  </a-row>
   <template
     v-for="(item,index) in tools"
     :key="'type'+ index"
   >
-    <Row :gutter="{ xs: 8, sm: 16}">
-      <Col
+    <a-row :gutter="{ xs: 8, sm: 16}">
+      <a-col
         :span="24"
         class="typeNameCol"
       >
@@ -31,8 +31,8 @@
           />
           <div>{{ item.type }}</div>
         </div>
-      </Col>
-      <Col
+      </a-col>
+      <a-col
         v-for="(tool,i) in item.children"
         :key="'tool'+i"
         :xs="12"
@@ -46,7 +46,7 @@
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')"
         >
-          <Tooltip>
+          <a-tooltip>
             <template #title>
               {{ tool.name }}
             </template>
@@ -69,16 +69,15 @@
                 <span class="hovered"><Star theme="filled" /></span>
               </span>
             </div>
-          </Tooltip>
+          </a-tooltip>
         </router-link>
-      </Col>
-    </Row>
+      </a-col>
+    </a-row>
   </template>
 </template>
 
 <script>
 import { Search, Star } from '@icon-park/vue-next'
-import { Row, Col, Tooltip } from 'ant-design-vue'
 import tools from '@/views/tools.json'
 import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash-es'
@@ -87,7 +86,7 @@ const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpe
 
 export default {
   name: 'HomePage',
-  components: { Star, Row, Col, Search, Tooltip },
+  components: { Star, Search },
   data: () => ({
     searchStr: '',
 
