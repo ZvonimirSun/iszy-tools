@@ -18,13 +18,7 @@ const iconClass = tools.map(item => item.icon).filter(item => item)
 export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: tag => tag === 'iconpark-icon'
-        }
-      }
-    }),
+    vue(),
     AutoImport({
       imports: [
         'vue',

@@ -22,7 +22,12 @@
               <template #title>
                 复制链接
               </template>
-              <span class="i-icon-park-outline-copy-link" @click="copyImgUrl(item)" />
+              <span class="py-3 flex">
+                <span
+                  class="i-icon-park-outline-copy-link"
+                  @click="copyImgUrl(item)"
+                />
+              </span>
             </a-tooltip>
 
             <a-tooltip>
@@ -36,7 +41,9 @@
                 :get-popup-container="getPopupContainer"
                 @confirm="removeImage(item)"
               >
-                <span class="i-icon-park-outline-delete" />
+                <span class="py-3 flex">
+                  <span class="i-icon-park-outline-delete" />
+                </span>
               </a-popconfirm>
             </a-tooltip>
           </template>
