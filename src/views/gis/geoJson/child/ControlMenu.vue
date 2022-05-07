@@ -28,7 +28,7 @@
         <a-button
           size="middle"
         >
-          <span class="buttonWithIcon">保存<Down theme="outline" /></span>
+          <span class="buttonWithIcon">保存<span class="i-icon-park-outline-down" /></span>
         </a-button>
       </a-dropdown>
     </a-space>
@@ -36,7 +36,6 @@
 </template>
 
 <script setup>
-import { Down } from '@icon-park/vue-next'
 import { GeoJSON } from 'leaflet'
 import '@/utils/shpwrite.js'
 import createFile from '@/utils/createFile.js'

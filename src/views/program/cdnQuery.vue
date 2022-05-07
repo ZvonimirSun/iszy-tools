@@ -399,7 +399,7 @@ export default {
       display: inline-flex;
       align-items: center;
 
-      .i-icon {
+      [class^="i-"] {
         font-size: 1.6rem;
         margin-right: .5rem;
       }

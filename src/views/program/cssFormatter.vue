@@ -1,83 +1,83 @@
 <template>
   <div class="codePanel">
     <div class="header">
-      <Button
+      <a-button
         type="primary"
         title="格式化"
         @click="format"
       >
         <template #icon>
-          <indent-right theme="outline" />
+          <span class="i-icon-park-outline-indent-right" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="压缩"
         @click="compact"
       >
         <template #icon>
-          <compression theme="outline" />
+          <span class="i-icon-park-outline-compression" />
         </template>
-      </Button>
-      <Divider type="vertical" />
-      <Button
+      </a-button>
+      <a-divider type="vertical" />
+      <a-button
         type="primary"
         title="折叠所有"
         @click="foldAll"
       >
         <template #icon>
-          <collapse-text-input theme="outline" />
+          <span class="i-icon-park-outline-collapse-text-input" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="展开所有"
         @click="unfoldAll"
       >
         <template #icon>
-          <expand-text-input theme="outline" />
+          <span class="i-icon-park-outline-expand-text-input" />
         </template>
-      </Button>
-      <Divider type="vertical" />
-      <Button
+      </a-button>
+      <a-divider type="vertical" />
+      <a-button
         type="primary"
         title="撤销"
         :disabled="historySize.undo === 0"
         @click="undo"
       >
         <template #icon>
-          <undo theme="outline" />
+          <span class="i-icon-park-outline-undo" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="重做"
         :disabled="historySize.redo === 0"
         @click="redo"
       >
         <template #icon>
-          <redo theme="outline" />
+          <span class="i-icon-park-outline-redo" />
         </template>
-      </Button>
-      <Divider type="vertical" />
-      <Button
+      </a-button>
+      <a-divider type="vertical" />
+      <a-button
         type="primary"
         title="前往顶部"
         @click="goTop"
       >
         <template #icon>
-          <to-top theme="outline" />
+          <span class="i-icon-park-outline-to-top" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="前往底部"
         @click="goBottom"
       >
         <template #icon>
-          <to-bottom theme="outline" />
+          <span class="i-icon-park-outline-to-bottom" />
         </template>
-      </Button>
+      </a-button>
     </div>
     <CodeMirror
       ref="cmEditor"
@@ -96,16 +96,6 @@
 </template>
 
 <script>
-import {
-  IndentRight,
-  Compression,
-  Undo,
-  Redo,
-  ToTop,
-  ToBottom,
-  ExpandTextInput,
-  CollapseTextInput
-} from '@icon-park/vue-next'
 // region codemirror
 import 'codemirror/lib/codemirror.css'
 // 代码高亮
@@ -143,24 +133,13 @@ import 'codemirror/addon/comment/comment.js'
 // import 'codemirror/addon/lint/css-lint.js'
 import CodeMirror from '@/components/vue-codemirror.vue'
 // endregion
-import { Button, Divider } from 'ant-design-vue'
 import { css_beautify as cssBeautify } from 'js-beautify'
 // window.CSSLint = CSSLint
 
 export default {
   name: 'CssFormatter',
   components: {
-    CodeMirror,
-    Button,
-    Divider,
-    IndentRight,
-    Compression,
-    Undo,
-    Redo,
-    ToTop,
-    ToBottom,
-    ExpandTextInput,
-    CollapseTextInput
+    CodeMirror
   },
   data: () => ({
     code: '',

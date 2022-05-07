@@ -1,7 +1,7 @@
 [
   {
     "type": "其他",
-    "icon": "i-icon-park:all-application",
+    "icon": "i-icon-park-solid-all-application",
     "children": [
       {
         "name": "淘宝优惠券精选",
@@ -62,8 +62,42 @@
     ]
   },
   {
+    "type": "代码工具",
+    "icon": "i-icon-park-outline-code",
+    "children": [
+      {
+        "name": "查看网页源码",
+        "link": "/viewSourceCode"
+      },
+      {
+        "name": "CSS格式化/压缩",
+        "link": "/cssFormatter"
+      },
+      {
+        "name": "TinyEditor",
+        "link": "/tinyEditor"
+      },
+      {
+        "name": "正则大全",
+        "link": "/anyRule"
+      },
+      {
+        "name": "UserAgent解析",
+        "link": "/userAgent"
+      },
+      {
+        "name": "JSON编辑器",
+        "link": "/jsonEditor"
+      },
+      {
+        "name": "前端CDN搜索",
+        "link": "/cdnQuery"
+      }
+    ]
+  },
+  {
     "type": "地图工具",
-    "icon": "i-icon-park:map-draw",
+    "icon": "i-icon-park-solid-map-draw",
     "children": [
       {
         "name": "地图选择器",
@@ -85,7 +119,7 @@
   },
   {
     "type": "图片工具",
-    "icon": "i-icon-park:picture-one",
+    "icon": "i-icon-park-solid-picture-one",
     "children": [
       {
         "name": "图片加水印",
@@ -99,7 +133,7 @@
   },
   {
     "type": "编解码工具",
-    "icon": "i-icon-park:file-lock",
+    "icon": "i-icon-park-solid-file-lock",
     "children": [
       {
         "name": "URL编码/解码",
@@ -125,7 +159,7 @@
   },
   {
     "type": "转换工具",
-    "icon": "i-icon-park:file-conversion",
+    "icon": "i-icon-park-outline-file-conversion",
     "children": [
       {
         "name": "时间计算",
@@ -134,10 +168,6 @@
       {
         "name": "颜色转换",
         "link": "/colorTransform"
-      },
-      {
-        "name": "JSON编辑器",
-        "link": "/jsonEditor"
       },
       {
         "name": "在线ASCII码对照表",
@@ -164,38 +194,8 @@
     ]
   },
   {
-    "type": "代码工具",
-    "icon": "i-icon-park:code",
-    "children": [
-      {
-        "name": "查看网页源码",
-        "link": "/viewSourceCode"
-      },
-      {
-        "name": "CSS格式化/压缩",
-        "link": "/cssFormatter"
-      },
-      {
-        "name": "TinyEditor",
-        "link": "/tinyEditor"
-      },
-      {
-        "name": "正则大全",
-        "link": "/anyRule"
-      },
-      {
-        "name": "UserAgent解析",
-        "link": "/userAgent"
-      },
-      {
-        "name": "前端CDN搜索",
-        "link": "/cdnQuery"
-      }
-    ]
-  },
-  {
     "type": "小游戏",
-    "icon": "i-icon-park:game",
+    "icon": "i-icon-park-solid-game",
     "children": [
       {
         "name": "2048",
@@ -209,7 +209,7 @@
   },
   {
     "type": "理财",
-    "icon": "i-icon-park:financing-one",
+    "icon": "i-icon-park-solid-financing-one",
     "children": [
       {
         "name": "多次提前还贷计算器",
@@ -223,7 +223,7 @@
   },
   {
     "type": "网站相关",
-    "icon": "i-icon-park:setting-two",
+    "icon": "i-icon-park-solid-setting-two",
     "children": [
       {
         "name": "网站管理",

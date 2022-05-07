@@ -1,6 +1,6 @@
 <template>
-  <Spin :spinning="spinning">
-    <Dragger
+  <a-spin :spinning="spinning">
+    <a-upload-dragger
       :file-list="[]"
       accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
       :show-upload-list="false"
@@ -8,7 +8,7 @@
       @reject="rejectFile"
     >
       <p class="ant-upload-drag-icon">
-        <UploadOne />
+        <span class="i-icon-park-upload-one" />
       </p>
       <p class="ant-upload-text">
         直接粘贴图片或拖拽图片到这里上传<br>或者直接点击选择文件上传
@@ -16,17 +16,15 @@
       <p class="ant-upload-hint">
         暂时仅支持单文件上传。
       </p>
-    </Dragger>
-  </Spin>
+    </a-upload-dragger>
+  </a-spin>
 </template>
 
 <script>
 import * as uploaders from '../uploader/index.js'
 import { UploadOne } from '@icon-park/vue-next'
-import { Upload, Spin } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 
-const { Dragger } = Upload
 const {
   mapGetters,
   mapActions
@@ -35,9 +33,7 @@ const {
 export default {
   name: 'ImgHostingUpload',
   components: {
-    Dragger,
-    UploadOne,
-    Spin
+    UploadOne
   },
   props: {
     activeKey: {
@@ -133,7 +129,7 @@ export default {
 }
 
 :deep(.ant-upload-drag-icon) {
-  .i-icon {
+  [class^="i-"] {
     font-size: 4.8rem;
   }
 }

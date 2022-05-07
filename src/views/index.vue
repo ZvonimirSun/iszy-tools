@@ -100,28 +100,28 @@ export default {
       } else {
         tmp = [{
           type: '工具',
-          icon: 'i-icon-park:all-application',
+          icon: 'i-icon-park-solid-all-application',
           children: this.allTools
         }]
       }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
-          icon: 'i-icon-park:history',
+          icon: 'i-icon-park-outline-history',
           children: this.recent(this.count)
         })
       }
       if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
-          icon: 'i-icon-park:concern',
+          icon: 'i-icon-park-solid-concern',
           children: this.most(this.count)
         })
       }
       if (this.favorite.length > 0) {
         tmp.unshift({
           type: '收藏',
-          icon: 'i-icon-park:folder-focus',
+          icon: 'i-icon-park-solid-folder-focus',
           children: this.favorite
         })
       }

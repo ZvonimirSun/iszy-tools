@@ -1083,11 +1083,11 @@ export default {
       display: flex;
       align-items: center;
 
-      .i-icon {
+      [class^="i-"] {
         font-size: 1.8rem;
       }
 
-      .i-icon + span, span + .i-icon {
+      [class^="i-"] + span, span + [class^="i-"] {
         margin-left: 0;
       }
     }

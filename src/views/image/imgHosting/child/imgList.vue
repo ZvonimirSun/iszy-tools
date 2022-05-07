@@ -3,14 +3,14 @@
     v-if="imgList.length"
     class="imgList"
   >
-    <PreviewGroup>
-      <Space :size="8">
-        <Card
+    <a-image-preview-group>
+      <a-space :size="8">
+        <a-card
           v-for="(item) in imgList"
           :key="item.id"
         >
           <template #cover>
-            <Image
+            <a-image
               :src="item.url"
               :alt="item.name"
               width="20rem"
@@ -18,43 +18,37 @@
             />
           </template>
           <template #actions>
-            <Tooltip>
+            <a-tooltip>
               <template #title>
                 复制链接
               </template>
-              <CopyLink @click="copyImgUrl(item)" />
-            </Tooltip>
+              <span class="i-icon-park-outline-copy-link" @click="copyImgUrl(item)" />
+            </a-tooltip>
 
-            <Tooltip>
+            <a-tooltip>
               <template #title>
                 删除
               </template>
-              <Popconfirm
+              <a-popconfirm
                 title="是否确认删除？"
                 ok-text="是"
                 cancel-text="否"
                 :get-popup-container="getPopupContainer"
                 @confirm="removeImage(item)"
               >
-                <Delete />
-              </Popconfirm>
-            </Tooltip>
+                <span class="i-icon-park-outline-delete" />
+              </a-popconfirm>
+            </a-tooltip>
           </template>
-          <Meta :title="item.name" />
-        </Card>
-      </Space>
-    </PreviewGroup>
+          <a-card-meta :title="item.name" />
+        </a-card>
+      </a-space>
+    </a-image-preview-group>
   </div>
-  <Empty v-else />
+  <a-empty v-else />
 </template>
 
 <script>
-import { CopyLink, Delete } from '@icon-park/vue-next'
-import { Empty, Card, Space, Image, Popconfirm, Tooltip } from 'ant-design-vue'
-import { createNamespacedHelpers } from 'vuex'
-
-const { Meta } = Card
-const { PreviewGroup } = Image
 const {
   mapState,
   mapActions,
@@ -63,18 +57,6 @@ const {
 
 export default {
   name: 'ImgHostingList',
-  components: {
-    Empty,
-    Card,
-    Meta,
-    Space,
-    Image,
-    PreviewGroup,
-    CopyLink,
-    Delete,
-    Popconfirm,
-    Tooltip
-  },
   computed: {
     ...mapState(['imgList']),
     ...mapGetters(['commonConfig'])
@@ -124,7 +106,7 @@ export default {
       margin: 0;
     }
 
-    .i-icon {
+    [class^="i-"] {
       font-size: 1.8rem;
       width: 100%;
       display: block;
