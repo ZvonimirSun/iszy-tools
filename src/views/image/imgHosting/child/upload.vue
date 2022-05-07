@@ -22,7 +22,6 @@
 
 <script>
 import * as uploaders from '../uploader/index.js'
-import { UploadOne } from '@icon-park/vue-next'
 import { createNamespacedHelpers } from 'vuex'
 
 const {
@@ -32,9 +31,6 @@ const {
 
 export default {
   name: 'ImgHostingUpload',
-  components: {
-    UploadOne
-  },
   props: {
     activeKey: {
       type: String,
