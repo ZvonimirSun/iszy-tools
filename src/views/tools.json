@@ -74,6 +74,10 @@
         "link": "/cssFormatter"
       },
       {
+        "name": "XML编辑器",
+        "link": "/xmlEditor"
+      },
+      {
         "name": "TinyEditor",
         "link": "/tinyEditor"
       },

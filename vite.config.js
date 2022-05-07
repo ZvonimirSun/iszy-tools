@@ -27,7 +27,8 @@ export default defineConfig({
       ],
       eslintrc: {
         enabled: true
-      }
+      },
+      dts: true
     }),
     Unocss({
       mode: 'vue-scoped',
