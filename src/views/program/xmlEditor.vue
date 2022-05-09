@@ -95,11 +95,12 @@
 <script setup>
 import { VAceEditor } from 'vue3-ace-editor'
 import ace from 'ace-builds'
-import 'ace-builds/src-noconflict/ext-language_tools'
 import 'ace-builds/src-noconflict/mode-xml'
 import 'ace-builds/src-noconflict/theme-chrome'
-import 'ace-builds/src-noconflict/ext-beautify.js'
 import 'ace-builds/src-noconflict/snippets/xml.js'
+import 'ace-builds/src-noconflict/ext-searchbox'
+import 'ace-builds/src-noconflict/ext-language_tools'
+import 'ace-builds/src-noconflict/ext-beautify'
 import workerXmlUrl from 'ace-builds/src-noconflict/worker-xml?url'
 ace.config.setModuleUrl('ace/mode/xml_worker', workerXmlUrl)
 const beautify = ace.require('ace/ext/beautify')
