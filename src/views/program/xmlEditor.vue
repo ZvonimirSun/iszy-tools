@@ -74,7 +74,7 @@
       <v-ace-editor
         v-model:value="code"
         lang="xml"
-        theme="github"
+        theme="textmate"
         style="height: 100%;"
         :options="{
           useWorker: true,
@@ -96,7 +96,7 @@
 import { VAceEditor } from 'vue3-ace-editor'
 import ace from 'ace-builds'
 import 'ace-builds/src-noconflict/mode-xml'
-import 'ace-builds/src-noconflict/theme-chrome'
+import 'ace-builds/src-noconflict/theme-textmate.js'
 import 'ace-builds/src-noconflict/snippets/xml.js'
 import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/ext-language_tools'
