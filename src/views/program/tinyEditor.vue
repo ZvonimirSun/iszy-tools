@@ -1,6 +1,9 @@
 <template>
   <div class="panel">
-    <div class="inputPanel">
+    <div
+      v-show="!fullScreenStatus"
+      class="inputPanel"
+    >
       <div class="header">
         <a-button
           type="primary"
@@ -45,52 +48,10 @@
         @init="editorInit($event, 'html')"
       />
     </div>
-    <div class="inputPanel">
-      <div class="header">
-        <a-button
-          type="primary"
-          title="格式化"
-          @click="format('css')"
-        >
-          <template #icon>
-            <span class="i-icon-park-outline-indent-right" />
-          </template>
-        </a-button>
-        <a-button
-          type="primary"
-          title="折叠所有"
-          @click="foldAll('css')"
-        >
-          <template #icon>
-            <span class="i-icon-park-outline-collapse-text-input" />
-          </template>
-        </a-button>
-        <a-button
-          type="primary"
-          title="展开所有"
-          @click="unfoldAll('css')"
-        >
-          <template #icon>
-            <span class="i-icon-park-outline-expand-text-input" />
-          </template>
-        </a-button>
-      </div>
-      <v-ace-editor
-        v-model:value="css"
-        lang="css"
-        theme="textmate"
-        style="height: calc(100% - 4.2rem);"
-        placeholder="请输入CSS内容"
-        :options="{
-          useWorker: true,
-          enableBasicAutocompletion:true,
-          enableSnippets:true,
-          enableLiveAutocompletion:true
-        }"
-        @init="editorInit($event, 'css')"
-      />
-    </div>
-    <div class="inputPanel">
+    <div
+      v-show="!fullScreenStatus"
+      class="inputPanel"
+    >
       <div class="header">
         <a-button
           type="primary"
@@ -135,7 +96,70 @@
         @init="editorInit($event, 'js')"
       />
     </div>
-    <div class="displayPanel">
+    <div
+      v-show="!fullScreenStatus"
+      class="inputPanel"
+    >
+      <div class="header">
+        <a-button
+          type="primary"
+          title="格式化"
+          @click="format('css')"
+        >
+          <template #icon>
+            <span class="i-icon-park-outline-indent-right" />
+          </template>
+        </a-button>
+        <a-button
+          type="primary"
+          title="折叠所有"
+          @click="foldAll('css')"
+        >
+          <template #icon>
+            <span class="i-icon-park-outline-collapse-text-input" />
+          </template>
+        </a-button>
+        <a-button
+          type="primary"
+          title="展开所有"
+          @click="unfoldAll('css')"
+        >
+          <template #icon>
+            <span class="i-icon-park-outline-expand-text-input" />
+          </template>
+        </a-button>
+      </div>
+      <v-ace-editor
+        v-model:value="css"
+        lang="css"
+        theme="textmate"
+        style="height: calc(100% - 4.2rem);"
+        placeholder="请输入CSS内容"
+        :options="{
+          useWorker: true,
+          enableBasicAutocompletion:true,
+          enableSnippets:true,
+          enableLiveAutocompletion:true
+        }"
+        @init="editorInit($event, 'css')"
+      />
+    </div>
+    <div
+      class="displayPanel"
+      :class="{
+        fullPanel: fullScreenStatus
+      }"
+    >
+      <span
+        v-if="fullScreenStatus"
+        class="i-icon-park-outline-off-screen fullScreen"
+        @click="fullScreen"
+      />
+      <span
+        v-else
+        class="i-icon-park-outline-full-screen fullScreen"
+        @click="fullScreen"
+      />
       <iframe
         w-full
         h-full
@@ -182,6 +206,8 @@ const doc = computed(() => {
   }
 })
 
+const fullScreenStatus = ref(false)
+
 function editorInit (aceEditor, type) {
   aceEditor.getSession().setTabSize(2)
   aceEditor.getSession().setUseSoftTabs(true)
@@ -198,6 +224,10 @@ function foldAll (type) {
 function unfoldAll (type) {
   aceEditors[type]?.session.unfold()
 }
+
+function fullScreen () {
+  fullScreenStatus.value = !fullScreenStatus.value
+}
 </script>
 
 <style scoped lang="scss">
@@ -206,11 +236,10 @@ function unfoldAll (type) {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  overflow: auto;
 
   .inputPanel {
     height: 50%;
-    width: calc(100% / 3);
+    width: 50%;
     resize: none;
     border: 1px solid rgb(217, 217, 217);
 
@@ -237,13 +266,31 @@ function unfoldAll (type) {
   .displayPanel {
     flex: 1;
     height: 50%;
+    position: relative;
+    width: 50%;
+
+    .fullScreen {
+      position: absolute;
+      right: .8rem;
+      top: .8rem;
+      cursor: pointer;
+
+      &:hover {
+        color: #16b0f6;
+      }
+    }
+
+    &.fullPanel {
+      height: 100%;
+      width: 100%;
+    }
 
     iframe {
       border: 1px solid rgb(217, 217, 217);
     }
 
     @media (max-width: 992px) {
-      height: 100%;
+      height: 70%;
     }
 
     &:hover {
