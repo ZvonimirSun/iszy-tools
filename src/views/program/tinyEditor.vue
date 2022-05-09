@@ -150,16 +150,25 @@
         fullPanel: fullScreenStatus
       }"
     >
-      <span
-        v-if="fullScreenStatus"
-        class="i-icon-park-outline-off-screen fullScreen"
-        @click="fullScreen"
-      />
-      <span
-        v-else
-        class="i-icon-park-outline-full-screen fullScreen"
-        @click="fullScreen"
-      />
+      <a-space class="fullScreen">
+        <span
+          v-if="fullScreenStatus"
+          class="i-icon-park-outline-off-screen"
+          title="退出完整展示"
+          @click="fullScreen"
+        />
+        <span
+          v-else
+          class="i-icon-park-outline-full-screen"
+          title="完整展示"
+          @click="fullScreen"
+        />
+        <span
+          class="i-fa-solid-external-link-alt"
+          title="新标签打开"
+          @click="openNew"
+        />
+      </a-space>
       <iframe
         w-full
         h-full
@@ -198,6 +207,9 @@ const html = ref('')
 const css = ref('')
 const js = ref('')
 
+/**
+ * @type {ComputedRef<String>}
+ */
 const doc = computed(() => {
   if (html.value + css.value + js.value === '') {
     return '输入内容以在此展示'
@@ -227,6 +239,10 @@ function unfoldAll (type) {
 
 function fullScreen () {
   fullScreenStatus.value = !fullScreenStatus.value
+}
+function openNew () {
+  const newTab = window.open('', '_blank')
+  newTab.document.write(doc.value)
 }
 </script>
 
@@ -273,10 +289,13 @@ function fullScreen () {
       position: absolute;
       right: .8rem;
       top: .8rem;
-      cursor: pointer;
 
-      &:hover {
-        color: #16b0f6;
+      [class^="i-"] {
+        cursor: pointer;
+
+        &:hover {
+          color: #16b0f6;
+        }
       }
     }
 
