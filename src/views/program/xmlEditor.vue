@@ -4,23 +4,17 @@
       <a-button
         type="primary"
         title="格式化"
+        @click="format"
       >
         <template #icon>
           <span class="i-icon-park-outline-indent-right" />
-        </template>
-      </a-button>
-      <a-button
-        type="primary"
-        title="压缩"
-      >
-        <template #icon>
-          <span class="i-icon-park-outline-compression" />
         </template>
       </a-button>
       <a-divider type="vertical" />
       <a-button
         type="primary"
         title="折叠所有"
+        @click="foldAll"
       >
         <template #icon>
           <span class="i-icon-park-outline-collapse-text-input" />
@@ -29,6 +23,7 @@
       <a-button
         type="primary"
         title="展开所有"
+        @click="unfoldAll"
       >
         <template #icon>
           <span class="i-icon-park-outline-expand-text-input" />
@@ -38,7 +33,8 @@
       <a-button
         type="primary"
         title="撤销"
-        :disabled="historySize.undo === 0"
+        :disabled="!hasUndo"
+        @click="undoEditor"
       >
         <template #icon>
           <span class="i-icon-park-outline-undo" />
@@ -47,7 +43,8 @@
       <a-button
         type="primary"
         title="重做"
-        :disabled="historySize.redo === 0"
+        :disabled="!hasRedo"
+        @click="redoEditor"
       >
         <template #icon>
           <span class="i-icon-park-outline-redo" />
@@ -57,6 +54,7 @@
       <a-button
         type="primary"
         title="前往顶部"
+        @click="scrollToTop"
       >
         <template #icon>
           <span class="i-icon-park-outline-to-top" />
@@ -65,6 +63,7 @@
       <a-button
         type="primary"
         title="前往底部"
+        @click="scrollToBottom"
       >
         <template #icon>
           <span class="i-icon-park-outline-to-bottom" />
@@ -72,28 +71,96 @@
       </a-button>
     </div>
     <div class="ace-container">
-      <vue-ace v-model:value="code" />
+      <v-ace-editor
+        v-model:value="code"
+        lang="xml"
+        theme="github"
+        style="height: 100%;"
+        :options="{
+          useWorker: true,
+          enableBasicAutocompletion:true,
+          enableSnippets:true,
+          enableLiveAutocompletion:true
+        }"
+        @init="editorInit"
+        @change="editorChange"
+      />
     </div>
     <div class="footer">
-      <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
-        cursor.ch + 1
-      }}</span>
+      <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.row + 1 }}&nbsp;&nbsp;列数:&nbsp;{{ cursor.column + 1 }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
+import { VAceEditor } from 'vue3-ace-editor'
+import ace from 'ace-builds'
+import 'ace-builds/src-noconflict/ext-language_tools'
+import 'ace-builds/src-noconflict/mode-xml'
+import 'ace-builds/src-noconflict/theme-chrome'
+import 'ace-builds/src-noconflict/ext-beautify.js'
+import 'ace-builds/src-noconflict/snippets/xml.js'
+import workerXmlUrl from 'ace-builds/src-noconflict/worker-xml?url'
+ace.config.setModuleUrl('ace/mode/xml_worker', workerXmlUrl)
+const beautify = ace.require('ace/ext/beautify')
+
+let aceEditor = null
 const code = ref('')
 const cursor = ref({
-  line: 0,
-  ch: 0
+  row: 0,
+  column: 0
 })
 const lineCount = ref(0)
-const historySize = ref({
-  undo: 0,
-  redo: 0
-})
+const hasUndo = ref(false)
+const hasRedo = ref(false)
 
+function editorInit (editor) {
+  aceEditor = editor
+  aceEditor.getSession().setTabSize(2)
+  aceEditor.getSession().setUseSoftTabs(true)
+  aceEditor.setShowPrintMargin(false)
+  aceEditor.selection.on('changeCursor', () => {
+    cursor.value = aceEditor.selection.getCursor()
+  })
+  cursor.value = aceEditor.selection.getCursor()
+  lineCount.value = aceEditor.session.getLength()
+}
+
+function foldAll () {
+  aceEditor.session.foldAll()
+}
+
+function unfoldAll () {
+  aceEditor.session.unfold()
+}
+
+function scrollToTop () {
+  aceEditor.gotoLine(0)
+}
+
+function format () {
+  beautify.beautify(aceEditor.session)
+}
+
+function scrollToBottom () {
+  aceEditor.gotoLine(aceEditor.session.getLength())
+}
+
+async function editorChange () {
+  lineCount.value = aceEditor.session.getLength()
+  await nextTick()
+  const undoManager = aceEditor.session.getUndoManager()
+  hasUndo.value = undoManager.hasUndo()
+  hasRedo.value = undoManager.hasRedo()
+}
+
+function undoEditor () {
+  aceEditor.getSession().getUndoManager().undo()
+}
+
+function redoEditor () {
+  aceEditor.getSession().getUndoManager().redo()
+}
 </script>
 
 <style scoped lang="scss">

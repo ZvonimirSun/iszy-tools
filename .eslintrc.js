@@ -1,4 +1,10 @@
 module.exports = {
+  globals: {
+    defineProps: 'readonly',
+    defineEmits: 'readonly',
+    defineExpose: 'readonly',
+    withDefaults: 'readonly'
+  },
   extends: [
     'plugin:vue/vue3-recommended',
     'standard',
