@@ -207,6 +207,35 @@ const html = ref('')
 const css = ref('')
 const js = ref('')
 
+const store = useStore()
+
+onMounted(() => {
+  html.value = store.state.tinyEditor.html
+  css.value = store.state.tinyEditor.css
+  js.value = store.state.tinyEditor.js
+})
+
+watch(html, (val) => {
+  store.dispatch('tinyEditor/setContent', {
+    type: 'html',
+    content: val
+  })
+})
+
+watch(css, (val) => {
+  store.dispatch('tinyEditor/setContent', {
+    type: 'css',
+    content: val
+  })
+})
+
+watch(js, (val) => {
+  store.dispatch('tinyEditor/setContent', {
+    type: 'js',
+    content: val
+  })
+})
+
 /**
  * @type {ComputedRef<String>}
  */

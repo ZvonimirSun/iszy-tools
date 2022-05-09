@@ -7,6 +7,7 @@ import user from './modules/user'
 import linuxCommand from './modules/linuxCommand'
 import imgHosting from './modules/imgHosting'
 import jsonEditor from './modules/jsonEditor/index.js'
+import tinyEditor from './modules/tinyEditor/index.js'
 import VuexPersist from '@/plugins/VuexPersist'
 
 export default createStore({
@@ -77,7 +78,8 @@ export default createStore({
     user,
     linuxCommand,
     imgHosting,
-    jsonEditor
+    jsonEditor,
+    tinyEditor
   },
   plugins: [VuexPersist({
     name: 'iszy_tools',
