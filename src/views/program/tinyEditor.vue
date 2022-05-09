@@ -1,18 +1,18 @@
 <template>
   <div class="panel">
-    <TextArea
+    <a-textarea
       v-model:value="html"
       class="inputPanel"
       placeholder="请输入HTML内容"
       title="HTML"
     />
-    <TextArea
+    <a-textarea
       v-model:value="css"
       class="inputPanel"
       placeholder="请输入CSS内容"
       title="CSS"
     />
-    <TextArea
+    <a-textarea
       v-model:value="js"
       class="inputPanel"
       placeholder="请输入JS内容"
@@ -27,32 +27,18 @@
   </div>
 </template>
 
-<script>
-import { Input } from 'ant-design-vue'
+<script setup>
+const html = ref('')
+const css = ref('')
+const js = ref('')
 
-const { TextArea } = Input
-
-export default {
-  name: 'TinyEditor',
-  components: {
-    TextArea
-  },
-  data: () => ({
-    html: '',
-    css: '',
-    js: ''
-  }),
-  computed: {
-    doc: function () {
-      if (this.html + this.css + this.js === '') {
-        return '输入内容以在此展示'
-      } else {
-        return this.html + '<style>' + this.css + '</style><script>' + this.js + '<\/script>'
-      }
-    }
-  },
-  methods: {}
-}
+const doc = computed(() => {
+  if (html.value + css.value + js.value === '') {
+    return '输入内容以在此展示'
+  } else {
+    return html.value + '<style>' + css.value + '<\/style><script>' + js.value + '<\/script>'
+  }
+})
 </script>
 
 <style scoped lang="scss">
