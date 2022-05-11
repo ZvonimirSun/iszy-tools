@@ -23,7 +23,8 @@ export default defineConfig({
       imports: [
         'vue',
         'vue-router',
-        'vuex'
+        'vuex',
+        '@vueuse/core'
       ],
       eslintrc: {
         enabled: true
