@@ -1,47 +1,36 @@
 <template>
-  <Space direction="vertical">
-    <TextArea
+  <a-space direction="vertical">
+    <a-textarea
       v-model:value="value"
       placeholder="转换的内容粘贴在这里"
       :auto-size="{ minRows: 5, maxRows: 8 }"
     />
-    <Group>
-      <Button
+    <a-space>
+      <a-button
         type="primary"
         @click="encode"
       >
         UrlEncode编码
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         @click="decode"
       >
         UrlDecode解码
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="link"
         @click="clear"
       >
         清空结果
-      </Button>
-    </Group>
-  </Space>
+      </a-button>
+    </a-space>
+  </a-space>
 </template>
 
 <script>
-import { Input, Button, Space } from 'ant-design-vue'
-
-const { TextArea } = Input
-const { Group } = Button
-
 export default {
   name: 'URLEncode',
-  components: {
-    TextArea,
-    Button,
-    Group,
-    Space
-  },
   data: () => ({
     mode: 'text',
     value: undefined
