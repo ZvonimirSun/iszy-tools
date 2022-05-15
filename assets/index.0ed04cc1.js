@@ -1,0 +1,1 @@
+import{F as t}from"./Form.ce2eacff.js";import{aG as n,bC as m}from"./index.cb0e67d8.js";t.useInjectFormItemContext=n;t.ItemRest=m;t.install=function(e){return e.component(t.name,t),e.component(t.Item.name,t.Item),e.component(m.name,m),e};
