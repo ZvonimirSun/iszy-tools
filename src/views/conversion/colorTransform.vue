@@ -1,331 +1,342 @@
 <template>
   <div
-    class="panel"
-    :style="{background: activeColor}"
-    :class="{light:isLight,dark:!isLight}"
+    w-max
+    max-w-full
+    h-full
+    overflow-auto
+    flex
+    flex-row
+    flex-wrap
+    justify-around
+    mx-auto
+    my-0
+    class="p-3.2 gap-3.2"
   >
-    <Row>
-      <Col
-        :md="12"
-        :xl="8"
-        :span="24"
+    <div
+      flex
+      flex-col
+      h-fit
+      w-xl
+    >
+      <a-typography-title :level="4">
+        颜色
+      </a-typography-title>
+      <a-form
+        layout="vertical"
       >
-        <Form layout="vertical">
-          <FormItem
-            label="HEX"
-            class="hex"
-          >
-            <Input
-              v-model:value="hex"
-              @change="inputChange({hex})"
+        <a-form-item
+          label="HEX"
+          class="hex"
+        >
+          <a-input
+            v-model:value="hex"
+            @change="inputChange({hex})"
+          />
+        </a-form-item>
+        <a-form-item
+          label="RGBA"
+          class="rgba"
+        >
+          <a-input-group compact>
+            <a-input-number
+              v-model:value="rgba.r"
+              placeholder="R"
+              :max="255"
+              :min="0"
+              :step="1"
+              @change="inputChange({rgba})"
             />
-          </FormItem>
-          <FormItem
-            label="RGBA"
-            class="rgba"
-          >
-            <InputGroup compact>
-              <InputNumber
-                v-model:value="rgba.r"
-                placeholder="R"
-                :max="255"
-                :min="0"
-                :step="1"
-                @change="inputChange({rgba})"
-              />
-              <InputNumber
-                v-model:value="rgba.g"
-                placeholder="G"
-                :max="255"
-                :min="0"
-                :step="1"
-                @change="inputChange({rgba})"
-              />
-              <InputNumber
-                v-model:value="rgba.b"
-                placeholder="B"
-                :max="255"
-                :min="0"
-                :step="1"
-                @change="inputChange({rgba})"
-              />
-              <InputNumber
-                v-model:value="rgba.a"
-                placeholder="A"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                @change="inputChange({rgba})"
-              />
-            </InputGroup>
-          </FormItem>
-          <FormItem
-            label="HSLA"
-            class="hsla"
-          >
-            <InputGroup compact>
-              <InputNumber
-                v-model:value="hsla.h"
-                placeholder="H"
-                :max="360"
-                :min="0"
-                :step="0.01"
-                :precision="2"
-                @change="inputChange({hsla})"
-              />
-              <InputNumber
-                v-model:value="hsla.s"
-                placeholder="S"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                :formatter="formatterPercentage"
-                :parser="parserPercentage"
-                :precision="2"
-                @change="inputChange({hsla})"
-              />
-              <InputNumber
-                v-model:value="hsla.l"
-                placeholder="L"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                :formatter="formatterPercentage"
-                :parser="parserPercentage"
-                :precision="2"
-                @change="inputChange({hsla})"
-              />
-              <InputNumber
-                v-model:value="hsla.a"
-                placeholder="A"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                :precision="2"
-                @change="inputChange({hsla})"
-              />
-            </InputGroup>
-          </FormItem>
-          <FormItem
-            label="HSVA"
-            class="hsva"
-          >
-            <InputGroup compact>
-              <InputNumber
-                v-model:value="hsva.h"
-                placeholder="H"
-                :max="360"
-                :min="0"
-                :step="0.01"
-                :precision="2"
-                @change="inputChange({hsva})"
-              />
-              <InputNumber
-                v-model:value="hsva.s"
-                placeholder="S"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                :formatter="formatterPercentage"
-                :parser="parserPercentage"
-                :precision="2"
-                @change="inputChange({hsva})"
-              />
-              <InputNumber
-                v-model:value="hsva.v"
-                placeholder="V"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                :formatter="formatterPercentage"
-                :parser="parserPercentage"
-                :precision="2"
-                @change="inputChange({hsva})"
-              />
-              <InputNumber
-                v-model:value="hsva.a"
-                placeholder="A"
-                :max="1"
-                :min="0"
-                :step="0.01"
-                :precision="2"
-                @change="inputChange({hsva})"
-              />
-            </InputGroup>
-          </FormItem>
-        </Form>
-      </Col>
-      <Col
-        :md="12"
-        :xl="8"
-        :span="24"
+            <a-input-number
+              v-model:value="rgba.g"
+              placeholder="G"
+              :max="255"
+              :min="0"
+              :step="1"
+              @change="inputChange({rgba})"
+            />
+            <a-input-number
+              v-model:value="rgba.b"
+              placeholder="B"
+              :max="255"
+              :min="0"
+              :step="1"
+              @change="inputChange({rgba})"
+            />
+            <a-input-number
+              v-model:value="rgba.a"
+              placeholder="A"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              @change="inputChange({rgba})"
+            />
+          </a-input-group>
+        </a-form-item>
+        <a-form-item
+          label="HSLA"
+          class="hsla"
+        >
+          <a-input-group compact>
+            <a-input-number
+              v-model:value="hsla.h"
+              placeholder="H"
+              :max="360"
+              :min="0"
+              :step="0.01"
+              :precision="2"
+              @change="inputChange({hsla})"
+            />
+            <a-input-number
+              v-model:value="hsla.s"
+              placeholder="S"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              :formatter="formatterPercentage"
+              :parser="parserPercentage"
+              :precision="2"
+              @change="inputChange({hsla})"
+            />
+            <a-input-number
+              v-model:value="hsla.l"
+              placeholder="L"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              :formatter="formatterPercentage"
+              :parser="parserPercentage"
+              :precision="2"
+              @change="inputChange({hsla})"
+            />
+            <a-input-number
+              v-model:value="hsla.a"
+              placeholder="A"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              :precision="2"
+              @change="inputChange({hsla})"
+            />
+          </a-input-group>
+        </a-form-item>
+        <a-form-item
+          label="HSVA"
+          class="hsva"
+        >
+          <a-input-group compact>
+            <a-input-number
+              v-model:value="hsva.h"
+              placeholder="H"
+              :max="360"
+              :min="0"
+              :step="0.01"
+              :precision="2"
+              @change="inputChange({hsva})"
+            />
+            <a-input-number
+              v-model:value="hsva.s"
+              placeholder="S"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              :formatter="formatterPercentage"
+              :parser="parserPercentage"
+              :precision="2"
+              @change="inputChange({hsva})"
+            />
+            <a-input-number
+              v-model:value="hsva.v"
+              placeholder="V"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              :formatter="formatterPercentage"
+              :parser="parserPercentage"
+              :precision="2"
+              @change="inputChange({hsva})"
+            />
+            <a-input-number
+              v-model:value="hsva.a"
+              placeholder="A"
+              :max="1"
+              :min="0"
+              :step="0.01"
+              :precision="2"
+              @change="inputChange({hsva})"
+            />
+          </a-input-group>
+        </a-form-item>
+      </a-form>
+    </div>
+    <div
+      w-xl
+      h-fit
+    >
+      <a-typography-title :level="4">
+        颜色选择
+      </a-typography-title>
+      <a-space
+        direction="vertical"
+        w-full
+        :gap="8"
       >
-        <Form layout="vertical">
-          <FormItem label="颜色选择">
-            <div class="saturation">
-              <Saturation
-                :value="colors"
-                @change="childChange"
-              />
-            </div>
-            <div class="hue">
-              <Hue
-                :value="colors"
-                @change="childChange"
-              />
-            </div>
-            <div class="alpha">
-              <Alpha
-                :value="colors"
-                @change="childChange"
-              />
-            </div>
-          </FormItem>
-        </Form>
-      </Col>
-    </Row>
+        <div
+          w-full
+          h-sm
+          b-2
+          b-solid
+        >
+          <Saturation
+            :value="colors"
+            @change="childChange"
+          />
+        </div>
+        <div
+          w-full
+          h-4
+        >
+          <Hue
+            :value="colors"
+            @change="childChange"
+          />
+        </div>
+        <div
+          w-full
+          h-4
+        >
+          <Alpha
+            :value="colors"
+            @change="childChange"
+          />
+        </div>
+      </a-space>
+    </div>
+    <div
+      flex
+      flex-col
+      h-fit
+      w-md
+    >
+      <a-typography-title :level="4">
+        颜色预览
+      </a-typography-title>
+      <div
+        w-full
+        h-sm
+        :style="{background: activeColor}"
+      />
+    </div>
   </div>
 </template>
 
-<script>
-import { Hue, Saturation, Alpha } from '@/components/index.js'
-
+<script setup>
 import tinyColor from 'tinycolor2'
-import { Form, Input, InputNumber, Row, Col } from 'ant-design-vue'
 
-const { Item: FormItem } = Form
-const { Group: InputGroup } = Input
+const hex = ref('16b0f6')
+const rgba = ref({
+  r: undefined,
+  g: undefined,
+  b: undefined,
+  a: undefined
+})
+const hsla = ref({
+  h: undefined,
+  s: undefined,
+  l: undefined,
+  a: undefined
+})
+const hsva = ref({
+  h: undefined,
+  s: undefined,
+  v: undefined,
+  a: undefined
+})
+const oldHue = ref(undefined)
+const colors = ref(getNormalizedColor('16b0f6'))
 
-export default {
-  name: 'ColorTransform',
-  components: {
-    Saturation,
-    Hue,
-    Alpha,
-    Form,
-    FormItem,
-    Input,
-    InputGroup,
-    InputNumber,
-    Row,
-    Col
-  },
-  data: () => ({
-    hex: '16b0f6',
-    rgba: {
-      r: undefined,
-      g: undefined,
-      b: undefined,
-      a: undefined
-    },
-    hsla: {
-      h: undefined,
-      s: undefined,
-      l: undefined,
-      a: undefined
-    },
-    hsva: {
-      h: undefined,
-      s: undefined,
-      v: undefined,
-      a: undefined
-    },
-    oldHue: undefined,
-    colors: colorChange('16b0f6')
-  }),
-  computed: {
-    activeColor () {
-      const { rgba } = this.colors
-      return `rgba(${[rgba.r, rgba.g, rgba.b, rgba.a].join(',')})`
-    },
-    isLight () {
-      if (this.colors) {
-        return tinyColor(this.colors.hex8).isLight() || this.colors.a < 0.5
-      } else {
-        return true
-      }
-    }
-  },
-  mounted () {
-    this.inputChange({ hex: this.hex })
-  },
-  methods: {
-    colorChange (data, oldHue) {
-      this.oldHue = this.colors.hsl.h
-      const {
-        rgba,
-        hex,
-        hex8,
-        a,
-        hsl,
-        hsv,
-        source
-      } = this.colors = colorChange(data, oldHue || this.oldHue)
-      if (source !== 'rgba') {
-        this.rgba.r = rgba.r
-        this.rgba.g = rgba.g
-        this.rgba.b = rgba.b
-        this.rgba.a = rgba.a
-      }
-      if (source !== 'hsla') {
-        this.hsla.h = hsl.h
-        this.hsla.s = hsl.s
-        this.hsla.l = hsl.l
-        this.hsla.a = a
-      }
-      this.hsva.h = hsv.h
-      this.hsva.s = hsv.s
-      this.hsva.v = hsv.v
-      this.hsva.a = a
-      if (source !== 'hex') {
-        if (a === 1) {
-          this.hex = hex.replace('#', '')
-        } else {
-          this.hex = hex8.replace('#', '')
-        }
-      }
-    },
-    isValidColor (color) {
-      return tinyColor(color).isValid()
-    },
-    childChange (data) {
-      this.colorChange(data)
-    },
-    inputChange (data) {
-      if (!data) {
-        return
-      }
-      if (data.hex) {
-        this.isValidColor(data.hex) && this.colorChange({
-          hex: data.hex,
-          source: 'hex'
-        })
-      } else if (data.rgba) {
-        this.isValidColor(data.rgba) && this.colorChange({
-          r: data.rgba.r || this.colors.rgba.r,
-          g: data.rgba.g || this.colors.rgba.g,
-          b: data.rgba.b || this.colors.rgba.b,
-          a: data.rgba.a || this.colors.rgba.a,
-          source: 'rgba'
-        })
-      } else if (data.hsla) {
-        const tmp = `hsla(${data.hsla.h},${(data.hsla.s * 100).toFixed(0)}%,${(data.hsla.l * 100).toFixed(0)}%,${data.hsla.a}`
-        this.isValidColor(tmp) && this.colorChange(tmp)
-      } else if (data.hsva) {
-        const tmp = `hsva(${data.hsva.h},${(data.hsva.s * 100).toFixed(0)}%,${(data.hsva.v * 100).toFixed(0)}%,${data.hsva.a}`
-        this.isValidColor(tmp) && this.colorChange(tmp)
-      }
-    },
-    formatterPercentage (value) {
-      return `${(value * 100).toFixed(0)}%`
-    },
-    parserPercentage (value) {
-      return parseInt(value.replace('%', '')) / 100
+const activeColor = computed(() => {
+  const { rgba } = colors.value
+  return `rgba(${[rgba.r, rgba.g, rgba.b, rgba.a].join(',')})`
+})
+
+onMounted(() => {
+  inputChange({ hex: hex.value })
+})
+
+function colorChange (data, oldHueLocal) {
+  oldHue.value = colors.value.hsl.h
+  const {
+    rgba: rgbaLocal,
+    hex: hexLocal,
+    hex8,
+    a,
+    hsl,
+    hsv,
+    source
+  } = colors.value = getNormalizedColor(data, oldHueLocal || oldHue.value)
+  if (source !== 'rgba') {
+    rgba.value.r = rgbaLocal.r
+    rgba.value.g = rgbaLocal.g
+    rgba.value.b = rgbaLocal.b
+    rgba.value.a = rgbaLocal.a
+  }
+  if (source !== 'hsla') {
+    hsla.value.h = hsl.h
+    hsla.value.s = hsl.s
+    hsla.value.l = hsl.l
+    hsla.value.a = a
+  }
+  hsva.value.h = hsv.h
+  hsva.value.s = hsv.s
+  hsva.value.v = hsv.v
+  hsva.value.a = a
+  if (source !== 'hex') {
+    if (a === 1) {
+      hex.value = hexLocal.replace('#', '')
+    } else {
+      hex.value = hex8.replace('#', '')
     }
   }
 }
+function isValidColor (color) {
+  return tinyColor(color).isValid()
+}
+function childChange (data) {
+  colorChange(data)
+}
+function inputChange (data) {
+  if (!data) {
+    return
+  }
+  if (data.hex) {
+    isValidColor(data.hex) && colorChange({
+      hex: data.hex,
+      source: 'hex'
+    })
+  } else if (data.rgba) {
+    isValidColor(data.rgba) && colorChange({
+      r: data.rgba.r || colors.value.rgba.r,
+      g: data.rgba.g || colors.value.rgba.g,
+      b: data.rgba.b || colors.value.rgba.b,
+      a: data.rgba.a || colors.value.rgba.a,
+      source: 'rgba'
+    })
+  } else if (data.hsla) {
+    const tmp = `hsla(${data.hsla.h},${(data.hsla.s * 100).toFixed(0)}%,${(data.hsla.l * 100).toFixed(0)}%,${data.hsla.a}`
+    isValidColor(tmp) && colorChange(tmp)
+  } else if (data.hsva) {
+    const tmp = `hsva(${data.hsva.h},${(data.hsva.s * 100).toFixed(0)}%,${(data.hsva.v * 100).toFixed(0)}%,${data.hsva.a}`
+    isValidColor(tmp) && colorChange(tmp)
+  }
+}
+function formatterPercentage (value) {
+  return `${(value * 100).toFixed(0)}%`
+}
+function parserPercentage (value) {
+  return parseInt(value.replace('%', '')) / 100
+}
 
-function colorChange (data, oldHue) {
+function getNormalizedColor (data, oldHue) {
   const alpha = data && data.a
   let color
 
@@ -369,62 +380,17 @@ function colorChange (data, oldHue) {
 </script>
 
 <style scoped lang="scss">
-.panel {
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  padding: .8rem;
-
-  &.light {
-    :deep(.ant-form-item-label) > label {
-      color: #333;
-    }
-  }
-
-  &.dark {
-    :deep(.ant-form-item-label) > label {
-      color: #fff;
-    }
-  }
+.ant-input-number + .ant-input-number {
+  width: 20%;
+  margin-left: .8rem;
+  max-width: 9.5rem;
 }
 
-.preview {
-  display: block;
-  max-width: 15rem;
-  width: 100%;
-  height: 3.2rem;
+.ant-form-item {
+  margin: 0;
 }
 
-.saturation {
-  max-width: 40.5rem;
-  width: 100%;
-  height: 25rem;
-  border: solid;
-}
-
-.hue {
-  max-width: 40.5rem;
-  width: 100%;
-  height: 1.2rem;
+.ant-form-item + .ant-form-item {
   margin-top: .8rem;
-}
-
-.alpha {
-  max-width: 40.5rem;
-  width: 100%;
-  height: 1.2rem;
-  margin-top: .8rem;
-}
-
-.hex .ant-input {
-  max-width: 15rem;
-}
-
-.panel {
-  .ant-input-number {
-    width: 20%;
-    margin-right: .8rem;
-    max-width: 9.5rem;
-  }
 }
 </style>
