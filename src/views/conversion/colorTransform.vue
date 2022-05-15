@@ -17,6 +17,7 @@
       flex-col
       h-fit
       w-xl
+      max-w-full
     >
       <a-typography-title :level="4">
         颜色
@@ -24,6 +25,12 @@
       <a-form
         layout="vertical"
       >
+        <a-form-item label="CSS 字符串">
+          <a-input
+            v-model:value="cssString"
+            @change="inputChange({cssString})"
+          />
+        </a-form-item>
         <a-form-item
           label="HEX"
           class="hex"
@@ -37,7 +44,13 @@
           label="RGBA"
           class="rgba"
         >
-          <a-input-group compact>
+          <div
+            flex
+            w-full
+            justify-between
+            overflow-auto
+            class="gap-3.2"
+          >
             <a-input-number
               v-model:value="rgba.r"
               placeholder="R"
@@ -70,13 +83,19 @@
               :step="0.01"
               @change="inputChange({rgba})"
             />
-          </a-input-group>
+          </div>
         </a-form-item>
         <a-form-item
           label="HSLA"
           class="hsla"
         >
-          <a-input-group compact>
+          <div
+            flex
+            w-full
+            justify-between
+            overflow-auto
+            class="gap-3.2"
+          >
             <a-input-number
               v-model:value="hsla.h"
               placeholder="H"
@@ -117,13 +136,19 @@
               :precision="2"
               @change="inputChange({hsla})"
             />
-          </a-input-group>
+          </div>
         </a-form-item>
         <a-form-item
           label="HSVA"
           class="hsva"
         >
-          <a-input-group compact>
+          <div
+            flex
+            w-full
+            justify-between
+            overflow-auto
+            class="gap-3.2"
+          >
             <a-input-number
               v-model:value="hsva.h"
               placeholder="H"
@@ -131,6 +156,7 @@
               :min="0"
               :step="0.01"
               :precision="2"
+              w-full
               @change="inputChange({hsva})"
             />
             <a-input-number
@@ -142,6 +168,7 @@
               :formatter="formatterPercentage"
               :parser="parserPercentage"
               :precision="2"
+              w-full
               @change="inputChange({hsva})"
             />
             <a-input-number
@@ -153,6 +180,7 @@
               :formatter="formatterPercentage"
               :parser="parserPercentage"
               :precision="2"
+              w-full
               @change="inputChange({hsva})"
             />
             <a-input-number
@@ -164,13 +192,14 @@
               :precision="2"
               @change="inputChange({hsva})"
             />
-          </a-input-group>
+          </div>
         </a-form-item>
       </a-form>
     </div>
     <div
       w-xl
       h-fit
+      max-w-full
     >
       <a-typography-title :level="4">
         颜色选择
@@ -215,7 +244,8 @@
       flex
       flex-col
       h-fit
-      w-md
+      w-xl
+      max-w-full
     >
       <a-typography-title :level="4">
         颜色预览
@@ -232,7 +262,8 @@
 <script setup>
 import tinyColor from 'tinycolor2'
 
-const hex = ref('16b0f6')
+const cssString = ref('#16b0f6ff')
+const hex = ref('')
 const rgba = ref({
   r: undefined,
   g: undefined,
@@ -251,7 +282,6 @@ const hsva = ref({
   v: undefined,
   a: undefined
 })
-const oldHue = ref(undefined)
 const colors = ref(getNormalizedColor('16b0f6'))
 
 const activeColor = computed(() => {
@@ -260,41 +290,45 @@ const activeColor = computed(() => {
 })
 
 onMounted(() => {
-  inputChange({ hex: hex.value })
+  inputChange({ cssString: cssString.value })
 })
 
-function colorChange (data, oldHueLocal) {
-  oldHue.value = colors.value.hsl.h
+function handleCssString () {
+  const ctx = document.createElement('canvas').getContext('2d')
+  ctx.fillStyle = cssString.value || ''
+  colorChange(ctx.fillStyle)
+}
+function colorChange (data, isCssString = false) {
   const {
     rgba: rgbaLocal,
     hex: hexLocal,
     hex8,
     a,
     hsl,
-    hsv,
-    source
-  } = colors.value = getNormalizedColor(data, oldHueLocal || oldHue.value)
-  if (source !== 'rgba') {
-    rgba.value.r = rgbaLocal.r
-    rgba.value.g = rgbaLocal.g
-    rgba.value.b = rgbaLocal.b
-    rgba.value.a = rgbaLocal.a
-  }
-  if (source !== 'hsla') {
-    hsla.value.h = hsl.h
-    hsla.value.s = hsl.s
-    hsla.value.l = hsl.l
-    hsla.value.a = a
-  }
+    hsv
+  } = colors.value = getNormalizedColor(data, colors.value.hsl.h)
+  rgba.value.r = rgbaLocal.r
+  rgba.value.g = rgbaLocal.g
+  rgba.value.b = rgbaLocal.b
+  rgba.value.a = rgbaLocal.a
+  hsla.value.h = hsl.h
+  hsla.value.s = hsl.s
+  hsla.value.l = hsl.l
+  hsla.value.a = a
   hsva.value.h = hsv.h
   hsva.value.s = hsv.s
   hsva.value.v = hsv.v
   hsva.value.a = a
-  if (source !== 'hex') {
+  if (a === 1) {
+    hex.value = hexLocal.replace('#', '')
+  } else {
+    hex.value = hex8.replace('#', '')
+  }
+  if (!isCssString) {
     if (a === 1) {
-      hex.value = hexLocal.replace('#', '')
+      cssString.value = '#' + hex.value.toLowerCase()
     } else {
-      hex.value = hex8.replace('#', '')
+      cssString.value = `rgba(${rgbaLocal.r}, ${rgbaLocal.g}, ${rgbaLocal.b}, ${rgbaLocal.a})`
     }
   }
 }
@@ -327,6 +361,8 @@ function inputChange (data) {
   } else if (data.hsva) {
     const tmp = `hsva(${data.hsva.h},${(data.hsva.s * 100).toFixed(0)}%,${(data.hsva.v * 100).toFixed(0)}%,${data.hsva.a}`
     isValidColor(tmp) && colorChange(tmp)
+  } else if (data.cssString) {
+    isValidColor(data.cssString) && colorChange(data.cssString, true)
   }
 }
 function formatterPercentage (value) {
@@ -368,8 +404,8 @@ function getNormalizedColor (data, oldHue) {
 
   return {
     hsl,
-    hex: color.toHexString().toUpperCase(),
-    hex8: color.toHex8String().toUpperCase(),
+    hex: color.toHexString(),
+    hex8: color.toHex8String(),
     rgba: color.toRgb(),
     hsv,
     oldHue: data.h || oldHue || hsl.h,
@@ -380,12 +416,6 @@ function getNormalizedColor (data, oldHue) {
 </script>
 
 <style scoped lang="scss">
-.ant-input-number + .ant-input-number {
-  width: 20%;
-  margin-left: .8rem;
-  max-width: 9.5rem;
-}
-
 .ant-form-item {
   margin: 0;
 }
