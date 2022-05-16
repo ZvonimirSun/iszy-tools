@@ -23,7 +23,7 @@
       </div>
       <div class="main">
         <slot />
-        <BackTop
+        <a-back-top
           :target="()=>$refs.container"
           :visibility-height="100"
         />
@@ -32,10 +32,6 @@
   </div>
 </template>
 <script setup>
-import { BackTop } from 'ant-design-vue'
-import { FullScreen, OffScreen } from '@icon-park/vue-next'
-
-// eslint-disable-next-line no-undef
 const props = defineProps({
   name: { type: String, default: '' },
   fullScreenStatus: Boolean

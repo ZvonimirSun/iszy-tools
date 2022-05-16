@@ -1,55 +1,55 @@
 <template>
-  <Form
+  <a-form
     layout="inline"
     :model="formState"
   >
-    <Item label="版本">
-      <Select v-model:value="formState.version">
-        <Option value="v1">
+    <a-form-item label="版本">
+      <a-select v-model:value="formState.version">
+        <a-select-option value="v1">
           Version 1
-        </Option>
-        <Option value="v4">
+        </a-select-option>
+        <a-select-option value="v4">
           Version 4
-        </Option>
-        <Option value="nil">
+        </a-select-option>
+        <a-select-option value="nil">
           NIL
-        </Option>
-      </Select>
-    </Item>
-    <Item
+        </a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item
       v-show="formState.version!=='nil'"
       label="数量"
     >
-      <InputNumber
+      <a-input-number
         v-model:value="formState.count"
         :max="500"
         :min="1"
         :step="1"
       />
-    </Item>
-    <Item label="连字符">
-      <Switch v-model:checked="formState.hasHyphen" />
-    </Item>
-    <Item label="自动生成">
-      <Switch v-model:checked="auto" />
-    </Item>
-  </Form>
-  <Divider />
+    </a-form-item>
+    <a-form-item label="连字符">
+      <a-switch v-model:checked="formState.hasHyphen" />
+    </a-form-item>
+    <a-form-item label="自动生成">
+      <a-switch v-model:checked="auto" />
+    </a-form-item>
+  </a-form>
+  <a-divider />
   <div class="btnGroup">
-    <Button
+    <a-button
       type="primary"
       @click="generate"
     >
       生成
-    </Button>
-    <Button
+    </a-button>
+    <a-button
       @click="reset"
     >
       重置
-    </Button>
+    </a-button>
   </div>
   <div class="resultPanel">
-    <TextArea
+    <a-textarea
       v-model:value="result"
       placeholder="结果栏"
       :auto-size="{ minRows: 10,maxRows:50 }"
@@ -59,14 +59,9 @@
 
 <script>
 import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
-import { Form, Select, Input, InputNumber, Switch, Divider, Button } from 'ant-design-vue'
-const { Item } = Form
-const { Option } = Select
-const { TextArea } = Input
 
 export default {
   name: 'UUID在线生成',
-  components: { Form, Select, InputNumber, Switch, Divider, Button, Item, Option, TextArea },
   data: () => ({
     formState: {
       count: 1,

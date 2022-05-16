@@ -1,17 +1,17 @@
 <template>
-  <Upload
+  <a-upload
     :file-list="[]"
     :show-upload-list="false"
     :before-upload="getFileList"
     :directory="true"
   >
-    <Input
+    <a-input
       readonly
       placeholder="点击这里选择 gltf 文件所在文件夹"
       :value="fileName"
     >
       <template #addonAfter>
-        <Button
+        <a-button
           block
           :disabled="!fileName"
           :loading="loading"
@@ -19,10 +19,10 @@
         >
           <span v-if="loading">加载中</span>
           <span v-else>加载</span>
-        </Button>
+        </a-button>
       </template>
-    </Input>
-  </Upload>
+    </a-input>
+  </a-upload>
   <div
     ref="treeContainer"
     class="threeContainer"
@@ -33,7 +33,6 @@
 import { WebGLRenderer, PerspectiveCamera, AmbientLight, Scene, Color, LoaderUtils, LoadingManager } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { Input, Upload, Button } from 'ant-design-vue'
 
 let scene, camera, renderer, ambientLight, controls, manager
 let fileList, fileMap, rootFile, rootPath, loader, modelScene
@@ -59,11 +58,6 @@ const animate = () => {
 
 export default {
   name: '3dView',
-  components: {
-    Upload,
-    Input,
-    Button
-  },
   data: () => ({
     fileName: undefined,
     loading: false

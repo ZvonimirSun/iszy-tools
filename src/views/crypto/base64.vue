@@ -1,41 +1,37 @@
 <template>
-  <Space
+  <a-space
     direction="vertical"
     style="width: 100%"
   >
-    <TextArea
+    <a-textarea
       v-model:value="data1"
       :rows="5"
       placeholder="请输入要进行 Base64 编码或解码的字符"
     />
-    <Space style="flex-wrap: wrap">
-      <Button
+    <a-space style="flex-wrap: wrap">
+      <a-button
         type="primary"
         @click="encode"
       >
         编码 (Encode)
-      </Button>
-      <Button @click="decode">
+      </a-button>
+      <a-button @click="decode">
         解码 (Decode)
-      </Button>
-      <Button @click="exchange">
+      </a-button>
+      <a-button @click="exchange">
         ↕交换
-      </Button>
-    </Space>
-    <TextArea
+      </a-button>
+    </a-space>
+    <a-textarea
       v-model:value="data2"
       :rows="5"
       readonly
       placeholder="Base64 编码或解码的结果"
     />
-  </Space>
+  </a-space>
 </template>
 
 <script setup>
-import { Input, Space, Button } from 'ant-design-vue'
-
-const { TextArea } = Input
-
 const data1 = ref('')
 const data2 = ref('')
 const msg = inject('$msg')

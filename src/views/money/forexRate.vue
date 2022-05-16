@@ -1,41 +1,48 @@
 <template>
-  <a-space
-    :gap="8"
-    direction="vertical"
+  <div
+    w-full
+    h-full
+    overflow-auto
   >
-    <div>1 {{ forexMap[curFromCode] }} 等于</div>
-    <div>{{ rate }} {{ forexMap[curToCode] }}</div>
-    <a-space :gap="8">
-      <a-input-number
-        v-model:value.number="fromValue"
-        @change="updateToValue"
-      />
-      <a-select v-model:value="fromCode">
-        <a-select-option
-          v-for="(item,index) in forexList"
-          :key="index"
-          :value="item.code"
-        >
-          {{ item.label }}
-        </a-select-option>
-      </a-select>
+    <a-space
+      :gap="8"
+      direction="vertical"
+      style="margin: 0 auto"
+    >
+      <div>1 {{ forexMap[curFromCode] }} 等于</div>
+      <div>{{ rate }} {{ forexMap[curToCode] }}</div>
+      <a-space :gap="8">
+        <a-input-number
+          v-model:value.number="fromValue"
+          @change="updateToValue"
+        />
+        <a-select v-model:value="fromCode">
+          <a-select-option
+            v-for="(item,index) in forexList"
+            :key="index"
+            :value="item.code"
+          >
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
+      </a-space>
+      <a-space :gap="8">
+        <a-input-number
+          v-model:value.number="toValue"
+          @change="updateFromValue"
+        />
+        <a-select v-model:value="toCode">
+          <a-select-option
+            v-for="(item,index) in forexList"
+            :key="index"
+            :value="item.code"
+          >
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
+      </a-space>
     </a-space>
-    <a-space :gap="8">
-      <a-input-number
-        v-model:value.number="toValue"
-        @change="updateFromValue"
-      />
-      <a-select v-model:value="toCode">
-        <a-select-option
-          v-for="(item,index) in forexList"
-          :key="index"
-          :value="item.code"
-        >
-          {{ item.label }}
-        </a-select-option>
-      </a-select>
-    </a-space>
-  </a-space>
+  </div>
 </template>
 
 <script setup>
@@ -132,6 +139,6 @@ function updateFromValue () {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

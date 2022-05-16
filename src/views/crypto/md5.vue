@@ -1,31 +1,27 @@
 <template>
-  <Space
+  <a-space
     direction="vertical"
     style="width: 100%"
   >
-    <TextArea
+    <a-textarea
       v-model:value="data1"
       :rows="5"
       placeholder="请输入要进行 MD5 编码的字符"
     />
-    <Title :level="4">
+    <a-typography-title :level="4">
       结果
-    </Title>
-    <TextArea
+    </a-typography-title>
+    <a-textarea
       v-model:value="data2"
       :rows="5"
       readonly
       placeholder="MD5 编码的结果"
     />
-  </Space>
+  </a-space>
 </template>
 
 <script setup>
-import { Input, Space, Typography } from 'ant-design-vue'
 import MD5 from 'crypto-js/md5.js'
-
-const { TextArea } = Input
-const { Title } = Typography
 
 const data1 = ref('')
 const data2 = ref('')

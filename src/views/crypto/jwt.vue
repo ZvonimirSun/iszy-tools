@@ -1,34 +1,34 @@
 <template>
   <div class="wrapper">
     <div class="encoded">
-      <Title :level="3">
+      <a-typography-title :level="3">
         Encoded
-      </Title>
-      <Title :level="4">
+      </a-typography-title>
+      <a-typography-title :level="4">
         Token
-      </Title>
-      <TextArea
+      </a-typography-title>
+      <a-textarea
         v-model:value="token"
         label="Token"
         @change="tokenChange"
       />
     </div>
     <div class="decoded">
-      <Title :level="3">
+      <a-typography-title :level="3">
         Decoded
-      </Title>
-      <Title :level="4">
+      </a-typography-title>
+      <a-typography-title :level="4">
         Header
-      </Title>
-      <TextArea
+      </a-typography-title>
+      <a-textarea
         v-model:value="header"
         label="Header"
         readonly
       />
-      <Title :level="4">
+      <a-typography-title :level="4">
         Payload
-      </Title>
-      <TextArea
+      </a-typography-title>
+      <a-textarea
         v-model:value="payload"
         label="Payload"
         readonly
@@ -38,10 +38,6 @@
 </template>
 
 <script setup>
-import { Input, Typography } from 'ant-design-vue'
-const { TextArea } = Input
-const { Title } = Typography
-
 const token = ref('')
 const header = ref('')
 const payload = ref('')

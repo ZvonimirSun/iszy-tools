@@ -1,107 +1,105 @@
 <template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     用户
-  </Title>
-  <Space>
-    <Button
+  </a-typography-title>
+  <a-space>
+    <a-button
       v-show="!_user.token"
       type="primary"
       @click="login"
     >
       登录
-    </Button>
-    <Button
+    </a-button>
+    <a-button
       v-show="_user.token"
       type="primary"
       @click="logout"
     >
       登出
-    </Button>
-    <Popconfirm
+    </a-button>
+    <a-popconfirm
       title="您是否确定要清空本地缓存？"
       ok-text="清空"
       @confirm="clearOfflineCache"
     >
-      <Button danger>
+      <a-button danger>
         清空本地缓存
-      </Button>
-    </Popconfirm>
-  </Space>
-  <Divider />
+      </a-button>
+    </a-popconfirm>
+  </a-space>
+  <a-divider />
   <template v-if="_user.token">
-    <Title :level="3">
+    <a-typography-title :level="3">
       云端同步
-    </Title>
-    <Space>
-      <Button
+    </a-typography-title>
+    <a-space>
+      <a-button
         type="primary"
         @click="uploadToCloud"
       >
         同步到云端
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         @click="downloadFromCloud"
       >
         从云端同步
-      </Button>
-      <Checkbox
+      </a-button>
+      <a-checkbox
         :checked="settings.autoSync"
         @change="triggerSetting('autoSync')"
       >
         自动同步
-      </Checkbox>
-    </Space>
-    <Divider />
+      </a-checkbox>
+    </a-space>
+    <a-divider />
   </template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     访问统计
-  </Title>
-  <Space>
-    <Checkbox
+  </a-typography-title>
+  <a-space>
+    <a-checkbox
       :checked="settings.showMost"
       @change="triggerSetting('showMost')"
     >
       最常访问
-    </Checkbox>
-    <Checkbox
+    </a-checkbox>
+    <a-checkbox
       :checked="settings.showRecent"
       @change="triggerSetting('showRecent')"
     >
       最近访问
-    </Checkbox>
-  </Space>
-  <Divider />
-  <Title :level="3">
+    </a-checkbox>
+  </a-space>
+  <a-divider />
+  <a-typography-title :level="3">
     其他设置
-  </Title>
-  <Space>
-    <Checkbox
+  </a-typography-title>
+  <a-space>
+    <a-checkbox
       :checked="settings.showSearch"
       @change="triggerSetting('showSearch')"
     >
       显示搜索
-    </Checkbox>
-    <Checkbox
+    </a-checkbox>
+    <a-checkbox
       :checked="settings.showType"
       @change="triggerSetting('showType')"
     >
       显示分类
-    </Checkbox>
-    <Checkbox
+    </a-checkbox>
+    <a-checkbox
       :checked="settings.openInNewTab"
       @change="triggerSetting('openInNewTab')"
     >
       新标签页打开工具
-    </Checkbox>
-  </Space>
+    </a-checkbox>
+  </a-space>
 </template>
 
 <script>
 import { createNamespacedHelpers, mapActions, mapMutations } from 'vuex'
-import { Typography, Divider, Checkbox, Space, Button, Popconfirm } from 'ant-design-vue'
 
-const { Title } = Typography
 const {
   mapState: mapStateUser,
   mapMutations: mapMutationsUser
@@ -109,14 +107,6 @@ const {
 
 export default {
   name: 'SettingsPage',
-  components: {
-    Divider,
-    Checkbox,
-    Title,
-    Space,
-    Button,
-    Popconfirm
-  },
   computed: {
     ...mapStateUser(['_user', 'settings'])
   },

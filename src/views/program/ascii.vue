@@ -1,18 +1,18 @@
 <template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     7 Bit ASCII Codes
-  </Title>
-  <Table
+  </a-typography-title>
+  <a-table
     :columns="columns"
     :data-source="data1"
     :pagination="false"
     row-key="dec"
   />
-  <Divider />
-  <Title :level="3">
+  <a-divider />
+  <a-typography-title :level="3">
     Extended ASCII Codes
-  </Title>
-  <Table
+  </a-typography-title>
+  <a-table
     :columns="columns"
     :data-source="data2"
     :pagination="false"
@@ -21,13 +21,8 @@
 </template>
 
 <script>
-import { Typography, Divider, Table } from 'ant-design-vue'
-
-const { Title } = Typography
-
 export default {
   name: 'AsciiTable',
-  components: { Title, Divider, Table },
   data: () => ({
     columns: [
       {

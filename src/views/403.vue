@@ -1,22 +1,21 @@
 <template>
-  <Result
+  <a-result
     status="403"
     title="403"
     sub-title="对不起，你无权访问当前页面。"
   >
     <template #extra>
-      <Button
+      <a-button
         type="primary"
         @click="login"
       >
         登录
-      </Button>
+      </a-button>
     </template>
-  </Result>
+  </a-result>
 </template>
 
 <script setup>
-import { Result, Button } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

@@ -1,55 +1,40 @@
 <template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     转换
-  </Title>
-  <Paragraph>
+  </a-typography-title>
+  <a-typography-paragraph>
     <blockquote>实时计算，直接输入即可</blockquote>
-  </Paragraph>
-  <Form layout="vertical">
-    <FormItem label="AV号">
-      <InputNumber
+  </a-typography-paragraph>
+  <a-form layout="vertical">
+    <a-form-item label="AV号">
+      <a-input-number
         v-model:value="aid"
         @change="enc(aid)"
       />
-    </FormItem>
-    <FormItem label="BV号">
-      <Input
+    </a-form-item>
+    <a-form-item label="BV号">
+      <a-input
         v-model:value="bvid"
         @change="dec(bvid)"
       />
-    </FormItem>
-  </Form>
-  <Title :level="3">
+    </a-form-item>
+  </a-form>
+  <a-typography-title :level="3">
     信息
-  </Title>
-  <Space direction="vertical">
-    <Link :href="'https://www.bilibili.com/video/av' + aid">
+  </a-typography-title>
+  <a-space direction="vertical">
+    <a-typography-link :href="'https://www.bilibili.com/video/av' + aid">
       {{ 'https://www.bilibili.com/video/av' + aid }}
-    </Link>
-    <Link :href="'https://www.bilibili.com/video/' + bvid">
+    </a-typography-link>
+    <a-typography-link :href="'https://www.bilibili.com/video/' + bvid">
       {{ 'https://www.bilibili.com/video/' + bvid }}
-    </Link>
-  </Space>
+    </a-typography-link>
+  </a-space>
 </template>
 
 <script>
-import { Form, Input, InputNumber, Typography, Space } from 'ant-design-vue'
-
-const { Item: FormItem } = Form
-const { Title, Paragraph, Link } = Typography
-
 export default {
   name: 'BilibiliBv2av',
-  components: {
-    Input,
-    InputNumber,
-    Form,
-    FormItem,
-    Title,
-    Paragraph,
-    Link,
-    Space
-  },
   data: () => ({
     aid: '19390801',
     bvid: '',

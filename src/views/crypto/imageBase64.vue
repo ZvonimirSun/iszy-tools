@@ -1,30 +1,30 @@
 <template>
   <div class="wrapper">
-    <Space>
-      <Upload
+    <a-space>
+      <a-upload
         :file-list="[]"
         :show-upload-list="false"
         accept="image/*"
         :before-upload="upload"
       >
-        <Button type="primary">
+        <a-button type="primary">
           点击上传
-        </Button>
-      </Upload>
-      <Button
+        </a-button>
+      </a-upload>
+      <a-button
         v-if="file"
         @click="copy"
       >
         复制
-      </Button>
-    </Space>
-    <Paragraph v-if="file">
+      </a-button>
+    </a-space>
+    <a-typography-paragraph v-if="file">
       <pre>{{ file }}</pre>
-    </Paragraph>
+    </a-typography-paragraph>
     <template v-if="file">
-      <Title :level="4">
+      <a-typography-title :level="4">
         预览
-      </Title>
+      </a-typography-title>
       <img
         class="preview"
         :src="file"
@@ -35,10 +35,6 @@
 </template>
 
 <script setup>
-import { Typography, Upload, Button, Space } from 'ant-design-vue'
-
-const { Paragraph, Title } = Typography
-
 const file = ref('')
 const $msg = inject('$msg')
 

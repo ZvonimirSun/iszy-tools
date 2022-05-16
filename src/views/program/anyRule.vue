@@ -1,69 +1,64 @@
 <template>
-  <Paragraph>
+  <a-typography-paragraph>
     <blockquote>
-      正则数据来源：<Link
+      正则数据来源：<a-typography-link
         href="https://any86.github.io/any-rule/"
         target="_blank"
       >
         正则大全
-      </Link>
+      </a-typography-link>
     </blockquote>
-  </Paragraph>
-  <Form layout="vertical">
-    <FormItem>
+  </a-typography-paragraph>
+  <a-form layout="vertical">
+    <a-form-item>
       <template #label>
         <strong>搜索</strong>
       </template>
-      <Input
+      <a-input
         v-model:value="keyword"
         placeholder="搜索关键词，如'手机'"
       />
-    </FormItem>
+    </a-form-item>
     <template
       v-for="(item,index) in rules"
       :key="index"
     >
-      <Divider v-show="isShow(item)" />
-      <FormItem
+      <a-divider v-show="isShow(item)" />
+      <a-form-item
         v-show="isShow(item)"
         :rules="{trigger:['change', 'blur'],validator:validator}"
         has-feedback
         :name="item.key"
       >
         <template #label>
-          <strong>{{ item.title }}</strong>&nbsp;<Link
+          <strong>{{ item.title }}</strong>&nbsp;<a-typography-link
             :href="'https://github.com/any86/any-rule/issues/new?title=我有更好的正则: '+item.title"
             target="_blank"
           >
             <strong>反馈</strong>
-          </Link>
+          </a-typography-link>
         </template>
-        <Input
+        <a-input
           v-model:value="item.test"
           :placeholder="'例如: '+item.examples.join(', ') + (item.counterExamples ? '; 反例: ' + item.counterExamples.join(', '): '')"
         />
-      </FormItem>
-      <Paragraph
+      </a-form-item>
+      <a-typography-paragraph
         v-show="isShow(item)"
         :copyable="{text:item.rule.toString()}"
       >
         <pre>{{ item.rule.toString() }}</pre>
-      </Paragraph>
+      </a-typography-paragraph>
     </template>
-  </Form>
+  </a-form>
 </template>
 
 <script>
 import { v4 as uuidv4 } from 'uuid'
-import { Typography, Form, Input, Divider } from 'ant-design-vue'
 import anyRule from '@/utils/anyRule.js'
-
-const { Paragraph, Link } = Typography
-const { Item: FormItem } = Form
 
 export default {
   name: 'AnyRule',
-  components: { Paragraph, Link, Form, FormItem, Input, Divider },
   data: () => ({
     rules: [],
     keyword: '',

@@ -11,7 +11,7 @@
     >
       <div class="editorController editorControllerLeft">
         <div class="editorTitle">
-          <Text
+          <a-typography-text
             :content="leftData?.name"
             :editable="leftData?.name ? {
               onStart:onEditStartLeft,
@@ -20,73 +20,73 @@
             }:false"
           />
         </div>
-        <Space class="editorControlButtons">
-          <Button
+        <a-space class="editorControlButtons">
+          <a-button
             size="small"
             type="primary"
             @click="create('left')"
           >
             <span class="buttonWithIcon"><FileAdditionOne theme="outline" />&nbsp;新建</span>
-          </Button>
-          <Dropdown>
+          </a-button>
+          <a-dropdown>
             <template #overlay>
-              <Menu
+              <a-menu
                 :trigger="['click','hover']"
                 @click="open($event,'left')"
               >
-                <MenuItem key="recent">
+                <a-menu-item key="recent">
                   <span class="buttonWithIcon"><History theme="outline" />&nbsp;打开最近记录</span>
-                </MenuItem>
-                <MenuItem key="file">
+                </a-menu-item>
+                <a-menu-item key="file">
                   <span class="buttonWithIcon"><Computer theme="outline" />&nbsp;打开本地文件</span>
-                </MenuItem>
-                <MenuItem key="url">
+                </a-menu-item>
+                <a-menu-item key="url">
                   <span class="buttonWithIcon"><LinkThree theme="outline" />&nbsp;打开URL</span>
-                </MenuItem>
-              </Menu>
+                </a-menu-item>
+              </a-menu>
             </template>
-            <Button
+            <a-button
               size="small"
               type="primary"
             >
               <span class="buttonWithIcon"><FolderOpen theme="outline" />&nbsp;打开<Down theme="outline" /></span>
-            </Button>
-          </Dropdown>
-          <Button
+            </a-button>
+          </a-dropdown>
+          <a-button
             size="small"
             type="primary"
             @click="download('left')"
           >
             <span class="buttonWithIcon"><Save theme="outline" />&nbsp;保存</span>
-          </Button>
-          <Dropdown>
+          </a-button>
+          <a-dropdown>
             <template #overlay>
-              <Menu
+              <a-menu
                 :trigger="['click','hover']"
                 @click="changeOption($event,'left')"
               >
-                <MenuItem key="indentation">
+                <a-menu-item key="indentation">
                   <span class="buttonWithIcon"><IndentRight theme="outline" />&nbsp;缩进({{ indent }})</span>
-                </MenuItem>
-                <MenuItem key="properties">
+                </a-menu-item>
+                <a-menu-item key="properties">
                   <span class="buttonWithIcon"><Info theme="outline" />&nbsp;文档属性</span>
-                </MenuItem>
-                <MenuItem
+                </a-menu-item>
+                <a-menu-item
                   key="delete"
                   :disabled="!Boolean(leftId)"
                 >
                   <span class="buttonWithIcon"><Delete theme="outline" />&nbsp;删除文档</span>
-                </MenuItem>
-              </Menu>
+                </a-menu-item>
+              </a-menu>
             </template>
-            <Button
+            <a-button
               size="small"
               type="primary"
             >
               <span class="buttonWithIcon"><SettingTwo theme="outline" />&nbsp;选项<Down theme="outline" /></span>
-            </Button>
-          </Dropdown>
-        </Space>
+            </a-button>
+          </a-dropdown>
+        </a-space>
       </div>
       <div
         ref="jsonEditorLeft"
@@ -97,45 +97,45 @@
       class="controller noShowMobile"
       :class="{full:fullPanel}"
     >
-      <Space direction="vertical">
+      <a-space direction="vertical">
         <template v-if="!fullPanel">
           <div class="emptySpace" />
-          <Button
+          <a-button
             type="primary"
             block
             @click="copyRight"
           >
             复制
             <Right theme="outline" />
-          </Button>
-          <Button
+          </a-button>
+          <a-button
             type="primary"
             block
             @click="copyLeft"
           >
             <Left theme="outline" />
             复制
-          </Button>
-          <Checkbox
+          </a-button>
+          <a-checkbox
             :checked="diff"
             @change="changeDiff"
           >
             对比
-          </Checkbox>
-          <Space v-if="diff">
-            <Button
+          </a-checkbox>
+          <a-space v-if="diff">
+            <a-button
               type="primary"
               class="diffBtn"
             >
               <Up theme="outline" />
-            </Button>
-            <Button
+            </a-button>
+            <a-button
               type="primary"
               class="diffBtn"
             >
               <Down theme="outline" />
-            </Button>
-          </Space>
+            </a-button>
+          </a-space>
         </template>
         <div
           class="drag"
@@ -185,7 +185,7 @@
             /></svg>
           </div>
         </div>
-      </Space>
+      </a-space>
     </div>
     <div
       class="editorPanelContainer editorPanelContainerRight noShowMobile"
@@ -194,7 +194,7 @@
     >
       <div class="editorController editorControllerRight">
         <div class="editorTitle">
-          <Text
+          <a-typography-text
             :content="rightData?.name"
             :editable="rightData?.name ? {
               onStart:onEditStartRight,
@@ -203,73 +203,73 @@
             }:false"
           />
         </div>
-        <Space class="editorControlButtons">
-          <Button
+        <a-space class="editorControlButtons">
+          <a-button
             size="small"
             type="primary"
             @click="create('right')"
           >
             <span class="buttonWithIcon"><FileAdditionOne theme="outline" />&nbsp;新建</span>
-          </Button>
-          <Dropdown>
+          </a-button>
+          <a-dropdown>
             <template #overlay>
-              <Menu
+              <a-menu
                 :trigger="['click','hover']"
                 @click="open($event,'right')"
               >
-                <MenuItem key="recent">
+                <a-menu-item key="recent">
                   <span class="buttonWithIcon"><History theme="outline" />&nbsp;打开最近记录</span>
-                </MenuItem>
-                <MenuItem key="file">
+                </a-menu-item>
+                <a-menu-item key="file">
                   <span class="buttonWithIcon"><Computer theme="outline" />&nbsp;打开本地文件</span>
-                </MenuItem>
-                <MenuItem key="url">
+                </a-menu-item>
+                <a-menu-item key="url">
                   <span class="buttonWithIcon"><LinkThree theme="outline" />&nbsp;打开URL</span>
-                </MenuItem>
-              </Menu>
+                </a-menu-item>
+              </a-menu>
             </template>
-            <Button
+            <a-button
               size="small"
               type="primary"
             >
               <span class="buttonWithIcon"><FolderOpen theme="outline" />&nbsp;打开<Down theme="outline" /></span>
-            </Button>
-          </Dropdown>
-          <Button
+            </a-button>
+          </a-dropdown>
+          <a-button
             size="small"
             type="primary"
             @click="download('right')"
           >
             <span class="buttonWithIcon"><Save theme="outline" />&nbsp;保存</span>
-          </Button>
-          <Dropdown>
+          </a-button>
+          <a-dropdown>
             <template #overlay>
-              <Menu
+              <a-menu
                 :trigger="['click','hover']"
                 @click="changeOption($event,'right')"
               >
-                <MenuItem key="indentation">
+                <a-menu-item key="indentation">
                   <span class="buttonWithIcon"><IndentRight theme="outline" />&nbsp;缩进({{ indent }})</span>
-                </MenuItem>
-                <MenuItem key="properties">
+                </a-menu-item>
+                <a-menu-item key="properties">
                   <span class="buttonWithIcon"><Info theme="outline" />&nbsp;文档属性</span>
-                </MenuItem>
-                <MenuItem
+                </a-menu-item>
+                <a-menu-item
                   key="delete"
                   :disabled="!Boolean(rightId)"
                 >
                   <span class="buttonWithIcon"><Delete theme="outline" />&nbsp;删除文档</span>
-                </MenuItem>
-              </Menu>
+                </a-menu-item>
+              </a-menu>
             </template>
-            <Button
+            <a-button
               size="small"
               type="primary"
             >
               <span class="buttonWithIcon"><SettingTwo theme="outline" />&nbsp;选项<Down theme="outline" /></span>
-            </Button>
-          </Dropdown>
-        </Space>
+            </a-button>
+          </a-dropdown>
+        </a-space>
       </div>
       <div
         ref="jsonEditorRight"
@@ -277,115 +277,115 @@
       />
     </div>
   </div>
-  <Modal
+  <a-modal
     :visible="modalStatus.type === 'openRecent'"
     title="打开最近"
     @cancel="closeModal"
     @ok="openRecent"
   >
-    <Paragraph>搜索</Paragraph>
-    <Input
+    <a-typography-paragraph>搜索</a-typography-paragraph>
+    <a-input
       v-model:value="keyword"
       placeholder="请输入文档名称"
     />
 
-    <List
+    <a-list
       class="dataList"
       item-layout="horizontal"
       :data-source="dataListAfterSearch"
     >
       <template #renderItem="{ item }">
-        <ListItem
+        <a-list-item
           :class="{selected: item._id === selectId}"
           @click="selectId=item._id"
         >
           <template #actions>
-            <Button
+            <a-button
               type="primary"
               danger
               @click="deleteData({id:item._id})"
             >
               删除
-            </Button>
+            </a-button>
           </template>
-          <ListItemMeta
+          <a-list-item-meta
             :description="'最后修改: '+item.updated"
           >
             <template #title>
               {{ item.name }}
             </template>
-          </ListItemMeta>
-        </ListItem>
+          </a-list-item-meta>
+        </a-list-item>
       </template>
-    </List>
-  </Modal>
+    </a-list>
+  </a-modal>
   <input
-    v-show="false"
     ref="uploader"
+    hidden
     type="file"
     accept=".json,.JSON"
     @change="openFile"
   >
-  <Modal
+  <a-modal
     :visible="modalStatus.type === 'openUrl'"
     title="打开URL"
     @cancel="closeModal"
     @ok="openUrl(url)"
   >
-    <Paragraph>不支持需要验证或开启CORS的地址</Paragraph>
-    <Input
+    <a-typography-paragraph>不支持需要验证或开启CORS的地址</a-typography-paragraph>
+    <a-input
       v-model:value="url"
       placeholder="请输入URL地址"
     />
-  </Modal>
-  <Modal
+  </a-modal>
+  <a-modal
     :visible="modalStatus.type === 'setIndentation'"
     title="设置缩进"
     @cancel="closeModal"
     @ok="changeIndentation"
   >
-    <Paragraph>配置代码模式下用于缩进的空格数。 缩进同时应用于两个面板。</Paragraph>
-    <Input v-model:value.number="indent" />
-  </Modal>
-  <Modal
+    <a-typography-paragraph>配置代码模式下用于缩进的空格数。 缩进同时应用于两个面板。</a-typography-paragraph>
+    <a-input v-model:value.number="indent" />
+  </a-modal>
+  <a-modal
     :visible="modalStatus.type === 'documentProperties'"
     title="文档属性"
     class="documentProperties"
     @cancel="closeModal"
     @ok="closeModal"
   >
-    <Paragraph>
-      <strong>名称：</strong><Text
+    <a-typography-paragraph>
+      <strong>名称：</strong><a-typography-text
         v-show="documentProperties.name"
         :editable="{onStart:onEditStart,onChange:onEditChange,onEnd:onEditEnd}"
         :content="documentProperties.name"
       />
-    </Paragraph>
-    <Paragraph>
-      <strong>存储：</strong><Text
+    </a-typography-paragraph>
+    <a-typography-paragraph>
+      <strong>存储：</strong><a-typography-text
         v-show="documentProperties.storage"
         :content="documentProperties.storage"
       />
-    </Paragraph>
-    <Paragraph>
-      <strong>更新：</strong><Text
+    </a-typography-paragraph>
+    <a-typography-paragraph>
+      <strong>更新：</strong><a-typography-text
         v-show="documentProperties.updated"
         :content="documentProperties.updated"
       />
-    </Paragraph>
-    <Paragraph>
-      <strong>内容：</strong><Text
+    </a-typography-paragraph>
+    <a-typography-paragraph>
+      <strong>内容：</strong><a-typography-text
         v-show="documentProperties.content"
         :content="documentProperties.content"
       />
-    </Paragraph>
-    <Paragraph>
-      <strong>大小：</strong><Text
+    </a-typography-paragraph>
+    <a-typography-paragraph>
+      <strong>大小：</strong><a-typography-text
         v-show="documentProperties.size"
         :content="documentProperties.size"
       />
-    </Paragraph>
-  </Modal>
+    </a-typography-paragraph>
+  </a-modal>
 </template>
 
 <script>
@@ -397,15 +397,10 @@ import { createNamespacedHelpers } from 'vuex'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile.js'
-import { Button, Space, Checkbox, Dropdown, Menu, Modal, Input, Typography, List } from 'ant-design-vue'
 import { Right, Left, Down, Up, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
 
-const { Item: MenuItem } = Menu
-const { Paragraph, Text } = Typography
-const { Item: ListItem } = List
-const { Meta: ListItemMeta } = ListItem
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
 
 let editorLeft, editorRight
@@ -417,21 +412,9 @@ let moved = false
 export default {
   name: 'JsonEditor',
   components: {
-    Button,
-    Space,
-    Checkbox,
     Right,
     Left,
-    Dropdown,
-    Menu,
-    MenuItem,
     Down,
-    Modal,
-    Input,
-    Paragraph,
-    List,
-    ListItem,
-    ListItemMeta,
     FileAdditionOne,
     FolderOpen,
     Save,
@@ -442,7 +425,6 @@ export default {
     Info,
     Delete,
     IndentRight,
-    Text,
     Up
   },
   data: () => ({

@@ -1,121 +1,116 @@
 <template>
-  <Title :level="4">
+  <a-typography-title :level="4">
     通用配置
-  </Title>
+  </a-typography-title>
   <div class="commonConfigPanel">
-    <Item label="时间戳重命名">
-      <Switch
+    <a-form-item label="时间戳重命名">
+      <a-switch
         v-model:checked="currentCommonConfig.renameTimeStamp"
         @change="updateConfig"
       />
-    </Item>
-    <Item label="上传后自动复制URL">
-      <Switch
+    </a-form-item>
+    <a-form-item label="上传后自动复制URL">
+      <a-switch
         v-model:checked="currentCommonConfig.copyUrlAfterUpload"
         @change="updateConfig"
       />
-    </Item>
-    <Title :level="5">
+    </a-form-item>
+    <a-typography-title :level="5">
       链接复制格式
-    </Title>
-    <Space>
-      <Radio
+    </a-typography-title>
+    <a-space>
+      <a-radio
         :style="radioStyle"
         :checked="currentCommonConfig.customCopyContent==='$url'"
         @change="updateCustomCopyContent('$url')"
       >
-        标准<Text
+        标准<a-typography-text
           code
           content="$url"
         />
-      </Radio>
-      <Radio
+      </a-radio>
+      <a-radio
         :style="radioStyle"
         :checked="currentCommonConfig.customCopyContent==='![]($url)'"
         @change="updateCustomCopyContent('![]($url)')"
       >
-        MarkDown<Text
+        MarkDown<a-typography-text
           code
           content="![]($url)"
         />
-      </Radio>
-      <Radio
+      </a-radio>
+      <a-radio
         :style="radioStyle"
         :checked="currentCommonConfig.customCopyContent===customContent"
         @change="updateCustomCopyContent(customContent)"
       >
-        自定义<Input
+        自定义<a-input
           v-model:value="customContent"
           style="width: 100px; margin-left: 10px"
           @change="updateCustomCopyContent($event.target.value)"
         />
-      </Radio>
-    </Space>
+      </a-radio>
+    </a-space>
   </div>
-  <Divider />
-  <Title :level="4">
+  <a-divider />
+  <a-typography-title :level="4">
     图床设置
-  </Title>
-  <Tabs
+  </a-typography-title>
+  <a-tabs
     v-model:activeKey="currentUploader"
     type="card"
     @change="changeUploader"
   >
-    <TabPane
+    <a-tab-pane
       v-for="(item,name) of uploaders"
       :key="name"
       :tab="item.name"
     >
       <div class="configPanel">
         <div class="configTable">
-          <Form
+          <a-form
             v-if="currentUploader === name"
             layout="vertical"
           >
-            <Item
+            <a-form-item
               v-for="(item1) of currentConfig"
               :key="item1.name"
               :label="item1.label"
               :required="item1.required"
             >
-              <Input
+              <a-input
                 v-if="item1.type==='input'"
                 v-model:value="item1.default"
                 allow-clear
                 :placeholder="item1.hint"
               />
-              <Password
+              <a-input-password
                 v-else-if="item1.type==='password'"
                 v-model:value="item1.default"
                 allow-clear
                 :placeholder="item1.hint"
               />
-            </Item>
-          </Form>
+            </a-form-item>
+          </a-form>
         </div>
         <div class="configOperator">
-          <Button
+          <a-button
             type="primary"
             @click="save"
           >
             保存
-          </Button>
+          </a-button>
         </div>
       </div>
-    </TabPane>
-  </Tabs>
+    </a-tab-pane>
+  </a-tabs>
 </template>
 
 <script>
-import { Form, Input, Tabs, Button, Switch, Typography, Divider, Space, Radio } from 'ant-design-vue'
 import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from '../uploader/index.js'
 import { cloneDeep, debounce, merge } from 'lodash-es'
 
-const { Title, Text } = Typography
-const { TabPane } = Tabs
-const { Item } = Form
-const { Password } = Input
 const {
   mapGetters,
   mapActions
@@ -123,21 +118,6 @@ const {
 
 export default {
   name: 'ImgHostingSettings',
-  components: {
-    Tabs,
-    TabPane,
-    Form,
-    Item,
-    Input,
-    Password,
-    Button,
-    Switch,
-    Divider,
-    Space,
-    Radio,
-    Title,
-    Text
-  },
   data: () => ({
     uploaders,
 
