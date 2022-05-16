@@ -27,7 +27,7 @@ export default defineConfig({
         '@vueuse/core'
       ],
       eslintrc: {
-        enabled: true
+        enabled: false
       },
       dts: true
     }),

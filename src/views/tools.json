@@ -66,6 +66,22 @@
     "icon": "i-icon-park-outline-code",
     "children": [
       {
+        "name": "渐变色生成器",
+        "link": "/gradientColor"
+      },
+      {
+        "name": "颜色选择器",
+        "link": "/colorTransform"
+      },
+      {
+        "name": "时间计算",
+        "link": "/timeCompute"
+      },
+      {
+        "name": "在线ASCII码对照表",
+        "link": "/ascii"
+      },
+      {
         "name": "查看网页源码",
         "link": "/viewSourceCode"
       },
@@ -158,24 +174,6 @@
       {
         "name": "图片Base64编码",
         "link": "/imageBase64"
-      }
-    ]
-  },
-  {
-    "type": "转换工具",
-    "icon": "i-icon-park-outline-file-conversion",
-    "children": [
-      {
-        "name": "时间计算",
-        "link": "/timeCompute"
-      },
-      {
-        "name": "颜色转换",
-        "link": "/colorTransform"
-      },
-      {
-        "name": "在线ASCII码对照表",
-        "link": "/ascii"
       }
     ]
   },
