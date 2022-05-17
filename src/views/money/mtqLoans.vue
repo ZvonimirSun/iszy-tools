@@ -65,7 +65,7 @@
             </a-select>
           </a-form-item>
           <a-form-item label="首次还款">
-            <a-datepicker
+            <a-date-picker
               v-model:value="firstRepaymentDate"
               :format="dateFormat"
               style="width: 100%"
@@ -97,7 +97,7 @@
               第{{ index + 1 }}次提前还款
             </a-divider>
             <a-form-item label="还款日期">
-              <a-datepicker
+              <a-date-picker
                 v-model:value="item.repaymentDate"
                 :format="dateFormat"
                 style="width: 100%"

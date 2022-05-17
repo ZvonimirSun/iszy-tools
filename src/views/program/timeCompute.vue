@@ -4,7 +4,7 @@
       转换时间戳
     </a-typography-title>
     <a-form-item label="时间">
-      <a-datepicker
+      <a-date-picker
         v-model:value="time"
         :show-time="true"
         style="width: 100%"
@@ -37,7 +37,7 @@
       计算几天后的日期
     </a-typography-title>
     <a-form-item label="日期">
-      <a-datepicker
+      <a-date-picker
         v-model:value="baseTime"
         style="width: 100%"
         :get-popup-container="getContainer"
@@ -62,7 +62,7 @@
       计算日期差
     </a-typography-title>
     <a-form-item label="开始日期">
-      <a-datepicker
+      <a-date-picker
         v-model:value="startTime"
         style="width: 100%"
         :get-popup-container="getContainer"
@@ -71,7 +71,7 @@
       />
     </a-form-item>
     <a-form-item label="结束日期">
-      <a-datepicker
+      <a-date-picker
         v-model:value="endTime"
         style="width: 100%"
         :get-popup-container="getContainer"
