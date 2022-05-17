@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as o}from"./index.c31bc572.js";import{_ as c}from"./index.07e0109f.js";const s={};function a(n,r){const _=c;return t(),o(_,{status:"404",title:"404","sub-title":"\u5BF9\u4E0D\u8D77\uFF0C\u4F60\u8BBF\u95EE\u7684\u9875\u9762\u4E0D\u5B58\u5728\u3002"})}var l=e(s,[["render",a],["__scopeId","data-v-1fc60a21"]]);export{l as default};
