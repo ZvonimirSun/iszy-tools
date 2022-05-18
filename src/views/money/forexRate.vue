@@ -4,19 +4,33 @@
     h-full
     overflow-auto
   >
+    <a-typography-paragraph>
+      <blockquote>仅供参考，采用第三方接口，数据可能存在延迟</blockquote>
+    </a-typography-paragraph>
     <a-space
       :gap="8"
       direction="vertical"
       style="margin: 0 auto"
     >
-      <div>1 {{ forexMap[curFromCode] }} 等于</div>
-      <div>{{ rate }} {{ forexMap[curToCode] }}</div>
+      <div>
+        <a-statistic
+          :title="`1 ${forexMap[curFromCode]} 等于`"
+          :value="`${rate} ${forexMap[curToCode]}`"
+        />
+        <a-typography-paragraph>
+          <blockquote>查询时间: {{ time }}</blockquote>
+        </a-typography-paragraph>
+      </div>
       <a-space :gap="8">
         <a-input-number
           v-model:value.number="fromValue"
+          class="w-50"
           @change="updateToValue"
         />
-        <a-select v-model:value="fromCode">
+        <a-select
+          v-model:value="fromCode"
+          class="w-50"
+        >
           <a-select-option
             v-for="(item,index) in forexList"
             :key="index"
@@ -29,9 +43,13 @@
       <a-space :gap="8">
         <a-input-number
           v-model:value.number="toValue"
+          class="w-50"
           @change="updateFromValue"
         />
-        <a-select v-model:value="toCode">
+        <a-select
+          v-model:value="toCode"
+          class="w-50"
+        >
           <a-select-option
             v-for="(item,index) in forexList"
             :key="index"
@@ -46,13 +64,17 @@
 </template>
 
 <script setup>
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+dayjs.extend(utc)
 
 const $axios = inject('$axios')
 const $msg = inject('$msg')
 
 const fromCode = ref('CNY')
 const toCode = ref('USD')
-const rate = ref(0)
 
 const curFromCode = ref('CNY')
 const curToCode = ref('USD')
@@ -92,43 +114,37 @@ const forexMap = computed(() => {
   return map
 })
 
-onBeforeMount(() => {
-  getRate()
+const time = ref('')
+
+const { data, execute } = useAxios('https://api.it120.cc/iszy/forex/rate', {
+  params: {
+    fromCode: fromCode.value,
+    toCode: toCode.value
+  }
+})
+
+const rate = computed(() => {
+  if (data.value) {
+    return data.value.data?.rate || 0
+  }
+  return 0
 })
 
 watch([fromCode, toCode], () => {
-  getRate()
+  execute('https://api.it120.cc/iszy/forex/rate', {
+    params: {
+      fromCode: fromCode.value,
+      toCode: toCode.value
+    }
+  })
 })
 
 watch(rate, () => {
+  time.value = dayjs.utc().format('M月D日 UTC HH:mm')
+  curFromCode.value = fromCode.value
+  curToCode.value = toCode.value
   toValue.value = fromValue.value * rate.value
 })
-
-function getRate () {
-  if (fromCode.value !== toCode.value) {
-    $axios.get('https://api.it120.cc/iszy/forex/rate', {
-      params: {
-        fromCode: fromCode.value,
-        toCode: toCode.value
-      }
-    }).then(res => {
-      rate.value = res.data?.data?.rate || 0
-      curFromCode.value = fromCode.value
-      curToCode.value = toCode.value
-    }).catch(err => {
-      $msg.error(err.message)
-    })
-  } else {
-    rate.value = 1
-    curFromCode.value = fromCode.value
-    curToCode.value = toCode.value
-  }
-}
-
-function getLabel (code) {
-  const item = forexList.value.find(item => item.code === code)
-  return item?.label || ''
-}
 
 function updateToValue () {
   toValue.value = parseFloat((fromValue.value * rate.value).toFixed(4))
