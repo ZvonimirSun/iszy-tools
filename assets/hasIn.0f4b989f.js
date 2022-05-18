@@ -1,1 +1,0 @@
-import{aY as e,aN as f,aZ as h,a_ as t,a6 as g,a$ as m}from"./index.c31bc572.js";function x(n,a){return n!=null&&a in Object(n)}function I(n,a,u){a=e(a,n);for(var r=-1,s=a.length,l=!1;++r<s;){var i=f(a[r]);if(!(l=n!=null&&u(n,i)))break;n=n[i]}return l||++r!=s?l:(s=n==null?0:n.length,!!s&&h(s)&&t(i,s)&&(g(n)||m(n)))}function v(n,a){return n!=null&&I(n,a,x)}export{v as h};
