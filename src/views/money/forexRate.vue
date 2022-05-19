@@ -73,11 +73,11 @@ dayjs.extend(utc)
 const $axios = inject('$axios')
 const $msg = inject('$msg')
 
-const fromCode = ref('CNY')
-const toCode = ref('USD')
+const fromCode = ref('USD')
+const toCode = ref('CNY')
 
-const curFromCode = ref('CNY')
-const curToCode = ref('USD')
+const curFromCode = ref('USD')
+const curToCode = ref('CNY')
 
 const fromValue = ref(1)
 const toValue = ref(0)
@@ -118,8 +118,8 @@ const time = ref('')
 
 const { data, execute } = useAxios('https://api.it120.cc/iszy/forex/rate', {
   params: {
-    fromCode: fromCode.value,
-    toCode: toCode.value
+    fromCode: toCode.value,
+    toCode: fromCode.value
   }
 })
 
@@ -133,8 +133,8 @@ const rate = computed(() => {
 watch([fromCode, toCode], () => {
   execute('https://api.it120.cc/iszy/forex/rate', {
     params: {
-      fromCode: fromCode.value,
-      toCode: toCode.value
+      fromCode: toCode.value,
+      toCode: fromCode.value
     }
   })
 })
