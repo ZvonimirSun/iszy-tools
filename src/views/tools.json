@@ -112,6 +112,10 @@
       {
         "name": "前端CDN搜索",
         "link": "/cdnQuery"
+      },
+      {
+        "name": "JSON转换工具",
+        "link": "/jsonConverter"
       }
     ]
   },
