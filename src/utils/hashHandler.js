@@ -1,6 +1,12 @@
 function getParamList () {
-  if (window.location.hash) {
-    return window.location.hash.slice(1).split('&').map(item => {
+  let hash = window.location.hash
+  if (hash) {
+    if (hash.startsWith('#!')) {
+      hash = hash.slice(2)
+    } else if (hash.startsWith('#')) {
+      hash = hash.slice(1)
+    }
+    return hash.split('&').map(item => {
       const tmp = item.split('=')
       if (tmp.length >= 2) {
         return {
@@ -63,7 +69,7 @@ function updateHash (list = []) {
     }
   }
   if (hash.length) {
-    window.location.hash = hash.slice(1)
+    window.location.hash = '!' + hash.slice(1)
   } else {
     window.location.hash = ''
   }
