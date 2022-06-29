@@ -17,8 +17,8 @@
     "paths": {
       "@/*": [ "src/*" ]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "vite-plugin-pwa/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "./auto-imports.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts", "src/**/*.json"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

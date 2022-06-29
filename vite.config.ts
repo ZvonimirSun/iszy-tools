@@ -5,7 +5,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
 import Sitemap from './src/plugins/Sitemap.js'
-// @ts-ignore
 import tools from './src/views/tools.json'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
@@ -30,7 +29,7 @@ export default defineConfig({
       eslintrc: {
         enabled: true
       },
-      dts: true
+      dts: './src/auto-imports.d.ts'
     }),
     Unocss({
       mode: 'vue-scoped',
@@ -45,6 +44,7 @@ export default defineConfig({
     Components({
       dirs: ['src/components'],
       extensions: ['vue'],
+      dts: './src/components.d.ts',
       resolvers: [
         AntDesignVueResolver()
       ]

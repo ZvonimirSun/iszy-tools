@@ -32,7 +32,7 @@
       </a-layout-header>
       <a-layout-content ref="view">
         <a-back-top
-          :target="()=>$refs.view.$el"
+          :target="()=>view.$el"
           :visibility-height="100"
         />
         <div
@@ -69,12 +69,14 @@
   </a-config-provider>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { Modal } from 'ant-design-vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
+import { MessageApi } from 'ant-design-vue/es/message'
+import { VueInstance } from '@vueuse/core'
 
 const {
   offlineReady,
@@ -84,9 +86,10 @@ const {
 const store = useStore()
 const route = useRoute()
 const _user = computed(() => store.state.user._user)
-const $msg = inject('$msg')
+const $msg: MessageApi = inject('$msg')
 
 const fullScreenStatus = ref(false)
+const view = ref<VueInstance>()
 
 onMounted(() => {
   asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
