@@ -29,6 +29,9 @@ module.exports = {
     'no-loss-of-precision': 0,
     'no-unused-vars': 0,
     'vue/multi-word-component-names': 0,
-    '@typescript-eslint/no-unused-vars': 0
+    '@typescript-eslint/no-unused-vars': 0,
+    '@typescript-eslint/no-this-alias': 0,
+    '@typescript-eslint/no-empty-function': 0,
+    'vue/no-v-text-v-html-on-component': 0,
   }
 }
