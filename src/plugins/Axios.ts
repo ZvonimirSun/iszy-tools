@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import store from '@/store'
 import router from '@/router'
 
@@ -7,7 +7,7 @@ axiosInstance.$apiBase = ''
 axiosInstance.CancelToken = Axios.CancelToken
 axiosInstance.isCancel = Axios.isCancel
 axiosInstance.interceptors.request.use(
-  configs => {
+  (configs: AxiosRequestConfig) => {
     if (store.state.user._user.token && configs.url.includes(axiosInstance.$apiBase)) {
       configs.headers.Authorization = 'Bearer ' + store.state.user._user.token
     }
@@ -15,15 +15,15 @@ axiosInstance.interceptors.request.use(
   }
 )
 axiosInstance.interceptors.response.use(
-  response => {
+  (response: AxiosResponse) => {
     if (response.config.url.includes(axiosInstance.$apiBase)) {
       if (response.data && response.data.code === 'A0401') {
         router.push('/403')
       }
     }
     return response
-  }, error => {
-    return Promise.reject(error)
+  }, async error => {
+    return await Promise.reject(error)
   }
 )
 

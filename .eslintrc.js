@@ -5,14 +5,19 @@ module.exports = {
     defineExpose: 'readonly',
     withDefaults: 'readonly'
   },
+  plugins: [
+    'vue',
+    '@typescript-eslint'
+  ],
   extends: [
+    'plugin:@typescript-eslint/recommended',
     'plugin:vue/vue3-recommended',
     'standard',
     './.eslintrc-auto-import.json'
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: '@babel/eslint-parser'
+    parser: '@typescript-eslint/parser'
   },
   rules: {
     'no-console': 0,

@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
 import Sitemap from './src/plugins/Sitemap.js'
+// @ts-ignore
 import tools from './src/views/tools.json'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
@@ -27,7 +28,7 @@ export default defineConfig({
         '@vueuse/core'
       ],
       eslintrc: {
-        enabled: false
+        enabled: true
       },
       dts: true
     }),
