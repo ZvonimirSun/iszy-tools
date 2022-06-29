@@ -32,11 +32,6 @@
   </div>
 </template>
 <script setup>
-const props = defineProps({
-  name: { type: String, default: '' },
-  fullScreenStatus: Boolean
-})
-
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['fullScreen'])
 

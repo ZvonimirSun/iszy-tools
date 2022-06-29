@@ -50,6 +50,7 @@ export function chineseLayer (type, options = {}) {
 
 const pi = Math.PI
 const a = 6378245.0
+// eslint-disable-next-line @typescript-eslint/no-loss-of-precision
 const ee = 0.00669342162296594323
 const xPi = pi * 3000.0 / 180.0
 // const R = 6378137

@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "lint": "eslint --cache --fix src/**/*.{js,vue}"
+    "lint": "eslint --cache --fix src/**/*.{js,ts,vue}"
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.1.4",
