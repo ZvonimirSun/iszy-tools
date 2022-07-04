@@ -130,7 +130,8 @@ export default {
           const a = cloneDeep(item)
           a.children = a.children.filter(item => {
             const tags = item.tags || []
-            return (item.name.toLowerCase().includes(this.searchStr.toLowerCase()) || tags.some((tag) => { return tag.includes(this.searchStr.toLowerCase()) }))
+            const searchStr = this.searchStr.toLowerCase()
+            return (item.name.toLowerCase().includes(searchStr) || item.link.toLowerCase().includes(searchStr) || tags.some((tag) => { return tag.includes(searchStr) }))
           })
           return a
         })
