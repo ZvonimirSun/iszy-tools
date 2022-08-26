@@ -47,7 +47,7 @@ export default createStore({
         const { _user, ...settings } = toRaw(state.user)
         try {
           const res = (await axios.post(`${this.$apiBase}/iszy_tools/settings`, settings)).data
-          return res.code === '00000' && res.data
+          return res.success && res.data
         } catch (e) {
           return false
         }
@@ -60,7 +60,7 @@ export default createStore({
         try {
           if (await dispatch('user/checkToken')) {
             const res = (await axios.get(`${this.$apiBase}/iszy_tools/settings`)).data
-            if (res.code === '00000' && res.data) {
+            if (res.success && res.data) {
               commit('importConfig', res.data)
               return true
             }

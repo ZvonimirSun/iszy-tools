@@ -3,7 +3,6 @@ import tools from '@/views/tools.json'
 import settings from './settings'
 import modules from './modules'
 import { flatten } from 'lodash-es'
-import dayjs from 'dayjs'
 
 export default {
   namespaced: true,
@@ -97,7 +96,7 @@ export default {
             userName: userName.trim(),
             password
           })
-          if (res.data && res.data.code === '00000') {
+          if (res.data && res.data.success) {
             commit('setToken', res.data.data.token)
             dispatch('downloadSettings', null, { root: true })
             dispatch('getProfiles')
@@ -149,7 +148,7 @@ export default {
       if (state._user.token) {
         try {
           const res = await axios.post(`${this.$apiBase}/auth/token`)
-          if (res.data && res.data.code === '00000') {
+          if (res.data && res.data.success) {
             commit('setToken', res.data.data.token)
           }
         } catch (e) {}
