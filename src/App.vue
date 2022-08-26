@@ -50,7 +50,7 @@
         </Container>
       </a-layout-content>
       <a-layout-footer v-show="!fullScreenStatus">
-        <span>© 2021&nbsp;</span>
+        <span>© {{ year }}&nbsp;</span>
         <a-typography-link
           href="https://www.iszy.cc"
           target="_blank"
@@ -90,6 +90,14 @@ const $msg: MessageApi = inject('$msg')
 
 const fullScreenStatus = ref(false)
 const view = ref<VueInstance>()
+
+const year = ref('2021')
+
+const now = new Date().getFullYear().toString()
+
+if (now !== year.value) {
+  year.value += ` - ${now}`
+}
 
 onMounted(() => {
   asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
