@@ -8,7 +8,7 @@
           </router-link>
         </div>
         <div
-          v-if="$route.path === '/'"
+          v-if="route.path === '/'"
           class="desc"
         >
           一个轻量的工具集合<template v-if="_user.profile.nickName">
@@ -36,7 +36,7 @@
           :visibility-height="100"
         />
         <div
-          v-if="$route.meta?.type !== 'tool'"
+          v-if="route.meta?.type !== 'tool'"
           class="container"
         >
           <router-view />
@@ -77,6 +77,7 @@ import { Modal } from 'ant-design-vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { MessageApi } from 'ant-design-vue/es/message'
 import { VueInstance } from '@vueuse/core'
+import 'ant-design-vue/es/modal/style/index.js'
 
 const {
   offlineReady,

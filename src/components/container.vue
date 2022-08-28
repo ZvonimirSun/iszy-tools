@@ -6,7 +6,7 @@
     <div class="containerAll">
       <div class="containerTitle">
         <div class="typeName">
-          <span>{{ name || $route.meta?.title || $route.name }}</span>
+          <span>{{ name || route.meta?.title || route.name }}</span>
           <span
             v-if="fullScreenStatus"
             class="i-icon-park-outline-off-screen fullScreen"
@@ -34,6 +34,12 @@
 <script setup>
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['fullScreen'])
+const route = useRoute()
+
+defineProps({
+  fullScreenStatus: { type: Boolean, default: false },
+  name: { type: String, default: '' }
+})
 
 function fullScreen () {
   emit('fullScreen')

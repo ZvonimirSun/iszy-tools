@@ -2,7 +2,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
 import Sitemap from './src/plugins/Sitemap.js'
 import tools from './src/views/tools.json'
@@ -125,15 +124,6 @@ export default defineConfig({
           }
         ]
       }
-    }),
-    styleImport({
-      libs: [
-        {
-          libraryName: 'ant-design-vue',
-          esModule: true,
-          resolveStyle: name => `ant-design-vue/es/${name}/style/index`
-        }
-      ]
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' })
   ],
