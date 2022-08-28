@@ -402,6 +402,7 @@ import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
 
 const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
+const { mapState: mapSettingState } = createNamespacedHelpers('user/jsonEditor')
 
 let editorLeft, editorRight
 
@@ -533,7 +534,8 @@ export default {
       }
     },
     ...mapState(['leftId', 'rightId', 'splitterValue', 'fullStatus']),
-    ...mapGetters(['dataList', 'data', 'leftData', 'rightData'])
+    ...mapGetters(['dataList', 'data', 'leftData', 'rightData']),
+    ...mapSettingState(['syncCloud'])
   },
   watch: {
     leftId: {
