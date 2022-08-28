@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <LeafletMap v-model:geo-json-layer="geoJsonLayer"/>
+    <LeafletMap v-model:geo-json-layer="geoJsonLayer" />
     <a-tabs type="card">
       <a-tab-pane
         key="geoJson"

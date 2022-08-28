@@ -6,8 +6,8 @@ import tetris from './modules/tetris'
 import user from './modules/user'
 import linuxCommand from './modules/linuxCommand'
 import imgHosting from './modules/imgHosting'
-import jsonEditor from './modules/jsonEditor/index.js'
-import tinyEditor from './modules/tinyEditor/index.js'
+import jsonEditor from './modules/jsonEditor'
+import tinyEditor from './modules/tinyEditor'
 import VuexPersist from '@/plugins/VuexPersist'
 
 export default createStore({

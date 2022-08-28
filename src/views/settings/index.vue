@@ -55,6 +55,9 @@
     <a-divider />
   </template>
   <a-typography-title :level="3">
+    全局设置
+  </a-typography-title>
+  <a-typography-title :level="4">
     访问统计
   </a-typography-title>
   <a-space>
@@ -71,8 +74,7 @@
       最近访问
     </a-checkbox>
   </a-space>
-  <a-divider />
-  <a-typography-title :level="3">
+  <a-typography-title :level="4">
     其他设置
   </a-typography-title>
   <a-space>
@@ -95,51 +97,69 @@
       新标签页打开工具
     </a-checkbox>
   </a-space>
+  <template v-if="_user.token">
+    <a-divider />
+    <a-typography-title :level="3">
+      应用设置
+    </a-typography-title>
+    <a-space>
+      <a-checkbox
+        :checked="settings.jsonEditor.syncCloud"
+        @change="triggerJsonEditorSetting('syncCloud')"
+      >
+        从云端获取
+      </a-checkbox>
+    </a-space>
+  </template>
 </template>
 
-<script>
-import { createNamespacedHelpers, mapActions, mapMutations } from 'vuex'
+<script setup lang="ts">
+import { MessageApi } from 'ant-design-vue/es/message'
 
-const {
-  mapState: mapStateUser,
-  mapMutations: mapMutationsUser
-} = createNamespacedHelpers('user')
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
-export default {
-  name: 'SettingsPage',
-  computed: {
-    ...mapStateUser(['_user', 'settings'])
-  },
-  methods: {
-    ...mapMutations(['clearOfflineCache']),
-    ...mapActions(['uploadSettings', 'downloadSettings']),
-    ...mapMutationsUser(['triggerSetting']),
-    async uploadToCloud () {
-      if (await this.uploadSettings()) {
-        this.$msg.success('同步成功')
-      } else {
-        this.$msg.error('同步失败')
-      }
-    },
-    async downloadFromCloud () {
-      if (await this.downloadSettings()) {
-        this.$msg.success('同步成功')
-      } else {
-        this.$msg.error('同步失败')
-      }
-    },
-    login () {
-      this.$router.push({
-        path: '/login',
-        query: {
-          redirect: this.$route.fullPath
-        }
-      })
-    },
-    logout () {
-      this.$router.push('/logout')
-    }
+const $msg = inject<MessageApi>('$msg')
+
+const _user = computed(() => {
+  return store.state.user._user
+})
+
+const settings = computed(() => {
+  return store.state.user.settings
+})
+
+const clearOfflineCache = () => store.commit('clearOfflineCache')
+const uploadSettings = () => store.dispatch('uploadSettings')
+const downloadSettings = () => store.dispatch('downloadSettings')
+const triggerSetting = (setting) => store.commit('user/triggerSetting', setting)
+const triggerJsonEditorSetting = (setting) => store.commit('user/jsonEditor/triggerJsonEditorSetting', setting)
+
+async function uploadToCloud () {
+  if (await uploadSettings()) {
+    $msg.success('同步成功')
+  } else {
+    $msg.error('同步失败')
   }
+}
+async function downloadFromCloud () {
+  if (await downloadSettings()) {
+    $msg.success('同步成功')
+  } else {
+    $msg.error('同步失败')
+  }
+}
+function login () {
+  router.push({
+    path: '/login',
+    query: {
+      redirect: route.fullPath
+    }
+  })
+}
+function logout () {
+  router.push('/logout')
 }
 </script>
 

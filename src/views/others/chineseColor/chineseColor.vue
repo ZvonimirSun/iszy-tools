@@ -151,7 +151,6 @@
 </template>
 
 <script setup>
-import { nextTick } from '@vue/runtime-dom'
 import colors from './colors.json'
 
 const selectedColor = ref()

@@ -1,6 +1,6 @@
 <template>
   <a-result
-    status="403"
+    status="success"
     title="403"
     sub-title="对不起，你无权访问当前页面。"
   >
@@ -16,8 +16,6 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-
 const router = useRouter()
 
 function login () {

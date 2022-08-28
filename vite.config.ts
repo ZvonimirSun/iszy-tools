@@ -43,7 +43,7 @@ export default defineConfig({
     Components({
       dirs: ['src/components'],
       extensions: ['vue'],
-      dts: './src/components.d.ts',
+      dts: false,
       resolvers: [
         AntDesignVueResolver()
       ]

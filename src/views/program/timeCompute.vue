@@ -96,7 +96,7 @@ export default {
   name: 'TimeCompute',
   data () {
     return {
-      dayjs: dayjs,
+      dayjs,
 
       time: dayjs(),
       timestamp: dayjs().valueOf(),
