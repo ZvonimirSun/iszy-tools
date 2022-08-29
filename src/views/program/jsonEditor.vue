@@ -401,7 +401,7 @@ import { Right, Left, Down, Up, FileAdditionOne, FolderOpen, Save, History, Comp
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
 
-const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('jsonEditor')
+const { mapState, mapGetters, mapMutations, mapActions } = createNamespacedHelpers('jsonEditor')
 const { mapState: mapSettingState } = createNamespacedHelpers('user/jsonEditor')
 
 let editorLeft, editorRight
@@ -562,7 +562,10 @@ export default {
     window.removeEventListener('hashchange', this.hashChange)
   },
   methods: {
-    init () {
+    async init () {
+      if (this.syncCloud) {
+        await this.getSyncData()
+      }
       this.fullPanel = this.fullStatus
       editorLeft = new JSONEditor(
         this.$refs.jsonEditorLeft,
@@ -1031,7 +1034,9 @@ export default {
         this.fullPanel = ''
       }
     },
-    ...mapMutations(['saveData', 'deleteData', 'setSplitter', 'setFullStatus'])
+
+    ...mapMutations(['setSplitter', 'setFullStatus']),
+    ...mapActions(['getSyncData', 'saveData', 'deleteData'])
   }
 }
 </script>

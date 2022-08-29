@@ -1,6 +1,9 @@
 import randomString from '@/utils/randomString.js'
 import dayjs from 'dayjs'
 import { clamp } from 'lodash-es'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
+
+const _mutex = new SimplePromiseQueue()
 
 export default {
   namespaced: true,
@@ -50,6 +53,9 @@ export default {
       } else {
         return null
       }
+    },
+    syncCloud: (state, getters, rootState) => {
+      return rootState.user.settings.jsonEditor.syncCloud
     }
   },
   mutations: {
@@ -116,7 +122,79 @@ export default {
       } else {
         state.fullStatus = ''
       }
+    },
+    replaceState (state, val = []) {
+      const data = {}
+      for (const d of val) {
+        data[d.key] = {
+          name: d.name
+        }
+        data[d.key].content = {}
+        if (d.text != null) {
+          data[d.key].content.text = d.text
+        } else if (d.json != null) {
+          data[d.key].content.json = d.json
+        }
+        data.updated = dayjs(d.updatedAt).format()
+      }
+      state.$_data = data
     }
   },
-  actions: {}
+  actions: {
+    async getSyncData ({ commit }) {
+      try {
+        const data = (await (this.$axios.get(`${this.$apiBase}/iszy_tools/jsoneditor`))).data
+        if (data.success) {
+          commit('replaceState', data.data)
+        } else {
+          console.log(data.message)
+        }
+      } catch (e) {
+        console.log(e.message)
+      }
+    },
+    async saveData ({ commit, state, getters }, { left, right, id, content, name }) {
+      if (getters.syncCloud) {
+        id = id || randomString(6)
+        if (content != null || name != null) {
+          try {
+            const item = { name: name || (state.$_data[id] || {}).name || `文档-${id}` }
+            if (typeof content === 'string') {
+              item.text = content
+            } else {
+              item.json = markRaw(content)
+            }
+            const data = (await this.$axios.post(`${this.$apiBase}/iszy_tools/jsoneditor/${id}`, item)).data
+            if (data.success) {
+              commit('saveData', { left, right, id, content, name })
+            } else {
+              console.log(data.message)
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        } else {
+          commit('saveData', { left, right, id, content, name })
+        }
+      } else {
+        commit('saveData', { left, right, id, content, name })
+      }
+    },
+    async deleteData ({ commit, getters }, { id }) {
+      if (getters.syncCloud) {
+        try {
+          const data = (await this.$axios.delete(`${this.$apiBase}/iszy_tools/jsoneditor/${id}`)).data
+          if (data.success) {
+            commit('deleteData', { id })
+          } else {
+            console.log(data.message)
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      } else {
+        commit('deleteData', { id })
+      }
+    }
+  }
 }
