@@ -712,19 +712,21 @@ export default {
       editorRight.refresh()
       this.save('left')
     },
-    save (leftOrRight) {
+    save (leftOrRight, name) {
       if (!leftOrRight || leftOrRight === 'left') {
         if (this.leftMode === 'tree') {
           this.saveData({
             left: true,
             id: this.leftId,
-            content: editorLeft.get()
+            content: editorLeft.get(),
+            name
           })
         } else {
           this.saveData({
             left: true,
             id: this.leftId,
-            content: editorLeft.getText()
+            content: editorLeft.getText(),
+            name
           })
         }
       }
@@ -733,13 +735,15 @@ export default {
           this.saveData({
             right: true,
             id: this.rightId,
-            content: editorRight.get()
+            content: editorRight.get(),
+            name
           })
         } else {
           this.saveData({
             right: true,
             id: this.rightId,
-            content: editorRight.getText()
+            content: editorRight.getText(),
+            name
           })
         }
       }
@@ -827,11 +831,11 @@ export default {
             if (this.modalStatus.leftOrRight === 'left') {
               this.codeLeft = reader.result
               editorLeft.setText(reader.result)
-              this.save('left')
+              this.save('left', file.name)
             } else if (this.modalStatus.leftOrRight === 'right') {
               this.codeRight = reader.result
               editorRight.setText(reader.result)
-              this.save('right')
+              this.save('right', file.name)
             }
           }
         }
