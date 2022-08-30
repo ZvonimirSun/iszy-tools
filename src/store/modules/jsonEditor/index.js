@@ -1,9 +1,11 @@
 import randomString from '@/utils/randomString.js'
 import dayjs from 'dayjs'
-import { clamp } from 'lodash-es'
+import { clamp, debounce } from 'lodash-es'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
 const _mutex = new SimplePromiseQueue()
+let waitList = {}
+let listened = false
 
 export default {
   namespaced: true,
@@ -153,32 +155,39 @@ export default {
         console.log(e.message)
       }
     },
-    async saveData ({ commit, state, getters }, { left, right, id, content, name }) {
+    syncData: debounce(function ({ dispatch }, { id, data }) {
+      if (navigator.onLine) {
+        _mutex.enqueue(this.$axios.post(`${this.$apiBase}/iszy_tools/jsoneditor/${id}`, data))
+      } else {
+        waitList[id] = data
+
+        if (!listened) {
+          listened = true
+          function reSync () {
+            window.removeEventListener('online', reSync)
+            for (const id in waitList) {
+              dispatch('syncData', { id, data: waitList[id] })
+            }
+            waitList = {}
+          }
+          window.addEventListener('online', reSync)
+        }
+      }
+    }, 500),
+    saveData ({ commit, state, getters, dispatch }, { left, right, id, content, name }) {
       if (getters.syncCloud) {
         id = id || randomString(6)
         if (content != null || name != null) {
-          try {
-            const item = { name: name || (state.$_data[id] || {}).name || `文档-${id}` }
-            if (typeof content === 'string') {
-              item.text = content
-            } else {
-              item.json = markRaw(content)
-            }
-            const data = (await this.$axios.post(`${this.$apiBase}/iszy_tools/jsoneditor/${id}`, item)).data
-            if (data.success) {
-              commit('saveData', { left, right, id, content, name })
-            } else {
-              console.log(data.message)
-            }
-          } catch (e) {
-            console.log(e)
+          const item = { name: name || (state.$_data[id] || {}).name || `文档-${id}` }
+          if (typeof content === 'string') {
+            item.text = content
+          } else {
+            item.json = markRaw(content)
           }
-        } else {
-          commit('saveData', { left, right, id, content, name })
+          dispatch('syncData', { id, data: item })
         }
-      } else {
-        commit('saveData', { left, right, id, content, name })
       }
+      commit('saveData', { left, right, id, content, name })
     },
     async deleteData ({ commit, getters }, { id }) {
       if (getters.syncCloud) {
