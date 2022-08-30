@@ -137,7 +137,7 @@ export default {
         } else if (d.json != null) {
           data[d.key].content.json = d.json
         }
-        data.updated = dayjs(d.updatedAt).format()
+        data[d.key].updated = dayjs(d.updatedAt).format()
       }
       state.$_data = data
     }
