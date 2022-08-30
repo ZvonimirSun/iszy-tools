@@ -181,7 +181,7 @@ export default {
           const item = { name: name || (state.$_data[id] || {}).name || `文档-${id}` }
           if (typeof content === 'string') {
             item.text = content
-          } else {
+          } else if (typeof content === 'object') {
             item.json = markRaw(content)
           }
           dispatch('syncData', { id, data: item })
