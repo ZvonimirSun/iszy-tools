@@ -6,14 +6,6 @@ const axiosInstance = Axios.create()
 axiosInstance.$apiBase = ''
 axiosInstance.CancelToken = Axios.CancelToken
 axiosInstance.isCancel = Axios.isCancel
-axiosInstance.interceptors.request.use(
-  (configs: AxiosRequestConfig) => {
-    if (store.state.user._user.token && configs.url.includes(axiosInstance.$apiBase)) {
-      configs.headers.Authorization = 'Bearer ' + store.state.user._user.token
-    }
-    return configs
-  }
-)
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
     // todo 修复401逻辑

@@ -38,9 +38,7 @@ export default (options = {}) => {
       if (data) {
         _store.replaceState(data)
         if (_store.state.user._user.token) {
-          _store.dispatch('user/updateToken')
           _store.dispatch('downloadSettings')
-          _store.dispatch('user/getProfiles')
         }
       }
 

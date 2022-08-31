@@ -8,7 +8,6 @@ export default {
   namespaced: true,
   state: () => ({
     _user: {
-      token: null,
       profile: {
         nickName: undefined
       }
@@ -93,13 +92,13 @@ export default {
       try {
         if (userName != null && password != null) {
           const res = await axios.post(`${this.$apiBase}/auth/login`, {
-            userName: userName.trim(),
+            username: userName.trim(),
             password
           })
           if (res.data && res.data.success) {
-            commit('setToken', res.data.data.token)
+            commit('setToken', 'logged')
+            commit('updateProfile', res.data.data)
             dispatch('downloadSettings', null, { root: true })
-            dispatch('getProfiles')
             return true
           } else {
             commit('clearToken')
@@ -142,16 +141,6 @@ export default {
         }
       } else {
         return false
-      }
-    },
-    async updateToken ({ state, commit }) {
-      if (state._user.token) {
-        try {
-          const res = await axios.post(`${this.$apiBase}/auth/token`)
-          if (res.data && res.data.success) {
-            commit('setToken', res.data.data.token)
-          }
-        } catch (e) {}
       }
     },
 
