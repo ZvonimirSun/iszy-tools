@@ -85,6 +85,10 @@ export default {
   },
   methods: {
     login () {
+      if (!navigator.onLine) {
+        this.$msg.warn('已离线！')
+        return
+      }
       if (this.form.userName != null && this.form.password != null) {
         this.loading = true
         this.$store.dispatch('user/login', {

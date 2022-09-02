@@ -55,9 +55,13 @@ routes = routes.concat([
     path: '/logout',
     name: '登出',
     beforeEnter (to, from, next) {
-      store.dispatch('user/logout').then(() => {
+      if (navigator.onLine) {
+        store.dispatch('user/logout').then(() => {
+          next(from.fullPath)
+        })
+      } else {
         next(from.fullPath)
-      })
+      }
     }
   },
   {

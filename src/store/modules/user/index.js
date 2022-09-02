@@ -89,47 +89,39 @@ export default {
   },
   actions: {
     async login ({ commit, dispatch }, { userName, password }) {
-      if (navigator.onLine) {
-        try {
-          if (userName != null && password != null) {
-            const res = await axios.post(`${this.$apiBase}/auth/login`, {
-              username: userName.trim(),
-              password
-            })
-            if (res.data && res.data.success) {
-              commit('setToken', 'logged')
-              commit('updateProfile', res.data.data)
-              dispatch('downloadSettings', null, { root: true })
-              return true
-            } else {
-              commit('clearToken')
-              return false
-            }
+      try {
+        if (userName != null && password != null) {
+          const res = await axios.post(`${this.$apiBase}/auth/login`, {
+            username: userName.trim(),
+            password
+          })
+          if (res.data && res.data.success) {
+            commit('setToken', 'logged')
+            commit('updateProfile', res.data.data)
+            dispatch('downloadSettings', null, { root: true })
+            return true
           } else {
+            commit('clearToken')
             return false
           }
-        } catch (e) {
-          commit('clearToken')
+        } else {
           return false
         }
-      } else {
-        this.$msg.warn('已离线！')
+      } catch (e) {
+        commit('clearToken')
+        return false
       }
     },
     async logout ({ commit }) {
-      if (navigator.onLine) {
-        try {
-          const data = (await axios.post(`${this.$apiBase}/auth/logout`)).data
-          if (data && data.success) {
-            commit('clearToken')
-          } else {
-            this.$msg.warn('登出失败！')
-          }
-        } catch (e) {
+      try {
+        const data = (await axios.post(`${this.$apiBase}/auth/logout`)).data
+        if (data && data.success) {
           commit('clearToken')
+        } else {
+          this.$msg.warn('登出失败！')
         }
-      } else {
-        this.$msg.warn('已离线！')
+      } catch (e) {
+        commit('clearToken')
       }
     },
     async getProfiles ({ state, commit, dispatch }) {

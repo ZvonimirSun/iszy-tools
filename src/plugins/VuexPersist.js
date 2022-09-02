@@ -37,7 +37,8 @@ export default (options = {}) => {
       }
       if (data) {
         _store.replaceState(data)
-        if (_store.state.user._user.token) {
+        if (_store.state.user._user.token && navigator.onLine) {
+          _store.dispatch('user/getProfiles')
           _store.dispatch('downloadSettings')
         }
       }
@@ -62,7 +63,7 @@ export default (options = {}) => {
           } else {
             _mutex.enqueue(setState(tmp[0], state[tmp[0]]))
             if (tmp[0] === 'user') {
-              if (state?.user?.settings?.autoSync) {
+              if (state?.user?.settings?.autoSync && navigator.onLine) {
                 _mutex.enqueue(_store.dispatch('uploadSettings'))
               }
             }
