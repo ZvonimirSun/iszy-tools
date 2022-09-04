@@ -38,8 +38,10 @@ export default (options = {}) => {
       if (data) {
         _store.replaceState(data)
         if (_store.state.user._user.token && navigator.onLine) {
-          _store.dispatch('user/getProfiles')
-          _store.dispatch('downloadSettings')
+          setTimeout(async () => {
+            await _store.dispatch('user/getProfiles')
+            await _store.dispatch('downloadSettings')
+          }, 0)
         }
       }
 
@@ -62,7 +64,7 @@ export default (options = {}) => {
             }
           } else {
             _mutex.enqueue(setState(tmp[0], state[tmp[0]]))
-            if (tmp[0] === 'user') {
+            if (tmp[0] === 'user' && ['setToken', 'clearToken', 'updateProfile'].indexOf(tmp[1]) === -1) {
               if (state?.user?.settings?.autoSync && navigator.onLine) {
                 _mutex.enqueue(_store.dispatch('uploadSettings'))
               }

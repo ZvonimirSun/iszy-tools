@@ -4,10 +4,13 @@ import settings from './settings'
 import modules from './modules'
 import { flatten } from 'lodash-es'
 
+let tokenChecked = false
+
 export default {
   namespaced: true,
   state: () => ({
     _user: {
+      token: undefined,
       profile: {
         nickName: undefined
       }
@@ -34,6 +37,7 @@ export default {
   mutations: {
     setToken (state, token) {
       state._user.token = token
+      tokenChecked = true
     },
     clearToken (state) {
       state._user.token = null
@@ -139,14 +143,19 @@ export default {
     },
     async checkToken ({ state, commit }) {
       if (state._user.token) {
-        try {
-          await axios.head(`${this.$apiBase}/auth/profile`)
+        if (tokenChecked) {
           return true
-        } catch (e) {
-          if (!axios.isCancel(e)) {
-            commit('clearToken')
+        } else {
+          try {
+            await axios.head(`${this.$apiBase}/auth/profile`)
+            tokenChecked = true
+            return true
+          } catch (e) {
+            if (!axios.isCancel(e)) {
+              commit('clearToken')
+            }
+            return false
           }
-          return false
         }
       } else {
         return false
