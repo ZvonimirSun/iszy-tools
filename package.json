@@ -28,6 +28,8 @@
     "dom-to-image": "^2.6.0",
     "esri-leaflet": "^3.0.3",
     "file-saver": "^2.0.5",
+    "fundebug-javascript": "^2.8.6",
+    "fundebug-vue": "^0.3.6",
     "highlight.js": "^11.2.0",
     "js-beautify": "^1.14.0",
     "jsoneditor": "^9.5.0",
