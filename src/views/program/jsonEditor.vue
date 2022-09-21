@@ -1,5 +1,12 @@
 <template>
   <div
+    v-show="loading"
+    class="loadingPanel"
+  >
+    <a-spin tip="同步中..." />
+  </div>
+  <div
+    v-show="!loading"
     ref="editorPanel"
     class="editorPanel"
   >
@@ -468,7 +475,9 @@ export default {
     leftMode: 'code',
     rightMode: 'tree',
 
-    fullPanel: ''
+    fullPanel: '',
+
+    loading: true
   }),
   computed: {
     dataListAfterSearch: function () {
@@ -565,6 +574,9 @@ export default {
     async init () {
       if (this.syncCloud) {
         await this.getSyncData()
+        this.loading = false
+      } else {
+        this.loading = false
       }
       this.fullPanel = this.fullStatus
       editorLeft = new JSONEditor(
@@ -1046,6 +1058,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.loadingPanel {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .editorPanel {
   display: flex;
   height: 100%;
