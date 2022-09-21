@@ -107,7 +107,6 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
 import * as uploaders from '../uploader/index.js'
 import { cloneDeep, debounce, merge } from 'lodash-es'
 

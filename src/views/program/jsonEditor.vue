@@ -397,7 +397,6 @@
 
 <script>
 import { deleteParam, getParam, setParam } from '@/utils/hashHandler.js'
-import { createNamespacedHelpers } from 'vuex'
 /**
  * @type {Function}
  */

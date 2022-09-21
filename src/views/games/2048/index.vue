@@ -61,7 +61,6 @@
 
 <script>
 import GameManager from './js/GameManager.js'
-import { createNamespacedHelpers } from 'vuex'
 
 const { mapActions, mapState, mapGetters } = createNamespacedHelpers('g2048')
 

@@ -1,5 +1,5 @@
 import EventBus from '@/plugins/EventBus.js'
-import { message } from 'ant-design-vue'
+import message from 'ant-design-vue/es/message'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'

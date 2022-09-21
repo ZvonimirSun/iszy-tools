@@ -79,7 +79,6 @@
 <script>
 import { Search, Star } from '@icon-park/vue-next'
 import tools from '@/views/tools.json'
-import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash-es'
 
 const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpers('user')

@@ -73,10 +73,10 @@
 import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { Modal } from 'ant-design-vue'
+import Modal from 'ant-design-vue/es/modal'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { MessageApi } from 'ant-design-vue/es/message'
-import { VueInstance } from '@vueuse/core'
+import { ComponentPublicInstance } from 'vue'
 import 'ant-design-vue/es/modal/style/index.js'
 
 const {
@@ -90,7 +90,7 @@ const _user = computed(() => store.state.user._user)
 const $msg: MessageApi = inject('$msg')
 
 const fullScreenStatus = ref(false)
-const view = ref<VueInstance>()
+const view = ref<ComponentPublicInstance >()
 
 const year = ref('2021')
 

@@ -22,7 +22,6 @@
 
 <script>
 import * as uploaders from '../uploader/index.js'
-import { createNamespacedHelpers } from 'vuex'
 
 const {
   mapGetters,
