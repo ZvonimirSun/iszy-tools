@@ -2,11 +2,15 @@
   <a-typography-title :level="3">
     生成二维码
   </a-typography-title>
-  <a-form>
+  <a-form
+    :wrapper-col="{ span: 10 }"
+    layout="vertical"
+  >
     <a-form-item label="内容">
       <a-textarea
         v-model:value="generateContent"
         placeholder="请输入待处理内容"
+        allow-clear
         @change="generateQR"
       />
     </a-form-item>
@@ -29,10 +33,43 @@
       </a-button>
     </a-form-item>
   </a-form>
-<!--  <a-divider />-->
-<!--  <a-typography-title :level="3">-->
-<!--    解析二维码-->
-<!--  </a-typography-title>-->
+  <a-divider />
+  <a-typography-title :level="3">
+    解析二维码
+  </a-typography-title>
+  <a-form
+    :wrapper-col="{ span: 10 }"
+    layout="vertical"
+  >
+    <a-form-item label="上传二维码">
+      <a-upload
+        :file-list="[]"
+        :show-upload-list="false"
+        accept="image/*"
+        :before-upload="upload"
+      >
+        <img
+          v-if="qrCodeFile"
+          ref="decodeImg"
+          class="upload-container"
+          alt="qrCode"
+          :src="qrCodeFile"
+        >
+        <div
+          v-else
+          class="upload-container"
+        >
+          <span class="i-icon-park-outline-upload" />
+        </div>
+      </a-upload>
+    </a-form-item>
+    <a-form-item label="结果">
+      <a-textarea
+        :value="decodeResult"
+        readonly
+      />
+    </a-form-item>
+  </a-form>
 </template>
 
 <script setup lang="ts">
@@ -40,10 +77,14 @@ import { toDataURL } from 'qrcode'
 import { Ref } from 'vue'
 import { MessageApi } from 'ant-design-vue/es/message'
 import createFile from '@/utils/createFile'
+import QrcodeDecoder from 'qrcode-decoder/src/index'
 
-const generateContent:Ref<string> = ref('')
-const generateResult:Ref<string> = ref('')
-const msg:MessageApi = inject('$msg')
+const generateContent: Ref<string> = ref('')
+const generateResult: Ref<string> = ref('')
+const msg: MessageApi = inject('$msg')
+const qrCodeFile: Ref<string> = ref('')
+const decodeResult: Ref<string> = ref('')
+const decodeImg: Ref<HTMLImageElement> = ref()
 
 async function generateQR () {
   if (!generateContent.value) {
@@ -64,8 +105,64 @@ function saveResult () {
   createFile(generateResult.value, 'result.png', 'url')
 }
 
+function upload (img: File) {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => {
+    if (typeof reader.result === 'string') {
+      qrCodeFile.value = reader.result
+      nextTick(() => {
+        debugger
+        decodeQRCode(decodeImg.value)
+      })
+    } else {
+      msg.error('读取文件失败')
+    }
+  })
+  reader.addEventListener('error', () => {
+    msg.error('读取文件失败')
+  })
+  reader.readAsDataURL(img)
+  return false
+}
+
+async function decodeQRCode (img: HTMLImageElement) {
+  try {
+    const qrcodeDecoder = new QrcodeDecoder()
+    const res = await qrcodeDecoder.decodeFromImage(img)
+    decodeResult.value = res.data
+  } catch (e) {
+    console.error(e)
+    msg.error(e.message)
+  }
+}
 </script>
 
 <style scoped lang="scss">
+.ant-form-item {
+  margin-bottom: .8rem;
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.upload-container {
+  cursor: pointer;
+  min-width: 20rem;
+  min-height: 20rem;
+  font-size: 30px;
+
+  &:not(img) {
+    width: 20rem;
+    height: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f6f6f6;
+
+    &:hover {
+      background: #dedede;
+    }
+  }
+}
 </style>
