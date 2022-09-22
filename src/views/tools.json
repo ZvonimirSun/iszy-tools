@@ -8,6 +8,10 @@
         "link": "https://shop.iszy.xyz"
       },
       {
+        "name": "二维码",
+        "link": "/qrcode"
+      },
+      {
         "name": "这是什么动漫",
         "link": "/whatAnimeIsThis"
       },
