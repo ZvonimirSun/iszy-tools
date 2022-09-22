@@ -92,7 +92,7 @@
 import { Buffer } from 'buffer'
 import { Compact } from '@ckpack/vue-color'
 import domToImage from 'dom-to-image'
-import createFile from '@/utils/createFile.js'
+import createFile from '@/utils/createFile'
 
 export default {
   name: 'WatermarkTool',

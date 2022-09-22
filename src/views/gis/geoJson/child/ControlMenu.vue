@@ -38,7 +38,7 @@
 <script setup>
 import { GeoJSON } from 'leaflet'
 import '@/utils/shpwrite.js'
-import createFile from '@/utils/createFile.js'
+import createFile from '@/utils/createFile'
 
 const $eventBus = inject('$eventBus')
 const $msg = inject('$msg')

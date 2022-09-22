@@ -402,7 +402,7 @@ import { deleteParam, getParam, setParam } from '@/utils/hashHandler.js'
  */
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
-import createFile from '@/utils/createFile.js'
+import createFile from '@/utils/createFile'
 import { Right, Left, Down, Up, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
