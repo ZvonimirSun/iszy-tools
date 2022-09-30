@@ -1,11 +1,15 @@
 [
   {
     "type": "其他",
-    "icon": "all-application",
+    "icon": "i-icon-park-solid-all-application",
     "children": [
       {
         "name": "淘宝优惠券精选",
-        "link": "https://taobao.iszy.xyz"
+        "link": "https://shop.iszy.xyz"
+      },
+      {
+        "name": "二维码",
+        "link": "/qrcode"
       },
       {
         "name": "这是什么动漫",
@@ -62,16 +66,78 @@
     ]
   },
   {
+    "type": "代码工具",
+    "icon": "i-icon-park-outline-code",
+    "children": [
+      {
+        "name": "渐变色生成器",
+        "link": "/gradientColor"
+      },
+      {
+        "name": "颜色选择器",
+        "link": "/colorTransform"
+      },
+      {
+        "name": "时间计算",
+        "link": "/timeCompute"
+      },
+      {
+        "name": "在线ASCII码对照表",
+        "link": "/ascii"
+      },
+      {
+        "name": "查看网页源码",
+        "link": "/viewSourceCode"
+      },
+      {
+        "name": "CSS格式化/压缩",
+        "link": "/cssFormatter"
+      },
+      {
+        "name": "XML编辑器",
+        "link": "/xmlEditor"
+      },
+      {
+        "name": "TinyEditor",
+        "link": "/tinyEditor"
+      },
+      {
+        "name": "正则大全",
+        "link": "/anyRule"
+      },
+      {
+        "name": "UserAgent解析",
+        "link": "/userAgent"
+      },
+      {
+        "name": "JSON编辑器",
+        "link": "/jsonEditor"
+      },
+      {
+        "name": "前端CDN搜索",
+        "link": "/cdnQuery"
+      },
+      {
+        "name": "JSON转换工具",
+        "link": "/jsonConverter"
+      }
+    ]
+  },
+  {
     "type": "地图工具",
-    "icon": "map-draw",
+    "icon": "i-icon-park-solid-map-draw",
     "children": [
       {
         "name": "地图选择器",
         "link": "https://datav.aliyun.com/tools/atlas/index.html"
       },
       {
-        "name": "GeoJSON",
-        "link": "/geoJson"
+        "name": "GeoJSON.io",
+        "link": "/geoJson",
+        "tags": [
+          "geojson",
+          "gis"
+        ]
       },
       {
         "name": "经纬度查询",
@@ -81,7 +147,7 @@
   },
   {
     "type": "图片工具",
-    "icon": "picture-one",
+    "icon": "i-icon-park-solid-picture-one",
     "children": [
       {
         "name": "图片加水印",
@@ -95,7 +161,7 @@
   },
   {
     "type": "编解码工具",
-    "icon": "file-lock",
+    "icon": "i-icon-park-solid-file-lock",
     "children": [
       {
         "name": "URL编码/解码",
@@ -120,28 +186,6 @@
     ]
   },
   {
-    "type": "转换工具",
-    "icon": "file-conversion",
-    "children": [
-      {
-        "name": "时间计算",
-        "link": "/timeCompute"
-      },
-      {
-        "name": "颜色转换",
-        "link": "/colorTransform"
-      },
-      {
-        "name": "JSON编辑器",
-        "link": "/jsonEditor"
-      },
-      {
-        "name": "在线ASCII码对照表",
-        "link": "/ascii"
-      }
-    ]
-  },
-  {
     "type": "生成工具",
     "icon": "",
     "children": [
@@ -160,38 +204,8 @@
     ]
   },
   {
-    "type": "代码工具",
-    "icon": "code",
-    "children": [
-      {
-        "name": "查看网页源码",
-        "link": "/viewSourceCode"
-      },
-      {
-        "name": "CSS格式化/压缩",
-        "link": "/cssFormatter"
-      },
-      {
-        "name": "TinyEditor",
-        "link": "/tinyEditor"
-      },
-      {
-        "name": "正则大全",
-        "link": "/anyRule"
-      },
-      {
-        "name": "UserAgent解析",
-        "link": "/userAgent"
-      },
-      {
-        "name": "前端CDN搜索",
-        "link": "/cdnQuery"
-      }
-    ]
-  },
-  {
     "type": "小游戏",
-    "icon": "game",
+    "icon": "i-icon-park-solid-game",
     "children": [
       {
         "name": "2048",
@@ -205,7 +219,7 @@
   },
   {
     "type": "理财",
-    "icon": "financing-one",
+    "icon": "i-icon-park-solid-financing-one",
     "children": [
       {
         "name": "多次提前还贷计算器",
@@ -214,15 +228,19 @@
       {
         "name": "基金股票信息查询",
         "link": "http://www.zodiacn.ltd"
+      },
+      {
+        "name": "实时汇率",
+        "link": "/forexRate"
       }
     ]
   },
   {
     "type": "网站相关",
-    "icon": "setting-two",
+    "icon": "i-icon-park-solid-setting-two",
     "children": [
       {
-        "name": "网站设置",
+        "name": "网站管理",
         "link": "/settings",
         "statistics": false
       },

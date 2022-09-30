@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container"
+    class="wrapper"
     :style="{background: selectedColor?.hex || '#fff'}"
   >
     <div class="wrapper">
@@ -30,15 +30,15 @@
             v-if="selectedColor"
             class="selectedColorDataWrapper"
           >
-            <Space
+            <a-space
               direction="vertical"
               :size="8"
             >
-              <Title :level="4">
+              <a-typography-title :level="4">
                 CMYK
-              </Title>
-              <Space :size="8">
-                <Progress
+              </a-typography-title>
+              <a-space :size="8">
+                <a-progress
                   type="circle"
                   :percent="selectedColor.CMYK[0]"
                   stroke-color="cyan"
@@ -47,8 +47,8 @@
                   <template #format>
                     <span style="color: cyan">{{ selectedColor.CMYK[0] }}</span>
                   </template>
-                </Progress>
-                <Progress
+                </a-progress>
+                <a-progress
                   type="circle"
                   :percent="selectedColor.CMYK[1]"
                   stroke-color="magenta"
@@ -57,8 +57,8 @@
                   <template #format>
                     <span style="color: magenta">{{ selectedColor.CMYK[1] }}</span>
                   </template>
-                </Progress>
-                <Progress
+                </a-progress>
+                <a-progress
                   type="circle"
                   :percent="selectedColor.CMYK[2]"
                   stroke-color="yellow"
@@ -67,8 +67,8 @@
                   <template #format>
                     <span style="color: yellow">{{ selectedColor.CMYK[2] }}</span>
                   </template>
-                </Progress>
-                <Progress
+                </a-progress>
+                <a-progress
                   type="circle"
                   :percent="selectedColor.CMYK[3]"
                   stroke-color="black"
@@ -77,13 +77,13 @@
                   <template #format>
                     <span style="color: black">{{ selectedColor.CMYK[3] }}</span>
                   </template>
-                </Progress>
-              </Space>
-              <Title :level="4">
+                </a-progress>
+              </a-space>
+              <a-typography-title :level="4">
                 RGB
-              </Title>
-              <Space :size="8">
-                <Progress
+              </a-typography-title>
+              <a-space :size="8">
+                <a-progress
                   type="circle"
                   :percent="selectedColor.RGB[0]/2.55"
                   stroke-color="red"
@@ -92,8 +92,8 @@
                   <template #format>
                     <span style="color: red">{{ selectedColor.RGB[0] }}</span>
                   </template>
-                </Progress>
-                <Progress
+                </a-progress>
+                <a-progress
                   type="circle"
                   :percent="selectedColor.RGB[1]/2.55"
                   stroke-color="green"
@@ -102,8 +102,8 @@
                   <template #format>
                     <span style="color: green">{{ selectedColor.RGB[1] }}</span>
                   </template>
-                </Progress>
-                <Progress
+                </a-progress>
+                <a-progress
                   type="circle"
                   :percent="selectedColor.RGB[2]/2.55"
                   stroke-color="blue"
@@ -112,15 +112,15 @@
                   <template #format>
                     <span style="color: blue">{{ selectedColor.RGB[2] }}</span>
                   </template>
-                </Progress>
-              </Space>
-              <Title :level="4">
+                </a-progress>
+              </a-space>
+              <a-typography-title :level="4">
                 HEX
-              </Title>
-              <Paragraph style="font-size:20px;line-height:28px;color:white">
+              </a-typography-title>
+              <a-typography-paragraph style="font-size:20px;line-height:28px;color:white">
                 {{ selectedColor.hex }}
-              </Paragraph>
-            </Space>
+              </a-typography-paragraph>
+            </a-space>
           </div>
         </div>
       </transition>
@@ -151,12 +151,7 @@
 </template>
 
 <script setup>
-import { nextTick } from '@vue/runtime-dom'
-import { ref, watch } from 'vue'
 import colors from './colors.json'
-import { Progress, Space, Typography } from 'ant-design-vue'
-
-const { Title, Paragraph } = Typography
 
 const selectedColor = ref()
 const selectedColorNameWrapper = ref()
@@ -186,7 +181,7 @@ function resize () {
 </script>
 
 <style scoped lang="scss">
-.container {
+.wrapper {
   width: 100%;
   height: 100%;
 

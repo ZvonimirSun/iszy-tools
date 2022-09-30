@@ -1,39 +1,39 @@
 <template>
-  <Form
+  <a-form-item
     :colon="false"
     class="addService"
   >
-    <Item label="服务名称">
-      <Input v-model:value="name" />
-    </Item>
-    <Item label="服务地址">
-      <Input v-model:value="url" />
-    </Item>
-    <Item label="服务类型">
-      <Select v-model:value="type">
-        <SelectOption value="supermap_rest">
+    <a-form-item label="服务名称">
+      <a-input v-model:value="name" />
+    </a-form-item>
+    <a-form-item label="服务地址">
+      <a-input v-model:value="url" />
+    </a-form-item>
+    <a-form-item label="服务类型">
+      <a-select v-model:value="type">
+        <a-select-option value="supermap_rest">
           超图动态
-        </SelectOption>
-        <SelectOption value="supermap_tile">
+        </a-select-option>
+        <a-select-option value="supermap_tile">
           超图切片
-        </SelectOption>
-        <SelectOption value="arcgis_rest">
+        </a-select-option>
+        <a-select-option value="arcgis_rest">
           ArcGIS 动态
-        </SelectOption>
-        <SelectOption value="arcgis_tile">
+        </a-select-option>
+        <a-select-option value="arcgis_tile">
           ArcGIS 切片
-        </SelectOption>
-      </Select>
-    </Item>
-    <Item class="formBtnItem">
-      <Button
+        </a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item class="formBtnItem">
+      <a-button
         type="primary"
         @click="addService"
       >
         添加
-      </Button>
-    </Item>
-  </Form>
+      </a-button>
+    </a-form-item>
+  </a-form-item>
 </template>
 
 <script>
@@ -41,15 +41,9 @@ import { tiledMapLayer } from '@/utils/iclient-leaflet/index.js'
 import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/DynamicMapLayer.js'
 import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
 import { CRS } from 'leaflet'
-import { defineComponent } from 'vue'
-import { Button, Form, Select, Input } from 'ant-design-vue'
-
-const { Item } = Form
-const { Option: SelectOption } = Select
 
 export default defineComponent({
   name: 'AddService',
-  components: { Button, Form, Select, Input, Item, SelectOption },
   props: {
     map: { type: Object, default: undefined },
     layerControl: { type: Object, default: undefined }

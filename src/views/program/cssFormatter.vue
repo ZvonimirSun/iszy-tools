@@ -1,278 +1,186 @@
 <template>
   <div class="codePanel">
     <div class="header">
-      <Button
+      <a-button
         type="primary"
         title="格式化"
         @click="format"
       >
         <template #icon>
-          <indent-right theme="outline" />
+          <span class="i-icon-park-outline-indent-right" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="压缩"
         @click="compact"
       >
         <template #icon>
-          <compression theme="outline" />
+          <span class="i-icon-park-outline-compression" />
         </template>
-      </Button>
-      <Divider type="vertical" />
-      <Button
+      </a-button>
+      <a-divider type="vertical" />
+      <a-button
         type="primary"
         title="折叠所有"
         @click="foldAll"
       >
         <template #icon>
-          <collapse-text-input theme="outline" />
+          <span class="i-icon-park-outline-collapse-text-input" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="展开所有"
         @click="unfoldAll"
       >
         <template #icon>
-          <expand-text-input theme="outline" />
+          <span class="i-icon-park-outline-expand-text-input" />
         </template>
-      </Button>
-      <Divider type="vertical" />
-      <Button
+      </a-button>
+      <a-divider type="vertical" />
+      <a-button
         type="primary"
         title="撤销"
-        :disabled="historySize.undo === 0"
-        @click="undo"
+        :disabled="!hasUndo"
+        @click="undoEditor"
       >
         <template #icon>
-          <undo theme="outline" />
+          <span class="i-icon-park-outline-undo" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="重做"
-        :disabled="historySize.redo === 0"
-        @click="redo"
+        :disabled="!hasRedo"
+        @click="redoEditor"
       >
         <template #icon>
-          <redo theme="outline" />
+          <span class="i-icon-park-outline-redo" />
         </template>
-      </Button>
-      <Divider type="vertical" />
-      <Button
+      </a-button>
+      <a-divider type="vertical" />
+      <a-button
         type="primary"
         title="前往顶部"
-        @click="goTop"
+        @click="scrollToTop"
       >
         <template #icon>
-          <to-top theme="outline" />
+          <span class="i-icon-park-outline-to-top" />
         </template>
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         title="前往底部"
-        @click="goBottom"
+        @click="scrollToBottom"
       >
         <template #icon>
-          <to-bottom theme="outline" />
+          <span class="i-icon-park-outline-to-bottom" />
         </template>
-      </Button>
+      </a-button>
     </div>
-    <CodeMirror
-      ref="cmEditor"
-      v-model:value="code"
-      class="cmEditor"
-      :options="cmOptions"
-      @changes="onChanges"
-      @cursor-activity="onCursorActivity"
-    />
+    <div class="ace-container">
+      <v-ace-editor
+        v-model:value="code"
+        lang="css"
+        theme="textmate"
+        style="height: 100%;"
+        :options="{
+          useWorker: true,
+          enableBasicAutocompletion:true,
+          enableSnippets:true,
+          enableLiveAutocompletion:true
+        }"
+        @init="editorInit"
+        @change="editorChange"
+      />
+    </div>
     <div class="footer">
-      <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.line + 1 }}&nbsp;&nbsp;列数:&nbsp;{{
-        cursor.ch + 1
-      }}</span>
+      <span>总行数:&nbsp;{{ lineCount }}&nbsp;&nbsp;行数:&nbsp;{{ cursor.row + 1 }}&nbsp;&nbsp;列数:&nbsp;{{ cursor.column + 1 }}</span>
     </div>
   </div>
 </template>
 
-<script>
-import {
-  IndentRight,
-  Compression,
-  Undo,
-  Redo,
-  ToTop,
-  ToBottom,
-  ExpandTextInput,
-  CollapseTextInput
-} from '@icon-park/vue-next'
-// region codemirror
-import 'codemirror/lib/codemirror.css'
-// 代码高亮
-import 'codemirror/mode/css/css.js'
-// 主题
-import 'codemirror/theme/idea.css'
-import 'codemirror/addon/dialog/dialog.css'
-// Sublime Keymap
-import 'codemirror/keymap/sublime.js'
-// 搜索
-import 'codemirror/addon/search/search'
-import 'codemirror/addon/search/searchcursor.js'
-import 'codemirror/addon/dialog/dialog.js'
-// 代码折叠
-import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/addon/fold/foldcode.js'
-import 'codemirror/addon/fold/foldgutter.js'
-import 'codemirror/addon/fold/brace-fold.js'
-import 'codemirror/addon/fold/comment-fold.js'
-// 全屏
-import 'codemirror/addon/display/fullscreen.css'
-import 'codemirror/addon/display/fullscreen.js'
-// 括号匹配
-import 'codemirror/addon/edit/matchbrackets.js'
-import 'codemirror/addon/edit/closebrackets.js'
-// 自动补全
-import 'codemirror/addon/hint/show-hint.css'
-import 'codemirror/addon/hint/show-hint.js'
-import 'codemirror/addon/hint/anyword-hint.js'
-// 行注释
-import 'codemirror/addon/comment/comment.js'
-// import { CSSLint } from 'csslint'
-// import 'codemirror/addon/lint/lint.css'
-// import 'codemirror/addon/lint/lint.js'
-// import 'codemirror/addon/lint/css-lint.js'
-import CodeMirror from '@/components/vue-codemirror.vue'
-// endregion
-import { Button, Divider } from 'ant-design-vue'
-import { css_beautify as cssBeautify } from 'js-beautify'
-// window.CSSLint = CSSLint
+<script setup>
+import { VAceEditor } from 'vue3-ace-editor'
+import ace from 'ace-builds'
+import 'ace-builds/src-noconflict/mode-css'
+import 'ace-builds/src-noconflict/theme-textmate.js'
+import 'ace-builds/src-noconflict/snippets/css.js'
+import 'ace-builds/src-noconflict/ext-searchbox.js'
+import 'ace-builds/src-noconflict/ext-language_tools.js'
+import 'ace-builds/src-noconflict/ext-beautify.js'
+import workerCssUrl from 'ace-builds/src-noconflict/worker-css.js?url'
+ace.config.setModuleUrl('ace/mode/css_worker', workerCssUrl)
+const beautify = ace.require('ace/ext/beautify')
 
-export default {
-  name: 'CssFormatter',
-  components: {
-    CodeMirror,
-    Button,
-    Divider,
-    IndentRight,
-    Compression,
-    Undo,
-    Redo,
-    ToTop,
-    ToBottom,
-    ExpandTextInput,
-    CollapseTextInput
-  },
-  data: () => ({
-    code: '',
-    cursor: {
-      line: 0,
-      ch: 0
-    },
-    lineCount: 0,
-    historySize: {
-      undo: 0,
-      redo: 0
-    },
-    cmOptions: {
-      // Js高亮显示
-      mode: 'text/css',
-      tabSize: 2,
-      indentUnit: 2, // 缩进单位，默认2
-      smartIndent: true, // 是否智能缩进
-      // 显示行号
-      styleActiveLine: true,
-      lineNumbers: true,
-      // 设置主题
-      theme: 'idea',
-      // 绑定Vim
-      keyMap: 'sublime',
-      // 代码折叠
-      lineWrapping: true,
-      foldGutter: true,
-      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-      // CodeMirror-lint-markers是实现语法报错功能
-      lint: false,
-      // 全屏模式
-      fullScreen: false,
-      // 括号匹配
-      matchBrackets: true,
-      autoCloseBrackets: true,
-      // 快捷键
-      extraKeys: {
-        F11: (cm) => {
-          cm.setOption('fullScreen', !cm.getOption('fullScreen'))
-        },
-        Esc: (cm) => {
-          if (cm.getOption('fullScreen')) {
-            cm.setOption('fullScreen', false)
-          }
-        }
-      }
-    }
-  }),
-  computed: {
-    codemirror: function () {
-      return this.$refs.cmEditor.codemirror
-    }
-  },
-  mounted () {
-    this.codemirror.setSize('100%', '100%')
-    this.$nextTick(() => {
-      this.codemirror.doc.clearHistory()
-      this.lineCount = this.codemirror.doc.lineCount()
-      this.historySize = this.codemirror.doc.historySize()
-    })
-  },
-  beforeUnmount () {
-    this.destroy()
-  },
-  methods: {
-    format () {
-      try {
-        this.code = cssBeautify(this.code)
-      } catch (e) {
-      }
-    },
-    compact () {
-      try {
-        this.code = this.code.replace(/\s+|\n/g, ' ')
-          .replace(/\s*{\s*/g, '{')
-          .replace(/\s*}\s*/g, '}')
-          .replace(/\s*:\s*/g, ':')
-          .replace(/\s*;\s*/g, ';')
-      } catch (e) {
-      }
-    },
-    redo () {
-      this.codemirror.redo()
-    },
-    undo () {
-      this.codemirror.undo()
-    },
-    goTop () {
-      this.codemirror.execCommand('goDocStart')
-    },
-    goBottom () {
-      this.codemirror.execCommand('goDocEnd')
-    },
-    foldAll () {
-      this.codemirror.execCommand('foldAll')
-    },
-    unfoldAll () {
-      this.codemirror.execCommand('unfoldAll')
-    },
-    destroy () {
-      const element = this.codemirror.doc.cm.getWrapperElement()
-      element && element.remove && element.remove()
-    },
-    onChanges (cm) {
-      this.lineCount = cm.doc.lineCount()
-      this.historySize = cm.doc.historySize()
-    },
-    onCursorActivity (cm) {
-      this.cursor = cm.getCursor()
-    }
+let aceEditor = null
+const code = ref('')
+const cursor = ref({
+  row: 0,
+  column: 0
+})
+const lineCount = ref(0)
+const hasUndo = ref(false)
+const hasRedo = ref(false)
+
+function editorInit (editor) {
+  aceEditor = editor
+  aceEditor.getSession().setTabSize(2)
+  aceEditor.getSession().setUseSoftTabs(true)
+  aceEditor.setShowPrintMargin(false)
+  aceEditor.selection.on('changeCursor', () => {
+    cursor.value = aceEditor.selection.getCursor()
+  })
+  cursor.value = aceEditor.selection.getCursor()
+  lineCount.value = aceEditor.session.getLength()
+}
+
+function foldAll () {
+  aceEditor.session.foldAll()
+}
+
+function unfoldAll () {
+  aceEditor.session.unfold()
+}
+
+function scrollToTop () {
+  aceEditor.gotoLine(0)
+}
+
+function format () {
+  beautify.beautify(aceEditor.session)
+}
+
+function compact () {
+  try {
+    code.value = code.value.replace(/\s+|\n/g, ' ')
+      .replace(/\s*{\s*/g, '{')
+      .replace(/\s*}\s*/g, '}')
+      .replace(/\s*:\s*/g, ':')
+      .replace(/\s*;\s*/g, ';')
+  } catch (e) {
   }
+}
+
+function scrollToBottom () {
+  aceEditor.gotoLine(aceEditor.session.getLength())
+}
+
+async function editorChange () {
+  lineCount.value = aceEditor.session.getLength()
+  await nextTick()
+  const undoManager = aceEditor.session.getUndoManager()
+  hasUndo.value = undoManager.hasUndo()
+  hasRedo.value = undoManager.hasRedo()
+}
+
+function undoEditor () {
+  aceEditor.getSession().getUndoManager().undo()
+}
+
+function redoEditor () {
+  aceEditor.getSession().getUndoManager().redo()
 }
 </script>
 
@@ -294,7 +202,7 @@ export default {
     align-items: center;
   }
 
-  .cmEditor {
+  .ace-container {
     width: 100%;
     height: calc(100% - 7.2rem);
   }
@@ -324,5 +232,10 @@ export default {
   &:not(:last-child) {
     margin-right: .5rem;
   }
+}
+
+.ant-divider {
+  border-color: white;
+  height: 1.6rem;
 }
 </style>

@@ -1,32 +1,32 @@
 <template>
-  <Paragraph>
+  <a-typography-paragraph>
     <blockquote>
       <ul>
         <li>
           数据来自:
-          <Link
+          <a-typography-link
             href="https://www.jsdelivr.com/"
             target="_blank"
           >
             jsDelivr
-          </Link>
+          </a-typography-link>
         </li>
         <li>
           搜索接口来自:
-          <Link
+          <a-typography-link
             href="https://www.algolia.com/"
             target="_blank"
           >
             Algolia
-          </Link>
+          </a-typography-link>
         </li>
       </ul>
     </blockquote>
-  </Paragraph>
-  <Title :level="3">
+  </a-typography-paragraph>
+  <a-typography-title :level="3">
     请输入要获取CDN的库名
-  </Title>
-  <Input
+  </a-typography-title>
+  <a-input
     v-model:value="keyword"
     placeholder="jquery"
     :loading="loading"
@@ -35,13 +35,13 @@
   />
   <keep-alive>
     <template v-if="status==='done'">
-      <Divider />
+      <a-divider />
       <template v-if="!pkgID">
-        <Title :level="4">
+        <a-typography-title :level="4">
           <span>共找到 {{ count }} 个库</span>
           <span v-if="count > 1000">，最多展示前 1000 个结果</span>
-        </Title>
-        <List
+        </a-typography-title>
+        <a-list
           item-layout="vertical"
           size="large"
           :data-source="result"
@@ -49,14 +49,14 @@
           :loading="loading"
         >
           <template #renderItem="{ item }">
-            <Item :key="item.objectID">
-              <Title
+            <a-list-item :key="item.objectID">
+              <a-typography-title
                 :level="4"
                 class="pkgName"
                 @click="showDetail(item.objectID)"
               >
                 {{ item.name }}
-              </Title>
+              </a-typography-title>
               <div class="meta">
                 <div
                   v-if="item.owner"
@@ -69,18 +69,18 @@
                   >
                   <div>{{ item.owner.name }}</div>
                 </div>
-                <Tag v-if="item.version">
+                <a-tag v-if="item.version">
                   <template #icon>
                     <tag-one theme="filled" />
                   </template>
                   <span :title="item.version">{{ item.version }}</span>
-                </Tag>
-                <Tag v-if="item.license">
+                </a-tag>
+                <a-tag v-if="item.license">
                   <template #icon>
                     <balance-two theme="outline" />
                   </template>
                   {{ item.license }}
-                </Tag>
+                </a-tag>
               </div>
               <div
                 v-if="item.description"
@@ -89,67 +89,67 @@
                 {{ item.description }}
               </div>
               <div v-if="item.keywords && item.keywords.length">
-                <Tag
+                <a-tag
                   v-for="(key,index) of item.keywords"
                   :key="index"
                 >
                   {{ key }}
-                </Tag>
+                </a-tag>
               </div>
-            </Item>
+            </a-list-item>
           </template>
-        </List>
+        </a-list>
       </template>
       <template v-else>
-        <Link
+        <a-typography-link
           href="javascript:;"
           style="margin-bottom: .8rem;display: block"
           @click="pkgID=null"
         >
           <return theme="outline" />
           返回
-        </Link>
-        <Typography class="metaDetail">
+        </a-typography-link>
+        <a-typography class="metaDetail">
           <ul>
             <li v-if="pkgData.name">
               <b>名称: </b>{{ pkgData.name }}
             </li>
             <li v-if="pkgData.homepage">
               <b>主页: </b>
-              <Link
+              <a-typography-link
                 :href="pkgData.homepage"
                 target="_blank"
               >
                 {{ pkgData.homepage }}
-              </Link>
+              </a-typography-link>
             </li>
             <li v-if="pkgData.description">
               <b>简介: </b>{{ pkgData.description }}
             </li>
             <li v-if="pkgData.repository">
               <b>仓库: </b>{{ pkgData.repository.type }} /
-              <Link
+              <a-typography-link
                 :href="pkgData.repository.url"
                 target="_blank"
               >
                 {{ pkgData.repository.url }}
-              </Link>
+              </a-typography-link>
             </li>
             <li v-if="pkgData.license">
               <b>协议: </b>{{ pkgData.license }}
             </li>
             <li v-if="pkgData.owner">
               <b>作者: </b>{{ pkgData.owner.name }} /
-              <Link
+              <a-typography-link
                 :href="pkgData.owner.link"
                 target="_blank"
               >
                 {{ pkgData.owner.link }}
-              </Link>
+              </a-typography-link>
             </li>
-            <Divider v-if="versions.length" />
+            <a-divider v-if="versions.length" />
             <li v-if="versions.length">
-              <b>版本: </b><Select
+              <b>版本: </b><a-select
                 v-model:value="version"
                 :options="versions"
                 @change="getVersionData"
@@ -157,78 +157,56 @@
             </li>
             <li v-if="defaultFile">
               <b>默认文件: </b>
-              <Text
+              <a-typography-text
                 :copyable="{
                   text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`
                 }"
               >
-                <Link
+                <a-typography-link
                   :href="`https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`"
                   target="_blank"
                 >
                   {{ defaultFile }}
-                </Link>
-              </Text>
+                </a-typography-link>
+              </a-typography-text>
             </li>
             <li v-if="files && files.length">
               <b>文件列表</b><corner-right-down theme="outline" />
             </li>
           </ul>
-        </Typography>
-        <DirectoryTree
+        </a-typography>
+        <a-directory-tree
           v-if="files && files.length"
           :tree-data="treeData"
           :selectable="false"
         >
           <template #title="{title,dataRef}">
-            <Text
+            <a-typography-text
               :copyable="dataRef.isLeaf?{
                 text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${dataRef.fileName}`
               }:false"
             >
               {{ title }}
-            </Text>
+            </a-typography-text>
           </template>
-        </DirectoryTree>
+        </a-directory-tree>
       </template>
     </template>
   </keep-alive>
 </template>
 
 <script>
-import { Input, Typography, Divider, List, Tag, Select, Tree } from 'ant-design-vue'
 import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
 import { TagOne, BalanceTwo, Return, CornerRightDown } from '@icon-park/vue-next'
-
-const {
-  Title,
-  Paragraph,
-  Link,
-  Text
-} = Typography
-const { Item } = List
-const { DirectoryTree } = Tree
 
 let timeoutIndex = null
 
 export default {
   name: 'CdnQuery',
   components: {
-    Divider,
-    Title,
-    Paragraph,
-    Typography,
-    Link,
-    Text,
-    Input,
-    Select,
-    List,
-    Item,
-    Tag,
     TagOne,
     BalanceTwo,
     Return,
-    DirectoryTree,
     CornerRightDown
   },
   data: () => ({
@@ -399,7 +377,7 @@ export default {
       display: inline-flex;
       align-items: center;
 
-      .i-icon {
+      [class^="i-"] {
         font-size: 1.6rem;
         margin-right: .5rem;
       }

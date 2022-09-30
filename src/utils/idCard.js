@@ -82,10 +82,10 @@ function birthDay (idCard) {
   const nongyear = nong.substr(0, 4)
   return {
     date: birthday,
-    nong: nong,
-    year: year,
-    month: month,
-    day: day,
+    nong,
+    year,
+    month,
+    day,
     week: dict.week(year, month, day), // 星期几
     zodiac: dict.zodiac(month, day), // 星座
     zodiac_zh: dict.zodiac_zh(nongyear) // 生肖

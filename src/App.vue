@@ -1,14 +1,14 @@
 <template>
-  <config-provider :locale="zhCN">
-    <Layout>
-      <Header v-show="!fullScreenStatus">
+  <a-config-provider :locale="zhCN">
+    <a-layout>
+      <a-layout-header v-show="!fullScreenStatus">
         <div class="header">
           <router-link to="/">
             ISZY工具集合
           </router-link>
         </div>
         <div
-          v-if="$route.path === '/'"
+          v-if="route.path === '/'"
           class="desc"
         >
           一个轻量的工具集合<template v-if="_user.profile.nickName">
@@ -22,20 +22,25 @@
           class="desc"
         >
           <router-link to="/">
-            <return theme="outline" />返回首页
+            <span class="i-icon-park-outline:return" />返回首页
           </router-link><template v-if="_user.profile.nickName">
             · <router-link to="/settings">
               {{ _user.profile.nickName }}
             </router-link>
           </template>
         </div>
-      </Header>
-      <Content ref="view">
-        <BackTop
-          :target="()=>$refs.view.$el"
+      </a-layout-header>
+      <a-layout-content ref="view">
+        <a-back-top
+          :target="()=>view.$el"
           :visibility-height="100"
         />
-        <router-view v-if="$route.meta?.type !== 'tool'" />
+        <div
+          v-if="route.meta?.type !== 'tool'"
+          class="container"
+        >
+          <router-view />
+        </div>
         <Container
           v-else
           :full-screen-status="fullScreenStatus"
@@ -43,56 +48,60 @@
         >
           <router-view />
         </Container>
-      </Content>
-      <Footer v-show="!fullScreenStatus">
-        <span>© 2021&nbsp;</span>
-        <Link
+      </a-layout-content>
+      <a-layout-footer v-show="!fullScreenStatus">
+        <span>© {{ year }}&nbsp;</span>
+        <a-typography-link
           href="https://www.iszy.cc"
           target="_blank"
         >
           随遇而安Blog
-        </Link>
+        </a-typography-link>
         <br>
-        <Link
+        <a-typography-link
           href="https://beian.miit.gov.cn/#/Integrated/recordQuery"
           target="_blank"
         >
           苏ICP备18047890号-2
-        </Link>
-      </Footer>
-    </Layout>
-  </config-provider>
+        </a-typography-link>
+      </a-layout-footer>
+    </a-layout>
+  </a-config-provider>
 </template>
 
-<script setup>
-import { Container } from '@/components'
+<script setup lang="ts">
 import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { Layout, ConfigProvider, BackTop, Typography, Modal } from 'ant-design-vue'
-import { watch, computed, inject, onMounted, ref } from 'vue'
+import Modal from 'ant-design-vue/es/modal'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { Return } from '@icon-park/vue-next'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { MessageApi } from 'ant-design-vue/es/message'
+import { ComponentPublicInstance } from 'vue'
+import 'ant-design-vue/es/modal/style/index.js'
 
 const {
   offlineReady,
   needRefresh,
   updateServiceWorker
 } = useRegisterSW()
-const { Header, Content, Footer } = Layout
-const { Link } = Typography
 const store = useStore()
 const route = useRoute()
 const _user = computed(() => store.state.user._user)
-const $msg = inject('$msg')
+const $msg: MessageApi = inject('$msg')
 
 const fullScreenStatus = ref(false)
+const view = ref<ComponentPublicInstance >()
+
+const year = ref('2021')
+
+const now = new Date().getFullYear().toString()
+
+if (now !== year.value) {
+  year.value += ` - ${now}`
+}
 
 onMounted(() => {
   asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
-  asyncLoad('https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_3367_12.fac13c124005c66063399b5fd8543bed.js')
 })
 
 function fullScreen () {
@@ -134,6 +143,9 @@ watch(() => route.path, () => {
 </style>
 
 <style lang="scss" scoped>
+.container {
+  margin: 0 auto;
+}
 .ant-layout {
   background: transparent;
   height: 100%;

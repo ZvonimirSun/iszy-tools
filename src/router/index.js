@@ -22,11 +22,13 @@ for (const key in vueFiles) {
   }
 }
 
+let routes = []
+
 // 加入所有工具路由
 for (const tmp of tools) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
-      if (!/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link)) {
+      if (!/^(http(s)?:\/\/)\w+\S+(\.\S+)+$/.test(tool.link)) {
         const path = (tmp.link || '') + (tool.link || '')
         if (modules[path]) {
           modules[path] = merge(modules[path], {
@@ -37,27 +39,38 @@ for (const tmp of tools) {
               type: 'tool'
             }
           })
+          routes.push(modules[path])
         }
       }
     }
   }
 }
 
-let routes = []
-
-for (const item in modules) {
-  routes.push(modules[item])
-}
-
 // 加入固定页面路由
 routes = routes.concat([
+  merge(modules['/'], {
+    name: '首页'
+  }),
+  merge(modules['/403'], {
+    name: '403'
+  }),
+  merge(modules['/404'], {
+    name: '404'
+  }),
+  merge(modules['/login'], {
+    name: '登录'
+  }),
   {
     path: '/logout',
     name: '登出',
     beforeEnter (to, from, next) {
-      store.dispatch('user/logout').then(() => {
+      if (navigator.onLine) {
+        store.dispatch('user/logout').then(() => {
+          next(from.fullPath)
+        })
+      } else {
         next(from.fullPath)
-      })
+      }
     }
   },
   {

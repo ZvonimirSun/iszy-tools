@@ -8,7 +8,6 @@
 <script>
 import 'jsoneditor/dist/jsoneditor.min.css'
 import JSONEditor from 'jsoneditor'
-import { defineComponent } from 'vue'
 import { debounce } from 'lodash-es'
 
 let editor
@@ -48,10 +47,15 @@ export default defineComponent({
       } catch (e) {
       }
     },
-    updateEditor () {
+    updateEditor (val) {
       try {
-        geoJson = this.geoJsonLayer.toGeoJSON()
-        editor.update(geoJson)
+        if (val) {
+          editor.update(val)
+          this.$eventBus.emit('updateGeojsonLayer', editor.get())
+        } else {
+          geoJson = this.geoJsonLayer.toGeoJSON()
+          editor.update(geoJson)
+        }
       } catch (e) {}
     }
   }

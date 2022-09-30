@@ -1,18 +1,18 @@
 <template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     请输入身份证号码
-  </Title>
-  <Input
+  </a-typography-title>
+  <a-input
     v-model:value="idData"
     placeholder="3205************"
     @change="analyse"
   />
   <template v-if="result && result.checkIdCard">
-    <Divider />
-    <Title :level="3">
+    <a-divider />
+    <a-typography-title :level="3">
       信息
-    </Title>
-    <Paragraph>
+    </a-typography-title>
+    <a-typography-paragraph>
       <ul>
         <li>性别：{{ result.sex }}</li>
         <li>年龄：{{ result.age }} 岁</li>
@@ -23,19 +23,15 @@
         <li>星座：{{ result.birthDay.zodiac }}</li>
         <li>生肖：{{ result.birthDay.zodiac_zh }}</li>
       </ul>
-    </Paragraph>
+    </a-typography-paragraph>
   </template>
 </template>
 
 <script>
-import { Input, Typography, Divider } from 'ant-design-vue'
 import { all } from '@/utils/idCard.js'
-
-const { Title, Paragraph } = Typography
 
 export default {
   name: 'IdChinese',
-  components: { Input, Title, Paragraph, Divider },
   data: () => ({
     idData: '',
     result: undefined

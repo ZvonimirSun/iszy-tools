@@ -1,22 +1,22 @@
 <template>
-  <Paragraph>
+  <a-typography-paragraph>
     <blockquote>全部过程均在本地进行，本工具可离线使用</blockquote>
-  </Paragraph>
-  <Form layout="vertical">
-    <FormItem label="请选择要添加水印的图片">
-      <Upload
+  </a-typography-paragraph>
+  <a-form layout="vertical">
+    <a-form-item label="请选择要添加水印的图片">
+      <a-upload
         :file-list="[]"
         :show-upload-list="false"
         accept="image/*"
         :before-upload="upload"
       >
-        <Input
+        <a-input
           readonly
           placeholder="点击这里上传图片"
           :value="fileName"
         >
           <template #addonAfter>
-            <Button
+            <a-button
               block
               :disabled="!file"
               :loading="loading"
@@ -24,50 +24,50 @@
             >
               <span v-if="loading">处理中</span>
               <span v-else>开始处理</span>
-            </Button>
+            </a-button>
           </template>
-        </Input>
-      </Upload>
-    </FormItem>
-    <FormItem label="请输入水印文字">
-      <Input
+        </a-input>
+      </a-upload>
+    </a-form-item>
+    <a-form-item label="请输入水印文字">
+      <a-input
         v-model:value="options.text"
         placeholder="仅供 xxx 验证使用"
       />
-    </FormItem>
-    <FormItem label="字体大小">
-      <Slider
+    </a-form-item>
+    <a-form-item label="字体大小">
+      <a-slider
         v-model:value="options.fontSize"
         :max="30"
         :min="10"
       />
-    </FormItem>
-    <FormItem label="透明度">
-      <Slider
+    </a-form-item>
+    <a-form-item label="透明度">
+      <a-slider
         v-model:value="options.alpha"
         :max="10"
         :min="1"
         :step="0.1"
       />
-    </FormItem>
-    <FormItem label="旋转角度">
-      <Slider
+    </a-form-item>
+    <a-form-item label="旋转角度">
+      <a-slider
         v-model:value="options.rotate"
         :max="365"
         :min="0"
       />
-    </FormItem>
-    <FormItem label="文本间距">
-      <Slider
+    </a-form-item>
+    <a-form-item label="文本间距">
+      <a-slider
         v-model:value="options.width"
         :max="100"
         :min="0"
       />
-    </FormItem>
-    <FormItem label="文字颜色">
+    </a-form-item>
+    <a-form-item label="文字颜色">
       <Compact v-model="color" />
-    </FormItem>
-    <FormItem
+    </a-form-item>
+    <a-form-item
       v-show="file"
       label="预览"
     >
@@ -84,31 +84,20 @@
           :style="{ background: `url(${svg})` }"
         />
       </div>
-    </FormItem>
-  </Form>
+    </a-form-item>
+  </a-form>
 </template>
 
 <script>
 import { Buffer } from 'buffer'
-import { Input, Upload, Button, Form, Slider, Typography } from 'ant-design-vue'
 import { Compact } from '@ckpack/vue-color'
 import domToImage from 'dom-to-image'
-import createFile from '@/utils/createFile.js'
-
-const { Paragraph } = Typography
-const { Item: FormItem } = Form
+import createFile from '@/utils/createFile'
 
 export default {
   name: 'WatermarkTool',
   components: {
-    Input,
-    Upload,
-    Button,
-    Form,
-    FormItem,
-    Slider,
-    Compact,
-    Paragraph
+    Compact
   },
   data: () => ({
     file: '',

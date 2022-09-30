@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
     <div class="main">
-      <Form
+      <a-form
         :layout="form.layout"
         :model="form"
         v-bind="{wrapperCol: { span: 24 }}"
       >
-        <Item required>
-          <Input
+        <a-form-item required>
+          <a-input
             v-model:value="form.userName"
             placeholder="账户"
             size="large"
@@ -19,10 +19,10 @@
                 style="color:rgba(0,0,0,.25)"
               />
             </template>
-          </Input>
-        </Item>
-        <Item required>
-          <Password
+          </a-input>
+        </a-form-item>
+        <a-form-item required>
+          <a-input-password
             v-model:value="form.password"
             placeholder="密码"
             size="large"
@@ -34,10 +34,10 @@
                 style="color:rgba(0,0,0,.25)"
               />
             </template>
-          </Password>
-        </Item>
-        <Item>
-          <Button
+          </a-input-password>
+        </a-form-item>
+        <a-form-item>
+          <a-button
             type="primary"
             block
             size="large"
@@ -45,29 +45,21 @@
             @click="login"
           >
             确定
-          </Button>
-        </Item>
-      </Form>
+          </a-button>
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
 
 <script>
 import { User, Lock } from '@icon-park/vue-next'
-import { Form, Input, Button } from 'ant-design-vue'
-const { Item } = Form
-const { Password } = Input
 
 export default {
   name: 'PageLogin',
   components: {
     User,
-    Lock,
-    Form,
-    Input,
-    Button,
-    Item,
-    Password
+    Lock
   },
   data: () => ({
     form: {
@@ -93,6 +85,10 @@ export default {
   },
   methods: {
     login () {
+      if (!navigator.onLine) {
+        this.$msg.warn('已离线！')
+        return
+      }
       if (this.form.userName != null && this.form.password != null) {
         this.loading = true
         this.$store.dispatch('user/login', {

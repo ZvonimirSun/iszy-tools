@@ -1,166 +1,177 @@
 <template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     用户
-  </Title>
-  <Space>
+  </a-typography-title>
+  <a-space>
     <template
       v-if="!_user.token"
     >
-      <Button
+      <a-button
         type="primary"
         @click="login"
       >
         登录
-      </Button>
-      <Button
+      </a-button>
+      <a-button
+        type="primary"
         @click="register"
       >
         注册
-      </Button>
+      </a-button>
     </template>
-    <Button
+    <a-button
       v-else
       type="primary"
       @click="logout"
     >
       登出
-    </Button>
-    <Popconfirm
+    </a-button>
+    <a-popconfirm
       title="您是否确定要清空本地缓存？"
       ok-text="清空"
       @confirm="clearOfflineCache"
     >
-      <Button danger>
+      <a-button danger>
         清空本地缓存
-      </Button>
-    </Popconfirm>
-  </Space>
-  <Divider />
+      </a-button>
+    </a-popconfirm>
+  </a-space>
+  <a-divider />
   <template v-if="_user.token">
-    <Title :level="3">
+    <a-typography-title :level="3">
       云端同步
-    </Title>
-    <Space>
-      <Button
+    </a-typography-title>
+    <a-space>
+      <a-button
         type="primary"
         @click="uploadToCloud"
       >
         同步到云端
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         @click="downloadFromCloud"
       >
         从云端同步
-      </Button>
-      <Checkbox
+      </a-button>
+      <a-checkbox
         :checked="settings.autoSync"
         @change="triggerSetting('autoSync')"
       >
         自动同步
-      </Checkbox>
-    </Space>
-    <Divider />
+      </a-checkbox>
+    </a-space>
+    <a-divider />
   </template>
-  <Title :level="3">
+  <a-typography-title :level="3">
+    全局设置
+  </a-typography-title>
+  <a-typography-title :level="4">
     访问统计
-  </Title>
-  <Space>
-    <Checkbox
+  </a-typography-title>
+  <a-space>
+    <a-checkbox
       :checked="settings.showMost"
       @change="triggerSetting('showMost')"
     >
       最常访问
-    </Checkbox>
-    <Checkbox
+    </a-checkbox>
+    <a-checkbox
       :checked="settings.showRecent"
       @change="triggerSetting('showRecent')"
     >
       最近访问
-    </Checkbox>
-  </Space>
-  <Divider />
-  <Title :level="3">
+    </a-checkbox>
+  </a-space>
+  <a-typography-title :level="4">
     其他设置
-  </Title>
-  <Space>
-    <Checkbox
+  </a-typography-title>
+  <a-space>
+    <a-checkbox
       :checked="settings.showSearch"
       @change="triggerSetting('showSearch')"
     >
       显示搜索
-    </Checkbox>
-    <Checkbox
+    </a-checkbox>
+    <a-checkbox
       :checked="settings.showType"
       @change="triggerSetting('showType')"
     >
       显示分类
-    </Checkbox>
-    <Checkbox
+    </a-checkbox>
+    <a-checkbox
       :checked="settings.openInNewTab"
       @change="triggerSetting('openInNewTab')"
     >
       新标签页打开工具
-    </Checkbox>
-  </Space>
+    </a-checkbox>
+  </a-space>
+  <template v-if="_user.token">
+    <a-divider />
+    <a-typography-title :level="3">
+      应用设置
+    </a-typography-title>
+    <a-space>
+      <a-checkbox
+        :checked="settings.jsonEditor.syncCloud"
+        @change="triggerJsonEditorSetting('syncCloud')"
+      >
+        从云端获取
+      </a-checkbox>
+    </a-space>
+  </template>
 </template>
 
-<script>
-import { createNamespacedHelpers, mapActions, mapMutations } from 'vuex'
-import { Typography, Divider, Checkbox, Space, Button, Popconfirm } from 'ant-design-vue'
+<script setup lang="ts">
+import { MessageApi } from 'ant-design-vue/es/message'
 
-const { Title } = Typography
-const {
-  mapState: mapStateUser,
-  mapMutations: mapMutationsUser
-} = createNamespacedHelpers('user')
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
-export default {
-  name: 'SettingsPage',
-  components: {
-    Divider,
-    Checkbox,
-    Title,
-    Space,
-    Button,
-    Popconfirm
-  },
-  computed: {
-    ...mapStateUser(['_user', 'settings'])
-  },
-  methods: {
-    ...mapMutations(['clearOfflineCache']),
-    ...mapActions(['uploadSettings', 'downloadSettings']),
-    ...mapMutationsUser(['triggerSetting']),
-    async uploadToCloud () {
-      if (await this.uploadSettings()) {
-        this.$msg.success('同步成功')
-      } else {
-        this.$msg.error('同步失败')
-      }
-    },
-    async downloadFromCloud () {
-      if (await this.downloadSettings()) {
-        this.$msg.success('同步成功')
-      } else {
-        this.$msg.error('同步失败')
-      }
-    },
-    login () {
-      this.$router.push({
-        path: '/login',
-        query: {
-          redirect: this.$route.fullPath
-        }
-      })
-    },
-    register () {
-      this.$router.push('/register')
-    },
-    logout () {
-      this.$router.push('/logout')
-    }
+const $msg = inject<MessageApi>('$msg')
+
+const _user = computed(() => {
+  return store.state.user._user
+})
+
+const settings = computed(() => {
+  return store.state.user.settings
+})
+
+const clearOfflineCache = () => store.commit('clearOfflineCache')
+const uploadSettings = () => store.dispatch('uploadSettings')
+const downloadSettings = () => store.dispatch('downloadSettings')
+const triggerSetting = (setting) => store.commit('user/triggerSetting', setting)
+const triggerJsonEditorSetting = (setting) => store.commit('user/jsonEditor/triggerJsonEditorSetting', setting)
+
+async function uploadToCloud () {
+  if (await uploadSettings()) {
+    $msg.success('同步成功')
+  } else {
+    $msg.error('同步失败')
   }
+}
+async function downloadFromCloud () {
+  if (await downloadSettings()) {
+    $msg.success('同步成功')
+  } else {
+    $msg.error('同步失败')
+  }
+}
+function login () {
+  router.push({
+    path: '/login',
+    query: {
+      redirect: route.fullPath
+    }
+  })
+}
+function register () {
+  router.push('/register')
+}
+function logout () {
+  router.push('/logout')
 }
 </script>
 

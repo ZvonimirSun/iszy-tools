@@ -50,7 +50,7 @@ export default class Grid {
 
     this.eachCell(function (x, y, tile) {
       if (!tile) {
-        cells.push({ x: x, y: y })
+        cells.push({ x, y })
       }
     })
 

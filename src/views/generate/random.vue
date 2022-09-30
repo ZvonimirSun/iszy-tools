@@ -1,64 +1,51 @@
 <template>
-  <Form
+  <a-form
     :label-col="{sm:{span:2}}"
     :wrapper-col="{sm:{span:3}}"
   >
-    <FormItem label="最小数字">
-      <InputNumber v-model:value.number="min" />
-    </FormItem>
-    <FormItem label="最大数字">
-      <InputNumber v-model:value.number="max" />
-    </FormItem>
-    <FormItem label="次数">
-      <InputNumber
+    <a-form-item label="最小数字">
+      <a-input-number v-model:value.number="min" />
+    </a-form-item>
+    <a-form-item label="最大数字">
+      <a-input-number v-model:value.number="max" />
+    </a-form-item>
+    <a-form-item label="次数">
+      <a-input-number
         v-model:value.number="times"
         :step="1"
       />
-    </FormItem>
-    <FormItem label="小数">
-      <Switch v-model:checked="float" />
-    </FormItem>
-    <FormItem :wrapper-col="{sm:{span:3,offset:2}}">
-      <Space>
-        <Button
+    </a-form-item>
+    <a-form-item label="小数">
+      <a-switch v-model:checked="float" />
+    </a-form-item>
+    <a-form-item :wrapper-col="{sm:{span:3,offset:2}}">
+      <a-space>
+        <a-button
           type="primary"
           @click="randomNum"
         >
           生成
-        </Button>
-        <Button @click="clearRandomNum">
+        </a-button>
+        <a-button @click="clearRandomNum">
           清空
-        </Button>
-      </Space>
-    </FormItem>
-    <FormItem :wrapper-col="{sm:{span:5}}">
-      <TextArea
+        </a-button>
+      </a-space>
+    </a-form-item>
+    <a-form-item :wrapper-col="{sm:{span:5}}">
+      <a-textarea
         :value="randomNumResult"
         readonly
         :auto-size="{ minRows: 2, maxRows: 5 }"
       />
-    </FormItem>
-  </Form>
+    </a-form-item>
+  </a-form>
 </template>
 
 <script>
-import { Form, InputNumber, Switch, Button, Input, Space } from 'ant-design-vue'
 import { random } from 'lodash-es'
-import { defineComponent } from 'vue'
 
-const { Item: FormItem } = Form
-const { TextArea } = Input
 export default defineComponent({
   name: 'RandomNumber',
-  components: {
-    Form,
-    FormItem,
-    InputNumber,
-    Switch,
-    Button,
-    TextArea,
-    Space
-  },
   data: () => ({
     min: 0,
     max: 10,

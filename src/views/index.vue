@@ -1,10 +1,10 @@
 <template>
-  <Row
+  <a-row
     v-if="settings.showSearch"
     :gutter="{ xs: 8, sm: 16, md: 24}"
     class="noName"
   >
-    <Col :span="24">
+    <a-col :span="24">
       <div class="search">
         <search theme="outline" />
         <input
@@ -13,28 +13,26 @@
           placeholder="搜索工具"
         >
       </div>
-    </Col>
-  </Row>
+    </a-col>
+  </a-row>
   <template
     v-for="(item,index) in tools"
     :key="'type'+ index"
   >
-    <Row :gutter="{ xs: 8, sm: 16}">
-      <Col
+    <a-row :gutter="{ xs: 8, sm: 16}">
+      <a-col
         :span="24"
         class="typeNameCol"
       >
         <div class="typeName">
-          <iconpark-icon
+          <span
             v-if="item.icon"
-            class="i-icon"
-            :name="item.icon"
-            color="#fff"
+            :class="item.icon"
           />
           <div>{{ item.type }}</div>
         </div>
-      </Col>
-      <Col
+      </a-col>
+      <a-col
         v-for="(tool,i) in item.children"
         :key="'tool'+i"
         :xs="12"
@@ -48,7 +46,7 @@
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')"
         >
-          <Tooltip>
+          <a-tooltip>
             <template #title>
               {{ tool.name }}
             </template>
@@ -71,25 +69,23 @@
                 <span class="hovered"><Star theme="filled" /></span>
               </span>
             </div>
-          </Tooltip>
+          </a-tooltip>
         </router-link>
-      </Col>
-    </Row>
+      </a-col>
+    </a-row>
   </template>
 </template>
 
 <script>
 import { Search, Star } from '@icon-park/vue-next'
-import { Row, Col, Tooltip } from 'ant-design-vue'
 import tools from '@/views/tools.json'
-import { createNamespacedHelpers } from 'vuex'
 import { cloneDeep, flatten } from 'lodash-es'
 
 const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpers('user')
 
 export default {
   name: 'HomePage',
-  components: { Star, Row, Col, Search, Tooltip },
+  components: { Star, Search },
   data: () => ({
     searchStr: '',
 
@@ -103,28 +99,28 @@ export default {
       } else {
         tmp = [{
           type: '工具',
-          icon: 'all-application',
+          icon: 'i-icon-park-solid-all-application',
           children: this.allTools
         }]
       }
       if (this.settings.showRecent && this.recent.length > 0) {
         tmp.unshift({
           type: '最近访问',
-          icon: 'history',
+          icon: 'i-icon-park-outline-history',
           children: this.recent(this.count)
         })
       }
       if (this.settings.showMost && this.most.length > 0) {
         tmp.unshift({
           type: '最常访问',
-          icon: 'concern',
+          icon: 'i-icon-park-solid-concern',
           children: this.most(this.count)
         })
       }
       if (this.favorite.length > 0) {
         tmp.unshift({
           type: '收藏',
-          icon: 'folder-focus',
+          icon: 'i-icon-park-solid-folder-focus',
           children: this.favorite
         })
       }
@@ -133,7 +129,8 @@ export default {
           const a = cloneDeep(item)
           a.children = a.children.filter(item => {
             const tags = item.tags || []
-            return (item.name.toLowerCase().includes(this.searchStr.toLowerCase()) || tags.some((tag) => { return tag.includes(this.searchStr.toLowerCase()) }))
+            const searchStr = this.searchStr.toLowerCase()
+            return (item.name.toLowerCase().includes(searchStr) || item.link.toLowerCase().includes(searchStr) || tags.some((tag) => { return tag.includes(searchStr) }))
           })
           return a
         })
@@ -196,15 +193,15 @@ export default {
     box-shadow: 0 0.8rem 1rem #16B0F64D;
     border-radius: .8rem;
 
-    .i-icon {
-      font-size: 2.4rem;
+    [class^="i-"] {
+      font-size: 2.2rem;
 
       & + * {
         margin-left: .5rem;
       }
     }
 
-    * + .i-icon {
+    * + [class^="i-"] {
       margin-left: .5rem;
     }
   }
@@ -365,9 +362,9 @@ export default {
   padding: 1.6rem .8rem;
   color: #666666;
 
-  .i-icon {
-    font-size: 2.4rem;
-    margin-right: 1.6rem;
+  [class^="i-"] {
+    font-size: 2.2rem;
+    margin-right: 1.4rem;
   }
 
   input {

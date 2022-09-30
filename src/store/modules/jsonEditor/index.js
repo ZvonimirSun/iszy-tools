@@ -1,7 +1,11 @@
 import randomString from '@/utils/randomString.js'
 import dayjs from 'dayjs'
-import { clamp } from 'lodash-es'
-import { markRaw } from 'vue'
+import { clamp, debounce } from 'lodash-es'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
+
+const _mutex = new SimplePromiseQueue()
+let waitList = {}
+let listened = false
 
 export default {
   namespaced: true,
@@ -51,6 +55,9 @@ export default {
       } else {
         return null
       }
+    },
+    syncCloud: (state, getters, rootState) => {
+      return rootState.user.settings.jsonEditor.syncCloud
     }
   },
   mutations: {
@@ -117,7 +124,86 @@ export default {
       } else {
         state.fullStatus = ''
       }
+    },
+    replaceState (state, val = []) {
+      const data = {}
+      for (const d of val) {
+        data[d.key] = {
+          name: d.name
+        }
+        data[d.key].content = {}
+        if (d.text != null) {
+          data[d.key].content.text = d.text
+        } else if (d.json != null) {
+          data[d.key].content.json = d.json
+        }
+        data[d.key].updated = dayjs(d.updatedAt).format()
+      }
+      state.$_data = data
     }
   },
-  actions: {}
+  actions: {
+    async getSyncData ({ commit }) {
+      try {
+        const data = (await (this.$axios.get(`${this.$apiBase}/tools/jsoneditor`))).data
+        if (data.success) {
+          commit('replaceState', data.data)
+        } else {
+          console.log(data.message)
+        }
+      } catch (e) {
+        console.log(e.message)
+      }
+    },
+    syncData: debounce(function ({ dispatch }, { id, data }) {
+      if (navigator.onLine) {
+        _mutex.enqueue(this.$axios.post(`${this.$apiBase}/tools/jsoneditor/${id}`, data))
+      } else {
+        waitList[id] = data
+
+        if (!listened) {
+          listened = true
+          function reSync () {
+            window.removeEventListener('online', reSync)
+            for (const id in waitList) {
+              dispatch('syncData', { id, data: waitList[id] })
+            }
+            waitList = {}
+          }
+          window.addEventListener('online', reSync)
+        }
+      }
+    }, 500),
+    saveData ({ commit, state, getters, dispatch }, { left, right, id, content, name }) {
+      if (getters.syncCloud) {
+        id = id || randomString(6)
+        if (content != null || name != null) {
+          const item = { name: name || (state.$_data[id] || {}).name || `文档-${id}` }
+          if (typeof content === 'string') {
+            item.text = content
+          } else if (typeof content === 'object') {
+            item.json = markRaw(content)
+          }
+          dispatch('syncData', { id, data: item })
+        }
+      }
+      commit('saveData', { left, right, id, content, name })
+    },
+    async deleteData ({ commit, getters }, { id }) {
+      if (getters.syncCloud) {
+        try {
+          const data = (await this.$axios.delete(`${this.$apiBase}/tools/jsoneditor/${id}`)).data
+          if (data.success) {
+            commit('deleteData', { id })
+          } else {
+            console.log(data.message)
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      } else {
+        commit('deleteData', { id })
+      }
+    }
+  }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="panel">
-      <div class="container">
+      <div class="wrapper">
         <div class="above-game">
           <div class="scores-container">
             <div
@@ -61,7 +61,6 @@
 
 <script>
 import GameManager from './js/GameManager.js'
-import { createNamespacedHelpers } from 'vuex'
 
 const { mapActions, mapState, mapGetters } = createNamespacedHelpers('g2048')
 
@@ -222,7 +221,7 @@ export default {
     margin-bottom: 3rem;
   }
 
-  .container {
+  .wrapper {
     font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
     font-size: 1.8rem;
     color: $text-color;
@@ -554,7 +553,7 @@ export default {
     $tile-border-radius: .3rem;
     $game-container-margin-top: 1.7rem;
 
-    .container {
+    .wrapper {
       font-size: 1.5rem;
       width: $field-width;
       margin: 0 auto;

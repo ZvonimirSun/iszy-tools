@@ -6,26 +6,24 @@
     <div class="containerAll">
       <div class="containerTitle">
         <div class="typeName">
-          <span>{{ name || $route.meta?.title || $route.name }}</span>
-          <OffScreen
+          <span>{{ name || route.meta?.title || route.name }}</span>
+          <span
             v-if="fullScreenStatus"
-            class="fullScreen"
+            class="i-icon-park-outline-off-screen fullScreen"
             title="取消全屏"
-            theme="outline"
             @click="fullScreen"
           />
-          <FullScreen
+          <span
             v-else
-            class="fullScreen"
+            class="i-icon-park-outline-full-screen fullScreen"
             title="全屏"
-            theme="outline"
             @click="fullScreen"
           />
         </div>
       </div>
       <div class="main">
         <slot />
-        <BackTop
+        <a-back-top
           :target="()=>$refs.container"
           :visibility-height="100"
         />
@@ -34,17 +32,14 @@
   </div>
 </template>
 <script setup>
-import { BackTop } from 'ant-design-vue'
-import { FullScreen, OffScreen } from '@icon-park/vue-next'
-
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  name: { type: String, default: '' },
-  fullScreenStatus: Boolean
-})
-
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['fullScreen'])
+const route = useRoute()
+
+defineProps({
+  fullScreenStatus: { type: Boolean, default: false },
+  name: { type: String, default: '' }
+})
 
 function fullScreen () {
   emit('fullScreen')
@@ -87,7 +82,7 @@ function fullScreen () {
       box-shadow: 0 0.8rem 1rem #16B0F64D;
       border-radius: .8rem;
 
-      .i-icon {
+      [class^="i-"] {
         font-size: 2.4rem;
 
         & + * {
@@ -95,14 +90,14 @@ function fullScreen () {
         }
       }
 
-      * + .i-icon {
+      * + [class^="i-"] {
         margin-left: .5rem;
       }
 
       .fullScreen {
         cursor: pointer;
 
-        &.i-icon {
+        &[class^="i-"] {
           font-size: 1.8rem;
         }
       }
@@ -115,6 +110,7 @@ function fullScreen () {
     flex: 1;
     overflow-y: auto;
     border-radius: .8rem;
+    position: relative;
   }
 }
 </style>

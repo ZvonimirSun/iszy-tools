@@ -1,3 +1,5 @@
+import jsonEditor from './jsonEditor'
+
 export default {
   state: () => ({
     showMost: false,
@@ -13,5 +15,8 @@ export default {
     triggerSetting (state, setting) {
       state[setting] = !state[setting]
     }
+  },
+  modules: {
+    jsonEditor
   }
 }

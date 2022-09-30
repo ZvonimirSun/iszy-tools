@@ -26,7 +26,7 @@
     </div>
     <div
       v-show="!loading && !output"
-      class="container"
+      class="wrapper"
     >
       <div class="title">
         <div class="meta">
@@ -85,7 +85,7 @@
     </div>
     <div
       v-show="!loading && output"
-      class="container"
+      class="wrapper"
     >
       <div class="title">
         <div class="meta">
@@ -331,7 +331,7 @@ export default {
     }
   }
 
-  .container {
+  .wrapper {
     position: relative;
     text-align: center;
     background-color: #fff;

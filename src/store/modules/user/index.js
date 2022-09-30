@@ -3,13 +3,14 @@ import tools from '@/views/tools.json'
 import settings from './settings'
 import modules from './modules'
 import { flatten } from 'lodash-es'
-import dayjs from 'dayjs'
+
+let tokenChecked = false
 
 export default {
   namespaced: true,
   state: () => ({
     _user: {
-      token: null,
+      token: undefined,
       profile: {
         nickName: undefined
       }
@@ -36,6 +37,7 @@ export default {
   mutations: {
     setToken (state, token) {
       state._user.token = token
+      tokenChecked = true
     },
     clearToken (state) {
       state._user.token = null
@@ -94,13 +96,13 @@ export default {
       try {
         if (userName != null && password != null) {
           const res = await axios.post(`${this.$apiBase}/auth/login`, {
-            userName: userName.trim(),
+            username: userName.trim(),
             password
           })
-          if (res.data && res.data.code === '00000') {
-            commit('setToken', res.data.data.token)
+          if (res.data && res.data.success) {
+            commit('setToken', 'logged')
+            commit('updateProfile', res.data.data)
             dispatch('downloadSettings', null, { root: true })
-            dispatch('getProfiles')
             return true
           } else {
             commit('clearToken')
@@ -114,8 +116,17 @@ export default {
         return false
       }
     },
-    logout ({ commit }) {
-      commit('clearToken')
+    async logout ({ commit }) {
+      try {
+        const data = (await axios.post(`${this.$apiBase}/auth/logout`)).data
+        if (data && data.success) {
+          commit('clearToken')
+        } else {
+          this.$msg.warn('登出失败！')
+        }
+      } catch (e) {
+        commit('clearToken')
+      }
     },
     async getProfiles ({ state, commit, dispatch }) {
       if (state._user.token) {
@@ -132,27 +143,22 @@ export default {
     },
     async checkToken ({ state, commit }) {
       if (state._user.token) {
-        try {
-          await axios.head(`${this.$apiBase}/auth/profile`)
+        if (tokenChecked) {
           return true
-        } catch (e) {
-          if (!axios.isCancel(e)) {
-            commit('clearToken')
+        } else {
+          try {
+            await axios.head(`${this.$apiBase}/auth/profile`)
+            tokenChecked = true
+            return true
+          } catch (e) {
+            if (!axios.isCancel(e)) {
+              commit('clearToken')
+            }
+            return false
           }
-          return false
         }
       } else {
         return false
-      }
-    },
-    async updateToken ({ state, commit }) {
-      if (state._user.token) {
-        try {
-          const res = await axios.post(`${this.$apiBase}/auth/token`)
-          if (res.data && res.data.code === '00000') {
-            commit('setToken', res.data.data.token)
-          }
-        } catch (e) {}
       }
     },
 

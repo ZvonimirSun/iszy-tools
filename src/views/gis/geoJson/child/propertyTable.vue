@@ -1,5 +1,5 @@
 <template>
-  <Table
+  <a-table
     v-if="tableColumns"
     class="ant-table-striped"
     :columns="tableColumns"
@@ -17,17 +17,17 @@
         v-if="editableData[index]"
         class="editable-cell-input-wrapper"
       >
-        <Input
+        <a-input
           v-if="typeof editableData[index][column.dataIndex] === 'string'"
           v-model:value="editableData[index][column.dataIndex]"
           @click.stop
         />
-        <Input
+        <a-input
           v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
           v-model:value.number="editableData[index][column.dataIndex]"
           @click.stop
         />
-        <Input
+        <a-input
           v-else
           :value="JSON.stringify(editableData[index][column.dataIndex])"
           @click.stop
@@ -50,18 +50,15 @@
         <a @click.stop="edit(index)"> 编辑属性 </a>
       </span>
     </template>
-  </Table>
-  <Empty v-else />
+  </a-table>
+  <a-empty v-else />
 </template>
 
 <script>
-import { Table, Empty, Input } from 'ant-design-vue'
 import { cloneDeep } from 'lodash-es'
-import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PropertyTable',
-  components: { Table, Empty, Input },
   props: {
     geoJsonLayer: { type: Object, default: undefined }
   },

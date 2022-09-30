@@ -18,7 +18,6 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { defineComponent, markRaw } from 'vue'
 // lib
 import CodeMirror from 'codemirror'
 // export

@@ -1,15 +1,14 @@
 :root {
   --main-bg-color: #f4f8fb;
   --global-font-size: 62.5%;
-  --global-mobile-font-size: 45%;
 }
 
 /*字号统一控制*/
 html {
-  font-size: var(--global-font-size);
+  font-size: var(--global-font-size, 62.5%);
 
   @media screen and (max-width: 480px) {
-    font-size: var(--global-mobile-font-size);
+    font-size: var(--global-mobile-font-size, var(--global-font-size, 62.5%));
   }
 }
 
@@ -62,6 +61,6 @@ html, body, #app {
   }
 }
 
-.i-icon {
+[class^="i-"] {
   line-height: 0;
 }

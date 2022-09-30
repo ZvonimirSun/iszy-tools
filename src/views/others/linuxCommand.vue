@@ -1,30 +1,30 @@
 <template>
-  <Paragraph>
+  <a-typography-paragraph>
     <blockquote>
       数据来源：
-      <Link
+      <a-typography-link
         href="https://github.com/jaywcjlove/linux-command"
         target="_blank"
       >
         jaywcjlove/linux-command
-      </Link>
+      </a-typography-link>
     </blockquote>
-  </Paragraph>
-  <Title :level="3">
+  </a-typography-paragraph>
+  <a-typography-title :level="3">
     请输入要查询的命令
-  </Title>
-  <Input
+  </a-typography-title>
+  <a-input
     v-model:value.trim="keyword"
     placeholder="man"
   />
-  <Divider v-show="keyword" />
-  <Title
+  <a-divider v-show="keyword" />
+  <a-typography-title
     v-show="keyword"
     :level="3"
   >
     搜索结果（点击查看详情）
-  </Title>
-  <Paragraph v-show="keyword">
+  </a-typography-title>
+  <a-typography-paragraph v-show="keyword">
     <ul>
       <li v-show="searchResults.length === 0">
         <b>没有结果</b>
@@ -34,26 +34,24 @@
         :key="index"
         class="resultListItem"
       >
-        <Paragraph @click="query(item)">
+        <a-typography-paragraph @click="query(item)">
           <b>{{ data[item].n }}</b>: {{ data[item].d }}
-        </Paragraph>
+        </a-typography-paragraph>
       </li>
     </ul>
-  </Paragraph>
-  <Modal
+  </a-typography-paragraph>
+  <a-modal
     v-model:visible="showModal"
     :footer="null"
     :title="command + ' 命令详情'"
     :width="modalWidth"
   >
     <!-- eslint-disable vue/no-v-html -->
-    <Typography v-html="commandDetail" />
-  </Modal>
+    <a-typography v-html="commandDetail" />
+  </a-modal>
 </template>
 
 <script>
-import { Typography, Input, Divider, Modal } from 'ant-design-vue'
-import { createNamespacedHelpers } from 'vuex'
 import dayjs from 'dayjs'
 import md from '@/utils/markdown.js'
 import duration from 'dayjs/plugin/duration'
@@ -62,11 +60,8 @@ dayjs.extend(duration)
 
 const { mapActions, mapState } = createNamespacedHelpers('linuxCommand')
 
-const { Paragraph, Link, Title } = Typography
-
 export default {
   name: 'LinuxCommand',
-  components: { Paragraph, Link, Title, Input, Divider, Modal, Typography },
   data: () => ({
     keyword: '',
     command: '',
@@ -99,7 +94,7 @@ export default {
     ...mapActions(['getData']),
     async query (command) {
       try {
-        const res = await this.$axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${command}.md`)
+        const res = await this.$axios.get(`https://jsdelivr.cdn.iszy.cc/gh/jaywcjlove/linux-command@1.8.1/command/${command}.md`)
         this.command = command
         this.commandData = res.data
         this.showModal = true

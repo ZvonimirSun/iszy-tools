@@ -1,46 +1,39 @@
 <template>
-  <div class="container">
-    <Tabs
+  <div class="wrapper">
+    <a-tabs
       v-model:activeKey="activeKey"
       type="card"
       class="totalTab"
     >
-      <TabPane
+      <a-tab-pane
         key="home"
         tab="上传区"
       >
         <Upload :active-key="activeKey" />
-      </TabPane>
-      <TabPane
+      </a-tab-pane>
+      <a-tab-pane
         key="uploaded"
         tab="相册"
       >
         <ImgList />
-      </TabPane>
-      <TabPane
+      </a-tab-pane>
+      <a-tab-pane
         key="settings"
         tab="设置"
       >
         <Settings />
-      </TabPane>
-    </Tabs>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
-import { Tabs } from 'ant-design-vue'
-
-const { TabPane } = Tabs
-
 export default {
   name: 'ImgHosting',
   components: {
     ImgList: defineAsyncComponent(() => import('./child/imgList.vue')),
     Upload: defineAsyncComponent(() => import('./child/upload.vue')),
-    Settings: defineAsyncComponent(() => import('./child/settings.vue')),
-    Tabs,
-    TabPane
+    Settings: defineAsyncComponent(() => import('./child/settings.vue'))
   },
   data: () => ({
     activeKey: 'home'
@@ -49,7 +42,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
+.wrapper {
   width: 100%;
   height: 100%;
 

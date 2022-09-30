@@ -1,11 +1,23 @@
 module.exports = {
+  globals: {
+    defineProps: 'readonly',
+    defineEmits: 'readonly',
+    defineExpose: 'readonly',
+    withDefaults: 'readonly'
+  },
+  plugins: [
+    'vue',
+    '@typescript-eslint'
+  ],
   extends: [
+    'plugin:@typescript-eslint/recommended',
     'plugin:vue/vue3-recommended',
-    'standard'
+    'standard',
+    './.eslintrc-auto-import.json'
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: '@babel/eslint-parser'
+    parser: '@typescript-eslint/parser'
   },
   rules: {
     'no-console': 0,
@@ -15,6 +27,11 @@ module.exports = {
     'no-eval': 0,
     'no-useless-escape': 0,
     'no-loss-of-precision': 0,
-    'no-unused-vars': 0
+    'no-unused-vars': 0,
+    'vue/multi-word-component-names': 0,
+    '@typescript-eslint/no-unused-vars': 0,
+    '@typescript-eslint/no-this-alias': 0,
+    '@typescript-eslint/no-empty-function': 0,
+    'vue/no-v-text-v-html-on-component': 0,
   }
 }

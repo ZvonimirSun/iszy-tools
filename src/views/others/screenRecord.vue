@@ -1,8 +1,8 @@
 <template>
   <template v-if="isSupported">
-    <Title :level="3">
+    <a-typography-title :level="3">
       实时预览
-    </Title>
+    </a-typography-title>
     <div class="previewVideo">
       <video
         ref="screenShare"
@@ -13,59 +13,59 @@
         class="rec"
       >REC</span>
     </div>
-    <Space
+    <a-space
       :size="8"
       class="operations"
       align="center"
     >
-      <Button
+      <a-button
         type="primary"
         :disabled="disabled.open"
         @click="openScreenShare"
       >
         开启屏幕共享
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         :disabled="disabled.start"
         @click="start"
       >
         开始录制
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         :disabled="disabled.pause"
         @click="pause"
       >
         暂停
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         :disabled="disabled.resume"
         @click="resume"
       >
         继续
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         :disabled="disabled.stop"
         @click="stop"
       >
         停止
-      </Button>
-      <Button
+      </a-button>
+      <a-button
         type="primary"
         :disabled="disabled.download"
         @click="download"
       >
         下载
-      </Button>
-    </Space>
+      </a-button>
+    </a-space>
     <template v-if="!!blobUrl">
-      <Divider />
-      <Title :level="3">
+      <a-divider />
+      <a-typography-title :level="3">
         结果
-      </Title>
+      </a-typography-title>
       <div class="previewVideo">
         <video
           controls
@@ -73,74 +73,74 @@
         />
       </div>
     </template>
-    <Divider />
-    <Title :level="3">
+    <a-divider />
+    <a-typography-title :level="3">
       设置
-    </Title>
-    <Alert
+    </a-typography-title>
+    <a-alert
       message="由于浏览器限制，部分设置可能无法生效"
       type="warning"
       show-icon
       closable
       style="margin-bottom: .8rem;"
     />
-    <Form
+    <a-form
       v-if="!disabled.open"
       :label-col="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}"
     >
-      <FormItem label="系统音频">
-        <Select
+      <a-form-item label="系统音频">
+        <a-select
           v-model:value="recordAudio"
           :options="recordAudioOptions"
           @change="selectAudio"
         />
-      </FormItem>
-      <FormItem label="麦克风">
-        <Select
+      </a-form-item>
+      <a-form-item label="麦克风">
+        <a-select
           v-model:value="recordMicro"
           :options="recordMicroOptions"
           @change="selectMicro"
         />
-      </FormItem>
-      <FormItem
+      </a-form-item>
+      <a-form-item
         v-if="supportedConstraints.aspectRatio"
         label="选择长宽比"
       >
-        <Select
+        <a-select
           v-model:value="aspectRatio"
           :options="aspectRatioList"
         />
-      </FormItem>
-      <FormItem
+      </a-form-item>
+      <a-form-item
         v-if="supportedConstraints.frameRate"
         label="选择帧率"
       >
-        <Select
+        <a-select
           v-model:value="frameRate"
           :options="frameRateList"
         />
-      </FormItem>
-      <FormItem
+      </a-form-item>
+      <a-form-item
         v-if="supportedConstraints.width && supportedConstraints.height"
         label="选择分辨率"
       >
-        <Select
+        <a-select
           v-model:value="resolutions"
           :options="resolutionsList"
         />
-      </FormItem>
-      <FormItem label="是否显示光标">
-        <Select
+      </a-form-item>
+      <a-form-item label="是否显示光标">
+        <a-select
           v-model:value="cursor"
           :options="cursorList"
         />
-      </FormItem>
-    </Form>
+      </a-form-item>
+    </a-form>
     <template v-else>
-      <Title :level="4">
+      <a-typography-title :level="4">
         当前设置
-      </Title>
-      <Paragraph>
+      </a-typography-title>
+      <a-typography-paragraph>
         <ul>
           <li>系统音频: {{ currentDisplayMediaOptions.video.recordAudio }}</li>
           <li>麦克风: {{ currentDisplayMediaOptions.video.recordMicro }}</li>
@@ -150,22 +150,17 @@
           <li>视频高度: {{ currentDisplayMediaOptions.video.height }}</li>
           <li>显示鼠标: {{ currentDisplayMediaOptions.video.cursor }}</li>
         </ul>
-      </Paragraph>
+      </a-typography-paragraph>
     </template>
   </template>
   <template v-else>
-    <Title :level="3">
+    <a-typography-title :level="3">
       你的浏览器不支持WebRTC，请安装最新版本Chrome后重试。
-    </Title>
+    </a-typography-title>
   </template>
 </template>
 
 <script>
-import { Typography, Space, Button, Divider, Form, Select, Alert } from 'ant-design-vue'
-
-const { Title, Paragraph } = Typography
-const { Item: FormItem } = Form
-
 const RECORD_STATUS_UNSTART = 'unstart'
 const RECORD_STATUS_RECORDING = 'recording'
 const RECORD_STATUS_PAUSED = 'paused'
@@ -173,7 +168,6 @@ const RECORD_STATUS_STOPPED = 'stopped'
 
 export default {
   name: 'ScreenRecord',
-  components: { Title, Paragraph, Space, Button, Divider, Form, FormItem, Select, Alert },
   data: () => ({
     recorder: null,
     screenShareVideoElement: null,

@@ -144,7 +144,6 @@
 <script>
 import { range, shuffle, cloneDeep } from 'lodash-es'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
-import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('tetris')
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']

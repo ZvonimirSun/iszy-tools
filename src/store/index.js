@@ -1,13 +1,13 @@
 import axios from '@/plugins/Axios'
 import { merge } from 'lodash-es'
-import { toRaw } from 'vue'
 import { createStore } from 'vuex'
 import g2048 from './modules/2048'
 import tetris from './modules/tetris'
 import user from './modules/user'
 import linuxCommand from './modules/linuxCommand'
 import imgHosting from './modules/imgHosting'
-import jsonEditor from './modules/jsonEditor/index.js'
+import jsonEditor from './modules/jsonEditor'
+import tinyEditor from './modules/tinyEditor'
 import VuexPersist from '@/plugins/VuexPersist'
 
 export default createStore({
@@ -37,15 +37,17 @@ export default createStore({
       state._cache = {}
     },
 
-    clearOfflineCache () {}
+    clearOfflineCache () {
+      console.log('clearOfflineCache')
+    }
   },
   actions: {
     async uploadSettings ({ state }) {
       if (state.user._user.token) {
         const { _user, ...settings } = toRaw(state.user)
         try {
-          const res = (await axios.post(`${this.$apiBase}/iszy_tools/settings`, settings)).data
-          return res.code === '00000' && res.data
+          const res = (await axios.post(`${this.$apiBase}/tools/settings`, settings)).data
+          return res.success && res.data
         } catch (e) {
           return false
         }
@@ -57,8 +59,8 @@ export default createStore({
       if (state.user._user.token) {
         try {
           if (await dispatch('user/checkToken')) {
-            const res = (await axios.get(`${this.$apiBase}/iszy_tools/settings`)).data
-            if (res.code === '00000' && res.data) {
+            const res = (await axios.get(`${this.$apiBase}/tools/settings`)).data
+            if (res.success && res.data) {
               commit('importConfig', res.data)
               return true
             }
@@ -78,7 +80,8 @@ export default createStore({
     user,
     linuxCommand,
     imgHosting,
-    jsonEditor
+    jsonEditor,
+    tinyEditor
   },
   plugins: [VuexPersist({
     name: 'iszy_tools',

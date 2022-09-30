@@ -2,21 +2,51 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import styleImport from 'vite-plugin-style-import'
 import { resolve } from 'path'
 import Sitemap from './src/plugins/Sitemap.js'
 import tools from './src/views/tools.json'
+import Components from 'unplugin-vue-components/vite'
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import Unocss from 'unocss/vite'
+import { presetUno, presetAttributify, presetIcons } from 'unocss'
+import AutoImport from 'unplugin-auto-import/vite'
+
+const iconClass = tools.map(item => item.icon).filter(item => item)
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: tag => tag === 'iconpark-icon'
+    vue(),
+    AutoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'vuex',
+        '@vueuse/core'
+      ],
+      eslintrc: {
+        enabled: true
+      },
+      dts: './src/auto-imports.d.ts'
+    }),
+    Unocss({
+      mode: 'vue-scoped',
+      presets: [presetUno(), presetAttributify(), presetIcons({
+        mode: 'auto',
+        extraProperties: {
+          display: 'inline-block'
         }
-      }
+      })],
+      safelist: [...iconClass]
+    }),
+    Components({
+      dirs: ['src/components'],
+      extensions: ['vue'],
+      dts: false,
+      resolvers: [
+        AntDesignVueResolver()
+      ]
     }),
     VitePWA({
       scope: '/',
@@ -94,15 +124,6 @@ export default defineConfig({
           }
         ]
       }
-    }),
-    styleImport({
-      libs: [
-        {
-          libraryName: 'ant-design-vue',
-          esModule: true,
-          resolveStyle: name => `ant-design-vue/es/${name}/style/index`
-        }
-      ]
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' })
   ],

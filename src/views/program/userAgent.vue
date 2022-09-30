@@ -1,17 +1,17 @@
 <template>
-  <Title :level="3">
+  <a-typography-title :level="3">
     请输入一个UA开始解析
-  </Title>
-  <Input
+  </a-typography-title>
+  <a-input
     v-model:value="data"
     placeholder="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
   />
   <template v-if="data">
-    <Divider />
-    <Title :level="3">
+    <a-divider />
+    <a-typography-title :level="3">
       解析结果
-    </Title>
-    <Paragraph>
+    </a-typography-title>
+    <a-typography-paragraph>
       <pre v-if="result.ua">{{ result.ua }}</pre>
       <ul>
         <li v-if="result.browser.name">
@@ -30,20 +30,17 @@
           <b>架构</b>: {{ result.cpu.architecture }}
         </li>
       </ul>
-    </Paragraph>
+    </a-typography-paragraph>
   </template>
 </template>
 
 <script>
-import { Input, Typography, Divider } from 'ant-design-vue'
 import UAParser from 'ua-parser-js'
 
-const { Title, Paragraph } = Typography
 const parser = new UAParser()
 
 export default {
   name: 'UserAgent',
-  components: { Title, Input, Paragraph, Divider },
   data: () => ({
     data: ''
   }),

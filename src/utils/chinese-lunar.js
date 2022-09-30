@@ -3188,11 +3188,11 @@ const _findLunar = function (solar, index, minMonth, maxMonth, isPreYear) {
   if (isPreYear && segMonth === 12) year = year - 1
   lunarYear = isPreYear ? lunarYear - 1 : lunarYear
   return {
-    year: year,
+    year,
     month: solarMonth,
     day: segDay,
-    lunarYear: lunarYear,
-    lunarMonth: lunarMonth,
+    lunarYear,
+    lunarMonth,
     leapMonth: mapping[0] // 闰月
   }
 }
@@ -3275,10 +3275,10 @@ _chineseLunar.monthAdd = function (lunar, inc) {
   }
 
   return {
-    year: year,
-    month: month,
-    leap: leap,
-    leapMonth: leapMonth
+    year,
+    month,
+    leap,
+    leapMonth
   }
 }
 
@@ -3440,7 +3440,7 @@ _chineseLunar.solarToLunar = function (solar, format) {
       data.leapMonth > 0 && data.lunarMonth > data.leapMonth
         ? data.lunarMonth - 1
         : data.lunarMonth,
-    day: day,
+    day,
     leapMonth: data.leapMonth
   })
 

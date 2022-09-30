@@ -6,35 +6,34 @@
 class TagCloud {
   /* constructor */
   constructor (container = document.body, texts, options) {
-    const self = this
     if (!container || container.nodeType !== 1) return new Error('Incorrect element type')
 
     // params
-    self.$container = container
-    self.texts = texts || []
-    self.config = { ...TagCloud._defaultConfig, ...options || {} }
+    this.$container = container
+    this.texts = texts || []
+    this.config = { ...TagCloud._defaultConfig, ...options || {} }
 
     // calculate config
-    self.radius = self.config.radius // rolling radius
-    self.depth = 2 * self.radius // rolling depth
-    self.size = 1.5 * self.radius // rolling area size with mouse
-    self.maxSpeed = TagCloud._getMaxSpeed(self.config.maxSpeed) // rolling max speed
-    self.initSpeed = TagCloud._getInitSpeed(self.config.initSpeed) // rolling init speed
-    self.direction = self.config.direction // rolling init direction
-    self.keep = self.config.keep // whether to keep rolling after mouse out area
-    self.paused = false // keep state to pause the animation
+    this.radius = this.config.radius // rolling radius
+    this.depth = 2 * this.radius // rolling depth
+    this.size = 1.5 * this.radius // rolling area size with mouse
+    this.maxSpeed = TagCloud._getMaxSpeed(this.config.maxSpeed) // rolling max speed
+    this.initSpeed = TagCloud._getInitSpeed(this.config.initSpeed) // rolling init speed
+    this.direction = this.config.direction // rolling init direction
+    this.keep = this.config.keep // whether to keep rolling after mouse out area
+    this.paused = false // keep state to pause the animation
 
     // create element
-    self._createElment()
+    this._createElment()
     // init
-    self._init()
+    this._init()
     // set elements and instances
-    TagCloud.list.push({ el: self.$el, container, instance: self })
+    TagCloud.list.push({ el: this.$el, container, instance: this })
   }
 
   /* static method */
   // all TagCloud list
-  static list = [];
+  static list = []
 
   // default config
   static _defaultConfig = {
@@ -47,12 +46,12 @@ class TagCloud {
     useItemInlineStyles: true,
     containerClass: 'tagcloud',
     itemClass: 'tagcloud--item'
-  };
+  }
 
   // speed value
-  static _getMaxSpeed = (name) => ({ slow: 0.5, normal: 1, fast: 2 })[name] || 1;
+  static _getMaxSpeed = (name) => ({ slow: 0.5, normal: 1, fast: 2 })[name] || 1
 
-  static _getInitSpeed = (name) => ({ slow: 16, normal: 32, fast: 80 })[name] || 32;
+  static _getInitSpeed = (name) => ({ slow: 16, normal: 32, fast: 80 })[name] || 32
 
   // event listener
   static _on (el, ev, handler, cap) {
@@ -68,34 +67,31 @@ class TagCloud {
   /* instance property method */
   // create elment
   _createElment () {
-    const self = this
-
     // create container
     const $el = document.createElement('div')
-    $el.className = self.config.containerClass
-    if (self.config.useContainerInlineStyles) {
+    $el.className = this.config.containerClass
+    if (this.config.useContainerInlineStyles) {
       $el.style.position = 'relative'
-      $el.style.width = `${2 * self.radius}px`
-      $el.style.height = `${2 * self.radius}px`
+      $el.style.width = `${2 * this.radius}px`
+      $el.style.height = `${2 * this.radius}px`
     }
 
     // create texts
-    self.items = []
-    self.texts.forEach((text, index) => {
-      const item = self._createTextItem(text, index)
+    this.items = []
+    this.texts.forEach((text, index) => {
+      const item = this._createTextItem(text, index)
       $el.appendChild(item.el)
-      self.items.push(item)
+      this.items.push(item)
     })
-    self.$container.appendChild($el)
-    self.$el = $el
+    this.$container.appendChild($el)
+    this.$el = $el
   }
 
   // create a text
   _createTextItem (text, index = 0) {
-    const self = this
     const itemEl = document.createElement('span')
-    itemEl.className = self.config.itemClass
-    if (self.config.useItemInlineStyles) {
+    itemEl.className = this.config.itemClass
+    if (this.config.useItemInlineStyles) {
       itemEl.style.willChange = 'transform, opacity, filter'
       itemEl.style.position = 'absolute'
       itemEl.style.top = '50%'
@@ -117,22 +113,21 @@ class TagCloud {
     itemEl.innerText = text
     return {
       el: itemEl,
-      ...self._computePosition(index) // distributed in appropriate place
+      ...this._computePosition(index) // distributed in appropriate place
     }
   }
 
   // calculate appropriate place
   _computePosition (index, random = false) {
-    const self = this
-    const textsLength = self.texts.length
+    const textsLength = this.texts.length
     // if random `true`, It means that a random appropriate place is generated, and the position will be independent of `index`
     if (random) index = Math.floor(Math.random() * (textsLength + 1))
     const phi = Math.acos(-1 + (2 * index + 1) / textsLength)
     const theta = Math.sqrt((textsLength + 1) * Math.PI) * phi
     return {
-      x: (self.size * Math.cos(theta) * Math.sin(phi)) / 2,
-      y: (self.size * Math.sin(theta) * Math.sin(phi)) / 2,
-      z: (self.size * Math.cos(phi)) / 2
+      x: (this.size * Math.cos(theta) * Math.sin(phi)) / 2,
+      y: (this.size * Math.sin(theta) * Math.sin(phi)) / 2,
+      z: (this.size * Math.cos(phi)) / 2
     }
   }
 
@@ -157,58 +152,54 @@ class TagCloud {
 
   // init
   _init () {
-    const self = this
+    this.active = false // whether the mouse is activated
 
-    self.active = false // whether the mouse is activated
+    this.mouseX0 = this.initSpeed * Math.sin(this.direction * (Math.PI / 180)) // init distance between the mouse and rolling center x axis
+    this.mouseY0 = -this.initSpeed * Math.cos(this.direction * (Math.PI / 180)) // init distance between the mouse and rolling center y axis
 
-    self.mouseX0 = self.initSpeed * Math.sin(self.direction * (Math.PI / 180)) // init distance between the mouse and rolling center x axis
-    self.mouseY0 = -self.initSpeed * Math.cos(self.direction * (Math.PI / 180)) // init distance between the mouse and rolling center y axis
-
-    self.mouseX = self.mouseX0 // current distance between the mouse and rolling center x axis
-    self.mouseY = self.mouseY0 // current distance between the mouse and rolling center y axis
+    this.mouseX = this.mouseX0 // current distance between the mouse and rolling center x axis
+    this.mouseY = this.mouseY0 // current distance between the mouse and rolling center y axis
 
     // mouseover
-    TagCloud._on(self.$el, 'mouseover', () => { self.active = true })
+    TagCloud._on(this.$el, 'mouseover', () => { this.active = true })
     // mouseout
-    TagCloud._on(self.$el, 'mouseout', () => { self.active = false })
+    TagCloud._on(this.$el, 'mouseout', () => { this.active = false })
     // mousemove
-    TagCloud._on(self.keep ? window : self.$el, 'mousemove', (ev) => {
+    TagCloud._on(this.keep ? window : this.$el, 'mousemove', (ev) => {
       ev = ev || window.event
-      const rect = self.$el.getBoundingClientRect()
-      self.mouseX = (ev.clientX - (rect.left + rect.width / 2)) / 5
-      self.mouseY = (ev.clientY - (rect.top + rect.height / 2)) / 5
+      const rect = this.$el.getBoundingClientRect()
+      this.mouseX = (ev.clientX - (rect.left + rect.width / 2)) / 5
+      this.mouseY = (ev.clientY - (rect.top + rect.height / 2)) / 5
     })
 
     // update state regularly
-    self._next() // init update state
-    self.interval = self._requestInterval(() => {
+    this._next() // init update state
+    this.interval = this._requestInterval(() => {
       // eslint-disable-next-line no-useless-call
-      self._next.call(self)
+      this._next.call(this)
     }, 10)
   }
 
   // calculate the next state
   _next () {
-    const self = this
-
-    if (self.paused) {
+    if (this.paused) {
       return
     }
 
     // if keep `false`, pause rolling after moving mouse out area
-    if (!self.keep && !self.active) {
-      self.mouseX = Math.abs(self.mouseX - self.mouseX0) < 1
-        ? self.mouseX0
-        : (self.mouseX + self.mouseX0) / 2 // reset distance between the mouse and rolling center x axis
-      self.mouseY = Math.abs(self.mouseY - self.mouseY0) < 1
-        ? self.mouseY0
-        : (self.mouseY + self.mouseY0) / 2 // reset distance between the mouse and rolling center y axis
+    if (!this.keep && !this.active) {
+      this.mouseX = Math.abs(this.mouseX - this.mouseX0) < 1
+        ? this.mouseX0
+        : (this.mouseX + this.mouseX0) / 2 // reset distance between the mouse and rolling center x axis
+      this.mouseY = Math.abs(this.mouseY - this.mouseY0) < 1
+        ? this.mouseY0
+        : (this.mouseY + this.mouseY0) / 2 // reset distance between the mouse and rolling center y axis
     }
 
-    const a = -(Math.min(Math.max(-self.mouseY, -self.size), self.size) / self.radius) *
-      self.maxSpeed
-    const b = (Math.min(Math.max(-self.mouseX, -self.size), self.size) / self.radius) *
-      self.maxSpeed
+    const a = -(Math.min(Math.max(-this.mouseY, -this.size), this.size) / this.radius) *
+      this.maxSpeed
+    const b = (Math.min(Math.max(-this.mouseX, -this.size), this.size) / this.radius) *
+      this.maxSpeed
 
     if (Math.abs(a) <= 0.01 && Math.abs(b) <= 0.01) return // pause
 
@@ -221,7 +212,7 @@ class TagCloud {
       Math.cos(b * l)
     ]
 
-    self.items.forEach(item => {
+    this.items.forEach(item => {
       const rx1 = item.x
       const ry1 = item.y * sc[1] + item.z * (-sc[0])
       const rz1 = item.y * sc[0] + item.z * sc[1]
@@ -230,7 +221,7 @@ class TagCloud {
       const ry2 = ry1
       const rz2 = rz1 * sc[3] - rx1 * sc[2]
 
-      const per = (2 * self.depth) / (2 * self.depth + rz2) // todo
+      const per = (2 * this.depth) / (2 * this.depth + rz2) // todo
 
       item.x = rx2
       item.y = ry2
@@ -255,55 +246,49 @@ class TagCloud {
   /* export instance properties and methods */
   // update
   update (texts) {
-    const self = this
     // params
-    self.texts = texts || []
+    this.texts = texts || []
     // judging and processing items based on texts
-    self.texts.forEach((text, index) => {
-      let item = self.items[index]
+    this.texts.forEach((text, index) => {
+      let item = this.items[index]
       if (!item) { // if not had, then create
-        item = self._createTextItem(text, index)
-        Object.assign(item, self._computePosition(index, true)) // random place
-        self.$el.appendChild(item.el)
-        self.items.push(item)
+        item = this._createTextItem(text, index)
+        Object.assign(item, this._computePosition(index, true)) // random place
+        this.$el.appendChild(item.el)
+        this.items.push(item)
       }
       // if had, replace text
       item.el.innerText = text
     })
     // remove redundant self.items
-    const textsLength = self.texts.length
-    const itemsLength = self.items.length
+    const textsLength = this.texts.length
+    const itemsLength = this.items.length
     if (textsLength < itemsLength) {
-      const removeList = self.items.splice(textsLength, itemsLength - textsLength)
+      const removeList = this.items.splice(textsLength, itemsLength - textsLength)
       removeList.forEach(item => {
-        self.$el.removeChild(item.el)
+        this.$el.removeChild(item.el)
       })
     }
   }
 
   // destroy
   destroy () {
-    const self = this
-    self.interval = null
+    this.interval = null
     // clear in TagCloud.list
-    const index = TagCloud.list.findIndex(e => e.el === self.$el)
+    const index = TagCloud.list.findIndex(e => e.el === this.$el)
     if (index !== -1) TagCloud.list.splice(index, 1)
     // clear element
-    if (self.$container && self.$el) {
-      self.$container.removeChild(self.$el)
+    if (this.$container && this.$el) {
+      this.$container.removeChild(this.$el)
     }
   }
 
   pause () {
-    const self = this
-
-    self.paused = true
+    this.paused = true
   }
 
   resume () {
-    const self = this
-
-    self.paused = false
+    this.paused = false
   }
 }
 

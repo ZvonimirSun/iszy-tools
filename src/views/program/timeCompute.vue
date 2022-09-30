@@ -1,10 +1,10 @@
 <template>
-  <Form layout="vertical">
-    <Title :level="3">
+  <a-form layout="vertical">
+    <a-typography-title :level="3">
       转换时间戳
-    </Title>
-    <Item label="时间">
-      <DatePicker
+    </a-typography-title>
+    <a-form-item label="时间">
+      <a-date-picker
         v-model:value="time"
         :show-time="true"
         style="width: 100%"
@@ -12,97 +12,91 @@
         @change="toTimeStamp"
         @ok="toTimeStamp"
       />
-    </Item>
-    <Item label="时间戳">
-      <Input
+    </a-form-item>
+    <a-form-item label="时间戳">
+      <a-input
         v-model:value="timestamp"
         @change="toTime"
       >
         <template #addonAfter>
-          <Select
+          <a-select
             v-model:value="timestampUnit"
             @change="toTimeStamp"
           >
-            <Option value="s">
+            <a-select-option value="s">
               秒
-            </Option>
-            <Option value="ms">
+            </a-select-option>
+            <a-select-option value="ms">
               毫秒
-            </Option>
-          </Select>
+            </a-select-option>
+          </a-select>
         </template>
-      </Input>
-    </Item>
-    <Title :level="3">
+      </a-input>
+    </a-form-item>
+    <a-typography-title :level="3">
       计算几天后的日期
-    </Title>
-    <Item label="日期">
-      <DatePicker
+    </a-typography-title>
+    <a-form-item label="日期">
+      <a-date-picker
         v-model:value="baseTime"
         style="width: 100%"
         :get-popup-container="getContainer"
         @change="calculateDate"
         @ok="calculateDate"
       />
-    </Item>
-    <Item label="相差天数（输入负数向前计算）">
-      <Input
+    </a-form-item>
+    <a-form-item label="相差天数（输入负数向前计算）">
+      <a-input
         v-model:value="addDays"
         addon-after="天"
         @change="calculateDate"
       />
-    </Item>
-    <Item label="目标日期">
-      <Input
+    </a-form-item>
+    <a-form-item label="目标日期">
+      <a-input
         v-model:value="resultTime"
         readonly
       />
-    </Item>
-    <Title :level="3">
+    </a-form-item>
+    <a-typography-title :level="3">
       计算日期差
-    </Title>
-    <Item label="开始日期">
-      <DatePicker
+    </a-typography-title>
+    <a-form-item label="开始日期">
+      <a-date-picker
         v-model:value="startTime"
         style="width: 100%"
         :get-popup-container="getContainer"
         @change="calculateDuration"
         @ok="calculateDuration"
       />
-    </Item>
-    <Item label="结束日期">
-      <DatePicker
+    </a-form-item>
+    <a-form-item label="结束日期">
+      <a-date-picker
         v-model:value="endTime"
         style="width: 100%"
         :get-popup-container="getContainer"
         @change="calculateDuration"
         @ok="calculateDuration"
       />
-    </Item>
-    <Item label="相差天数">
-      <Input
+    </a-form-item>
+    <a-form-item label="相差天数">
+      <a-input
         v-model:value="duration"
         addon-after="天"
         readonly
       />
-    </Item>
-  </Form>
+    </a-form-item>
+  </a-form>
 </template>
 
 <script>
 import dayjs from 'dayjs'
-import { Form, DatePicker, Input, Typography, Select } from 'ant-design-vue'
-
-const { Item } = Form
-const { Title } = Typography
-const { Option } = Select
 
 export default {
   name: 'TimeCompute',
-  components: { Form, DatePicker, Input, Item, Select, Title, Option },
   data () {
     return {
-      dayjs: dayjs,
+      dayjs,
 
       time: dayjs(),
       timestamp: dayjs().valueOf(),
