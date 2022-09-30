@@ -95,7 +95,7 @@ export default {
     async login ({ commit, dispatch }, { userName, password }) {
       let error = ''
       try {
-        if (userName != null && password != null) {
+        if (userName && password) {
           const res = (await axios.post(`${this.$apiBase}/auth/login`, {
             username: userName.trim(),
             password
