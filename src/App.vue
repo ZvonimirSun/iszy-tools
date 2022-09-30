@@ -75,8 +75,8 @@ import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import Modal from 'ant-design-vue/es/modal'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { MessageApi } from 'ant-design-vue/es/message'
-import { ComponentPublicInstance } from 'vue'
+import type { MessageApi } from 'ant-design-vue/es/message'
+import type { ComponentPublicInstance } from 'vue'
 import 'ant-design-vue/es/modal/style/index.js'
 
 const {

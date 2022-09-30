@@ -74,8 +74,8 @@
 
 <script setup lang="ts">
 import { toDataURL } from 'qrcode'
-import { Ref } from 'vue'
-import { MessageApi } from 'ant-design-vue/es/message'
+import type { Ref } from 'vue'
+import type { MessageApi } from 'ant-design-vue/es/message'
 import createFile from '@/utils/createFile'
 import QrcodeDecoder from 'qrcode-decoder/src/index'
 

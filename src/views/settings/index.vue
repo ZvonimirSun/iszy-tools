@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { MessageApi } from 'ant-design-vue/es/message'
+import type { MessageApi } from 'ant-design-vue/es/message'
 
 const store = useStore()
 const router = useRouter()

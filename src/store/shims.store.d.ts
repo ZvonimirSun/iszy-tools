@@ -1,9 +1,9 @@
-import { AxiosInstance } from 'axios'
-import message from 'ant-design-vue/es/message'
+import type { AxiosInstance } from 'axios'
+import type { MessageApi } from 'ant-design-vue/es/message'
 declare module 'vuex' {
   export interface Store<S> {
     $axios?: AxiosInstance
-    $msg?: typeof message,
+    $msg?: MessageApi,
     $apiBase?: string
   }
 }

@@ -1,4 +1,4 @@
-import { CancelTokenStatic, AxiosStatic } from 'axios'
+import type { CancelTokenStatic, AxiosStatic } from 'axios'
 
 declare module 'axios' {
   export interface AxiosInstance {
