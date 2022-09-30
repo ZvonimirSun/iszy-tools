@@ -132,9 +132,6 @@ export default defineConfig({
       '@': resolve('src')
     }
   },
-  optimizeDeps: {
-    include: ['@icon-park/vue-next']
-  },
   build: {
   },
   css: {

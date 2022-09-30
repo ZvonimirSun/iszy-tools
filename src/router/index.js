@@ -24,21 +24,57 @@ for (const key in vueFiles) {
 
 let routes = []
 
+const data = [...tools, {
+  children: [
+    {
+      name: '首页',
+      link: '/',
+      type: 'internal'
+    },
+    {
+      name: '403',
+      link: '/403',
+      type: 'internal'
+    },
+    {
+      name: '404',
+      link: '/404',
+      type: 'internal'
+    },
+    {
+      name: '登录',
+      link: '/login',
+      type: 'internal'
+    },
+    {
+      name: '注册',
+      link: '/register',
+      type: 'internal'
+    }
+  ]
+}]
+
 // 加入所有工具路由
-for (const tmp of tools) {
+for (const tmp of data) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
       if (!/^(http(s)?:\/\/)\w+\S+(\.\S+)+$/.test(tool.link)) {
         const path = (tmp.link || '') + (tool.link || '')
         if (modules[path]) {
-          modules[path] = merge(modules[path], {
-            name: tool.name,
-            meta: {
-              statistics: tool.statistics !== false,
-              layout: tool.layout,
-              type: 'tool'
-            }
-          })
+          if (tool.type !== 'internal') {
+            modules[path] = merge(modules[path], {
+              name: tool.name,
+              meta: {
+                statistics: tool.statistics !== false,
+                layout: tool.layout,
+                type: 'tool'
+              }
+            })
+          } else {
+            modules[path] = merge(modules[path], {
+              name: tool.name
+            })
+          }
           routes.push(modules[path])
         }
       }
@@ -48,18 +84,6 @@ for (const tmp of tools) {
 
 // 加入固定页面路由
 routes = routes.concat([
-  merge(modules['/'], {
-    name: '首页'
-  }),
-  merge(modules['/403'], {
-    name: '403'
-  }),
-  merge(modules['/404'], {
-    name: '404'
-  }),
-  merge(modules['/login'], {
-    name: '登录'
-  }),
   {
     path: '/logout',
     name: '登出',

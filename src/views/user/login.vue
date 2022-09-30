@@ -14,8 +14,8 @@
             @keypress.enter="login"
           >
             <template #prefix>
-              <User
-                theme="outline"
+              <span
+                class="i-icon-park-outline-user"
                 style="color:rgba(0,0,0,.25)"
               />
             </template>
@@ -29,8 +29,8 @@
             @keypress.enter="login"
           >
             <template #prefix>
-              <Lock
-                theme="outline"
+              <span
+                class="i-icon-park-outline-lock"
                 style="color:rgba(0,0,0,.25)"
               />
             </template>
@@ -53,14 +53,8 @@
 </template>
 
 <script>
-import { User, Lock } from '@icon-park/vue-next'
-
 export default {
   name: 'PageLogin',
-  components: {
-    User,
-    Lock
-  },
   data: () => ({
     form: {
       layout: 'horizontal',

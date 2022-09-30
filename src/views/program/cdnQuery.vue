@@ -71,13 +71,13 @@
                 </div>
                 <a-tag v-if="item.version">
                   <template #icon>
-                    <tag-one theme="filled" />
+                    <span class="i-icon-park-outline-tag-one" />
                   </template>
                   <span :title="item.version">{{ item.version }}</span>
                 </a-tag>
                 <a-tag v-if="item.license">
                   <template #icon>
-                    <balance-two theme="outline" />
+                    <span class="i-icon-park-outline-balance-two" />
                   </template>
                   {{ item.license }}
                 </a-tag>
@@ -106,7 +106,7 @@
           style="margin-bottom: .8rem;display: block"
           @click="pkgID=null"
         >
-          <return theme="outline" />
+          <span class="i-icon-park-outline-return" />
           返回
         </a-typography-link>
         <a-typography class="metaDetail">
@@ -171,7 +171,7 @@
               </a-typography-text>
             </li>
             <li v-if="files && files.length">
-              <b>文件列表</b><corner-right-down theme="outline" />
+              <b>文件列表</b><span class="i-icon-park-outline-corner-right-down" />
             </li>
           </ul>
         </a-typography>
@@ -197,18 +197,11 @@
 
 <script>
 import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
-import { TagOne, BalanceTwo, Return, CornerRightDown } from '@icon-park/vue-next'
 
 let timeoutIndex = null
 
 export default {
   name: 'CdnQuery',
-  components: {
-    TagOne,
-    BalanceTwo,
-    Return,
-    CornerRightDown
-  },
   data: () => ({
     loading: false,
     keyword: '',

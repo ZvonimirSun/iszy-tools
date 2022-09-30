@@ -33,7 +33,7 @@
             type="primary"
             @click="create('left')"
           >
-            <span class="buttonWithIcon"><FileAdditionOne theme="outline" />&nbsp;新建</span>
+            <span class="buttonWithIcon"><span class="i-icon-park-outline-file-addition-one" />&nbsp;新建</span>
           </a-button>
           <a-dropdown>
             <template #overlay>
@@ -42,13 +42,13 @@
                 @click="open($event,'left')"
               >
                 <a-menu-item key="recent">
-                  <span class="buttonWithIcon"><History theme="outline" />&nbsp;打开最近记录</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-history" />&nbsp;打开最近记录</span>
                 </a-menu-item>
                 <a-menu-item key="file">
-                  <span class="buttonWithIcon"><Computer theme="outline" />&nbsp;打开本地文件</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-computer" />&nbsp;打开本地文件</span>
                 </a-menu-item>
                 <a-menu-item key="url">
-                  <span class="buttonWithIcon"><LinkThree theme="outline" />&nbsp;打开URL</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-link-three" />&nbsp;打开URL</span>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -56,7 +56,7 @@
               size="small"
               type="primary"
             >
-              <span class="buttonWithIcon"><FolderOpen theme="outline" />&nbsp;打开<Down theme="outline" /></span>
+              <span class="buttonWithIcon"><span class="i-icon-park-outline-folder-open" />&nbsp;打开<span class="i-icon-park-outline-down" /></span>
             </a-button>
           </a-dropdown>
           <a-button
@@ -64,7 +64,7 @@
             type="primary"
             @click="download('left')"
           >
-            <span class="buttonWithIcon"><Save theme="outline" />&nbsp;保存</span>
+            <span class="buttonWithIcon"><span class="i-icon-park-outline-save" />&nbsp;保存</span>
           </a-button>
           <a-dropdown>
             <template #overlay>
@@ -73,16 +73,16 @@
                 @click="changeOption($event,'left')"
               >
                 <a-menu-item key="indentation">
-                  <span class="buttonWithIcon"><IndentRight theme="outline" />&nbsp;缩进({{ indent }})</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-indent-right" />&nbsp;缩进({{ indent }})</span>
                 </a-menu-item>
                 <a-menu-item key="properties">
-                  <span class="buttonWithIcon"><Info theme="outline" />&nbsp;文档属性</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-info" />&nbsp;文档属性</span>
                 </a-menu-item>
                 <a-menu-item
                   key="delete"
                   :disabled="!Boolean(leftId)"
                 >
-                  <span class="buttonWithIcon"><Delete theme="outline" />&nbsp;删除文档</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-delete" />&nbsp;删除文档</span>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -90,7 +90,7 @@
               size="small"
               type="primary"
             >
-              <span class="buttonWithIcon"><SettingTwo theme="outline" />&nbsp;选项<Down theme="outline" /></span>
+              <span class="buttonWithIcon"><span class="i-icon-park-outline-setting-two" />&nbsp;选项<span class="i-icon-park-outline-down" /></span>
             </a-button>
           </a-dropdown>
         </a-space>
@@ -113,14 +113,14 @@
             @click="copyRight"
           >
             复制
-            <Right theme="outline" />
+            <span class="i-icon-park-outline-right" />
           </a-button>
           <a-button
             type="primary"
             block
             @click="copyLeft"
           >
-            <Left theme="outline" />
+            <span class="i-icon-park-outline-left" />
             复制
           </a-button>
           <a-checkbox
@@ -134,13 +134,13 @@
               type="primary"
               class="diffBtn"
             >
-              <Up theme="outline" />
+              <span class="i-icon-park-outline-up" />
             </a-button>
             <a-button
               type="primary"
               class="diffBtn"
             >
-              <Down theme="outline" />
+              <span class="i-icon-park-outline-down" />
             </a-button>
           </a-space>
         </template>
@@ -216,7 +216,7 @@
             type="primary"
             @click="create('right')"
           >
-            <span class="buttonWithIcon"><FileAdditionOne theme="outline" />&nbsp;新建</span>
+            <span class="buttonWithIcon"><span class="i-icon-park-outline-file-addition-one" />&nbsp;新建</span>
           </a-button>
           <a-dropdown>
             <template #overlay>
@@ -225,13 +225,13 @@
                 @click="open($event,'right')"
               >
                 <a-menu-item key="recent">
-                  <span class="buttonWithIcon"><History theme="outline" />&nbsp;打开最近记录</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-history" />&nbsp;打开最近记录</span>
                 </a-menu-item>
                 <a-menu-item key="file">
-                  <span class="buttonWithIcon"><Computer theme="outline" />&nbsp;打开本地文件</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-computer" />&nbsp;打开本地文件</span>
                 </a-menu-item>
                 <a-menu-item key="url">
-                  <span class="buttonWithIcon"><LinkThree theme="outline" />&nbsp;打开URL</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-link-three" />&nbsp;打开URL</span>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -239,7 +239,7 @@
               size="small"
               type="primary"
             >
-              <span class="buttonWithIcon"><FolderOpen theme="outline" />&nbsp;打开<Down theme="outline" /></span>
+              <span class="buttonWithIcon"><span class="i-icon-park-outline-folder-open" />&nbsp;打开<span class="i-icon-park-outline-down" /></span>
             </a-button>
           </a-dropdown>
           <a-button
@@ -247,7 +247,7 @@
             type="primary"
             @click="download('right')"
           >
-            <span class="buttonWithIcon"><Save theme="outline" />&nbsp;保存</span>
+            <span class="buttonWithIcon"><span class="i-icon-park-outline-save" />&nbsp;保存</span>
           </a-button>
           <a-dropdown>
             <template #overlay>
@@ -256,16 +256,16 @@
                 @click="changeOption($event,'right')"
               >
                 <a-menu-item key="indentation">
-                  <span class="buttonWithIcon"><IndentRight theme="outline" />&nbsp;缩进({{ indent }})</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-indent-right" />&nbsp;缩进({{ indent }})</span>
                 </a-menu-item>
                 <a-menu-item key="properties">
-                  <span class="buttonWithIcon"><Info theme="outline" />&nbsp;文档属性</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-info" />&nbsp;文档属性</span>
                 </a-menu-item>
                 <a-menu-item
                   key="delete"
                   :disabled="!Boolean(rightId)"
                 >
-                  <span class="buttonWithIcon"><Delete theme="outline" />&nbsp;删除文档</span>
+                  <span class="buttonWithIcon"><span class="i-icon-park-outline-delete" />&nbsp;删除文档</span>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -273,7 +273,7 @@
               size="small"
               type="primary"
             >
-              <span class="buttonWithIcon"><SettingTwo theme="outline" />&nbsp;选项<Down theme="outline" /></span>
+              <span class="buttonWithIcon"><span class="i-icon-park-outline-setting-two" />&nbsp;选项<span class="i-icon-park-outline-down" /></span>
             </a-button>
           </a-dropdown>
         </a-space>
@@ -403,7 +403,6 @@ import { deleteParam, getParam, setParam } from '@/utils/hashHandler.js'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile'
-import { Right, Left, Down, Up, FileAdditionOne, FolderOpen, Save, History, Computer, LinkThree, SettingTwo, Info, Delete, IndentRight } from '@icon-park/vue-next'
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
 
@@ -418,22 +417,6 @@ let moved = false
 
 export default {
   name: 'JsonEditor',
-  components: {
-    Right,
-    Left,
-    Down,
-    FileAdditionOne,
-    FolderOpen,
-    Save,
-    History,
-    Computer,
-    LinkThree,
-    SettingTwo,
-    Info,
-    Delete,
-    IndentRight,
-    Up
-  },
   data: () => ({
     codeLeft: {
       array: [
@@ -1094,6 +1077,10 @@ export default {
     .ant-btn {
       display: flex;
       align-items: center;
+
+      span:not([class^="i-"]) {
+        flex: 1;
+      }
 
       [class^="i-"] {
         font-size: 1.8rem;

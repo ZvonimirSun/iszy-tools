@@ -6,7 +6,7 @@
   >
     <a-col :span="24">
       <div class="search">
-        <search theme="outline" />
+        <span class="i-icon-park-outline-search" />
         <input
           v-model="searchStr"
           type="search"
@@ -59,14 +59,14 @@
                 v-if="isFav(tool.name)"
                 class="fav collected"
                 @click.prevent="updateFav({name:tool.name})"
-              ><Star theme="filled" /></span>
+              ><span class="i-icon-park-solid-star" /></span>
               <span
                 v-else
                 class="fav"
                 @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})"
               >
-                <span class="nonHover"><Star theme="outline" /></span>
-                <span class="hovered"><Star theme="filled" /></span>
+                <span class="nonHover"><span class="i-icon-park-outline-star" /></span>
+                <span class="hovered"><span class="i-icon-park-solid-star" /></span>
               </span>
             </div>
           </a-tooltip>
@@ -77,7 +77,6 @@
 </template>
 
 <script>
-import { Search, Star } from '@icon-park/vue-next'
 import tools from '@/views/tools.json'
 import { cloneDeep, flatten } from 'lodash-es'
 
@@ -85,7 +84,6 @@ const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpe
 
 export default {
   name: 'HomePage',
-  components: { Star, Search },
   data: () => ({
     searchStr: '',
 

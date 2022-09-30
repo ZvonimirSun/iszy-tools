@@ -3,6 +3,8 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
+export {}
+
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAlert: typeof import('ant-design-vue/es')['Alert']
@@ -76,5 +78,3 @@ declare module '@vue/runtime-core' {
     VueCodemirror: typeof import('./components/vue-codemirror.vue')['default']
   }
 }
-
-export {}
