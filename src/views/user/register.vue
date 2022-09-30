@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="register-container">
     <div class="main">
       <a-form
         v-bind="{wrapperCol: { span: 24 }}"
@@ -221,11 +221,10 @@ async function register () {
 </script>
 
 <style scoped lang="scss">
-.login-container {
+.register-container {
   width: 100%;
   min-height: 100%;
   position: relative;
-  //background: #F6F6F6;
   padding: 5rem 0 14.4rem;
 
   .main {

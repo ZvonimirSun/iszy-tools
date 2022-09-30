@@ -93,28 +93,33 @@ export default {
   },
   actions: {
     async login ({ commit, dispatch }, { userName, password }) {
+      let error = ''
       try {
         if (userName != null && password != null) {
-          const res = await axios.post(`${this.$apiBase}/auth/login`, {
+          const res = (await axios.post(`${this.$apiBase}/auth/login`, {
             username: userName.trim(),
             password
-          })
-          if (res.data && res.data.success) {
+          })).data
+          if (res.success) {
             commit('setToken', 'logged')
-            commit('updateProfile', res.data.data)
+            commit('updateProfile', res.data)
             dispatch('downloadSettings', null, { root: true })
-            return true
+            return
           } else {
             commit('clearToken')
-            return false
+            error = res.message
           }
         } else {
-          return false
+          error = '用户名或密码错误'
         }
       } catch (e) {
         commit('clearToken')
-        return false
+        if (e?.response?.data?.message) {
+          throw new Error(e.response.data.message)
+        }
+        throw e
       }
+      throw new Error(error)
     },
     async logout ({ commit }) {
       try {
