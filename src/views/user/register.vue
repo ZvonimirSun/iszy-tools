@@ -169,6 +169,8 @@ async function validateUserName (_rule: Rule, value = '') {
     throw new Error('用户名不能为空')
   } else if (!reg.test(value)) {
     throw new Error('用户名由5-16位字母、数字、下划线组成，且必须以字母开头')
+  } else if (value === 'admin') {
+    throw new Error('用户名禁止使用admin')
   }
 }
 async function validateNickName (_rule: Rule, value = '') {
