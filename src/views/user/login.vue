@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="main">
       <a-form
-        :layout="form.layout"
+        layout="horizontal"
         :model="form"
         v-bind="{wrapperCol: { span: 24 }}"
       >
@@ -57,8 +57,10 @@ import type{ Ref } from 'vue'
 import type { MessageApi } from 'ant-design-vue/es/message'
 import type { LocationQuery } from 'vue-router'
 
-const form = ref({
-  layout: 'horizontal',
+const form:Ref<{
+  userName: string,
+  password: string
+}> = ref({
   userName: '',
   password: ''
 })
