@@ -37,15 +37,24 @@
           </a-input-password>
         </a-form-item>
         <a-form-item>
-          <a-button
-            type="primary"
-            block
-            size="large"
-            :loading="loading"
-            @click="login"
-          >
-            确定
-          </a-button>
+          <div class="btn-wrapper">
+            <a-button
+              type="primary"
+              block
+              size="large"
+              :loading="loading"
+              @click="login"
+            >
+              登录
+            </a-button>
+            <a-button
+              block
+              size="large"
+              @click="register"
+            >
+              注册
+            </a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -109,6 +118,9 @@ function getOtherQuery (query:LocationQuery) {
     return acc
   }, {})
 }
+function register () {
+  router.push('/register')
+}
 </script>
 
 <style scoped lang="scss">
@@ -133,5 +145,11 @@ function getOtherQuery (query:LocationQuery) {
     text-align: center;
     color: #999999;
   }
+}
+
+.btn-wrapper {
+  width: 100%;
+  display: flex;
+  gap: 8px;
 }
 </style>
