@@ -62,30 +62,32 @@
 </template>
 
 <script setup lang="ts">
-import type{ Ref } from 'vue'
+import type { Ref } from 'vue'
 import type { MessageApi } from 'ant-design-vue/es/message'
 import type { LocationQuery } from 'vue-router'
 
-const form:Ref<{
+const form: Ref<{
   userName: string,
   password: string
 }> = ref({
   userName: '',
   password: ''
 })
-const redirect = ref(undefined)
+const redirect: Ref<string> = ref() as Ref<string>
 const otherQuery = ref({})
-const loading:Ref<boolean> = ref(false)
+const loading: Ref<boolean> = ref(false)
 
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const $msg: MessageApi = inject('$msg')
+const $msg: MessageApi = inject('$msg') as MessageApi
 
 watch(route, function (val) {
   const query = val.query
   if (query) {
-    redirect.value = query.redirect
+    if (typeof query.redirect === 'string') {
+      redirect.value = query.redirect
+    }
     otherQuery.value = getOtherQuery(query)
   }
 }, { immediate: true })
@@ -105,19 +107,17 @@ async function login () {
       $msg.success('登录成功！')
       router.push({ path: redirect.value || '/', query: otherQuery.value })
     } catch (e) {
-      $msg.error(e.message)
+      if (e instanceof Error) { $msg.error(e.message) }
     }
     loading.value = false
   }
 }
-function getOtherQuery (query:LocationQuery) {
-  return Object.keys(query).reduce((acc, cur) => {
-    if (cur !== 'redirect') {
-      acc[cur] = query[cur]
-    }
-    return acc
-  }, {})
+
+function getOtherQuery (query: LocationQuery) {
+  const { redirect, ...result } = query
+  return result
 }
+
 function register () {
   router.push('/register')
 }

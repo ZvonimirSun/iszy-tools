@@ -81,20 +81,23 @@ import QrcodeDecoder from 'qrcode-decoder/src/index'
 
 const generateContent: Ref<string> = ref('')
 const generateResult: Ref<string> = ref('')
-const msg: MessageApi = inject('$msg')
+const msg: MessageApi = inject('$msg') as MessageApi
 const qrCodeFile: Ref<string> = ref('')
 const decodeResult: Ref<string> = ref('')
-const decodeImg: Ref<HTMLImageElement> = ref()
+const decodeImg: Ref<HTMLImageElement> = ref() as Ref<HTMLImageElement>
 
 async function generateQR () {
   if (!generateContent.value) {
     generateResult.value = ''
     return
-  } try {
+  }
+  try {
     generateResult.value = await toDataURL(generateContent.value)
   } catch (e) {
     generateResult.value = ''
-    msg.error(e.message)
+    if (e instanceof Error) {
+      msg.error(e.message)
+    }
   }
 }
 
@@ -128,11 +131,13 @@ function upload (img: File) {
 async function decodeQRCode (img: HTMLImageElement) {
   try {
     const qrcodeDecoder = new QrcodeDecoder()
-    const res = await qrcodeDecoder.decodeFromImage(img)
-    decodeResult.value = res.data
+    const res = await qrcodeDecoder.decodeFromImage(img) as { data: string }
+    if (res) {
+      decodeResult.value = res.data
+    }
   } catch (e) {
     console.error(e)
-    msg.error(e.message)
+    if (e instanceof Error) { msg.error(e.message) }
   }
 }
 </script>

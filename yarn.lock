@@ -1058,11 +1058,6 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@bugsnag/safe-json-stringify@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.npmmirror.com/@bugsnag/safe-json-stringify/-/safe-json-stringify-6.0.0.tgz#22abdcd83e008c369902976730c34c150148a758"
-  integrity sha512-htzFO1Zc57S8kgdRK9mLcPVTW1BY2ijfH7Dk2CeZmspTWKdKqSo1iwmqrq2WtRjFlo8aRZYgLX0wFrDXF/9DLA==
-
 "@ckpack/vue-color@^1.1.4":
   version "1.2.0"
   resolved "https://registry.npmmirror.com/@ckpack/vue-color/-/vue-color-1.2.0.tgz#bb4a3f2e740c71e8902d734e39231aae145abdef"
@@ -1352,6 +1347,11 @@
   version "0.0.39"
   resolved "https://registry.npmmirror.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+
+"@types/file-saver@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.npmmirror.com/@types/file-saver/-/file-saver-2.0.5.tgz#9ee342a5d1314bb0928375424a2f162f97c310c7"
+  integrity sha512-zv9kNf3keYegP5oThGLaPk8E081DFDuwfqjtiTzm6PoxChdJ1raSuADf2YGCVIyrSynLrgc8JWv296s7Q7pQSQ==
 
 "@types/json-schema@^7.0.9":
   version "7.0.11"
@@ -3311,18 +3311,6 @@ functions-have-names@^1.2.2:
   version "1.2.3"
   resolved "https://registry.npmmirror.com/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
-
-fundebug-javascript@^2.8.6:
-  version "2.8.6"
-  resolved "https://registry.npmmirror.com/fundebug-javascript/-/fundebug-javascript-2.8.6.tgz#53f1d1e01d05bcd798a5069a72d8a619c19c2e97"
-  integrity sha512-Z5j0qrYytK9OuRkua1JilKYtDoscRiJd8Ay5SGuHDhuCboLMuPzj4Sv1IoCQCIpYWZSZHwtiz345GdYzDQRRbw==
-  dependencies:
-    "@bugsnag/safe-json-stringify" "^6.0.0"
-
-fundebug-vue@^0.3.6:
-  version "0.3.6"
-  resolved "https://registry.npmmirror.com/fundebug-vue/-/fundebug-vue-0.3.6.tgz#c722781fdce41be842b9c62d99871caa927ea855"
-  integrity sha512-fVA2srxZJrtJu80oWbNIAC2EXJn4HG2uG1cbSxX3BTNIDA5KKz/fRU9cHKshMvt6xD9i1RinDsi9pLeuk8uhBA==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"

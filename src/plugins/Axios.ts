@@ -7,7 +7,7 @@ axiosInstance.CancelToken = Axios.CancelToken
 axiosInstance.isCancel = Axios.isCancel
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    if (response.status === 401 && response.config.url.includes(axiosInstance.$apiBase)) {
+    if (response.status === 401 && response.config.url && response.config.url.includes(axiosInstance.$apiBase as string)) {
       store.dispatch('user/logout')
     }
     return response

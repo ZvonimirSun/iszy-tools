@@ -76,7 +76,7 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import Modal from 'ant-design-vue/es/modal'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import type { MessageApi } from 'ant-design-vue/es/message'
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, Ref } from 'vue'
 import 'ant-design-vue/es/modal/style/index.js'
 
 const {
@@ -87,10 +87,10 @@ const {
 const store = useStore()
 const route = useRoute()
 const _user = computed(() => store.state.user._user)
-const $msg: MessageApi = inject('$msg')
+const $msg: MessageApi = inject('$msg') as MessageApi
 
 const fullScreenStatus = ref(false)
-const view = ref<ComponentPublicInstance >()
+const view: Ref<ComponentPublicInstance> = ref() as Ref<ComponentPublicInstance>
 
 const year = ref('2021')
 

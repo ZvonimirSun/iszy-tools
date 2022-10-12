@@ -129,7 +129,7 @@ const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
-const $msg = inject<MessageApi>('$msg')
+const $msg = inject<MessageApi>('$msg') as MessageApi
 
 const _user = computed(() => {
   return store.state.user._user
@@ -142,8 +142,8 @@ const settings = computed(() => {
 const clearOfflineCache = () => store.commit('clearOfflineCache')
 const uploadSettings = () => store.dispatch('uploadSettings')
 const downloadSettings = () => store.dispatch('downloadSettings')
-const triggerSetting = (setting) => store.commit('user/triggerSetting', setting)
-const triggerJsonEditorSetting = (setting) => store.commit('user/jsonEditor/triggerJsonEditorSetting', setting)
+const triggerSetting = (setting: string) => store.commit('user/triggerSetting', setting)
+const triggerJsonEditorSetting = (setting: string) => store.commit('user/jsonEditor/triggerJsonEditorSetting', setting)
 
 async function uploadToCloud () {
   if (await uploadSettings()) {

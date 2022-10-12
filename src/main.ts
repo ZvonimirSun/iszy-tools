@@ -4,11 +4,8 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
 import axios from '@/plugins/Axios'
-import * as fundebug from 'fundebug-javascript'
-import FundebugVue from 'fundebug-vue'
 import 'ant-design-vue/es/message/style/css.js'
 
-const fundebugApiKey = '376d597c08f80d72c91b09f49055384c76742c47c07783dadbad8d196c318d0c'
 const $apiBase = 'https://api.iszy.xyz'
 
 const app = createApp(App)
@@ -34,9 +31,5 @@ store.$msg = app.config.globalProperties.$msg
 store.$apiBase = app.config.globalProperties.$apiBase
 axios.$apiBase = app.config.globalProperties.$apiBase
 
-fundebug.init({
-  apikey: fundebugApiKey
-})
-
-app.use(new FundebugVue(fundebug)).use(store).use(router)
+app.use(store).use(router)
 app.mount('#app')
