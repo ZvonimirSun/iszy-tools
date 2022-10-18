@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "lint": "eslint --cache --fix src/**/*.{js,ts,vue}"
+    "lint": "eslint --fix src/**/*.{js,ts,vue}"
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.1.4",
@@ -34,6 +34,7 @@
     "localforage": "^1.9.0",
     "lodash-es": "^4.17.21",
     "marked": "^4.0.10",
+    "pinia": "^2.0.23",
     "qrcode": "^1.5.1",
     "qrcode-decoder": "^0.3.1",
     "relationship.js": "^1.0.0",

@@ -5,9 +5,11 @@ import router from '@/router'
 import store from '@/store'
 import axios from '@/plugins/Axios'
 import 'ant-design-vue/es/message/style/css.js'
+import { createPinia } from 'pinia'
 
 const $apiBase = 'https://api.iszy.xyz'
 
+const pinia = createPinia()
 const app = createApp(App)
 
 message.config({
@@ -31,5 +33,5 @@ store.$msg = app.config.globalProperties.$msg
 store.$apiBase = app.config.globalProperties.$apiBase
 axios.$apiBase = app.config.globalProperties.$apiBase
 
-app.use(store).use(router)
+app.use(pinia).use(router)
 app.mount('#app')
