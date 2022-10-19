@@ -33,5 +33,5 @@ store.$msg = app.config.globalProperties.$msg
 store.$apiBase = app.config.globalProperties.$apiBase
 axios.$apiBase = app.config.globalProperties.$apiBase
 
-app.use(pinia).use(router)
+app.use(pinia).use(store).use(router)
 app.mount('#app')
