@@ -1,5 +1,5 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, SubscriptionCallbackMutation } from 'pinia'
-import { cloneDeep, merge } from 'lodash-es'
+import { cloneDeep, debounce, merge } from 'lodash-es'
 import localforage from 'localforage'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
@@ -16,7 +16,7 @@ export interface PluginOptions<S extends StateTree = StateTree> {
   debug?: boolean
 }
 
-function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: PluginOptions<S> = ({} as PluginOptions<StateTree>)): PiniaPlugin {
+function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: PluginOptions<S> = ({} as PluginOptions)): PiniaPlugin {
   const name = (pluginOptions.name != null ? pluginOptions.name : 'pinia')
   const storeName = (pluginOptions.storeName != null ? pluginOptions.storeName : 'keyvaluepairs')
   const version = (pluginOptions.version != null ? pluginOptions.version : 1)
@@ -54,18 +54,18 @@ function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: Plu
     } = context
     if (!persist) return
 
-    getState(store.$id).then(data => {
+    getState(store.$id).then((data: unknown) => {
       store.$patch(merge({}, store.$state, data))
+      const updateState = debounce(function () {
+        _mutex.enqueue(setState(store.$id, store.$state as never).catch(e => {
+          debug && console.log(e)
+        }))
+      }, 100)
       store.$subscribe(
         (
-          _mutation: SubscriptionCallbackMutation<StateTree>,
-          state: StateTree
+          _mutation: SubscriptionCallbackMutation<StateTree>
         ) => {
-          try {
-            _mutex.enqueue(setState(store.$id, state as never))
-          } catch (error) {
-            debug && console.error(error)
-          }
+          updateState()
         },
         {
           detached: true,
