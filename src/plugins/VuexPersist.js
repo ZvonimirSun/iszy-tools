@@ -3,12 +3,20 @@ import localforage from 'localforage'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
 export default (options = {}) => {
-  const name = ((options.name != null) ? options.name : 'vuex')
-  const storeName = ((options.storeName != null) ? options.storeName : 'keyvaluepairs')
+  const name = (options.name != null ? options.name : 'vuex')
+  const storeName = (options.storeName != null ? options.storeName : 'keyvaluepairs')
+  const version = (options.version != null ? options.version : 1)
   localforage.config({
     name,
-    storeName
-  })
+    storeName: version !== 1 ? `${storeName}_${version}` : storeName
+  });
+
+  (async function () {
+    const storeVersion = await localforage.getItem('version')
+    if (storeVersion == null) {
+      await localforage.setItem('version', version)
+    }
+  })()
 
   const _mutex = new SimplePromiseQueue()
 
