@@ -96,7 +96,7 @@ export default {
       let error = ''
       try {
         if (userName && password) {
-          const res = (await axios.post(`${this.$apiBase}/auth/login`, {
+          const res = (await axios.post(`${axios.$apiBase}/auth/login`, {
             username: userName.trim(),
             password
           })).data
@@ -123,7 +123,7 @@ export default {
     },
     async logout ({ commit }) {
       try {
-        const data = (await axios.post(`${this.$apiBase}/auth/logout`)).data
+        const data = (await axios.post(`${axios.$apiBase}/auth/logout`)).data
         if (data && data.success) {
           commit('clearToken')
         } else {
@@ -137,7 +137,7 @@ export default {
       if (state._user.token) {
         try {
           if (await dispatch('checkToken')) {
-            commit('updateProfile', (await axios.get(`${this.$apiBase}/auth/profile`)).data.data)
+            commit('updateProfile', (await axios.get(`${axios.$apiBase}/auth/profile`)).data.data)
           }
         } catch (e) {
           if (!axios.isCancel(e)) {
@@ -152,7 +152,7 @@ export default {
           return true
         } else {
           try {
-            await axios.head(`${this.$apiBase}/auth/profile`)
+            await axios.head(`${axios.$apiBase}/auth/profile`)
             tokenChecked = true
             return true
           } catch (e) {

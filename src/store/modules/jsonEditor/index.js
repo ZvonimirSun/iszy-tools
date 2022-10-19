@@ -145,7 +145,7 @@ export default {
   actions: {
     async getSyncData ({ commit }) {
       try {
-        const data = (await (this.$axios.get(`${this.$apiBase}/tools/jsoneditor`))).data
+        const data = (await (this.$axios.get(`${this.$axios.$apiBase}/tools/jsoneditor`))).data
         if (data.success) {
           commit('replaceState', data.data)
         } else {
@@ -157,7 +157,7 @@ export default {
     },
     syncData: debounce(function ({ dispatch }, { id, data }) {
       if (navigator.onLine) {
-        _mutex.enqueue(this.$axios.post(`${this.$apiBase}/tools/jsoneditor/${id}`, data))
+        _mutex.enqueue(this.$axios.post(`${this.$axios.$apiBase}/tools/jsoneditor/${id}`, data))
       } else {
         waitList[id] = data
 
@@ -192,7 +192,7 @@ export default {
     async deleteData ({ commit, getters }, { id }) {
       if (getters.syncCloud) {
         try {
-          const data = (await this.$axios.delete(`${this.$apiBase}/tools/jsoneditor/${id}`)).data
+          const data = (await this.$axios.delete(`${this.$axios.$apiBase}/tools/jsoneditor/${id}`)).data
           if (data.success) {
             commit('deleteData', { id })
           } else {

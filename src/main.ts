@@ -21,17 +21,14 @@ axios.defaults.withCredentials = true
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
 app.config.globalProperties.$eventBus = EventBus
-app.config.globalProperties.$apiBase = $apiBase
 
 app.provide('$axios', axios)
 app.provide('$msg', message)
 app.provide('$eventBus', EventBus)
-app.provide('$apiBase', $apiBase)
 
 store.$axios = app.config.globalProperties.$axios
 store.$msg = app.config.globalProperties.$msg
-store.$apiBase = app.config.globalProperties.$apiBase
-axios.$apiBase = app.config.globalProperties.$apiBase
+axios.$apiBase = $apiBase
 
 app.use(pinia).use(store).use(router)
 app.mount('#app')

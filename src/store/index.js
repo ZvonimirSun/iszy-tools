@@ -46,7 +46,7 @@ export default createStore({
       if (state.user._user.token) {
         const { _user, ...settings } = toRaw(state.user)
         try {
-          const res = (await axios.post(`${this.$apiBase}/tools/settings`, settings)).data
+          const res = (await axios.post(`${axios.$apiBase}/tools/settings`, settings)).data
           return res.success && res.data
         } catch (e) {
           return false
@@ -59,7 +59,7 @@ export default createStore({
       if (state.user._user.token) {
         try {
           if (await dispatch('user/checkToken')) {
-            const res = (await axios.get(`${this.$apiBase}/tools/settings`)).data
+            const res = (await axios.get(`${axios.$apiBase}/tools/settings`)).data
             if (res.success && res.data) {
               commit('importConfig', res.data)
               return true
