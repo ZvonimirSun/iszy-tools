@@ -82,9 +82,5 @@ export default createStore({
     imgHosting,
     jsonEditor,
     tinyEditor
-  },
-  plugins: [VuexPersist({
-    name: 'iszy_tools',
-    storeName: 'state'
-  })]
+  }
 })

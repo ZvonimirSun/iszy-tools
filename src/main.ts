@@ -6,6 +6,7 @@ import store from '@/store'
 import axios from '@/plugins/Axios'
 import 'ant-design-vue/es/message/style/css.js'
 import { createPinia } from 'pinia'
+import { createPiniaPersist } from '@/plugins/PiniaPersist'
 
 const $apiBase = 'https://api.iszy.xyz'
 
@@ -29,6 +30,13 @@ app.provide('$eventBus', EventBus)
 store.$axios = app.config.globalProperties.$axios
 store.$msg = app.config.globalProperties.$msg
 axios.$apiBase = $apiBase
+
+pinia.use(createPiniaPersist({
+  name: 'iszy_tools',
+  storeName: 'state',
+  version: 2,
+  debug: true
+}))
 
 app.use(pinia).use(store).use(router)
 app.mount('#app')

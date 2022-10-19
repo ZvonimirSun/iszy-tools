@@ -20,6 +20,7 @@ interface Statistic {
 }
 
 export const useUserStore = defineStore('user', {
+  persist: true,
   state: () => ({
     _user: {
       token: null as string | null,
