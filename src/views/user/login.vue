@@ -65,6 +65,7 @@
 import type { Ref } from 'vue'
 import type { MessageApi } from 'ant-design-vue/es/message'
 import type { LocationQuery } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const form: Ref<{
   userName: string,
@@ -81,6 +82,7 @@ const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const $msg: MessageApi = inject('$msg') as MessageApi
+const userStore = useUserStore()
 
 watch(route, function (val) {
   const query = val.query
@@ -100,7 +102,7 @@ async function login () {
   if (form.value.userName != null && form.value.password != null) {
     loading.value = true
     try {
-      await store.dispatch('user/login', {
+      await userStore.login({
         userName: form.value.userName,
         password: form.value.password
       })
