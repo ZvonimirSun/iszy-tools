@@ -182,6 +182,10 @@
       {
         "name": "图片Base64编码",
         "link": "/imageBase64"
+      },
+      {
+        "name": "GeoHash编解码",
+        "link": "/geohash"
       }
     ]
   },
