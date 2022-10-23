@@ -47,7 +47,8 @@ function encode () {
 
 function decode () {
   try {
-    data2.value = JSON.stringify(decodeGeoHash(data1.value))
+    const { latitude, longitude } = decodeGeoHash(data1.value)
+    data2.value = latitude + ',' + longitude
   } catch (e) {
     msg.error(`解码失败，${e.message}`)
   }

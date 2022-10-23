@@ -108,7 +108,7 @@ function decodeGeoHash (geohash) {
   lat[2] = (lat[0] + lat[1]) / 2
   lon[2] = (lon[0] + lon[1]) / 2
 
-  return { latitude: lat, longitude: lon }
+  return { latitude: lat[2], longitude: lon[2] }
 }
 function calculateAdjacent (srcHash, dir) {
   srcHash = srcHash.toLowerCase()
