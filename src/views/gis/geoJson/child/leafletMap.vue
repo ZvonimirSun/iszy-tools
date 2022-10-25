@@ -13,6 +13,7 @@
     </div>
     <a-form
       v-if="selectedFeature?.properties"
+      name="selected-feature-form"
       :label-col="{ span: 8 }"
       :wrapper-col="{ span: 16 }"
       :colon="false"
@@ -37,6 +38,58 @@
           :value="JSON.stringify(val)"
           @change="saveToEditor($event, selectedFeature, key)"
         />
+      </a-form-item>
+    </a-form>
+    <a-form
+      name="add-property-form"
+      :model="addPropertyForm"
+      @finish="onPropertyFinishAdd"
+    >
+      <a-space
+        v-for="(property, index) in addPropertyForm.properties"
+        :key="property.id"
+      >
+        <a-form-item
+          :name="['properties', index, 'label']"
+          :rules="{
+            required: true,
+            message: '属性名称缺失',
+          }"
+        >
+          <a-input
+            v-model:value="property.label"
+            placeholder="属性名称"
+          />
+        </a-form-item>
+        <a-form-item
+          :name="['properties', index, 'value']"
+          :rules="{
+            required: true,
+            message: '属性值缺失',
+          }"
+        >
+          <a-input
+            v-model:value="property.value"
+            placeholder="属性值"
+          />
+        </a-form-item>
+      </a-space>
+      <a-form-item>
+        <a-button
+          type="dashed"
+          block
+          @click="addNewProperty()"
+        >
+          <span class="i-icon-park-outline-add-one" />新增属性
+        </a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          type="primary"
+          html-type="submit"
+        >
+          确认
+        </a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -81,6 +134,26 @@ const $eventBus = inject('$eventBus')
 const selectedFeature = ref(undefined)
 const mapContainer = ref()
 const propertyPopup = ref()
+
+const addPropertyForm = reactive({
+  properties: []
+})
+
+const onPropertyFinishAdd = values => {
+  values.properties.forEach(item => {
+    if (item.label && item.value) {
+      selectedFeature.value.properties[item.label] = isNaN(item.value) ? item.value : Number(item.value)
+    }
+  })
+  $eventBus.emit('updateEditor')
+}
+function addNewProperty () {
+  addPropertyForm.properties.push({
+    label: '',
+    value: '',
+    id: Date.now()
+  })
+}
 
 onMounted(() => {
   $eventBus.on('locationGeo', locationGeo)
@@ -233,6 +306,7 @@ function onEachFeature (feature, layer) {
       }
     }).on('popupclose', () => {
       selectedFeature.value = undefined
+      addPropertyForm.properties = []
       if (layer instanceof Marker) {
         layer.setIcon(blueIcon)
       } else {
@@ -256,10 +330,11 @@ function saveToEditor (val, feature, key) {
 function locationGeo (geoJson) {
   try {
     const layer = geoJSON(geoJson)
-    const bounds = layer.getBounds()
-    const center = bounds.getCenter()
-    const zoom = _map.getBoundsZoom(bounds)
-    _map.setView(center, zoom > 16 ? 16 : zoom)
+    // const bounds = layer.getBounds()
+    // const center = bounds.getCenter()
+    // const zoom = _map.getBoundsZoom(bounds)
+    // _map.setView(center, zoom)
+    _map.fitBounds(layer.getBounds())
   } catch (e) {
   }
 }
@@ -268,15 +343,17 @@ function updateGeojsonLayer (geoJson) {
     props.geoJsonLayer.clearLayers()
     try {
       props.geoJsonLayer.addData(geoJson)
-      const bounds = props.geoJsonLayer.getBounds()
-      const center = bounds.getCenter()
-      const zoom = _map.getBoundsZoom(bounds)
-      _map.setView(center, zoom > 16 ? 16 : zoom)
+      // const bounds = props.geoJsonLayer.getBounds()
+      // const center = bounds.getCenter()
+      // const zoom = _map.getBoundsZoom(bounds)
+      // _map.setView(center, zoom)
+      _map.fitBounds(props.geoJsonLayer.getBounds())
     } catch (e) {
       console.log(e)
     }
   }
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -308,6 +385,7 @@ function updateGeojsonLayer (geoJson) {
         flex-direction: column;
         width: 30rem;
         height: 20rem;
+        overflow-y: auto;
 
         .title {
           display: block;
@@ -323,7 +401,7 @@ function updateGeojsonLayer (geoJson) {
         .ant-form {
           flex: 1;
           padding: .8rem;
-          overflow-y: auto;
+          // overflow-y: auto;
 
           .ant-form-item {
             margin-bottom: .8rem;
