@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/views/tools.json'
 import axios from '@/plugins/Axios'
 import { flatten } from 'lodash-es'
@@ -196,3 +196,7 @@ export const useUserStore = defineStore('user', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+}
