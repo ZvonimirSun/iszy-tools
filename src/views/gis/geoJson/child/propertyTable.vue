@@ -113,7 +113,10 @@ export default defineComponent({
   },
   methods: {
     getArrayKeys (array) {
-      return [...array.reduce((s, o) => (Object.keys(o).forEach(k => s.add(k)), s), new Set())]
+      return [...array.reduce((s, o) => {
+        Object.keys(o).forEach(k => s.add(k))
+        return s
+      }, new Set())]
     },
     saveToEditableData (val, property, key) {
       if (val instanceof InputEvent && property && key) {
