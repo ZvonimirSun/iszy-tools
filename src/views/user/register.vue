@@ -122,12 +122,12 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { FormInstance, Rule } from 'ant-design-vue/es/form'
-import type { AxiosInstance } from 'axios'
+import type { AxiosStatic } from 'axios'
 import type { MessageApi } from 'ant-design-vue/es/message'
 
 const registerForm: Ref<FormInstance> = ref<FormInstance>() as Ref<FormInstance>
-const $axios:AxiosInstance = inject('$axios') as AxiosInstance
-const $msg:MessageApi = inject('$msg') as MessageApi
+const $axios: AxiosStatic = inject('$axios') as AxiosStatic
+const $msg: MessageApi = inject('$msg') as MessageApi
 const router = useRouter()
 
 const form = reactive({
