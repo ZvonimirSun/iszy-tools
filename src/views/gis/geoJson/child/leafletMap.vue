@@ -1,97 +1,113 @@
 <template>
   <div
     ref="mapContainer"
-    class="mapContainer"
+    class="map-container"
   />
   <div
     v-show="false"
     ref="propertyPopup"
-    class="propertyPopup"
+    class="property-popup"
   >
     <div class="title">
       <span>属性</span>
     </div>
-    <a-form
-      v-if="selectedFeature?.properties"
-      name="selected-feature-form"
-      :label-col="{ span: 8 }"
-      :wrapper-col="{ span: 16 }"
-      :colon="false"
-    >
-      <a-form-item
-        v-for="(val,key,index) of selectedFeature.properties"
-        :key="'prop'+index"
-        :label="key"
-      >
-        <a-input
-          v-if="typeof selectedFeature.properties[key] === 'string'"
-          v-model:value="selectedFeature.properties[key]"
-          @change="saveToEditor"
-        />
-        <a-input
-          v-else-if="typeof selectedFeature.properties[key] === 'number'"
-          v-model:value.number="selectedFeature.properties[key]"
-          @change="saveToEditor"
-        />
-        <a-input
-          v-else
-          :value="JSON.stringify(val)"
-          @change="saveToEditor($event, selectedFeature, key)"
-        />
-      </a-form-item>
-    </a-form>
-    <a-form
-      name="add-property-form"
-      :model="addPropertyForm"
-      @finish="onPropertyFinishAdd"
-    >
-      <a-space
-        v-for="(property, index) in addPropertyForm.properties"
-        :key="property.id"
+    <div class="content">
+      <a-form
+        v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
+        name="selected-feature-form"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        :colon="false"
       >
         <a-form-item
-          :name="['properties', index, 'label']"
-          :rules="{
-            required: true,
-            message: '属性名称缺失',
-          }"
+          v-for="(val,key,index) of selectedFeature.properties"
+          :key="'prop'+index"
+          :label="key"
         >
           <a-input
-            v-model:value="property.label"
-            placeholder="属性名称"
+            v-if="typeof selectedFeature.properties[key] === 'string'"
+            v-model:value="selectedFeature.properties[key]"
+            @change="saveToEditor"
           />
+          <a-input
+            v-else-if="typeof selectedFeature.properties[key] === 'number'"
+            v-model:value.number="selectedFeature.properties[key]"
+            @change="saveToEditor"
+          />
+          <a-input
+            v-else
+            :value="JSON.stringify(val)"
+            @change="saveToEditor($event, selectedFeature, key)"
+          />
+        </a-form-item>
+      </a-form>
+      <a-form
+        name="add-property-form"
+        :model="addPropertyForm"
+        @finish="onPropertyFinishAdd"
+      >
+        <template
+          v-if="Object.keys(addPropertyForm.properties).length"
+        >
+          <div
+            v-for="(property, index) in addPropertyForm.properties"
+            :key="property.id"
+            class="form-item-container"
+          >
+            <a-form-item
+              :name="['properties', index, 'label']"
+              :rules="{
+                required: true,
+                message: '属性名称缺失',
+              }"
+            >
+              <a-input
+                v-model:value="property.label"
+                placeholder="属性名称"
+              />
+            </a-form-item>
+            <a-form-item
+              :name="['properties', index, 'value']"
+              :rules="{
+                required: true,
+                message: '属性值缺失',
+              }"
+            >
+              <a-input
+                v-model:value="property.value"
+                placeholder="属性值"
+              />
+            </a-form-item>
+          </div>
+        </template>
+        <a-form-item>
+          <a-button
+            type="dashed"
+            block
+            @click="addNewProperty"
+          >
+            <span class="i-icon-park-outline-add-one" />新增属性
+          </a-button>
         </a-form-item>
         <a-form-item
-          :name="['properties', index, 'value']"
-          :rules="{
-            required: true,
-            message: '属性值缺失',
-          }"
+          v-if="Object.keys(addPropertyForm.properties).length"
         >
-          <a-input
-            v-model:value="property.value"
-            placeholder="属性值"
-          />
+          <div class="btn-container">
+            <a-button
+              type="primary"
+              html-type="submit"
+            >
+              确认
+            </a-button>
+            <a-button
+              @click.stop="cancelEdit"
+            >
+              取消
+            </a-button>
+          </div>
         </a-form-item>
-      </a-space>
-      <a-form-item>
-        <a-button
-          type="dashed"
-          block
-          @click="addNewProperty()"
-        >
-          <span class="i-icon-park-outline-add-one" />新增属性
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button
-          type="primary"
-          html-type="submit"
-        >
-          确认
-        </a-button>
-      </a-form-item>
-    </a-form>
+      </a-form>
+    </div>
   </div>
 </template>
 
@@ -121,15 +137,14 @@ const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
 let layerControl, _map
 
-// eslint-disable-next-line no-undef
 const props = defineProps({
   geoJsonLayer: { type: GeoJSON, default: undefined }
 })
 
-// eslint-disable-next-line no-undef
 const emit = defineEmits(['update:geoJsonLayer'])
 
 const $eventBus = inject('$eventBus')
+const $msg = inject('$msg')
 
 const selectedFeature = ref(undefined)
 const mapContainer = ref()
@@ -142,9 +157,14 @@ const addPropertyForm = reactive({
 const onPropertyFinishAdd = values => {
   values.properties.forEach(item => {
     if (item.label && item.value) {
-      selectedFeature.value.properties[item.label] = isNaN(item.value) ? item.value : Number(item.value)
+      if (selectedFeature.value.properties[item.label] != null) {
+        $msg.warn('字段 [ ' + item.label + ' ] 存在，已跳过')
+      } else {
+        selectedFeature.value.properties[item.label] = isNaN(item.value) ? item.value : parseFloat(item.value)
+      }
     }
   })
+  cancelEdit()
   $eventBus.emit('updateEditor')
 }
 function addNewProperty () {
@@ -153,6 +173,10 @@ function addNewProperty () {
     value: '',
     id: Date.now()
   })
+}
+
+function cancelEdit () {
+  addPropertyForm.properties = []
 }
 
 onMounted(() => {
@@ -292,28 +316,29 @@ function addControls () {
 }
 
 function onEachFeature (feature, layer) {
-  if (feature.properties) {
-    layer.bindPopup(propertyPopup.value).on('popupopen', () => {
-      selectedFeature.value = feature
-      if (layer instanceof Marker) {
-        layer.setIcon(yellowIcon)
-      } else {
-        layer.setStyle({
-          color: '#ffff00',
-          weight: 5,
-          opacity: 0.65
-        })
-      }
-    }).on('popupclose', () => {
-      selectedFeature.value = undefined
-      addPropertyForm.properties = []
-      if (layer instanceof Marker) {
-        layer.setIcon(blueIcon)
-      } else {
-        props.geoJsonLayer.resetStyle(layer)
-      }
-    })
+  if (!feature.properties) {
+    feature.properties = {}
   }
+  layer.bindPopup(propertyPopup.value).on('popupopen', () => {
+    selectedFeature.value = feature
+    if (layer instanceof Marker) {
+      layer.setIcon(yellowIcon)
+    } else {
+      layer.setStyle({
+        color: '#ffff00',
+        weight: 5,
+        opacity: 0.65
+      })
+    }
+  }).on('popupclose', () => {
+    selectedFeature.value = undefined
+    addPropertyForm.properties = []
+    if (layer instanceof Marker) {
+      layer.setIcon(blueIcon)
+    } else {
+      props.geoJsonLayer.resetStyle(layer)
+    }
+  })
 }
 
 function saveToEditor (val, feature, key) {
@@ -330,10 +355,6 @@ function saveToEditor (val, feature, key) {
 function locationGeo (geoJson) {
   try {
     const layer = geoJSON(geoJson)
-    // const bounds = layer.getBounds()
-    // const center = bounds.getCenter()
-    // const zoom = _map.getBoundsZoom(bounds)
-    // _map.setView(center, zoom)
     _map.fitBounds(layer.getBounds())
   } catch (e) {
   }
@@ -343,10 +364,6 @@ function updateGeojsonLayer (geoJson) {
     props.geoJsonLayer.clearLayers()
     try {
       props.geoJsonLayer.addData(geoJson)
-      // const bounds = props.geoJsonLayer.getBounds()
-      // const center = bounds.getCenter()
-      // const zoom = _map.getBoundsZoom(bounds)
-      // _map.setView(center, zoom)
       _map.fitBounds(props.geoJsonLayer.getBounds())
     } catch (e) {
       console.log(e)
@@ -357,10 +374,15 @@ function updateGeojsonLayer (geoJson) {
 </script>
 
 <style scoped lang="scss">
-.mapContainer {
+.map-container {
   height: 100%;
   width: 100%;
   z-index: 0;
+}
+
+.btn-container {
+  display: flex;
+  gap: .8rem;
 }
 
 ::v-deep(.leaflet-popup) {
@@ -380,7 +402,7 @@ function updateGeojsonLayer (geoJson) {
       padding: 0;
       overflow: auto;
 
-      .propertyPopup {
+      .property-popup {
         display: flex !important;
         flex-direction: column;
         width: 30rem;
@@ -398,17 +420,34 @@ function updateGeojsonLayer (geoJson) {
           padding: 0 .8rem;
         }
 
-        .ant-form {
+        .content {
           flex: 1;
+          width: 100%;
           padding: .8rem;
-          // overflow-y: auto;
+          overflow-y: auto;
 
-          .ant-form-item {
-            margin-bottom: .8rem;
+          .form-item-container {
+            display: flex;
+            gap: .8rem;
+            margin-top: .8rem;
 
-            &:last-child {
-              margin-bottom: 0;
+            .ant-form-item {
+              margin: unset;
             }
+
+            & + .ant-form-item {
+              margin-top: .8rem;
+            }
+          }
+        }
+
+        .ant-form-item {
+          margin-bottom: .8rem;
+        }
+
+        .ant-form:last-child {
+          .ant-form-item:last-child {
+            margin-bottom: 0;
           }
         }
       }
