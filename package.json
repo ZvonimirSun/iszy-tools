@@ -12,7 +12,7 @@
     "@ckpack/vue-color": "^1.1.4",
     "@highlightjs/vue-plugin": "^2.0.1",
     "@supermap/iclient-common": "^10.2.0",
-    "@vueuse/core": "^8.5.0",
+    "@vueuse/core": "^9.4.0",
     "@vueuse/integrations": "^8.5.0",
     "ace-builds": "^1.4.14",
     "algoliasearch": "^4.10.5",
