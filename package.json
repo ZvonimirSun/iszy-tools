@@ -49,7 +49,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/eslint-parser": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-env": "^7.20.2",
     "@iconify-json/fa-solid": "^1.1.1",
     "@iconify-json/icon-park": "^1.1.6",
     "@iconify-json/icon-park-outline": "^1.1.6",
