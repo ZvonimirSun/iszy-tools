@@ -75,8 +75,8 @@ export const useUserStore = defineStore('user', {
         }
       } catch (e) {
         this.clearToken()
-        if ((e as AxiosError)?.response?.data?.message) {
-          throw new Error((e as AxiosError)?.response?.data?.message)
+        if (((e as AxiosError)?.response?.data as {message: string})?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as {message: string})?.message)
         }
         throw e
       }
