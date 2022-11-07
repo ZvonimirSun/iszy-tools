@@ -33,7 +33,7 @@
     "leaflet": "^1.9.2",
     "localforage": "^1.9.0",
     "lodash-es": "^4.17.21",
-    "marked": "^4.0.10",
+    "marked": "^4.2.2",
     "qrcode": "^1.5.1",
     "qrcode-decoder": "^0.3.1",
     "relationship.js": "^1.0.0",
