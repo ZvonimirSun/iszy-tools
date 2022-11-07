@@ -459,7 +459,9 @@ export default {
 
     fullPanel: '',
 
-    loading: true
+    loading: true,
+
+    targetEditor: ''
   }),
   computed: {
     dataListAfterSearch: function () {
@@ -551,6 +553,7 @@ export default {
       editorRight.destroy()
     }
     window.removeEventListener('hashchange', this.hashChange)
+    window.removeEventListener('keydown', this.saveListener)
   },
   methods: {
     async init () {
@@ -587,6 +590,14 @@ export default {
           },
           onError: (e) => {
             this.$msg.error(e.message)
+          },
+          onFocus: () => {
+            this.targetEditor = 'left'
+          },
+          onBlur: () => {
+            if (this.targetEditor === 'left') {
+              this.targetEditor = ''
+            }
           }
         }
       )
@@ -616,6 +627,14 @@ export default {
           },
           onError: (e) => {
             this.$msg.error(e.message)
+          },
+          onFocus: () => {
+            this.targetEditor = 'right'
+          },
+          onBlur: () => {
+            if (this.targetEditor === 'right') {
+              this.targetEditor = ''
+            }
           }
         }
       )
@@ -669,6 +688,7 @@ export default {
         this.handleHashParams('left', this.leftId)
         this.handleHashParams('right', this.rightId)
         window.addEventListener('hashchange', this.hashChange)
+        window.addEventListener('keydown', this.saveListener)
       })
     },
 
@@ -705,6 +725,16 @@ export default {
       editorLeft.refresh()
       editorRight.refresh()
       this.save('left')
+    },
+    saveListener (e) {
+      if (e.keyCode === 83 && (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)) {
+        e.preventDefault()
+        if (this.targetEditor) {
+          this.save(this.targetEditor)
+        } else {
+          this.$msg.warn('请先选中一个编辑器')
+        }
+      }
     },
     save (leftOrRight, name) {
       if (!leftOrRight || leftOrRight === 'left') {
