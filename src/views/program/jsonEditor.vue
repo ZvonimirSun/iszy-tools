@@ -553,7 +553,7 @@ export default {
       editorRight.destroy()
     }
     window.removeEventListener('hashchange', this.hashChange)
-    window.removeEventListener('keydown', this.saveListener)
+    window.removeEventListener('keydown', this.downloadListener)
   },
   methods: {
     async init () {
@@ -688,7 +688,7 @@ export default {
         this.handleHashParams('left', this.leftId)
         this.handleHashParams('right', this.rightId)
         window.addEventListener('hashchange', this.hashChange)
-        window.addEventListener('keydown', this.saveListener)
+        window.addEventListener('keydown', this.downloadListener)
       })
     },
 
@@ -725,16 +725,6 @@ export default {
       editorLeft.refresh()
       editorRight.refresh()
       this.save('left')
-    },
-    saveListener (e) {
-      if (e.keyCode === 83 && (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)) {
-        e.preventDefault()
-        if (this.targetEditor) {
-          this.save(this.targetEditor)
-        } else {
-          this.$msg.warn('请先选中一个编辑器')
-        }
-      }
     },
     save (leftOrRight, name) {
       if (!leftOrRight || leftOrRight === 'left') {
@@ -893,6 +883,16 @@ export default {
         createFile(editorLeft.getText(), `${this.leftData?.name || 'left'}.json`)
       } else if (leftOrRight === 'right') {
         createFile(editorRight.getText(), `${this.rightData?.name || 'right'}.json`)
+      }
+    },
+    downloadListener (e) {
+      if (e.keyCode === 83 && (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)) {
+        e.preventDefault()
+        if (this.targetEditor) {
+          this.download(this.targetEditor)
+        } else {
+          this.$msg.warn('请先选中一个编辑器')
+        }
       }
     },
     changeOption (e, leftOrRight) {
