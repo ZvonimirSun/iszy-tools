@@ -1,13 +1,16 @@
 import Axios, { AxiosResponse } from 'axios'
 import store from '@/store'
 
-const axiosInstance = Axios.create()
-axiosInstance.$apiBase = ''
-axiosInstance.CancelToken = Axios.CancelToken
-axiosInstance.isCancel = Axios.isCancel
-axiosInstance.interceptors.response.use(
+Axios.$apiBase = ''
+Axios.interceptors.request.use((config) => {
+  if (config.url && config.url.startsWith(Axios.$apiBase as string)) {
+    config.withCredentials = true
+  }
+  return config
+})
+Axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    if (response.status === 401 && response.config.url && response.config.url.includes(axiosInstance.$apiBase as string)) {
+    if (response.status === 401 && response.config.url && response.config.url.startsWith(Axios.$apiBase as string)) {
       store.dispatch('user/logout')
     }
     return response
@@ -16,4 +19,4 @@ axiosInstance.interceptors.response.use(
   }
 )
 
-export default axiosInstance
+export default Axios

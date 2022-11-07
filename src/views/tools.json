@@ -156,6 +156,10 @@
       {
         "name": "极简图床",
         "link": "/imgHosting"
+      },
+      {
+        "name": "图片Base64编码",
+        "link": "/imageBase64"
       }
     ]
   },
@@ -180,8 +184,8 @@
         "link": "/md5"
       },
       {
-        "name": "图片Base64编码",
-        "link": "/imageBase64"
+        "name": "GeoHash编解码",
+        "link": "/geohash"
       }
     ]
   },

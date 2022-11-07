@@ -18,7 +18,6 @@ message.config({
   maxCount: 3
 })
 
-axios.defaults.withCredentials = true
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$msg = message
 app.config.globalProperties.$eventBus = EventBus

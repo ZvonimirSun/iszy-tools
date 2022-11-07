@@ -87,7 +87,7 @@ export default defineComponent({
     },
     tableColumns () {
       if (this.propertyList && this.propertyList.length > 0) {
-        const keys = Object.keys(this.propertyList[0])
+        const keys = this.getArrayKeys(this.propertyList)
         const columns = keys.map(item => {
           return {
             title: item,
@@ -112,6 +112,12 @@ export default defineComponent({
     }
   },
   methods: {
+    getArrayKeys (array) {
+      return [...array.reduce((s, o) => {
+        Object.keys(o).forEach(k => s.add(k))
+        return s
+      }, new Set())]
+    },
     saveToEditableData (val, property, key) {
       if (val instanceof InputEvent && property && key) {
         try {

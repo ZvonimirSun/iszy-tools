@@ -1,9 +1,7 @@
-import type { CancelTokenStatic, AxiosStatic } from 'axios'
+import type { AxiosStatic } from 'axios'
 
 declare module 'axios' {
   export interface AxiosInstance {
-    $apiBase?: string,
-    CancelToken?: CancelTokenStatic,
-    isCancel?: AxiosStatic['isCancel']
+    $apiBase?: string
   }
 }

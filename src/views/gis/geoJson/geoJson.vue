@@ -55,7 +55,7 @@ export default defineComponent({
   overflow: auto;
   position: relative;
 
-  :deep(.mapContainer) {
+  :deep(.map-container) {
     height: 100%;
     width: 60%;
   }

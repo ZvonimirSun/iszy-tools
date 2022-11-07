@@ -19,6 +19,14 @@ module.exports = {
   parserOptions: {
     parser: '@typescript-eslint/parser'
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'no-dupe-class-members': 'off'
+      }
+    }
+  ],
   rules: {
     'no-console': 0,
     'no-debugger': 0,
@@ -32,6 +40,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-this-alias': 0,
     '@typescript-eslint/no-empty-function': 0,
-    'vue/no-v-text-v-html-on-component': 0,
+    'vue/no-v-text-v-html-on-component': 0
   }
 }
