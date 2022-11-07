@@ -13,14 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
-      - name: Restore cached ./node_modules
-        uses: actions/cache@v2
+        uses: actions/checkout@v3
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
-          path: ./node_modules
-          key: ${{ runner.os }}-yarn-lock-${{ hashFiles('./yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-lock-
+            ${{ runner.os }}-yarn-
       - name: Install dependencies 🔧
         run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
       - name: Eslint Fix 🔧
