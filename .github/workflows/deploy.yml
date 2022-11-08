@@ -31,7 +31,7 @@ jobs:
       - name: Build app 🔧
         run: yarn build
       - name: Deploy to branch🚀
-        uses: JamesIves/github-pages-deploy-action@4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: deploy
           folder: dist
