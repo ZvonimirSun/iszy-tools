@@ -24,6 +24,13 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      - uses: actions/cache@v3
+        id: yarn-lock-cache
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-yarn-lock-${{ hashFiles('./yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-lock-
       - name: Install dependencies 🔧
         run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
       - name: Eslint Fix 🔧
