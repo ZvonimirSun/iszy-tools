@@ -7,7 +7,7 @@
         @click="format"
       >
         <template #icon>
-          <span class="i-icon-park-outline-indent-right" />
+          <span class="i-iszy-jsoneditor-format" />
         </template>
       </a-button>
       <a-divider type="vertical" />

@@ -1,3 +1,5 @@
+@import "icons.scss";
+
 :root {
   --main-bg-color: #f4f8fb;
   --global-font-size: 62.5%;
@@ -59,8 +61,4 @@ html, body, #app {
   code, kbd, samp {
     font-family: JetBrains Mono, monospace;
   }
-}
-
-[class^="i-"] {
-  line-height: 0;
 }
