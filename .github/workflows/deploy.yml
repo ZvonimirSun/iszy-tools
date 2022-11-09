@@ -15,17 +15,12 @@ on:
     branches-ignore:
       - 'deploy'
 
-env:
-  MAIN_BRANCH: main
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
-      - name: Set ENV
-        run: echo "MAIN_BRANCH=${MAIN_BRANCH}" >> $GITHUB_ENV
       - name: Cache build dist
         uses: actions/cache@v3
         id: dist-cache
@@ -67,7 +62,7 @@ jobs:
         if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         run: yarn build
   deploy:
-    if: ${{ github.ref_name == github.env.MAIN_BRANCH }}
+    if: ${{ github.ref_name == 'main' }}
     needs: ['build']
     runs-on: ubuntu-latest
     steps:
@@ -94,5 +89,6 @@ jobs:
         if: ${{ steps.deploy-cache.outputs.cache-hit != 'true' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: deploy
           folder: dist
+          branch: deploy
+          force: false
