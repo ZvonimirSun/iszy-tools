@@ -1,12 +1,22 @@
-name: Deploy
+name: Auto Test
 
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
+      - 'deploy'
+    paths-ignore:
+      - '.github/**'
+  pull_request:
+    branches-ignore:
+      - 'deploy'
     paths-ignore:
       - '.github/**'
   workflow_dispatch:
+    branches-ignore:
+      - 'deploy'
+
+env:
+  MAIN_BRANCH: main
 
 jobs:
   build:
@@ -14,17 +24,33 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
+      - name: Set ENV
+        run: echo "MAIN_BRANCH=${MAIN_BRANCH}" >> $GITHUB_ENV
+      - name: Cache build dist
+        uses: actions/cache@v3
+        id: dist-cache
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-dist-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-dist-
       - name: Get yarn cache directory path
+        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
+        run: |
+          echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn cache dir
+        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache@v3
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - uses: actions/cache@v3
+      - name: Cache yarn node_modules
+        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache@v3
         id: yarn-lock-cache
         with:
           path: ./node_modules
@@ -32,11 +58,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-lock-
       - name: Install dependencies 🔧
+        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' && (steps.yarn-cache.outputs.cache-hit != 'true' || steps.yarn-lock-cache.outputs.cache-hit != 'true') }}
         run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
       - name: Eslint Fix 🔧
+        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         run: yarn lint
       - name: Build app 🔧
+        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         run: yarn build
+  deploy:
+    if: ${{ github.ref_name == github.env.MAIN_BRANCH }}
+    needs: ['build']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Cache build dist
+        uses: actions/cache@v3
+        id: dist-cache
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-dist-${{ env.GITHUB_SHA }}
+          restore-keys: |
+            ${{ runner.os }}-dist-
       - name: Deploy to branch🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
