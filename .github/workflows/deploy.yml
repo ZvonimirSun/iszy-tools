@@ -78,10 +78,20 @@ jobs:
         id: dist-cache
         with:
           path: ./dist
-          key: ${{ runner.os }}-dist-${{ env.GITHUB_SHA }}
+          key: ${{ runner.os }}-dist-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-dist-
+      - name: Cache deploy dist
+        if: ${{ steps.dist-cache.outputs.cache-hit == 'true' }}
+        uses: actions/cache@v3
+        id: deploy-cache
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-deploy-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deploy-
       - name: Deploy to branch🚀
+        if: ${{ steps.deploy-cache.outputs.cache-hit != 'true' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: deploy
