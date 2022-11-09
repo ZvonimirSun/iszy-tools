@@ -60,20 +60,6 @@
     ]
   },
   {
-    "type": "运维",
-    "icon": "i-icon-park-outline-computer",
-    "children": [
-      {
-        "name": "WebSSH",
-        "link": "/webssh"
-      },
-      {
-        "name": "Linux命令查询",
-        "link": "/linuxCommand"
-      }
-    ]
-  },
-  {
     "type": "开发工具",
     "icon": "i-icon-park-outline-code",
     "children": [
@@ -212,20 +198,16 @@
     ]
   },
   {
-    "type": "小游戏",
-    "icon": "i-icon-park-solid-game",
+    "type": "运维",
+    "icon": "i-icon-park-outline-computer",
     "children": [
       {
-        "name": "2048",
-        "link": "/2048"
+        "name": "WebSSH",
+        "link": "/webssh"
       },
       {
-        "name": "俄罗斯方块",
-        "link": "/tetris"
-      },
-      {
-        "name": "奥利奥生成器",
-        "link": "/oreooo"
+        "name": "Linux命令查询",
+        "link": "/linuxCommand"
       }
     ]
   },
@@ -248,13 +230,31 @@
     ]
   },
   {
+    "type": "小游戏",
+    "icon": "i-icon-park-solid-game",
+    "children": [
+      {
+        "name": "2048",
+        "link": "/2048"
+      },
+      {
+        "name": "俄罗斯方块",
+        "link": "/tetris"
+      },
+      {
+        "name": "奥利奥生成器",
+        "link": "/oreooo"
+      }
+    ]
+  },
+  {
     "type": "其他",
     "icon": "i-icon-park-solid-all-application",
     "children": [
       {
         "name": "淘宝优惠券精选",
         "link": "https://shop.iszy.xyz"
-      },
+      }
     ]
   },
   {
