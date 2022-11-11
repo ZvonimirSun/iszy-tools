@@ -1,15 +1,15 @@
 [
   {
-    "type": "其他",
-    "icon": "i-icon-park-solid-all-application",
+    "type": "通用工具",
+    "icon": "i-icon-park-outline-toolkit",
     "children": [
       {
-        "name": "淘宝优惠券精选",
-        "link": "https://shop.iszy.xyz"
+        "name": "屏幕录制",
+        "link": "/screenRecord"
       },
       {
-        "name": "二维码",
-        "link": "/qrcode"
+        "name": "3D模型浏览",
+        "link": "/3dView"
       },
       {
         "name": "这是什么动漫",
@@ -20,77 +20,29 @@
         "link": "/bilibiliBv2av"
       },
       {
-        "name": "奥利奥生成器",
-        "link": "/oreooo"
-      },
-      {
         "name": "身份证解析",
         "link": "/idChinese"
-      },
-      {
-        "name": "屏幕录制",
-        "link": "/screenRecord"
-      },
-      {
-        "name": "WebSSH",
-        "link": "/webssh"
       },
       {
         "name": "亲戚关系计算器",
         "link": "/relationship"
       },
       {
-        "name": "在线流程图",
-        "link": "https://draw.iszy.xyz"
-      },
-      {
-        "name": "3D模型浏览",
-        "link": "/3dView"
-      },
-      {
         "name": "Chromium下载",
         "link": "https://chromium.cypress.io/"
-      },
-      {
-        "name": "Linux命令查询",
-        "link": "/linuxCommand"
-      },
-      {
-        "name": "资源包",
-        "link": "https://lib.iszy.xyz"
-      },
-      {
-        "name": "中国色",
-        "link": "/chineseColor"
       }
     ]
   },
   {
-    "type": "代码工具",
-    "icon": "i-icon-park-outline-code",
+    "type": "编辑器",
+    "icon": "i-icon-park-outline-editor",
     "children": [
       {
-        "name": "渐变色生成器",
-        "link": "/gradientColor"
+        "name": "JSON编辑器",
+        "link": "/jsonEditor"
       },
       {
-        "name": "颜色选择器",
-        "link": "/colorTransform"
-      },
-      {
-        "name": "时间计算",
-        "link": "/timeCompute"
-      },
-      {
-        "name": "在线ASCII码对照表",
-        "link": "/ascii"
-      },
-      {
-        "name": "查看网页源码",
-        "link": "/viewSourceCode"
-      },
-      {
-        "name": "CSS格式化/压缩",
+        "name": "CSS编辑器",
         "link": "/cssFormatter"
       },
       {
@@ -102,24 +54,54 @@
         "link": "/tinyEditor"
       },
       {
-        "name": "正则大全",
-        "link": "/anyRule"
+        "name": "在线流程图",
+        "link": "https://draw.iszy.xyz"
+      }
+    ]
+  },
+  {
+    "type": "开发工具",
+    "icon": "i-icon-park-outline-code",
+    "children": [
+      {
+        "name": "JSON转换工具",
+        "link": "/jsonConverter"
+      },
+      {
+        "name": "颜色选择器",
+        "link": "/colorTransform"
+      },
+      {
+        "name": "时间计算",
+        "link": "/timeCompute"
       },
       {
         "name": "UserAgent解析",
         "link": "/userAgent"
       },
       {
-        "name": "JSON编辑器",
-        "link": "/jsonEditor"
+        "name": "在线ASCII码对照表",
+        "link": "/ascii"
+      },
+      {
+        "name": "查看网页源码",
+        "link": "/viewSourceCode"
+      },
+      {
+        "name": "正则大全",
+        "link": "/anyRule"
       },
       {
         "name": "前端CDN搜索",
         "link": "/cdnQuery"
       },
       {
-        "name": "JSON转换工具",
-        "link": "/jsonConverter"
+        "name": "中国色",
+        "link": "/chineseColor"
+      },
+      {
+        "name": "资源包",
+        "link": "https://lib.iszy.xyz"
       }
     ]
   },
@@ -127,10 +109,6 @@
     "type": "地图工具",
     "icon": "i-icon-park-solid-map-draw",
     "children": [
-      {
-        "name": "地图选择器",
-        "link": "https://datav.aliyun.com/tools/atlas/index.html"
-      },
       {
         "name": "GeoJSON.io",
         "link": "/geoJson",
@@ -142,6 +120,10 @@
       {
         "name": "经纬度查询",
         "link": "/latLng"
+      },
+      {
+        "name": "地图选择器",
+        "link": "https://datav.aliyun.com/tools/atlas/index.html"
       }
     ]
   },
@@ -150,12 +132,12 @@
     "icon": "i-icon-park-solid-picture-one",
     "children": [
       {
-        "name": "图片加水印",
-        "link": "/watermark"
-      },
-      {
         "name": "极简图床",
         "link": "/imgHosting"
+      },
+      {
+        "name": "图片加水印",
+        "link": "/watermark"
       },
       {
         "name": "图片Base64编码",
@@ -194,7 +176,7 @@
     "icon": "",
     "children": [
       {
-        "name": "UUID在线生成",
+        "name": "UUID生成",
         "link": "/uuid",
         "tags": [
           "uuid",
@@ -202,22 +184,30 @@
         ]
       },
       {
-        "name": "随机数",
+        "name": "随机数生成",
         "link": "/random"
+      },
+      {
+        "name": "渐变色生成器",
+        "link": "/gradientColor"
+      },
+      {
+        "name": "二维码生成/识别",
+        "link": "/qrcode"
       }
     ]
   },
   {
-    "type": "小游戏",
-    "icon": "i-icon-park-solid-game",
+    "type": "运维",
+    "icon": "i-icon-park-outline-computer",
     "children": [
       {
-        "name": "2048",
-        "link": "/2048"
+        "name": "WebSSH",
+        "link": "/webssh"
       },
       {
-        "name": "俄罗斯方块",
-        "link": "/tetris"
+        "name": "Linux命令查询",
+        "link": "/linuxCommand"
       }
     ]
   },
@@ -236,6 +226,34 @@
       {
         "name": "实时汇率",
         "link": "/forexRate"
+      }
+    ]
+  },
+  {
+    "type": "小游戏",
+    "icon": "i-icon-park-solid-game",
+    "children": [
+      {
+        "name": "2048",
+        "link": "/2048"
+      },
+      {
+        "name": "俄罗斯方块",
+        "link": "/tetris"
+      },
+      {
+        "name": "奥利奥生成器",
+        "link": "/oreooo"
+      }
+    ]
+  },
+  {
+    "type": "其他",
+    "icon": "i-icon-park-solid-all-application",
+    "children": [
+      {
+        "name": "淘宝优惠券精选",
+        "link": "https://shop.iszy.xyz"
       }
     ]
   },

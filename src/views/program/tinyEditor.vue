@@ -11,7 +11,7 @@
           @click="format('html')"
         >
           <template #icon>
-            <span class="i-icon-park-outline-indent-right" />
+            <span class="i-iszy-jsoneditor-format" />
           </template>
         </a-button>
         <a-button
@@ -59,7 +59,7 @@
           @click="format('css')"
         >
           <template #icon>
-            <span class="i-icon-park-outline-indent-right" />
+            <span class="i-iszy-jsoneditor-format" />
           </template>
         </a-button>
         <a-button
@@ -107,7 +107,7 @@
           @click="format('css')"
         >
           <template #icon>
-            <span class="i-icon-park-outline-indent-right" />
+            <span class="i-iszy-jsoneditor-format" />
           </template>
         </a-button>
         <a-button
