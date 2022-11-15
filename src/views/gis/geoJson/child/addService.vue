@@ -23,6 +23,9 @@
         <a-select-option value="arcgis_tile">
           ArcGIS 切片
         </a-select-option>
+        <a-select-option value="tms">
+          TMS
+        </a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item class="formBtnItem">
@@ -40,12 +43,14 @@
 import { tiledMapLayer } from '@/utils/iclient-leaflet/index.js'
 import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/DynamicMapLayer.js'
 import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
-import { CRS } from 'leaflet'
+import { CRS, tileLayer, Map } from 'leaflet'
+
+let _map
 
 export default defineComponent({
   name: 'AddService',
   props: {
-    map: { type: Object, default: undefined },
+    map: { type: Map, default: undefined },
     layerControl: { type: Object, default: undefined }
   },
   data: () => ({
@@ -54,6 +59,11 @@ export default defineComponent({
     url: '',
     type: 'supermap_rest'
   }),
+  watch: {
+    map: function (val) {
+      _map = val
+    }
+  },
   methods: {
     addService () {
       const serviceUrl = this.url
@@ -69,7 +79,7 @@ export default defineComponent({
             layer = tiledMapLayer(serviceUrl, {
               prjCoordSys: { epsgCode: 3857 },
               crs: CRS.EPSG3857
-            }).addTo(this.map)
+            }).addTo(_map)
             break
           }
           case 'arcgis_rest': {
@@ -77,14 +87,19 @@ export default defineComponent({
               url: serviceUrl,
               f: 'image'
             })
-            layer.addTo(this.map)
+            layer.addTo(_map)
             break
           }
           case 'arcgis_tile': {
             layer = esriTiledMapLayer({
               url: serviceUrl
             })
-            layer.addTo(this.map)
+            layer.addTo(_map)
+            break
+          }
+          case 'tms': {
+            layer = tileLayer(serviceUrl)
+            layer.addTo(_map)
             break
           }
           default:

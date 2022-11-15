@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
-    <LeafletMap v-model:geo-json-layer="geoJsonLayer" />
+    <LeafletMap
+      v-model:geo-json-layer="geoJsonLayer"
+      @getMap="getMap"
+    />
     <a-tabs type="card">
       <a-tab-pane
         key="geoJson"
@@ -21,7 +24,7 @@
         key="addService"
         tab="添加服务"
       >
-        <AddService />
+        <AddService :map="map" />
       </a-tab-pane>
     </a-tabs>
     <ControlMenu
@@ -41,8 +44,14 @@ export default defineComponent({
     ControlMenu: defineAsyncComponent(() => import('./child/ControlMenu.vue'))
   },
   data: () => ({
-    geoJsonLayer: undefined
-  })
+    geoJsonLayer: undefined,
+    map: undefined
+  }),
+  methods: {
+    getMap (map) {
+      this.map = markRaw(map)
+    }
+  }
 })
 </script>
 

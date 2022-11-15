@@ -141,7 +141,7 @@ const props = defineProps({
   geoJsonLayer: { type: GeoJSON, default: undefined }
 })
 
-const emit = defineEmits(['update:geoJsonLayer'])
+const emit = defineEmits(['update:geoJsonLayer', 'getMap'])
 
 const $eventBus = inject('$eventBus')
 const $msg = inject('$msg')
@@ -204,6 +204,7 @@ function initMap () {
     attributionControl: true,
     zoomControl: false
   }))
+  emit('getMap', _map)
   _map.setView([35, 105], 4)
 
   // 添加GeoJson图层
