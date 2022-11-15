@@ -1,4 +1,15 @@
 import OSS from 'ali-oss'
+import { Config } from './index'
+
+export interface AliOssConfig {
+  accessKeyId: string,
+  accessKeySecret: string,
+  bucket: string,
+  area: string,
+  path: string,
+  customUrl: string,
+  options: string
+}
 
 /**
  * handle
@@ -13,7 +24,7 @@ import OSS from 'ali-oss'
  * @param file {File} 文件
  * @return {Promise<Object>}
  */
-const handle = async (options, file) => {
+const handle = async (options: AliOssConfig, file: File) => {
   const customUrl = options.customUrl
   const path = options.path || ''
   const client = new OSS({
@@ -28,25 +39,20 @@ const handle = async (options, file) => {
     if (customUrl) {
       return { name: file.name, url: `${customUrl}/${path}${file.name}${optionUrl}` }
     } else {
-      return { name: file.name, url: `https://${options.bucket}.${optionUrl.area}.aliyuncs.com/${path}${file.name}${optionUrl}` }
+      return {
+        name: file.name,
+        url: `https://${options.bucket}.${options.area}.aliyuncs.com/${path}${file.name}${optionUrl}`
+      }
     }
   } else {
     throw new Error('上传失败')
   }
 }
+
 /**
  * 获取配置
- * @param options {Object} 阿里云配置
- * @param options.accessKeyId {String}
- * @param options.accessKeySecret {String}
- * @param options.bucket {String} 存储空间名
- * @param options.area {String} 存储区域代号
- * @param options.path {String} 自定义存储路径
- * @param options.customUrl {String} 自定义域名，注意要加 `http://` 或者 `https://`
- * @param options.options {String} 针对图片的一些后缀处理参数
- * @return {Array}
  */
-const config = (options = {}) => {
+const config = (options = {} as AliOssConfig): Config[] => {
   return [
     {
       name: 'accessKeyId',
@@ -107,7 +113,7 @@ const config = (options = {}) => {
   ]
 }
 
-export default {
+export const aliyun = {
   name: '阿里云OSS',
   handle,
   config

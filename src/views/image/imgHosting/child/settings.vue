@@ -106,81 +106,79 @@
   </a-tabs>
 </template>
 
-<script>
-import * as uploaders from '../uploader/index.js'
+<script lang="ts" setup>
+import * as uploaders from '../uploader/index'
 import { cloneDeep, debounce, merge } from 'lodash-es'
+import type { Ref } from 'vue'
+import { useImgHostingStore } from '@/stores/imgHosting'
+import $msg from 'ant-design-vue/es/message'
+import { AliOssConfig } from '../uploader/index'
 
-const {
-  mapGetters,
-  mapActions
-} = createNamespacedHelpers('imgHosting')
+const currentUploader: Ref<'aliyun'> = ref('aliyun')
+const currentConfig: Ref<uploaders.Config[]> = ref([])
+const currentCommonConfig = ref({
+  renameBeforeUpload: false,
+  renameTimeStamp: true,
+  copyUrlAfterUpload: true,
+  customCopyContent: '$url'
+})
+const customContent: Ref<string> = ref('$url')
 
-export default {
-  name: 'ImgHostingSettings',
-  data: () => ({
-    uploaders,
+const radioStyle = {
+  display: 'flex',
+  height: '32px',
+  lineHeight: '32px'
+}
 
-    currentUploader: 'aliyun',
-    currentConfig: [],
-    currentCommonConfig: {
-      renameBeforeUpload: false,
-      renameTimeStamp: true,
-      copyUrlAfterUpload: true,
-      customCopyContent: '$url'
-    },
+const config = computed(() => useImgHostingStore().config)
+const uploader = computed(() => useImgHostingStore().uploader)
+const commonConfig = computed(() => useImgHostingStore().commonConfig)
 
-    radioStyle: {
-      display: 'flex',
-      height: '32px',
-      lineHeight: '32px'
-    },
+const saveConfig = useImgHostingStore().saveConfig
+const saveCommonConfig = useImgHostingStore().saveCommonConfig
 
-    customContent: '$url'
-  }),
-  computed: {
-    ...mapGetters(['config', 'uploader', 'commonConfig'])
-  },
-  mounted () {
-    if (this.uploader) {
-      this.currentUploader = this.uploader
-    }
-    this.changeUploader()
-    this.currentCommonConfig = merge(this.currentCommonConfig, cloneDeep(this.commonConfig || {}))
-    if (this.currentCommonConfig.customCopyContent !== '$url' && this.currentCommonConfig.customCopyContent !== '![]($url)') {
-      this.customContent = this.currentCommonConfig.customCopyContent
-    }
-  },
-  methods: {
-    ...mapActions(['saveConfig', 'saveCommonConfig', 'importConfig']),
-    changeUploader () {
-      this.currentConfig = cloneDeep(uploaders[this.currentUploader].config(this.config(this.currentUploader)))
-    },
-    save () {
-      const config = {}
-      for (const c of this.currentConfig) {
-        if (c.required && (c.default == null || c.default === '')) {
-          this.$msg.warn('必填项未填写完整')
-          return
-        }
-        config[c.name] = c.default
-      }
-      this.saveConfig({
-        uploader: this.currentUploader,
-        config
-      })
-      this.$msg.success('保存成功')
-    },
-    handler () {
-      this.$refs.file.click()
-    },
-    updateConfig: debounce(function () {
-      this.saveCommonConfig(this.currentCommonConfig)
-    }, 100),
-    updateCustomCopyContent (val) {
-      this.currentCommonConfig.customCopyContent = val
-      this.updateConfig()
-    }
+const file = ref()
+
+onMounted(() => {
+  if (uploader.value) {
+    currentUploader.value = uploader.value
   }
+  changeUploader()
+  currentCommonConfig.value = merge(currentCommonConfig.value, cloneDeep(commonConfig.value || {}))
+  if (currentCommonConfig.value.customCopyContent !== '$url' && currentCommonConfig.value.customCopyContent !== '![]($url)') {
+    customContent.value = currentCommonConfig.value.customCopyContent
+  }
+})
+
+function changeUploader () {
+  if (currentUploader.value === 'aliyun') {
+    currentConfig.value = cloneDeep(uploaders[currentUploader.value].config(config.value(currentUploader.value) as unknown as AliOssConfig))
+  }
+}
+
+function save () {
+  const config = {} as Record<string, string>
+  for (const c of currentConfig.value) {
+    if (c.required && (c.default == null || c.default === '')) {
+      $msg.warn('必填项未填写完整')
+      return
+    }
+    config[c.name] = c.default
+  }
+  saveConfig({
+    uploader: currentUploader.value,
+    config
+  })
+  $msg.success('保存成功')
+}
+
+const updateConfig = debounce(function () {
+  saveCommonConfig(currentCommonConfig.value)
+}, 100)
+
+function updateCustomCopyContent (val: string) {
+  currentCommonConfig.value.customCopyContent = val
+  updateConfig()
 }
 </script>
 

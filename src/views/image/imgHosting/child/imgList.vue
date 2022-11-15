@@ -55,37 +55,35 @@
   <a-empty v-else />
 </template>
 
-<script>
-const {
-  mapState,
-  mapActions,
-  mapGetters
-} = createNamespacedHelpers('imgHosting')
+<script lang="ts" setup>
+import { useImgHostingStore } from '@/stores/imgHosting'
+import $msg from 'ant-design-vue/es/message'
 
-export default {
-  name: 'ImgHostingList',
-  computed: {
-    ...mapState(['imgList']),
-    ...mapGetters(['commonConfig'])
-  },
-  methods: {
-    ...mapActions(['removeImage']),
-    async copyImgUrl ({ url }) {
-      try {
-        if (this.commonConfig.customCopyContent) {
-          await navigator.clipboard.writeText(this.commonConfig.customCopyContent.replace(/\$url/g, url))
-        } else {
-          await navigator.clipboard.writeText(url)
-        }
-        this.$msg.success('地址已复制到剪贴板')
-      } catch (e) {
-        this.$msg.error('复制失败')
-      }
-    },
-    getPopupContainer () {
-      return document.body
+const imgList = computed(() => {
+  return useImgHostingStore().imgList
+})
+
+const commonConfig = computed(() => {
+  return useImgHostingStore().commonConfig
+})
+
+const removeImage = useImgHostingStore().removeImage
+
+async function copyImgUrl ({ url } = {} as {url: string}) {
+  try {
+    if (commonConfig.value.customCopyContent) {
+      await navigator.clipboard.writeText(commonConfig.value.customCopyContent.replace(/\$url/g, url))
+    } else {
+      await navigator.clipboard.writeText(url)
     }
+    $msg.success('地址已复制到剪贴板')
+  } catch (e) {
+    $msg.error('复制失败')
   }
+}
+
+function getPopupContainer () {
+  return document.body
 }
 </script>
 
