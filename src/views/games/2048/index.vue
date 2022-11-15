@@ -60,9 +60,9 @@
 </template>
 
 <script>
+import { use2048Store } from '@/stores/2048'
+import { useUserStore } from '@/stores/user'
 import GameManager from './js/GameManager.js'
-
-const { mapActions, mapState, mapGetters } = createNamespacedHelpers('g2048')
 
 let gameManager
 
@@ -72,10 +72,12 @@ export default {
     state: {}
   }),
   computed: {
-    ...mapState({
-      gameState: state => state.gameState
-    }),
-    ...mapGetters(['bestScore'])
+    gameState () {
+      return use2048Store().gameState
+    },
+    bestScore () {
+      return useUserStore().modules['2048'].bestScore
+    }
   },
   mounted () {
     gameManager = new GameManager(4, this)
@@ -84,11 +86,9 @@ export default {
     gameManager.destroy()
   },
   methods: {
-    ...mapActions([
-      'setBestScore',
-      'setGameState',
-      'clearGameState'
-    ])
+    setBestScore: use2048Store().setBestScore,
+    setGameState: use2048Store().setGameState,
+    clearGameState: use2048Store().clearGameState
   }
 }
 </script>
@@ -423,7 +423,7 @@ export default {
 
       &.tile-#{$power} .tile-inner {
         // Calculate base background color
-        $gold-percent: math.div($exponent - 1, $limit - 1) * 100;
+        $gold-percent: math.div($exponent - 1, $limit - 1) * 100%;
         $mixed-background: mix($tile-gold-color, $tile-color, $gold-percent);
 
         $nth-color: nth($special-colors, $exponent);

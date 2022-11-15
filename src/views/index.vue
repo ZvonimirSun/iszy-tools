@@ -154,11 +154,8 @@ const tools = computed(() => {
   }
   return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
 })
-function updateFav ({ name, link, add } = {} as {
-  name: string, link?: string, add?: boolean
-}) {
-  userStore.updateFav({ name, link, add })
-}
+
+const updateFav = userStore.updateFav
 
 onMounted(() => {
   userStore.fixFavorite()
