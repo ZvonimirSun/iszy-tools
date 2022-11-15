@@ -30,7 +30,40 @@ export const useUserStore = defineStore('user', {
     },
 
     favorite: [] as Favorite[],
-    statistics: [] as Statistic[]
+    statistics: [] as Statistic[],
+
+    settings: {
+      showMost: false,
+      showRecent: false,
+
+      showSearch: true,
+      showType: true,
+      openInNewTab: false,
+
+      autoSync: false
+    },
+    modules: {
+      2048: {
+        bestScore: 0
+      },
+      tetris: {
+        bestScore: 0
+      },
+      imgHosting: {
+        uploader: '',
+        configs: {
+        } as Record<string, never>,
+        commonConfig: {
+          renameBeforeUpload: false,
+          renameTimeStamp: true,
+          copyUrlAfterUpload: true,
+          customCopyContent: '$url'
+        }
+      },
+      jsonEditor: {
+        syncCloud: false
+      }
+    }
   }),
   getters: {
     isFav: state => (name: string) => {
