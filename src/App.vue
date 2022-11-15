@@ -11,8 +11,10 @@
           v-if="route.path === '/'"
           class="desc"
         >
-          一个轻量的工具集合<template v-if="_user.profile.nickName">
-            · <router-link to="/settings">
+          一个轻量的工具集合
+          <template v-if="_user.profile.nickName">
+            ·
+            <router-link to="/settings">
               {{ _user.profile.nickName }}
             </router-link>
           </template>
@@ -23,8 +25,10 @@
         >
           <router-link to="/">
             <span class="i-icon-park-outline:return" />返回首页
-          </router-link><template v-if="_user.profile.nickName">
-            · <router-link to="/settings">
+          </router-link>
+          <template v-if="_user.profile.nickName">
+            ·
+            <router-link to="/settings">
               {{ _user.profile.nickName }}
             </router-link>
           </template>
@@ -75,21 +79,20 @@ import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import Modal from 'ant-design-vue/es/modal'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import type { MessageApi } from 'ant-design-vue/es/message'
 import type { ComponentPublicInstance, Ref } from 'vue'
 import 'ant-design-vue/es/modal/style/index.js'
+import { useUserStore } from '@/stores/user'
+import $msg from 'ant-design-vue/es/message'
 
 const {
   offlineReady,
   needRefresh,
   updateServiceWorker
 } = useRegisterSW()
-const store = useStore()
 const route = useRoute()
-const _user = computed(() => store.state.user._user)
-const $msg: MessageApi = inject('$msg') as MessageApi
+const _user = useUserStore()._user
 
-const fullScreenStatus = ref(false)
+const fullScreenStatus: Ref<boolean> = ref(false)
 const view: Ref<ComponentPublicInstance> = ref() as Ref<ComponentPublicInstance>
 
 const year = ref('2021')
@@ -146,6 +149,7 @@ watch(() => route.path, () => {
 .container {
   margin: 0 auto;
 }
+
 .ant-layout {
   background: transparent;
   height: 100%;

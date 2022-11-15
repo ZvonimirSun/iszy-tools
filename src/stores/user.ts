@@ -51,8 +51,7 @@ export const useUserStore = defineStore('user', {
       },
       imgHosting: {
         uploader: '',
-        configs: {
-        } as Record<string, never>,
+        configs: {} as Record<string, never>,
         commonConfig: {
           renameBeforeUpload: false,
           renameTimeStamp: true,
@@ -66,15 +65,15 @@ export const useUserStore = defineStore('user', {
     }
   }),
   getters: {
-    isFav: state => (name: string) => {
+    isFav: state => (name: string): boolean => {
       return state.favorite.filter(item => (item.name === name)).length > 0
     },
-    recent: state => (count: number) => {
+    recent: state => (count?: number): Statistic[] => {
       return [...state.statistics].sort(function (a, b) {
         return b.lastAccessTime - a.lastAccessTime
       }).slice(0, count)
     },
-    most: state => (count: number) => {
+    most: state => (count?: number): Statistic[] => {
       return [...state.statistics].sort(function (a, b) {
         return b.times - a.times
       }).slice(0, count)
@@ -108,8 +107,8 @@ export const useUserStore = defineStore('user', {
         }
       } catch (e) {
         this.clearToken()
-        if (((e as AxiosError)?.response?.data as {message: string})?.message) {
-          throw new Error(((e as AxiosError)?.response?.data as {message: string})?.message)
+        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
         }
         throw e
       }
@@ -172,17 +171,9 @@ export const useUserStore = defineStore('user', {
       for (const tool of this.favorite) {
         const tmp = allTools.find(item => (item.name === tool.name))
         if (!tmp) {
-          this.favorite = this.favorite.filter(item => (item.name !== tool.name))
+          this.updateFav({ name: tool.name })
         } else if (tmp.link !== tool.link) {
-          const tmp = this.favorite.find(item => (item.name === tool.name))
-          if (tmp) {
-            tmp.link = tool.link
-          } else {
-            this.favorite.push({
-              name: tool.name,
-              link: tool.link
-            })
-          }
+          this.updateFav({ name: tool.name, link: tmp.link, add: true })
         }
       }
       for (const tool of this.statistics) {
@@ -204,7 +195,26 @@ export const useUserStore = defineStore('user', {
         nickName: null
       }
     },
-    access ({ name, link } = {} as {name:string, link:string}) {
+
+    // 收藏相关
+    updateFav ({ name, link, add } = {} as {
+      name: string, link?: string, add?: boolean
+    }) {
+      if (add) {
+        if (!link) {
+          return
+        }
+        const tmp = this.favorite.filter(item => (item.name === name))
+        if (tmp.length > 0) {
+          tmp[0].link = link
+        } else {
+          this.favorite.push({ name, link })
+        }
+      } else {
+        this.favorite = this.favorite.filter(item => (item.name !== name))
+      }
+    },
+    access ({ name, link } = {} as { name: string, link: string }) {
       if (Array.isArray(this.statistics)) {
         const tmp = this.statistics.filter(item => (item.name === name))
         if (tmp.length > 0) {

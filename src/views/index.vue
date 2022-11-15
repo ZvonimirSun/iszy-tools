@@ -58,7 +58,7 @@
               <span
                 v-if="isFav(tool.name)"
                 class="fav collected"
-                @click.prevent="updateFav({name:tool.name})"
+                @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:false})"
               ><span class="i-icon-park-solid-star" /></span>
               <span
                 v-else
@@ -76,87 +76,93 @@
   </template>
 </template>
 
-<script>
-import tools from '@/views/tools.json'
+<script setup lang="ts">
+import oriTools from '@/views/tools.json'
 import { cloneDeep, flatten } from 'lodash-es'
+import type { Ref } from 'vue'
+import { useUserStore } from '@/stores/user'
 
-const { mapActions, mapGetters, mapState, mapMutations } = createNamespacedHelpers('user')
+const searchStr: Ref<string> = ref('')
+const count: Ref<number> = ref(6)
+const userStore = useUserStore()
 
-export default {
-  name: 'HomePage',
-  data: () => ({
-    searchStr: '',
-
-    count: 6
-  }),
-  computed: {
-    tools () {
-      let tmp
-      if (this.settings.showType) {
-        tmp = [...(tools || [])]
-      } else {
-        tmp = [{
-          type: '工具',
-          icon: 'i-icon-park-solid-all-application',
-          children: this.allTools
-        }]
-      }
-      if (this.settings.showRecent && this.recent.length > 0) {
-        tmp.unshift({
-          type: '最近访问',
-          icon: 'i-icon-park-outline-history',
-          children: this.recent(this.count)
-        })
-      }
-      if (this.settings.showMost && this.most.length > 0) {
-        tmp.unshift({
-          type: '最常访问',
-          icon: 'i-icon-park-solid-concern',
-          children: this.most(this.count)
-        })
-      }
-      if (this.favorite.length > 0) {
-        tmp.unshift({
-          type: '收藏',
-          icon: 'i-icon-park-solid-folder-focus',
-          children: this.favorite
-        })
-      }
-      if (this.searchStr) {
-        tmp = tmp.map(item => {
-          const a = cloneDeep(item)
-          a.children = a.children.filter(item => {
-            const tags = item.tags || []
-            const searchStr = this.searchStr.toLowerCase()
-            return (item.name.toLowerCase().includes(searchStr) || item.link.toLowerCase().includes(searchStr) || tags.some((tag) => { return tag.includes(searchStr) }))
-          })
-          return a
-        })
-      }
-      return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
-    },
-    allTools () {
-      return flatten([...(tools || [])].map(item => {
-        return item.children
-      }))
-    },
-    ...mapState(['settings', 'favorite']),
-    ...mapGetters([
-      'most',
-      'recent',
-      'isFav'
-    ])
-  },
-  mounted () {
-    this.fixFavorite()
-  },
-  methods: {
-    ...mapMutations(['updateFav']),
-    ...mapActions([
-      'fixFavorite'
-    ])
-  }
+interface ToolItem {
+  name: string,
+  link: string,
+  tags?: string[],
+  statistics?: boolean
 }
+
+interface ToolMenu {
+  type: string,
+  icon?: string,
+  children?: ToolItem[]
+}
+
+const allTools = computed(() => {
+  return flatten([...(oriTools || [])].map(item => {
+    return item.children
+  }))
+})
+
+const settings = computed(() => userStore.settings)
+const isFav = computed(() => userStore.isFav)
+const tools = computed(() => {
+  let tmp: ToolMenu[]
+  if (settings.value.showType) {
+    tmp = [...(oriTools || [])]
+  } else {
+    tmp = [{
+      type: '工具',
+      icon: 'i-icon-park-solid-all-application',
+      children: allTools.value
+    }]
+  }
+  if (settings.value.showRecent && userStore.recent().length > 0) {
+    tmp.unshift({
+      type: '最近访问',
+      icon: 'i-icon-park-outline-history',
+      children: userStore.recent(count.value)
+    })
+  }
+  if (userStore.settings.showMost && userStore.most().length > 0) {
+    tmp.unshift({
+      type: '最常访问',
+      icon: 'i-icon-park-solid-concern',
+      children: userStore.most(count.value)
+    })
+  }
+  if (userStore.favorite.length > 0) {
+    tmp.unshift({
+      type: '收藏',
+      icon: 'i-icon-park-solid-folder-focus',
+      children: userStore.favorite
+    })
+  }
+  if (searchStr.value) {
+    tmp = tmp.map(item => {
+      const a = cloneDeep(item)
+      a.children = (a.children || []).filter(item => {
+        const tags = item.tags || []
+        const tmpSearchStr = searchStr.value.toLowerCase()
+        return (item.name.toLowerCase().includes(tmpSearchStr) || item.link.toLowerCase().includes(tmpSearchStr) || tags.some((tag: string) => {
+          return tag.includes(tmpSearchStr)
+        }))
+      })
+      return a
+    })
+  }
+  return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
+})
+function updateFav ({ name, link, add } = {} as {
+  name: string, link?: string, add?: boolean
+}) {
+  userStore.updateFav({ name, link, add })
+}
+
+onMounted(() => {
+  userStore.fixFavorite()
+})
 </script>
 
 <style scoped lang="scss">

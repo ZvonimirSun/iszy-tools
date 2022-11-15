@@ -22,7 +22,7 @@ export default defineConfig({
       imports: [
         'vue',
         'vue-router',
-        'vuex',
+        'pinia',
         '@vueuse/core'
       ],
       eslintrc: {
