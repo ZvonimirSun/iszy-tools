@@ -4,7 +4,7 @@
   </a-typography-title>
   <a-space>
     <template
-      v-if="!_user.token"
+      v-if="!userStore._user.token"
     >
       <a-button
         type="primary"
@@ -37,7 +37,7 @@
     </a-popconfirm>
   </a-space>
   <a-divider />
-  <template v-if="_user.token">
+  <template v-if="userStore._user.token">
     <a-typography-title :level="3">
       云端同步
     </a-typography-title>
@@ -55,8 +55,7 @@
         从云端同步
       </a-button>
       <a-checkbox
-        :checked="settings.autoSync"
-        @change="triggerSetting('autoSync')"
+        v-model:checked="settings.autoSync"
       >
         自动同步
       </a-checkbox>
@@ -71,14 +70,12 @@
   </a-typography-title>
   <a-space>
     <a-checkbox
-      :checked="settings.showMost"
-      @change="triggerSetting('showMost')"
+      v-model:checked="settings.showMost"
     >
       最常访问
     </a-checkbox>
     <a-checkbox
-      :checked="settings.showRecent"
-      @change="triggerSetting('showRecent')"
+      v-model:checked="settings.showRecent"
     >
       最近访问
     </a-checkbox>
@@ -88,33 +85,29 @@
   </a-typography-title>
   <a-space>
     <a-checkbox
-      :checked="settings.showSearch"
-      @change="triggerSetting('showSearch')"
+      v-model:checked="settings.showSearch"
     >
       显示搜索
     </a-checkbox>
     <a-checkbox
-      :checked="settings.showType"
-      @change="triggerSetting('showType')"
+      v-model:checked="settings.showType"
     >
       显示分类
     </a-checkbox>
     <a-checkbox
-      :checked="settings.openInNewTab"
-      @change="triggerSetting('openInNewTab')"
+      v-model:checked="settings.openInNewTab"
     >
       新标签页打开工具
     </a-checkbox>
   </a-space>
-  <template v-if="_user.token">
+  <template v-if="userStore._user.token">
     <a-divider />
     <a-typography-title :level="3">
       应用设置
     </a-typography-title>
     <a-space>
       <a-checkbox
-        :checked="settings.jsonEditor.syncCloud"
-        @change="triggerJsonEditorSetting('syncCloud')"
+        v-model:checked="userStore.modules.jsonEditor.syncCloud"
       >
         从云端获取
       </a-checkbox>
@@ -123,27 +116,21 @@
 </template>
 
 <script setup lang="ts">
-import type { MessageApi } from 'ant-design-vue/es/message'
+import $msg from 'ant-design-vue/es/message'
+import { useUserStore } from '@/stores/user'
+import { useMainStore } from '@/stores/main'
 
-const store = useStore()
 const router = useRouter()
 const route = useRoute()
-
-const $msg = inject<MessageApi>('$msg') as MessageApi
-
-const _user = computed(() => {
-  return store.state.user._user
-})
+const userStore = useUserStore()
 
 const settings = computed(() => {
-  return store.state.user.settings
+  return userStore.settings
 })
 
-const clearOfflineCache = () => store.commit('clearOfflineCache')
-const uploadSettings = () => store.dispatch('uploadSettings')
-const downloadSettings = () => store.dispatch('downloadSettings')
-const triggerSetting = (setting: string) => store.commit('user/triggerSetting', setting)
-const triggerJsonEditorSetting = (setting: string) => store.commit('user/jsonEditor/triggerJsonEditorSetting', setting)
+const clearOfflineCache = () => useMainStore().clearOfflineCache()
+const uploadSettings = () => userStore.uploadSettings()
+const downloadSettings = () => userStore.downloadSettings()
 
 async function uploadToCloud () {
   if (await uploadSettings()) {

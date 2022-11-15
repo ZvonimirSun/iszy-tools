@@ -63,9 +63,9 @@
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import type { MessageApi } from 'ant-design-vue/es/message'
 import type { LocationQuery } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import $msg from 'ant-design-vue/es/message'
 
 const form: Ref<{
   userName: string,
@@ -78,10 +78,8 @@ const redirect: Ref<string> = ref() as Ref<string>
 const otherQuery = ref({})
 const loading: Ref<boolean> = ref(false)
 
-const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const $msg: MessageApi = inject('$msg') as MessageApi
 const userStore = useUserStore()
 
 watch(route, function (val) {

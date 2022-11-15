@@ -234,8 +234,10 @@ export const useUserStore = defineStore('user', {
     },
 
     async uploadSettings () {
+      return true
     },
     async downloadSettings () {
+      return true
     }
   }
 })
