@@ -8,8 +8,7 @@
     :pagination="false"
     bordered
     size="small"
-    :scroll="{x:true}"
-    :row-class-name="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+    :scroll="tableScroll"
     :custom-row="rowEvents"
   >
     <template #bodyCell="{text, index, column}">
@@ -96,19 +95,23 @@ export default defineComponent({
           return {
             title: item,
             dataIndex: item,
-            key: item
+            key: item,
+            width: 150
           }
         })
         columns.push({
           title: '操作',
           dataIndex: 'operation',
-          width: 40,
+          width: 100,
           fixed: 'right'
         })
         return columns
       } else {
         return null
       }
+    },
+    tableScroll () {
+      return { y: this.height - 96 }
     }
   },
   methods: {
@@ -154,18 +157,15 @@ export default defineComponent({
 :deep(.ant-table) {
   th {
     background-color: #e6e6e6;
+    white-space: nowrap;
   }
 
   td {
-    white-space: nowrap;
-
     .editable-cell-input-wrapper, .editable-cell-text-wrapper {
-      width: max-content;
+      width: 100%;
+      white-space: nowrap;
+      overflow-x: auto;
     }
   }
-}
-
-:deep(.ant-table-striped) .table-striped {
-  background-color: #fafafa;
 }
 </style>
