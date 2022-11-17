@@ -127,6 +127,9 @@ export default defineConfig({
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' })
   ],
+  optimizeDeps: {
+    include: ['vue', 'ant-design-vue']
+  },
   resolve: {
     alias: {
       '@': resolve('src')

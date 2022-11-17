@@ -1,15 +1,18 @@
 <template>
-  <div class="wrapper">
-    <LeafletMap
+  <div
+    ref="wrapper"
+    class="wrapper"
+  >
+    <leaflet-map
       v-model:geo-json-layer="geoJsonLayer"
-      @getMap="getMap"
+      @get-map="getMap"
     />
     <a-tabs type="card">
       <a-tab-pane
         key="geoJson"
         tab="GeoJSON"
       >
-        <GeoJsonEditor
+        <geo-json-editor
           ref="geoJsonEditor"
           :geo-json-layer="geoJsonLayer"
         />
@@ -18,41 +21,48 @@
         key="table"
         tab="表格"
       >
-        <PropertyTable :geo-json-layer="geoJsonLayer" />
+        <property-table
+          :geo-json-layer="geoJsonLayer"
+          :height="wrapperHeight"
+        />
       </a-tab-pane>
       <a-tab-pane
         key="addService"
         tab="添加服务"
       >
-        <AddService :map="map" />
+        <add-service :map="_map" />
       </a-tab-pane>
     </a-tabs>
-    <ControlMenu
+    <control-menu
       :geo-json-layer="geoJsonLayer"
     />
   </div>
 </template>
 
-<script>
-export default defineComponent({
-  name: 'GeoJson',
-  components: {
-    LeafletMap: defineAsyncComponent(() => import('./child/leafletMap.vue')),
-    GeoJsonEditor: defineAsyncComponent(() => import('./child/geoJsonEditor.vue')),
-    PropertyTable: defineAsyncComponent(() => import('./child/propertyTable.vue')),
-    AddService: defineAsyncComponent(() => import('./child/addService.vue')),
-    ControlMenu: defineAsyncComponent(() => import('./child/ControlMenu.vue'))
-  },
-  data: () => ({
-    geoJsonLayer: undefined,
-    map: undefined
-  }),
-  methods: {
-    getMap (map) {
-      this.map = markRaw(map)
-    }
+<script setup lang="ts">
+import type { Map, GeoJSON } from 'leaflet'
+import LeafletMap from './child/leafletMap.vue'
+import GeoJsonEditor from './child/geoJsonEditor.vue'
+import PropertyTable from './child/propertyTable.vue'
+import AddService from './child/addService.vue'
+import ControlMenu from './child/ControlMenu.vue'
+import type { Ref } from 'vue'
+
+const geoJsonLayer: Ref<GeoJSON | null> = ref(null)
+const _map: Ref<Map | null> = ref(null)
+const wrapper: Ref<HTMLDivElement | undefined> = ref()
+
+const wrapperHeight = computed(() => {
+  if (wrapper.value) {
+    return parseFloat(getComputedStyle(wrapper.value).height)
+  } else {
+    return 400
   }
 })
+
+function getMap (val: Map) {
+  _map.value = markRaw(val)
+}
 </script>
 
 <style scoped lang="scss">
