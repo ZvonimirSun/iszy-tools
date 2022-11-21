@@ -19,46 +19,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: 切换到当前分支
         uses: actions/checkout@v3
-      - name: Cache build dist
+      - name: 编译结果缓存
         uses: actions/cache@v3
         id: dist-cache
         with:
-          path: ./dist
+          path: dist
           key: ${{ runner.os }}-dist-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-dist-
-      - name: Get yarn cache directory path
+      - name: 设置Node版本和缓存
+        uses: actions/setup-node@v3
         if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
-        id: yarn-cache-dir-path
-        run: |
-          echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn cache dir
-        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Cache yarn node_modules
-        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        id: yarn-lock-cache
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-yarn-lock-${{ hashFiles('./yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-lock-
+          node-version: 18
+          cache: 'npm'
       - name: Install dependencies 🔧
-        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' && (steps.yarn-cache.outputs.cache-hit != 'true' || steps.yarn-lock-cache.outputs.cache-hit != 'true') }}
-        run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
-      - name: Eslint Fix 🔧
         if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
-        run: yarn lint
-      - name: Build app 🔧
+        run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
+      - name: 编译应用 🔧
         if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         run: yarn build
   deploy:
@@ -66,22 +46,22 @@ jobs:
     needs: ['build']
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: 切换到当前分支
         uses: actions/checkout@v3
-      - name: Cache build dist
+      - name: 编译结果缓存
         uses: actions/cache@v3
         id: dist-cache
         with:
-          path: ./dist
+          path: dist
           key: ${{ runner.os }}-dist-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-dist-
-      - name: Cache deploy dist
+      - name: 部署结果缓存
         if: ${{ steps.dist-cache.outputs.cache-hit == 'true' }}
         uses: actions/cache@v3
         id: deploy-cache
         with:
-          path: ./dist
+          path: dist
           key: ${{ runner.os }}-deploy-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-deploy-
