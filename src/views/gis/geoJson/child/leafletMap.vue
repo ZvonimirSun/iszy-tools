@@ -238,6 +238,28 @@ function addBaseMaps () {
       ], {
         attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
       }),
+      谷歌矢量: layerGroup([
+        chineseLayer('Google.Normal.Map', {
+          maxZoom: 20
+        })
+      ], {
+        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+      }),
+      谷歌影像: layerGroup([
+        chineseLayer('Google.Satellite.Map', {
+          maxZoom: 20
+        }),
+        chineseLayer('Google.Satellite.Annotation', {
+          maxZoom: 20
+        })
+      ], {
+        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+      }),
+      OpenStreetMap: chineseLayer('OSM.Normal.Map', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
+        maxNativeZoom: 19,
+        maxZoom: 20
+      }),
       天地图矢量: layerGroup([
         chineseLayer('TianDiTu.Normal.Map', {
           key: tdtToken,
@@ -279,11 +301,6 @@ function addBaseMaps () {
         })
       ], {
         attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-      }),
-      OpenStreetMap: chineseLayer('OSM.Normal.Map', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
-        maxNativeZoom: 19,
-        maxZoom: 20
       })
     },
     {
