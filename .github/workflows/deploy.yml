@@ -21,52 +21,17 @@ jobs:
     steps:
       - name: 切换到当前分支
         uses: actions/checkout@v3
-      - name: 编译结果缓存
-        uses: actions/cache@v3
-        id: dist-cache
-        with:
-          path: dist
-          key: ${{ runner.os }}-dist-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-dist-
       - name: 设置Node版本和缓存
         uses: actions/setup-node@v3
-        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         with:
           node-version: 18
           cache: 'npm'
       - name: Install dependencies 🔧
-        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
       - name: 编译应用 🔧
-        if: ${{ steps.dist-cache.outputs.cache-hit != 'true' }}
         run: yarn build
-  deploy:
-    if: ${{ github.ref_name == 'main' }}
-    needs: ['build']
-    runs-on: ubuntu-latest
-    steps:
-      - name: 切换到当前分支
-        uses: actions/checkout@v3
-      - name: 编译结果缓存
-        uses: actions/cache@v3
-        id: dist-cache
-        with:
-          path: dist
-          key: ${{ runner.os }}-dist-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-dist-
-      - name: 部署结果缓存
-        if: ${{ steps.dist-cache.outputs.cache-hit == 'true' }}
-        uses: actions/cache@v3
-        id: deploy-cache
-        with:
-          path: dist
-          key: ${{ runner.os }}-deploy-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-deploy-
-      - name: Deploy to branch🚀
-        if: ${{ steps.deploy-cache.outputs.cache-hit != 'true' }}
+      - name: 部署应用
+        if: ${{ github.ref_name == 'main' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
