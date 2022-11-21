@@ -45,8 +45,6 @@ import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/
 import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
 import { CRS, tileLayer, Map, Control } from 'leaflet'
 
-let _map
-
 export default defineComponent({
   name: 'AddService',
   props: {
@@ -59,16 +57,11 @@ export default defineComponent({
     url: '',
     type: 'supermap_rest'
   }),
-  watch: {
-    map: {
-      handler: function (val) {
-        _map = val
-      },
-      immediate: true
-    }
-  },
   methods: {
     addService () {
+      if (!this.map || !this.layerControl) {
+        return
+      }
       const serviceUrl = this.url
       const serviceType = this.type
       const serviceName = this.name
@@ -83,7 +76,7 @@ export default defineComponent({
               prjCoordSys: { epsgCode: 3857 },
               crs: CRS.EPSG3857
             })
-            layer.addTo(_map)
+            layer.addTo(this.map)
             break
           }
           case 'arcgis_rest': {
@@ -91,19 +84,19 @@ export default defineComponent({
               url: serviceUrl,
               f: 'image'
             })
-            layer.addTo(_map)
+            layer.addTo(this.map)
             break
           }
           case 'arcgis_tile': {
             layer = esriTiledMapLayer({
               url: serviceUrl
             })
-            layer.addTo(_map)
+            layer.addTo(this.map)
             break
           }
           case 'tms': {
             layer = tileLayer(serviceUrl)
-            layer.addTo(_map)
+            layer.addTo(this.map)
             break
           }
           default:
@@ -112,7 +105,7 @@ export default defineComponent({
       } catch (e) {
         this.$msg.error('添加服务失败')
       }
-      if (layer) {
+      if (layer && this.layerControl) {
         this.layerControl.addOverlay(layer, serviceName)
       }
     }

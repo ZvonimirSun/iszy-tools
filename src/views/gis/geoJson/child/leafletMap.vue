@@ -141,7 +141,7 @@ const props = defineProps({
   geoJsonLayer: { type: GeoJSON, default: undefined }
 })
 
-const emit = defineEmits(['update:geoJsonLayer', 'getMap'])
+const emit = defineEmits(['update:geoJsonLayer', 'getMap', 'getControl'])
 
 const $eventBus = inject('$eventBus')
 const $msg = inject('$msg')
@@ -303,6 +303,7 @@ function addBaseMaps () {
       position: 'bottomleft'
     }
   ).addTo(_map)
+  emit('getControl', layerControl)
 }
 function addControls () {
   control.scale({
