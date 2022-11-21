@@ -41,7 +41,7 @@
     "tinycolor2": "^1.4.2",
     "ua-parser-js": "^1.0.2",
     "uuid": "^9.0.0",
-    "vue": "^3.2.33",
+    "vue": "^3.2.45",
     "vue-router": "^4.0.9",
     "vue3-ace-editor": "^2.2.2",
     "vuex": "^4.0.2"
