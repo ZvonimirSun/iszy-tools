@@ -63,7 +63,7 @@
     "@vue/compiler-sfc": "^3.2.37",
     "@vue/runtime-dom": "^3.2.45",
     "co": "^4.6.0",
-    "eslint": "~8.22.0",
+    "eslint": "~8.28.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.5.1",
