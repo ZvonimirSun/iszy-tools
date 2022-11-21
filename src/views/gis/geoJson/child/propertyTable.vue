@@ -1,56 +1,60 @@
 <template>
-  <a-table
+  <div
     v-if="tableColumns"
-    class="ant-table-striped"
-    :columns="tableColumns"
-    :data-source="propertyList"
-    :row-key="(record,index)=>{return index}"
-    :pagination="false"
-    bordered
-    size="small"
-    :scroll="{x:true}"
-    :row-class-name="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
-    :custom-row="rowEvents"
+    ref="table"
   >
-    <template #property="{text, column, index}">
-      <div
-        v-if="editableData[index]"
-        class="editable-cell-input-wrapper"
-      >
-        <a-input
-          v-if="typeof editableData[index][column.dataIndex] === 'string'"
-          v-model:value="editableData[index][column.dataIndex]"
-          @click.stop
-        />
-        <a-input
-          v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
-          v-model:value.number="editableData[index][column.dataIndex]"
-          @click.stop
-        />
-        <a-input
+    <a-table
+      class="ant-table-striped"
+      :columns="tableColumns"
+      :data-source="propertyList"
+      :row-key="(record,index)=>{return index}"
+      :pagination="false"
+      bordered
+      size="small"
+      :scroll="tableScroll"
+      :row-class-name="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+      :custom-row="rowEvents"
+    >
+      <template #property="{text, column, index}">
+        <div
+          v-if="editableData[index]"
+          class="editable-cell-input-wrapper"
+        >
+          <a-input
+            v-if="typeof editableData[index][column.dataIndex] === 'string'"
+            v-model:value="editableData[index][column.dataIndex]"
+            @click.stop
+          />
+          <a-input
+            v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
+            v-model:value.number="editableData[index][column.dataIndex]"
+            @click.stop
+          />
+          <a-input
+            v-else
+            :value="JSON.stringify(editableData[index][column.dataIndex])"
+            @click.stop
+            @change="saveToEditableData($event, editableData[index], column.dataIndex)"
+          />
+        </div>
+        <div
           v-else
-          :value="JSON.stringify(editableData[index][column.dataIndex])"
-          @click.stop
-          @change="saveToEditableData($event, editableData[index], column.dataIndex)"
-        />
-      </div>
-      <div
-        v-else
-        class="editable-cell-text-wrapper"
-      >
-        {{ typeof text === 'object' ? JSON.stringify(text) : text }}
-      </div>
-    </template>
-    <template #operation="{ index }">
-      <span v-if="editableData[index]">
-        <a @click.stop="save(index)"> 保存属性 </a>
-        <a @click.stop="cancel(index)"> 取消编辑 </a>
-      </span>
-      <span v-else>
-        <a @click.stop="edit(index)"> 编辑属性 </a>
-      </span>
-    </template>
-  </a-table>
+          class="editable-cell-text-wrapper"
+        >
+          {{ typeof text === 'object' ? JSON.stringify(text) : text }}
+        </div>
+      </template>
+      <template #operation="{ index }">
+        <span v-if="editableData[index]">
+          <a @click.stop="save(index)"> 保存属性 </a>
+          <a @click.stop="cancel(index)"> 取消编辑 </a>
+        </span>
+        <span v-else>
+          <a @click.stop="edit(index)"> 编辑属性 </a>
+        </span>
+      </template>
+    </a-table>
+  </div>
   <a-empty v-else />
 </template>
 
@@ -66,6 +70,14 @@ export default defineComponent({
     editableData: {}
   }),
   computed: {
+    tableScroll () {
+      if (this.$refs.table) {
+        const height = parseFloat(getComputedStyle(this.$refs.table).height)
+        return { x: true }
+      } else {
+        return { x: true }
+      }
+    },
     features () {
       if (this.geoJsonLayer) {
         try {

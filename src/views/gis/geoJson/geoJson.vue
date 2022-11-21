@@ -2,7 +2,7 @@
   <div class="wrapper">
     <LeafletMap
       v-model:geo-json-layer="geoJsonLayer"
-      @getMap="getMap"
+      @get-map="getMap"
     />
     <a-tabs type="card">
       <a-tab-pane
@@ -34,14 +34,20 @@
 </template>
 
 <script>
+import LeafletMap from './child/leafletMap.vue'
+import GeoJsonEditor from './child/geoJsonEditor.vue'
+import PropertyTable from './child/propertyTable.vue'
+import AddService from './child/addService.vue'
+import ControlMenu from './child/ControlMenu.vue'
+
 export default defineComponent({
   name: 'GeoJson',
   components: {
-    LeafletMap: defineAsyncComponent(() => import('./child/leafletMap.vue')),
-    GeoJsonEditor: defineAsyncComponent(() => import('./child/geoJsonEditor.vue')),
-    PropertyTable: defineAsyncComponent(() => import('./child/propertyTable.vue')),
-    AddService: defineAsyncComponent(() => import('./child/addService.vue')),
-    ControlMenu: defineAsyncComponent(() => import('./child/ControlMenu.vue'))
+    LeafletMap,
+    GeoJsonEditor,
+    PropertyTable,
+    AddService,
+    ControlMenu
   },
   data: () => ({
     geoJsonLayer: undefined,

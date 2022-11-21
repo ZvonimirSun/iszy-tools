@@ -4,8 +4,15 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
+registries:
+  npm-npmjs:
+    type: npm-registry
+    url: https://registry.npmmirror.com
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
+    open-pull-requests-limit: 1
     directory: "/" # Location of package manifests
+    registries:
+      - npm-npmjs
     schedule:
       interval: "weekly"
