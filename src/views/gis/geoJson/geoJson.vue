@@ -6,6 +6,7 @@
     <leaflet-map
       v-model:geo-json-layer="geoJsonLayer"
       @get-map="getMap"
+      @get-control="getControl"
     />
     <a-tabs type="card">
       <a-tab-pane
@@ -30,7 +31,10 @@
         key="addService"
         tab="添加服务"
       >
-        <add-service :map="_map" />
+        <add-service
+          :map="_map"
+          :layer-control="_control"
+        />
       </a-tab-pane>
     </a-tabs>
     <control-menu
@@ -40,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Map, GeoJSON } from 'leaflet'
+import type { Map, GeoJSON, Control } from 'leaflet'
 import LeafletMap from './child/leafletMap.vue'
 import GeoJsonEditor from './child/geoJsonEditor.vue'
 import PropertyTable from './child/propertyTable.vue'
@@ -50,6 +54,7 @@ import type { Ref } from 'vue'
 
 const geoJsonLayer: Ref<GeoJSON | null> = ref(null)
 const _map: Ref<Map | null> = ref(null)
+const _control: Ref<Control.Layers | null> = ref(null)
 const wrapper: Ref<HTMLDivElement | undefined> = ref()
 
 const wrapperHeight = computed(() => {
@@ -62,6 +67,10 @@ const wrapperHeight = computed(() => {
 
 function getMap (val: Map) {
   _map.value = markRaw(val)
+}
+
+function getControl (val: Control.Layers) {
+  _control.value = markRaw(val)
 }
 </script>
 

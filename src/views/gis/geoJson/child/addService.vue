@@ -43,7 +43,7 @@
 import { tiledMapLayer } from '@/utils/iclient-leaflet/index.js'
 import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/DynamicMapLayer.js'
 import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
-import { CRS, tileLayer, Map } from 'leaflet'
+import { CRS, tileLayer, Map, Control } from 'leaflet'
 
 let _map
 
@@ -51,7 +51,7 @@ export default defineComponent({
   name: 'AddService',
   props: {
     map: { type: Map, default: undefined },
-    layerControl: { type: Object, default: undefined }
+    layerControl: { type: Control.Layers, default: undefined }
   },
   data: () => ({
     id: 1,
@@ -60,8 +60,11 @@ export default defineComponent({
     type: 'supermap_rest'
   }),
   watch: {
-    map: function (val) {
-      _map = val
+    map: {
+      handler: function (val) {
+        _map = val
+      },
+      immediate: true
     }
   },
   methods: {
@@ -79,7 +82,8 @@ export default defineComponent({
             layer = tiledMapLayer(serviceUrl, {
               prjCoordSys: { epsgCode: 3857 },
               crs: CRS.EPSG3857
-            }).addTo(_map)
+            })
+            layer.addTo(_map)
             break
           }
           case 'arcgis_rest': {
