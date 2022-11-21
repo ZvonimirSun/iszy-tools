@@ -5136,10 +5136,10 @@ regjsparser@^0.9.1:
   dependencies:
     jsesc "~0.5.0"
 
-relationship.js@^1.0.0:
-  version "1.2.0"
-  resolved "https://registry.npmmirror.com/relationship.js/-/relationship.js-1.2.0.tgz#495f9f5595639ba6a81a8a638603c79e28437e11"
-  integrity sha512-aputmrdRoM7+9G1AfcYucxLLvmQgQKvaw7vkGN2bTbXoOes9h7w5WqKSg2oERqX72D5dgwQ3f0n65UW2cxfloA==
+relationship.js@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/relationship.js/-/relationship.js-1.2.2.tgz#62ade43368a8003cb9bcb78b9ec55f941e5ef87a"
+  integrity sha512-yW4F1I0orDck6dZj5Sse4IUPxqme0ujNc87BY0+0rHhTZOSSoyrnzZ+dsIYBBbOvqLEHIxt8Ewxg6dnrhMYFDw==
 
 require-directory@^2.1.1:
   version "2.1.1"
