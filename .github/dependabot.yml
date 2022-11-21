@@ -13,6 +13,6 @@ updates:
     open-pull-requests-limit: 1
     directory: "/" # Location of package manifests
     registries:
-      - npm-npmjs
+      - "npm-npmjs"
     schedule:
       interval: "weekly"
