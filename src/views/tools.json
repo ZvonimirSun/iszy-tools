@@ -230,9 +230,13 @@
     ]
   },
   {
-    "type": "小游戏",
+    "type": "游戏",
     "icon": "i-icon-park-solid-game",
     "children": [
+      {
+        "name": "塞尔达荒野之息地图",
+        "link": "/zeldaBotwMap"
+      },
       {
         "name": "2048",
         "link": "/2048"
