@@ -52,9 +52,9 @@ import AddService from './child/addService.vue'
 import ControlMenu from './child/ControlMenu.vue'
 import type { Ref } from 'vue'
 
-const geoJsonLayer: Ref<GeoJSON | null> = ref(null)
-const _map: Ref<Map | null> = ref(null)
-const _control: Ref<Control.Layers | null> = ref(null)
+const geoJsonLayer: Ref<GeoJSON<unknown> | undefined> = ref()
+const _map: Ref<Map | undefined> = ref()
+const _control: Ref<Control.Layers | undefined> = ref()
 const wrapper: Ref<HTMLDivElement | undefined> = ref()
 
 const wrapperHeight = computed(() => {
