@@ -202,7 +202,8 @@ function initMap () {
   // 初始化地图
   _map = markRaw(map(mapContainer.value, {
     attributionControl: true,
-    zoomControl: false
+    zoomControl: false,
+    minZoom: 4
   }))
   emit('getMap', _map)
   _map.setView([35, 105], 4)
@@ -221,19 +222,16 @@ function addBaseMaps () {
   layerControl = control.layers(
     {
       高德矢量: chineseLayer('GaoDe.Normal.Map', {
-        minZoom: 3,
         maxNativeZoom: 18,
         maxZoom: 20,
         attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
       }).addTo(_map),
       高德影像: layerGroup([
         chineseLayer('GaoDe.Satellite.Map', {
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         }),
         chineseLayer('GaoDe.Satellite.Annotation', {
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         })
@@ -243,13 +241,11 @@ function addBaseMaps () {
       天地图矢量: layerGroup([
         chineseLayer('TianDiTu.Normal.Map', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         }),
         chineseLayer('TianDiTu.Normal.Annotation', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         })
@@ -259,13 +255,11 @@ function addBaseMaps () {
       天地图影像: layerGroup([
         chineseLayer('TianDiTu.Satellite.Map', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         }),
         chineseLayer('TianDiTu.Satellite.Annotation', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         })
@@ -275,13 +269,11 @@ function addBaseMaps () {
       天地图地形: layerGroup([
         chineseLayer('TianDiTu.Terrain.Map', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 14,
           maxZoom: 20
         }),
         chineseLayer('TianDiTu.Terrain.Annotation', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 14,
           maxZoom: 20
         })
@@ -290,7 +282,6 @@ function addBaseMaps () {
       }),
       OpenStreetMap: chineseLayer('OSM.Normal.Map', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
-        minZoom: 3,
         maxNativeZoom: 19,
         maxZoom: 20
       })
