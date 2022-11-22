@@ -4,63 +4,66 @@
     class="ant-table-striped"
     :columns="tableColumns"
     :data-source="propertyList"
-    :row-key="(record,index)=>{return index}"
+    :row-key="(record)=>{return record.key}"
     :pagination="false"
     bordered
     size="small"
-    :scroll="{x:true}"
-    :row-class-name="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+    :scroll="tableScroll"
     :custom-row="rowEvents"
   >
-    <template #property="{text, column, index}">
-      <div
-        v-if="editableData[index]"
-        class="editable-cell-input-wrapper"
-      >
-        <a-input
-          v-if="typeof editableData[index][column.dataIndex] === 'string'"
-          v-model:value="editableData[index][column.dataIndex]"
-          @click.stop
-        />
-        <a-input
-          v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
-          v-model:value.number="editableData[index][column.dataIndex]"
-          @click.stop
-        />
-        <a-input
+    <template #bodyCell="{text, index, column}">
+      <template v-if="column.dataIndex !== 'operation'">
+        <div
+          v-if="editableData[index]"
+          class="editable-cell-input-wrapper"
+        >
+          <a-input
+            v-if="typeof editableData[index][column.dataIndex] === 'string'"
+            v-model:value="editableData[index][column.dataIndex]"
+            @click.stop
+          />
+          <a-input
+            v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
+            v-model:value.number="editableData[index][column.dataIndex]"
+            @click.stop
+          />
+          <a-input
+            v-else
+            :value="JSON.stringify(editableData[index][column.dataIndex])"
+            @click.stop
+            @change="saveToEditableData($event, editableData[index], column.dataIndex)"
+          />
+        </div>
+        <div
           v-else
-          :value="JSON.stringify(editableData[index][column.dataIndex])"
-          @click.stop
-          @change="saveToEditableData($event, editableData[index], column.dataIndex)"
-        />
-      </div>
-      <div
-        v-else
-        class="editable-cell-text-wrapper"
-      >
-        {{ typeof text === 'object' ? JSON.stringify(text) : text }}
-      </div>
-    </template>
-    <template #operation="{ index }">
-      <span v-if="editableData[index]">
-        <a @click.stop="save(index)"> 保存属性 </a>
-        <a @click.stop="cancel(index)"> 取消编辑 </a>
-      </span>
-      <span v-else>
-        <a @click.stop="edit(index)"> 编辑属性 </a>
-      </span>
+          class="editable-cell-text-wrapper"
+        >
+          {{ typeof text === 'object' ? JSON.stringify(text) : text }}
+        </div>
+      </template>
+      <template v-else>
+        <span v-if="editableData[index]">
+          <a @click.stop="save(index)"> 保存属性 </a>
+          <a @click.stop="cancel(index)"> 取消编辑 </a>
+        </span>
+        <span v-else>
+          <a @click.stop="edit(index)"> 编辑属性 </a>
+        </span>
+      </template>
     </template>
   </a-table>
   <a-empty v-else />
 </template>
 
 <script>
+import { GeoJSON } from 'leaflet'
 import { cloneDeep } from 'lodash-es'
 
 export default defineComponent({
   name: 'PropertyTable',
   props: {
-    geoJsonLayer: { type: Object, default: undefined }
+    geoJsonLayer: { type: GeoJSON, default: null },
+    height: { type: Number, default: null }
   },
   data: () => ({
     editableData: {}
@@ -93,22 +96,22 @@ export default defineComponent({
             title: item,
             dataIndex: item,
             key: item,
-            slots: { customRender: 'property' }
+            width: 150
           }
         })
         columns.push({
           title: '操作',
           dataIndex: 'operation',
-          width: 40,
-          fixed: 'right',
-          slots: {
-            customRender: 'operation'
-          }
+          width: 100,
+          fixed: 'right'
         })
         return columns
       } else {
         return null
       }
+    },
+    tableScroll () {
+      return { y: this.height - 96 }
     }
   },
   methods: {
@@ -154,18 +157,15 @@ export default defineComponent({
 :deep(.ant-table) {
   th {
     background-color: #e6e6e6;
+    white-space: nowrap;
   }
 
   td {
-    white-space: nowrap;
-
     .editable-cell-input-wrapper, .editable-cell-text-wrapper {
-      width: max-content;
+      width: 100%;
+      white-space: nowrap;
+      overflow-x: auto;
     }
   }
-}
-
-:deep(.ant-table-striped) .table-striped {
-  background-color: #fafafa;
 }
 </style>

@@ -88,17 +88,10 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'jsdelivr-cdn'
-            }
-          },
-          {
-            urlPattern: /^https:\/\/at\.alicdn\.com/,
+            urlPattern: /^https:\/\/.*cdn\.iszy\.cc/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iconfont',
+              cacheName: 'iszycc-cdn',
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
@@ -109,13 +102,13 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/lf1-cdn-tos\.bytegoofy\.com/,
+            urlPattern: /^https:\/\/lib\.iszy\.xyz/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'bytegoofy',
+              cacheName: 'iszylib-cdn',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 7 // <== 365 days
               },
               cacheableResponse: {
                 statuses: [0, 200]
@@ -127,6 +120,9 @@ export default defineConfig({
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' })
   ],
+  optimizeDeps: {
+    include: ['vue', 'ant-design-vue']
+  },
   resolve: {
     alias: {
       '@': resolve('src')

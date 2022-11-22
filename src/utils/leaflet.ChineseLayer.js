@@ -87,11 +87,11 @@ ChineseLayer.include({
 
     Google: {
       Normal: {
-        Map: '//www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        Map: '//www.google.com/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
       },
       Satellite: {
-        Map: '//www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
-        Annotation: '//www.google.cn/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}'
+        Map: '//www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+        Annotation: '//www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}'
       },
       Subdomains: []
     },

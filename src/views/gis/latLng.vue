@@ -68,40 +68,58 @@ export default {
     initMap () {
       this.map = markRaw(map(this.$refs.mapContainer, {
         attributionControl: true,
-        zoomControl: false
+        zoomControl: false,
+        minZoom: 4
       }))
       this.map.setView([35, 105], 4)
       control.layers({
         高德矢量: chineseLayer('GaoDe.Normal.Map', {
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20,
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }).addTo(this.map),
         高德影像: layerGroup([
           chineseLayer('GaoDe.Satellite.Map', {
-            minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
           chineseLayer('GaoDe.Satellite.Annotation', {
-            minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           })
         ], {
           attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
         }),
+        谷歌矢量: layerGroup([
+          chineseLayer('Google.Normal.Map', {
+            maxZoom: 20
+          })
+        ], {
+          attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+        }),
+        谷歌影像: layerGroup([
+          chineseLayer('Google.Satellite.Map', {
+            maxZoom: 20
+          }),
+          chineseLayer('Google.Satellite.Annotation', {
+            maxZoom: 20
+          })
+        ], {
+          attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+        }),
+        OpenStreetMap: chineseLayer('OSM.Normal.Map', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
+          maxNativeZoom: 19,
+          maxZoom: 20
+        }),
         天地图矢量: layerGroup([
           chineseLayer('TianDiTu.Normal.Map', {
             key: this.tdtToken,
-            minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
           chineseLayer('TianDiTu.Normal.Annotation', {
             key: this.tdtToken,
-            minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           })
@@ -111,13 +129,11 @@ export default {
         天地图影像: layerGroup([
           chineseLayer('TianDiTu.Satellite.Map', {
             key: this.tdtToken,
-            minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           }),
           chineseLayer('TianDiTu.Satellite.Annotation', {
             key: this.tdtToken,
-            minZoom: 3,
             maxNativeZoom: 18,
             maxZoom: 20
           })
@@ -127,21 +143,16 @@ export default {
         天地图地形: layerGroup([
           chineseLayer('TianDiTu.Terrain.Map', {
             key: this.tdtToken,
-            minZoom: 3,
             maxNativeZoom: 14,
             maxZoom: 20
           }),
           chineseLayer('TianDiTu.Terrain.Annotation', {
             key: this.tdtToken,
-            minZoom: 3,
             maxNativeZoom: 14,
             maxZoom: 20
           })
         ], {
           attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-        }),
-        OpenStreetMap: chineseLayer('OSM.Normal.Map', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者'
         })
       }, {}, {
         hideSingleBase: true,

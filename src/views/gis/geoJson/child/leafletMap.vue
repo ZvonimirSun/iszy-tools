@@ -141,7 +141,7 @@ const props = defineProps({
   geoJsonLayer: { type: GeoJSON, default: undefined }
 })
 
-const emit = defineEmits(['update:geoJsonLayer', 'getMap'])
+const emit = defineEmits(['update:geoJsonLayer', 'getMap', 'getControl'])
 
 const $eventBus = inject('$eventBus')
 const $msg = inject('$msg')
@@ -202,7 +202,8 @@ function initMap () {
   // 初始化地图
   _map = markRaw(map(mapContainer.value, {
     attributionControl: true,
-    zoomControl: false
+    zoomControl: false,
+    minZoom: 4
   }))
   emit('getMap', _map)
   _map.setView([35, 105], 4)
@@ -221,35 +222,52 @@ function addBaseMaps () {
   layerControl = control.layers(
     {
       高德矢量: chineseLayer('GaoDe.Normal.Map', {
-        minZoom: 3,
         maxNativeZoom: 18,
         maxZoom: 20,
         attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
       }).addTo(_map),
       高德影像: layerGroup([
         chineseLayer('GaoDe.Satellite.Map', {
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         }),
         chineseLayer('GaoDe.Satellite.Annotation', {
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         })
       ], {
         attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
       }),
+      谷歌矢量: layerGroup([
+        chineseLayer('Google.Normal.Map', {
+          maxZoom: 20
+        })
+      ], {
+        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+      }),
+      谷歌影像: layerGroup([
+        chineseLayer('Google.Satellite.Map', {
+          maxZoom: 20
+        }),
+        chineseLayer('Google.Satellite.Annotation', {
+          maxZoom: 20
+        })
+      ], {
+        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+      }),
+      OpenStreetMap: chineseLayer('OSM.Normal.Map', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
+        maxNativeZoom: 19,
+        maxZoom: 20
+      }),
       天地图矢量: layerGroup([
         chineseLayer('TianDiTu.Normal.Map', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         }),
         chineseLayer('TianDiTu.Normal.Annotation', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         })
@@ -259,13 +277,11 @@ function addBaseMaps () {
       天地图影像: layerGroup([
         chineseLayer('TianDiTu.Satellite.Map', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         }),
         chineseLayer('TianDiTu.Satellite.Annotation', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 18,
           maxZoom: 20
         })
@@ -275,24 +291,16 @@ function addBaseMaps () {
       天地图地形: layerGroup([
         chineseLayer('TianDiTu.Terrain.Map', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 14,
           maxZoom: 20
         }),
         chineseLayer('TianDiTu.Terrain.Annotation', {
           key: tdtToken,
-          minZoom: 3,
           maxNativeZoom: 14,
           maxZoom: 20
         })
       ], {
         attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-      }),
-      OpenStreetMap: chineseLayer('OSM.Normal.Map', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
-        minZoom: 3,
-        maxNativeZoom: 19,
-        maxZoom: 20
       })
     },
     {
@@ -303,6 +311,7 @@ function addBaseMaps () {
       position: 'bottomleft'
     }
   ).addTo(_map)
+  emit('getControl', layerControl)
 }
 function addControls () {
   control.scale({
