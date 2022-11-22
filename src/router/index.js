@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import tools from '@/views/tools.json'
-import store from '@/store'
 import { merge } from 'lodash-es'
+import { useUserStore } from '@/stores/user'
 
 const vueFiles = import.meta.glob('../views/**/*.vue')
 
@@ -89,7 +89,7 @@ routes = routes.concat([
     name: '登出',
     beforeEnter (to, from, next) {
       if (navigator.onLine) {
-        store.dispatch('user/logout').then(() => {
+        useUserStore().logout().then(() => {
           next(from.fullPath)
         })
       } else {
@@ -128,14 +128,12 @@ const router = createRouter({
 const whiteList = ['/login', '/logout']
 
 router.beforeEach(async (to, from, next) => {
-  // 恢复持久化数据
-  await store.restored
   // 权限控制
-  const currentUser = store.getters.currentUser
-  if (currentUser || whiteList.indexOf(to.path) !== -1 || !to.meta.requiresAuth) {
+  const isLogged = await useUserStore().checkToken()
+  if (isLogged || whiteList.indexOf(to.path) !== -1 || !to.meta.requiresAuth) {
     document.title = getPageTitle(to.meta.title || to.name)
     if (to.name && to.meta.statistics) {
-      await store.commit('user/access', { name: to.name, link: to.path })
+      await useUserStore().access({ name: to.name, link: to.path })
     }
     next()
   } else {
