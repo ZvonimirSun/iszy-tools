@@ -63,7 +63,9 @@ export const useUserStore = defineStore('user', {
         syncCloud: false
       }
     },
-    version: 2
+    version: 2,
+
+    syncing: false
   }),
   getters: {
     isFav: state => (name: string): boolean => {
@@ -274,15 +276,12 @@ export const useUserStore = defineStore('user', {
       }
     },
     importConfig (data: any) {
+      this.syncing = true
       let tmp = data
       if (data.version == null) {
         tmp = this.upgradeDataToV2(data)
       }
-      this.favorite = tmp.favorite
-      this.statistics = tmp.statistics
-      this.settings = tmp.settings
-      this.modules = tmp.modules
-      this.version = tmp.version
+      useUserStore().$patch(tmp)
     },
 
     upgradeDataToV2 (data: any) {

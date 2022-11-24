@@ -78,11 +78,22 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
     const data = getState(store.$id)
     store.$patch(merge({}, store.$state, data))
 
+    let flag = true
     // 更新数据
     const updateState = debounce(function () {
       _mutex.enqueue(setState(store.$id, store.$state as never).catch(e => {
         debug && console.log(e)
       }))
+      if (store.$id === 'user' && store.$state.settings?.autoSync && navigator.onLine) {
+        if (!flag) {
+          flag = true
+        } else if (!store.$state.syncing) {
+          _mutex.enqueue(store.uploadSettings?.())
+        } else {
+          store.$state.syncing = false
+          flag = false
+        }
+      }
     }, 100)
     store.$subscribe(
       (
