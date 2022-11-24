@@ -50,7 +50,7 @@ export const useUserStore = defineStore('user', {
         bestScore: 0
       },
       imgHosting: {
-        uploader: '' as 'aliyun' | '' | null,
+        uploader: null as 'aliyun' | null,
         configs: {} as Record<string, Record<string, string>>,
         commonConfig: {
           renameBeforeUpload: false,

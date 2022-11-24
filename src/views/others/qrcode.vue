@@ -114,7 +114,6 @@ function upload (img: File) {
     if (typeof reader.result === 'string') {
       qrCodeFile.value = reader.result
       nextTick(() => {
-        debugger
         decodeQRCode(decodeImg.value)
       })
     } else {

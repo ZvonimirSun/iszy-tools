@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/user'
-import { cloneDeep, merge } from 'lodash-es'
+import { merge } from 'lodash-es'
 import { v4 as uuidv4 } from 'uuid'
 
 const userImgHosting = useUserStore().modules.imgHosting
@@ -35,9 +35,6 @@ export const useImgHostingStore = defineStore('imgHosting', {
     }) {
       userImgHosting.uploader = uploader
       userImgHosting.configs[uploader] = config
-    },
-    saveCommonConfig (val: any) {
-      userImgHosting.commonConfig = cloneDeep(val)
     },
     addImage ({ name, url } = {} as { name: string, url: string }) {
       if (name && url) {

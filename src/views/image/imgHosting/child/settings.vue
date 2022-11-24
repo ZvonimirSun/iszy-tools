@@ -5,52 +5,50 @@
   <div class="commonConfigPanel">
     <a-form-item label="时间戳重命名">
       <a-switch
-        v-model:checked="currentCommonConfig.renameTimeStamp"
-        @change="updateConfig"
+        v-model:checked="commonConfig.renameTimeStamp"
       />
     </a-form-item>
     <a-form-item label="上传后自动复制URL">
       <a-switch
-        v-model:checked="currentCommonConfig.copyUrlAfterUpload"
-        @change="updateConfig"
+        v-model:checked="commonConfig.copyUrlAfterUpload"
       />
     </a-form-item>
     <a-typography-title :level="5">
       链接复制格式
     </a-typography-title>
-    <a-space>
+    <a-radio-group
+      v-model:value="customCopyContentType"
+      class="custom-copy-wrapper"
+      @change="updateCustomCopyContent"
+    >
       <a-radio
-        :style="radioStyle"
-        :checked="currentCommonConfig.customCopyContent==='$url'"
-        @change="updateCustomCopyContent('$url')"
+        value="standard"
       >
-        标准<a-typography-text
+        标准
+        <a-typography-text
           code
           content="$url"
         />
       </a-radio>
       <a-radio
-        :style="radioStyle"
-        :checked="currentCommonConfig.customCopyContent==='![]($url)'"
-        @change="updateCustomCopyContent('![]($url)')"
+        value="markdown"
       >
-        MarkDown<a-typography-text
+        MarkDown
+        <a-typography-text
           code
           content="![]($url)"
         />
       </a-radio>
       <a-radio
-        :style="radioStyle"
-        :checked="currentCommonConfig.customCopyContent===customContent"
-        @change="updateCustomCopyContent(customContent)"
+        value="custom"
       >
-        自定义<a-input
+        自定义
+        <a-input
           v-model:value="customContent"
           style="width: 100px; margin-left: 10px"
-          @change="updateCustomCopyContent($event.target.value)"
         />
       </a-radio>
-    </a-space>
+    </a-radio-group>
   </div>
   <a-divider />
   <a-typography-title :level="4">
@@ -66,10 +64,12 @@
       :key="name"
       :tab="item.name"
     >
-      <div class="configPanel">
+      <div
+        v-if="currentUploader === name"
+        class="configPanel"
+      >
         <div class="configTable">
           <a-form
-            v-if="currentUploader === name"
             layout="vertical"
           >
             <a-form-item
@@ -108,51 +108,70 @@
 
 <script lang="ts" setup>
 import * as uploaders from '../uploader/index'
-import { cloneDeep, debounce, merge } from 'lodash-es'
+import { cloneDeep, merge } from 'lodash-es'
 import type { Ref } from 'vue'
 import { useImgHostingStore } from '@/stores/imgHosting'
 import $msg from 'ant-design-vue/es/message'
 import { AliOssConfig } from '../uploader/index'
+import { CheckboxChangeEvent } from 'ant-design-vue/es/checkbox/interface'
 
-const currentUploader: Ref<'aliyun'> = ref('aliyun')
-const currentConfig: Ref<uploaders.Config[]> = ref([])
-const currentCommonConfig = ref({
+const imgHosingStore = useImgHostingStore()
+const commonConfig = imgHosingStore.commonConfig
+const config = imgHosingStore.config
+
+const defaultCommonConfig = {
   renameBeforeUpload: false,
   renameTimeStamp: true,
   copyUrlAfterUpload: true,
   customCopyContent: '$url'
-})
+}
+const customCopyContentType: Ref<'standard'|'markdown'|'custom'> = ref('standard')
 const customContent: Ref<string> = ref('$url')
 
-const radioStyle = {
-  display: 'flex',
-  height: '32px',
-  lineHeight: '32px'
-}
-
-const config = computed(() => useImgHostingStore().config)
-const uploader = computed(() => useImgHostingStore().uploader)
-const commonConfig = computed(() => useImgHostingStore().commonConfig)
-
-const saveConfig = useImgHostingStore().saveConfig
-const saveCommonConfig = useImgHostingStore().saveCommonConfig
-
-const file = ref()
+const currentUploader: Ref<'aliyun'> = ref('aliyun')
+const currentConfig: Ref<uploaders.Config[]> = ref([])
 
 onMounted(() => {
-  if (uploader.value) {
-    currentUploader.value = uploader.value
+  const uploader = useImgHostingStore().uploader
+  if (uploader != null) {
+    currentUploader.value = uploader
+  }
+  merge(commonConfig, merge({}, defaultCommonConfig, commonConfig))
+  switch (commonConfig.customCopyContent) {
+    case '$url':
+      customCopyContentType.value = 'standard'
+      break
+    case '![]($url)':
+      customCopyContentType.value = 'markdown'
+      break
+    default:
+      customCopyContentType.value = 'custom'
+      customContent.value = commonConfig.customCopyContent
   }
   changeUploader()
-  currentCommonConfig.value = merge(currentCommonConfig.value, cloneDeep(commonConfig.value || {}))
-  if (currentCommonConfig.value.customCopyContent !== '$url' && currentCommonConfig.value.customCopyContent !== '![]($url)') {
-    customContent.value = currentCommonConfig.value.customCopyContent
+})
+function updateCustomCopyContent (val: CheckboxChangeEvent) {
+  switch (val.target.value) {
+    case 'standard':
+      commonConfig.customCopyContent = '$url'
+      break
+    case 'markdown':
+      commonConfig.customCopyContent = '![]($url)'
+      break
+    case 'custom':
+      commonConfig.customCopyContent = customContent.value
+      break
+  }
+}
+watch(customContent, (val: string) => {
+  if (customCopyContentType.value === 'custom') {
+    commonConfig.customCopyContent = val
   }
 })
 
 function changeUploader () {
   if (currentUploader.value === 'aliyun') {
-    currentConfig.value = cloneDeep(uploaders[currentUploader.value].config(config.value(currentUploader.value) as unknown as AliOssConfig))
+    currentConfig.value = cloneDeep(uploaders[currentUploader.value].config(config(currentUploader.value) as AliOssConfig))
   }
 }
 
@@ -165,20 +184,11 @@ function save () {
     }
     config[c.name] = c.default
   }
-  saveConfig({
+  useImgHostingStore().saveConfig({
     uploader: currentUploader.value,
     config
   })
   $msg.success('保存成功')
-}
-
-const updateConfig = debounce(function () {
-  saveCommonConfig(currentCommonConfig.value)
-}, 100)
-
-function updateCustomCopyContent (val: string) {
-  currentCommonConfig.value.customCopyContent = val
-  updateConfig()
 }
 </script>
 
@@ -207,5 +217,11 @@ function updateCustomCopyContent (val: string) {
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.custom-copy-wrapper :deep(.ant-radio-wrapper) {
+  display: flex;
+  height: 32px;
+  line-height: 32px;
 }
 </style>

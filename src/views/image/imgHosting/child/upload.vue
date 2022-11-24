@@ -24,6 +24,8 @@
 import * as uploaders from '../uploader/index'
 import { useImgHostingStore } from '@/stores/imgHosting'
 import $msg from 'ant-design-vue/es/message'
+import { UploadRequestOption } from 'ant-design-vue/es/vc-upload/interface'
+import { AliOssConfig } from '../uploader/index'
 
 const props = defineProps({
   activeKey: {
@@ -35,9 +37,11 @@ const props = defineProps({
 const spinning = ref(false)
 const timeoutIndex = ref()
 
-const config = computed(() => useImgHostingStore().config)
-const uploader = computed(() => useImgHostingStore().uploader)
-const commonConfig = computed(() => useImgHostingStore().commonConfig)
+const imgHostingStore = useImgHostingStore()
+
+const config = imgHostingStore.config
+const uploader = imgHostingStore.uploader
+const commonConfig = imgHostingStore.commonConfig
 
 onMounted(() => {
   document.addEventListener('paste', paste)
@@ -47,23 +51,24 @@ onBeforeUnmount(() => {
   document.removeEventListener('paste', paste)
 })
 
-async function customRequest ({ file } = {} as {file: File}) {
+async function customRequest ({ file } = { } as UploadRequestOption) {
+  let tmpFile: File = file as File
   spinning.value = true
-  if (uploader.value && config.value(uploader.value)) {
-    if (commonConfig.value.renameTimeStamp) {
-      const tmp = file.name || ''
-      file = new File([file], ((new Date().getTime()) + tmp.substring(tmp.lastIndexOf('.'))).toLowerCase(), {
-        type: file.type,
-        lastModified: file.lastModified
+  if (uploader && config(uploader)) {
+    if (commonConfig.renameTimeStamp) {
+      const tmp = tmpFile.name || ''
+      tmpFile = new File([tmpFile], ((new Date().getTime()) + tmp.substring(tmp.lastIndexOf('.'))).toLowerCase(), {
+        type: tmpFile.type,
+        lastModified: tmpFile.lastModified
       })
     }
     try {
-      const result = await uploaders[uploader.value].handle(config.value(uploader.value), file)
+      const result = await uploaders[uploader].handle(config(uploader) as AliOssConfig, tmpFile)
       useImgHostingStore().addImage(result)
-      if (commonConfig.value.copyUrlAfterUpload) {
+      if (commonConfig.copyUrlAfterUpload) {
         try {
-          if (commonConfig.value.customCopyContent) {
-            await navigator.clipboard.writeText(commonConfig.value.customCopyContent.replace(/\$url/g, result.url))
+          if (commonConfig.customCopyContent) {
+            await navigator.clipboard.writeText(commonConfig.customCopyContent.replace(/\$url/g, result.url))
           } else {
             await navigator.clipboard.writeText(result.url)
           }
@@ -93,7 +98,8 @@ function paste (event: ClipboardEvent) {
     timeoutIndex.value = setTimeout(() => {
       timeoutIndex.value = undefined
     }, 500)
-    const items: DataTransferItemList | null = event.clipboardData && event.clipboardData.items
+    // todo ts fix
+    const items: any = event.clipboardData && event.clipboardData.items
     let file
     if (items && items.length) {
       for (const item of items) {
@@ -103,7 +109,7 @@ function paste (event: ClipboardEvent) {
       }
     }
     if (file) {
-      customRequest({ file })
+      customRequest({ file } as UploadRequestOption)
     } else {
       rejectFile()
       clearTimeout(timeoutIndex.value)

@@ -1,7 +1,7 @@
 import OSS from 'ali-oss'
 import { Config } from './index'
 
-export interface AliOssConfig {
+export interface AliOssConfig extends Record<string, string> {
   accessKeyId: string,
   accessKeySecret: string,
   bucket: string,
