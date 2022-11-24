@@ -396,6 +396,7 @@
 </template>
 
 <script>
+import { useJsonEditorStore } from '@/stores/jsonEditor'
 import { deleteParam, getParam, setParam } from '@/utils/hashHandler.js'
 /**
  * @type {Function}
@@ -405,9 +406,6 @@ import 'jsoneditor/dist/jsoneditor.min.css'
 import createFile from '@/utils/createFile'
 import { get, isEqual, debounce, cloneDeep } from 'lodash-es'
 import formatBytes from '@/utils/formatBytes.js'
-
-const { mapState, mapGetters, mapMutations, mapActions } = createNamespacedHelpers('jsonEditor')
-const { mapState: mapSettingState } = createNamespacedHelpers('user/jsonEditor')
 
 let editorLeft, editorRight
 
@@ -526,9 +524,7 @@ export default {
         return {}
       }
     },
-    ...mapState(['leftId', 'rightId', 'splitterValue', 'fullStatus']),
-    ...mapGetters(['dataList', 'data', 'leftData', 'rightData']),
-    ...mapSettingState(['syncCloud'])
+    ...mapState(useJsonEditorStore, ['leftId', 'rightId', 'splitterValue', 'fullStatus', 'dataList', 'data', 'leftData', 'rightData', 'syncCloud'])
   },
   watch: {
     leftId: {
@@ -1063,8 +1059,7 @@ export default {
       }
     },
 
-    ...mapMutations(['setSplitter', 'setFullStatus']),
-    ...mapActions(['getSyncData', 'saveData', 'deleteData'])
+    ...mapActions(useJsonEditorStore, ['setSplitter', 'setFullStatus', 'getSyncData', 'saveData', 'deleteData'])
   }
 }
 </script>
