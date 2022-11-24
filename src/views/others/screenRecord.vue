@@ -5,7 +5,7 @@
     </a-typography-title>
     <div class="previewVideo">
       <video
-        ref="screenShare"
+        ref="screenShareVideoElement"
         autoplay
       />
       <span
@@ -160,349 +160,374 @@
   </template>
 </template>
 
-<script>
+<script lang="ts" setup>
+import type { Ref } from 'vue'
+import $msg from 'ant-design-vue/es/message'
+
+// eslint-disable-next-line no-undef
+interface MediaTrackSettingsUserShared extends MediaTrackSettings {
+  cursor?: string
+}
+
 const RECORD_STATUS_UNSTART = 'unstart'
 const RECORD_STATUS_RECORDING = 'recording'
 const RECORD_STATUS_PAUSED = 'paused'
 const RECORD_STATUS_STOPPED = 'stopped'
 
-export default {
-  name: 'ScreenRecord',
-  data: () => ({
-    recorder: null,
-    screenShareVideoElement: null,
-    localScreenShareStream: null,
-    disabled: {
-      open: false,
-      start: true,
-      pause: true,
-      resume: true,
-      stop: true,
-      download: true
-    },
-    status: RECORD_STATUS_UNSTART,
-    chunks: [],
-    blobUrl: '',
+const screenShareVideoElement: Ref<HTMLVideoElement> = ref() as Ref<HTMLVideoElement>
+let recorder: MediaRecorder | null = null
+let localScreenShareStream: MediaStream | null = null
+const disabled: Ref<{
+  open: boolean,
+  start: boolean,
+  pause: boolean,
+  resume: boolean,
+  stop: boolean,
+  download: boolean
+}> = ref({
+  open: false,
+  start: true,
+  pause: true,
+  resume: true,
+  stop: true,
+  download: true
+})
+const status: Ref<'unstart' | 'recording' | 'paused' | 'stopped'> = ref(RECORD_STATUS_UNSTART)
+let chunks: Array<Blob> = []
+const blobUrl: Ref<string> = ref('')
 
-    recordAudio: 'never',
-    recordAudioOptions: [
-      {
-        label: '否',
-        value: 'never'
-      },
-      {
-        label: '是',
-        value: 'always'
+// 录制参数
+const recordAudioOptions: Array<{
+  label: string,
+  value: 'never' | 'always'
+}> = [
+  {
+    label: '否',
+    value: 'never'
+  },
+  {
+    label: '是',
+    value: 'always'
+  }
+]
+const recordAudio: Ref<'never' | 'always'> = ref('never')
+const recordMicroOptions = [
+  {
+    label: '否',
+    value: 'never'
+  },
+  {
+    label: '是',
+    value: 'always'
+  }
+]
+const recordMicro: Ref<'never' | 'always'> = ref('never')
+const aspectRatioList = [
+  {
+    label: '默认',
+    value: 'default'
+  },
+  {
+    label: '16:9',
+    value: 1.77
+  },
+  {
+    label: '4:3',
+    value: 1.33
+  },
+  {
+    label: '21:9',
+    value: 2.35
+  },
+  {
+    label: '14:10',
+    value: 1.4
+  },
+  {
+    label: '19:10',
+    value: 1.9
+  }
+]
+const aspectRatio: Ref<number | 'default'> = ref('default')
+const frameRateList = [
+  {
+    label: '默认',
+    value: 'default'
+  },
+  {
+    label: '60',
+    value: 60
+  },
+  {
+    label: '30',
+    value: 30
+  },
+  {
+    label: '25',
+    value: 25
+  },
+  {
+    label: '15',
+    value: 15
+  },
+  {
+    label: '5',
+    value: 5
+  }
+]
+const frameRate: Ref<number | 'default'> = ref('default')
+const resolutionsList = [
+  {
+    label: '默认',
+    value: 'default'
+  },
+  {
+    label: '屏幕尺寸',
+    value: 'fit-screen'
+  },
+  {
+    label: '4K',
+    value: '4k'
+  },
+  {
+    label: '1080p',
+    value: '1080p'
+  },
+  {
+    label: '720p',
+    value: '720p'
+  }
+]
+const resolutions: Ref<string> = ref('default')
+const cursorList = [
+  {
+    label: '默认',
+    value: 'default'
+  },
+  {
+    label: '总是显示',
+    value: 'always'
+  },
+  {
+    label: '移动时显示',
+    value: 'motion'
+  },
+  {
+    label: '从不显示',
+    value: 'never'
+  }
+]
+const cursor: Ref<string> = ref('default')
+
+// 测试浏览器支持度
+const supportedConstraints = (() => {
+  if (navigator && navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints) {
+    return navigator.mediaDevices.getSupportedConstraints()
+  } else {
+    return {}
+  }
+})()
+const isScreenShareSupported = (() => {
+  return Boolean(navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia)
+})()
+const isWebRTCSupported = (() => {
+  return Boolean(navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
+})()
+const isSupported = isScreenShareSupported && isWebRTCSupported
+
+const showREC = computed(() => {
+  return status.value === RECORD_STATUS_RECORDING
+})
+const displayMediaOptions = computed(() => {
+  const videoConstraints = {} as {
+    aspectRatio: number,
+    frameRate: number,
+    cursor: string,
+    width: number,
+    height: number
+  }
+  if (typeof aspectRatio.value === 'number') {
+    videoConstraints.aspectRatio = aspectRatio.value
+  }
+  if (typeof frameRate.value === 'number') {
+    videoConstraints.frameRate = frameRate.value
+  }
+  if (cursor.value !== 'default') {
+    videoConstraints.cursor = cursor.value
+  }
+  switch (resolutions.value) {
+    case 'fit-screen':
+      videoConstraints.width = screen.width
+      videoConstraints.height = screen.height
+      break
+    case '4K':
+      videoConstraints.width = 3840
+      videoConstraints.height = 2160
+      break
+    case '1080p':
+      videoConstraints.width = 1920
+      videoConstraints.height = 1080
+      break
+    case '720p':
+      videoConstraints.width = 1280
+      videoConstraints.height = 720
+      break
+    default:
+      break
+  }
+  return {
+    video: videoConstraints,
+    audio: recordAudio.value === 'always'
+  }
+})
+const currentDisplayMediaOptions = computed(() => {
+  if (localScreenShareStream) {
+    const tracks: Array<MediaStreamTrack> = localScreenShareStream.getVideoTracks()
+    if (tracks.length > 0) {
+      const settings: MediaTrackSettingsUserShared = tracks[0].getSettings()
+      const currentOptions = {
+        recordAudio: recordAudioOptions.find(item => (recordAudio.value === item.value))?.label,
+        recordMicro: recordMicroOptions.find(item => (recordMicro.value === item.value))?.label,
+        frameRate: settings.frameRate,
+        width: settings.width,
+        height: settings.height,
+        aspectRatio: '默认',
+        cursor: ''
       }
-    ],
-    recordMicro: 'never',
-    recordMicroOptions: [
-      {
-        label: '否',
-        value: 'never'
-      },
-      {
-        label: '是',
-        value: 'always'
-      }
-    ],
-    aspectRatio: 'default',
-    aspectRatioList: [
-      {
-        label: '默认',
-        value: 'default'
-      },
-      {
-        label: '16:9',
-        value: 1.77
-      },
-      {
-        label: '4:3',
-        value: 1.33
-      },
-      {
-        label: '21:9',
-        value: 2.35
-      },
-      {
-        label: '14:10',
-        value: 1.4
-      },
-      {
-        label: '19:10',
-        value: 1.9
-      }
-    ],
-    frameRate: 'default',
-    frameRateList: [
-      {
-        label: '默认',
-        value: 'default'
-      },
-      {
-        label: '60',
-        value: 60
-      },
-      {
-        label: '30',
-        value: 30
-      },
-      {
-        label: '25',
-        value: 25
-      },
-      {
-        label: '15',
-        value: 15
-      },
-      {
-        label: '5',
-        value: 5
-      }
-    ],
-    resolutions: 'default',
-    resolutionsList: [
-      {
-        label: '默认',
-        value: 'default'
-      },
-      {
-        label: '屏幕尺寸',
-        value: 'fit-screen'
-      },
-      {
-        label: '4K',
-        value: '4k'
-      },
-      {
-        label: '1080p',
-        value: '1080p'
-      },
-      {
-        label: '720p',
-        value: '720p'
-      }
-    ],
-    cursor: 'default',
-    cursorList: [
-      {
-        label: '默认',
-        value: 'default'
-      },
-      {
-        label: '总是显示',
-        value: 'always'
-      },
-      {
-        label: '移动时显示',
-        value: 'motion'
-      },
-      {
-        label: '从不显示',
-        value: 'never'
-      }
-    ]
-  }),
-  computed: {
-    supportedConstraints () {
-      if (navigator && navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints) {
-        return navigator.mediaDevices.getSupportedConstraints()
-      } else {
-        return {}
-      }
-    },
-    isScreenShareSupported () {
-      return Boolean(navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia)
-    },
-    isWebRTCSupported () {
-      return Boolean(navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
-    },
-    isSupported () {
-      return this.isScreenShareSupported && this.isWebRTCSupported
-    },
-    showREC () {
-      return this.status === RECORD_STATUS_RECORDING
-    },
-    displayMediaOptions () {
-      const videoConstraints = {}
-      if (this.aspectRatio !== 'default') {
-        videoConstraints.aspectRatio = this.aspectRatio
-      }
-      if (this.frameRate !== 'default') {
-        videoConstraints.frameRate = this.frameRate
-      }
-      if (this.cursor !== 'default') {
-        videoConstraints.cursor = this.cursor
-      }
-      if (this.resolutions !== 'default') {
-        if (this.resolutions === 'fit-screen') {
-          videoConstraints.width = screen.width
-          videoConstraints.height = screen.height
+      if (settings.aspectRatio) {
+        const tmpAspectRatio = settings.aspectRatio
+        const option = aspectRatioList.find(item => (typeof item.value === 'number' ? (tmpAspectRatio - item.value <= 0.1) : false))
+        if (option) {
+          currentOptions.aspectRatio = option.label
+        } else {
+          currentOptions.aspectRatio = '默认'
         }
-        if (this.resolutions === '4K') {
-          videoConstraints.width = 3840
-          videoConstraints.height = 2160
-        }
-        if (this.resolutions === '1080p') {
-          videoConstraints.width = 1920
-          videoConstraints.height = 1080
-        }
-        if (this.resolutions === '720p') {
-          videoConstraints.width = 1280
-          videoConstraints.height = 720
+      }
+      if (settings.cursor) {
+        const option = cursorList.find(item => (settings.cursor === item.value))
+        if (option) {
+          currentOptions.cursor = option.label
+        } else {
+          currentOptions.cursor = '默认'
         }
       }
       return {
-        video: videoConstraints,
-        audio: this.recordAudio === 'always'
-      }
-    },
-    currentDisplayMediaOptions () {
-      if (this.localScreenShareStream) {
-        const tracks = this.localScreenShareStream.getVideoTracks()
-        if (tracks.length > 0) {
-          const settings = tracks[0].getSettings()
-          const currentOptions = {
-            recordAudio: this.recordAudioOptions.find(item => (this.recordAudio === item.value)).label,
-            recordMicro: this.recordMicroOptions.find(item => (this.recordMicro === item.value)).label,
-            frameRate: settings.frameRate,
-            width: settings.width,
-            height: settings.height
-          }
-          if (settings.aspectRatio) {
-            const option = this.aspectRatioList.find(item => (settings.aspectRatio - item.value <= 0.1))
-            if (option) {
-              currentOptions.aspectRatio = option.label
-            } else {
-              currentOptions.aspectRatio = '默认'
-            }
-          }
-          if (settings.cursor) {
-            const option = this.cursorList.find(item => (settings.cursor === item.value))
-            if (option) {
-              currentOptions.cursor = option.label
-            } else {
-              currentOptions.cursor = '默认'
-            }
-          }
-          return {
-            video: currentOptions
-          }
-        }
-      }
-      return {
-        video: {},
-        audio: {}
+        video: currentOptions
       }
     }
-  },
-  mounted () {
-    this.screenShareVideoElement = this.$refs.screenShare
-  },
-  beforeUnmount () {
-    this.stop()
-  },
-  methods: {
-    async openScreenShare () {
-      try {
-        this.localScreenShareStream = await navigator.mediaDevices.getDisplayMedia(this.displayMediaOptions)
-        if (this.recordMicro === 'always') {
-          const tempStream = await navigator.mediaDevices.getUserMedia({ audio: true })
-          this.localScreenShareStream.addTrack(tempStream.getAudioTracks()[0])
-        }
+  }
+  return {
+    video: {} as { recordAudio: string | undefined, recordMicro: string | undefined, frameRate: number | undefined, width: number | undefined, height: number | undefined, aspectRatio: string, cursor: string },
+    audio: {}
+  }
+})
 
-        const screenShareTrack = this.localScreenShareStream.getVideoTracks()[0]
-        if (screenShareTrack) {
-          screenShareTrack.onended = this.onScreenShareEnded
-          screenShareTrack.onmute = this.onScreenShareEnded
-        }
-
-        this.recorder = new MediaRecorder(this.localScreenShareStream)
-        this.recorder.onstop = this.onRecordStopped
-        this.recorder.ondataavailable = this.onDataAvailable
-
-        this.screenShareVideoElement.srcObject = this.localScreenShareStream
-        this.screenShareVideoElement.muted = true
-        this.disabled.open = true
-        this.disabled.start = false
-      } catch (e) {
-        this.$msg.error(e.message)
-      }
-    },
-    start () {
-      this.recorder.start()
-      this.status = RECORD_STATUS_RECORDING
-      this.disabled.start = true
-      this.disabled.pause = false
-      this.disabled.stop = false
-    },
-    pause () {
-      this.recorder.pause()
-      this.status = RECORD_STATUS_PAUSED
-      this.disabled.pause = true
-      this.disabled.resume = false
-    },
-    resume () {
-      this.recorder.resume()
-      this.status = RECORD_STATUS_RECORDING
-      this.disabled.pause = false
-      this.disabled.resume = true
-    },
-    stop () {
-      if (this.recorder && this.recorder.state !== 'inactive') {
-        this.recorder.stop()
-      }
-      this.status = RECORD_STATUS_STOPPED
-      this.disabled.start = false
-      this.disabled.pause = true
-      this.disabled.resume = true
-      this.disabled.stop = true
-    },
-    download () {
-      if (this.blobUrl) {
-        const link = document.createElement('a')
-        link.href = this.blobUrl
-        link.download = 'screen-record.mp4'
-        link.click()
-      }
-    },
-
-    onScreenShareEnded () {
-      this.stop()
-      if (!this.localScreenShareStream) {
-        return
-      } else {
-        const tracks = this.localScreenShareStream.getTracks()
-        tracks.forEach(track => {
-          track.stop()
-        })
-      }
-      this.$msg.info('屏幕分享结束')
-      this.localScreenShareStream = null
-      this.screenShareVideoElement.srcObject = null
-      this.disabled.open = false
-      this.disabled.start = true
-    },
-    onRecordStopped () {
-      const blob = new Blob(this.chunks, { type: 'video/mp4' })
-      this.blobUrl = URL.createObjectURL(blob)
-      this.disabled.download = false
-      this.chunks = []
-    },
-    onDataAvailable (e) {
-      this.chunks.push(e.data)
-    },
-
-    selectAudio () {
-      if (this.recordAudio && this.recordMicro) {
-        this.recordMicro = 'never'
-      }
-    },
-    selectMicro () {
-      if (this.recordAudio && this.recordMicro) {
-        this.recordAudio = 'never'
-      }
+async function openScreenShare () {
+  try {
+    localScreenShareStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions.value)
+    if (recordMicro.value === 'always') {
+      const tempStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      localScreenShareStream.addTrack(tempStream.getAudioTracks()[0])
     }
+
+    const screenShareTrack = localScreenShareStream.getVideoTracks()[0]
+    if (screenShareTrack) {
+      screenShareTrack.onended = onScreenShareEnded
+      screenShareTrack.onmute = onScreenShareEnded
+    }
+
+    recorder = new MediaRecorder(localScreenShareStream)
+    recorder.onstop = onRecordStopped
+    recorder.ondataavailable = onDataAvailable
+
+    screenShareVideoElement.value.srcObject = localScreenShareStream
+    screenShareVideoElement.value.muted = true
+    disabled.value.open = true
+    disabled.value.start = false
+  } catch (e) {
+    $msg.error((e as Error).message)
+  }
+}
+
+function start () {
+  recorder?.start()
+  status.value = RECORD_STATUS_RECORDING
+  disabled.value.start = true
+  disabled.value.pause = false
+  disabled.value.stop = false
+}
+
+function pause () {
+  recorder?.pause()
+  status.value = RECORD_STATUS_PAUSED
+  disabled.value.pause = true
+  disabled.value.resume = false
+}
+
+function resume () {
+  recorder?.resume()
+  status.value = RECORD_STATUS_RECORDING
+  disabled.value.pause = false
+  disabled.value.resume = true
+}
+
+function stop () {
+  if (recorder && recorder.state !== 'inactive') {
+    recorder.stop()
+  }
+  status.value = RECORD_STATUS_STOPPED
+  disabled.value.start = false
+  disabled.value.pause = true
+  disabled.value.resume = true
+  disabled.value.stop = true
+}
+
+function download () {
+  if (blobUrl.value) {
+    const link = document.createElement('a')
+    link.href = blobUrl.value
+    link.download = 'screen-record.mp4'
+    link.click()
+  }
+}
+
+function onScreenShareEnded () {
+  stop()
+  if (!localScreenShareStream) {
+    return
+  } else {
+    const tracks = localScreenShareStream.getTracks()
+    tracks.forEach(track => {
+      track.stop()
+    })
+  }
+  $msg.info('屏幕分享结束')
+  localScreenShareStream = null
+  screenShareVideoElement.value.srcObject = null
+  disabled.value.open = false
+  disabled.value.start = true
+}
+
+function onRecordStopped () {
+  const blob = new Blob(chunks, { type: 'video/mp4' })
+  blobUrl.value = URL.createObjectURL(blob)
+  disabled.value.download = false
+  chunks = []
+}
+
+function onDataAvailable (e: any) {
+  chunks.push(e.data)
+}
+
+function selectAudio () {
+  if (recordAudio.value && recordMicro.value) {
+    recordMicro.value = 'never'
+  }
+}
+
+function selectMicro () {
+  if (recordAudio.value && recordMicro.value) {
+    recordAudio.value = 'never'
   }
 }
 </script>

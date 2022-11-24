@@ -1,8 +1,10 @@
-/// <reference types="vite/client" />
+import type { AxiosStatic } from 'axios'
+import type { MessageApi } from 'ant-design-vue/es/message'
 
-declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-  const component: DefineComponent<{}, {}, any>
-  export default component
+declare module 'vuex' {
+  export interface Store<S> {
+    $axios?: AxiosStatic
+    $msg?: MessageApi,
+    $apiBase?: string
+  }
 }
