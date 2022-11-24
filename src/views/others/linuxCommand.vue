@@ -55,10 +55,9 @@
 import dayjs from 'dayjs'
 import md from '@/utils/markdown.js'
 import duration from 'dayjs/plugin/duration'
+import { useLinuxCommandStore } from '@/stores/linuxCommand'
 
 dayjs.extend(duration)
-
-const { mapActions, mapState } = createNamespacedHelpers('linuxCommand')
 
 export default {
   name: 'LinuxCommand',
@@ -69,7 +68,7 @@ export default {
     showModal: false
   }),
   computed: {
-    ...mapState(['data', 'time']),
+    ...mapState(useLinuxCommandStore, ['data', 'time']),
     searchResults () {
       return Object.keys(this.data).filter(key => (this.data[key].n.toString().toLowerCase().includes(this.keyword.toLowerCase())))
     },
@@ -91,7 +90,7 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions(['getData']),
+    ...mapActions(useLinuxCommandStore, ['getData']),
     async query (command) {
       try {
         const res = await this.$axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${command}.md`)
