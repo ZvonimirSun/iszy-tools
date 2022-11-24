@@ -1,5 +1,5 @@
 import Axios, { AxiosResponse } from 'axios'
-import store from '@/store'
+import { useUserStore } from '@/stores/user'
 
 Axios.$apiBase = ''
 Axios.interceptors.request.use((config) => {
@@ -11,7 +11,7 @@ Axios.interceptors.request.use((config) => {
 Axios.interceptors.response.use(
   (response: AxiosResponse) => {
     if (response.status === 401 && response.config.url && response.config.url.startsWith(Axios.$apiBase as string)) {
-      store.dispatch('user/logout')
+      useUserStore().logout()
     }
     return response
   }, async error => {
