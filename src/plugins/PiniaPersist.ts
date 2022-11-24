@@ -88,6 +88,14 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
       (
         _mutation: SubscriptionCallbackMutation<StateTree>
       ) => {
+        if (_mutation.storeId === 'main') {
+          if (!Array.isArray(_mutation.events) && _mutation.events.key === 'clearOfflineCacheTag') {
+            localforage.clear().then(() => {
+              window.location.reload()
+            })
+            return
+          }
+        }
         updateState()
       },
       {

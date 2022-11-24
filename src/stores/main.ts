@@ -1,8 +1,10 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const useMainStore = defineStore('main', {
+  persist: true,
   state: () => ({
-    _cache: {} as Record<string, never>
+    _cache: {} as Record<string, never>,
+    clearOfflineCacheTag: false
   }),
   getters: {
     getData: (state) => (key: string): never => {
@@ -26,6 +28,7 @@ export const useMainStore = defineStore('main', {
 
     clearOfflineCache () {
       console.log('clearOfflineCache')
+      this.clearOfflineCacheTag = true
     }
   }
 })
