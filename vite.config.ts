@@ -129,6 +129,7 @@ export default defineConfig({
     }
   },
   build: {
+    target: 'esnext'
   },
   css: {
     preprocessorOptions: {
