@@ -16,29 +16,49 @@ export interface PluginOptions<S extends StateTree = StateTree> {
   debug?: boolean
 }
 
-function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: PluginOptions<S> = ({} as PluginOptions)): PiniaPlugin {
+// 队列
+const _mutex = new SimplePromiseQueue()
+
+async function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: PluginOptions<S> = ({} as PluginOptions)): Promise<PiniaPlugin> {
+  // 应用名称
   const name = (pluginOptions.name != null ? pluginOptions.name : 'pinia')
+  // 库名
   const storeName = (pluginOptions.storeName != null ? pluginOptions.storeName : 'keyvaluepairs')
+  // 库版本号
   const version = (pluginOptions.version != null ? pluginOptions.version : 1)
+  // 日志输出
   const debug = pluginOptions.debug
 
+  // 设置库
   localforage.config({
     name,
     storeName: version !== 1 ? `${storeName}_${version}` : storeName
-  });
+  })
 
-  (async function () {
-    const storeVersion = await localforage.getItem('version')
-    if (storeVersion == null) {
-      await localforage.setItem('version', version)
+  // 设置库版本号
+  const storeVersion = await localforage.getItem('version')
+  if (storeVersion == null) {
+    await localforage.setItem('version', version)
+  }
+
+  // 转储到 sessionStorage
+  sessionStorage.clear()
+  const keys = await localforage.keys()
+  for (const key of keys) {
+    const data = await localforage.getItem(key)
+    if (data != null) {
+      sessionStorage.setItem(key, JSON.stringify(data))
     }
-  })()
-
-  const _mutex = new SimplePromiseQueue()
+  }
 
   // 获取state的值
   const getState = (key:string) => {
-    return localforage.getItem(key)
+    const data = sessionStorage.getItem(key)
+    if (data != null) {
+      return JSON.parse(data)
+    } else {
+      return null
+    }
   }
 
   // 设置state的值
@@ -54,25 +74,27 @@ function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: Plu
     } = context
     if (!persist) return
 
-    getState(store.$id).then((data: unknown) => {
-      store.$patch(merge({}, store.$state, data))
-      const updateState = debounce(function () {
-        _mutex.enqueue(setState(store.$id, store.$state as never).catch(e => {
-          debug && console.log(e)
-        }))
-      }, 100)
-      store.$subscribe(
-        (
-          _mutation: SubscriptionCallbackMutation<StateTree>
-        ) => {
-          updateState()
-        },
-        {
-          detached: true,
-          deep: true
-        }
-      )
-    })
+    // 恢复持久化数据
+    const data = getState(store.$id)
+    store.$patch(merge({}, store.$state, data))
+
+    // 更新数据
+    const updateState = debounce(function () {
+      _mutex.enqueue(setState(store.$id, store.$state as never).catch(e => {
+        debug && console.log(e)
+      }))
+    }, 100)
+    store.$subscribe(
+      (
+        _mutation: SubscriptionCallbackMutation<StateTree>
+      ) => {
+        updateState()
+      },
+      {
+        detached: true,
+        deep: true
+      }
+    )
   }
 }
 

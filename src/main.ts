@@ -26,12 +26,13 @@ app.provide('$eventBus', EventBus)
 
 axios.$apiBase = $apiBase
 
-pinia.use(createPiniaPersist({
+const piniaPersistPlugin = await createPiniaPersist({
   name: 'iszy_tools',
   storeName: 'state',
-  version: 2,
-  debug: true
-}))
+  version: 2
+})
+
+pinia.use(piniaPersistPlugin)
 
 app.use(pinia).use(router)
 app.mount('#app')
