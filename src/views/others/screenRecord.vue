@@ -1,158 +1,170 @@
 <template>
-  <template v-if="isSupported">
-    <a-typography-title :level="3">
-      实时预览
-    </a-typography-title>
-    <div class="previewVideo">
-      <video
-        ref="screenShareVideoElement"
-        autoplay
-      />
-      <span
-        v-show="showREC"
-        class="rec"
-      >REC</span>
-    </div>
-    <a-space
-      :size="8"
-      class="operations"
-      align="center"
-    >
-      <a-button
-        type="primary"
-        :disabled="disabled.open"
-        @click="openScreenShare"
-      >
-        开启屏幕共享
-      </a-button>
-      <a-button
-        type="primary"
-        :disabled="disabled.start"
-        @click="start"
-      >
-        开始录制
-      </a-button>
-      <a-button
-        type="primary"
-        :disabled="disabled.pause"
-        @click="pause"
-      >
-        暂停
-      </a-button>
-      <a-button
-        type="primary"
-        :disabled="disabled.resume"
-        @click="resume"
-      >
-        继续
-      </a-button>
-      <a-button
-        type="primary"
-        :disabled="disabled.stop"
-        @click="stop"
-      >
-        停止
-      </a-button>
-      <a-button
-        type="primary"
-        :disabled="disabled.download"
-        @click="download"
-      >
-        下载
-      </a-button>
-    </a-space>
-    <template v-if="!!blobUrl">
-      <a-divider />
-      <a-typography-title :level="3">
-        结果
-      </a-typography-title>
+  <div
+    v-if="isSupported"
+    class="wrapper"
+  >
+    <div class="video-wrapper">
       <div class="previewVideo">
         <video
+          v-show="!blobUrl"
+          ref="screenShareVideoElement"
+          autoplay
+        />
+        <video
+          v-show="blobUrl"
           controls
           :src="blobUrl"
         />
+        <span
+          v-show="showStatus"
+          class="rec"
+        >{{ showStatus }}</span>
       </div>
-    </template>
-    <a-divider />
-    <a-typography-title :level="3">
-      设置
-    </a-typography-title>
-    <a-alert
-      message="由于浏览器限制，部分设置可能无法生效"
-      type="warning"
-      show-icon
-      closable
-      style="margin-bottom: .8rem;"
-    />
-    <a-form
-      v-if="!disabled.open"
-      :label-col="{sm: {span: 5}, md: {span: 4}, lg: {span: 3}, xxl: {span: 2}}"
+      <div
+        class="operations"
+      >
+        <a-button
+          type="primary"
+          @click="showSettings = !showSettings"
+        >
+          设置
+        </a-button>
+        <a-button
+          v-if="status === SCREEN_UNSHARE"
+          type="primary"
+          @click="openScreenShare"
+        >
+          开启屏幕共享
+        </a-button>
+        <template v-else>
+          <a-button
+            type="primary"
+            :disabled="status === RECORD_STATUS_RECORDING || status === RECORD_STATUS_PAUSED"
+            @click="start"
+          >
+            开始录制
+          </a-button>
+          <a-button
+            type="primary"
+            :disabled="status !== RECORD_STATUS_RECORDING"
+            @click="pause"
+          >
+            暂停
+          </a-button>
+          <a-button
+            type="primary"
+            :disabled="status !== RECORD_STATUS_PAUSED"
+            @click="resume"
+          >
+            继续
+          </a-button>
+          <a-button
+            type="primary"
+            :disabled="status === RECORD_STATUS_UNSTART || status === RECORD_STATUS_STOPPED"
+            @click="stop"
+          >
+            停止
+          </a-button>
+        </template>
+        <template
+          v-if="blobUrl"
+        >
+          <a-button
+            type="primary"
+            @click="clear"
+          >
+            清除
+          </a-button>
+          <a-button
+            type="primary"
+            @click="download"
+          >
+            下载
+          </a-button>
+        </template>
+      </div>
+    </div>
+    <div
+      v-show="showSettings"
+      class="settings-wrapper"
     >
-      <a-form-item label="系统音频">
-        <a-select
-          v-model:value="recordAudio"
-          :options="recordAudioOptions"
-          @change="selectAudio"
-        />
-      </a-form-item>
-      <a-form-item label="麦克风">
-        <a-select
-          v-model:value="recordMicro"
-          :options="recordMicroOptions"
-          @change="selectMicro"
-        />
-      </a-form-item>
-      <a-form-item
-        v-if="supportedConstraints.aspectRatio"
-        label="选择长宽比"
+      <a-alert
+        message="由于浏览器限制，部分设置可能无法生效"
+        type="warning"
+        show-icon
+        closable
+        style="margin-bottom: .8rem;"
+      />
+      <a-form
+        v-if="status === 'unshare'"
+        layout="vertical"
       >
-        <a-select
-          v-model:value="aspectRatio"
-          :options="aspectRatioList"
-        />
-      </a-form-item>
-      <a-form-item
-        v-if="supportedConstraints.frameRate"
-        label="选择帧率"
-      >
-        <a-select
-          v-model:value="frameRate"
-          :options="frameRateList"
-        />
-      </a-form-item>
-      <a-form-item
-        v-if="supportedConstraints.width && supportedConstraints.height"
-        label="选择分辨率"
-      >
-        <a-select
-          v-model:value="resolutions"
-          :options="resolutionsList"
-        />
-      </a-form-item>
-      <a-form-item label="是否显示光标">
-        <a-select
-          v-model:value="cursor"
-          :options="cursorList"
-        />
-      </a-form-item>
-    </a-form>
-    <template v-else>
-      <a-typography-title :level="4">
-        当前设置
-      </a-typography-title>
-      <a-typography-paragraph>
-        <ul>
-          <li>系统音频: {{ currentDisplayMediaOptions.video.recordAudio }}</li>
-          <li>麦克风: {{ currentDisplayMediaOptions.video.recordMicro }}</li>
-          <li>长宽比: {{ currentDisplayMediaOptions.video.aspectRatio }}</li>
-          <li>帧率: {{ currentDisplayMediaOptions.video.frameRate }}</li>
-          <li>视频宽度: {{ currentDisplayMediaOptions.video.width }}</li>
-          <li>视频高度: {{ currentDisplayMediaOptions.video.height }}</li>
-          <li>显示鼠标: {{ currentDisplayMediaOptions.video.cursor }}</li>
-        </ul>
-      </a-typography-paragraph>
-    </template>
-  </template>
+        <a-form-item label="系统音频">
+          <a-select
+            v-model:value="recordAudio"
+            :options="recordAudioOptions"
+            @change="selectAudio"
+          />
+        </a-form-item>
+        <a-form-item label="麦克风">
+          <a-select
+            v-model:value="recordMicro"
+            :options="recordMicroOptions"
+            @change="selectMicro"
+          />
+        </a-form-item>
+        <a-form-item
+          v-if="supportedConstraints.aspectRatio"
+          label="选择长宽比"
+        >
+          <a-select
+            v-model:value="aspectRatio"
+            :options="aspectRatioList"
+          />
+        </a-form-item>
+        <a-form-item
+          v-if="supportedConstraints.frameRate"
+          label="选择帧率"
+        >
+          <a-select
+            v-model:value="frameRate"
+            :options="frameRateList"
+          />
+        </a-form-item>
+        <a-form-item
+          v-if="supportedConstraints.width && supportedConstraints.height"
+          label="选择分辨率"
+        >
+          <a-select
+            v-model:value="resolutions"
+            :options="resolutionsList"
+          />
+        </a-form-item>
+        <a-form-item label="是否显示光标">
+          <a-select
+            v-model:value="cursor"
+            :options="cursorList"
+          />
+        </a-form-item>
+      </a-form>
+      <template v-else>
+        <a-typography-title :level="4">
+          当前设置
+        </a-typography-title>
+        <a-typography-paragraph>
+          <ul>
+            <li>系统音频: {{ currentDisplayMediaOptions.video.recordAudio }}</li>
+            <li>麦克风: {{ currentDisplayMediaOptions.video.recordMicro }}</li>
+            <li>长宽比: {{ currentDisplayMediaOptions.video.aspectRatio }}</li>
+            <li>帧率: {{ currentDisplayMediaOptions.video.frameRate }}</li>
+            <li>视频宽度: {{ currentDisplayMediaOptions.video.width }}</li>
+            <li>视频高度: {{ currentDisplayMediaOptions.video.height }}</li>
+            <li>显示鼠标: {{ currentDisplayMediaOptions.video.cursor }}</li>
+          </ul>
+        </a-typography-paragraph>
+      </template>
+    </div>
+  </div>
   <template v-else>
     <a-typography-title :level="3">
       你的浏览器不支持WebRTC，请安装最新版本Chrome后重试。
@@ -169,33 +181,25 @@ interface MediaTrackSettingsUserShared extends MediaTrackSettings {
   cursor?: string
 }
 
+const SCREEN_UNSHARE = 'unshare'
 const RECORD_STATUS_UNSTART = 'unstart'
 const RECORD_STATUS_RECORDING = 'recording'
 const RECORD_STATUS_PAUSED = 'paused'
 const RECORD_STATUS_STOPPED = 'stopped'
 
+// 视频元素
 const screenShareVideoElement: Ref<HTMLVideoElement> = ref() as Ref<HTMLVideoElement>
-let recorder: MediaRecorder | null = null
+// 视频流
 let localScreenShareStream: MediaStream | null = null
-const disabled: Ref<{
-  open: boolean,
-  start: boolean,
-  pause: boolean,
-  resume: boolean,
-  stop: boolean,
-  download: boolean
-}> = ref({
-  open: false,
-  start: true,
-  pause: true,
-  resume: true,
-  stop: true,
-  download: true
-})
-const status: Ref<'unstart' | 'recording' | 'paused' | 'stopped'> = ref(RECORD_STATUS_UNSTART)
+// 录制对象
+let recorder: MediaRecorder | null = null
+// 录制状态
+const status: Ref<'unstart' | 'recording' | 'paused' | 'stopped' | 'unshare'> = ref(SCREEN_UNSHARE)
+// 录制数据
 let chunks: Array<Blob> = []
+// 录制结果
 const blobUrl: Ref<string> = ref('')
-
+const showSettings: Ref<boolean> = ref(false)
 // 录制参数
 const recordAudioOptions: Array<{
   label: string,
@@ -335,8 +339,15 @@ const isWebRTCSupported = (() => {
 })()
 const isSupported = isScreenShareSupported && isWebRTCSupported
 
-const showREC = computed(() => {
-  return status.value === RECORD_STATUS_RECORDING
+const showStatus = computed(() => {
+  switch (status.value) {
+    case RECORD_STATUS_RECORDING:
+      return 'REC'
+    case RECORD_STATUS_PAUSED:
+      return 'PAUSE'
+    default:
+      return false
+  }
 })
 const displayMediaOptions = computed(() => {
   const videoConstraints = {} as {
@@ -442,33 +453,26 @@ async function openScreenShare () {
 
     screenShareVideoElement.value.srcObject = localScreenShareStream
     screenShareVideoElement.value.muted = true
-    disabled.value.open = true
-    disabled.value.start = false
+    status.value = 'unstart'
   } catch (e) {
     $msg.error((e as Error).message)
   }
 }
 
 function start () {
+  clear()
   recorder?.start()
   status.value = RECORD_STATUS_RECORDING
-  disabled.value.start = true
-  disabled.value.pause = false
-  disabled.value.stop = false
 }
 
 function pause () {
   recorder?.pause()
   status.value = RECORD_STATUS_PAUSED
-  disabled.value.pause = true
-  disabled.value.resume = false
 }
 
 function resume () {
   recorder?.resume()
   status.value = RECORD_STATUS_RECORDING
-  disabled.value.pause = false
-  disabled.value.resume = true
 }
 
 function stop () {
@@ -476,10 +480,10 @@ function stop () {
     recorder.stop()
   }
   status.value = RECORD_STATUS_STOPPED
-  disabled.value.start = false
-  disabled.value.pause = true
-  disabled.value.resume = true
-  disabled.value.stop = true
+}
+
+function clear () {
+  blobUrl.value = ''
 }
 
 function download () {
@@ -504,14 +508,12 @@ function onScreenShareEnded () {
   $msg.info('屏幕分享结束')
   localScreenShareStream = null
   screenShareVideoElement.value.srcObject = null
-  disabled.value.open = false
-  disabled.value.start = true
+  status.value = 'unshare'
 }
 
 function onRecordStopped () {
   const blob = new Blob(chunks, { type: 'video/mp4' })
   blobUrl.value = URL.createObjectURL(blob)
-  disabled.value.download = false
   chunks = []
 }
 
@@ -533,6 +535,33 @@ function selectMicro () {
 </script>
 
 <style scoped lang="scss">
+.wrapper {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+}
+
+.video-wrapper {
+  overflow: auto;
+  flex: 1;
+}
+
+.settings-wrapper {
+  overflow: auto;
+  width: 33rem;
+
+  @media (max-width: 1250px) {
+    width: 100%;
+  }
+
+  .ant-form-item {
+    margin-bottom: .8rem;
+  }
+}
+
 .previewVideo {
   background: #dedede;
   margin: 0 auto;
@@ -561,6 +590,8 @@ function selectMicro () {
 }
 
 .operations {
+  display: flex;
+  gap: .8rem;
   width: 100%;
   margin-top: .8rem;
   justify-content: center;
