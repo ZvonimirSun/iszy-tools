@@ -16,8 +16,8 @@
     </a-col>
   </a-row>
   <template
-    v-for="(item,index) in tools"
-    :key="'type'+ index"
+    v-for="(item) in tools"
+    :key="item.id"
   >
     <a-row :gutter="{ xs: 8, sm: 16}">
       <a-col
@@ -33,8 +33,8 @@
         </div>
       </a-col>
       <a-col
-        v-for="(tool,i) in item.children"
-        :key="'tool'+i"
+        v-for="(tool) in item.children"
+        :key="tool.id"
         :xs="12"
         :sm="12"
         :md="8"
@@ -77,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import { v4 as uuid } from 'uuid'
 import oriTools from '@/views/tools.json'
 import { cloneDeep, flatten } from 'lodash-es'
 import type { Ref } from 'vue'
@@ -87,6 +88,7 @@ const count: Ref<number> = ref(6)
 const userStore = useUserStore()
 
 interface ToolItem {
+  id?: string,
   name: string,
   link: string,
   tags?: string[],
@@ -94,6 +96,7 @@ interface ToolItem {
 }
 
 interface ToolMenu {
+  id?: string,
   type: string,
   icon?: string,
   children?: ToolItem[]
@@ -105,6 +108,16 @@ const allTools = computed(() => {
   }))
 })
 
+// 补充id
+for (const item of oriTools as ToolMenu[]) {
+  item.id = item.id || uuid()
+  if (item.children) {
+    for (const tool of item.children) {
+      tool.id = tool.id || uuid()
+    }
+  }
+}
+
 const settings = computed(() => userStore.settings)
 const isFav = computed(() => userStore.isFav)
 const tools = computed(() => {
@@ -113,6 +126,7 @@ const tools = computed(() => {
     tmp = [...(oriTools || [])]
   } else {
     tmp = [{
+      id: uuid(),
       type: '工具',
       icon: 'i-icon-park-solid-all-application',
       children: allTools.value
@@ -120,6 +134,7 @@ const tools = computed(() => {
   }
   if (settings.value.showRecent && userStore.recent().length > 0) {
     tmp.unshift({
+      id: uuid(),
       type: '最近访问',
       icon: 'i-icon-park-outline-history',
       children: userStore.recent(count.value)
@@ -127,6 +142,7 @@ const tools = computed(() => {
   }
   if (userStore.settings.showMost && userStore.most().length > 0) {
     tmp.unshift({
+      id: uuid(),
       type: '最常访问',
       icon: 'i-icon-park-solid-concern',
       children: userStore.most(count.value)
@@ -134,6 +150,7 @@ const tools = computed(() => {
   }
   if (userStore.favorite.length > 0) {
     tmp.unshift({
+      id: uuid(),
       type: '收藏',
       icon: 'i-icon-park-solid-folder-focus',
       children: userStore.favorite
