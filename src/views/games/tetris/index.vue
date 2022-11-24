@@ -145,7 +145,8 @@
 import { range, shuffle, cloneDeep } from 'lodash-es'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
 
-const { mapGetters, mapActions } = createNamespacedHelpers('tetris')
+import { useUserStore } from '@/stores/user'
+
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {
@@ -215,7 +216,9 @@ export default {
       const level = this.level <= 20 ? this.level : 20
       return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
     },
-    ...mapGetters(['bestScore'])
+    bestScore: function () {
+      return useUserStore().modules.tetris.bestScore
+    }
   },
   mounted () {
     this.resetGame()
@@ -519,7 +522,9 @@ export default {
       }
       return false
     },
-    ...mapActions(['setBestScore'])
+    setBestScore (score) {
+      useUserStore().modules.tetris.bestScore = score
+    }
   }
 }
 </script>
