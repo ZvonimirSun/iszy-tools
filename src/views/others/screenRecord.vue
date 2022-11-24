@@ -12,6 +12,7 @@
         />
         <video
           v-show="blobUrl"
+          ref="recordVideoElement"
           controls
           :src="blobUrl"
         />
@@ -189,6 +190,7 @@ const RECORD_STATUS_STOPPED = 'stopped'
 
 // 视频元素
 const screenShareVideoElement: Ref<HTMLVideoElement> = ref() as Ref<HTMLVideoElement>
+const recordVideoElement: Ref<HTMLVideoElement> = ref() as Ref<HTMLVideoElement>
 // 视频流
 let localScreenShareStream: MediaStream | null = null
 // 录制对象
@@ -515,6 +517,16 @@ function onRecordStopped () {
   const blob = new Blob(chunks, { type: 'video/mp4' })
   blobUrl.value = URL.createObjectURL(blob)
   chunks = []
+  const i = setInterval(async () => {
+    if (recordVideoElement.value.readyState > 0) {
+      if (recordVideoElement.value.duration === Infinity) {
+        recordVideoElement.value.currentTime = 10000000 * Math.random()
+      } else {
+        clearInterval(i)
+        recordVideoElement.value.currentTime = 0
+      }
+    }
+  }, 200)
 }
 
 function onDataAvailable (e: any) {
@@ -563,7 +575,6 @@ function selectMicro () {
 }
 
 .previewVideo {
-  background: #dedede;
   margin: 0 auto;
   display: block;
   width: 100%;
@@ -572,6 +583,7 @@ function selectMicro () {
 
   video {
     width: 100%;
+    background: #dedede;
   }
 
   .rec {
