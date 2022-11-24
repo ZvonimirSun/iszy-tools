@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/views/tools.json'
 import axios from '@/plugins/Axios'
-import { flatten } from 'lodash-es'
+import { flatten, merge } from 'lodash-es'
 import type { AxiosError } from 'axios'
 import $msg from 'ant-design-vue/es/message'
 
@@ -62,7 +62,8 @@ export const useUserStore = defineStore('user', {
       jsonEditor: {
         syncCloud: false
       }
-    }
+    },
+    version: 2
   }),
   getters: {
     isFav: state => (name: string): boolean => {
@@ -234,10 +235,63 @@ export const useUserStore = defineStore('user', {
     },
 
     async uploadSettings () {
-      return true
+      if (this._user.token) {
+        const settings = {
+          favorite: this.favorite,
+          statistics: this.statistics,
+
+          settings: this.settings,
+          modules: this.modules,
+
+          version: this.version
+        }
+        try {
+          const res = (await axios.post(`${axios.$apiBase}/tools/settings`, settings)).data
+          return res.success && res.data
+        } catch (e) {
+          return false
+        }
+      } else {
+        return false
+      }
     },
     async downloadSettings () {
-      return true
+      if (this._user.token) {
+        try {
+          if (await this.checkToken()) {
+            const res = (await axios.get(`${axios.$apiBase}/tools/settings`)).data
+            if (res.success && res.data) {
+              this.importConfig(res.data)
+              return true
+            }
+          }
+        } catch (e) {
+          console.log(e)
+        }
+        return false
+      } else {
+        return false
+      }
+    },
+    importConfig (data: any) {
+      let tmp = data
+      if (data.version == null) {
+        tmp = this.upgradeDataToV2(data)
+      }
+      this.favorite = tmp.favorite
+      this.statistics = tmp.statistics
+      this.settings = tmp.settings
+      this.modules = tmp.modules
+      this.version = tmp.version
+    },
+
+    upgradeDataToV2 (data: any) {
+      delete data.profile
+      delete data.token
+      data.modules.jsonEditor = merge(this.modules.jsonEditor, data.settings.jsonEditor)
+      delete data.settings.jsonEditor
+      data.version = 2
+      return data
     }
   }
 })

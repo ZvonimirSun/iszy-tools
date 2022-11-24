@@ -14,8 +14,6 @@ export const useMainStore = defineStore('main', {
     }
   },
   actions: {
-    importConfig () {
-    },
     setData ({ key, val } = {} as {key: string, val:never}) {
       if (key) {
         this._cache = this._cache || {} as Record<string, never>
