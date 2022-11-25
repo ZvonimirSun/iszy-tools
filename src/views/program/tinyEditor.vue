@@ -34,7 +34,7 @@
         </a-button>
       </div>
       <v-ace-editor
-        v-model:value="html"
+        v-model:value="store.html"
         lang="html"
         theme="textmate"
         style="height: calc(100% - 4.2rem);"
@@ -82,7 +82,7 @@
         </a-button>
       </div>
       <v-ace-editor
-        v-model:value="js"
+        v-model:value="store.js"
         lang="javascript"
         theme="textmate"
         style="height: calc(100% - 4.2rem);"
@@ -130,7 +130,7 @@
         </a-button>
       </div>
       <v-ace-editor
-        v-model:value="css"
+        v-model:value="store.css"
         lang="css"
         theme="textmate"
         style="height: calc(100% - 4.2rem);"
@@ -181,6 +181,7 @@
 </template>
 
 <script setup>
+import { useTinyEditorStore } from '@/stores/tinyEditor'
 import { VAceEditor } from 'vue3-ace-editor'
 import ace from 'ace-builds'
 import 'ace-builds/src-noconflict/mode-css'
@@ -203,47 +204,16 @@ const beautify = ace.require('ace/ext/beautify')
 
 const aceEditors = {}
 
-const html = ref('')
-const css = ref('')
-const js = ref('')
-
-const store = useStore()
-
-onMounted(() => {
-  html.value = store.state.tinyEditor.html
-  css.value = store.state.tinyEditor.css
-  js.value = store.state.tinyEditor.js
-})
-
-watch(html, (val) => {
-  store.dispatch('tinyEditor/setContent', {
-    type: 'html',
-    content: val
-  })
-})
-
-watch(css, (val) => {
-  store.dispatch('tinyEditor/setContent', {
-    type: 'css',
-    content: val
-  })
-})
-
-watch(js, (val) => {
-  store.dispatch('tinyEditor/setContent', {
-    type: 'js',
-    content: val
-  })
-})
+const store = useTinyEditorStore()
 
 /**
  * @type {ComputedRef<String>}
  */
 const doc = computed(() => {
-  if (html.value + css.value + js.value === '') {
+  if (store.html + store.css + store.js === '') {
     return '输入内容以在此展示'
   } else {
-    return html.value + '<style>' + css.value + '<\/style><script>' + js.value + '<\/script>'
+    return store.html + '<style>' + store.css + '<\/style><script>' + store.js + '<\/script>'
   }
 })
 

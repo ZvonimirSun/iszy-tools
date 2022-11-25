@@ -30,22 +30,33 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
   const debug = pluginOptions.debug
 
   // 设置库
-  localforage.config({
+  const localStore = localforage.createInstance({
     name,
     storeName: version !== 1 ? `${storeName}_${version}` : storeName
   })
 
+  // 升级旧版本库
+  if (version !== 1) {
+    const lastVersionStore = localforage.createInstance({
+      name,
+      storeName: version - 1 !== 1 ? `${storeName}_${version - 1}` : storeName
+    })
+    if (version === 2) {
+      await migrateToV2(lastVersionStore, localStore)
+    }
+  }
+
   // 设置库版本号
-  const storeVersion = await localforage.getItem('version')
+  const storeVersion = await localStore.getItem('version')
   if (storeVersion == null) {
-    await localforage.setItem('version', version)
+    await localStore.setItem('version', version)
   }
 
   // 转储到 sessionStorage
   sessionStorage.clear()
-  const keys = await localforage.keys()
+  const keys = await localStore.keys()
   for (const key of keys) {
-    const data = await localforage.getItem(key)
+    const data = await localStore.getItem(key)
     if (data != null) {
       sessionStorage.setItem(key, JSON.stringify(data))
     }
@@ -63,7 +74,7 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
 
   // 设置state的值
   const setState = (key: string, state: never) => {
-    return localforage.setItem(key, cloneDeep(state))
+    return localStore.setItem(key, cloneDeep(state))
   }
 
   return (context: PiniaPluginContext) => {
@@ -101,7 +112,7 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
       ) => {
         if (_mutation.storeId === 'main') {
           if (!Array.isArray(_mutation.events) && _mutation.events.key === 'clearOfflineCacheTag') {
-            localforage.clear().then(() => {
+            localStore.clear().then(() => {
               window.location.reload()
             })
             return
@@ -117,6 +128,39 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
   }
 }
 
-export { createPiniaPersist }
+async function migrateToV2 (lastStore: typeof localforage, store: typeof localforage) {
+  await store.clear()
+  const keys = await lastStore.keys()
+  for (const key of keys) {
+    switch (key) {
+      case 'g2048':
+        await store.setItem('2048', await lastStore.getItem('g2048'))
+        break
+      case 'imgHosting':
+        await store.setItem('imgHosting', await lastStore.getItem('imgHosting'))
+        break
+      case 'jsonEditor':
+        await store.setItem('jsonEditor', await lastStore.getItem('jsonEditor'))
+        break
+      case 'linuxCommand':
+        await store.setItem('linuxCommand', await lastStore.getItem('linuxCommand'))
+        break
+      case 'tinyEditor':
+        await store.setItem('tinyEditor', await lastStore.getItem('tinyEditor'))
+        break
+      case 'user': {
+        const tmp: any = await lastStore.getItem('user')
+        delete tmp.profile
+        delete tmp.token
+        tmp.modules.jsonEditor = tmp.settings.jsonEditor
+        delete tmp.settings.jsonEditor
+        tmp.version = 2
+        await store.setItem('user', tmp)
+        break
+      }
+    }
+  }
+  await store.setItem('version', 2)
+}
 
-export default createPiniaPersist()
+export { createPiniaPersist }
