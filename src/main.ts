@@ -5,6 +5,7 @@ import router from '@/router'
 import axios from '@/plugins/Axios'
 import 'ant-design-vue/es/message/style/css.js'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
+import VueGtag from 'vue-gtag'
 
 const $apiBase = 'https://api.iszy.xyz'
 
@@ -34,5 +35,8 @@ const piniaPersistPlugin = await createPiniaPersist({
 
 pinia.use(piniaPersistPlugin)
 
-app.use(pinia).use(router)
+app.use(pinia).use(router).use(VueGtag, {
+  pageTrackerScreenviewEnabled: true,
+  config: { id: 'G-LSFH1TGJMM' }
+}, router)
 app.mount('#app')
