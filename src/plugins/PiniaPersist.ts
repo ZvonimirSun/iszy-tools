@@ -35,26 +35,35 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
     storeName: version !== 1 ? `${storeName}_${version}` : storeName
   })
 
-  // 升级旧版本库
-  if (version !== 1) {
-    const lastVersionStore = localforage.createInstance({
-      name,
-      storeName: version - 1 !== 1 ? `${storeName}_${version - 1}` : storeName
-    })
-    if (version === 2) {
-      await migrateToV2(lastVersionStore, localStore)
+  const keys = await localStore.keys()
+  if (!keys.length) {
+    // 升级旧版本库
+    if (version !== 1) {
+      const lastVersionStore = localforage.createInstance({
+        name,
+        storeName: version - 1 !== 1 ? `${storeName}_${version - 1}` : storeName
+      })
+      const lastKeys = await lastVersionStore.keys()
+      if (lastKeys.length) {
+        if (version === 2) {
+          await migrateToV2(lastVersionStore, localStore)
+        }
+      }
+      await localforage.dropInstance({
+        name,
+        storeName: version - 1 !== 1 ? `${storeName}_${version - 1}` : storeName
+      })
     }
-  }
 
-  // 设置库版本号
-  const storeVersion = await localStore.getItem('version')
-  if (storeVersion == null) {
-    await localStore.setItem('version', version)
+    // 设置库版本号
+    const storeVersion = await localStore.getItem('version')
+    if (storeVersion == null) {
+      await localStore.setItem('version', version)
+    }
   }
 
   // 转储到 sessionStorage
   sessionStorage.clear()
-  const keys = await localStore.keys()
   for (const key of keys) {
     const data = await localStore.getItem(key)
     if (data != null) {
