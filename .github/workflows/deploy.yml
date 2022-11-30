@@ -2,8 +2,6 @@ name: Auto Test
 
 on:
   push:
-    branches:
-      - 'main'
     paths-ignore:
       - '.github/**'
   pull_request:
