@@ -203,7 +203,8 @@ function initMap () {
   _map = markRaw(map(mapContainer.value, {
     attributionControl: true,
     zoomControl: false,
-    minZoom: 4
+    minZoom: 4,
+    trackResize: true
   }))
   emit('getMap', _map)
   _map.setView([35, 105], 4)

@@ -25,7 +25,8 @@ onMounted(() => {
     crs: CRS.Simple,
     attributionControl: false,
     maxBounds: bounds,
-    maxBoundsViscosity: 1.0
+    maxBoundsViscosity: 1.0,
+    trackResize: true
   }).setView([0, 0], 2))
 
   tileLayer('https://lib.iszy.xyz/other/zelda-botw-map/map/{z}_{x}_{y}.png', {

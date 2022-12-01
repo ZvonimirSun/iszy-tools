@@ -69,7 +69,8 @@ export default {
       this.map = markRaw(map(this.$refs.mapContainer, {
         attributionControl: true,
         zoomControl: false,
-        minZoom: 4
+        minZoom: 4,
+        trackResize: true
       }))
       this.map.setView([35, 105], 4)
       control.layers({
