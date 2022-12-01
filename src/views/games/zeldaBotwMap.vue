@@ -34,6 +34,12 @@ onMounted(() => {
     noWrap: true,
     bounds
   }).addTo(_map.value)
+  tileLayer('https://lib.iszy.xyz/other/zelda-botw-map/label/{z}_{x}_{y}.png', {
+    minZoom: 2,
+    maxZoom: 7,
+    noWrap: true,
+    bounds
+  }).addTo(_map.value)
 })
 
 </script>
