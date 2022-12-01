@@ -1,7 +1,7 @@
 <template>
   <a-config-provider :locale="zhCN">
-    <a-layout>
-      <a-layout-header v-show="!fullScreenStatus">
+    <a-layout v-if="route.meta?.type !== 'tool' || !fullScreenStatus">
+      <a-layout-header>
         <div class="header">
           <router-link to="/">
             ISZY工具集合
@@ -47,13 +47,12 @@
         </div>
         <Container
           v-else
-          :full-screen-status="fullScreenStatus"
           @full-screen="fullScreen"
         >
           <router-view />
         </Container>
       </a-layout-content>
-      <a-layout-footer v-show="!fullScreenStatus">
+      <a-layout-footer>
         <span>© {{ year }}&nbsp;</span>
         <a-typography-link
           href="https://www.iszy.cc"
@@ -70,6 +69,7 @@
         </a-typography-link>
       </a-layout-footer>
     </a-layout>
+    <router-view v-else />
   </a-config-provider>
 </template>
 
@@ -103,8 +103,27 @@ if (now !== year.value) {
   year.value += ` - ${now}`
 }
 
+let showInfo = false
+
 onMounted(() => {
   asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
+  window.addEventListener('keydown', function (e: KeyboardEvent) {
+    if (fullScreenStatus.value) {
+      if (e.key === 'Escape') {
+        if (!e.repeat) {
+          if (!showInfo) {
+            showInfo = true
+            setTimeout(() => {
+              showInfo = false
+            }, 3000)
+            $msg.info('长按Esc以退出全屏')
+          }
+        } else {
+          fullScreen()
+        }
+      }
+    }
+  }, false)
 })
 
 function fullScreen () {
@@ -114,6 +133,9 @@ function fullScreen () {
     setParam('fullScreen')
   }
   fullScreenStatus.value = !fullScreenStatus.value
+  if (fullScreenStatus.value) {
+    $msg.info('长按Esc以退出全屏')
+  }
 }
 
 watch(offlineReady, function (val) {
