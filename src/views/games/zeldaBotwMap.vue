@@ -28,7 +28,7 @@ onMounted(() => {
     maxBoundsViscosity: 1.0
   }).setView([0, 0], 2))
 
-  tileLayer('https://lib.iszy.xyz/other/zelda-botw-map/{z}_{x}_{y}.png', {
+  tileLayer('https://lib.iszy.xyz/other/zelda-botw-map/map/{z}_{x}_{y}.png', {
     minZoom: 2,
     maxZoom: 7,
     noWrap: true,
