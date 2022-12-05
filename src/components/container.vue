@@ -2,6 +2,9 @@
   <div
     ref="container"
     class="containerBase"
+    :class="{
+      'full-screen': fullScreenStatus
+    }"
   >
     <div class="containerAll">
       <div class="containerTitle">
@@ -28,6 +31,10 @@
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['fullScreen'])
 const route = useRoute()
+
+defineProps({
+  fullScreenStatus: { type: Boolean, default: false }
+})
 
 function fullScreen () {
   emit('fullScreen')
@@ -99,6 +106,17 @@ function fullScreen () {
     overflow-y: auto;
     border-radius: .8rem;
     position: relative;
+  }
+}
+
+.full-screen {
+  .containerAll {
+    height: 100%;
+    margin: 0;
+
+    .containerTitle {
+      display: none;
+    }
   }
 }
 </style>

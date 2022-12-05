@@ -1,7 +1,7 @@
 <template>
   <a-config-provider :locale="zhCN">
-    <a-layout v-if="route.meta?.type !== 'tool' || !fullScreenStatus">
-      <a-layout-header>
+    <a-layout>
+      <a-layout-header v-show="!fullScreenStatus">
         <div class="header">
           <router-link to="/">
             ISZY工具集合
@@ -34,7 +34,10 @@
           </template>
         </div>
       </a-layout-header>
-      <a-layout-content ref="view">
+      <a-layout-content
+        ref="view"
+        :class="{'full-screen': fullScreenStatus}"
+      >
         <a-back-top
           :target="()=>view.$el"
           :visibility-height="100"
@@ -47,12 +50,13 @@
         </div>
         <Container
           v-else
+          :full-screen-status="fullScreenStatus"
           @full-screen="fullScreen"
         >
           <router-view />
         </Container>
       </a-layout-content>
-      <a-layout-footer>
+      <a-layout-footer v-show="!fullScreenStatus">
         <span>© {{ year }}&nbsp;</span>
         <a-typography-link
           href="https://www.iszy.cc"
@@ -69,7 +73,6 @@
         </a-typography-link>
       </a-layout-footer>
     </a-layout>
-    <router-view v-else />
   </a-config-provider>
 </template>
 
@@ -215,6 +218,10 @@ watch(() => route.path, () => {
     margin: 0 auto;
     padding: 0 1.6rem 1.6rem;
     overflow-y: auto;
+
+    &.full-screen {
+      padding: 0;
+    }
   }
 
   &-footer {
