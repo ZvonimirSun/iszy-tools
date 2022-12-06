@@ -117,6 +117,11 @@ function fullScreen () {
     .containerTitle {
       display: none;
     }
+
+    .main {
+      padding: 0;
+      border-radius: 0;
+    }
   }
 }
 </style>
