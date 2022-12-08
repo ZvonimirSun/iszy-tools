@@ -60,7 +60,7 @@ export default defineComponent({
           this.randomNumResult = random(this.min, this.max, this.float) + (this.randomNumResult === '' ? '' : '\n') + this.randomNumResult
         }
       } catch (e) {
-        this.$msg.error('计算错误')
+        ElMessage.error('计算错误')
       }
     },
     clearRandomNum () {

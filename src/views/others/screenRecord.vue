@@ -175,7 +175,6 @@
 
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import $msg from 'ant-design-vue/es/message'
 
 // eslint-disable-next-line no-undef
 interface MediaTrackSettingsUserShared extends MediaTrackSettings {
@@ -457,7 +456,7 @@ async function openScreenShare () {
     screenShareVideoElement.value.muted = true
     status.value = 'unstart'
   } catch (e) {
-    $msg.error((e as Error).message)
+    ElMessage.error((e as Error).message)
   }
 }
 
@@ -507,7 +506,7 @@ function onScreenShareEnded () {
       track.stop()
     })
   }
-  $msg.info('屏幕分享结束')
+  ElMessage.info('屏幕分享结束')
   localScreenShareStream = null
   screenShareVideoElement.value.srcObject = null
   status.value = 'unshare'

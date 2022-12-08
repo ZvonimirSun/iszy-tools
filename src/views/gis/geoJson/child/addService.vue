@@ -131,7 +131,7 @@ export default defineComponent({
             break
         }
       } catch (e) {
-        this.$msg.error('添加服务失败')
+        ElMessage.error('添加服务失败')
       }
       if (layer && this.layerControl) {
         this.layerControl.addOverlay(layer, serviceName)

@@ -222,8 +222,6 @@ const hasRedo = ref(false)
 const hasUndoJs = ref(false)
 const hasRedoJs = ref(false)
 
-const $msg = inject('$msg')
-
 function editorInit (editor) {
   aceEditor = editor
   editor.getSession().setTabSize(2)
@@ -317,9 +315,9 @@ function run () {
     const func = new Function('json', code.value + '\nreturn main(json)')
     json.value = JSON.stringify(func(JSON.parse(json.value)))
     format()
-    $msg.success('转换成功')
+    ElMessage.success('转换成功')
   } catch (e) {
-    $msg.warn(e.message)
+    ElMessage.warning(e.message)
   }
 }
 </script>

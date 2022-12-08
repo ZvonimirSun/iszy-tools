@@ -116,7 +116,6 @@
 </template>
 
 <script setup lang="ts">
-import $msg from 'ant-design-vue/es/message'
 import { useUserStore } from '@/stores/user'
 import { useMainStore } from '@/stores/main'
 
@@ -134,16 +133,16 @@ const downloadSettings = () => userStore.downloadSettings()
 
 async function uploadToCloud () {
   if (await uploadSettings()) {
-    $msg.success('同步成功')
+    ElMessage.success('同步成功')
   } else {
-    $msg.error('同步失败')
+    ElMessage.error('同步失败')
   }
 }
 async function downloadFromCloud () {
   if (await downloadSettings()) {
-    $msg.success('同步成功')
+    ElMessage.success('同步成功')
   } else {
-    $msg.error('同步失败')
+    ElMessage.error('同步失败')
   }
 }
 function login () {

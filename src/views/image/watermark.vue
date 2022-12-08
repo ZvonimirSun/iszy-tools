@@ -167,7 +167,7 @@ export default {
         const result = await domToImage.toBlob(this.$refs.preview, {})
         createFile(result, 'watermark.png')
       } catch (e) {
-        this.$msg.error('生成失败')
+        ElMessage.error('生成失败')
       }
       this.loading = false
     }

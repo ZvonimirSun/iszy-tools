@@ -265,10 +265,10 @@ export default {
               if (res.data.status === '1' && res.data.regeocode.formatted_address) {
                 address = res.data.regeocode.formatted_address
               } else {
-                this.$msg.warn('未找到相关地址。')
+                ElMessage.warning('未找到相关地址。')
               }
             } catch (e) {
-              this.$msg.error('查询地址失败！')
+              ElMessage.error('查询地址失败！')
             }
           }
           if (this.clickMarker) {
@@ -298,7 +298,7 @@ export default {
             this.map.setView(latLng, 16)
           }
         } catch (e) {
-          this.$msg.error('定位失败!')
+          ElMessage.error('定位失败!')
         }
       }
     },
@@ -319,10 +319,10 @@ export default {
               lng: latLng.lng
             }, info.formatted_address)
           } else {
-            this.$msg.warn('未找到相关地址。')
+            ElMessage.warning('未找到相关地址。')
           }
         } catch (e) {
-          this.$msg.error('查询地址失败!')
+          ElMessage.error('查询地址失败!')
         }
       }
     },

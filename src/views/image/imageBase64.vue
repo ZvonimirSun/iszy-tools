@@ -49,7 +49,6 @@ import type { MessageApi } from 'ant-design-vue/es/message'
 import type { AxiosStatic } from 'axios'
 
 const dataUrl: Ref<string> = ref('')
-const $msg: MessageApi = inject('$msg') as MessageApi
 const $axios: AxiosStatic = inject('$axios') as AxiosStatic
 
 const isUrl = computed(() => {
@@ -68,9 +67,9 @@ function upload (img: File): false {
 async function copy () {
   try {
     await window.navigator.clipboard.writeText(dataUrl.value)
-    $msg.success('复制成功')
+    ElMessage.success('复制成功')
   } catch (e) {
-    $msg.error((e as Error)?.message)
+    ElMessage.error((e as Error)?.message)
   }
 }
 
@@ -85,7 +84,7 @@ async function convert () {
     }
     reader.readAsDataURL(res.data)
   } catch (e) {
-    $msg.error((e as Error)?.message)
+    ElMessage.error((e as Error)?.message)
   }
 }
 </script>

@@ -41,7 +41,6 @@ import '@/utils/shpwrite.js'
 import createFile from '@/utils/createFile'
 
 const $eventBus = inject('$eventBus')
-const $msg = inject('$msg')
 // eslint-disable-next-line no-undef
 const props = defineProps({
   geoJsonLayer: { type: GeoJSON, default: undefined }
@@ -79,7 +78,7 @@ function exportFile (e = {}) {
 
 function exportShapefile () {
   if (typeof ArrayBuffer === 'undefined') {
-    $msg.error('当前浏览器不支持导出成Shapefile')
+    ElMessage.error('当前浏览器不支持导出成Shapefile')
     return
   }
   const data = props.geoJsonLayer?.toGeoJSON()
@@ -100,10 +99,10 @@ function exportShapefile () {
         }
       })
     } catch (e) {
-      $msg.error('导出失败，' + e.message)
+      ElMessage.error('导出失败，' + e.message)
     }
   } else {
-    $msg.warn('无可导出数据')
+    ElMessage.warning('无可导出数据')
   }
 }
 
@@ -112,7 +111,7 @@ function exportGeoJson () {
   if (data) {
     createFile(data, 'exportFile.geojson')
   } else {
-    $msg.warn('无可导出数据')
+    ElMessage.warning('无可导出数据')
   }
 }
 </script>

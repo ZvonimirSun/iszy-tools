@@ -42,7 +42,7 @@ MD5 32位 小写: ${tmp.toLowerCase()}
 MD5 16位 大写: ${tmp.substring(8, 24).toUpperCase()}
 MD5 16位 小写: ${tmp.substring(8, 24).toLowerCase()}`
   } catch (e) {
-    this.$msg.error(e)
+    ElMessage.error(e)
     return ''
   }
 }

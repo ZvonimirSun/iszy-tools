@@ -6,10 +6,12 @@ import { resolve } from 'path'
 import Sitemap from './src/plugins/Sitemap.js'
 import tools from './src/views/tools.json'
 import Components from 'unplugin-vue-components/vite'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import { AntDesignVueResolver, ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
 import { presetUno, presetAttributify, presetIcons } from 'unocss'
 import AutoImport from 'unplugin-auto-import/vite'
+import Inspect from 'vite-plugin-inspect'
+import Zeitreise from '@zeitreise/vite'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
@@ -17,8 +19,14 @@ const iconClass = tools.map(item => item.icon).filter(item => item)
 export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
-    vue(),
+    vue({
+      reactivityTransform: true
+    }),
     AutoImport({
+      resolvers: [
+        ElementPlusResolver(),
+        AntDesignVueResolver()
+      ],
       imports: [
         'vue',
         'vue-router',
@@ -28,6 +36,7 @@ export default defineConfig({
       eslintrc: {
         enabled: true
       },
+      vueTemplate: true,
       dts: './src/auto-imports.d.ts'
     }),
     Unocss({
@@ -43,8 +52,9 @@ export default defineConfig({
     Components({
       dirs: ['src/components'],
       extensions: ['vue'],
-      dts: false,
+      dts: './src/components.d.ts',
       resolvers: [
+        ElementPlusResolver(),
         AntDesignVueResolver()
       ]
     }),
@@ -118,10 +128,12 @@ export default defineConfig({
         ]
       }
     }),
-    Sitemap({ tools, hostname: 'https://tools.iszy.xyz' })
+    Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
+    Inspect(),
+    Zeitreise()
   ],
   optimizeDeps: {
-    include: ['vue', 'ant-design-vue']
+    include: ['vue', 'element-plus', 'ant-design-vue']
   },
   resolve: {
     alias: {

@@ -144,7 +144,6 @@ const props = defineProps({
 const emit = defineEmits(['update:geoJsonLayer', 'getMap', 'getControl'])
 
 const $eventBus = inject('$eventBus')
-const $msg = inject('$msg')
 
 const selectedFeature = ref(undefined)
 const mapContainer = ref()
@@ -158,7 +157,7 @@ const onPropertyFinishAdd = values => {
   values.properties.forEach(item => {
     if (item.label && item.value) {
       if (selectedFeature.value.properties[item.label] != null) {
-        $msg.warn('字段 [ ' + item.label + ' ] 存在，已跳过')
+        ElMessage.warning('字段 [ ' + item.label + ' ] 存在，已跳过')
       } else {
         selectedFeature.value.properties[item.label] = isNaN(item.value) ? item.value : parseFloat(item.value)
       }

@@ -123,7 +123,6 @@
 import type { Ref } from 'vue'
 import type { FormInstance, Rule } from 'ant-design-vue/es/form'
 import type { AxiosStatic } from 'axios'
-import type { MessageApi } from 'ant-design-vue/es/message'
 
 const registerForm: Ref<FormInstance> = ref<FormInstance>() as Ref<FormInstance>
 const $axios: AxiosStatic = inject('$axios') as AxiosStatic
@@ -212,10 +211,10 @@ async function register () {
       email: form.email
     })).data
     if (res.success) {
-      $msg.success('注册成功，请等待管理员审核')
+      ElMessage.success('注册成功，请等待管理员审核')
       await router.push('/')
     } else {
-      $msg.error(`注册失败，${res.message}`)
+      ElMessage.error(`注册失败，${res.message}`)
     }
   } catch (e) {
   }

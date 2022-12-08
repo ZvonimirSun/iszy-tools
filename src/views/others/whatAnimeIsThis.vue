@@ -123,7 +123,7 @@ export default {
   methods: {
     beforeUpload (img) {
       if (img.size / 1024 / 1024 >= 10) {
-        this.$msg.error('图片大小不能超过10MB!')
+        ElMessage.error('图片大小不能超过10MB!')
         return false
       }
       const reader = new FileReader()
@@ -152,7 +152,7 @@ export default {
         }
       } catch (e) {
         this.loading = false
-        this.$msg.error('请求失败，请检查网络连接')
+        ElMessage.error('请求失败，请检查网络连接')
       }
     },
     async checkTimes () {
@@ -162,7 +162,7 @@ export default {
         this.quotaUsed = res.data.quotaUsed || 0
         this.quota = res.data.quota || 0
       } catch (e) {
-        this.$msg.error('请求失败，请检查网络连接')
+        ElMessage.error('请求失败，请检查网络连接')
       }
     },
     secondToDate (seconds) {

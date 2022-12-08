@@ -111,7 +111,6 @@ import * as uploaders from '../uploader/index'
 import { cloneDeep, merge } from 'lodash-es'
 import type { Ref } from 'vue'
 import { useImgHostingStore } from '@/stores/imgHosting'
-import $msg from 'ant-design-vue/es/message'
 import { AliOssConfig } from '../uploader/index'
 import { CheckboxChangeEvent } from 'ant-design-vue/es/checkbox/interface'
 
@@ -179,7 +178,7 @@ function save () {
   const config = {} as Record<string, string>
   for (const c of currentConfig.value) {
     if (c.required && (c.default == null || c.default === '')) {
-      $msg.warn('必填项未填写完整')
+      ElMessage.warning('必填项未填写完整')
       return
     }
     config[c.name] = c.default
@@ -188,7 +187,7 @@ function save () {
     uploader: currentUploader.value,
     config
   })
-  $msg.success('保存成功')
+  ElMessage.success('保存成功')
 }
 </script>
 

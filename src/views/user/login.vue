@@ -65,7 +65,6 @@
 import type { Ref } from 'vue'
 import type { LocationQuery } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import $msg from 'ant-design-vue/es/message'
 
 const form: Ref<{
   userName: string,
@@ -94,7 +93,7 @@ watch(route, function (val) {
 
 async function login () {
   if (!navigator.onLine) {
-    $msg.warn('已离线！')
+    ElMessage.warning('已离线！')
     return
   }
   if (form.value.userName != null && form.value.password != null) {
@@ -104,10 +103,10 @@ async function login () {
         userName: form.value.userName,
         password: form.value.password
       })
-      $msg.success('登录成功！')
+      ElMessage.success('登录成功！')
       router.push({ path: redirect.value || '/', query: otherQuery.value })
     } catch (e) {
-      if (e instanceof Error) { $msg.error(e.message) }
+      if (e instanceof Error) { ElMessage.error(e.message) }
     }
     loading.value = false
   }

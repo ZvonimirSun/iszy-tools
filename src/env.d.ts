@@ -1,3 +1,5 @@
+/// <reference types="vue/macros-global" />
+
 export interface ToolItem {
   id?: string,
   name: string,

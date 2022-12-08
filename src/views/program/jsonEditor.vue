@@ -585,7 +585,7 @@ export default {
             this.save('left')
           },
           onError: (e) => {
-            this.$msg.error(e.message)
+            ElMessage.error(e.message)
           },
           onFocus: () => {
             this.targetEditor = 'left'
@@ -622,7 +622,7 @@ export default {
             this.save('right')
           },
           onError: (e) => {
-            this.$msg.error(e.message)
+            ElMessage.error(e.message)
           },
           onFocus: () => {
             this.targetEditor = 'right'
@@ -871,7 +871,7 @@ export default {
           this.closeModal()
         }
       } catch (e) {
-        this.$msg.error(e.message)
+        ElMessage.error(e.message)
       }
     },
     download (leftOrRight) {
@@ -887,7 +887,7 @@ export default {
         if (this.targetEditor) {
           this.download(this.targetEditor)
         } else {
-          this.$msg.warn('请先选中一个编辑器')
+          ElMessage.warning('请先选中一个编辑器')
         }
       }
     },
@@ -946,11 +946,11 @@ export default {
     changeDiff () {
       if (!this.diff) {
         if (typeof this.codeLeft === 'string' || typeof this.codeRight === 'string') {
-          this.$msg.error('JSON存在错误')
+          ElMessage.error('JSON存在错误')
           return
         }
         if (this.leftMode !== 'tree' || this.rightMode !== 'tree') {
-          this.$msg.warn('对比模式仅在「树」模式下生效，请切换为树模式')
+          ElMessage.warning('对比模式仅在「树」模式下生效，请切换为树模式')
         }
       }
       this.diff = !this.diff

@@ -1,26 +1,29 @@
 <template>
-  <a-row
+  <el-row
     v-if="settings.showSearch"
-    :gutter="{ xs: 8, sm: 16, md: 24}"
-    class="noName"
+    :gutter="8"
   >
-    <a-col :span="24">
-      <div class="search">
+    <el-col>
+      <div class="search-wrapper">
         <span class="i-icon-park-outline-search" />
-        <input
+        <el-input
           v-model="searchStr"
-          type="search"
           placeholder="搜索工具"
-        >
+        />
       </div>
-    </a-col>
-  </a-row>
+    </el-col>
+  </el-row>
   <template
     v-for="(item) in tools"
     :key="item.id"
   >
-    <a-row :gutter="{ xs: 8, sm: 16}">
-      <a-col
+    <el-row
+      :gutter="16"
+      :style="{
+        padding: '0 .8rem .4rem',
+      }"
+    >
+      <el-col
         :span="24"
         class="typeNameCol"
       >
@@ -31,25 +34,25 @@
           />
           <div>{{ item.type }}</div>
         </div>
-      </a-col>
-      <a-col
+      </el-col>
+      <el-col
         v-for="(tool) in item.children"
         :key="tool.id"
         :xs="12"
-        :sm="12"
-        :md="8"
-        :lg="6"
-        :xl="4"
-        :xxl="3"
+        :sm="8"
+        :md="6"
+        :lg="4"
+        :xl="3"
       >
         <router-link
           :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
           :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')"
         >
-          <a-tooltip>
-            <template #title>
-              {{ tool.name }}
-            </template>
+          <el-tooltip
+            placement="top"
+            :show-after="200"
+            :content="tool.name"
+          >
             <div
               class="tool"
               :class="{toolCollected:isFav(tool.name)}"
@@ -69,10 +72,10 @@
                 <span class="hovered"><span class="i-icon-park-solid-star" /></span>
               </span>
             </div>
-          </a-tooltip>
+          </el-tooltip>
         </router-link>
-      </a-col>
-    </a-row>
+      </el-col>
+    </el-row>
   </template>
 </template>
 
@@ -166,10 +169,37 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.ant-row {
-  background: #fff;
-  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
-  border-radius: .8rem;
+.search-wrapper {
+  display: inline-flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  padding: 1.4rem 2rem;
+  color: var(--el-text-color-primary);
+
+  [class^="i-"] {
+    font-size: 2.2rem;
+    margin-right: 1.4rem;
+    color: var(--el-color-primary)
+  }
+
+  :deep(.el-input) {
+    flex: 1;
+    background: transparent;
+
+    .el-input__wrapper:not(.is-focus):not(:hover) {
+      background: transparent;
+      outline: none;
+      border: none;
+      box-shadow: unset;
+    }
+  }
+}
+
+.el-row {
+  background: var(--el-fill-color);
+  box-shadow: var(--el-box-shadow-light);
+  border-radius: var(--el-border-radius-round);
 
   &:not(:first-child) {
     margin-top: 3.3rem;
@@ -182,7 +212,7 @@ onMounted(() => {
 
   .typeName {
     margin-left: 3rem;
-    padding: .5rem 1.6rem;
+    padding: 0 1.6rem;
 
     height: 3.2rem;
     display: inline-flex;
@@ -192,10 +222,10 @@ onMounted(() => {
     font-weight: 700;
     line-height: 2.4rem;
 
-    color: #fff;
-    background-color: #16b0f6;
-    box-shadow: 0 0.8rem 1rem #16B0F64D;
-    border-radius: .8rem;
+    color: var(--el-color-white);
+    background-color: var(--el-color-primary);
+    box-shadow: var(--el-box-shadow-light);
+    border-radius: var(--el-border-radius-middle);
 
     [class^="i-"] {
       font-size: 2.2rem;
@@ -212,17 +242,15 @@ onMounted(() => {
 }
 
 .tool {
-  color: #333333;
+  color: var(--el-text-color-primary);
   font-size: 1.6rem;
   line-height: 2.4rem;
   font-weight: 600;
-  box-shadow: 0 .5rem .8rem #16B0F64D;
-  border-radius: .8rem;
+  border-radius: var(--el-border-radius-middle);
   margin: .8rem 0;
   padding: .8rem 1.6rem;
-  background-color: #fff;
-  transform: translateZ(0);
-  transition: transform 0.2s, color 0.2s, background-color 0.2s;
+  background-color: var(--el-fill-color-lighter);
+  border: var(--el-border);
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -230,11 +258,7 @@ onMounted(() => {
   white-space: nowrap;
 
   position: relative;
-
-  @media screen and (max-width: 576px) {
-    box-shadow: unset;
-    border: #999 .1rem solid;
-  }
+  text-decoration: none;
 
   &.toolCollected {
     padding-right: 1.5rem * 2;
@@ -248,7 +272,7 @@ onMounted(() => {
 
     &.collected {
       display: unset;
-      color: #16b0f6;
+      color: var(--el-color-primary);
     }
 
     .hovered {
@@ -256,20 +280,10 @@ onMounted(() => {
     }
   }
 
-  sup {
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    width: .6rem;
-    height: .6rem;
-    border-radius: 100%;
-    box-shadow: 0 0 0 .1rem #fff;
-  }
-
   @media (any-hover: hover) {
     &:hover {
-      background-color: #16b0f6;
-      color: #fff;
+      background-color: var(--el-color-primary);
+      color: var(--el-color-white);
       //transform: scale3d(1.1, 1.1, 1.1);
       padding-right: 1.5rem * 2;
 
@@ -277,7 +291,7 @@ onMounted(() => {
         display: unset;
 
         &.collected {
-          color: white;
+          color: var(--el-color-white);
         }
 
         &:hover {
@@ -287,13 +301,9 @@ onMounted(() => {
 
           .hovered {
             display: unset;
-            color: white;
+            color: var(--el-color-white);
           }
         }
-      }
-
-      sup {
-        display: none;
       }
     }
   }
@@ -306,14 +316,14 @@ onMounted(() => {
     }
 
     &:active {
-      background-color: #16b0f6;
-      color: #fff;
+      background-color: var(--el-color-primary);
+      color: var(--el-color-white);
       //transform: scale3d(1.1, 1.1, 1.1);
 
       .fav {
 
         &.collected {
-          color: white;
+          color: var(--el-color-white);
         }
 
         .nonHover {
@@ -322,59 +332,14 @@ onMounted(() => {
 
         .hovered {
           display: unset;
-          color: white;
+          color: var(--el-color-white);
         }
       }
-
-      sup {
-        display: none;
-      }
     }
   }
 }
 
-.announcement {
-  display: block;
-  width: 100%;
-  padding: 1.6rem;
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  font-weight: 700;
-
-  .legendInfo {
-    display: flex;
-    align-items: center;
-
-    .legendName + sup {
-      margin: 0 .8rem 0 .5rem;
-      display: block;
-      width: .6rem;
-      height: .6rem;
-      border-radius: 100%;
-      box-shadow: 0 0 0 .1rem #fff;
-    }
-  }
-}
-
-.search {
-  display: inline-flex;
-  width: 100%;
-  align-items: center;
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  font-weight: 700;
-  padding: 1.6rem .8rem;
-  color: #666666;
-
-  [class^="i-"] {
-    font-size: 2.2rem;
-    margin-right: 1.4rem;
-  }
-
-  input {
-    flex: 1;
-    outline: none;
-    border: none;
-  }
+a {
+  text-decoration: none;
 }
 </style>

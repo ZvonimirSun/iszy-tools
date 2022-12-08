@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import { useImgHostingStore } from '@/stores/imgHosting'
-import $msg from 'ant-design-vue/es/message'
+import type { Ref } from 'vue'
 
 const imgList = computed(() => {
   return useImgHostingStore().imgList
@@ -76,9 +76,9 @@ async function copyImgUrl ({ url } = {} as {url: string}) {
     } else {
       await navigator.clipboard.writeText(url)
     }
-    $msg.success('地址已复制到剪贴板')
+    ElMessage.success('地址已复制到剪贴板')
   } catch (e) {
-    $msg.error('复制失败')
+    ElMessage.error('复制失败')
   }
 }
 

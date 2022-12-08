@@ -75,13 +75,11 @@
 <script setup lang="ts">
 import { toDataURL } from 'qrcode'
 import type { Ref } from 'vue'
-import type { MessageApi } from 'ant-design-vue/es/message'
 import createFile from '@/utils/createFile'
 import QrcodeDecoder from 'qrcode-decoder/src/index'
 
 const generateContent: Ref<string> = ref('')
 const generateResult: Ref<string> = ref('')
-const msg: MessageApi = inject('$msg') as MessageApi
 const qrCodeFile: Ref<string> = ref('')
 const decodeResult: Ref<string> = ref('')
 const decodeImg: Ref<HTMLImageElement> = ref() as Ref<HTMLImageElement>
@@ -96,7 +94,7 @@ async function generateQR () {
   } catch (e) {
     generateResult.value = ''
     if (e instanceof Error) {
-      msg.error(e.message)
+      ElMessage.error(e.message)
     }
   }
 }
@@ -117,11 +115,11 @@ function upload (img: File) {
         decodeQRCode(decodeImg.value)
       })
     } else {
-      msg.error('读取文件失败')
+      ElMessage.error('读取文件失败')
     }
   })
   reader.addEventListener('error', () => {
-    msg.error('读取文件失败')
+    ElMessage.error('读取文件失败')
   })
   reader.readAsDataURL(img)
   return false
@@ -136,7 +134,7 @@ async function decodeQRCode (img: HTMLImageElement) {
     }
   } catch (e) {
     console.error(e)
-    if (e instanceof Error) { msg.error(e.message) }
+    if (e instanceof Error) { ElMessage.error(e.message) }
   }
 }
 </script>

@@ -35,13 +35,12 @@
 import { encodeGeoHash, decodeGeoHash } from '@/utils/geohash.js'
 const data1 = ref('')
 const data2 = ref('')
-const msg = inject('$msg')
 
 function encode () {
   try {
     data2.value = encodeGeoHash(data1.value)
   } catch (e) {
-    msg.error(`编码失败，${e.message}`)
+    ElMessage.error(`编码失败，${e.message}`)
   }
 }
 
@@ -50,7 +49,7 @@ function decode () {
     const { latitude, longitude } = decodeGeoHash(data1.value)
     data2.value = latitude + ',' + longitude
   } catch (e) {
-    msg.error(`解码失败，${e.message}`)
+    ElMessage.error(`解码失败，${e.message}`)
   }
 }
 

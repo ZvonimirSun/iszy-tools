@@ -23,8 +23,6 @@
 <script lang="ts" setup>
 import * as uploaders from '../uploader/index'
 import { useImgHostingStore } from '@/stores/imgHosting'
-import $msg from 'ant-design-vue/es/message'
-import { UploadRequestOption } from 'ant-design-vue/es/vc-upload/interface'
 import { AliOssConfig } from '../uploader/index'
 
 const props = defineProps({
@@ -72,25 +70,25 @@ async function customRequest ({ file } = { } as UploadRequestOption) {
           } else {
             await navigator.clipboard.writeText(result.url)
           }
-          $msg.success('上传成功，地址已复制到剪贴板')
+          ElMessage.success('上传成功，地址已复制到剪贴板')
         } catch (e) {
-          $msg.error('上传成功，但地址复制失败')
+          ElMessage.error('上传成功，但地址复制失败')
         }
       } else {
-        $msg.success('上传成功')
+        ElMessage.success('上传成功')
       }
     } catch (e) {
       console.log(e)
-      $msg.error('上传失败')
+      ElMessage.error('上传失败')
     }
   } else {
-    $msg.warn('请先进行设置')
+    ElMessage.warning('请先进行设置')
   }
   spinning.value = false
 }
 
 function rejectFile () {
-  $msg.warning('不支持的文件类型！')
+  ElMessage.warning('不支持的文件类型！')
 }
 
 function paste (event: ClipboardEvent) {

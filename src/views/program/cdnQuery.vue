@@ -270,7 +270,7 @@ export default {
             this.pageIndex = page
             this.status = 'done'
           } else {
-            this.$msg.warn('搜索失败')
+            ElMessage.warning('搜索失败')
           }
           this.loading = false
         }

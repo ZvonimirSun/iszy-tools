@@ -109,7 +109,7 @@ export default {
         if (flag === 1) {
           fileMap = map
         } else {
-          this.$msg.error('此文件夹不包含gltf文件')
+          ElMessage.error('此文件夹不包含gltf文件')
         }
       }
       return false

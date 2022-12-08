@@ -3,7 +3,6 @@ import tools from '@/views/tools.json'
 import axios from '@/plugins/Axios'
 import { flatten, merge } from 'lodash-es'
 import type { AxiosError } from 'axios'
-import $msg from 'ant-design-vue/es/message'
 
 let tokenChecked = false
 
@@ -123,7 +122,7 @@ export const useUserStore = defineStore('user', {
         if (data && data.success) {
           this.clearToken()
         } else {
-          $msg.warn('登出失败！')
+          ElMessage.warning('登出失败！')
         }
       } catch (e) {
         this.clearToken()

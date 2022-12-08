@@ -95,7 +95,6 @@
 <script setup>
 import tinyColor from 'tinycolor2'
 import { Sketch } from '@ckpack/vue-color'
-const $msg = inject('$msg')
 
 const fromColor = ref('#ff0000')
 const toColor = ref('#00ffff')
@@ -149,13 +148,13 @@ function getGradientHexArr (startHex, endHex, steps) {
 
 function copyColor (hex) {
   window.navigator.clipboard.writeText(hex)
-  $msg.success('复制成功')
+  ElMessage.success('复制成功')
 }
 
 function copyAll () {
   const hex = gradientColors.value.join(',')
   window.navigator.clipboard.writeText(hex)
-  $msg.success('复制成功')
+  ElMessage.success('复制成功')
 }
 </script>
 

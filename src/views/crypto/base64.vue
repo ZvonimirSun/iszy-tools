@@ -34,7 +34,6 @@
 <script setup>
 const data1 = ref('')
 const data2 = ref('')
-const msg = inject('$msg')
 
 function encode () {
   data2.value = btoa(encodeURIComponent(data1.value).replace(/%([0-9A-F]{2})/g, function (match, p1) {
@@ -48,7 +47,7 @@ function decode () {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
     }).join(''))
   } catch (e) {
-    msg.error('解码失败')
+    ElMessage.error('解码失败')
   }
 }
 
