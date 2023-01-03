@@ -99,6 +99,7 @@ routes = routes.concat([
   },
   {
     path: '/redirect',
+    name: '重定向',
     beforeEnter (to, from, next) {
       if (to.query.url) {
         window.location.href = to.query.url
@@ -109,6 +110,7 @@ routes = routes.concat([
   },
   {
     path: '/:any(.*)/:catchAll(.*)',
+    name: 'redirect',
     beforeEnter (to, from, next) {
       if (to?.params?.catchAll) { next(to.params.catchAll) } else { next('/404') }
     }
