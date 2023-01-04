@@ -1,0 +1,1 @@
+import{t as f}from"./toFinite.051198cb.js";function t(r,e,n){var u=-1,i=r.length;e<0&&(e=-e>i?0:i+e),n=n>i?i:n,n<0&&(n+=i),i=e>n?0:n-e>>>0,e>>>=0;for(var o=Array(i);++u<i;)o[u]=r[u+e];return o}function c(r){return function(e){return e?.[r]}}function a(r){var e=f(r),n=e%1;return e===e?n?e-n:e:0}export{t as a,c as b,a as t};
