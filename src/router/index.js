@@ -50,6 +50,11 @@ const data = [...tools, {
       name: '注册',
       link: '/register',
       type: 'internal'
+    },
+    {
+      name: '重定向',
+      link: '/redirect',
+      type: 'internal'
     }
   ]
 }]
@@ -94,17 +99,6 @@ routes = routes.concat([
         })
       } else {
         next(from.fullPath)
-      }
-    }
-  },
-  {
-    path: '/redirect',
-    name: '重定向',
-    beforeEnter (to, from, next) {
-      if (to.query.url) {
-        window.location.href = to.query.url
-      } else {
-        next('/')
       }
     }
   },
