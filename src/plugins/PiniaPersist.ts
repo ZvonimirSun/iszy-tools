@@ -64,12 +64,17 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
 
   // 转储到 sessionStorage
   sessionStorage.clear()
+  const promiseList: Array<Promise<void>> = []
   for (const key of keys) {
-    const data = await localStore.getItem(key)
-    if (data != null) {
-      sessionStorage.setItem(key, JSON.stringify(data))
-    }
+    promiseList.push((async () => {
+      const data = await localStore.getItem(key)
+      if (data != null) {
+        sessionStorage.setItem(key, JSON.stringify(data))
+      }
+    })())
   }
+
+  await Promise.all(promiseList)
 
   // 获取state的值
   const getState = (key: string, clear: boolean) => {
