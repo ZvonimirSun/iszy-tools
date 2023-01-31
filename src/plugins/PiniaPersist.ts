@@ -72,9 +72,12 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
   }
 
   // 获取state的值
-  const getState = (key:string) => {
+  const getState = (key: string, clear: boolean) => {
     const data = sessionStorage.getItem(key)
     if (data != null) {
+      if (clear) {
+        sessionStorage.removeItem(key)
+      }
       return JSON.parse(data)
     } else {
       return null
@@ -95,7 +98,7 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
     if (!persist) return
 
     // 恢复持久化数据
-    const data = getState(store.$id)
+    const data = getState(store.$id, true)
     store.$patch(merge({}, store.$state, data))
 
     let flag = true
