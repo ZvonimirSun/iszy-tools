@@ -1,0 +1,1 @@
+import{b as o}from"./default-5df60f68.js";import{B as i,o as m,b as c}from"./index-7db2b7cc.js";import{a as g}from"./index-2d447dfc.js";var h=function(){return m(c(),["component"])},a=function(s,r){var t=r.slots,n=r.attrs,e=o(o({},s),{},{component:"div"},n);return g(i,e,t)};a.displayName="ATypographyParagraph";a.inheritAttrs=!1;a.props=h();const l=a;export{l as _};
