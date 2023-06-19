@@ -2,16 +2,21 @@ name: Auto Test
 
 on:
   push:
+    branches:
+      - 'main'
+      - 'dev'
     paths-ignore:
       - '.github/**'
   pull_request:
     branches-ignore:
       - 'deploy'
+      - 'deploy-beta'
     paths-ignore:
       - '.github/**'
   workflow_dispatch:
     branches-ignore:
       - 'deploy'
+      - 'deploy-beta'
 
 jobs:
   build:
@@ -34,4 +39,11 @@ jobs:
         with:
           folder: dist
           branch: deploy
+          force: false
+      - name: 部署测试应用
+        if: ${{ github.ref_name == 'dev' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: deploy-beta
           force: false
