@@ -16,7 +16,7 @@
     >
       <div class="codePanel">
         <div class="header">
-          <a-button
+          <el-button
             type="primary"
             title="格式化"
             @click="format"
@@ -24,8 +24,8 @@
             <template #icon>
               <span class="i-iszy-jsoneditor-format" />
             </template>
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             title="压缩"
             @click="compact"
@@ -33,9 +33,9 @@
             <template #icon>
               <span class="i-icon-park-outline-compression" />
             </template>
-          </a-button>
-          <a-divider type="vertical" />
-          <a-button
+          </el-button>
+          <el-divider direction="vertical" />
+          <el-button
             type="primary"
             title="折叠所有"
             @click="foldAll"
@@ -43,8 +43,8 @@
             <template #icon>
               <span class="i-icon-park-outline-collapse-text-input" />
             </template>
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             title="展开所有"
             @click="unfoldAll"
@@ -52,9 +52,9 @@
             <template #icon>
               <span class="i-icon-park-outline-expand-text-input" />
             </template>
-          </a-button>
-          <a-divider type="vertical" />
-          <a-button
+          </el-button>
+          <el-divider direction="vertical" />
+          <el-button
             type="primary"
             title="撤销"
             :disabled="!hasUndo"
@@ -63,8 +63,8 @@
             <template #icon>
               <span class="i-icon-park-outline-undo" />
             </template>
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             title="重做"
             :disabled="!hasRedo"
@@ -73,9 +73,9 @@
             <template #icon>
               <span class="i-icon-park-outline-redo" />
             </template>
-          </a-button>
-          <a-divider type="vertical" />
-          <a-button
+          </el-button>
+          <el-divider direction="vertical" />
+          <el-button
             type="primary"
             title="前往顶部"
             @click="scrollToTop"
@@ -83,8 +83,8 @@
             <template #icon>
               <span class="i-icon-park-outline-to-top" />
             </template>
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             title="前往底部"
             @click="scrollToBottom"
@@ -92,13 +92,13 @@
             <template #icon>
               <span class="i-icon-park-outline-to-bottom" />
             </template>
-          </a-button>
+          </el-button>
         </div>
         <div class="ace-container">
           <v-ace-editor
-            v-model:value="json"
+            v-model="json"
             lang="json"
-            theme="textmate"
+            :theme="theme"
             style="height: 100%;"
             :options="{
               useWorker: true,
@@ -116,7 +116,7 @@
       </div>
       <div class="codePanel">
         <div class="header">
-          <a-button
+          <el-button
             type="primary"
             title="格式化"
             @click="formatJs"
@@ -124,9 +124,9 @@
             <template #icon>
               <span class="i-iszy-jsoneditor-format" />
             </template>
-          </a-button>
-          <a-divider type="vertical" />
-          <a-button
+          </el-button>
+          <el-divider direction="vertical" />
+          <el-button
             type="primary"
             title="撤销"
             :disabled="!hasUndoJs"
@@ -135,8 +135,8 @@
             <template #icon>
               <span class="i-icon-park-outline-undo" />
             </template>
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             title="重做"
             :disabled="!hasRedoJs"
@@ -145,9 +145,9 @@
             <template #icon>
               <span class="i-icon-park-outline-redo" />
             </template>
-          </a-button>
-          <a-divider type="vertical" />
-          <a-button
+          </el-button>
+          <el-divider direction="vertical" />
+          <el-button
             type="primary"
             title="运行"
             @click="run"
@@ -155,13 +155,13 @@
             <template #icon>
               <span class="i-icon-park-solid-right-one" />
             </template>
-          </a-button>
+          </el-button>
         </div>
         <div class="ace-container">
           <v-ace-editor
-            v-model:value="code"
+            v-model="code"
             lang="javascript"
-            theme="textmate"
+            :theme="theme"
             style="height: 100%;"
             :options="{
               useWorker: true,
@@ -187,6 +187,7 @@ import ace from 'ace-builds'
 import 'ace-builds/src-noconflict/mode-json.js'
 import 'ace-builds/src-noconflict/mode-javascript.js'
 import 'ace-builds/src-noconflict/theme-textmate.js'
+import 'ace-builds/src-noconflict/theme-twilight.js'
 import 'ace-builds/src-noconflict/snippets/json.js'
 import 'ace-builds/src-noconflict/snippets/javascript.js'
 import 'ace-builds/src-noconflict/ext-searchbox.js'
@@ -197,6 +198,20 @@ import workerJavascriptUrl from 'ace-builds/src-noconflict/worker-javascript.js?
 ace.config.setModuleUrl('ace/mode/json_worker', workerJsonUrl)
 ace.config.setModuleUrl('ace/mode/javascript_worker', workerJavascriptUrl)
 const beautify = ace.require('ace/ext/beautify')
+
+const theme = ref('textmate')
+const isDark = useDark()
+if (isDark.value) {
+  theme.value = 'twilight'
+}
+
+watch(isDark, (val) => {
+  if (val) {
+    theme.value = 'twilight'
+  } else {
+    theme.value = 'textmate'
+  }
+})
 
 let aceEditor = null
 let aceEditorJs = null
@@ -326,7 +341,7 @@ function run () {
 .codePanel {
   width: calc(50% - 4px);
   height: 100%;
-  border: .1rem solid #ddd;
+  border: .1rem solid var(--el-border-color);
   font-size: 1.4rem;
   overflow: hidden;
 
@@ -354,30 +369,12 @@ function run () {
     width: 100%;
     padding: .5rem;
     line-height: 2.2rem;
-    background-color: #f7f7f7;
-    border-top: .1rem solid #ddd;
+    background-color: var(--el-bg-color-overlay);
+    border-top: .1rem solid var(--el-border-color);
   }
 }
 
-.ant-btn {
-  font-size: 1.8rem;
-
-  &[disabled] {
-    background-color: #1890ff;
-    border: unset;
-    cursor: default;
-  }
-
-  &:hover:not([disabled]) {
-    border-color: #f7f7f7;
-  }
-
-  &:not(:last-child) {
-    margin-right: .5rem;
-  }
-}
-
-.ant-divider {
+.el-divider {
   border-color: white;
   height: 1.6rem;
 }

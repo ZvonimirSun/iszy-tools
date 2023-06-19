@@ -24,64 +24,64 @@
       <div
         class="operations"
       >
-        <a-button
+        <el-button
           type="primary"
           @click="showSettings = !showSettings"
         >
           设置
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           v-if="status === SCREEN_UNSHARE"
           type="primary"
           @click="openScreenShare"
         >
           开启屏幕共享
-        </a-button>
+        </el-button>
         <template v-else>
-          <a-button
+          <el-button
             type="primary"
             :disabled="status === RECORD_STATUS_RECORDING || status === RECORD_STATUS_PAUSED"
             @click="start"
           >
             开始录制
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             :disabled="status !== RECORD_STATUS_RECORDING"
             @click="pause"
           >
             暂停
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             :disabled="status !== RECORD_STATUS_PAUSED"
             @click="resume"
           >
             继续
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             :disabled="status === RECORD_STATUS_UNSTART || status === RECORD_STATUS_STOPPED"
             @click="stop"
           >
             停止
-          </a-button>
+          </el-button>
         </template>
         <template
           v-if="blobUrl"
         >
-          <a-button
+          <el-button
             type="primary"
             @click="clear"
           >
             清除
-          </a-button>
-          <a-button
+          </el-button>
+          <el-button
             type="primary"
             @click="download"
           >
             下载
-          </a-button>
+          </el-button>
         </template>
       </div>
     </div>
@@ -89,65 +89,101 @@
       v-show="showSettings"
       class="settings-wrapper"
     >
-      <a-alert
-        message="由于浏览器限制，部分设置可能无法生效"
+      <el-alert
+        title="由于浏览器限制，部分设置可能无法生效"
         type="warning"
         show-icon
-        closable
         style="margin-bottom: .8rem;"
       />
-      <a-form
+      <el-form
         v-if="status === 'unshare'"
-        layout="vertical"
+        label-position="top"
       >
-        <a-form-item label="系统音频">
-          <a-select
-            v-model:value="recordAudio"
-            :options="recordAudioOptions"
+        <el-form-item label="系统音频">
+          <el-select
+            v-model="recordAudio"
             @change="selectAudio"
-          />
-        </a-form-item>
-        <a-form-item label="麦克风">
-          <a-select
-            v-model:value="recordMicro"
-            :options="recordMicroOptions"
+          >
+            <el-option
+              v-for="item in recordAudioOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="麦克风">
+          <el-select
+            v-model="recordMicro"
             @change="selectMicro"
-          />
-        </a-form-item>
-        <a-form-item
+          >
+            <el-option
+              v-for="item in recordMicroOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
           v-if="supportedConstraints.aspectRatio"
           label="选择长宽比"
         >
-          <a-select
-            v-model:value="aspectRatio"
-            :options="aspectRatioList"
-          />
-        </a-form-item>
-        <a-form-item
+          <el-select
+            v-model="aspectRatio"
+          >
+            <el-option
+              v-for="item in aspectRatioList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
           v-if="supportedConstraints.frameRate"
           label="选择帧率"
         >
-          <a-select
-            v-model:value="frameRate"
-            :options="frameRateList"
-          />
-        </a-form-item>
-        <a-form-item
+          <el-select
+            v-model="frameRate"
+          >
+            <el-option
+              v-for="item in frameRateList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
           v-if="supportedConstraints.width && supportedConstraints.height"
           label="选择分辨率"
         >
-          <a-select
-            v-model:value="resolutions"
-            :options="resolutionsList"
-          />
-        </a-form-item>
-        <a-form-item label="是否显示光标">
-          <a-select
-            v-model:value="cursor"
+          <el-select
+            v-model="resolutions"
+          >
+            <el-option
+              v-for="item in resolutionsList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否显示光标">
+          <el-select
+            v-model="cursor"
             :options="cursorList"
-          />
-        </a-form-item>
-      </a-form>
+          >
+            <el-option
+              v-for="item in cursorList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
       <template v-else>
         <a-typography-title :level="4">
           当前设置
@@ -568,8 +604,12 @@ function selectMicro () {
     width: 100%;
   }
 
-  .ant-form-item {
+  .el-form-item {
     margin-bottom: .8rem;
+
+    .el-select {
+      width: 100%;
+    }
   }
 }
 

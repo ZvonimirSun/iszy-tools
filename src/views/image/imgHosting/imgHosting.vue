@@ -1,29 +1,29 @@
 <template>
   <div class="wrapper">
-    <a-tabs
-      v-model:activeKey="activeKey"
+    <el-tabs
+      v-model="activeKey"
       type="card"
       class="totalTab"
     >
-      <a-tab-pane
-        key="home"
-        tab="上传区"
+      <el-tab-pane
+        name="home"
+        label="上传区"
       >
         <Upload :active-key="activeKey" />
-      </a-tab-pane>
-      <a-tab-pane
-        key="uploaded"
-        tab="相册"
+      </el-tab-pane>
+      <el-tab-pane
+        name="uploaded"
+        label="相册"
       >
         <ImgList />
-      </a-tab-pane>
-      <a-tab-pane
-        key="settings"
-        tab="设置"
+      </el-tab-pane>
+      <el-tab-pane
+        name="settings"
+        label="设置"
       >
         <Settings />
-      </a-tab-pane>
-    </a-tabs>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -46,10 +46,10 @@ const activeKey: Ref<string> = ref('home')
   }
 }
 
-:deep(.ant-tabs) {
+:deep(.el-tabs) {
   width: 100%;
 
-  .ant-tabs-bar {
+  .el-tabs__header {
     height: 4rem !important;
     margin-bottom: .8rem;
 
@@ -59,18 +59,14 @@ const activeKey: Ref<string> = ref('home')
     }
   }
 
-  .ant-tabs-content {
+  .el-tabs__content {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 4.8rem);
 
-    .ant-tabs-tabpane {
+    .el-tab-pane {
       width: 100%;
       height: 100%;
       overflow: auto;
-
-      &.ant-tabs-tabpane-inactive {
-        display: none;
-      }
     }
   }
 }

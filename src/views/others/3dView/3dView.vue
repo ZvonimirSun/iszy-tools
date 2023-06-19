@@ -1,17 +1,19 @@
 <template>
-  <a-upload
-    :file-list="[]"
-    :show-upload-list="false"
-    :before-upload="getFileList"
-    :directory="true"
+  <el-upload
+    ref="uploadRef"
+    v-model:file-list="fileList"
+    :show-file-list="false"
+    :auto-upload="false"
+    multiple
   >
-    <a-input
+    <el-input
       readonly
       placeholder="点击这里选择 gltf 文件所在文件夹"
       :value="fileName"
+      @click="startUpload"
     >
-      <template #addonAfter>
-        <a-button
+      <template #append>
+        <el-button
           block
           :disabled="!fileName"
           :loading="loading"
@@ -19,23 +21,32 @@
         >
           <span v-if="loading">加载中</span>
           <span v-else>加载</span>
-        </a-button>
+        </el-button>
       </template>
-    </a-input>
-  </a-upload>
+    </el-input>
+  </el-upload>
   <div
     ref="treeContainer"
     class="threeContainer"
   />
 </template>
 
-<script>
-import { WebGLRenderer, PerspectiveCamera, AmbientLight, Scene, Color, LoaderUtils, LoadingManager } from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+<script setup>
+import {
+  WebGLRenderer,
+  PerspectiveCamera,
+  AmbientLight,
+  Scene,
+  Color,
+  LoaderUtils,
+  LoadingManager
+} from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 let scene, camera, renderer, ambientLight, controls, manager
-let fileList, fileMap, rootFile, rootPath, loader, modelScene
+let loader
+let modelScene
 let blobURLs = []
 // glTF texture types. `envMap` is deliberately omitted, as it's used internally
 // by the loader but not part of the glTF format.
@@ -56,111 +67,136 @@ const animate = () => {
   renderer.render(scene, camera)
 }
 
-export default {
-  name: '3dView',
-  data: () => ({
-    fileName: undefined,
-    loading: false
-  }),
-  mounted () {
-    this.initScene()
-  },
-  methods: {
-    initScene () {
-      // Scene
-      scene = new Scene()
-      scene.background = new Color(0x999999)
+const loading = ref(false)
+const fileList = ref([])
 
-      // Renderer
-      renderer = new WebGLRenderer({ antialias: true })
-      renderer.setSize(parseFloat(window.getComputedStyle(this.$refs.treeContainer).width), parseFloat(window.getComputedStyle(this.$refs.treeContainer).height))
-      this.$refs.treeContainer.appendChild(renderer.domElement)
+const uploadRef = ref()
+const treeContainer = ref()
 
-      // Camera
-      const aspect = parseFloat(window.getComputedStyle(this.$refs.treeContainer).width) / parseFloat(window.getComputedStyle(this.$refs.treeContainer).height)
-      camera = new PerspectiveCamera(60, aspect, 0.01, 5000)
-      camera.position.set(5, 2, 0)
-      renderer.render(scene, camera)
+onMounted(() => {
+  uploadRef.value.$el.querySelector('.el-upload__input').webkitdirectory = true
+  initScene()
+})
 
-      // Camera Controls
-      controls = new OrbitControls(camera, renderer.domElement)
-
-      // Light
-      ambientLight = new AmbientLight(0xaaaaaa, 20)
-      scene.add(ambientLight)
-
-      manager = new LoadingManager()
-      animate()
-    },
-    getFileList (f, list) {
-      if (fileList !== list) {
-        const map = new Map()
-        let flag = 0
-        for (const file of list) {
-          const path = file.webkitRelativePath || file.name
-          map.set(path, file)
-          if (file.name.match(/\.(gltf|glb)$/)) {
-            flag = 1
-            this.fileName = file.name
-            rootFile = file
-            rootPath = path.replace(file.name, '')
-          }
-        }
-        if (flag === 1) {
-          fileMap = map
-        } else {
-          ElMessage.error('此文件夹不包含gltf文件')
-        }
-      }
-      return false
-    },
-    loadScene () {
-      this.clearScene()
-      const fileURL = typeof rootFile === 'string'
-        ? rootFile
-        : URL.createObjectURL(rootFile)
-      const baseURL = LoaderUtils.extractUrlBase(fileURL)
-      manager.setURLModifier((url, path) => {
-        const normalizedURL = rootPath + decodeURI(url)
-          .replace(baseURL, '')
-          .replace(/^(\.?\/)/, '')
-        if (fileMap.has(normalizedURL)) {
-          const blob = fileMap.get(normalizedURL)
-          const blobURL = URL.createObjectURL(blob)
-          blobURLs.push(blobURL)
-          return blobURL
-        }
-        return (path || '') + url
-      })
-      blobURLs = []
-      loader = new GLTFLoader(manager)
-      loader.load(fileURL, (gltf) => {
-        modelScene = gltf.scene || gltf.scenes[0]
-        scene.add(modelScene)
-        blobURLs.forEach(URL.revokeObjectURL)
-      }, () => {}, () => {
-        blobURLs.forEach(URL.revokeObjectURL)
-      })
-    },
-    clearScene () {
-      if (!modelScene) {
-        return
-      }
-      scene.remove(modelScene)
-      modelScene.traverse((node) => {
-        if (!node.isMesh) return
-        node.geometry.dispose()
-        const materials = Array.isArray(node.material)
-          ? node.material
-          : [node.material]
-        materials.forEach((material) => {
-          MAP_NAMES.forEach((map) => {
-            if (material[map]) material[map].dispose()
-          })
-        })
-      })
+const rawFileList = computed(() => {
+  const result = []
+  for (const file of fileList.value) {
+    if (file.raw) {
+      result.push(file.raw)
     }
   }
+  return result
+})
+
+const rootFile = computed(() => {
+  if (rawFileList.value.length) {
+    for (const file of rawFileList.value) {
+      if (file.name.match(/\.(gltf|glb)$/)) {
+        return file
+      }
+    }
+  }
+  return null
+})
+
+const fileMap = computed(() => {
+  const map = {}
+  if (rawFileList.value.length) {
+    for (const file of rawFileList.value) {
+      const path = file.webkitRelativePath || file.name
+      map[path] = file
+    }
+  }
+  return map
+})
+
+const fileName = computed(() => {
+  return rootFile.value?.name
+})
+
+const rootPath = computed(() => {
+  if (rootFile.value) {
+    const path = rootFile.value.webkitRelativePath || rootFile.value.name
+    return path.replace(fileName.value || '', '')
+  }
+})
+
+function initScene () {
+  // Scene
+  scene = new Scene()
+  scene.background = new Color(0x999999)
+
+  // Renderer
+  renderer = new WebGLRenderer({ antialias: true })
+  renderer.setSize(parseFloat(window.getComputedStyle(treeContainer.value).width), parseFloat(window.getComputedStyle(treeContainer.value).height))
+  treeContainer.value.appendChild(renderer.domElement)
+
+  // Camera
+  const aspect = parseFloat(window.getComputedStyle(treeContainer.value).width) / parseFloat(window.getComputedStyle(treeContainer.value).height)
+  camera = new PerspectiveCamera(60, aspect, 0.01, 5000)
+  camera.position.set(5, 2, 0)
+  renderer.render(scene, camera)
+
+  // Camera Controls
+  controls = new OrbitControls(camera, renderer.domElement)
+
+  // Light
+  ambientLight = new AmbientLight(0xaaaaaa, 20)
+  scene.add(ambientLight)
+
+  manager = new LoadingManager()
+  animate()
+}
+
+function startUpload () {
+  fileList.value = []
+}
+
+function loadScene () {
+  if (modelScene) {
+    clearScene()
+  }
+  if (!rootFile.value) {
+    return
+  }
+  const fileURL = URL.createObjectURL(rootFile.value)
+  const baseURL = LoaderUtils.extractUrlBase(fileURL)
+  manager.setURLModifier((url, path) => {
+    const normalizedURL = rootPath.value + decodeURI(url)
+      .replace(baseURL, '')
+      .replace(/^(\.?\/)/, '')
+    if (fileMap.value[normalizedURL]) {
+      const blob = fileMap.value[normalizedURL]
+      const blobURL = URL.createObjectURL(blob)
+      blobURLs.push(blobURL)
+      return blobURL
+    }
+    return (path || '') + url
+  })
+  blobURLs = []
+  loader = new GLTFLoader(manager)
+  loader.load(fileURL, (gltf) => {
+    modelScene = gltf.scene || gltf.scenes[0]
+    scene.add(modelScene)
+    blobURLs.forEach(URL.revokeObjectURL)
+  }, () => {}, () => {
+    blobURLs.forEach(URL.revokeObjectURL)
+  })
+}
+function clearScene () {
+  scene.remove(modelScene)
+  modelScene.traverse((node) => {
+    if (!node.isMesh) return
+    node.geometry.dispose()
+    const materials = Array.isArray(node.material)
+      ? node.material
+      : [node.material]
+    materials.forEach((material) => {
+      MAP_NAMES.forEach((map) => {
+        if (material[map]) material[map].dispose()
+      })
+    })
+  })
 }
 </script>
 
@@ -170,13 +206,8 @@ export default {
   height: calc(100% - .8rem - 32px);
 }
 
-:deep(.ant-upload) {
+:deep(.el-upload) {
   width: 100% !important;
   margin-bottom: .8rem;
-}
-
-:deep(.ant-input-group-addon) {
-  padding: 0;
-  border: unset;
 }
 </style>

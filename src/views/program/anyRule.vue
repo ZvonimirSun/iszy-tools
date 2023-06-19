@@ -9,87 +9,91 @@
       </a-typography-link>
     </blockquote>
   </a-typography-paragraph>
-  <a-form layout="vertical">
-    <a-form-item>
+  <el-form
+    :label-position="'top'"
+    :model="model"
+  >
+    <el-form-item>
       <template #label>
         <strong>搜索</strong>
       </template>
-      <a-input
-        v-model:value="keyword"
+      <el-input
+        v-model="keyword"
         placeholder="搜索关键词，如'手机'"
       />
-    </a-form-item>
-    <template
-      v-for="(item,index) in rules"
+    </el-form-item>
+    <div
+      v-for="(item,index) in anyRules"
       :key="index"
     >
-      <a-divider v-show="isShow(item)" />
-      <a-form-item
+      <el-divider v-show="isShow(item)" />
+      <el-form-item
         v-show="isShow(item)"
-        :rules="{trigger:['change', 'blur'],validator:validator}"
-        has-feedback
-        :name="item.key"
+        :rules="[{
+          validator: validator,
+          trigger: 'change'
+        }]"
+        :prop="item.key"
       >
         <template #label>
           <strong>{{ item.title }}</strong>&nbsp;<a-typography-link
-            :href="'https://github.com/any86/any-rule/issues/new?title=我有更好的正则: '+item.title"
+            :href="`https://github.com/any86/any-rule/issues/new?title=我有更好的正则: ${item.title}`"
             target="_blank"
           >
             <strong>反馈</strong>
           </a-typography-link>
         </template>
-        <a-input
-          v-model:value="item.test"
+        <el-input
+          v-model="model[item.key]"
           :placeholder="'例如: '+item.examples.join(', ') + (item.counterExamples ? '; 反例: ' + item.counterExamples.join(', '): '')"
         />
-      </a-form-item>
+      </el-form-item>
       <a-typography-paragraph
         v-show="isShow(item)"
         :copyable="{text:item.rule.toString()}"
       >
         <pre>{{ item.rule.toString() }}</pre>
       </a-typography-paragraph>
-    </template>
-  </a-form>
+    </div>
+  </el-form>
 </template>
 
-<script>
-import { v4 as uuidv4 } from 'uuid'
+<script setup>
+import { v4 as uuid } from 'uuid'
 import anyRule from '@/utils/anyRule.js'
 
-export default {
-  name: 'AnyRule',
-  data: () => ({
-    rules: [],
-    keyword: '',
-    dict: {}
-  }),
-  computed: {
-    isShow () {
-      return item => (item.title.includes(this.keyword))
+const model = ref({})
+const anyRules = ref([])
+const keyword = ref('')
+const dict = ref({})
+
+function isShow (item) {
+  return item.title.includes(keyword.value)
+}
+
+onMounted(() => {
+  anyRules.value = anyRule.map(item => {
+    const result = {
+      ...item,
+      key: uuid()
     }
-  },
-  mounted () {
-    this.rules = Object.freeze(anyRule.map(item => {
-      item.key = uuidv4()
-      item.test = ''
-      item.status = ''
-      this.dict[item.key] = item
-      return item
-    }))
-  },
-  methods: {
-    async validator (val) {
-      if (val && val.field && this.dict[val.field]) {
-        const { rule, test } = this.dict[val.field]
-        if (test !== '') {
-          if (!rule.test(test)) {
-            throw new Error('不通过')
-          }
-        }
+    model.value[result.key] = ''
+    dict.value[result.key] = result
+    return result
+  })
+})
+
+function validator (rule, value, callback) {
+  if (rule && rule.field && dict.value[rule.field]) {
+    const { rule: _rule } = dict.value[rule.field]
+    if (value) {
+      if (!_rule.test(value)) {
+        callback(new Error('不通过'))
+        return
       }
     }
   }
+  callback()
 }
 </script>
 

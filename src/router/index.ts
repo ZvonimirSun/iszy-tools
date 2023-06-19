@@ -1,11 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  NavigationGuardNext,
+  RouteLocationNormalized,
+  RouteRecordRaw,
+  RouterOptions
+} from 'vue-router'
 import tools from '@/views/tools.json'
 import { merge } from 'lodash-es'
 import { useUserStore } from '@/stores/user'
+import { DefineComponent } from 'vue'
+import { ToolMenu } from '@/env'
 
-const vueFiles = import.meta.glob('../views/**/*.vue')
+const vueFiles = import.meta.glob('../views/**/*.vue') as Record<string, () => Promise<DefineComponent>>
 
-const modules = {}
+const modules: Record<string, {
+  path: string,
+  component: () => Promise<DefineComponent> | DefineComponent
+}> = {}
 
 for (const key in vueFiles) {
   if (!key.includes('/child/')) {
@@ -22,9 +34,9 @@ for (const key in vueFiles) {
   }
 }
 
-let routes = []
+let routes: RouteRecordRaw[] = []
 
-const data = [...tools, {
+const data: ToolMenu[] = [...tools, {
   children: [
     {
       name: '首页',
@@ -47,8 +59,8 @@ const data = [...tools, {
       type: 'internal'
     },
     {
-      name: '注册',
-      link: '/register',
+      name: '重定向',
+      link: '/redirect',
       type: 'internal'
     }
   ]
@@ -87,7 +99,7 @@ routes = routes.concat([
   {
     path: '/logout',
     name: '登出',
-    beforeEnter (to, from, next) {
+    beforeEnter (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
       if (navigator.onLine) {
         useUserStore().logout().then(() => {
           next(from.fullPath)
@@ -98,42 +110,45 @@ routes = routes.concat([
     }
   },
   {
-    path: '/redirect',
-    beforeEnter (to, from, next) {
-      if (to.query.url) {
-        window.location.href = to.query.url
-      } else {
-        next('/')
-      }
-    }
-  },
-  {
     path: '/:any(.*)/:catchAll(.*)',
-    beforeEnter (to, from, next) {
-      if (to?.params?.catchAll) { next(to.params.catchAll) } else { next('/404') }
+    name: 'redirect',
+    beforeEnter (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+      if (to?.params?.catchAll) {
+        next(to.params.catchAll as string)
+      } else {
+        next('/404')
+      }
     }
   },
   {
     path: '/:catchAll(.*)',
     redirect: '/404'
   }
-])
+] as RouteRecordRaw[])
 
-const router = createRouter({
+const options: RouterOptions = {
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
-})
+}
+
+const router = createRouter(options)
 
 // 路由白名单
 const whiteList = ['/login', '/logout']
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   // 权限控制
   const isLogged = await useUserStore().checkToken()
   if (isLogged || whiteList.indexOf(to.path) !== -1 || !to.meta.requiresAuth) {
-    document.title = getPageTitle(to.meta.title || to.name)
+    document.title = getPageTitle(to.meta.title || to.name?.toString())
     if (to.name && to.meta.statistics) {
-      await useUserStore().access({ name: to.name, link: to.path })
+      let name:string
+      if (typeof to.name === 'string') {
+        name = to.name
+      } else {
+        name = to.name.toString()
+      }
+      useUserStore().access({ name, link: to.path })
     }
     next()
   } else {
@@ -142,7 +157,7 @@ router.beforeEach(async (to, from, next) => {
   }
 })
 
-function getPageTitle (pageTitle) {
+function getPageTitle (pageTitle: string | undefined | null) {
   if (pageTitle && pageTitle !== 'ISZY工具集合') {
     return `${pageTitle} - ISZY工具集合`
   }

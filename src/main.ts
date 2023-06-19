@@ -3,8 +3,6 @@ import App from '@/App.vue'
 import router from '@/router'
 import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
-import VueGtag from 'vue-gtag'
-import { RouteRecordRaw } from 'vue-router'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const $apiBase = 'https://api.iszy.xyz'
@@ -28,15 +26,5 @@ const piniaPersistPlugin = await createPiniaPersist({
 
 pinia.use(piniaPersistPlugin)
 
-app.use(pinia).use(router).use(VueGtag, {
-  appName: 'ISZY工具集合',
-  pageTrackerScreenviewEnabled: true,
-  pageTrackerTemplate (to: RouteRecordRaw) {
-    return {
-      page_title: to.name,
-      page_path: to.path
-    }
-  },
-  config: { id: 'G-LSFH1TGJMM' }
-}, router)
+app.use(pinia).use(router)
 app.mount('#app')

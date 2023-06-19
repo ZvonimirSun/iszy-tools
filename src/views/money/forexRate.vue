@@ -7,7 +7,7 @@
     <a-typography-paragraph>
       <blockquote>仅供参考，采用第三方接口，数据可能存在延迟</blockquote>
     </a-typography-paragraph>
-    <a-space
+    <el-space
       :gap="8"
       direction="vertical"
       style="margin: 0 auto"
@@ -21,45 +21,45 @@
           <blockquote>查询时间: {{ time }}</blockquote>
         </a-typography-paragraph>
       </div>
-      <a-space :gap="8">
-        <a-input-number
-          v-model:value.number="fromValue"
+      <el-space :gap="8">
+        <el-input-number
+          v-model.number="fromValue"
           class="w-50"
           @change="updateToValue"
         />
-        <a-select
-          v-model:value="fromCode"
+        <el-select
+          v-model="fromCode"
           class="w-50"
         >
-          <a-select-option
+          <el-option
             v-for="(item,index) in forexList"
             :key="index"
             :value="item.code"
           >
             {{ item.label }}
-          </a-select-option>
-        </a-select>
-      </a-space>
-      <a-space :gap="8">
-        <a-input-number
-          v-model:value.number="toValue"
+          </el-option>
+        </el-select>
+      </el-space>
+      <el-space :gap="8">
+        <el-input-number
+          v-model.number="toValue"
           class="w-50"
           @change="updateFromValue"
         />
-        <a-select
-          v-model:value="toCode"
+        <el-select
+          v-model="toCode"
           class="w-50"
         >
-          <a-select-option
+          <el-option
             v-for="(item,index) in forexList"
             :key="index"
             :value="item.code"
           >
             {{ item.label }}
-          </a-select-option>
-        </a-select>
-      </a-space>
-    </a-space>
+          </el-option>
+        </el-select>
+      </el-space>
+    </el-space>
   </div>
 </template>
 
@@ -69,9 +69,6 @@ import utc from 'dayjs/plugin/utc'
 import { useAxios } from '@vueuse/integrations/useAxios'
 
 dayjs.extend(utc)
-
-const $axios = inject('$axios')
-const $msg = inject('$msg')
 
 const fromCode = ref('USD')
 const toCode = ref('CNY')
@@ -131,7 +128,7 @@ const rate = computed(() => {
 })
 
 watch([fromCode, toCode], () => {
-  execute('https://api.it120.cc/iszy/forex/rate', {
+  execute?.('https://api.it120.cc/iszy/forex/rate', {
     params: {
       fromCode: toCode.value,
       toCode: fromCode.value
@@ -156,5 +153,7 @@ function updateFromValue () {
 </script>
 
 <style scoped lang="scss">
-
+:deep(.ant-statistic) * {
+  color: var(--el-text-color-primary)
+}
 </style>

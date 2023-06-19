@@ -5,7 +5,7 @@
       class="inputPanel"
     >
       <div class="header">
-        <a-button
+        <el-button
           type="primary"
           title="格式化"
           @click="format('html')"
@@ -13,8 +13,8 @@
           <template #icon>
             <span class="i-iszy-jsoneditor-format" />
           </template>
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           type="primary"
           title="折叠所有"
           @click="foldAll('html')"
@@ -22,8 +22,8 @@
           <template #icon>
             <span class="i-icon-park-outline-collapse-text-input" />
           </template>
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           type="primary"
           title="展开所有"
           @click="unfoldAll('html')"
@@ -31,12 +31,12 @@
           <template #icon>
             <span class="i-icon-park-outline-expand-text-input" />
           </template>
-        </a-button>
+        </el-button>
       </div>
       <v-ace-editor
         v-model:value="store.html"
         lang="html"
-        theme="textmate"
+        :theme="theme"
         style="height: calc(100% - 4.2rem);"
         placeholder="请输入HTML内容"
         :options="{
@@ -53,7 +53,7 @@
       class="inputPanel"
     >
       <div class="header">
-        <a-button
+        <el-button
           type="primary"
           title="格式化"
           @click="format('css')"
@@ -61,8 +61,8 @@
           <template #icon>
             <span class="i-iszy-jsoneditor-format" />
           </template>
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           type="primary"
           title="折叠所有"
           @click="foldAll('js')"
@@ -70,8 +70,8 @@
           <template #icon>
             <span class="i-icon-park-outline-collapse-text-input" />
           </template>
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           type="primary"
           title="展开所有"
           @click="unfoldAll('js')"
@@ -79,12 +79,12 @@
           <template #icon>
             <span class="i-icon-park-outline-expand-text-input" />
           </template>
-        </a-button>
+        </el-button>
       </div>
       <v-ace-editor
         v-model:value="store.js"
         lang="javascript"
-        theme="textmate"
+        :theme="theme"
         style="height: calc(100% - 4.2rem);"
         placeholder="请输入JS内容"
         :options="{
@@ -101,7 +101,7 @@
       class="inputPanel"
     >
       <div class="header">
-        <a-button
+        <el-button
           type="primary"
           title="格式化"
           @click="format('css')"
@@ -109,8 +109,8 @@
           <template #icon>
             <span class="i-iszy-jsoneditor-format" />
           </template>
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           type="primary"
           title="折叠所有"
           @click="foldAll('css')"
@@ -118,8 +118,8 @@
           <template #icon>
             <span class="i-icon-park-outline-collapse-text-input" />
           </template>
-        </a-button>
-        <a-button
+        </el-button>
+        <el-button
           type="primary"
           title="展开所有"
           @click="unfoldAll('css')"
@@ -127,12 +127,12 @@
           <template #icon>
             <span class="i-icon-park-outline-expand-text-input" />
           </template>
-        </a-button>
+        </el-button>
       </div>
       <v-ace-editor
         v-model:value="store.css"
         lang="css"
-        theme="textmate"
+        :theme="theme"
         style="height: calc(100% - 4.2rem);"
         placeholder="请输入CSS内容"
         :options="{
@@ -150,7 +150,7 @@
         fullPanel: fullScreenStatus
       }"
     >
-      <a-space class="fullScreen">
+      <el-space class="fullScreen">
         <span
           v-if="fullScreenStatus"
           class="i-icon-park-outline-off-screen"
@@ -168,13 +168,14 @@
           title="新标签打开"
           @click="openNew"
         />
-      </a-space>
+      </el-space>
       <iframe
         w-full
         h-full
         :srcdoc="doc"
         seamless
         title="展示面板"
+        allowTransparency="true"
       />
     </div>
   </div>
@@ -188,6 +189,7 @@ import 'ace-builds/src-noconflict/mode-css'
 import 'ace-builds/src-noconflict/mode-javascript.js'
 import 'ace-builds/src-noconflict/mode-html.js'
 import 'ace-builds/src-noconflict/theme-textmate.js'
+import 'ace-builds/src-noconflict/theme-twilight.js'
 import 'ace-builds/src-noconflict/snippets/css.js'
 import 'ace-builds/src-noconflict/snippets/javascript.js'
 import 'ace-builds/src-noconflict/snippets/html.js'
@@ -205,6 +207,20 @@ const beautify = ace.require('ace/ext/beautify')
 const aceEditors = {}
 
 const store = useTinyEditorStore()
+
+const theme = ref('textmate')
+const isDark = useDark()
+if (isDark.value) {
+  theme.value = 'twilight'
+}
+
+watch(isDark, (val) => {
+  if (val) {
+    theme.value = 'twilight'
+  } else {
+    theme.value = 'textmate'
+  }
+})
 
 /**
  * @type {ComputedRef<String>}
@@ -252,11 +268,15 @@ function openNew () {
   display: flex;
   flex-wrap: wrap;
 
+  * {
+    box-sizing: border-box;
+  }
+
   .inputPanel {
     height: 50%;
     width: 50%;
     resize: none;
-    border: 1px solid rgb(217, 217, 217);
+    border: 1px solid var(--el-border-color);
 
     @media (max-width: 992px) {
       height: 70%;
@@ -317,25 +337,7 @@ function openNew () {
   }
 }
 
-.ant-btn {
-  font-size: 1.8rem;
-
-  &[disabled] {
-    background-color: #1890ff;
-    border: unset;
-    cursor: default;
-  }
-
-  &:hover:not([disabled]) {
-    border-color: #f7f7f7;
-  }
-
-  &:not(:last-child) {
-    margin-right: .5rem;
-  }
-}
-
-.ant-divider {
+.el-divider {
   border-color: white;
   height: 1.6rem;
 }

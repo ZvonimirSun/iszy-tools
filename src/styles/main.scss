@@ -37,7 +37,7 @@ html, body, #app {
   margin: 0;
   height: 100%;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   display: block;
   vertical-align: top;
 }
@@ -70,5 +70,20 @@ code, kbd, samp {
 }
 
 .ant-typography {
+  color: var(--el-text-color-primary) !important;
+
+  * {
+    color: inherit !important;
+  }
+}
+
+a.ant-typography, .ant-typography a {
+  color: var(--el-color-primary) !important;
+}
+
+.ant-list-item-meta-title {
+  color: var(--el-text-color-primary) !important;
+}
+.ant-list-item-meta-description {
   color: var(--el-text-color-primary) !important;
 }

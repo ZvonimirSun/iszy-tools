@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 export const useLinuxCommandStore = defineStore('linuxCommand', {
   persist: true,
   state: () => ({
-    data: {},
+    data: {} as Record<string, any>,
     time: null as string | null
   }),
   actions: {

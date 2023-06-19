@@ -5,31 +5,35 @@
   <a-typography-paragraph>
     <blockquote>实时计算，直接输入即可</blockquote>
   </a-typography-paragraph>
-  <a-form layout="vertical">
-    <a-form-item label="AV号">
-      <a-input-number
-        v-model:value="aid"
+  <el-form layout="vertical">
+    <el-form-item label="AV号">
+      <el-input-number
+        v-model="aid"
+        controls-position="right"
         @change="enc(aid)"
       />
-    </a-form-item>
-    <a-form-item label="BV号">
-      <a-input
-        v-model:value="bvid"
+    </el-form-item>
+    <el-form-item label="BV号">
+      <el-input
+        v-model="bvid"
         @change="dec(bvid)"
       />
-    </a-form-item>
-  </a-form>
+    </el-form-item>
+  </el-form>
   <a-typography-title :level="3">
     信息
   </a-typography-title>
-  <a-space direction="vertical">
+  <el-space
+    direction="vertical"
+    alignment="normal"
+  >
     <a-typography-link :href="'https://www.bilibili.com/video/av' + aid">
       {{ 'https://www.bilibili.com/video/av' + aid }}
     </a-typography-link>
     <a-typography-link :href="'https://www.bilibili.com/video/' + bvid">
       {{ 'https://www.bilibili.com/video/' + bvid }}
     </a-typography-link>
-  </a-space>
+  </el-space>
 </template>
 
 <script>
@@ -86,9 +90,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-.ant-input-number {
-  width: 100%;
-}
-</style>

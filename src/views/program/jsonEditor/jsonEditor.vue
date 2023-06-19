@@ -1,0 +1,546 @@
+<template>
+  <div
+    v-show="loading"
+    class="loadingPanel"
+  >
+    <a-spin tip="同步中..." />
+  </div>
+  <div
+    v-show="!loading"
+    ref="editorPanel"
+    class="editorPanel"
+  >
+    <JsonEditorExtend
+      ref="editorPanelContainerLeft"
+      v-model:code="left.code"
+      v-model:name="left.name"
+      class="editorPanelContainerLeft"
+      :class="{full:fullPanel==='left',hide:fullPanel==='right'}"
+      :style="{flex: store.splitterValue + ' 1 0'}"
+      mode="code"
+      @open-recent="beforeOpenRecent('left')"
+      @create="create('left')"
+    />
+    <div
+      class="controller noShowMobile"
+      :class="{full:fullPanel}"
+    >
+      <el-space
+        direction="vertical"
+      >
+        <template v-if="!fullPanel">
+          <div class="emptySpace" />
+          <el-button
+            type="primary"
+            block
+            @click="copyRight"
+          >
+            复制
+            <span class="i-icon-park-outline-right" />
+          </el-button>
+          <el-button
+            type="primary"
+            block
+            @click="copyLeft"
+          >
+            <span class="i-icon-park-outline-left" />
+            复制
+          </el-button>
+        </template>
+        <div
+          class="drag"
+          @mousedown="startDrag"
+          @touchstart="startDrag"
+          @click="clickDragger"
+        >
+          <div class="dragIcon">
+            <svg
+              v-if="fullPanel==='right'"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="chevron-right"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+            ><path
+              fill="currentColor"
+              d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
+            /></svg>
+            <svg
+              v-else-if="fullPanel==='left'"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="chevron-left"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+            ><path
+              fill="currentColor"
+              d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
+            /></svg>
+            <svg
+              v-else
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="ellipsis-vertical"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 128 512"
+            ><path
+              fill="currentColor"
+              d="M64 360C94.93 360 120 385.1 120 416C120 446.9 94.93 472 64 472C33.07 472 8 446.9 8 416C8 385.1 33.07 360 64 360zM64 200C94.93 200 120 225.1 120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200zM64 152C33.07 152 8 126.9 8 96C8 65.07 33.07 40 64 40C94.93 40 120 65.07 120 96C120 126.9 94.93 152 64 152z"
+            /></svg>
+          </div>
+        </div>
+      </el-space>
+    </div>
+    <JsonEditorExtend
+      v-model:code="right.code"
+      v-model:name="right.name"
+      class="editorPanelContainerRight noShowMobile"
+      :class="{full:fullPanel==='right',hide:fullPanel==='left'}"
+      :style="{flex: (1-store.splitterValue) + ' 1 0'}"
+      mode="tree"
+      @open-recent="beforeOpenRecent('right')"
+      @create="create('right')"
+    />
+  </div>
+  <el-dialog
+    v-model="showOpenRecent"
+    title="打开最近"
+  >
+    <a-typography-paragraph>搜索</a-typography-paragraph>
+    <el-input
+      v-model="keyword"
+      placeholder="请输入文档名称"
+    />
+
+    <a-list
+      class="dataList"
+      item-layout="horizontal"
+      :data-source="dataListAfterSearch"
+    >
+      <template #renderItem="{ item }">
+        <a-list-item
+          :class="{selected: item._id === selectId}"
+          @click="selectId=item._id"
+        >
+          <template #actions>
+            <el-button
+              type="danger"
+            >
+              删除
+            </el-button>
+          </template>
+          <a-list-item-meta
+            :description="'最后修改: '+item.updated"
+          >
+            <template #title>
+              {{ item.name }}
+            </template>
+          </a-list-item-meta>
+        </a-list-item>
+      </template>
+    </a-list>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="showOpenRecent=false">取消</el-button>
+        <el-button
+          type="primary"
+          @click="openRecent"
+        >
+          确定
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+
+<script setup lang="ts">
+import { useJsonEditorStore } from '@/stores/jsonEditor'
+import type { Ref } from 'vue'
+import { cloneDeep } from 'lodash-es'
+
+const JsonEditorExtend = defineAsyncComponent(() => import('./child/json-editor-extend.vue'))
+const editorPanelContainerLeft: Ref<{container: HTMLDivElement}> = ref<{container: HTMLDivElement}>() as Ref<{container: HTMLDivElement}>
+const editorPanel: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
+const loading: Ref<boolean> = ref(true)
+const fullPanel = ref('')
+
+const store = useJsonEditorStore()
+
+interface EditorStatus {
+  id: string,
+  code: object | string,
+  name: string
+}
+
+const left: Ref<EditorStatus> = ref({
+  id: '',
+  code: {
+    array: [
+      1,
+      2,
+      3
+    ],
+    boolean: true,
+    color: 'gold',
+    null: null,
+    number: 123,
+    object: {
+      a: 'b',
+      c: 'd'
+    },
+    string: 'Hello World'
+  },
+  name: ''
+})
+
+const right: Ref<EditorStatus> = ref({
+  id: '',
+  code: {},
+  name: ''
+})
+
+watch(left, (val) => {
+  debugger
+})
+
+watch(right, (val) => {
+  debugger
+})
+
+onMounted(() => {
+  init()
+})
+
+async function init () {
+  if (store.syncCloud) {
+    await store.getSyncData()
+    loading.value = false
+  } else {
+    loading.value = false
+  }
+  if (store.leftData && store.leftData.content) {
+    left.value.name = store.leftData.name
+    if (store.leftData.content.json) {
+      left.value.code = store.leftData.content.json
+    } else if (store.leftData.content.text) {
+      left.value.code = store.leftData.content.text
+    }
+  }
+  if (store.rightData && store.rightData.content) {
+    right.value.name = store.rightData.name
+    if (store.rightData.content.json) {
+      right.value.code = store.rightData.content.json
+    } else if (store.rightData.content.text) {
+      right.value.code = store.rightData.content.text
+    }
+  }
+  fullPanel.value = store.fullStatus
+}
+
+function create (leftOrRight: 'left' | 'right') {
+  if (leftOrRight === 'left') {
+    left.value.id = ''
+    left.value.name = ''
+  } else {
+    right.value.id = ''
+    right.value.name = ''
+  }
+}
+
+// region 最近打开相关
+const showOpenRecent: Ref<boolean> = ref(false)
+const selectId: Ref<string> = ref('')
+const keyword: Ref<string> = ref('')
+let openRecentFlag: 'left' | 'right' | '' = ''
+const dataListAfterSearch = computed(() => {
+  return store.dataList(keyword.value)
+})
+
+function beforeOpenRecent (leftOrRight: 'left' | 'right') {
+  selectId.value = ''
+  keyword.value = ''
+  openRecentFlag = leftOrRight
+  showOpenRecent.value = true
+}
+
+function openRecent () {
+  if (selectId.value) {
+    const tmp = store.data(selectId.value)
+    if (tmp && tmp.content) {
+      const data = tmp.content
+      if (openRecentFlag === 'left') {
+        store.saveData({
+          left: true,
+          id: selectId.value
+        })
+        if (data.json) {
+          left.value.id = selectId.value
+          left.value.name = tmp.name
+          left.value.code = data.json
+        } else if (data.text) {
+          left.value.id = selectId.value
+          left.value.name = tmp.name
+          left.value.code = data.text
+        }
+      } else if (openRecentFlag === 'right') {
+        store.saveData({
+          right: true,
+          id: selectId.value
+        })
+        if (data.json) {
+          right.value.id = selectId.value
+          right.value.name = tmp.name
+          right.value.code = data.json
+        } else if (data.text) {
+          right.value.id = selectId.value
+          right.value.name = tmp.name
+          right.value.code = data.text
+        }
+      }
+    }
+  }
+  showOpenRecent.value = false
+}
+// endregion
+
+function copyRight () {
+  right.value.code = cloneDeep(left.value.code)
+}
+
+function copyLeft () {
+  left.value.code = cloneDeep(right.value.code)
+}
+
+let startX = 0
+let originWidth = 0
+let moved = false
+
+// region 拖拽相关
+function startDrag (e: TouchEvent | MouseEvent) {
+  // 只允许左键
+  if (e instanceof MouseEvent && e.button !== 0) {
+    return
+  }
+  moved = false
+  const dom = editorPanelContainerLeft.value.container
+  originWidth = parseFloat(window.getComputedStyle(dom).width)
+  if (isNaN(originWidth)) {
+    originWidth = 0
+  }
+  if (e instanceof TouchEvent) {
+    startX = e.touches[0].clientX
+    document.addEventListener('touchend', endDrag)
+    document.addEventListener('touchmove', dragMove)
+  } else {
+    startX = e.clientX
+    document.addEventListener('mouseup', endDrag)
+    document.addEventListener('mousemove', dragMove)
+  }
+}
+function dragMove (e: TouchEvent | MouseEvent) {
+  moved = true
+  let clientX = 0
+  if (e instanceof TouchEvent) {
+    clientX = e.touches[0].clientX
+  } else {
+    clientX = e.clientX
+  }
+  const width = originWidth - startX + clientX
+  const editorPanelWidth = parseFloat(window.getComputedStyle(editorPanel.value).width)
+  if (width < 435) {
+    fullPanel.value = 'right'
+    if (fullPanel.value !== store.fullStatus) { store.setFullStatus('right') }
+  } else if (editorPanelWidth - 100 - width < 435) {
+    fullPanel.value = 'left'
+    if (fullPanel.value !== store.fullStatus) { store.setFullStatus('left') }
+  } else {
+    fullPanel.value = ''
+    store.setSplitter(width / (editorPanelWidth - 100))
+    if (fullPanel.value !== store.fullStatus) {
+      store.setFullStatus()
+    }
+  }
+}
+function endDrag () {
+  document.removeEventListener('mousemove', dragMove)
+  document.removeEventListener('touchmove', dragMove)
+  document.removeEventListener('mouseup', endDrag)
+  document.removeEventListener('touchend', endDrag)
+}
+function clickDragger () {
+  if (moved) { return }
+  if (fullPanel.value === 'left') {
+    store.setSplitter(1 - 435 / (parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))
+    fullPanel.value = ''
+  } else if (fullPanel.value === 'right') {
+    store.setSplitter(435 / (parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))
+    fullPanel.value = ''
+  }
+}
+// endregion
+</script>
+
+<style lang="scss" scoped>
+.loadingPanel {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editorPanel {
+  display: flex;
+  height: 100%;
+  flex: 1 1;
+}
+
+.controller {
+  height: 100%;
+  width: 10rem;
+  text-align: center;
+  user-select: none;
+
+  &.full {
+    width: 5rem;
+  }
+
+  > :deep(.el-space) {
+    width: calc(100% - 1.6rem);
+    height: 100%;
+
+    .emptySpace {
+      display: block;
+      width: 100%;
+      height: 9.2rem;
+    }
+
+    .el-space__item {
+      min-width: 100%;
+    }
+
+    .el-space__item:last-child {
+      flex: 1;
+    }
+
+    .drag {
+      width: 100%;
+      height: 100%;
+      cursor: col-resize;
+      display: inline-flex;
+      border-radius: .3rem;
+      flex: 4 1;
+      align-items: center;
+
+      &:hover {
+        background: #dedede;
+      }
+
+      .dragIcon {
+        color: #a8a8a8;
+        width: 100%;
+        text-align: center;
+
+        svg {
+          width: 3rem;
+          height: 2.4rem;
+        }
+      }
+    }
+
+    .diffBtn {
+      padding: 4px 0.9rem;
+    }
+  }
+}
+
+.editorPanelContainerLeft {
+  @media (max-width: 1024px) {
+    flex: 1 !important;
+  }
+}
+
+:deep(.jsonEditor) {
+  &.jsonEditorLeft .differentElement {
+    background-color: pink;
+
+    .jsoneditor-field, .jsoneditor-value {
+      color: red;
+    }
+  }
+
+  &.jsonEditorRight .differentElement {
+    background-color: #acee61;
+
+    .jsoneditor-field, .jsoneditor-value {
+      color: red;
+    }
+  }
+}
+
+.noShowMobile {
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.showMobile {
+  @media (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.el-space {
+  @media (max-width: 1024px) {
+    margin-top: 1.2rem;
+  }
+}
+
+.dataList {
+  max-height: 50vh;
+  overflow: auto;
+  margin-top: .8rem;
+  padding: 0 .8rem;
+  border: 1px solid #dedede;
+
+  .ant-list-item {
+    cursor: pointer;
+
+    &.selected {
+      background: #dedede;
+    }
+
+    &:hover {
+      background: #dedede;
+    }
+  }
+}
+
+.documentProperties {
+  .ant-typography-edit-content {
+    left: unset;
+    margin: 0;
+    display: inline-block;
+    width: calc(100% - 42px);
+  }
+}
+
+:deep(.ant-list-item) {
+  &.selected, &:hover {
+    .ant-list-item-meta-title {
+      color: var(--el-color-black) !important;
+    }
+
+    .ant-list-item-meta-description {
+      color: var(--el-color-black) !important;
+    }
+  }
+}
+</style>

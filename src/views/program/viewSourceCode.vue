@@ -1,12 +1,16 @@
 <template>
-  <a-input-search
-    v-model:value="url"
+  <el-input
+    v-model="url"
     placeholder="填入网址"
     enter-button="获取"
     size="large"
-    :loading="loading"
-    @search="getContent"
-  />
+  >
+    <template #append>
+      <el-button @click="getContent">
+        <span class="i-icon-park-outline-search" />
+      </el-button>
+    </template>
+  </el-input>
   <a-typography-paragraph v-show="data">
     <highlight-js
       autodetect

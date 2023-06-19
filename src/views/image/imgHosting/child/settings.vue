@@ -3,107 +3,109 @@
     通用配置
   </a-typography-title>
   <div class="commonConfigPanel">
-    <a-form-item label="时间戳重命名">
-      <a-switch
-        v-model:checked="commonConfig.renameTimeStamp"
+    <el-form-item label="时间戳重命名">
+      <el-switch
+        v-model="commonConfig.renameTimeStamp"
       />
-    </a-form-item>
-    <a-form-item label="上传后自动复制URL">
-      <a-switch
-        v-model:checked="commonConfig.copyUrlAfterUpload"
+    </el-form-item>
+    <el-form-item label="上传后自动复制URL">
+      <el-switch
+        v-model="commonConfig.copyUrlAfterUpload"
       />
-    </a-form-item>
+    </el-form-item>
     <a-typography-title :level="5">
       链接复制格式
     </a-typography-title>
-    <a-radio-group
-      v-model:value="customCopyContentType"
+    <el-radio-group
+      v-model="customCopyContentType"
       class="custom-copy-wrapper"
       @change="updateCustomCopyContent"
     >
-      <a-radio
-        value="standard"
+      <el-radio
+        label="standard"
       >
         标准
         <a-typography-text
           code
           content="$url"
         />
-      </a-radio>
-      <a-radio
-        value="markdown"
+      </el-radio>
+      <el-radio
+        label="markdown"
       >
         MarkDown
         <a-typography-text
           code
           content="![]($url)"
         />
-      </a-radio>
-      <a-radio
-        value="custom"
+      </el-radio>
+      <el-radio
+        label="custom"
       >
         自定义
-        <a-input
-          v-model:value="customContent"
+        <el-input
+          v-model="customContent"
           style="width: 100px; margin-left: 10px"
         />
-      </a-radio>
-    </a-radio-group>
+      </el-radio>
+    </el-radio-group>
   </div>
-  <a-divider />
+  <el-divider />
   <a-typography-title :level="4">
     图床设置
   </a-typography-title>
-  <a-tabs
-    v-model:activeKey="currentUploader"
+  <el-tabs
+    v-model="currentUploader"
     type="card"
-    @change="changeUploader"
+    @tab-change="changeUploader"
   >
-    <a-tab-pane
+    <el-tab-pane
       v-for="(item,name) of uploaders"
       :key="name"
-      :tab="item.name"
+      :name="name"
+      :label="item.name"
     >
       <div
         v-if="currentUploader === name"
         class="configPanel"
       >
         <div class="configTable">
-          <a-form
-            layout="vertical"
+          <el-form
+            label-position="top"
           >
-            <a-form-item
+            <el-form-item
               v-for="(item1) of currentConfig"
               :key="item1.name"
               :label="item1.label"
               :required="item1.required"
             >
-              <a-input
+              <el-input
                 v-if="item1.type==='input'"
-                v-model:value="item1.default"
+                v-model="item1.default"
                 allow-clear
                 :placeholder="item1.hint"
               />
-              <a-input-password
+              <el-input
                 v-else-if="item1.type==='password'"
-                v-model:value="item1.default"
+                v-model="item1.default"
+                type="password"
                 allow-clear
                 :placeholder="item1.hint"
               />
-            </a-form-item>
-          </a-form>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="configOperator">
-          <a-button
+          <el-button
             type="primary"
             @click="save"
           >
             保存
-          </a-button>
+          </el-button>
         </div>
       </div>
-    </a-tab-pane>
-  </a-tabs>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script lang="ts" setup>
@@ -112,7 +114,6 @@ import { cloneDeep, merge } from 'lodash-es'
 import type { Ref } from 'vue'
 import { useImgHostingStore } from '@/stores/imgHosting'
 import { AliOssConfig } from '../uploader/index'
-import { CheckboxChangeEvent } from 'ant-design-vue/es/checkbox/interface'
 
 const imgHosingStore = useImgHostingStore()
 const commonConfig = imgHosingStore.commonConfig
@@ -149,8 +150,8 @@ onMounted(() => {
   }
   changeUploader()
 })
-function updateCustomCopyContent (val: CheckboxChangeEvent) {
-  switch (val.target.value) {
+function updateCustomCopyContent (val: string | number | boolean) {
+  switch (val) {
     case 'standard':
       commonConfig.customCopyContent = '$url'
       break
@@ -192,7 +193,7 @@ function save () {
 </script>
 
 <style scoped lang="scss">
-.ant-divider {
+.el-divider {
   margin: .8rem 0;
 }
 
@@ -210,7 +211,7 @@ function save () {
   }
 }
 
-.ant-form-item {
+.el-form-item {
   margin-bottom: .8rem;
 
   &:last-child {

@@ -8,7 +8,7 @@
         "link": "/screenRecord"
       },
       {
-        "name": "3D模型浏览",
+        "name": "glTF模型浏览",
         "link": "/3dView"
       },
       {
@@ -162,7 +162,7 @@
         "link": "/base64"
       },
       {
-        "name": "MD5编码",
+        "name": "MD5计算",
         "link": "/md5"
       },
       {

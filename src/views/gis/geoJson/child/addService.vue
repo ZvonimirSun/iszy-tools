@@ -18,51 +18,51 @@
         >
           {{ item.url }}
         </div>
-        <a-button @click="removeLayer(index)">
+        <el-button @click="removeLayer(index)">
           移除
-        </a-button>
+        </el-button>
       </div>
     </div>
-    <a-divider />
+    <el-divider />
   </template>
-  <a-form
+  <el-form
     :colon="false"
     class="addService"
   >
-    <a-form-item label="服务名称">
-      <a-input v-model:value="name" />
-    </a-form-item>
-    <a-form-item label="服务地址">
-      <a-input v-model:value="url" />
-    </a-form-item>
-    <a-form-item label="服务类型">
-      <a-select v-model:value="type">
-        <a-select-option value="supermap_rest">
+    <el-form-item label="服务名称">
+      <el-input v-model="name" />
+    </el-form-item>
+    <el-form-item label="服务地址">
+      <el-input v-model="url" />
+    </el-form-item>
+    <el-form-item label="服务类型">
+      <el-select v-model="type">
+        <el-option value="supermap_rest">
           超图动态
-        </a-select-option>
-        <a-select-option value="supermap_tile">
+        </el-option>
+        <el-option value="supermap_tile">
           超图切片
-        </a-select-option>
-        <a-select-option value="arcgis_rest">
+        </el-option>
+        <el-option value="arcgis_rest">
           ArcGIS 动态
-        </a-select-option>
-        <a-select-option value="arcgis_tile">
+        </el-option>
+        <el-option value="arcgis_tile">
           ArcGIS 切片
-        </a-select-option>
-        <a-select-option value="tms">
+        </el-option>
+        <el-option value="tms">
           TMS
-        </a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item class="formBtnItem">
-      <a-button
+        </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item class="formBtnItem">
+      <el-button
         type="primary"
         @click="addService"
       >
         添加
-      </a-button>
-    </a-form-item>
-  </a-form>
+      </el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>

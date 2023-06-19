@@ -1,21 +1,21 @@
 <template>
-  <a-space
+  <el-space
     :size="8"
-    align="center"
+    alignment="center"
   >
-    <a-input
-      v-model:value="keyword"
+    <el-input
+      v-model="keyword"
       placeholder="输入经纬度(如'116.4,36.9')或地址(如'北京市政府')"
       allow-clear
       @keypress.enter="handler"
     />
-    <a-button
+    <el-button
       type="primary"
       @click="handler"
     >
       解析
-    </a-button>
-  </a-space>
+    </el-button>
+  </el-space>
   <div
     ref="mapContainer"
     class="mapContainer"
@@ -339,11 +339,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.ant-space {
+.el-space {
   margin-bottom: .8rem;
   width: 100%;
 
-  :deep(.ant-space-item:first-child) {
+  :deep(.el-space__item:first-child) {
     flex: 1;
   }
 }

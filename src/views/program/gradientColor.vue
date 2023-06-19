@@ -35,8 +35,8 @@
         <a-typography-paragraph>
           渐变个数
         </a-typography-paragraph>
-        <a-input-number
-          v-model:value.number="steps"
+        <el-input-number
+          v-model.number="steps"
           :step="1"
           :precision="0"
         />
@@ -75,20 +75,20 @@
         {{ item }}
       </div>
       <div relative>
-        <a-button
+        <el-button
           h-full
           @click="showRGB=!showRGB"
         >
           {{ showRGB ? '显示HEX' : '显示RGB' }}
-        </a-button>
+        </el-button>
       </div>
     </div>
-    <a-button
+    <el-button
       type="primary"
       @click="copyAll"
     >
       复制所有
-    </a-button>
+    </el-button>
   </div>
 </template>
 

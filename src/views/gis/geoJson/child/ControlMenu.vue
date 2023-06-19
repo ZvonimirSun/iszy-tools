@@ -7,31 +7,31 @@
       accept=".json,.JSON,.geojson,.GEOJSON"
       @change="openFile"
     >
-    <a-space :gap="8">
-      <a-button
+    <el-space :gap="8">
+      <el-button
         size="middle"
         @click="$refs.uploader.click()"
       >
         打开
-      </a-button>
-      <a-dropdown>
+      </el-button>
+      <el-dropdown>
         <template #overlay>
-          <a-menu @click="exportFile">
-            <a-menu-item key="geojson">
+          <el-menu @click="exportFile">
+            <el-menu-item key="geojson">
               GeoJSON
-            </a-menu-item>
-            <a-menu-item key="shapefile">
+            </el-menu-item>
+            <el-menu-item key="shapefile">
               Shapefile
-            </a-menu-item>
-          </a-menu>
+            </el-menu-item>
+          </el-menu>
         </template>
-        <a-button
+        <el-button
           size="middle"
         >
           <span class="buttonWithIcon">保存<span class="i-icon-park-outline-down" /></span>
-        </a-button>
-      </a-dropdown>
-    </a-space>
+        </el-button>
+      </el-dropdown>
+    </el-space>
   </div>
 </template>
 

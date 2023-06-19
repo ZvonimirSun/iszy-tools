@@ -1,6 +1,5 @@
 <template>
   <div
-    w-max
     max-w-full
     h-full
     overflow-auto
@@ -14,6 +13,7 @@
   >
     <div
       flex
+      flex-1
       flex-col
       h-fit
       w-xl
@@ -22,25 +22,25 @@
       <a-typography-title :level="4">
         颜色
       </a-typography-title>
-      <a-form
-        layout="vertical"
+      <el-form
+        :label-width="100"
       >
-        <a-form-item label="CSS 字符串">
-          <a-input
-            v-model:value="cssString"
+        <el-form-item label="CSS 字符串">
+          <el-input
+            v-model="cssString"
             @change="inputChange({cssString})"
           />
-        </a-form-item>
-        <a-form-item
+        </el-form-item>
+        <el-form-item
           label="HEX"
           class="hex"
         >
-          <a-input
-            v-model:value="hex"
+          <el-input
+            v-model="hex"
             @change="inputChange({hex})"
           />
-        </a-form-item>
-        <a-form-item
+        </el-form-item>
+        <el-form-item
           label="RGBA"
           class="rgba"
         >
@@ -51,8 +51,9 @@
             overflow-auto
             class="gap-3.2"
           >
-            <a-input-number
-              v-model:value="rgba.r"
+            <el-input-number
+              v-model="rgba.r"
+              controls-position="right"
               placeholder="R"
               :max="255"
               :min="0"
@@ -60,8 +61,9 @@
               :precision="0"
               @change="inputChange({rgba})"
             />
-            <a-input-number
-              v-model:value="rgba.g"
+            <el-input-number
+              v-model="rgba.g"
+              controls-position="right"
               placeholder="G"
               :max="255"
               :min="0"
@@ -69,8 +71,9 @@
               :precision="0"
               @change="inputChange({rgba})"
             />
-            <a-input-number
-              v-model:value="rgba.b"
+            <el-input-number
+              v-model="rgba.b"
+              controls-position="right"
               placeholder="B"
               :max="255"
               :min="0"
@@ -78,8 +81,9 @@
               :precision="0"
               @change="inputChange({rgba})"
             />
-            <a-input-number
-              v-model:value="rgba.a"
+            <el-input-number
+              v-model="rgba.a"
+              controls-position="right"
               placeholder="A"
               :max="1"
               :min="0"
@@ -88,8 +92,8 @@
               @change="inputChange({rgba})"
             />
           </div>
-        </a-form-item>
-        <a-form-item
+        </el-form-item>
+        <el-form-item
           label="CMYK"
           class="cmyk"
         >
@@ -100,8 +104,9 @@
             overflow-auto
             class="gap-3.2"
           >
-            <a-input-number
-              v-model:value="cmyk.c"
+            <el-input-number
+              v-model="cmyk.c"
+              controls-position="right"
               placeholder="C"
               :max="1"
               :min="0"
@@ -111,8 +116,9 @@
               :precision="2"
               @change="inputChange({cmyk})"
             />
-            <a-input-number
-              v-model:value="cmyk.m"
+            <el-input-number
+              v-model="cmyk.m"
+              controls-position="right"
               placeholder="M"
               :max="1"
               :min="0"
@@ -122,8 +128,9 @@
               :precision="2"
               @change="inputChange({cmyk})"
             />
-            <a-input-number
-              v-model:value="cmyk.y"
+            <el-input-number
+              v-model="cmyk.y"
+              controls-position="right"
               placeholder="Y"
               :max="1"
               :min="0"
@@ -133,8 +140,9 @@
               :precision="2"
               @change="inputChange({cmyk})"
             />
-            <a-input-number
-              v-model:value="cmyk.k"
+            <el-input-number
+              v-model="cmyk.k"
+              controls-position="right"
               placeholder="K"
               :max="1"
               :min="0"
@@ -145,8 +153,8 @@
               @change="inputChange({cmyk})"
             />
           </div>
-        </a-form-item>
-        <a-form-item
+        </el-form-item>
+        <el-form-item
           label="HSVA"
           class="hsva"
         >
@@ -157,8 +165,9 @@
             overflow-auto
             class="gap-3.2"
           >
-            <a-input-number
-              v-model:value="hsva.h"
+            <el-input-number
+              v-model="hsva.h"
+              controls-position="right"
               placeholder="H"
               :max="360"
               :min="0"
@@ -168,8 +177,9 @@
               :precision="2"
               @change="inputChange({hsva})"
             />
-            <a-input-number
-              v-model:value="hsva.s"
+            <el-input-number
+              v-model="hsva.s"
+              controls-position="right"
               placeholder="S"
               :max="1"
               :min="0"
@@ -179,8 +189,9 @@
               :precision="2"
               @change="inputChange({hsva})"
             />
-            <a-input-number
-              v-model:value="hsva.v"
+            <el-input-number
+              v-model="hsva.v"
+              controls-position="right"
               placeholder="V"
               :max="1"
               :min="0"
@@ -190,8 +201,9 @@
               :precision="2"
               @change="inputChange({hsva})"
             />
-            <a-input-number
-              v-model:value="hsva.a"
+            <el-input-number
+              v-model="hsva.a"
+              controls-position="right"
               placeholder="A"
               :max="1"
               :min="0"
@@ -200,8 +212,8 @@
               @change="inputChange({hsva})"
             />
           </div>
-        </a-form-item>
-        <a-form-item
+        </el-form-item>
+        <el-form-item
           label="HSLA"
           class="hsla"
         >
@@ -212,8 +224,9 @@
             overflow-auto
             class="gap-3.2"
           >
-            <a-input-number
-              v-model:value="hsla.h"
+            <el-input-number
+              v-model="hsla.h"
+              controls-position="right"
               placeholder="H"
               :max="360"
               :min="0"
@@ -223,8 +236,9 @@
               :precision="2"
               @change="inputChange({hsla})"
             />
-            <a-input-number
-              v-model:value="hsla.s"
+            <el-input-number
+              v-model="hsla.s"
+              controls-position="right"
               placeholder="S"
               :max="1"
               :min="0"
@@ -234,8 +248,9 @@
               :precision="2"
               @change="inputChange({hsla})"
             />
-            <a-input-number
-              v-model:value="hsla.l"
+            <el-input-number
+              v-model="hsla.l"
+              controls-position="right"
               placeholder="L"
               :max="1"
               :min="0"
@@ -245,8 +260,9 @@
               :precision="2"
               @change="inputChange({hsla})"
             />
-            <a-input-number
-              v-model:value="hsla.a"
+            <el-input-number
+              v-model="hsla.a"
+              controls-position="right"
               placeholder="A"
               :max="1"
               :min="0"
@@ -255,8 +271,8 @@
               @change="inputChange({hsla})"
             />
           </div>
-        </a-form-item>
-      </a-form>
+        </el-form-item>
+      </el-form>
     </div>
     <div
       w-xl
@@ -266,9 +282,10 @@
       <a-typography-title :level="4">
         颜色选择
       </a-typography-title>
-      <a-space
+      <el-space
         direction="vertical"
         w-full
+        :fill="true"
         :gap="8"
       >
         <div
@@ -300,7 +317,7 @@
             @change="colorChange"
           />
         </div>
-      </a-space>
+      </el-space>
     </div>
     <div
       flex

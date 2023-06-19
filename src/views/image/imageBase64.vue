@@ -1,33 +1,34 @@
 <template>
   <div class="wrapper">
-    <a-space>
-      <a-upload
+    <el-space>
+      <el-upload
         :file-list="[]"
-        :show-upload-list="false"
+        :show-file-list="false"
         accept="image/*"
         :before-upload="upload"
       >
-        <a-button type="primary">
+        <el-button type="primary">
           点击上传图片
-        </a-button>
-      </a-upload>
-      <a-button
+        </el-button>
+      </el-upload>
+      <el-button
         v-if="isUrl"
         @click="convert"
       >
         转换为Base64
-      </a-button>
-      <a-button
+      </el-button>
+      <el-button
         v-if="dataUrl"
         @click="copy"
       >
         复制内容
-      </a-button>
-    </a-space>
-    <a-textarea
-      v-model:value="dataUrl"
+      </el-button>
+    </el-space>
+    <el-input
+      v-model="dataUrl"
+      type="textarea"
       allow-clear
-      :auto-size="{minRows: 5,maxRows: 10}"
+      :autosize="{minRows: 5,maxRows: 10}"
       placeholder="请输入 图片地址 或 Base64格式的图片"
     />
     <template v-if="dataUrl">
@@ -35,9 +36,15 @@
         预览
       </a-typography-title>
       <img
+        ref="imgPreview"
         class="preview"
         :src="dataUrl"
         alt="preview"
+        :style="{
+          width: imageSize.width ? imageSize.width : '',
+          height: imageSize.height ? imageSize.height : ''
+        }"
+        @load="onImagePreview"
       >
     </template>
   </div>
@@ -45,11 +52,18 @@
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import type { MessageApi } from 'ant-design-vue/es/message'
 import type { AxiosStatic } from 'axios'
 
 const dataUrl: Ref<string> = ref('')
 const $axios: AxiosStatic = inject('$axios') as AxiosStatic
+const imgPreview: Ref<HTMLImageElement> = ref() as Ref<HTMLImageElement>
+const imageSize: Ref<{
+  width: string,
+  height: string
+}> = ref({
+  width: '',
+  height: ''
+})
 
 const isUrl = computed(() => {
   return dataUrl.value && (dataUrl.value.startsWith('http://') || dataUrl.value.startsWith('https://'))
@@ -87,6 +101,11 @@ async function convert () {
     ElMessage.error((e as Error)?.message)
   }
 }
+
+function onImagePreview () {
+  imageSize.value.height = imgPreview.value.naturalHeight + 'px'
+  imageSize.value.width = imgPreview.value.naturalWidth + 'px'
+}
 </script>
 
 <style scoped lang="scss">
@@ -106,10 +125,7 @@ async function convert () {
 
 .preview {
   margin: 0;
-  flex: 1;
-  overflow: auto;
-  object-fit: scale-down;
-  width: 100%;
+  padding: 0;
 }
 
 :deep(.ant-typography pre) {

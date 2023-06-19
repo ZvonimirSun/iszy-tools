@@ -1,5 +1,5 @@
 <template>
-  <a-table
+  <el-table
     v-if="tableColumns"
     class="ant-table-striped"
     :columns="tableColumns"
@@ -17,17 +17,17 @@
           v-if="editableData[index]"
           class="editable-cell-input-wrapper"
         >
-          <a-input
+          <el-input
             v-if="typeof editableData[index][column.dataIndex] === 'string'"
-            v-model:value="editableData[index][column.dataIndex]"
+            v-model="editableData[index][column.dataIndex]"
             @click.stop
           />
-          <a-input
+          <el-input
             v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
-            v-model:value.number="editableData[index][column.dataIndex]"
+            v-model.number="editableData[index][column.dataIndex]"
             @click.stop
           />
-          <a-input
+          <el-input
             v-else
             :value="JSON.stringify(editableData[index][column.dataIndex])"
             @click.stop
@@ -51,8 +51,8 @@
         </span>
       </template>
     </template>
-  </a-table>
-  <a-empty v-else />
+  </el-table>
+  <el-empty v-else />
 </template>
 
 <script>

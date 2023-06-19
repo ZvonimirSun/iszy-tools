@@ -1,14 +1,14 @@
 <template>
   <div class="login-container">
     <div class="main">
-      <a-form
+      <el-form
         layout="horizontal"
         :model="form"
         v-bind="{wrapperCol: { span: 24 }}"
       >
-        <a-form-item required>
-          <a-input
-            v-model:value="form.userName"
+        <el-form-item required>
+          <el-input
+            v-model="form.userName"
             placeholder="账户"
             size="large"
             @keypress.enter="login"
@@ -16,29 +16,29 @@
             <template #prefix>
               <span
                 class="i-icon-park-outline-user"
-                style="color:rgba(0,0,0,.25)"
               />
             </template>
-          </a-input>
-        </a-form-item>
-        <a-form-item required>
-          <a-input-password
-            v-model:value="form.password"
+          </el-input>
+        </el-form-item>
+        <el-form-item required>
+          <el-input
+            v-model="form.password"
+            type="password"
             placeholder="密码"
             size="large"
+            show-password
             @keypress.enter="login"
           >
             <template #prefix>
               <span
                 class="i-icon-park-outline-lock"
-                style="color:rgba(0,0,0,.25)"
               />
             </template>
-          </a-input-password>
-        </a-form-item>
-        <a-form-item>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
           <div class="btn-wrapper">
-            <a-button
+            <el-button
               type="primary"
               block
               size="large"
@@ -46,17 +46,10 @@
               @click="login"
             >
               登录
-            </a-button>
-            <a-button
-              block
-              size="large"
-              @click="register"
-            >
-              注册
-            </a-button>
+            </el-button>
           </div>
-        </a-form-item>
-      </a-form>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -116,10 +109,6 @@ function getOtherQuery (query: LocationQuery) {
   const { redirect, ...result } = query
   return result
 }
-
-function register () {
-  router.push('/register')
-}
 </script>
 
 <style scoped lang="scss">
@@ -133,16 +122,6 @@ function register () {
     min-width: 26rem;
     width: 36.8rem;
     margin: 0 auto;
-  }
-
-  .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0 1.6rem;
-    margin: 4.8rem 0 2.4rem;
-    text-align: center;
-    color: #999999;
   }
 }
 

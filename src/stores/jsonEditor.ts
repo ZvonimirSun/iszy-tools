@@ -80,14 +80,14 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       }
     },
     syncCloud: () => {
-      return useUserStore().modules.jsonEditor.syncCloud
+      return useUserStore().isLogged && useUserStore().modules.jsonEditor.syncCloud
     }
   },
   actions: {
     setSplitter (val = 0.5) {
       this.splitterValue = clamp(val, 0, 1)
     },
-    setFullStatus (val: 'left' | 'right' | unknown) {
+    setFullStatus (val?: 'left' | 'right' | unknown) {
       if (val === 'left' || val === 'right') {
         this.fullStatus = val
       } else {
@@ -147,9 +147,9 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
         }
       }
     }, 500),
-    saveData ({ left, right, id, content, name } = {} as {
-      left: boolean, right: boolean, id: string, content: any, name?: string
-    }) {
+    saveData ({ left, right, id, content, name }: {
+      left?: boolean, right?: boolean, id?: string, content?: any, name?: string
+    } = {}) {
       if (this.syncCloud) {
         id = id || randomString(6)
         if (content != null || name != null) {

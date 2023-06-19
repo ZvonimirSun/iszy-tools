@@ -6,17 +6,14 @@
   />
 </template>
 
-<script>
-
-export default {
-  name: 'WebsshPage'
-}
+<script setup lang="ts">
 </script>
 
 <style scoped lang="scss">
 .webssh {
   width: 100%;
-  height: calc(100% - .8rem);
+  height: 100%;
   border: none;
+  display: block;
 }
 </style>

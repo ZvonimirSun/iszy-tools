@@ -8,8 +8,8 @@
       @get-map="getMap"
       @get-control="getControl"
     />
-    <a-tabs type="card">
-      <a-tab-pane
+    <el-tabs type="card">
+      <el-tab-pane
         key="geoJson"
         tab="GeoJSON"
       >
@@ -17,8 +17,8 @@
           ref="geoJsonEditor"
           :geo-json-layer="geoJsonLayer"
         />
-      </a-tab-pane>
-      <a-tab-pane
+      </el-tab-pane>
+      <el-tab-pane
         key="table"
         tab="表格"
       >
@@ -26,8 +26,8 @@
           :geo-json-layer="geoJsonLayer"
           :height="wrapperHeight"
         />
-      </a-tab-pane>
-      <a-tab-pane
+      </el-tab-pane>
+      <el-tab-pane
         key="addService"
         tab="添加服务"
       >
@@ -35,8 +35,8 @@
           :map="_map"
           :layer-control="_control"
         />
-      </a-tab-pane>
-    </a-tabs>
+      </el-tab-pane>
+    </el-tabs>
     <control-menu
       :geo-json-layer="geoJsonLayer"
     />

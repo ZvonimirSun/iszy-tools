@@ -2,12 +2,12 @@
   <a-typography-title :level="3">
     请输入一个UA开始解析
   </a-typography-title>
-  <a-input
-    v-model:value="data"
+  <el-input
+    v-model="data"
     placeholder="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
   />
   <template v-if="data">
-    <a-divider />
+    <el-divider />
     <a-typography-title :level="3">
       解析结果
     </a-typography-title>

@@ -1,34 +1,37 @@
 <template>
-  <a-space
+  <el-space
     direction="vertical"
-    style="width: 100%"
+    :fill="true"
+    w-full
   >
-    <a-textarea
-      v-model:value="data1"
+    <el-input
+      v-model="data1"
+      type="textarea"
       :rows="5"
       placeholder="请输入要进行 GeoHash 编码或解码的字符"
     />
-    <a-space style="flex-wrap: wrap">
-      <a-button
+    <el-space style="flex-wrap: wrap">
+      <el-button
         type="primary"
         @click="encode"
       >
         编码 (Encode)
-      </a-button>
-      <a-button @click="decode">
+      </el-button>
+      <el-button @click="decode">
         解码 (Decode)
-      </a-button>
-      <a-button @click="exchange">
+      </el-button>
+      <el-button @click="exchange">
         ↕交换
-      </a-button>
-    </a-space>
-    <a-textarea
-      v-model:value="data2"
+      </el-button>
+    </el-space>
+    <el-input
+      v-model="data2"
+      type="textarea"
       :rows="5"
       readonly
       placeholder="GeoHash 编码或解码的结果"
     />
-  </a-space>
+  </el-space>
 </template>
 
 <script setup>
@@ -59,9 +62,3 @@ function exchange () {
   data2.value = tmp
 }
 </script>
-
-<style lang="scss">
-textarea.ant-input {
-  resize: none;
-}
-</style>

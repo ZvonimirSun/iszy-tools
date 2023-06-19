@@ -12,36 +12,36 @@
       <span>属性</span>
     </div>
     <div class="content">
-      <a-form
+      <el-form
         v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
         name="selected-feature-form"
         :label-col="{ span: 8 }"
         :wrapper-col="{ span: 16 }"
         :colon="false"
       >
-        <a-form-item
+        <el-form-item
           v-for="(val,key,index) of selectedFeature.properties"
           :key="'prop'+index"
           :label="key"
         >
-          <a-input
+          <el-input
             v-if="typeof selectedFeature.properties[key] === 'string'"
-            v-model:value="selectedFeature.properties[key]"
+            v-model="selectedFeature.properties[key]"
             @change="saveToEditor"
           />
-          <a-input
+          <el-input
             v-else-if="typeof selectedFeature.properties[key] === 'number'"
-            v-model:value.number="selectedFeature.properties[key]"
+            v-model.number="selectedFeature.properties[key]"
             @change="saveToEditor"
           />
-          <a-input
+          <el-input
             v-else
             :value="JSON.stringify(val)"
             @change="saveToEditor($event, selectedFeature, key)"
           />
-        </a-form-item>
-      </a-form>
-      <a-form
+        </el-form-item>
+      </el-form>
+      <el-form
         name="add-property-form"
         :model="addPropertyForm"
         @finish="onPropertyFinishAdd"
@@ -54,59 +54,59 @@
             :key="property.id"
             class="form-item-container"
           >
-            <a-form-item
+            <el-form-item
               :name="['properties', index, 'label']"
               :rules="{
                 required: true,
                 message: '属性名称缺失',
               }"
             >
-              <a-input
-                v-model:value="property.label"
+              <el-input
+                v-model="property.label"
                 placeholder="属性名称"
               />
-            </a-form-item>
-            <a-form-item
+            </el-form-item>
+            <el-form-item
               :name="['properties', index, 'value']"
               :rules="{
                 required: true,
                 message: '属性值缺失',
               }"
             >
-              <a-input
-                v-model:value="property.value"
+              <el-input
+                v-model="property.value"
                 placeholder="属性值"
               />
-            </a-form-item>
+            </el-form-item>
           </div>
         </template>
-        <a-form-item>
-          <a-button
+        <el-form-item>
+          <el-button
             type="dashed"
             block
             @click="addNewProperty"
           >
             <span class="i-icon-park-outline-add-one" />新增属性
-          </a-button>
-        </a-form-item>
-        <a-form-item
+          </el-button>
+        </el-form-item>
+        <el-form-item
           v-if="Object.keys(addPropertyForm.properties).length"
         >
           <div class="btn-container">
-            <a-button
+            <el-button
               type="primary"
               html-type="submit"
             >
               确认
-            </a-button>
-            <a-button
+            </el-button>
+            <el-button
               @click.stop="cancelEdit"
             >
               取消
-            </a-button>
+            </el-button>
           </div>
-        </a-form-item>
-      </a-form>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>

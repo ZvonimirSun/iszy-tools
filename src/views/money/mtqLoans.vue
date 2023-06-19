@@ -1,518 +1,523 @@
 <template>
-  <a-row>
-    <a-col :span="24">
-      <span class="tips">计算仅供参考，请以银行数据为准!</span>
-    </a-col>
-  </a-row>
-  <a-row>
-    <a-col
-      :xs="24"
-      :lg="6"
+  <div
+    flex
+    flex-col
+    h-full
+    overflow-auto
+  >
+    <span class="tips">计算仅供参考，请以银行数据为准!</span>
+    <div
+      flex
+      flex-1
+      overflow-auto
+      class="panel-wrapper"
     >
-      <div class="panel">
-        <a-form
-          layout="horizontal"
-          :label-col="{ span: 8 }"
-          :wrapper-col="{ span: 16 }"
+      <div
+        class="panel"
+      >
+        <el-form
+          :label-width="120"
           label-align="left"
-          :colon="false"
         >
-          <a-form-item label="贷款金额">
-            <a-input
-              v-model:value="loanAmount"
+          <el-form-item label="贷款金额">
+            <el-input-number
+              v-model="loanAmount"
               addon-after="元"
-              type="number"
+              controls-position="right"
             />
-          </a-form-item>
-          <a-form-item label="贷款期限">
-            <a-select
-              v-model:value="repaymentPeriod"
+          </el-form-item>
+          <el-form-item label="贷款期限">
+            <el-select
+              v-model="repaymentPeriod"
               type="number"
             >
-              <a-select-option :value="0">
-                自定义贷款期限
-              </a-select-option>
-              <a-select-option
+              <el-option
+                :value="0"
+                label="自定义贷款期限"
+              />
+              <el-option
                 v-for="(n,index) in 30"
                 :key="'repaymentPeriod'+index"
                 :value="n"
-              >
-                {{ n }}年({{ n * 12 }}月)
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="贷款月数">
-            <a-input
-              v-model:value="loanMonth"
+                :label="n + '年(' + n * 12 + '月)'"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="贷款月数">
+            <el-input
+              v-model="loanMonth"
               addon-after="月"
               :disabled="repaymentPeriod!==0"
             />
-          </a-form-item>
-          <a-form-item label="贷款利率">
-            <a-input
-              v-model:value="lendingRates"
+          </el-form-item>
+          <el-form-item label="贷款利率">
+            <el-input
+              v-model="lendingRates"
               addon-after="%"
             />
-          </a-form-item>
-          <a-form-item label="还款方式">
-            <a-select v-model:value="repayment">
-              <a-select-option value="equalLoan">
-                等额本息
-              </a-select-option>
-              <a-select-option value="equalPrincipal">
-                等额本金
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="首次还款">
-            <a-date-picker
-              v-model:value="firstRepaymentDate"
-              :format="dateFormat"
-              style="width: 100%"
+          </el-form-item>
+          <el-form-item label="还款方式">
+            <el-select v-model="repayment">
+              <el-option
+                value="equalLoan"
+                label="等额本息"
+              />
+              <el-option
+                value="equalPrincipal"
+                label="等额本金"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="首次还款">
+            <el-date-picker
+              v-model="firstRepaymentDate"
+              type="date"
             />
-          </a-form-item>
-          <a-divider />
-          <a-form-item>
-            <a-space>
-              <a-button
+          </el-form-item>
+          <el-divider />
+          <el-form-item>
+            <el-space>
+              <el-button
                 type="primary"
                 :disabled="!firstRepaymentDate"
                 @click="addPrepayment"
               >
                 添加提前还款
-              </a-button>
-              <a-button
+              </el-button>
+              <el-button
                 v-if="prepayment.length > 0"
                 @click="removePrepayment"
               >
                 移除
-              </a-button>
-            </a-space>
-          </a-form-item>
+              </el-button>
+            </el-space>
+          </el-form-item>
           <template
             v-for="(item, index) of prepayment"
             :key="index"
           >
-            <a-divider orientation="left">
+            <el-divider orientation="left">
               第{{ index + 1 }}次提前还款
-            </a-divider>
-            <a-form-item label="还款日期">
-              <a-date-picker
-                v-model:value="item.repaymentDate"
-                :format="dateFormat"
+            </el-divider>
+            <el-form-item label="还款日期">
+              <el-date-picker
+                v-model="item.repaymentDate"
                 style="width: 100%"
               />
-            </a-form-item>
-            <a-form-item label="提前还款金额">
-              <a-input
-                v-model:value="item.repaymentAmount"
-                addon-after="元"
-                type="number"
+            </el-form-item>
+            <el-form-item label="提前还款金额">
+              <el-input-number
+                v-model="item.repaymentAmount"
               />
-            </a-form-item>
-            <a-form-item label="调整期数">
-              <a-input
-                v-model:value="item.adjustLoanMonth"
-                addon-after="期"
-                type="number"
+            </el-form-item>
+            <el-form-item label="调整期数">
+              <el-input-number
+                v-model="item.adjustLoanMonth"
               />
-            </a-form-item>
-            <a-form-item label="调整利率">
-              <a-input
-                v-model:value="item.lendingRates"
+            </el-form-item>
+            <el-form-item label="调整利率">
+              <el-input
+                v-model="item.lendingRates"
                 addon-after="%"
               />
-            </a-form-item>
+            </el-form-item>
           </template>
-        </a-form>
+        </el-form>
       </div>
-    </a-col>
-    <a-col
-      :xs="24"
-      :lg="18"
-    >
-      <div class="panel">
-        <a-form
-          :label-col="{span:6}"
-          :wrapper-col="{ span: 18}"
+      <div
+        class="panel"
+        flex-1
+        flex
+        flex-col
+      >
+        <el-form
+          :label-width="120"
           label-align="left"
-          :colon="false"
         >
-          <a-form-item label="累计提前还款">
-            <a-input
-              v-model:value="cumulativeRepayment"
+          <el-form-item label="累计提前还款">
+            <el-input
+              v-model="cumulativeRepayment"
               addon-after="元"
               readonly
             />
-          </a-form-item>
-          <a-form-item label="累计调整期数">
-            <a-input
-              v-model:value="cumulativeAdjustLoanMonth"
+          </el-form-item>
+          <el-form-item label="累计调整期数">
+            <el-input
+              v-model="cumulativeAdjustLoanMonth"
               addon-after="元"
               readonly
             />
-          </a-form-item>
-          <a-form-item label="原累计利息">
-            <a-input
-              v-model:value="originalCumulativeInterestPayment"
+          </el-form-item>
+          <el-form-item label="原累计利息">
+            <el-input
+              v-model="originalCumulativeInterestPayment"
               addon-after="元"
               readonly
             />
-          </a-form-item>
-          <a-form-item label="累计缴息">
-            <a-input
-              v-model:value="cumulativeInterestPayment"
+          </el-form-item>
+          <el-form-item label="累计缴息">
+            <el-input
+              v-model="cumulativeInterestPayment"
               addon-after="元"
               readonly
             />
-          </a-form-item>
-          <a-form-item label="累计节省利息">
-            <a-input
-              v-model:value="savedMoney"
+          </el-form-item>
+          <el-form-item label="累计节省利息">
+            <el-input
+              v-model="savedMoney"
               addon-after="元"
               readonly
             />
-          </a-form-item>
-          <a-form-item :wrapper-col="{span:24}">
-            <a-table
-              :data-source="dataSource"
-              :columns="columns"
-              bordered
-              size="small"
-              :pagination="false"
-            />
-          </a-form-item>
-        </a-form>
+          </el-form-item>
+        </el-form>
+        <el-table
+          flex-1
+          :data="dataSource"
+        >
+          <el-table-column
+            prop="times"
+            label="期次"
+          />
+          <el-table-column
+            prop="repaymentDate"
+            label="还款日期"
+          />
+          <el-table-column
+            prop="monthlyAmount"
+            label="每月还款"
+          />
+          <el-table-column
+            prop="interestRepayment"
+            label="偿还利息"
+          />
+          <el-table-column
+            prop="principalRepayment"
+            label="偿还本金"
+          />
+          <el-table-column
+            prop="remainingPrincipal"
+            label="剩余本金"
+          />
+        </el-table>
       </div>
-    </a-col>
-  </a-row>
+    </div>
+  </div>
 </template>
 
-<script>
-import dayjs from 'dayjs'
+<script lang="ts" setup>
+import dayjs, { OpUnitType } from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import isBetween from 'dayjs/plugin/isBetween'
+import type { Ref } from 'vue'
 
 dayjs.extend(isBetween)
 
-export default {
-  name: 'MtqLoans',
-  data: () => ({
-    loanAmount: 150000,
-    repaymentPeriod: 2,
-    loanMonth: 24,
-    lendingRates: 4.5,
-    repayment: 'equalLoan',
-    firstRepaymentDate: dayjs(),
+const loanAmount: Ref<number> = ref(150000)
+const repaymentPeriod: Ref<number> = ref(2)
+const loanMonth: Ref<number> = ref(24)
+const lendingRates: Ref<number> = ref(4.5)
+const repayment: Ref<'equalLoan' | 'equalPrincipal'> = ref('equalLoan')
+const firstRepaymentDate: Ref<Date> = ref(new Date())
 
-    prepayment: [],
+interface SinglePayment {
+  repaymentDate: Date,
+  repaymentAmount: number,
+  adjustLoanMonth: number,
+  lendingRates: number
+}
 
-    columns: [
-      {
-        title: '期次',
-        dataIndex: 'times',
-        key: 'times'
-      },
-      {
-        title: '还款日期',
-        dataIndex: 'repaymentDate',
-        key: 'repaymentDate'
-      },
-      {
-        title: '每月还款',
-        dataIndex: 'monthlyAmount',
-        key: 'monthlyAmount'
-      },
-      {
-        title: '偿还利息',
-        dataIndex: 'interestRepayment',
-        key: 'interestRepayment'
-      },
-      {
-        title: '偿还本金',
-        dataIndex: 'principalRepayment',
-        key: 'principalRepayment'
-      },
-      {
-        title: '剩余本金',
-        dataIndex: 'remainingPrincipal',
-        key: 'remainingPrincipal'
-      }
-    ],
-    dateFormat: 'YYYY/MM/DD'
-  }),
-  computed: {
-    options: function () {
-      const newOptions = {}
-      if (!isNaN(parseFloat(this.loanAmount)) && parseFloat(this.loanAmount) > 0) {
-        newOptions.loanAmount = parseFloat(this.loanAmount)
-      }
-      if (Number.isInteger(parseFloat(this.loanMonth)) && parseFloat(this.loanMonth) > 0) {
-        newOptions.loanMonth = parseInt(this.loanMonth)
-      }
-      if (!isNaN(parseFloat(this.lendingRates)) && parseFloat(this.lendingRates) > 0) {
-        newOptions.lendingRates = parseFloat(this.lendingRates)
-      }
-      if (dayjs.isDayjs(this.firstRepaymentDate)) {
-        newOptions.firstRepaymentDate = this.firstRepaymentDate
-        if (this.prepayment.length === 0) {
-          newOptions.prepayment = this.prepayment
+interface Options {
+  loanAmount: number,
+  loanMonth: number,
+  lendingRates: number,
+  firstRepaymentDate: dayjs.Dayjs,
+  prepayment: Array<SinglePayment>
+}
+
+const prepayment: Ref<Array<SinglePayment>> = ref([])
+
+const dateFormat = 'YYYY/MM/DD'
+
+const options: Ref<Partial<Options>> = computed(() => {
+  const newOptions: Partial<Options> = {}
+  if (!isNaN(loanAmount.value) && loanAmount.value > 0) {
+    newOptions.loanAmount = loanAmount.value
+  }
+  if (Number.isInteger(loanMonth.value) && loanMonth.value > 0) {
+    newOptions.loanMonth = loanMonth.value
+  }
+  if (!isNaN(lendingRates.value) && lendingRates.value > 0) {
+    newOptions.lendingRates = lendingRates.value
+  }
+  if (firstRepaymentDate.value) {
+    newOptions.firstRepaymentDate = dayjs(firstRepaymentDate.value)
+    if (prepayment.value.length === 0) {
+      newOptions.prepayment = prepayment.value
+    } else {
+      let flag = true
+      for (const i in prepayment.value) {
+        if (i === '0') {
+          if (!(prepayment.value[i].repaymentDate && dayjs(prepayment.value[i].repaymentDate).diff(dayjs(firstRepaymentDate.value).subtract(1, 'M'), 'days') >= 0)) {
+            flag = false
+            break
+          }
         } else {
-          let flag = true
-          for (const i in this.prepayment) {
-            if (i === '0') {
-              if (!(dayjs.isDayjs(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.firstRepaymentDate.clone().subtract(1, 'M'), 'days') >= 0)) {
-                flag = false
-                break
-              }
-            } else {
-              if (!(dayjs.isDayjs(this.prepayment[i].repaymentDate) && this.prepayment[i].repaymentDate.diff(this.prepayment[i - 1].repaymentDate, 'days') >= 0)) {
-                flag = false
-                break
-              }
-            }
-          }
-          if (flag) {
-            newOptions.prepayment = this.prepayment
+          if (!(prepayment.value[i].repaymentDate && dayjs(prepayment.value[i].repaymentDate).diff(prepayment.value[parseInt(i) - 1].repaymentDate, 'days') >= 0)) {
+            flag = false
+            break
           }
         }
       }
-      return newOptions
-    },
-    isValidOptions: function () {
-      return Object.keys(this.options).length >= 5
-    },
-
-    originDataSource: function () {
-      if (this.isValidOptions) {
-        const result = []
-        result.push({
-          key: 0,
-          times: 0,
-          remainingPrincipal: this.options.loanAmount
-        })
-        if (this.repayment === 'equalLoan') {
-          const remain = {
-            loanAmount: this.options.loanAmount,
-            loanMonth: this.options.loanMonth,
-            lendingRates: this.options.lendingRates
-          }
-          for (let i = 1; i <= this.options.loanMonth; i++) {
-            const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
-            const interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
-            const principal = Number((amount - interest).toFixed(2))
-            remain.loanAmount -= principal
-            remain.loanMonth--
-            result.push({
-              key: i,
-              times: i,
-              repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
-              monthlyAmount: amount,
-              interestRepayment: interest,
-              principalRepayment: principal,
-              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-            })
-          }
-        }
-        if (this.repayment === 'equalPrincipal') {
-          const remain = {
-            loanAmount: this.options.loanAmount,
-            loanMonth: this.options.loanMonth
-          }
-          for (let i = 1; i <= this.options.loanMonth; i++) {
-            const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
-            const interest = Number((remain.loanAmount * this.options.lendingRates / 100.0 / 12).toFixed(2))
-            const amount = Number((principal + interest).toFixed(2))
-            remain.loanAmount -= principal
-            remain.loanMonth--
-            result.push({
-              key: i,
-              times: i,
-              repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
-              monthlyAmount: amount,
-              interestRepayment: interest,
-              principalRepayment: principal,
-              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-            })
-          }
-        }
-        return result
-      } else {
-        return []
+      if (flag) {
+        newOptions.prepayment = prepayment.value
       }
-    },
-    dataSource: function () {
-      if (this.isValidOptions) {
-        const result = []
-        result.push({
-          key: 0,
-          times: 0,
-          remainingPrincipal: this.options.loanAmount
-        })
-        if (this.repayment === 'equalLoan') {
-          const remain = {
-            loanAmount: this.options.loanAmount,
-            loanMonth: this.options.loanMonth,
-            lendingRates: this.options.lendingRates
-          }
-          let adjustLoanMonth = 0
-          let moreInterest = 0
-          const prepayment = cloneDeep(this.options.prepayment)
-          for (let i = 1; i <= this.options.loanMonth - adjustLoanMonth; i++) {
-            if (i > 0) {
-              while (prepayment.length > 0 && prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
-                const a = prepayment.shift()
-                remain.loanAmount -= Number(a.repaymentAmount)
-                remain.lendingRates = Number(a.lendingRates || 0)
-                remain.loanMonth -= Number(a.adjustLoanMonth || 0)
-                adjustLoanMonth += Number(a.adjustLoanMonth || 0)
-                result.push({
-                  repaymentDate: a.repaymentDate.format(this.dateFormat),
-                  principalRepayment: a.repaymentAmount,
-                  remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-                })
-              }
-            }
-            const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
-            let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
-            moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
-            const principal = Number((amount - interest).toFixed(2))
-            remain.loanAmount -= principal
-            remain.loanMonth--
-            if (remain.loanMonth === 0) {
-              interest = Number((interest + moreInterest).toFixed(2))
-            }
-            result.push({
-              key: i,
-              times: i,
-              repaymentDate: this.options.firstRepaymentDate.clone().add(i - 1, 'M').format(this.dateFormat),
-              monthlyAmount: amount,
-              interestRepayment: interest,
-              principalRepayment: principal,
-              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-            })
-          }
-        }
-        if (this.repayment === 'equalPrincipal') {
-          const remain = {
-            loanAmount: this.options.loanAmount,
-            loanMonth: this.options.loanMonth,
-            lendingRates: this.options.lendingRates
-          }
-          let adjustLoanMonth = 0
-          let moreInterest = 0
-          const prepayment = cloneDeep(this.options.prepayment)
-          for (let i = 1; i <= this.options.loanMonth - adjustLoanMonth; i++) {
-            if (prepayment.length > 0 && i > 1) {
-              if (prepayment[0].repaymentDate.isBetween(this.options.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), this.options.firstRepaymentDate.clone().add(i - 1, 'M'), '[)')) {
-                const a = prepayment.shift()
-                remain.loanAmount -= Number(a.repaymentAmount)
-                remain.lendingRates = Number(a.lendingRates || 0)
-                remain.loanMonth -= Number(a.adjustLoanMonth || 0)
-                adjustLoanMonth += Number(a.adjustLoanMonth || 0)
-                result.push({
-                  repaymentDate: a.repaymentDate.format(this.dateFormat),
-                  principalRepayment: a.repaymentAmount,
-                  remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-                })
-              }
-            }
-            const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
-            let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
-            moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
-            const amount = Number((principal + interest).toFixed(2))
-            remain.loanAmount -= principal
-            remain.loanMonth--
-            if (remain.loanMonth === 0) {
-              interest = Number((interest + moreInterest).toFixed(2))
-            }
-            result.push({
-              key: i,
-              times: i,
-              repaymentDate: this.options.firstRepaymentDate.clone().add((i - 1), 'M').format(this.dateFormat),
-              monthlyAmount: amount,
-              interestRepayment: interest,
-              principalRepayment: principal,
-              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
-            })
-          }
-        }
-        return result
-      } else {
-        return []
-      }
-    },
-
-    originalCumulativeInterestPayment: function () {
-      let tmp = 0
-      if (this.isValidOptions) {
-        for (const item of this.originDataSource) {
-          tmp += item.interestRepayment || 0
-        }
-      }
-      return Number(tmp.toFixed(2))
-    },
-    cumulativeInterestPayment: function () {
-      let tmp = 0
-      if (this.isValidOptions) {
-        for (const item of this.dataSource) {
-          tmp += item.interestRepayment || 0
-        }
-      }
-      return Number(tmp.toFixed(2))
-    },
-    cumulativeRepayment: function () {
-      let tmp = 0
-      if (this.isValidOptions) {
-        for (const item of this.prepayment) {
-          tmp += Number(item.repaymentAmount || 0)
-        }
-      }
-      return tmp.toFixed(2)
-    },
-    cumulativeAdjustLoanMonth: function () {
-      let tmp = 0
-      if (this.isValidOptions) {
-        for (const item of this.prepayment) {
-          tmp += Number(item.adjustLoanMonth || 0)
-        }
-      }
-      return tmp.toFixed(2)
-    },
-    savedMoney: function () {
-      return (Number(this.originalCumulativeInterestPayment) - Number(this.cumulativeInterestPayment)).toFixed(2)
-    }
-  },
-  watch: {
-    repaymentPeriod (val) {
-      if (val !== 0) {
-        this.loanMonth = val * 12
-      } else {
-        this.loanMonth = 120
-      }
-    }
-  },
-  methods: {
-    addPrepayment () {
-      let date, lendingRates
-      if (this.prepayment.length === 0) {
-        date = this.firstRepaymentDate || dayjs()
-        lendingRates = this.lendingRates || 0
-      } else {
-        date = this.prepayment[this.prepayment.length - 1].repaymentDate || dayjs()
-        lendingRates = this.prepayment[this.prepayment.length - 1].lendingRates || 0
-      }
-      this.prepayment.push({
-        repaymentDate: date,
-        repaymentAmount: 0,
-        adjustLoanMonth: 0,
-        lendingRates
-      })
-    },
-    removePrepayment () {
-      this.prepayment.pop()
     }
   }
+  return newOptions
+})
+
+const validOptions: Ref<Options | null> = computed(() => {
+  if (options.value.loanAmount != null && options.value.loanMonth != null && options.value.lendingRates != null && options.value.firstRepaymentDate && options.value.prepayment) {
+    return options.value as Options
+  } else {
+    return null
+  }
+})
+
+const originDataSource = computed(() => {
+  if (validOptions.value) {
+    const result = []
+    result.push({
+      key: 0,
+      times: 0,
+      remainingPrincipal: options.value.loanAmount
+    })
+    if (repayment.value === 'equalLoan') {
+      const remain = {
+        loanAmount: validOptions.value.loanAmount,
+        loanMonth: validOptions.value.loanMonth,
+        lendingRates: validOptions.value.lendingRates
+      }
+      for (let i = 1; i <= validOptions.value.loanMonth; i++) {
+        const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
+        const interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
+        const principal = Number((amount - interest).toFixed(2))
+        remain.loanAmount -= principal
+        remain.loanMonth--
+        result.push({
+          key: i,
+          times: i,
+          repaymentDate: validOptions.value.firstRepaymentDate.clone().add((i - 1), 'M').format(dateFormat),
+          monthlyAmount: amount,
+          interestRepayment: interest,
+          principalRepayment: principal,
+          remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+        })
+      }
+    } else {
+      const remain = {
+        loanAmount: validOptions.value.loanAmount,
+        loanMonth: validOptions.value.loanMonth
+      }
+      for (let i = 1; i <= validOptions.value.loanMonth; i++) {
+        const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
+        const interest = Number((remain.loanAmount * validOptions.value.lendingRates / 100.0 / 12).toFixed(2))
+        const amount = Number((principal + interest).toFixed(2))
+        remain.loanAmount -= principal
+        remain.loanMonth--
+        result.push({
+          key: i,
+          times: i,
+          repaymentDate: validOptions.value.firstRepaymentDate.clone().add((i - 1), 'M').format(dateFormat),
+          monthlyAmount: amount,
+          interestRepayment: interest,
+          principalRepayment: principal,
+          remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+        })
+      }
+    }
+    return result
+  } else {
+    return []
+  }
+})
+
+const dataSource: Ref<Array<Partial<{
+  key: number,
+  times: number,
+  repaymentDate: string,
+  monthlyAmount: number,
+  interestRepayment: number,
+  principalRepayment: number,
+  remainingPrincipal: number
+}>>> = computed(() => {
+  if (validOptions.value) {
+    const result = []
+    result.push({
+      key: 0,
+      times: 0,
+      remainingPrincipal: validOptions.value.loanAmount
+    })
+    if (repayment.value === 'equalLoan') {
+      const remain = {
+        loanAmount: validOptions.value.loanAmount,
+        loanMonth: validOptions.value.loanMonth,
+        lendingRates: validOptions.value.lendingRates
+      }
+      let adjustLoanMonth = 0
+      let moreInterest = 0
+      const prepayment = cloneDeep(validOptions.value.prepayment)
+      for (let i = 1; i <= validOptions.value.loanMonth - adjustLoanMonth; i++) {
+        if (i > 0) {
+          while (prepayment.length > 0 && dayjs(prepayment[0].repaymentDate).isBetween(validOptions.value.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M'), '[)' as OpUnitType)) {
+            const a: SinglePayment = prepayment.shift() as SinglePayment
+            remain.loanAmount -= Number(a.repaymentAmount)
+            remain.lendingRates = Number(a.lendingRates || 0)
+            remain.loanMonth -= Number(a.adjustLoanMonth || 0)
+            adjustLoanMonth += Number(a.adjustLoanMonth || 0)
+            result.push({
+              repaymentDate: dayjs(a.repaymentDate).format(dateFormat),
+              principalRepayment: a.repaymentAmount,
+              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+            })
+          }
+        }
+        const amount = Number((-pmt(remain.lendingRates / 100.0 / 12, remain.loanMonth, remain.loanAmount)).toFixed(2))
+        let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
+        moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
+        const principal = Number((amount - interest).toFixed(2))
+        remain.loanAmount -= principal
+        remain.loanMonth--
+        if (remain.loanMonth === 0) {
+          interest = Number((interest + moreInterest).toFixed(2))
+        }
+        result.push({
+          key: i,
+          times: i,
+          repaymentDate: validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M').format(dateFormat),
+          monthlyAmount: amount,
+          interestRepayment: interest,
+          principalRepayment: principal,
+          remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+        })
+      }
+    } else {
+      const remain = {
+        loanAmount: validOptions.value.loanAmount,
+        loanMonth: validOptions.value.loanMonth,
+        lendingRates: validOptions.value.lendingRates
+      }
+      let adjustLoanMonth = 0
+      let moreInterest = 0
+      const prepayment = cloneDeep(validOptions.value.prepayment)
+      for (let i = 1; i <= validOptions.value.loanMonth - adjustLoanMonth; i++) {
+        if (prepayment.length > 0 && i > 1) {
+          if (dayjs(prepayment[0].repaymentDate).isBetween(validOptions.value.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M'), '[)' as OpUnitType)) {
+            const a = prepayment.shift() as SinglePayment
+            remain.loanAmount -= Number(a.repaymentAmount)
+            remain.lendingRates = Number(a.lendingRates || 0)
+            remain.loanMonth -= Number(a.adjustLoanMonth || 0)
+            adjustLoanMonth += Number(a.adjustLoanMonth || 0)
+            result.push({
+              repaymentDate: dayjs(a.repaymentDate).format(dateFormat),
+              principalRepayment: a.repaymentAmount,
+              remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+            })
+          }
+        }
+        const principal = Number((remain.loanAmount / remain.loanMonth).toFixed(2))
+        let interest = Number((remain.loanAmount * remain.lendingRates / 100.0 / 12).toFixed(2))
+        moreInterest += remain.loanAmount * remain.lendingRates / 100.0 / 12 - interest
+        const amount = Number((principal + interest).toFixed(2))
+        remain.loanAmount -= principal
+        remain.loanMonth--
+        if (remain.loanMonth === 0) {
+          interest = Number((interest + moreInterest).toFixed(2))
+        }
+        result.push({
+          key: i,
+          times: i,
+          repaymentDate: validOptions.value.firstRepaymentDate.clone().add((i - 1), 'M').format(dateFormat),
+          monthlyAmount: amount,
+          interestRepayment: interest,
+          principalRepayment: principal,
+          remainingPrincipal: Number(remain.loanAmount.toFixed(2))
+        })
+      }
+    }
+    return result
+  } else {
+    return []
+  }
+})
+
+const originalCumulativeInterestPayment = computed(() => {
+  let tmp = 0
+  if (validOptions.value) {
+    for (const item of originDataSource.value) {
+      tmp += item.interestRepayment || 0
+    }
+  }
+  return Number(tmp.toFixed(2))
+})
+
+const cumulativeInterestPayment = computed(() => {
+  let tmp = 0
+  if (validOptions.value) {
+    for (const item of dataSource.value) {
+      tmp += item.interestRepayment || 0
+    }
+  }
+  return Number(tmp.toFixed(2))
+})
+const cumulativeRepayment = computed(() => {
+  let tmp = 0
+  if (validOptions.value) {
+    for (const item of prepayment.value) {
+      tmp += Number(item.repaymentAmount || 0)
+    }
+  }
+  return tmp.toFixed(2)
+})
+const cumulativeAdjustLoanMonth = computed(() => {
+  let tmp = 0
+  if (validOptions.value) {
+    for (const item of prepayment.value) {
+      tmp += Number(item.adjustLoanMonth || 0)
+    }
+  }
+  return tmp.toFixed(2)
+})
+const savedMoney = computed(() => {
+  return (originalCumulativeInterestPayment.value - cumulativeInterestPayment.value).toFixed(2)
+})
+
+watch(repaymentPeriod, (val: number) => {
+  if (val !== 0) {
+    loanMonth.value = val * 12
+  } else {
+    loanMonth.value = 120
+  }
+})
+
+function addPrepayment () {
+  let date: Date, _lendingRates: number
+  if (prepayment.value.length === 0) {
+    date = firstRepaymentDate.value ? firstRepaymentDate.value : new Date()
+    _lendingRates = lendingRates.value || 0
+  } else {
+    date = prepayment.value[prepayment.value.length - 1].repaymentDate || new Date()
+    _lendingRates = prepayment.value[prepayment.value.length - 1].lendingRates || 0
+  }
+  prepayment.value.push({
+    repaymentDate: date,
+    repaymentAmount: 0,
+    adjustLoanMonth: 0,
+    lendingRates: _lendingRates
+  })
+}
+function removePrepayment () {
+  prepayment.value.pop()
 }
 
 /**
@@ -523,15 +528,14 @@ export default {
  * @param numberOfPayments    The total number of payments for the loan in months.
  * @param presentValue         The present value, or the total amount that a series of future payments is worth now;
  *                              Also known as the principal.
- * @param futureValue          The future value, or a cash balance you want to attain after the last payment is made.
+ * @param [futureValue]          The future value, or a cash balance you want to attain after the last payment is made.
  *                              If fv is omitted, it is assumed to be 0 (zero), that is, the future value of a loan is 0.
- * @param type                  Optional, defaults to 0. The number 0 (zero) or 1 and indicates when payments are due.
+ * @param [type]                  Optional, defaults to 0. The number 0 (zero) or 1 and indicates when payments are due.
  *                              0 = At the end of period
  *                              1 = At the beginning of the period
  * @returns {number}
  */
-// eslint-disable-next-line no-unused-vars
-function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) {
+function pmt (ratePerPeriod: number, numberOfPayments: number, presentValue: number, futureValue?: number, type?: 0 | 1) {
   futureValue = typeof futureValue !== 'undefined' ? futureValue : 0
   type = typeof type !== 'undefined' ? type : 0
 
@@ -550,20 +554,24 @@ function pmt (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) 
 
 <style scoped lang="scss">
 .tips {
-  width: 100%;
-  height: 100%;
   padding: .5rem .8rem;
-
   color: red;
 }
 
 .panel {
-  width: 100%;
-  height: 100%;
   padding: .5rem .8rem;
+  overflow: auto;
+  box-sizing: border-box;
+  display: block;
+}
 
-  .ant-calendar-picker {
-    width: 100%;
+@media screen and (max-width: 712px) {
+  .panel-wrapper {
+    flex-wrap: wrap;
+
+    .panel {
+      width: 100%;
+    }
   }
 }
 </style>

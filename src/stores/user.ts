@@ -67,6 +67,7 @@ export const useUserStore = defineStore('user', {
     syncing: false
   }),
   getters: {
+    isLogged: state => !!state._user.token,
     isFav: state => (name: string): boolean => {
       return state.favorite.filter(item => (item.name === name)).length > 0
     },
