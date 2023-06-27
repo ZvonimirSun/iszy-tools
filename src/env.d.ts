@@ -5,7 +5,8 @@ export interface ToolItem {
   tags?: string[],
   statistics?: boolean,
   layout?: string,
-  type?: string
+  type?: string,
+  requiresAuth?: boolean,
 }
 
 export interface ToolMenu {

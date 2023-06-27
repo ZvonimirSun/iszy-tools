@@ -9,8 +9,8 @@ import {
 import tools from '@/views/tools.json'
 import { merge } from 'lodash-es'
 import { useUserStore } from '@/stores/user'
-import { DefineComponent } from 'vue'
-import { ToolMenu } from '@/env'
+import type { DefineComponent } from 'vue'
+import type { ToolMenu } from '@/env'
 
 const vueFiles = import.meta.glob('../views/**/*.vue') as Record<string, () => Promise<DefineComponent>>
 
@@ -79,7 +79,8 @@ for (const tmp of data) {
               meta: {
                 statistics: tool.statistics !== false,
                 layout: tool.layout,
-                type: 'tool'
+                type: 'tool',
+                requiresAuth: tool.requiresAuth
               }
             })
           } else {

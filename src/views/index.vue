@@ -107,9 +107,11 @@ for (const item of oriTools as ToolMenu[]) {
   }
 }
 
+const isLogged = computed(() => userStore.isLogged)
 const settings = computed(() => userStore.settings)
 const isFav = computed(() => userStore.isFav)
-const tools = computed(() => {
+
+const toolsHasAuth = computed(() => {
   let tmp: ToolMenu[]
   if (settings.value.showType) {
     tmp = [...(oriTools || [])]
@@ -145,8 +147,20 @@ const tools = computed(() => {
       children: userStore.favorite
     })
   }
+  return tmp
+    .map(item => {
+      const a = cloneDeep(item)
+      a.children = (a.children || [])
+        .filter(item => (!item.requiresAuth || isLogged.value))
+      return a
+    })
+    .filter(item => item.children?.length)
+})
+
+const tools = computed(() => {
+  const tmp: ToolMenu[] = toolsHasAuth.value
   if (searchStr.value) {
-    tmp = tmp.map(item => {
+    return tmp.map(item => {
       const a = cloneDeep(item)
       a.children = (a.children || []).filter(item => {
         const tags = item.tags || []
@@ -156,9 +170,10 @@ const tools = computed(() => {
         }))
       })
       return a
-    })
+    }).filter(item => item.children?.length)
+  } else {
+    return tmp
   }
-  return tmp.filter(item => (Array.isArray(item.children) && item.children.length > 0))
 })
 
 const updateFav = userStore.updateFav

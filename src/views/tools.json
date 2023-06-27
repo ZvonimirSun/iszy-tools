@@ -64,6 +64,11 @@
     "icon": "i-icon-park-outline-code",
     "children": [
       {
+        "name": "Mock工具",
+        "link": "/mock",
+        "requiresAuth": true
+      },
+      {
         "name": "JSON转换工具",
         "link": "/jsonConverter"
       },
