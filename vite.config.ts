@@ -11,7 +11,7 @@ import Unocss from 'unocss/vite'
 import { presetUno, presetAttributify, presetIcons } from 'unocss'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
-import Zeitreise from '@zeitreise/vite'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
@@ -21,6 +21,7 @@ export default defineConfig({
   server: { port: 3000, https: false },
   plugins: [
     vue(),
+    vueJsx(),
     AutoImport({
       resolvers: [
         ElementPlusResolver(),
@@ -142,8 +143,7 @@ export default defineConfig({
       }
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
-    Inspect(),
-    Zeitreise()
+    Inspect()
   ],
   optimizeDeps: {
     include: ['vue', 'element-plus', 'ant-design-vue']

@@ -11,6 +11,7 @@
   "dependencies": {
     "@ckpack/vue-color": "^1.1.4",
     "@highlightjs/vue-plugin": "^2.0.1",
+    "@lezer/common": "1.0.0",
     "@supermap/iclient-common": "^11.0.1",
     "@vueuse/core": "^10.1.2",
     "@vueuse/integrations": "^10.1.2",
@@ -68,9 +69,9 @@
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
     "@vue/compiler-sfc": "^3.3.4",
     "@vue/runtime-dom": "^3.3.4",
-    "@zeitreise/vite": "^0.2.4",
     "co": "^4.6.0",
     "eslint": "^8.41.0",
     "eslint-config-standard": "^17.1.0",

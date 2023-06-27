@@ -302,6 +302,7 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "toValue": true
+    "toValue": true,
+    "ElTag": true
   }
 }
