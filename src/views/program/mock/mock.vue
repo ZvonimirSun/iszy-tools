@@ -84,7 +84,10 @@
       </div>
     </div>
     <div class="prj-data-control">
-      <el-button type="primary">
+      <el-button
+        type="primary"
+        @click="openCreateDataDialog"
+      >
         新增接口
       </el-button>
     </div>
@@ -150,6 +153,110 @@
       </span>
     </template>
   </el-dialog>
+  <el-dialog
+    v-model="showDataDialog"
+    :title="dataForm.id > -1 ? '修改接口' : '添加接口'"
+    @opened="initJsonEditor"
+  >
+    <div class="edit-data-wrapper">
+      <el-form
+        :model="dataForm"
+        class="edit-data-form"
+      >
+        <el-form-item
+          label="接口名"
+          :label-width="120"
+          :required="true"
+        >
+          <el-input
+            v-model="dataForm.name"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item
+          label="类型(method)"
+          :label-width="120"
+          :required="true"
+        >
+          <el-select
+            v-model="dataForm.type"
+          >
+            <el-option
+              label="GET"
+              value="get"
+            />
+            <el-option
+              label="POST"
+              value="post"
+            />
+            <el-option
+              label="DELETE"
+              value="delete"
+            />
+            <el-option
+              label="PUT"
+              value="put"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="返回延时(单位毫秒)"
+          :label-width="120"
+        >
+          <el-input
+            v-model.number="dataForm.delay"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item
+          label="接口"
+          :label-width="120"
+          :required="true"
+        >
+          <el-input
+            v-model="dataForm.path"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item
+          label="接口描述"
+          :label-width="120"
+        >
+          <el-input
+            v-model="dataForm.description"
+            type="textarea"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item
+          label="接口状态"
+          :label-width="120"
+        >
+          <el-switch
+            v-model="dataForm.enabled"
+            inline-prompt
+            active-text="开"
+            inactive-text="关"
+          />
+        </el-form-item>
+      </el-form>
+      <div
+        ref="jsonEditor"
+        class="edit-data-json"
+      />
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="showDataDialog = false">取消</el-button>
+        <el-button
+          type="primary"
+          @click="createOrEditData(dataForm)"
+        >
+          提交
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup lang="tsx">
 import type { Ref } from 'vue'
@@ -158,6 +265,8 @@ import dayjs from 'dayjs'
 import { getParam, setParam } from '@/utils/hashHandler'
 import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
+import JSONEditor from 'jsoneditor'
+import 'jsoneditor/dist/jsoneditor.min.css'
 
 interface MockPrj {
   id: string
@@ -166,18 +275,20 @@ interface MockPrj {
   description: string
 }
 
+type RequestType = 'post' | 'get' | 'delete' | 'put'
+
 interface MockData {
   id: number
   name: string
-  type: 'post' | 'get'
+  type: RequestType
   enabled: boolean
   path: string
   description?: string
   delay: number
   response: string | object
   projectId: string,
-  createdAt: string,
-  url: string
+  createdAt?: string,
+  url?: string
 }
 
 const prjs: Ref<MockPrj[]> = ref([])
@@ -185,13 +296,29 @@ const selectedPrj: Ref<MockPrj | null> = ref(null)
 const datas: Ref<MockData[]> = ref([])
 
 const showPrjDialog: Ref<boolean> = ref(false)
+const showDataDialog: Ref<boolean> = ref(false)
 
-const form = reactive({
+const jsonEditor: Ref<HTMLDivElement> = ref() as Ref<HTMLDivElement>
+
+const form: MockPrj = reactive({
   id: '',
   name: '',
   path: '',
   description: ''
 })
+const dataForm: MockData = reactive({
+  id: -1,
+  name: '',
+  type: 'get',
+  enabled: true,
+  path: '',
+  description: '',
+  delay: 0,
+  response: '',
+  projectId: ''
+})
+
+let jsonEditorInstance: JSONEditor
 
 const columns: Column<any>[] = [
   {
@@ -240,8 +367,8 @@ const columns: Column<any>[] = [
     key: 'operations',
     cellRenderer: ({ rowData: data }: {rowData: MockData}) => (
       <>
-        <el-button size="small" onClick={() => copy(data.url)}>复制</el-button>
-        <el-button size="small" onClick={() => editData(data)}>编辑</el-button>
+        <el-button size="small" onClick={() => copy(data.url ?? '')}>复制</el-button>
+        <el-button size="small" onClick={() => openEditDataDialog(data)}>编辑</el-button>
         <el-popconfirm
           title="确认要删除该数据吗？删除后无法恢复！"
           onConfirm={() => deleteData(data)}
@@ -273,18 +400,22 @@ onMounted(async () => {
 })
 
 function openCreatePrjDialog () {
-  form.id = ''
-  form.name = ''
-  form.path = ''
-  form.description = ''
+  Object.assign(form, {
+    id: '',
+    name: '',
+    path: '',
+    description: ''
+  })
   showPrjDialog.value = true
 }
 
 function openEditPrjDialog (prj: MockPrj) {
-  form.id = prj.id ?? ''
-  form.name = prj.name
-  form.path = prj.path
-  form.description = prj.description ?? ''
+  Object.assign(form, {
+    id: prj.id ?? '',
+    name: prj.name,
+    path: prj.path,
+    description: prj.description ?? ''
+  })
   showPrjDialog.value = true
 }
 
@@ -380,7 +511,92 @@ function selectPrj (prj: MockPrj) {
   getMockDatas(prj)
 }
 
-function editData (data: MockData) {
+function openCreateDataDialog () {
+  Object.assign(dataForm, {
+    id: -1,
+    name: '',
+    type: 'get',
+    enabled: true,
+    path: '',
+    description: '',
+    delay: 0,
+    response: '',
+    projectId: ''
+  })
+  showDataDialog.value = true
+}
+
+function openEditDataDialog (data: MockData) {
+  Object.assign(dataForm, {
+    id: data.id,
+    name: data.name,
+    type: data.type,
+    enabled: data.enabled,
+    path: data.path,
+    description: data.description,
+    delay: data.delay,
+    response: data.response,
+    projectId: data.projectId
+  })
+  showDataDialog.value = true
+}
+
+function initJsonEditor () {
+  if (!jsonEditorInstance) {
+    jsonEditorInstance = new JSONEditor(jsonEditor.value, {
+      mode: 'code',
+      onChangeText: (text: string) => {
+        dataForm.response = text
+      }
+    })
+  }
+  jsonEditorInstance.setText(typeof dataForm.response === 'string' ? dataForm.response : JSON.stringify(dataForm.response))
+}
+
+function createOrEditData (data: MockData) {
+  if (data.id > -1) {
+    editData(data)
+  } else {
+    createData(data)
+  }
+}
+
+async function editData (data: MockData) {
+  try {
+    const res: {
+      success: boolean
+    } = await axios.put(`${axios.$apiBase}/mock/api/data/${data.id}`, {
+      ...data,
+      id: undefined,
+      projectId: undefined
+    }).then(axios.getData)
+    if (res.success) {
+      ElMessage.success('修改数据成功')
+      getMockDatas(selectedPrj.value as MockPrj)
+      showDataDialog.value = false
+    } else {
+      ElMessage.error('修改数据失败')
+    }
+  } catch (e) {
+    ElMessage.error('修改数据失败')
+  }
+}
+
+async function createData (data: MockData) {
+  try {
+    const res: {
+      success: boolean
+    } = await axios.post(`${axios.$apiBase}/mock/api/data`, { ...data, id: undefined, projectId: selectedPrj.value?.id }).then(axios.getData)
+    if (res.success) {
+      ElMessage.success('创建数据成功')
+      getMockDatas(selectedPrj.value as MockPrj)
+      showDataDialog.value = false
+    } else {
+      ElMessage.error('创建数据失败')
+    }
+  } catch (e) {
+    ElMessage.error('创建数据失败')
+  }
 }
 
 async function deleteData (data: MockData) {
@@ -390,6 +606,7 @@ async function deleteData (data: MockData) {
     } = await axios.delete(`${axios.$apiBase}/mock/api/data/${data.id}`).then(axios.getData)
     if (res.success) {
       ElMessage.success('删除数据成功')
+      getMockDatas(selectedPrj.value as MockPrj)
     } else {
       ElMessage.error('删除数据失败')
     }
@@ -563,4 +780,21 @@ async function copy (val: string) {
   }
 }
 
+.edit-data-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .edit-data-form {
+    width: 300px;
+
+    @media screen and (max-width: 1440px) {
+      width: 100%;
+    }
+  }
+
+  .edit-data-json {
+    flex: 1;
+  }
+}
 </style>
