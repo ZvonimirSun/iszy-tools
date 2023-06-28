@@ -466,7 +466,6 @@ async function deletePrj (prj: MockPrj) {
     } else {
       ElMessage.error('删除项目失败')
     }
-    ElMessage.success('删除项目成功')
   } catch (e) {
     ElMessage.error('删除项目失败')
   }

@@ -147,14 +147,7 @@ const toolsHasAuth = computed(() => {
       children: userStore.favorite
     })
   }
-  return tmp
-    .map(item => {
-      const a = cloneDeep(item)
-      a.children = (a.children || [])
-        .filter(item => (!item.requiresAuth || isLogged.value))
-      return a
-    })
-    .filter(item => item.children?.length)
+  return tmp.filter(item => item.children?.length)
 })
 
 const tools = computed(() => {
