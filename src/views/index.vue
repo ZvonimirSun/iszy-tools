@@ -107,7 +107,6 @@ for (const item of oriTools as ToolMenu[]) {
   }
 }
 
-const isLogged = computed(() => userStore.isLogged)
 const settings = computed(() => userStore.settings)
 const isFav = computed(() => userStore.isFav)
 
