@@ -157,7 +157,7 @@
     v-model="showDataDialog"
     fullscreen
     :title="dataForm.id > -1 ? '修改接口' : '添加接口'"
-    @opened="initJsonEditor"
+    destroy-on-close
   >
     <div class="edit-data-wrapper">
       <el-form
@@ -241,12 +241,13 @@
           />
         </el-form-item>
       </el-form>
-      <div
-        ref="jsonEditor"
+      <VanillaJsonEditor
         class="edit-data-json"
-        :class="{
-          'jse-theme-dark': isDark
+        :props="{
+          mode: 'code'
         }"
+        :content="dataForm.response"
+        @change="updateResponse"
       />
     </div>
     <template #footer>
@@ -269,9 +270,9 @@ import dayjs from 'dayjs'
 import { getParam, setParam } from '@/utils/hashHandler'
 import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
-import { Content, JSONContent, JSONEditor, JSONValue, Mode } from 'vanilla-jsoneditor'
-import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
+import { JSONValue } from 'vanilla-jsoneditor'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
+import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 
 interface MockPrj {
   id: string
@@ -290,7 +291,7 @@ interface MockData {
   path: string
   description?: string
   delay: number
-  response: JSONValue
+  response: JSONValue | string
   projectId: string,
   createdAt?: string,
   url?: string
@@ -304,8 +305,6 @@ const datas: Ref<MockData[]> = ref([])
 
 const showPrjDialog: Ref<boolean> = ref(false)
 const showDataDialog: Ref<boolean> = ref(false)
-
-const jsonEditor: Ref<HTMLDivElement> = ref() as Ref<HTMLDivElement>
 
 const form: MockPrj = reactive({
   id: '',
@@ -324,8 +323,6 @@ const dataForm: MockData = reactive({
   response: '',
   projectId: ''
 })
-
-let jsonEditorInstance: JSONEditor
 
 const columns: Column<any>[] = [
   {
@@ -405,18 +402,6 @@ onMounted(async () => {
     if (prj) {
       selectPrj(prj)
     }
-  }
-})
-
-onBeforeUnmount(() => {
-  if (jsonEditorInstance) {
-    jsonEditorInstance.destroy()
-  }
-})
-
-watch(() => isDark, () => {
-  if (jsonEditorInstance) {
-    jsonEditorInstance.refresh()
   }
 })
 
@@ -561,27 +546,8 @@ function openEditDataDialog (data: MockData) {
   showDataDialog.value = true
 }
 
-function initJsonEditor () {
-  if (!jsonEditorInstance) {
-    jsonEditorInstance = new JSONEditor({
-      target: jsonEditor.value,
-      props: {
-        mode: Mode.text,
-        onChange: (updatedContent: Content) => {
-          function _isJson (val: Content): val is JSONContent {
-            return (val as JSONContent).json != null
-          }
-
-          if (_isJson(updatedContent)) {
-            dataForm.response = updatedContent.json
-          } else {
-            dataForm.response = updatedContent.text
-          }
-        }
-      }
-    })
-  }
-  jsonEditorInstance.set(typeof dataForm.response === 'string' ? { text: dataForm.response } : { json: dataForm.response })
+function updateResponse (response: JSONValue | string) {
+  dataForm.response = response
 }
 
 function createOrEditData (data: MockData) {
