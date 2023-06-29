@@ -6733,6 +6733,11 @@ uuid@^9.0.0:
   resolved "https://registry.npmmirror.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
   integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
+vanilla-jsoneditor@^0.17.8:
+  version "0.17.8"
+  resolved "http://192.168.2.58:4873/vanilla-jsoneditor/-/vanilla-jsoneditor-0.17.8.tgz#449ae39e986611e020df8a651fdf3f11329b2a84"
+  integrity sha512-DP9GP/IBQjYOnC820CYoFuXs3vgrL+zdGGp1X83qFirSkRWPeP+6zB/14a0LYhvomQNNezes5Gwel89MKc4Qbg==
+
 vanilla-picker@^2.12.1:
   version "2.12.1"
   resolved "https://registry.npmmirror.com/vanilla-picker/-/vanilla-picker-2.12.1.tgz#6e619eecf553891b8d2d042b745a23c91f19f34c"

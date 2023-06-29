@@ -244,6 +244,9 @@
       <div
         ref="jsonEditor"
         class="edit-data-json"
+        :class="{
+          'jse-theme-dark': isDark
+        }"
       />
     </div>
     <template #footer>
@@ -266,8 +269,8 @@ import dayjs from 'dayjs'
 import { getParam, setParam } from '@/utils/hashHandler'
 import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
-import JSONEditor from 'jsoneditor'
-import 'jsoneditor/dist/jsoneditor.min.css'
+import { Content, JSONContent, JSONEditor, JSONValue, Mode } from 'vanilla-jsoneditor'
+import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 
 interface MockPrj {
@@ -287,11 +290,13 @@ interface MockData {
   path: string
   description?: string
   delay: number
-  response: string | object
+  response: JSONValue
   projectId: string,
   createdAt?: string,
   url?: string
 }
+
+const isDark = useDark()
 
 const prjs: Ref<MockPrj[]> = ref([])
 const selectedPrj: Ref<MockPrj | null> = ref(null)
@@ -400,6 +405,18 @@ onMounted(async () => {
     if (prj) {
       selectPrj(prj)
     }
+  }
+})
+
+onBeforeUnmount(() => {
+  if (jsonEditorInstance) {
+    jsonEditorInstance.destroy()
+  }
+})
+
+watch(() => isDark, () => {
+  if (jsonEditorInstance) {
+    jsonEditorInstance.refresh()
   }
 })
 
@@ -546,14 +563,25 @@ function openEditDataDialog (data: MockData) {
 
 function initJsonEditor () {
   if (!jsonEditorInstance) {
-    jsonEditorInstance = new JSONEditor(jsonEditor.value, {
-      mode: 'code',
-      onChangeText: (text: string) => {
-        dataForm.response = text
+    jsonEditorInstance = new JSONEditor({
+      target: jsonEditor.value,
+      props: {
+        mode: Mode.text,
+        onChange: (updatedContent: Content) => {
+          function _isJson (val: Content): val is JSONContent {
+            return (val as JSONContent).json != null
+          }
+
+          if (_isJson(updatedContent)) {
+            dataForm.response = updatedContent.json
+          } else {
+            dataForm.response = updatedContent.text
+          }
+        }
       }
     })
   }
-  jsonEditorInstance.setText(typeof dataForm.response === 'string' ? dataForm.response : JSON.stringify(dataForm.response))
+  jsonEditorInstance.set(typeof dataForm.response === 'string' ? { text: dataForm.response } : { json: dataForm.response })
 }
 
 function createOrEditData (data: MockData) {
