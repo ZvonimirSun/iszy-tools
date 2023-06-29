@@ -84,6 +84,12 @@ watch(route, function (val) {
   }
 }, { immediate: true })
 
+onMounted(() => {
+  if (userStore.isLogged) {
+    router.push({ path: redirect.value || '/', query: otherQuery.value })
+  }
+})
+
 async function login () {
   if (!navigator.onLine) {
     ElMessage.warning('已离线！')

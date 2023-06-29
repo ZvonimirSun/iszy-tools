@@ -10,14 +10,16 @@
     ref="editorPanel"
     class="editorPanel"
   >
-    <JsonEditorExtend
+    <VanillaJsonEditor
       ref="editorPanelContainerLeft"
-      v-model:code="left.code"
-      v-model:name="left.name"
-      class="editorPanelContainerLeft"
+      show-menu-bar
+      class="editorPanelContainer editorPanelContainerLeft"
       :class="{full:fullPanel==='left',hide:fullPanel==='right'}"
       :style="{flex: store.splitterValue + ' 1 0'}"
-      mode="code"
+      :name="store.leftData?.name"
+      :config="{
+        mode: 'code'
+      }"
       @open-recent="beforeOpenRecent('left')"
       @create="create('left')"
     />
@@ -97,13 +99,16 @@
         </div>
       </el-space>
     </div>
-    <JsonEditorExtend
-      v-model:code="right.code"
-      v-model:name="right.name"
-      class="editorPanelContainerRight noShowMobile"
+    <VanillaJsonEditor
+      ref="editorPanelContainerRight"
+      show-menu-bar
+      class="editorPanelContainer editorPanelContainerRight noShowMobile"
       :class="{full:fullPanel==='right',hide:fullPanel==='left'}"
       :style="{flex: (1-store.splitterValue) + ' 1 0'}"
-      mode="tree"
+      :name="store.rightData?.name"
+      :config="{
+        mode: 'tree'
+      }"
       @open-recent="beforeOpenRecent('right')"
       @create="create('right')"
     />
@@ -163,56 +168,32 @@
 <script setup lang="ts">
 import { useJsonEditorStore } from '@/stores/jsonEditor'
 import type { Ref } from 'vue'
-import { cloneDeep } from 'lodash-es'
+import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 
-const JsonEditorExtend = defineAsyncComponent(() => import('./child/json-editor-extend.vue'))
-const editorPanelContainerLeft: Ref<{container: HTMLDivElement}> = ref<{container: HTMLDivElement}>() as Ref<{container: HTMLDivElement}>
+const editorPanelContainerLeft: Ref<InstanceType<typeof VanillaJsonEditor> | null> = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editorPanelContainerRight: Ref<InstanceType<typeof VanillaJsonEditor> | null> = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
 const editorPanel: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
 const loading: Ref<boolean> = ref(true)
 const fullPanel = ref('')
 
 const store = useJsonEditorStore()
 
-interface EditorStatus {
-  id: string,
-  code: object | string,
-  name: string
-}
-
-const left: Ref<EditorStatus> = ref({
-  id: '',
-  code: {
-    array: [
-      1,
-      2,
-      3
-    ],
-    boolean: true,
-    color: 'gold',
-    null: null,
-    number: 123,
-    object: {
-      a: 'b',
-      c: 'd'
-    },
-    string: 'Hello World'
+const defaultData = {
+  array: [
+    1,
+    2,
+    3
+  ],
+  boolean: true,
+  color: 'gold',
+  null: null,
+  number: 123,
+  object: {
+    a: 'b',
+    c: 'd'
   },
-  name: ''
-})
-
-const right: Ref<EditorStatus> = ref({
-  id: '',
-  code: {},
-  name: ''
-})
-
-watch(left, (val) => {
-  debugger
-})
-
-watch(right, (val) => {
-  debugger
-})
+  string: 'Hello World'
+}
 
 onMounted(() => {
   init()
@@ -226,32 +207,26 @@ async function init () {
     loading.value = false
   }
   if (store.leftData && store.leftData.content) {
-    left.value.name = store.leftData.name
     if (store.leftData.content.json) {
-      left.value.code = store.leftData.content.json
+      editorPanelContainerLeft.value?.set(store.leftData.content.json)
     } else if (store.leftData.content.text) {
-      left.value.code = store.leftData.content.text
+      editorPanelContainerLeft.value?.set(store.leftData.content.text)
     }
+  } else {
+    editorPanelContainerLeft.value?.set(defaultData)
   }
   if (store.rightData && store.rightData.content) {
-    right.value.name = store.rightData.name
     if (store.rightData.content.json) {
-      right.value.code = store.rightData.content.json
+      editorPanelContainerRight.value?.set(store.rightData.content.json)
     } else if (store.rightData.content.text) {
-      right.value.code = store.rightData.content.text
+      editorPanelContainerRight.value?.set(store.rightData.content.text)
     }
   }
   fullPanel.value = store.fullStatus
 }
 
 function create (leftOrRight: 'left' | 'right') {
-  if (leftOrRight === 'left') {
-    left.value.id = ''
-    left.value.name = ''
-  } else {
-    right.value.id = ''
-    right.value.name = ''
-  }
+
 }
 
 // region 最近打开相关
@@ -281,13 +256,9 @@ function openRecent () {
           id: selectId.value
         })
         if (data.json) {
-          left.value.id = selectId.value
-          left.value.name = tmp.name
-          left.value.code = data.json
+          editorPanelContainerLeft.value?.set(data.json)
         } else if (data.text) {
-          left.value.id = selectId.value
-          left.value.name = tmp.name
-          left.value.code = data.text
+          editorPanelContainerLeft.value?.set(data.text)
         }
       } else if (openRecentFlag === 'right') {
         store.saveData({
@@ -295,13 +266,9 @@ function openRecent () {
           id: selectId.value
         })
         if (data.json) {
-          right.value.id = selectId.value
-          right.value.name = tmp.name
-          right.value.code = data.json
+          editorPanelContainerRight.value?.set(data.json)
         } else if (data.text) {
-          right.value.id = selectId.value
-          right.value.name = tmp.name
-          right.value.code = data.text
+          editorPanelContainerRight.value?.set(data.text)
         }
       }
     }
@@ -311,11 +278,17 @@ function openRecent () {
 // endregion
 
 function copyRight () {
-  right.value.code = cloneDeep(left.value.code)
+  const data = editorPanelContainerLeft.value?.get()
+  if (data != null) {
+    editorPanelContainerRight.value?.set(data)
+  }
 }
 
 function copyLeft () {
-  left.value.code = cloneDeep(right.value.code)
+  const data = editorPanelContainerRight.value?.get()
+  if (data != null) {
+    editorPanelContainerLeft.value?.set(data)
+  }
 }
 
 let startX = 0
@@ -328,8 +301,11 @@ function startDrag (e: TouchEvent | MouseEvent) {
   if (e instanceof MouseEvent && e.button !== 0) {
     return
   }
+  const dom = editorPanelContainerLeft.value?.container
+  if (!dom) {
+    return
+  }
   moved = false
-  const dom = editorPanelContainerLeft.value.container
   originWidth = parseFloat(window.getComputedStyle(dom).width)
   if (isNaN(originWidth)) {
     originWidth = 0
@@ -400,6 +376,18 @@ function clickDragger () {
   display: flex;
   height: 100%;
   flex: 1 1;
+}
+
+.editorPanelContainer.hide {
+  @media (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.editorPanelContainer.full {
+  @media (min-width: 1024px) {
+    flex: 1 !important;
+  }
 }
 
 .controller {

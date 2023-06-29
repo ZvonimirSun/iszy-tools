@@ -243,7 +243,7 @@
       </el-form>
       <VanillaJsonEditor
         class="edit-data-json"
-        :props="{
+        :config="{
           mode: 'code'
         }"
         :content="dataForm.response"
