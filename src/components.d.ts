@@ -81,6 +81,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Saturation: typeof import('./components/color-picker/saturation.vue')['default']
+    VanillaJsonEditor: typeof import('./components/VanillaJsonEditor.vue')['default']
     VueCodemirror: typeof import('./components/vue-codemirror.vue')['default']
   }
 }

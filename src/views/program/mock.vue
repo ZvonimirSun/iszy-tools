@@ -272,7 +272,6 @@ import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
 import { JSONValue } from 'vanilla-jsoneditor'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
-import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 
 interface MockPrj {
   id: string
@@ -296,8 +295,6 @@ interface MockData {
   createdAt?: string,
   url?: string
 }
-
-const isDark = useDark()
 
 const prjs: Ref<MockPrj[]> = ref([])
 const selectedPrj: Ref<MockPrj | null> = ref(null)

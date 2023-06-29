@@ -113,8 +113,8 @@ function set (val: JSONValue | string) {
   }
 }
 
-function pickDefinedProps (object, propNames) {
-  const props = {}
+function pickDefinedProps (object: Record<string, any>, propNames: string[]) {
+  const props: Record<string, any> = {}
   for (const propName of propNames) {
     if (object[propName] !== undefined) {
       props[propName] = object[propName]
