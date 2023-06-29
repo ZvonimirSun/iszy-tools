@@ -155,6 +155,7 @@
   </el-dialog>
   <el-dialog
     v-model="showDataDialog"
+    fullscreen
     :title="dataForm.id > -1 ? '修改接口' : '添加接口'"
     @opened="initJsonEditor"
   >
@@ -325,7 +326,8 @@ const columns: Column<any>[] = [
     title: '名称',
     key: 'name',
     dataKey: 'name',
-    width: 300
+    width: 300,
+    fixed: 'left'
   },
   {
     title: '请求类型',
@@ -365,6 +367,7 @@ const columns: Column<any>[] = [
   {
     title: '操作',
     key: 'operations',
+    fixed: 'right',
     cellRenderer: ({ rowData: data }: {rowData: MockData}) => (
       <>
         <el-button size="small" onClick={() => copy(data.url ?? '')}>复制</el-button>
@@ -780,6 +783,7 @@ async function copy (val: string) {
 }
 
 .edit-data-wrapper {
+  height: calc(100vh - 6.2rem - 5.4rem - 6rem);
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
