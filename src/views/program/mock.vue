@@ -268,6 +268,7 @@ import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
+import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 
 interface MockPrj {
   id: string
@@ -327,7 +328,7 @@ const columns: Column<any>[] = [
     key: 'name',
     dataKey: 'name',
     width: 300,
-    fixed: 'left'
+    fixed: FixedDir.LEFT
   },
   {
     title: '请求类型',
@@ -367,7 +368,7 @@ const columns: Column<any>[] = [
   {
     title: '操作',
     key: 'operations',
-    fixed: 'right',
+    fixed: FixedDir.RIGHT,
     cellRenderer: ({ rowData: data }: {rowData: MockData}) => (
       <>
         <el-button size="small" onClick={() => copy(data.url ?? '')}>复制</el-button>
