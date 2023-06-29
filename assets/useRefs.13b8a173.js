@@ -1,0 +1,1 @@
+import{r as f,aw as t}from"./index.471dd628.js";var a=function(){var e=f(new Map),n=function(r){return function(s){e.value.set(r,s)}};return t(function(){e.value=new Map}),[n,e]};const i=a;export{i as u};
