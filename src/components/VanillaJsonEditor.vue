@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
-import { Content, JSONContent, JSONEditor, JSONValue } from 'vanilla-jsoneditor'
+import { Content, isJSONContent, JSONEditor, JSONValue } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
@@ -57,7 +57,7 @@ const documentProperties: Ref<{
     const data = jsonEditor.get()
     let content
     let code
-    if (_isJson(data)) {
+    if (isJSONContent(data)) {
       code = data.json
     } else {
       code = data.text
@@ -122,7 +122,7 @@ onMounted(() => {
     target: jsonEditorDiv.value,
     props: {
       onChange: (updatedContent: Content) => {
-        if (_isJson(updatedContent)) {
+        if (isJSONContent(updatedContent)) {
           emits('change', updatedContent.json)
         } else {
           emits('change', updatedContent.text)
@@ -221,7 +221,7 @@ function set (val: JSONValue | string) {
 
 function get () {
   const data = jsonEditor.get()
-  if (_isJson(data)) {
+  if (isJSONContent(data)) {
     return data.json
   } else {
     return data.text
@@ -235,7 +235,7 @@ function refresh () {
 function download () {
   const data = jsonEditor.get()
   const name = _name.value ? _name.value + '.json' : '未命名.json'
-  if (_isJson(data)) {
+  if (isJSONContent(data)) {
     createFile(JSON.stringify(data.json), name)
   } else {
     createFile(data.text, name)
@@ -296,10 +296,6 @@ function _pickDefinedProps (object: Record<string, any>, propNames: string[]) {
     }
   }
   return props
-}
-
-function _isJson (val: Content): val is JSONContent {
-  return (val as JSONContent).json != null
 }
 </script>
 
