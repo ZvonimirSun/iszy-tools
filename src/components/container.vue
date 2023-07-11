@@ -57,8 +57,7 @@ function fullScreen () {
   flex-direction: column;
 
   .containerTitle {
-    padding: .8rem;
-    margin-top: -2.5rem;
+    margin-top: -1.7rem;
 
     .typeName {
       margin-left: 3rem;

@@ -18,10 +18,14 @@
       :style="{flex: store.splitterValue + ' 1 0'}"
       :name="store.leftData?.name"
       :config="{
-        mode: 'code'
+        mode: 'text'
       }"
+      @change="change('left', $event)"
       @open-recent="beforeOpenRecent('left')"
+      @open="open('left', $event)"
       @create="create('left')"
+      @change-name="changeName('left', $event)"
+      @delete="deleteJson('left')"
     />
     <div
       class="controller noShowMobile"
@@ -109,8 +113,12 @@
       :config="{
         mode: 'tree'
       }"
+      @change="change('right', $event)"
       @open-recent="beforeOpenRecent('right')"
+      @open="open('right', $event)"
       @create="create('right')"
+      @change-name="changeName('right', $event)"
+      @delete="deleteJson('right')"
     />
   </div>
   <el-dialog
@@ -226,7 +234,46 @@ async function init () {
 }
 
 function create (leftOrRight: 'left' | 'right') {
+  store.saveData({
+    [leftOrRight]: true
+  })
+  if (leftOrRight === 'left') {
+    editorPanelContainerLeft.value?.set({})
+  } else if (leftOrRight === 'right') {
+    editorPanelContainerRight.value?.set({})
+  }
+}
 
+function changeName (leftOrRight: 'left' | 'right', name: string) {
+  let id: string | null = null
+  if (leftOrRight === 'left') {
+    id = store.leftId
+  } else if (leftOrRight === 'right') {
+    id = store.rightId
+  }
+  if (id) {
+    store.saveData({
+      id,
+      name
+    })
+  }
+}
+
+function change (leftOrRight: 'left' | 'right', data: any) {
+  let id: string | null = null
+  if (leftOrRight === 'left') {
+    id = store.leftId
+  } else if (leftOrRight === 'right') {
+    id = store.rightId
+  }
+  const tmp = {
+    [leftOrRight]: true,
+    content: data
+  }
+  if (id) {
+    tmp.id = id
+  }
+  store.saveData(tmp)
 }
 
 // region 最近打开相关
@@ -274,6 +321,26 @@ function openRecent () {
     }
   }
   showOpenRecent.value = false
+}
+
+function open (leftOrRight: 'left' | 'right', { name, content } : {name: string, content: string}) {
+  store.saveData({
+    [leftOrRight]: true,
+    name,
+    content
+  })
+  if (leftOrRight === 'left') {
+    editorPanelContainerLeft.value?.set(content)
+  } else if (leftOrRight === 'right') {
+    editorPanelContainerRight.value?.set(content)
+  }
+}
+
+function deleteJson (leftOrRight: 'left' | 'right') {
+  const id = leftOrRight === 'left' ? store.leftId : store.rightId
+  if (id) {
+    store.deleteData({ id })
+  }
 }
 // endregion
 

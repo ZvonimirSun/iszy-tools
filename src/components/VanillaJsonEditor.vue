@@ -43,6 +43,9 @@ const _indent: Ref<number> = ref(2)
 const settingIndent: Ref<boolean> = ref(false)
 const showDocumentProperties: Ref<boolean> = ref(false)
 
+const editingName: Ref<boolean> = ref(false)
+const newName: Ref<string> = ref('')
+
 const documentProperties: Ref<{
   name?: string,
   storage?: string,
@@ -87,7 +90,8 @@ const emits = defineEmits<{
   (e: 'create'): void
   (e: 'changeName', name: string): void
   (e: 'open', file: { name: string, content: string }): void
-  (e: 'openRecent'): void
+  (e: 'openRecent'): void,
+  (e: 'delete'): void
 }>()
 
 defineExpose({
@@ -106,7 +110,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   content: undefined,
   config: () => ({
-    mode: 'code'
+    mode: 'text'
   }),
   showMenuBar: false,
 
@@ -166,7 +170,7 @@ function create () {
   emits('create')
 }
 
-function open (val: 'recent' | 'file' | 'url') {
+function open (val: 'recent' | 'file') {
   switch (val) {
     case 'file':
       uploader.value.click()
@@ -239,7 +243,7 @@ function download () {
 }
 
 let lastIndent = _indent.value
-function changeOption (val: 'indentation' | 'properties') {
+function changeOption (val: 'indentation' | 'properties' | 'delete') {
   switch (val) {
     case 'indentation':
       lastIndent = _indent.value
@@ -247,6 +251,9 @@ function changeOption (val: 'indentation' | 'properties') {
       break
     case 'properties':
       showDocumentProperties.value = true
+      break
+    case 'delete':
+      emits('delete')
       break
   }
 }
@@ -261,6 +268,22 @@ function changeIndentation () {
     indentation: _indent.value
   })
   settingIndent.value = false
+}
+
+function startEditName () {
+  newName.value = _name.value
+  editingName.value = true
+}
+
+function cancelEdit () {
+  editingName.value = false
+}
+
+function changeName () {
+  if (newName.value) {
+    emits('changeName', newName.value)
+  }
+  editingName.value = false
 }
 
 /** ************************* 辅助方法 *******************************/
@@ -289,9 +312,33 @@ function _isJson (val: Content): val is JSONContent {
       v-if="showMenuBar"
       class="json-editor-menu"
     >
-      <div class="editorTitle">
+      <div
+        v-if="_name && !editingName"
+        class="editorTitle"
+      >
         {{ _name }}
+        <i
+          class="i-icon-park-outline-edit"
+          @click="startEditName"
+        />
       </div>
+      <el-input
+        v-if="editingName"
+        v-model="newName"
+        class="name-editor"
+        placeholder="请输入名称"
+      >
+        <template #suffix>
+          <i
+            class="i-icon-park-outline-close"
+            @click="cancelEdit"
+          />
+          <i
+            class="i-icon-park-outline-check"
+            @click="changeName"
+          />
+        </template>
+      </el-input>
       <el-space class="editorControlButtons">
         <el-button
           size="small"
@@ -310,9 +357,6 @@ function _isJson (val: Content): val is JSONContent {
               </el-dropdown-item>
               <el-dropdown-item command="file">
                 <span class="buttonWithIcon"><span class="i-icon-park-outline-computer" />&nbsp;打开本地文件</span>
-              </el-dropdown-item>
-              <el-dropdown-item command="url">
-                <span class="buttonWithIcon"><span class="i-icon-park-outline-link-three" />&nbsp;打开URL</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -457,6 +501,31 @@ function _isJson (val: Content): val is JSONContent {
     color: white;
     padding: .8rem;
     margin-right: auto;
+    display: flex;
+    align-items: center;
+
+    i {
+      margin-left: .5rem;
+      cursor: pointer;
+    }
+  }
+
+  .name-editor {
+    margin-right: auto;
+    margin-left: .8rem;
+    max-width: 20rem;
+
+    i {
+      cursor: pointer;
+
+      &:hover {
+        color: var(--el-color-primary);
+      }
+    }
+
+    i + i {
+      margin-left: .5rem;
+    }
   }
 
   .editorControlButtons {
