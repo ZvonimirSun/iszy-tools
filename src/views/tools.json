@@ -69,10 +69,6 @@
         "requiresAuth": true
       },
       {
-        "name": "JSON转换工具",
-        "link": "/jsonConverter"
-      },
-      {
         "name": "颜色选择器",
         "link": "/colorTransform"
       },
