@@ -7,44 +7,18 @@
       accept=".json,.JSON,.geojson,.GEOJSON"
       @change="openFile"
     >
-    <el-space :gap="8">
-      <el-button
-        size="middle"
-        @click="$refs.uploader.click()"
-      >
-        打开
-      </el-button>
-      <el-dropdown>
-        <template #overlay>
-          <el-menu @click="exportFile">
-            <el-menu-item key="geojson">
-              GeoJSON
-            </el-menu-item>
-            <el-menu-item key="shapefile">
-              Shapefile
-            </el-menu-item>
-          </el-menu>
-        </template>
-        <el-button
-          size="middle"
-        >
-          <span class="buttonWithIcon">保存<span class="i-icon-park-outline-down" /></span>
-        </el-button>
-      </el-dropdown>
-    </el-space>
+    <el-button @click="$refs.uploader.click()">
+      打开
+    </el-button>
+    <el-button @click="exportGeoJson">
+      保存
+    </el-button>
   </div>
 </template>
 
 <script setup>
-import { GeoJSON } from 'leaflet'
-import '@/utils/shpwrite.js'
 import createFile from '@/utils/createFile'
-
-const $eventBus = inject('$eventBus')
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  geoJsonLayer: { type: GeoJSON, default: undefined }
-})
+import $eventBus from '@/plugins/EventBus'
 
 function openFile (e) {
   if (e.target.files.length) {
@@ -55,8 +29,8 @@ function openFile (e) {
         try {
           const data = JSON.parse(reader.result)
           $eventBus.emit('updateEditor', data)
+          $eventBus.emit('updateGeojsonLayer', data)
         } catch (e) {
-          $eventBus.emit('updateEditor')
         }
       }
     }
@@ -65,65 +39,29 @@ function openFile (e) {
   e.target.value = ''
 }
 
-function exportFile (e = {}) {
-  switch (e.key) {
-    case 'shapefile':
-      exportShapefile()
-      break
-    case 'geojson':
-      exportGeoJson()
-      break
-  }
-}
-
-function exportShapefile () {
-  if (typeof ArrayBuffer === 'undefined') {
-    ElMessage.error('当前浏览器不支持导出成Shapefile')
-    return
-  }
-  const data = props.geoJsonLayer?.toGeoJSON()
-  if (data) {
-    try {
-      window.process = window.process || {}
-      Object.assign(window.process, {
-        browser: true
-      })
-      // todo 修复不支持multiPolygon等问题
-      // eslint-disable-next-line no-undef
-      shpwrite.download(data, {
-        folder: 'geojson',
-        types: {
-          point: 'points',
-          polygon: 'polygons',
-          line: 'lines'
-        }
-      })
-    } catch (e) {
-      ElMessage.error('导出失败，' + e.message)
-    }
-  } else {
-    ElMessage.warning('无可导出数据')
-  }
-}
-
 function exportGeoJson () {
-  const data = props.geoJsonLayer?.toGeoJSON()
-  if (data) {
-    createFile(data, 'exportFile.geojson')
-  } else {
-    ElMessage.warning('无可导出数据')
-  }
+  $eventBus.emit('getGeoJson', function (data) {
+    if (data) {
+      createFile(JSON.stringify(data), 'exportFile.geojson')
+    } else {
+      ElMessage.warning('无可导出数据')
+    }
+  })
 }
 </script>
 
 <style scoped lang="scss">
 .controlMenu {
-  background: #fff;
+  background: var(--el-fill-color-lighter);
   padding: .8rem;
 }
 
 .buttonWithIcon {
   display: inline-flex;
   align-items: center;
+
+  .i-icon-park-outline-down {
+    margin-left: .5rem;
+  }
 }
 </style>

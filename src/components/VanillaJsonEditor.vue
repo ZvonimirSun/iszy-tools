@@ -94,6 +94,8 @@ const emits = defineEmits<{
   (e: 'delete'): void
 }>()
 
+let updating = false
+
 defineExpose({
   container,
   update,
@@ -122,6 +124,7 @@ onMounted(() => {
     target: jsonEditorDiv.value,
     props: {
       onChange: (updatedContent: Content) => {
+        if (updating) return
         if (isJSONContent(updatedContent)) {
           emits('change', updatedContent.json)
         } else {
@@ -200,16 +203,23 @@ function openFile (e: Event) {
 }
 
 function update (val: JSONValue | string) {
+  updating = true
+  let data
   if (val != null) {
     if (typeof val === 'string') {
-      jsonEditor.update({ text: val })
+      data = val
     } else {
-      jsonEditor.update({ json: val })
+      data = JSON.stringify(val, null, _indent.value)
     }
+    jsonEditor.update({ text: data })
   }
+  setTimeout(() => {
+    updating = false
+  }, 0)
 }
 
 function set (val: JSONValue | string) {
+  updating = true
   if (val != null) {
     if (typeof val === 'string') {
       jsonEditor.set({ text: val })
@@ -217,6 +227,9 @@ function set (val: JSONValue | string) {
       jsonEditor.set({ json: val })
     }
   }
+  setTimeout(() => {
+    updating = false
+  }, 0)
 }
 
 function get () {

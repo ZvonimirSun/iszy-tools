@@ -3,48 +3,35 @@
     ref="wrapper"
     class="wrapper"
   >
-    <leaflet-map
-      v-model:geo-json-layer="geoJsonLayer"
-      @get-map="getMap"
-      @get-control="getControl"
-    />
-    <el-tabs type="card">
+    <leaflet-map />
+    <el-tabs
+      v-model="currentTab"
+      type="card"
+    >
       <el-tab-pane
-        key="geoJson"
-        tab="GeoJSON"
+        name="geoJson"
+        label="GeoJSON"
       >
-        <geo-json-editor
-          ref="geoJsonEditor"
-          :geo-json-layer="geoJsonLayer"
-        />
+        <geo-json-editor />
       </el-tab-pane>
       <el-tab-pane
-        key="table"
-        tab="表格"
+        name="table"
+        label="属性表"
       >
-        <property-table
-          :geo-json-layer="geoJsonLayer"
-          :height="wrapperHeight"
-        />
+        <property-table :height="wrapperHeight" />
       </el-tab-pane>
       <el-tab-pane
-        key="addService"
-        tab="添加服务"
+        name="addService"
+        label="添加服务"
       >
-        <add-service
-          :map="_map"
-          :layer-control="_control"
-        />
+        <add-service />
       </el-tab-pane>
     </el-tabs>
-    <control-menu
-      :geo-json-layer="geoJsonLayer"
-    />
+    <control-menu />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Map, GeoJSON, Control } from 'leaflet'
 import LeafletMap from './child/leafletMap.vue'
 import GeoJsonEditor from './child/geoJsonEditor.vue'
 import PropertyTable from './child/propertyTable.vue'
@@ -52,26 +39,16 @@ import AddService from './child/addService.vue'
 import ControlMenu from './child/ControlMenu.vue'
 import type { Ref } from 'vue'
 
-const geoJsonLayer: Ref<GeoJSON<unknown> | undefined> = ref()
-const _map: Ref<Map | undefined> = ref()
-const _control: Ref<Control.Layers | undefined> = ref()
+const currentTab: Ref<string> = ref('geoJson')
 const wrapper: Ref<HTMLDivElement | undefined> = ref()
 
 const wrapperHeight = computed(() => {
   if (wrapper.value) {
-    return parseFloat(getComputedStyle(wrapper.value).height)
+    return parseFloat(getComputedStyle(wrapper.value).height) - 40
   } else {
     return 400
   }
 })
-
-function getMap (val: Map) {
-  _map.value = markRaw(val)
-}
-
-function getControl (val: Control.Layers) {
-  _control.value = markRaw(val)
-}
 </script>
 
 <style scoped lang="scss">
@@ -88,44 +65,31 @@ function getControl (val: Control.Layers) {
     width: 60%;
   }
 
-  :deep(.ant-tabs) {
+  :deep(.el-tabs) {
     width: 40%;
     height: 100%;
 
-    .ant-tabs-bar {
+    .el-tabs__header {
       margin: 0;
     }
 
-    .ant-tabs-nav {
-      margin: 0;
-    }
+    .el-tabs__content {
+      height: calc(100% - 4.1rem);
+      z-index: 2;
 
-    .ant-tabs-nav-container, .ant-tabs-bar, .ant-tabs-tab {
-      height: 4rem;
-      line-height: 4rem;
-    }
-
-    .ant-tabs-content {
-      height: calc(100%);
-
-      .ant-tabs-tabpane {
+      .el-tab-pane {
         height: 100%;
-        overflow: auto;
-
-        &.ant-tabs-tabpane-inactive {
-          display: none;
-        }
       }
     }
   }
 
   @media (max-width: 992px) {
-    :deep(.mapContainer) {
+    :deep(.map-container) {
       width: 100%;
       height: calc(50% - .4rem);
     }
 
-    :deep(.ant-tabs) {
+    :deep(.el-tabs) {
       margin-top: .8rem;
       width: 100%;
       height: calc(50% - .4rem);
