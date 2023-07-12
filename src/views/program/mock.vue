@@ -244,7 +244,7 @@
       <VanillaJsonEditor
         class="edit-data-json"
         :config="{
-          mode: 'code'
+          mode: 'text'
         }"
         :content="dataForm.response"
         @change="updateResponse"
