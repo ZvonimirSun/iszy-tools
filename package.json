@@ -88,7 +88,7 @@
     "postcss": "^8.4.24",
     "sass": "^1.56.0",
     "sitemap": "^7.1.1",
-    "typescript": "^5.0.4",
+    "typescript": "^5.1.6",
     "unocss": "^0.52.0",
     "unplugin-auto-import": "^0.16.1",
     "unplugin-vue-components": "^0.24.1",
