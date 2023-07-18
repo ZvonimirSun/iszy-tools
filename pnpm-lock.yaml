@@ -57,8 +57,8 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0
   element-plus:
-    specifier: ^2.3.5
-    version: 2.3.5(vue@3.3.4)
+    specifier: ^2.3.8
+    version: 2.3.8(vue@3.3.4)
   esri-leaflet:
     specifier: ^3.0.3
     version: 3.0.3(leaflet@1.9.4)
@@ -3920,8 +3920,8 @@ packages:
     resolution: {integrity: sha512-fT3hvdUWLjDbaTGzyOjng/CQhQJSQP8ThO3XZAoaxHvHo2kUXiRQVMj9M235l8uDFiNPsPa6KHT1p3RaR6ugRw==}
     dev: true
 
-  /element-plus@2.3.5(vue@3.3.4):
-    resolution: {integrity: sha512-g27DHm2C5/tPwte9H6Juu+JOdzT9z1ALHTIvia6MwnBdCrI4kd77o6KcYdodU15/tYiPBoCEmobhl/7GUDb+1Q==}
+  /element-plus@2.3.8(vue@3.3.4):
+    resolution: {integrity: sha512-yHQR0/tG2LvPkpGUt7Te/hPmP2XW/BytBNUbx+EFO54VnGCOE3upmQcVffNp1PLgwg9sthYDXontUWpnpmLPJw==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
