@@ -495,7 +495,7 @@ function clickDragger () {
       align-items: center;
 
       &:hover {
-        background: #dedede;
+        background: var(--el-fill-color-dark);
       }
 
       .dragIcon {

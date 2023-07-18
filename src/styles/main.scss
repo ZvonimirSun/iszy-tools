@@ -52,14 +52,16 @@ html, body, #app {
   color: var(--el-text-color-primary);
 }
 
-a {
+#app a {
   color: var(--el-color-primary);
   text-decoration: none;
 }
 
-pre,
-code, kbd, samp {
-  font-family: JetBrains Mono, monospace;
+#app {
+  pre,
+  code, kbd, samp {
+    font-family: JetBrains Mono, monospace;
+  }
 }
 
 .el-blockquote {

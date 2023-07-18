@@ -10,7 +10,7 @@
           <span class="i-iszy-jsoneditor-format" />
         </template>
       </el-button>
-      <el-divider type="vertical" />
+      <el-divider direction="vertical" />
       <el-button
         type="primary"
         title="折叠所有"
@@ -29,7 +29,7 @@
           <span class="i-icon-park-outline-expand-text-input" />
         </template>
       </el-button>
-      <el-divider type="vertical" />
+      <el-divider direction="vertical" />
       <el-button
         type="primary"
         title="撤销"
@@ -50,7 +50,7 @@
           <span class="i-icon-park-outline-redo" />
         </template>
       </el-button>
-      <el-divider type="vertical" />
+      <el-divider direction="vertical" />
       <el-button
         type="primary"
         title="前往顶部"
@@ -74,7 +74,7 @@
       <v-ace-editor
         v-model="code"
         lang="xml"
-        theme="textmate"
+        :theme="theme"
         style="height: 100%;"
         :options="{
           useWorker: true,
@@ -97,6 +97,7 @@ import { VAceEditor } from 'vue3-ace-editor'
 import ace from 'ace-builds'
 import 'ace-builds/src-noconflict/mode-xml'
 import 'ace-builds/src-noconflict/theme-textmate.js'
+import 'ace-builds/src-noconflict/theme-twilight.js'
 import 'ace-builds/src-noconflict/snippets/xml.js'
 import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/ext-language_tools'
@@ -114,6 +115,20 @@ const cursor = ref({
 const lineCount = ref(0)
 const hasUndo = ref(false)
 const hasRedo = ref(false)
+const theme = ref('textmate')
+
+const isDark = useDark()
+if (isDark.value) {
+  theme.value = 'twilight'
+}
+
+watch(isDark, (val) => {
+  if (val) {
+    theme.value = 'twilight'
+  } else {
+    theme.value = 'textmate'
+  }
+})
 
 function editorInit (editor) {
   aceEditor = editor
@@ -168,16 +183,17 @@ function redoEditor () {
 .codePanel {
   width: 100%;
   height: 100%;
-  border: .1rem solid #ddd;
+  border: .1rem solid var(--el-border-color);
   font-size: 1.4rem;
   overflow: hidden;
+  box-sizing: border-box;
 
   .header {
     display: flex;
     flex-flow: row wrap;
     width: 100%;
     padding: .5rem;
-    background-color: #1890ff;
+    background-color: var(--el-color-primary);
     color: #fff;
     align-items: center;
   }
@@ -191,31 +207,13 @@ function redoEditor () {
     width: 100%;
     padding: .5rem;
     line-height: 2.2rem;
-    background-color: #f7f7f7;
-    border-top: .1rem solid #ddd;
+    background-color: var(--el-bg-color);
+    border-top: .1rem solid var(--el-border-color);
   }
 }
 
-.ant-btn {
-  font-size: 1.8rem;
-
-  &[disabled] {
-    background-color: #1890ff;
-    border: unset;
-    cursor: default;
-  }
-
-  &:hover:not([disabled]) {
-    border-color: #f7f7f7;
-  }
-
-  &:not(:last-child) {
-    margin-right: .5rem;
-  }
-}
-
-.ant-divider {
-  border-color: white;
+.el-divider {
+  border-color: var(--el-color-white);
   height: 1.6rem;
 }
 </style>
