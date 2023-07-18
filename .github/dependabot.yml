@@ -1,9 +1,4 @@
 version: 2
-registries:
-  npm-npmjs:
-    type: npm-registry
-    url: https://registry.npmmirror.com
-    replaces-base: true
 updates:
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -14,8 +9,6 @@ updates:
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
     directory: "/"
-    registries:
-      - npm-npmjs
     schedule:
       interval: "weekly"
 
