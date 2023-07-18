@@ -1,7 +1,7 @@
 lockfileVersion: '6.0'
 
 settings:
-  autoInstallPeers: true
+  autoInstallPeers: false
   excludeLinksFromLockfile: false
 
 dependencies:
@@ -127,6 +127,9 @@ dependencies:
     version: 2.2.2
 
 devDependencies:
+  '@algolia/client-search':
+    specifier: ~4.10.0
+    version: 4.10.5
   '@babel/core':
     specifier: ^7.21.8
     version: 7.21.8
@@ -240,19 +243,19 @@ devDependencies:
     version: 5.0.4
   unocss:
     specifier: ^0.52.0
-    version: 0.52.0(postcss@8.4.24)(rollup@2.79.1)(vite@4.4.4)
+    version: 0.52.0(postcss@8.4.24)(vite@4.4.4)
   unplugin-auto-import:
     specifier: ^0.16.1
-    version: 0.16.1(@vueuse/core@10.1.2)(rollup@2.79.1)
+    version: 0.16.1(@vueuse/core@10.1.2)
   unplugin-vue-components:
     specifier: ^0.24.1
-    version: 0.24.1(rollup@2.79.1)(vue@3.3.4)
+    version: 0.24.1(vue@3.3.4)
   vite:
     specifier: ^4.4.4
     version: 4.4.4(less@4.1.1)(sass@1.56.0)
   vite-plugin-inspect:
     specifier: ^0.7.26
-    version: 0.7.26(rollup@2.79.1)(vite@4.4.4)
+    version: 0.7.26(vite@4.4.4)
   vite-plugin-pwa:
     specifier: ^0.15.0
     version: 0.15.0(vite@4.4.4)(workbox-build@6.5.4)(workbox-window@6.5.4)
@@ -281,7 +284,6 @@ packages:
 
   /@algolia/cache-common@4.10.5:
     resolution: {integrity: sha512-1mClwdmTHll+OnHkG+yeRoFM17kSxDs4qXkjf6rNZhoZGXDvfYLy3YcZ1FX4Kyz0DJv8aroq5RYGBDsWkHj6Tw==}
-    dev: false
 
   /@algolia/cache-in-memory@4.10.5:
     resolution: {integrity: sha512-+ciQnfIGi5wjMk02XhEY8fmy2pzy+oY1nIIfu8LBOglaSipCRAtjk6WhHc7/KIbXPiYzIwuDbM2K1+YOwSGjwA==}
@@ -311,7 +313,6 @@ packages:
     dependencies:
       '@algolia/requester-common': 4.10.5
       '@algolia/transporter': 4.10.5
-    dev: false
 
   /@algolia/client-personalization@4.10.5:
     resolution: {integrity: sha512-nH+IyFKBi8tCyzGOanJTbXC5t4dspSovX3+ABfmwKWUYllYzmiQNFUadpb3qo+MLA3jFx5IwBesjneN6dD5o3w==}
@@ -327,11 +328,9 @@ packages:
       '@algolia/client-common': 4.10.5
       '@algolia/requester-common': 4.10.5
       '@algolia/transporter': 4.10.5
-    dev: false
 
   /@algolia/logger-common@4.10.5:
     resolution: {integrity: sha512-gRJo9zt1UYP4k3woEmZm4iuEBIQd/FrArIsjzsL/b+ihNoOqIxZKTSuGFU4UUZOEhvmxDReiA4gzvQXG+TMTmA==}
-    dev: false
 
   /@algolia/logger-console@4.10.5:
     resolution: {integrity: sha512-4WfIbn4253EDU12u9UiYvz+QTvAXDv39mKNg9xSoMCjKE5szcQxfcSczw2byc6pYhahOJ9PmxPBfs1doqsdTKQ==}
@@ -347,7 +346,6 @@ packages:
 
   /@algolia/requester-common@4.10.5:
     resolution: {integrity: sha512-UkVa1Oyuj6NPiAEt5ZvrbVopEv1m/mKqjs40KLB+dvfZnNcj+9Fry4Oxnt15HMy/HLORXsx4UwcthAvBuOXE9Q==}
-    dev: false
 
   /@algolia/requester-node-http@4.10.5:
     resolution: {integrity: sha512-aNEKVKXL4fiiC+bS7yJwAHdxln81ieBwY3tsMCtM4zF9f5KwCzY2OtN4WKEZa5AAADVcghSAUdyjs4AcGUlO5w==}
@@ -361,7 +359,6 @@ packages:
       '@algolia/cache-common': 4.10.5
       '@algolia/logger-common': 4.10.5
       '@algolia/requester-common': 4.10.5
-    dev: false
 
   /@ampproject/remapping@2.2.1:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
@@ -1595,12 +1592,9 @@ packages:
       vue: 3.3.4
     dev: false
 
-  /@codemirror/autocomplete@6.9.0(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.2)(@lezer/common@1.0.0):
+  /@codemirror/autocomplete@6.9.0(@lezer/common@1.0.0):
     resolution: {integrity: sha512-Fbwm0V/Wn3BkEJZRhr0hi5BhCo5a7eBL6LYaliPjOSwCyfOpnjXY59HruSxOUNV+1OYer0Tgx1zRNQttjXyDog==}
     peerDependencies:
-      '@codemirror/language': ^6.0.0
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
       '@lezer/common': ^1.0.0
     dependencies:
       '@codemirror/language': 6.8.0
@@ -2138,7 +2132,7 @@ packages:
       rollup: 2.79.1
     dev: true
 
-  /@rollup/pluginutils@5.0.2(rollup@2.79.1):
+  /@rollup/pluginutils@5.0.2:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -2150,7 +2144,6 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 2.0.2
       picomatch: 2.3.1
-      rollup: 2.79.1
     dev: true
 
   /@simonwep/pickr@1.8.2:
@@ -2604,24 +2597,24 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: true
 
-  /@unocss/astro@0.52.0(rollup@2.79.1)(vite@4.4.4):
+  /@unocss/astro@0.52.0(vite@4.4.4):
     resolution: {integrity: sha512-vgEOFj+q4DY1F0kwqydbaNQjZSSYBqCV8eiE5ZpRfhQ+k0S71e7yudgYW5Np2sYBbih7v57GKnuQDwno3M6yDQ==}
     dependencies:
       '@unocss/core': 0.52.0
       '@unocss/reset': 0.52.0
-      '@unocss/vite': 0.52.0(rollup@2.79.1)(vite@4.4.4)
+      '@unocss/vite': 0.52.0(vite@4.4.4)
     transitivePeerDependencies:
       - rollup
       - vite
     dev: true
 
-  /@unocss/cli@0.52.0(rollup@2.79.1):
+  /@unocss/cli@0.52.0:
     resolution: {integrity: sha512-IVj8IDT2M1w7mux2m7HY4/rwmfumYxaEIkpDkHGPgZcUVzXaOenNvbun1Q4oDZ2oFKytTJqGNSieavugfmlrjA==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@ampproject/remapping': 2.2.1
-      '@rollup/pluginutils': 5.0.2(rollup@2.79.1)
+      '@rollup/pluginutils': 5.0.2
       '@unocss/config': 0.52.0
       '@unocss/core': 0.52.0
       '@unocss/preset-uno': 0.52.0
@@ -2773,13 +2766,13 @@ packages:
       '@unocss/core': 0.52.0
     dev: true
 
-  /@unocss/vite@0.52.0(rollup@2.79.1)(vite@4.4.4):
+  /@unocss/vite@0.52.0(vite@4.4.4):
     resolution: {integrity: sha512-Ip2Jyu7dywqEsy3EacnItE+VXB77R72mQ9oA6TyrZpov5ZKoS327kqQSzHS/lYXzZ2yomFq9EsqbKQWIEInH9Q==}
     peerDependencies:
       vite: ^2.9.0 || ^3.0.0-0 || ^4.0.0
     dependencies:
       '@ampproject/remapping': 2.2.1
-      '@rollup/pluginutils': 5.0.2(rollup@2.79.1)
+      '@rollup/pluginutils': 5.0.2
       '@unocss/config': 0.52.0
       '@unocss/core': 0.52.0
       '@unocss/inspector': 0.52.0
@@ -3572,7 +3565,7 @@ packages:
   /codemirror@6.0.1(@lezer/common@1.0.0):
     resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
     dependencies:
-      '@codemirror/autocomplete': 6.9.0(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.2)(@lezer/common@1.0.0)
+      '@codemirror/autocomplete': 6.9.0(@lezer/common@1.0.0)
       '@codemirror/commands': 6.2.4
       '@codemirror/language': 6.8.0
       '@codemirror/lint': 6.4.0
@@ -6925,10 +6918,10 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /unimport@3.0.14(rollup@2.79.1):
+  /unimport@3.0.14:
     resolution: {integrity: sha512-67Rh/sGpEuVqdHWkXaZ6NOq+I7sKt86o+DUtKeGB6dh4Hk1A8AQrzyVGg2+LaVEYotStH7HwvV9YSaRjyT7Uqg==}
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@2.79.1)
+      '@rollup/pluginutils': 5.0.2
       escape-string-regexp: 5.0.0
       fast-glob: 3.3.0
       local-pkg: 0.4.3
@@ -6960,7 +6953,7 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unocss@0.52.0(postcss@8.4.24)(rollup@2.79.1)(vite@4.4.4):
+  /unocss@0.52.0(postcss@8.4.24)(vite@4.4.4):
     resolution: {integrity: sha512-MholrJpVLH95SwCiQzXJiimkpUXqI1HWZCZBh4jklpfSGo3eZeo62f1BpXZThmLDPLZoBsf0qqItcvB803X37A==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -6969,8 +6962,8 @@ packages:
       '@unocss/webpack':
         optional: true
     dependencies:
-      '@unocss/astro': 0.52.0(rollup@2.79.1)(vite@4.4.4)
-      '@unocss/cli': 0.52.0(rollup@2.79.1)
+      '@unocss/astro': 0.52.0(vite@4.4.4)
+      '@unocss/cli': 0.52.0
       '@unocss/core': 0.52.0
       '@unocss/extractor-arbitrary-variants': 0.52.0
       '@unocss/postcss': 0.52.0(postcss@8.4.24)
@@ -6988,7 +6981,7 @@ packages:
       '@unocss/transformer-compile-class': 0.52.0
       '@unocss/transformer-directives': 0.52.0
       '@unocss/transformer-variant-group': 0.52.0
-      '@unocss/vite': 0.52.0(rollup@2.79.1)(vite@4.4.4)
+      '@unocss/vite': 0.52.0(vite@4.4.4)
     transitivePeerDependencies:
       - postcss
       - rollup
@@ -7001,7 +6994,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /unplugin-auto-import@0.16.1(@vueuse/core@10.1.2)(rollup@2.79.1):
+  /unplugin-auto-import@0.16.1(@vueuse/core@10.1.2):
     resolution: {integrity: sha512-H3Ky56cGEEHTssxUIFuGXTowGVlT/Bp3MBx1yyCzUHzAtdrO+2r9zpid32f2AkTpQxo2lch6yaTK61Im+rEyPQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -7014,18 +7007,18 @@ packages:
         optional: true
     dependencies:
       '@antfu/utils': 0.7.5
-      '@rollup/pluginutils': 5.0.2(rollup@2.79.1)
+      '@rollup/pluginutils': 5.0.2
       '@vueuse/core': 10.1.2(vue@3.3.4)
       local-pkg: 0.4.3
       magic-string: 0.30.1
       minimatch: 9.0.3
-      unimport: 3.0.14(rollup@2.79.1)
+      unimport: 3.0.14
       unplugin: 1.4.0
     transitivePeerDependencies:
       - rollup
     dev: true
 
-  /unplugin-vue-components@0.24.1(rollup@2.79.1)(vue@3.3.4):
+  /unplugin-vue-components@0.24.1(vue@3.3.4):
     resolution: {integrity: sha512-T3A8HkZoIE1Cja95xNqolwza0yD5IVlgZZ1PVAGvVCx8xthmjsv38xWRCtHtwl+rvZyL9uif42SRkDGw9aCfMA==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -7039,7 +7032,7 @@ packages:
         optional: true
     dependencies:
       '@antfu/utils': 0.7.5
-      '@rollup/pluginutils': 5.0.2(rollup@2.79.1)
+      '@rollup/pluginutils': 5.0.2
       chokidar: 3.5.3
       debug: 4.3.4
       fast-glob: 3.3.0
@@ -7136,14 +7129,14 @@ packages:
       '@sphinxxxx/color-conversion': 2.2.2
     dev: false
 
-  /vite-plugin-inspect@0.7.26(rollup@2.79.1)(vite@4.4.4):
+  /vite-plugin-inspect@0.7.26(vite@4.4.4):
     resolution: {integrity: sha512-gRjBay+OxLr/Dr+HXlfJVXZH0cqhE5hkkBvo2du2cA1LGUBnV8Aym89AdPrURkSpTk3Rvw9dNWM2VLIuw6RKJg==}
     engines: {node: '>=14'}
     peerDependencies:
       vite: ^3.1.0 || ^4.0.0
     dependencies:
       '@antfu/utils': 0.7.5
-      '@rollup/pluginutils': 5.0.2(rollup@2.79.1)
+      '@rollup/pluginutils': 5.0.2
       debug: 4.3.4
       fs-extra: 11.1.1
       picocolors: 1.0.0
