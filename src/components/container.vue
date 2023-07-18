@@ -19,8 +19,7 @@
       </div>
       <div class="main">
         <slot />
-        <a-back-top
-          :target="()=>$refs.container"
+        <el-backtop
           :visibility-height="100"
         />
       </div>
@@ -50,19 +49,19 @@ function fullScreen () {
 .containerAll {
   height: calc(100% - 2.4rem);
   margin-top: 2.4rem;
-  background: #fff;
-  box-shadow: 0 0.8rem 1rem rgb(36 159 253 / 30%);
-  border-radius: .8rem;
+  background: var(--el-fill-color-lighter);
+  box-shadow: var(--el-box-shadow-light);
+  border-radius: var(--el-border-radius-round);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 
   .containerTitle {
-    margin-top: -1.6rem;
+    margin-top: -1.7rem;
 
     .typeName {
       margin-left: 3rem;
-      padding: .5rem 1.6rem;
+      padding: 0 1.6rem;
 
       height: 3.2rem;
       display: inline-flex;
@@ -72,10 +71,10 @@ function fullScreen () {
       font-weight: 700;
       line-height: 2.4rem;
 
-      color: #fff;
-      background-color: #16b0f6;
-      box-shadow: 0 0.8rem 1rem #16B0F64D;
-      border-radius: .8rem;
+      color: var(--el-color-white);
+      background-color: var(--el-color-primary);
+      box-shadow: var(--el-box-shadow-light);
+      border-radius: var(--el-border-radius-middle);
 
       [class^="i-"] {
         font-size: 2.4rem;
@@ -101,7 +100,7 @@ function fullScreen () {
 
   .main {
     padding: .8rem;
-    background: #fff;
+    background: var(--el-fill-color-lighter);
     flex: 1;
     overflow-y: auto;
     border-radius: .8rem;

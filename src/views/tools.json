@@ -8,7 +8,7 @@
         "link": "/screenRecord"
       },
       {
-        "name": "3D模型浏览",
+        "name": "glTF模型浏览",
         "link": "/3dView"
       },
       {
@@ -64,8 +64,9 @@
     "icon": "i-icon-park-outline-code",
     "children": [
       {
-        "name": "JSON转换工具",
-        "link": "/jsonConverter"
+        "name": "Mock工具",
+        "link": "/mock",
+        "requiresAuth": true
       },
       {
         "name": "颜色选择器",

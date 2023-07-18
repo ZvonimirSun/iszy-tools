@@ -1,55 +1,70 @@
 <template>
-  <a-space direction="vertical">
-    <a-textarea
-      v-model:value="value"
+  <el-space
+    direction="vertical"
+    w-full
+    :fill="true"
+  >
+    <el-input
+      v-model="value"
+      type="textarea"
       placeholder="转换的内容粘贴在这里"
-      :auto-size="{ minRows: 5, maxRows: 8 }"
+      :autosize="{ minRows: 5, maxRows: 8 }"
     />
-    <a-space>
-      <a-button
+    <el-space>
+      <el-button
         type="primary"
         @click="encode"
       >
         UrlEncode编码
-      </a-button>
-      <a-button
+      </el-button>
+      <el-button
         type="primary"
         @click="decode"
       >
         UrlDecode解码
-      </a-button>
-      <a-button
-        type="link"
+      </el-button>
+      <el-button
+        @click="revert"
+      >
+        交换
+      </el-button>
+      <el-button
+        link
+        type="primary"
         @click="clear"
       >
         清空结果
-      </a-button>
-    </a-space>
-  </a-space>
+      </el-button>
+    </el-space>
+    <el-input
+      v-model="result"
+      type="textarea"
+      placeholder="转换的内容粘贴在这里"
+      :autosize="{ minRows: 5, maxRows: 8 }"
+    />
+  </el-space>
 </template>
 
-<script>
-export default {
-  name: 'URLEncode',
-  data: () => ({
-    mode: 'text',
-    value: undefined
-  }),
-  methods: {
-    encode () {
-      if (this.value != null) {
-        this.value = encodeURIComponent(this.value)
-      }
-    },
-    decode () {
-      if (this.value != null) {
-        this.value = decodeURIComponent(this.value)
-      }
-    },
-    clear () {
-      this.value = undefined
-    }
-  }
+<script setup lang="ts">
+import type { Ref } from 'vue'
+
+const value: Ref<string> = ref('')
+const result: Ref<string> = ref('')
+
+function encode () {
+  result.value = encodeURIComponent(value.value)
+}
+function decode () {
+  result.value = decodeURIComponent(value.value)
+}
+function revert () {
+  const tmp = value.value
+  value.value = result.value
+  result.value = tmp
+}
+function clear () {
+  value.value = ''
+  result.value = ''
 }
 </script>
 

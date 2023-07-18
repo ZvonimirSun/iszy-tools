@@ -20,6 +20,16 @@
     },
     "types": ["vite/client", "vite-plugin-pwa/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts", "src/**/*.json", "vite.config.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.d.ts",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "typings/**/*.d.ts",
+    "node_modules/element-plus/**/*",
+    "vite.config.ts"
+  ],
   "exclude": ["dist", "node_modules", "cypress"]
 }

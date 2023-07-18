@@ -1,58 +1,59 @@
 <template>
-  <a-space
+  <el-space
+    :fill="true"
     direction="vertical"
-    style="width: 100%"
+    w-full
   >
-    <a-tabs
-      v-model:activeKey="mode"
+    <el-tabs
+      v-model="mode"
       type="card"
     >
-      <a-tab-pane
-        key="text"
-        tab="文本"
+      <el-tab-pane
+        name="text"
+        label="文本"
       >
-        <a-textarea
-          v-model:value="data1"
+        <el-input
+          v-model="data1"
+          type="textarea"
           :rows="5"
           placeholder="请输入要进行 MD5 计算的字符"
         />
-      </a-tab-pane>
-      <a-tab-pane
-        key="file"
-        tab="文件"
+      </el-tab-pane>
+      <el-tab-pane
+        name="file"
+        label="文件"
       >
-        <a-upload
+        <el-upload
           :file-list="fileList"
           :before-upload="fileCompute"
-          @remove="fileRemove"
+          :on-remove="fileRemove"
         >
-          <a-button>选择文件</a-button>
-        </a-upload>
-      </a-tab-pane>
-    </a-tabs>
+          <el-button>选择文件</el-button>
+        </el-upload>
+      </el-tab-pane>
+    </el-tabs>
     <a-typography-title :level="4">
       结果
     </a-typography-title>
-    <a-textarea
-      v-model:value="data2"
+    <el-input
+      v-model="data2"
+      type="textarea"
       :rows="5"
       readonly
       placeholder="MD5 计算的结果"
     />
-  </a-space>
+  </el-space>
 </template>
 
 <script setup lang="ts">
 import SparkMD5 from 'spark-md5'
-import $msg from 'ant-design-vue/es/message'
 import type { Ref } from 'vue'
-import type { UploadProps } from 'ant-design-vue'
-import type { FileType } from 'ant-design-vue/es/upload/interface'
+import type { UploadUserFile, UploadRawFile } from 'element-plus'
 
 const data1: Ref<string> = ref('')
 const data2: Ref<string> = ref('')
 const mode: Ref<string> = ref('text')
-const fileList: Ref<UploadProps['fileList']> = ref([])
+const fileList: Ref<UploadUserFile[]> = ref([])
 
 watch(data1, async (val: string) => {
   if (!val) {
@@ -63,8 +64,10 @@ watch(data1, async (val: string) => {
   }
 })
 
-function fileCompute (val: FileType) {
-  fileList.value = [val]
+function fileCompute (val: UploadRawFile) {
+  fileList.value = [{
+    name: val.name
+  }]
   data2.value = '计算中...'
   encode(val).then((result: string) => {
     data2.value = result
@@ -73,7 +76,7 @@ function fileCompute (val: FileType) {
 }
 
 function fileRemove () {
-  fileList.value = []
+  // fileList.value = []
 }
 
 function encode (val: string | File): Promise<string> {
@@ -125,7 +128,7 @@ MD5 16位 小写: ${tmp.substring(8, 24).toLowerCase()}`)
       })
     }
   } catch (e) {
-    $msg.error((e as Error).message)
+    ElMessage.error((e as Error).message)
     return Promise.resolve('计算失败')
   }
 }

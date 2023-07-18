@@ -1,8 +1,8 @@
 <template>
-  <template v-if="layers.length">
+  <template v-if="data.layers.length">
     <div class="layer-wrapper">
       <div
-        v-for="(item,index) in layers"
+        v-for="(item,index) in data.layers"
         :key="item.id"
         class="layer-item"
       >
@@ -18,147 +18,148 @@
         >
           {{ item.url }}
         </div>
-        <a-button @click="removeLayer(index)">
+        <el-button @click="removeLayer(index)">
           移除
-        </a-button>
+        </el-button>
       </div>
     </div>
-    <a-divider />
+    <el-divider />
   </template>
-  <a-form
+  <el-form
     :colon="false"
     class="addService"
   >
-    <a-form-item label="服务名称">
-      <a-input v-model:value="name" />
-    </a-form-item>
-    <a-form-item label="服务地址">
-      <a-input v-model:value="url" />
-    </a-form-item>
-    <a-form-item label="服务类型">
-      <a-select v-model:value="type">
-        <a-select-option value="supermap_rest">
-          超图动态
-        </a-select-option>
-        <a-select-option value="supermap_tile">
-          超图切片
-        </a-select-option>
-        <a-select-option value="arcgis_rest">
-          ArcGIS 动态
-        </a-select-option>
-        <a-select-option value="arcgis_tile">
-          ArcGIS 切片
-        </a-select-option>
-        <a-select-option value="tms">
-          TMS
-        </a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item class="formBtnItem">
-      <a-button
+    <el-form-item label="服务名称">
+      <el-input v-model="data.name" />
+    </el-form-item>
+    <el-form-item label="服务地址">
+      <el-input v-model="data.url" />
+    </el-form-item>
+    <el-form-item label="服务类型">
+      <el-select v-model="data.type">
+        <el-option
+          value="supermap_rest"
+          label="超图动态"
+        />
+        <el-option
+          value="supermap_tile"
+          label="超图切片"
+        />
+        <el-option
+          value="arcgis_rest"
+          label="ArcGIS 动态"
+        />
+        <el-option
+          value="arcgis_tile"
+          label="ArcGIS 切片"
+        />
+        <el-option
+          value="tms"
+          label="TMS"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item class="formBtnItem">
+      <el-button
         type="primary"
         @click="addService"
       >
         添加
-      </a-button>
-    </a-form-item>
-  </a-form>
+      </el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
-<script>
-import { tiledMapLayer } from '@/utils/iclient-leaflet/index.js'
-import { dynamicMapLayer as esriDynamicMapLayer } from 'esri-leaflet/src/Layers/DynamicMapLayer.js'
-import { tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet/src/Layers/TiledMapLayer.js'
-import { CRS, tileLayer, Map, Control } from 'leaflet'
+<script setup lang="ts">
+import { tiledMapLayer } from '@/utils/iclient-leaflet'
+import { CRS, Layer, tileLayer } from 'leaflet'
+import { dynamicMapLayer as esriDynamicMapLayer, tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet'
 import { v4 as uuid } from 'uuid'
+import $event from '@/plugins/EventBus'
 
-export default defineComponent({
-  name: 'AddService',
-  props: {
-    map: { type: Map, default: undefined },
-    layerControl: { type: Control.Layers, default: undefined }
-  },
-  data: () => ({
-    count: 0,
-    name: '服务 1',
-    url: '',
-    type: 'supermap_rest',
-    layers: []
-  }),
-  methods: {
-    addService () {
-      if (!this.map || !this.layerControl) {
-        return
-      }
-      const serviceUrl = this.url
-      const serviceType = this.type
-      const serviceName = this.name
-      this.count++
-      this.name = '服务 ' + this.count
-      let layer
-      try {
-        switch (serviceType) {
-          case 'supermap_rest':
-          case 'supermap_tile': {
-            layer = tiledMapLayer(serviceUrl, {
-              prjCoordSys: { epsgCode: 3857 },
-              crs: CRS.EPSG3857
-            })
-            layer.addTo(this.map)
-            break
-          }
-          case 'arcgis_rest': {
-            layer = esriDynamicMapLayer({
-              url: serviceUrl,
-              f: 'image'
-            })
-            layer.addTo(this.map)
-            break
-          }
-          case 'arcgis_tile': {
-            layer = esriTiledMapLayer({
-              url: serviceUrl
-            })
-            layer.addTo(this.map)
-            break
-          }
-          case 'tms': {
-            layer = tileLayer(serviceUrl)
-            layer.addTo(this.map)
-            break
-          }
-          default:
-            break
-        }
-      } catch (e) {
-        this.$msg.error('添加服务失败')
-      }
-      if (layer && this.layerControl) {
-        this.layerControl.addOverlay(layer, serviceName)
-        this.layers.push({
-          name: serviceName,
-          url: serviceUrl,
-          layer,
-          id: uuid()
-        })
-      }
-    },
-    removeLayer (index) {
-      if (this.layers[index]?.layer && this.layerControl) {
-        this.map.removeLayer(this.layers[index]?.layer)
-        this.layerControl.removeLayer(this.layers[index]?.layer)
-        this.layers.splice(index, 1)
-      }
-    }
-  }
+const data: {
+  count: number
+  name: string
+  url: string
+  type: string
+  layers: Array<{
+    id: string
+    name: string
+    url: string,
+    layer: Layer
+  }>
+} = reactive({
+  count: 0,
+  name: '服务 1',
+  url: '',
+  type: 'supermap_rest',
+  layers: []
 })
+
+function addService () {
+  const serviceUrl = data.url
+  const serviceType = data.type
+  const serviceName = data.name
+  data.count++
+  data.name = '服务 ' + data.count
+  let layer
+  try {
+    switch (serviceType) {
+      case 'supermap_rest':
+      case 'supermap_tile': {
+        layer = tiledMapLayer(serviceUrl, {
+          prjCoordSys: { epsgCode: 3857 },
+          crs: CRS.EPSG3857
+        })
+        break
+      }
+      case 'arcgis_rest': {
+        layer = esriDynamicMapLayer({
+          url: serviceUrl,
+          f: 'image'
+        })
+        break
+      }
+      case 'arcgis_tile': {
+        layer = esriTiledMapLayer({
+          url: serviceUrl
+        })
+        break
+      }
+      case 'tms': {
+        layer = tileLayer(serviceUrl)
+        break
+      }
+      default:
+        break
+    }
+  } catch (e) {
+    ElMessage.error('添加服务失败')
+    return
+  }
+  if (layer) {
+    $event.emit('addLayer', layer, serviceName)
+    data.layers.push({
+      name: serviceName,
+      url: serviceUrl,
+      layer,
+      id: uuid()
+    })
+  }
+}
+function removeLayer (index: number) {
+  if (data.layers[index]?.layer) {
+    $event.emit('removeLayer', data.layers[index].layer)
+    data.layers.splice(index, 1)
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .addService {
   padding: .8rem 0 .8rem .8rem;
 
-  .ant-form-item {
+  .el-form-item {
     margin-bottom: .8rem;
 
     &:last-child {
@@ -203,7 +204,7 @@ export default defineComponent({
   }
 }
 
-.ant-divider {
+.el-divider {
   margin: .8rem 0;
 }
 </style>

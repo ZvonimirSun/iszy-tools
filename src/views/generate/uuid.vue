@@ -1,142 +1,138 @@
 <template>
-  <a-form
+  <el-form
     layout="inline"
     :model="formState"
   >
-    <a-form-item label="版本">
-      <a-select v-model:value="formState.version">
-        <a-select-option value="v1">
+    <el-form-item label="版本">
+      <el-select v-model="formState.version">
+        <el-option value="v1">
           Version 1
-        </a-select-option>
-        <a-select-option value="v4">
+        </el-option>
+        <el-option value="v4">
           Version 4
-        </a-select-option>
-        <a-select-option value="nil">
+        </el-option>
+        <el-option value="nil">
           NIL
-        </a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item
+        </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item
       v-show="formState.version!=='nil'"
       label="数量"
     >
-      <a-input-number
-        v-model:value="formState.count"
+      <el-input-number
+        v-model="formState.count"
         :max="500"
         :min="1"
         :step="1"
       />
-    </a-form-item>
-    <a-form-item label="连字符">
-      <a-switch v-model:checked="formState.hasHyphen" />
-    </a-form-item>
-    <a-form-item label="自动生成">
-      <a-switch v-model:checked="auto" />
-    </a-form-item>
-  </a-form>
-  <a-divider />
+    </el-form-item>
+    <el-form-item label="连字符">
+      <el-switch v-model="formState.hasHyphen" />
+    </el-form-item>
+    <el-form-item label="自动生成">
+      <el-switch v-model="auto" />
+    </el-form-item>
+  </el-form>
+  <el-divider />
   <div class="btnGroup">
-    <a-button
+    <el-button
       type="primary"
       @click="generate"
     >
       生成
-    </a-button>
-    <a-button
+    </el-button>
+    <el-button
       @click="reset"
     >
       重置
-    </a-button>
+    </el-button>
   </div>
   <div class="resultPanel">
-    <a-textarea
-      v-model:value="result"
+    <el-input
+      v-model="result"
+      type="textarea"
       placeholder="结果栏"
-      :auto-size="{ minRows: 10,maxRows:50 }"
+      :autosize="{ minRows: 10,maxRows:20 }"
     />
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
+import type { Ref } from 'vue'
 
-export default {
-  name: 'UUID在线生成',
-  data: () => ({
-    formState: {
-      count: 1,
-      version: 'v4',
-      hasHyphen: true
-    },
-    auto: true,
-    times: 0,
-    result: ''
-  }),
-  watch: {
-    formState: {
-      handler (val) {
-        if (val.version === 'nil' && val.count !== 1) {
-          val.count = 1
-        }
-        if (this.auto) {
-          this.generate()
-        }
-      },
-      deep: true
-    },
-    auto: {
-      handler (val) {
-        if (val) {
-          this.generate()
-        }
-      },
-      immediate: true
+const formState: Ref<{
+  count: number,
+  version: string,
+  hasHyphen: boolean
+}> = ref({
+  count: 1,
+  version: 'v4',
+  hasHyphen: true
+})
+const auto: Ref<boolean> = ref(true)
+const times: Ref<number> = ref(0)
+const result: Ref<string> = ref('')
+
+watch(formState, function (val) {
+  if (val.version === 'nil' && val.count !== 1) {
+    val.count = 1
+  }
+  if (auto.value) {
+    generate()
+  }
+}, {
+  deep: true
+})
+
+watch(auto, function (val) {
+  if (val) {
+    generate()
+  }
+})
+
+function generate () {
+  times.value++
+  result.value = ''
+  const _times = times.value
+  const version = formState.value.version
+  const count = formState.value.count
+  const hasHyphen = formState.value.hasHyphen
+  for (let i = 0; i < count; i++) {
+    if (_times !== times.value) {
+      break
     }
-  },
-  methods: {
-    generate () {
-      this.times++
-      this.result = ''
-      const times = this.times
-      const version = this.formState.version
-      const count = this.formState.count
-      const hasHyphen = this.formState.hasHyphen
-      for (let i = 0; i < count; i++) {
-        if (times !== this.times) {
-          break
-        }
-        let tmp = ''
-        switch (version) {
-          case 'v1': {
-            tmp = uuidv1()
-            break
-          }
-          case 'v4': {
-            tmp = uuidv4()
-            break
-          }
-          case 'nil': {
-            tmp = NIL_UUID
-            break
-          }
-          default:
-            break
-        }
-        if (hasHyphen) {
-          this.result += tmp + '\n'
-        } else {
-          this.result += tmp.replaceAll('-', '') + '\n'
-        }
+    let tmp = ''
+    switch (version) {
+      case 'v1': {
+        tmp = uuidv1()
+        break
       }
-    },
-    reset () {
-      this.times = 0
-      this.formState = {
-        count: 1,
-        version: 'v4',
-        hasHyphen: 'yes'
+      case 'v4': {
+        tmp = uuidv4()
+        break
       }
+      case 'nil': {
+        tmp = NIL_UUID
+        break
+      }
+      default:
+        break
     }
+    if (hasHyphen) {
+      result.value += tmp + '\n'
+    } else {
+      result.value += tmp.replaceAll('-', '') + '\n'
+    }
+  }
+}
+function reset () {
+  times.value = 0
+  formState.value = {
+    count: 1,
+    version: 'v4',
+    hasHyphen: true
   }
 }
 </script>

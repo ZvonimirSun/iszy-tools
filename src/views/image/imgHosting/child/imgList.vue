@@ -3,64 +3,66 @@
     v-if="imgList.length"
     class="imgList"
   >
-    <a-image-preview-group>
-      <a-space :size="8">
-        <a-card
-          v-for="(item) in imgList"
-          :key="item.id"
+    <el-space :size="8">
+      <el-card
+        v-for="(item,index) in imgList"
+        :key="item.id"
+        :body-style="{ padding: '0px' }"
+      >
+        <el-image
+          loading="lazy"
+          :src="item.url"
+          :alt="item.name"
+          :preview-src-list="preImgList"
+          :initial-index="index"
+          style="width: 20rem; height: 12.36rem"
+          fit="cover"
+        />
+        <div
+          :title="item.name"
+          class="card-meta"
         >
-          <template #cover>
-            <a-image
-              :src="item.url"
-              :alt="item.name"
-              width="20rem"
-              height="12.36rem"
+          {{ item.name }}
+        </div>
+        <div class="card-action">
+          <span class="py-3 flex">
+            <span
+              class="i-icon-park-outline-copy-link"
+              @click="copyImgUrl(item)"
             />
-          </template>
-          <template #actions>
-            <a-tooltip>
-              <template #title>
-                复制链接
-              </template>
+          </span>
+          <el-popconfirm
+            title="是否确认删除？"
+            confirm-button-text="是"
+            cancel-button-text="否"
+            confirm-button-type="danger"
+            @confirm="removeImage(item)"
+          >
+            <template #reference>
               <span class="py-3 flex">
-                <span
-                  class="i-icon-park-outline-copy-link"
-                  @click="copyImgUrl(item)"
-                />
+                <span class="i-icon-park-outline-delete" />
               </span>
-            </a-tooltip>
-
-            <a-tooltip>
-              <template #title>
-                删除
-              </template>
-              <a-popconfirm
-                title="是否确认删除？"
-                ok-text="是"
-                cancel-text="否"
-                :get-popup-container="getPopupContainer"
-                @confirm="removeImage(item)"
-              >
-                <span class="py-3 flex">
-                  <span class="i-icon-park-outline-delete" />
-                </span>
-              </a-popconfirm>
-            </a-tooltip>
-          </template>
-          <a-card-meta :title="item.name" />
-        </a-card>
-      </a-space>
-    </a-image-preview-group>
+            </template>
+          </el-popconfirm>
+        </div>
+      </el-card>
+    </el-space>
   </div>
-  <a-empty v-else />
+  <el-empty v-else />
 </template>
 
 <script lang="ts" setup>
 import { useImgHostingStore } from '@/stores/imgHosting'
-import $msg from 'ant-design-vue/es/message'
+import type { Ref } from 'vue'
 
 const imgList = computed(() => {
   return useImgHostingStore().imgList
+})
+
+const preImgList: Ref<string[]> = computed(() => {
+  return imgList.value.map((item) => {
+    return item.url
+  })
 })
 
 const commonConfig = computed(() => {
@@ -76,14 +78,10 @@ async function copyImgUrl ({ url } = {} as {url: string}) {
     } else {
       await navigator.clipboard.writeText(url)
     }
-    $msg.success('地址已复制到剪贴板')
+    ElMessage.success('地址已复制到剪贴板')
   } catch (e) {
-    $msg.error('复制失败')
+    ElMessage.error('复制失败')
   }
-}
-
-function getPopupContainer () {
-  return document.body
 }
 </script>
 
@@ -93,12 +91,42 @@ function getPopupContainer () {
   height: 100%;
   overflow: auto;
 
-  :deep(.ant-image) {
-    cursor: pointer;
+  .card-meta {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  :deep(.ant-image-img) {
-    object-fit: cover;
+  .card-action {
+    display: flex;
+
+    > span {
+      width: 50%;
+      cursor: pointer;
+      border-top: solid .1rem var(--el-border-color);
+
+      &:not(:last-child) {
+        border-right: solid .1rem var(--el-border-color);
+      }
+
+      &:hover {
+        [class^="i-"] {
+          color: var(--el-color-primary);
+        }
+      }
+    }
+
+    [class^="i-"] {
+      font-size: 1.8rem;
+      width: 100%;
+      display: block;
+      color: var(--el-text-color-placeholder);
+    }
+  }
+
+  :deep(.ant-image) {
+    cursor: pointer;
   }
 
   :deep(.ant-card-body) {
@@ -111,12 +139,6 @@ function getPopupContainer () {
       margin: 0;
     }
 
-    [class^="i-"] {
-      font-size: 1.8rem;
-      width: 100%;
-      display: block;
-      padding: .8rem 0;
-    }
   }
 
   .ant-space {

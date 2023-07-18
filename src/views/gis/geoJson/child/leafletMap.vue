@@ -11,111 +11,47 @@
     <div class="title">
       <span>属性</span>
     </div>
-    <div class="content">
-      <a-form
-        v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
-        name="selected-feature-form"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        :colon="false"
+    <div
+      v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
+      class="content"
+    >
+      <el-descriptions
+        :column="1"
+        :border="true"
       >
-        <a-form-item
+        <el-descriptions-item
           v-for="(val,key,index) of selectedFeature.properties"
-          :key="'prop'+index"
-          :label="key"
+          :key="index"
+          :label="key.toString()"
         >
-          <a-input
-            v-if="typeof selectedFeature.properties[key] === 'string'"
-            v-model:value="selectedFeature.properties[key]"
-            @change="saveToEditor"
-          />
-          <a-input
-            v-else-if="typeof selectedFeature.properties[key] === 'number'"
-            v-model:value.number="selectedFeature.properties[key]"
-            @change="saveToEditor"
-          />
-          <a-input
-            v-else
-            :value="JSON.stringify(val)"
-            @change="saveToEditor($event, selectedFeature, key)"
-          />
-        </a-form-item>
-      </a-form>
-      <a-form
-        name="add-property-form"
-        :model="addPropertyForm"
-        @finish="onPropertyFinishAdd"
-      >
-        <template
-          v-if="Object.keys(addPropertyForm.properties).length"
-        >
-          <div
-            v-for="(property, index) in addPropertyForm.properties"
-            :key="property.id"
-            class="form-item-container"
-          >
-            <a-form-item
-              :name="['properties', index, 'label']"
-              :rules="{
-                required: true,
-                message: '属性名称缺失',
-              }"
-            >
-              <a-input
-                v-model:value="property.label"
-                placeholder="属性名称"
-              />
-            </a-form-item>
-            <a-form-item
-              :name="['properties', index, 'value']"
-              :rules="{
-                required: true,
-                message: '属性值缺失',
-              }"
-            >
-              <a-input
-                v-model:value="property.value"
-                placeholder="属性值"
-              />
-            </a-form-item>
-          </div>
-        </template>
-        <a-form-item>
-          <a-button
-            type="dashed"
-            block
-            @click="addNewProperty"
-          >
-            <span class="i-icon-park-outline-add-one" />新增属性
-          </a-button>
-        </a-form-item>
-        <a-form-item
-          v-if="Object.keys(addPropertyForm.properties).length"
-        >
-          <div class="btn-container">
-            <a-button
-              type="primary"
-              html-type="submit"
-            >
-              确认
-            </a-button>
-            <a-button
-              @click.stop="cancelEdit"
-            >
-              取消
-            </a-button>
-          </div>
-        </a-form-item>
-      </a-form>
+          {{ val }}
+        </el-descriptions-item>
+      </el-descriptions>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
-import { map, control, layerGroup, geoJSON, marker, Icon, Marker, GeoJSON } from 'leaflet'
+import {
+  map,
+  control,
+  layerGroup,
+  geoJSON,
+  marker,
+  Icon,
+  Marker,
+  GeoJSON,
+  Map,
+  Control,
+  Layer
+} from 'leaflet'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+import $eventBus from '@/plugins/EventBus'
+import { Ref } from 'vue'
+import '@geoman-io/leaflet-geoman-free'
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 
 const blueIcon = new Icon({
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
@@ -135,90 +71,51 @@ const yellowIcon = new Icon({
 })
 const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
-let layerControl, _map
+let geoJsonLayer: GeoJSON, _map: Map, layerControl: Control.Layers
 
-const props = defineProps({
-  geoJsonLayer: { type: GeoJSON, default: undefined }
-})
-
-const emit = defineEmits(['update:geoJsonLayer', 'getMap', 'getControl'])
-
-const $eventBus = inject('$eventBus')
-const $msg = inject('$msg')
-
-const selectedFeature = ref(undefined)
-const mapContainer = ref()
-const propertyPopup = ref()
-
-const addPropertyForm = reactive({
-  properties: []
-})
-
-const onPropertyFinishAdd = values => {
-  values.properties.forEach(item => {
-    if (item.label && item.value) {
-      if (selectedFeature.value.properties[item.label] != null) {
-        $msg.warn('字段 [ ' + item.label + ' ] 存在，已跳过')
-      } else {
-        selectedFeature.value.properties[item.label] = isNaN(item.value) ? item.value : parseFloat(item.value)
-      }
-    }
-  })
-  cancelEdit()
-  $eventBus.emit('updateEditor')
-}
-function addNewProperty () {
-  addPropertyForm.properties.push({
-    label: '',
-    value: '',
-    id: Date.now()
-  })
-}
-
-function cancelEdit () {
-  addPropertyForm.properties = []
-}
+const selectedFeature: Ref<GeoJSON.Feature | undefined> = ref(undefined)
+const mapContainer: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
+const propertyPopup: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
 
 onMounted(() => {
   $eventBus.on('locationGeo', locationGeo)
   $eventBus.on('updateGeojsonLayer', updateGeojsonLayer)
+  $eventBus.on('getGeoJson', getGeoJson)
+  $eventBus.on('addLayer', addLayer)
+  $eventBus.on('removeLayer', removeLayer)
   initMap()
   nextTick(() => {
-    addBaseMaps()
-    addControls()
   })
 })
 
 onBeforeUnmount(() => {
   $eventBus.off('locationGeo', locationGeo)
   $eventBus.off('updateGeojsonLayer', updateGeojsonLayer)
+  $eventBus.off('getGeoJson', getGeoJson)
+  $eventBus.off('addLayer', addLayer)
+  $eventBus.off('removeLayer', removeLayer)
   if (_map) {
     _map.remove()
-    _map = undefined
   }
 })
 
 function initMap () {
   // 初始化地图
-  _map = markRaw(map(mapContainer.value, {
+  _map = map(mapContainer.value, {
     attributionControl: true,
     zoomControl: false,
     minZoom: 4,
     trackResize: true
-  }))
-  emit('getMap', _map)
+  })
   _map.setView([35, 105], 4)
 
   // 添加GeoJson图层
-  emit('update:geoJsonLayer', geoJSON(undefined, {
+  geoJsonLayer = geoJSON(undefined, {
     onEachFeature,
     pointToLayer: (feature, latLng) => {
-      return marker(latLng, { icon: blueIcon })
+      return marker(latLng, { icon: blueIcon }).addTo(_map)
     }
-  }).addTo(_map))
-}
-
-function addBaseMaps () {
+  }).addTo(_map)
   // 添加底图、图层控制
   layerControl = control.layers(
     {
@@ -305,16 +202,13 @@ function addBaseMaps () {
       })
     },
     {
-      图形: toRaw(props.geoJsonLayer)
+      图形: geoJsonLayer
     },
     {
       hideSingleBase: true,
       position: 'bottomleft'
     }
   ).addTo(_map)
-  emit('getControl', layerControl)
-}
-function addControls () {
   control.scale({
     imperial: false,
     position: 'bottomright'
@@ -324,64 +218,109 @@ function addControls () {
     zoomOutTitle: '缩小',
     position: 'topright'
   }).addTo(_map)
+  _map.pm.setLang('zh')
+  _map.pm.setGlobalOptions({
+    layerGroup: geoJsonLayer
+  })
+  _map.pm.addControls({
+    position: 'topright',
+    drawCircleMarker: false,
+    drawText: false,
+    rotateMode: true
+  })
+
+  _map.on('pm:create pm:remove pm:cut', function (e) {
+    updateEditor()
+    if (e.type === 'pm:create') {
+      onEachFeature(e.layer.toGeoJSON() as GeoJSON.Feature, e.layer)
+    }
+  })
 }
 
-function onEachFeature (feature, layer) {
+function onEachFeature (feature: GeoJSON.Feature, layer: GeoJSON | Marker) {
+  layer.on('pm:change', function () {
+    updateEditor()
+  })
   if (!feature.properties) {
     feature.properties = {}
   }
   layer.bindPopup(propertyPopup.value).on('popupopen', () => {
     selectedFeature.value = feature
-    if (layer instanceof Marker) {
-      layer.setIcon(yellowIcon)
-    } else {
-      layer.setStyle({
-        color: '#ffff00',
-        weight: 5,
-        opacity: 0.65
-      })
+    if (_map.hasLayer(layer)) {
+      if (layer instanceof Marker) {
+        layer.setIcon(yellowIcon)
+      } else {
+        layer.setStyle({
+          color: '#ffff00',
+          weight: 5,
+          opacity: 0.65
+        })
+      }
     }
   }).on('popupclose', () => {
     selectedFeature.value = undefined
-    addPropertyForm.properties = []
-    if (layer instanceof Marker) {
-      layer.setIcon(blueIcon)
-    } else {
-      props.geoJsonLayer.resetStyle(layer)
+    if (_map.hasLayer(layer)) {
+      if (layer instanceof Marker) {
+        layer.setIcon(blueIcon)
+      } else {
+        geoJsonLayer.resetStyle(layer)
+      }
     }
   })
 }
 
-function saveToEditor (val, feature, key) {
-  if (val instanceof InputEvent && feature && key) {
-    try {
-      feature.properties[key] = JSON.parse(val.currentTarget.value)
-    } catch (e) {
-      feature.properties[key] = val.currentTarget.value
-    }
-  }
-  $eventBus.emit('updateEditor')
-}
+// function saveToEditor (val: InputEvent, feature: GeoJSON.Feature, key: string) {
+//   if (val && feature && key) {
+//     try {
+//       feature.properties[key] = JSON.parse(val.currentTarget.value)
+//     } catch (e) {
+//       feature.properties[key] = val.currentTarget.value
+//     }
+//   }
+//   $eventBus.emit('updateEditor')
+// }
 
-function locationGeo (geoJson) {
+function locationGeo (geoJson: GeoJSON.GeoJsonObject) {
   try {
     const layer = geoJSON(geoJson)
     _map.fitBounds(layer.getBounds())
   } catch (e) {
   }
 }
-function updateGeojsonLayer (geoJson) {
-  if (props.geoJsonLayer && props.geoJsonLayer instanceof GeoJSON) {
-    props.geoJsonLayer.clearLayers()
-    try {
-      props.geoJsonLayer.addData(geoJson)
-      _map.fitBounds(props.geoJsonLayer.getBounds())
-    } catch (e) {
-      console.log(e)
-    }
+function updateGeojsonLayer (geoJson: GeoJSON.GeoJsonObject) {
+  geoJsonLayer.clearLayers()
+  try {
+    geoJsonLayer.addData(geoJson)
+    _map.fitBounds(geoJsonLayer.getBounds())
+  } catch (e) {
   }
 }
 
+function getGeoJson (callback: (geoJson: GeoJSON.GeoJsonObject) => void) {
+  // eslint-disable-next-line n/no-callback-literal
+  callback(geoJsonLayer?.toGeoJSON())
+}
+
+function addLayer (layer: Layer, serviceName: string) {
+  layer.addTo(_map)
+  layerControl.addOverlay(layer, serviceName)
+}
+
+function removeLayer (layer: Layer) {
+  _map.removeLayer(layer)
+  layerControl.removeLayer(layer)
+}
+
+function updateEditor () {
+  if (geoJsonLayer.getLayers().length === 0) {
+    $eventBus.emit('updateEditor', {
+      type: 'FeatureCollection',
+      features: []
+    })
+  } else {
+    $eventBus.emit('updateEditor', geoJsonLayer.toGeoJSON())
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -400,13 +339,18 @@ function updateGeojsonLayer (geoJson) {
 
   .leaflet-popup-close-button {
     color: #fff;
-    padding: .6rem .6rem 0 0;
+    padding: .2rem .2rem 0 0;
     font-size: 1.8rem;
+  }
+
+  .leaflet-popup-tip {
+    background: var(--el-fill-color-lighter);
   }
 
   .leaflet-popup-content-wrapper {
     border-radius: 0;
     padding: 0;
+    background-color: var(--el-fill-color-lighter);
 
     .leaflet-popup-content {
       margin: 0;
@@ -416,17 +360,21 @@ function updateGeojsonLayer (geoJson) {
       .property-popup {
         display: flex !important;
         flex-direction: column;
-        width: 30rem;
+        width: 30.1rem;
         height: 20rem;
         overflow-y: auto;
 
+        * {
+          //box-sizing: border-box;
+        }
+
         .title {
-          display: block;
+          display: flex;
           width: 100%;
           height: 3rem;
           line-height: 3rem;
-          background: #38f;
-          color: #fff;
+          background: var(--el-color-primary);
+          color: var(--el-color-white);
           font-size: 1.6rem;
           padding: 0 .8rem;
         }
@@ -436,6 +384,7 @@ function updateGeojsonLayer (geoJson) {
           width: 100%;
           padding: .8rem;
           overflow-y: auto;
+          background: var(--el-fill-color-lighter);
 
           .form-item-container {
             display: flex;
@@ -452,12 +401,12 @@ function updateGeojsonLayer (geoJson) {
           }
         }
 
-        .ant-form-item {
+        .el-form-item {
           margin-bottom: .8rem;
         }
 
-        .ant-form:last-child {
-          .ant-form-item:last-child {
+        .el-form:last-child {
+          .el-form-item:last-child {
             margin-bottom: 0;
           }
         }

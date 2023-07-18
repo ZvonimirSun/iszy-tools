@@ -1,18 +1,18 @@
 <template>
-  <a-result
-    status="success"
+  <el-result
+    icon="warning"
     title="403"
     sub-title="对不起，你无权访问当前页面。"
   >
     <template #extra>
-      <a-button
+      <el-button
         type="primary"
         @click="login"
       >
         登录
-      </a-button>
+      </el-button>
     </template>
-  </a-result>
+  </el-result>
 </template>
 
 <script setup>

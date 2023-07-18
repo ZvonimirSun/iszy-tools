@@ -11,10 +11,10 @@ export default async (dom) => {
         } else if (dom.msRequestFullscreen) {
           await dom.msRequestFullscreen()
         } else {
-          this.$msg.error('不支持全屏')
+          ElMessage.error('不支持全屏')
         }
       } catch (e) {
-        this.$msg.error('无法进入全屏')
+        ElMessage.error('无法进入全屏')
       }
     } else {
       await document.exitFullscreen()

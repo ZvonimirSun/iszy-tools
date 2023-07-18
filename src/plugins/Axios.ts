@@ -19,4 +19,8 @@ Axios.interceptors.response.use(
   }
 )
 
+Axios.getData = function (res: AxiosResponse) {
+  return res?.data
+}
+
 export default Axios

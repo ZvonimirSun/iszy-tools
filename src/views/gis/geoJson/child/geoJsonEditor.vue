@@ -1,65 +1,54 @@
 <template>
-  <div
-    ref="geoJsonContainer"
-    class="geoJsonContainer"
+  <VanillaJsonEditor
+    ref="editor"
+    class="edit-data-json"
+    :config="{
+      mode: 'text'
+    }"
+    :content="geoJson"
+    @change="onChangeDebounce"
   />
 </template>
 
-<script>
-import 'jsoneditor/dist/jsoneditor.min.css'
-import JSONEditor from 'jsoneditor'
+<script setup lang="ts">
 import { debounce } from 'lodash-es'
+import $eventBus from '@/plugins/EventBus.js'
+import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
+import { Ref } from 'vue'
+import { JSONValue } from 'vanilla-jsoneditor'
 
-let editor
-let geoJson = {
+const editor: Ref<InstanceType<typeof VanillaJsonEditor> | null> = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+let geoJson: JSONValue = {
   type: 'FeatureCollection',
   features: []
 }
 
-export default defineComponent({
-  name: 'GeoJsonEditor',
-  props: {
-    geoJsonLayer: { type: Object, default: undefined }
-  },
-  mounted () {
-    editor = new JSONEditor(
-      this.$refs.geoJsonContainer,
-      {
-        mode: 'code',
-        onChangeText: debounce(this.onChangeText, 500)
-      },
-      geoJson
-    )
-    this.$eventBus.on('updateEditor', debounce(this.updateEditor, 500))
-  },
-  beforeUnmount () {
-    this.$eventBus.off('updateEditor', this.updateEditor)
-    if (editor) {
-      editor.destroy()
-      editor = undefined
-    }
-  },
-  methods: {
-    onChangeText () {
-      try {
-        geoJson = editor.get()
-        this.$eventBus.emit('updateGeojsonLayer', geoJson)
-      } catch (e) {
-      }
-    },
-    updateEditor (val) {
-      try {
-        if (val) {
-          editor.update(val)
-          this.$eventBus.emit('updateGeojsonLayer', editor.get())
-        } else {
-          geoJson = this.geoJsonLayer.toGeoJSON()
-          editor.update(geoJson)
-        }
-      } catch (e) {}
-    }
-  }
+const updateEditorDebounce = debounce(updateEditor, 500)
+
+onMounted(() => {
+  $eventBus.on('updateEditor', updateEditorDebounce)
 })
+
+onBeforeUnmount(() => {
+  $eventBus.off('updateEditor', updateEditorDebounce)
+})
+
+const onChangeDebounce = debounce(onChange, 500)
+
+function onChange (val: JSONValue | string) {
+  try {
+    if (typeof val === 'string') {
+      geoJson = JSON.parse(val)
+    } else {
+      geoJson = val
+    }
+    $eventBus.emit('updateGeojsonLayer', geoJson)
+  } catch (e) {}
+}
+
+function updateEditor (val: JSONValue) {
+  editor.value?.update(val)
+}
 </script>
 
 <style scoped lang="scss">

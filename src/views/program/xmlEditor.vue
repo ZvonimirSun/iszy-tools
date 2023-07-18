@@ -1,7 +1,7 @@
 <template>
   <div class="codePanel">
     <div class="header">
-      <a-button
+      <el-button
         type="primary"
         title="格式化"
         @click="format"
@@ -9,9 +9,9 @@
         <template #icon>
           <span class="i-iszy-jsoneditor-format" />
         </template>
-      </a-button>
-      <a-divider type="vertical" />
-      <a-button
+      </el-button>
+      <el-divider type="vertical" />
+      <el-button
         type="primary"
         title="折叠所有"
         @click="foldAll"
@@ -19,8 +19,8 @@
         <template #icon>
           <span class="i-icon-park-outline-collapse-text-input" />
         </template>
-      </a-button>
-      <a-button
+      </el-button>
+      <el-button
         type="primary"
         title="展开所有"
         @click="unfoldAll"
@@ -28,9 +28,9 @@
         <template #icon>
           <span class="i-icon-park-outline-expand-text-input" />
         </template>
-      </a-button>
-      <a-divider type="vertical" />
-      <a-button
+      </el-button>
+      <el-divider type="vertical" />
+      <el-button
         type="primary"
         title="撤销"
         :disabled="!hasUndo"
@@ -39,8 +39,8 @@
         <template #icon>
           <span class="i-icon-park-outline-undo" />
         </template>
-      </a-button>
-      <a-button
+      </el-button>
+      <el-button
         type="primary"
         title="重做"
         :disabled="!hasRedo"
@@ -49,9 +49,9 @@
         <template #icon>
           <span class="i-icon-park-outline-redo" />
         </template>
-      </a-button>
-      <a-divider type="vertical" />
-      <a-button
+      </el-button>
+      <el-divider type="vertical" />
+      <el-button
         type="primary"
         title="前往顶部"
         @click="scrollToTop"
@@ -59,8 +59,8 @@
         <template #icon>
           <span class="i-icon-park-outline-to-top" />
         </template>
-      </a-button>
-      <a-button
+      </el-button>
+      <el-button
         type="primary"
         title="前往底部"
         @click="scrollToBottom"
@@ -68,11 +68,11 @@
         <template #icon>
           <span class="i-icon-park-outline-to-bottom" />
         </template>
-      </a-button>
+      </el-button>
     </div>
     <div class="ace-container">
       <v-ace-editor
-        v-model:value="code"
+        v-model="code"
         lang="xml"
         theme="textmate"
         style="height: 100%;"
