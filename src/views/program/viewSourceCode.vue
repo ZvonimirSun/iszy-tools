@@ -1,12 +1,16 @@
 <template>
-  <a-input-search
-    v-model:value="url"
+  <el-input
+    v-model="url"
     placeholder="填入网址"
     enter-button="获取"
     size="large"
-    :loading="loading"
-    @search="getContent"
-  />
+  >
+    <template #append>
+      <el-button @click="getContent">
+        <span class="i-icon-park-outline-search" />
+      </el-button>
+    </template>
+  </el-input>
   <a-typography-paragraph v-show="data">
     <highlight-js
       autodetect
@@ -36,13 +40,13 @@ export default {
         try {
           const res = await this.$axios('https://cors.iszy.xyz/' + this.url)
           this.data = htmlBeatify(res.data || '')
-          this.$msg.success('解析成功')
+          ElMessage.success('解析成功')
         } catch (e) {
-          this.$msg.error('解析出错')
+          ElMessage.error('解析出错')
         }
         this.loading = false
       } else {
-        this.$msg.warn('请输入地址')
+        ElMessage.warning('请输入地址')
       }
     }
   }

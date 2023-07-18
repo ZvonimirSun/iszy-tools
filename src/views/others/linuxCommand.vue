@@ -13,11 +13,11 @@
   <a-typography-title :level="3">
     请输入要查询的命令
   </a-typography-title>
-  <a-input
-    v-model:value.trim="keyword"
+  <el-input
+    v-model.trim="keyword"
     placeholder="man"
   />
-  <a-divider v-show="keyword" />
+  <el-divider v-show="keyword" />
   <a-typography-title
     v-show="keyword"
     :level="3"
@@ -34,73 +34,74 @@
         :key="index"
         class="resultListItem"
       >
-        <a-typography-paragraph @click="query(item)">
-          <b>{{ data[item].n }}</b>: {{ data[item].d }}
-        </a-typography-paragraph>
+        <div @click="query(item)">
+          <a-typography-paragraph>
+            <b>{{ store.data[item].n }}</b>: {{ store.data[item].d }}
+          </a-typography-paragraph>
+        </div>
       </li>
     </ul>
   </a-typography-paragraph>
-  <a-modal
-    v-model:visible="showModal"
-    :footer="null"
+  <el-dialog
+    v-model="showModal"
     :title="command + ' 命令详情'"
     :width="modalWidth"
   >
     <!-- eslint-disable vue/no-v-html -->
     <a-typography v-html="commandDetail" />
-  </a-modal>
+  </el-dialog>
 </template>
 
-<script>
+<script lang="ts" setup>
 import dayjs from 'dayjs'
 import md from '@/utils/markdown.js'
 import duration from 'dayjs/plugin/duration'
 import { useLinuxCommandStore } from '@/stores/linuxCommand'
+import type { Ref } from 'vue'
+import $axios from '@/plugins/Axios'
 
 dayjs.extend(duration)
 
-export default {
-  name: 'LinuxCommand',
-  data: () => ({
-    keyword: '',
-    command: '',
-    commandData: '',
-    showModal: false
-  }),
-  computed: {
-    ...mapState(useLinuxCommandStore, ['data', 'time']),
-    searchResults () {
-      return Object.keys(this.data).filter(key => (this.data[key].n.toString().toLowerCase().includes(this.keyword.toLowerCase())))
-    },
-    commandDetail () {
-      return this.commandData ? md(this.commandData) : ''
-    },
-    modalWidth () {
-      return document.body.clientWidth < 832 ? document.body.clientWidth - 32 : 800
+const keyword: Ref<string> = ref('')
+const command: Ref<string> = ref('')
+const commandData: Ref<string> = ref('')
+const showModal: Ref<boolean> = ref(false)
+
+const store = useLinuxCommandStore()
+
+const searchResults = computed(() => {
+  if (keyword.value) {
+    return Object.keys(store.data).filter(key => (store.data[key].n.toString().toLowerCase().includes(keyword.value.toLowerCase())))
+  } else {
+    return []
+  }
+})
+const commandDetail = computed(() => {
+  return commandData.value ? md(commandData.value) : ''
+})
+const modalWidth = computed(() => {
+  return document.body.clientWidth < 832 ? document.body.clientWidth - 32 : 800
+})
+
+onMounted(() => {
+  if (store.time) {
+    const currentDate = dayjs()
+    const storageDate = dayjs(store.time)
+    if (dayjs.duration(currentDate.diff(storageDate)).asDays() <= 1) {
+      return
     }
-  },
-  mounted () {
-    if (this.time) {
-      const currentDate = dayjs()
-      const storageDate = dayjs(this.time)
-      if (dayjs.duration(currentDate.diff(storageDate)).asDays() <= 1) {
-        return
-      }
-    }
-    this.getData()
-  },
-  methods: {
-    ...mapActions(useLinuxCommandStore, ['getData']),
-    async query (command) {
-      try {
-        const res = await this.$axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${command}.md`)
-        this.command = command
-        this.commandData = res.data
-        this.showModal = true
-      } catch (e) {
-        this.$msg.error('查询失败')
-      }
-    }
+  }
+  store.getData()
+})
+
+async function query (c: string) {
+  try {
+    const res = await $axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${c}.md`)
+    command.value = c
+    commandData.value = res.data
+    showModal.value = true
+  } catch (e) {
+    ElMessage.error('查询失败')
   }
 }
 </script>

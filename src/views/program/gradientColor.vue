@@ -35,8 +35,8 @@
         <a-typography-paragraph>
           渐变个数
         </a-typography-paragraph>
-        <a-input-number
-          v-model:value.number="steps"
+        <el-input-number
+          v-model.number="steps"
           :step="1"
           :precision="0"
         />
@@ -75,27 +75,26 @@
         {{ item }}
       </div>
       <div relative>
-        <a-button
+        <el-button
           h-full
           @click="showRGB=!showRGB"
         >
           {{ showRGB ? '显示HEX' : '显示RGB' }}
-        </a-button>
+        </el-button>
       </div>
     </div>
-    <a-button
+    <el-button
       type="primary"
       @click="copyAll"
     >
       复制所有
-    </a-button>
+    </el-button>
   </div>
 </template>
 
 <script setup>
 import tinyColor from 'tinycolor2'
 import { Sketch } from '@ckpack/vue-color'
-const $msg = inject('$msg')
 
 const fromColor = ref('#ff0000')
 const toColor = ref('#00ffff')
@@ -149,13 +148,13 @@ function getGradientHexArr (startHex, endHex, steps) {
 
 function copyColor (hex) {
   window.navigator.clipboard.writeText(hex)
-  $msg.success('复制成功')
+  ElMessage.success('复制成功')
 }
 
 function copyAll () {
   const hex = gradientColors.value.join(',')
   window.navigator.clipboard.writeText(hex)
-  $msg.success('复制成功')
+  ElMessage.success('复制成功')
 }
 </script>
 

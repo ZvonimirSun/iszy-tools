@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/Axios'
-import $msg from 'ant-design-vue/es/message'
 import dayjs from 'dayjs'
 
 export const useLinuxCommandStore = defineStore('linuxCommand', {
   persist: true,
   state: () => ({
-    data: {},
+    data: {} as Record<string, any>,
     time: null as string | null
   }),
   actions: {
@@ -16,7 +15,7 @@ export const useLinuxCommandStore = defineStore('linuxCommand', {
         this.data = res.data
         this.time = dayjs().format()
       } catch (e) {
-        $msg.warn('获取Linux命令数据失败')
+        ElMessage.warning('获取Linux命令数据失败')
       }
     }
   }

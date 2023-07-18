@@ -2,21 +2,21 @@
   <a-typography-paragraph>
     <blockquote>全部过程均在本地进行，本工具可离线使用</blockquote>
   </a-typography-paragraph>
-  <a-form layout="vertical">
-    <a-form-item label="请选择要添加水印的图片">
-      <a-upload
+  <el-form layout="vertical">
+    <el-form-item label="请选择要添加水印的图片">
+      <el-upload
         :file-list="[]"
         :show-upload-list="false"
         accept="image/*"
         :before-upload="upload"
       >
-        <a-input
+        <el-input
           readonly
           placeholder="点击这里上传图片"
           :value="fileName"
         >
-          <template #addonAfter>
-            <a-button
+          <template #append>
+            <el-button
               block
               :disabled="!file"
               :loading="loading"
@@ -24,50 +24,50 @@
             >
               <span v-if="loading">处理中</span>
               <span v-else>开始处理</span>
-            </a-button>
+            </el-button>
           </template>
-        </a-input>
-      </a-upload>
-    </a-form-item>
-    <a-form-item label="请输入水印文字">
-      <a-input
-        v-model:value="options.text"
+        </el-input>
+      </el-upload>
+    </el-form-item>
+    <el-form-item label="请输入水印文字">
+      <el-input
+        v-model="options.text"
         placeholder="仅供 xxx 验证使用"
       />
-    </a-form-item>
-    <a-form-item label="字体大小">
-      <a-slider
-        v-model:value="options.fontSize"
+    </el-form-item>
+    <el-form-item label="字体大小">
+      <el-slider
+        v-model="options.fontSize"
         :max="30"
         :min="10"
       />
-    </a-form-item>
-    <a-form-item label="透明度">
-      <a-slider
-        v-model:value="options.alpha"
+    </el-form-item>
+    <el-form-item label="透明度">
+      <el-slider
+        v-model="options.alpha"
         :max="10"
         :min="1"
         :step="0.1"
       />
-    </a-form-item>
-    <a-form-item label="旋转角度">
-      <a-slider
-        v-model:value="options.rotate"
+    </el-form-item>
+    <el-form-item label="旋转角度">
+      <el-slider
+        v-model="options.rotate"
         :max="365"
         :min="0"
       />
-    </a-form-item>
-    <a-form-item label="文本间距">
-      <a-slider
-        v-model:value="options.width"
+    </el-form-item>
+    <el-form-item label="文本间距">
+      <el-slider
+        v-model="options.width"
         :max="100"
         :min="0"
       />
-    </a-form-item>
-    <a-form-item label="文字颜色">
+    </el-form-item>
+    <el-form-item label="文字颜色">
       <Compact v-model="color" />
-    </a-form-item>
-    <a-form-item
+    </el-form-item>
+    <el-form-item
       v-show="file"
       label="预览"
     >
@@ -84,8 +84,8 @@
           :style="{ background: `url(${svg})` }"
         />
       </div>
-    </a-form-item>
-  </a-form>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -167,7 +167,7 @@ export default {
         const result = await domToImage.toBlob(this.$refs.preview, {})
         createFile(result, 'watermark.png')
       } catch (e) {
-        this.$msg.error('生成失败')
+        ElMessage.error('生成失败')
       }
       this.loading = false
     }

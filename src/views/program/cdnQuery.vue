@@ -8,7 +8,7 @@
             href="https://www.jsdelivr.com/"
             target="_blank"
           >
-            jsDelivr
+            JSDelivr
           </a-typography-link>
         </li>
         <li>
@@ -26,79 +26,83 @@
   <a-typography-title :level="3">
     请输入要获取CDN的库名
   </a-typography-title>
-  <a-input
-    v-model:value="keyword"
+  <el-input
+    v-model="keyword"
     placeholder="jquery"
-    :loading="loading"
-    allow-clear
+    clearable
     @change="search(0)"
   />
   <keep-alive>
     <template v-if="status==='done'">
-      <a-divider />
+      <el-divider />
       <template v-if="!pkgID">
         <a-typography-title :level="4">
           <span>共找到 {{ count }} 个库</span>
           <span v-if="count > 1000">，最多展示前 1000 个结果</span>
         </a-typography-title>
-        <a-list
-          item-layout="vertical"
-          size="large"
-          :data-source="result"
-          :pagination="pagination"
-          :loading="loading"
-        >
-          <template #renderItem="{ item }">
-            <a-list-item :key="item.objectID">
+        <div class="result-list">
+          <div
+            v-for="item in result"
+            :key="item.objectID"
+            class="result-list-item"
+          >
+            <div
+              class="pkgName"
+            >
               <a-typography-title
                 :level="4"
-                class="pkgName"
                 @click="showDetail(item.objectID)"
               >
                 {{ item.name }}
               </a-typography-title>
-              <div class="meta">
-                <div
-                  v-if="item.owner"
-                  class="owner"
-                  @click="searchByOwner(item.owner.name)"
-                >
-                  <img
-                    :src="item.owner.avatar"
-                    :alt="item.owner.name"
-                  >
-                  <div>{{ item.owner.name }}</div>
-                </div>
-                <a-tag v-if="item.version">
-                  <template #icon>
-                    <span class="i-icon-park-outline-tag-one" />
-                  </template>
-                  <span :title="item.version">{{ item.version }}</span>
-                </a-tag>
-                <a-tag v-if="item.license">
-                  <template #icon>
-                    <span class="i-icon-park-outline-balance-two" />
-                  </template>
-                  {{ item.license }}
-                </a-tag>
-              </div>
+            </div>
+            <div class="meta">
               <div
-                v-if="item.description"
-                class="description"
+                v-if="item.owner"
+                class="owner"
+                @click="searchByOwner(item.owner.name)"
               >
-                {{ item.description }}
-              </div>
-              <div v-if="item.keywords && item.keywords.length">
-                <a-tag
-                  v-for="(key,index) of item.keywords"
-                  :key="index"
+                <img
+                  :src="item.owner.avatar"
+                  :alt="item.owner.name"
                 >
-                  {{ key }}
-                </a-tag>
+                <div>{{ item.owner.name }}</div>
               </div>
-            </a-list-item>
-          </template>
-        </a-list>
+              <a-tag v-if="item.version">
+                <template #icon>
+                  <span class="i-icon-park-outline-tag-one" />
+                </template>
+                <span :title="item.version">{{ item.version }}</span>
+              </a-tag>
+              <a-tag v-if="item.license">
+                <template #icon>
+                  <span class="i-icon-park-outline-balance-two" />
+                </template>
+                {{ item.license }}
+              </a-tag>
+            </div>
+            <div
+              v-if="item.description"
+              class="description"
+            >
+              {{ item.description }}
+            </div>
+            <div v-if="item.keywords && item.keywords.length">
+              <a-tag
+                v-for="(key,index) of item.keywords"
+                :key="index"
+              >
+                {{ key }}
+              </a-tag>
+            </div>
+          </div>
+        </div>
+        <el-pagination
+          layout="prev,jumper,next"
+          :total="count > 1000 ? 1000 : count"
+          :hide-on-single-page="true"
+          @current-change="search($event - 1)"
+        />
       </template>
       <template v-else>
         <a-typography-link
@@ -109,7 +113,10 @@
           <span class="i-icon-park-outline-return" />
           返回
         </a-typography-link>
-        <a-typography class="metaDetail">
+        <a-typography
+          v-if="pkgData"
+          class="metaDetail"
+        >
           <ul>
             <li v-if="pkgData.name">
               <b>名称: </b>{{ pkgData.name }}
@@ -147,13 +154,21 @@
                 {{ pkgData.owner.link }}
               </a-typography-link>
             </li>
-            <a-divider v-if="versions.length" />
+            <el-divider v-if="versions.length" />
             <li v-if="versions.length">
-              <b>版本: </b><a-select
-                v-model:value="version"
+              <b>版本: </b>
+              <el-select
+                v-model="version"
                 :options="versions"
                 @change="getVersionData"
-              />
+              >
+                <el-option
+                  v-for="_version in versions"
+                  :key="_version.value"
+                  :value="_version.value"
+                  :label="_version.label"
+                />
+              </el-select>
             </li>
             <li v-if="defaultFile">
               <b>默认文件: </b>
@@ -175,213 +190,270 @@
             </li>
           </ul>
         </a-typography>
-        <a-directory-tree
-          v-if="files && files.length"
-          :tree-data="treeData"
+        <el-tree
+          v-if="pkgData && files && files.length"
+          :data="treeData"
           :selectable="false"
         >
-          <template #title="{title,dataRef}">
-            <a-typography-text
-              :copyable="dataRef.isLeaf?{
-                text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${dataRef.fileName}`
-              }:false"
+          <template #default="{ data }">
+            <div
+              v-if="data.isLeaf"
+              flex
+              items-center
             >
-              {{ title }}
-            </a-typography-text>
+              <span
+                class="i-fa-solid-file"
+                m-r-2
+              />
+              <a-typography-text
+                :copyable="{
+                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${data.fileName}`
+                }"
+              >
+                {{ data.label }}
+              </a-typography-text>
+            </div>
+            <div
+              v-else
+              flex
+              items-center
+            >
+              <span
+                class="i-fa-solid-folder"
+                m-r-2
+              />
+              <a-typography-text>
+                {{ data.label }}
+              </a-typography-text>
+            </div>
           </template>
-        </a-directory-tree>
+        </el-tree>
       </template>
     </template>
   </keep-alive>
 </template>
 
-<script>
-import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
+<script lang="ts" setup>
+import cdnQuery, { AlgoliaHit, getByName } from '@/utils/cdnQuery.js'
+import $axios from '@/plugins/Axios'
+import type { Ref } from 'vue'
 
-let timeoutIndex = null
+interface File {
+  type: 'file',
+  name: string,
+  hash: string,
+  time: string,
+  size: number
+}
 
-export default {
-  name: 'CdnQuery',
-  data: () => ({
-    loading: false,
-    keyword: '',
-    status: '',
+interface Directory {
+  type: 'directory',
+  name: string,
+  files: Array<Directory | File>
+}
 
-    pageIndex: 0,
-    pageSize: 10,
+let timeoutIndex: number | null = null
 
-    result: [],
-    count: 0,
-
-    pkgID: '',
-    pkgData: {},
-    version: null,
-    versions: [],
-    defaultFile: null,
-    files: []
-  }),
-  computed: {
-    pagination () {
-      return {
-        onChange: page => {
-          this.search(page - 1)
-        },
-        pageSize: 10,
-        simple: true,
-        total: this.count > 1000 ? 1000 : this.count
-      }
-    },
-    treeData () {
-      if (this.files && this.files.length) {
-        return this.handleFileList(this.files)
-      } else { return [] }
-    }
+const loading: Ref<boolean> = ref(false)
+const keyword: Ref<string> = ref('')
+const status: Ref<string> = ref('')
+const pageIndex: Ref<number> = ref(0)
+const pageSize = 10
+const result: Ref<Array<AlgoliaHit>> = ref([])
+const count: Ref<number> = ref(0)
+const pkgID: Ref<string | null> = ref('')
+const pkgData: Ref<{
+  objectID: string,
+  name?: string,
+  homepage?: string,
+  description?: string,
+  repository?: {
+    type: string,
+    url: string
   },
-  mounted () {
+  license?: string,
+  owner?: {
+    name: string,
+    link: string
   },
-  methods: {
-    async search (pageIndex = 0) {
-      if (!this.keyword) {
-        return
-      }
-      if (timeoutIndex) {
-        clearTimeout(timeoutIndex)
-      }
-      timeoutIndex = setTimeout(async () => {
-        this.loading = true
-        this.pkgData = null
-        this.version = null
-        this.versions = []
-        this.versionDetail = {}
+  version?: string
+} | null> = ref(null)
+const version: Ref<string> = ref('')
+const versions: Ref<Array<{
+  label: string,
+  value: string
+}>> = ref([])
+const defaultFile: Ref<string | null> = ref(null)
+const files: Ref<Array<Directory | File>> = ref([])
 
-        const {
-          response,
-          query
-        } = await cdnQuery(this.keyword, pageIndex, this.pageSize)
-        if (query === this.keyword) {
-          if (response && Object.keys(response).length > 0) {
-            const {
-              hits,
-              page,
-              nbHits
-            } = response
-            this.result = hits
-            this.count = nbHits
-            this.pageIndex = page
-            this.status = 'done'
-          } else {
-            this.$msg.warn('搜索失败')
-          }
-          this.loading = false
-        }
-      }, 200)
-    },
-    searchByOwner (owner) {
-      this.keyword = 'author:' + owner
-      this.search(0)
-    },
-    async showDetail (objectID) {
-      this.pkgID = objectID
-      this.pkgData = {}
-      this.version = null
-      this.versions = []
-      this.defaultFile = null
-      this.files = []
-
-      try {
-        this.pkgData = await getByName(objectID)
-        this.version = this.pkgData.version
-        await this.getVersionData()
-      } catch (e) {
-        console.error(e.message)
-      }
-    },
-    async getVersionData () {
-      try {
-        this.versions = []
-        this.defaultFile = null
-        this.files = []
-
-        this.versions = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}`)).data.versions.map(item => {
-          return {
-            label: item,
-            value: item
-          }
-        })
-        const { default: defaultFile, files } = (await this.$axios.get(`https://data.jsdelivr.com/v1/package/npm/${this.pkgData.name}@${this.version}`)).data
-        this.defaultFile = defaultFile
-        this.files = files
-      } catch (e) {
-        console.error(e.message)
-      }
-    },
-    handleFileList (list, fileName) {
-      return list.map(item => {
-        const name = fileName ? `${fileName}/${item.name}` : `/${item.name}`
-        return {
-          title: item.name,
-          key: item.hash,
-          isLeaf: item.type === 'file',
-          fileName: name,
-          children: ((item.type === 'directory' && item.files) ? this.handleFileList(item.files, name) : undefined)
-        }
-      })
-    }
+const treeData = computed(() => {
+  if (files.value && files.value.length) {
+    return handleFileList(files.value)
+  } else {
+    return []
   }
+})
+
+async function search (_pageIndex = 0) {
+  if (!keyword.value) {
+    loading.value = false
+    pkgData.value = null
+    version.value = ''
+    versions.value = []
+    result.value = []
+    pageIndex.value = 0
+    count.value = 0
+    status.value = ''
+    return
+  }
+  if (timeoutIndex) {
+    clearTimeout(timeoutIndex)
+  }
+  timeoutIndex = window.setTimeout(async () => {
+    loading.value = true
+    const {
+      response,
+      query
+    } = await cdnQuery(keyword.value, _pageIndex, pageSize)
+    if (query === keyword.value) {
+      if (response) {
+        const {
+          hits,
+          page,
+          nbHits
+        } = response
+        result.value = hits
+        count.value = nbHits
+        pageIndex.value = page
+        status.value = 'done'
+      } else {
+        ElMessage.warning('搜索失败')
+      }
+      loading.value = false
+    }
+  }, 200)
+}
+
+function searchByOwner (owner: string) {
+  keyword.value = 'author:' + owner
+  search(0)
+}
+
+async function showDetail (objectID: string) {
+  pkgID.value = objectID
+  pkgData.value = null
+  version.value = ''
+  versions.value = []
+  defaultFile.value = null
+  files.value = []
+
+  try {
+    pkgData.value = await getByName(objectID)
+    version.value = pkgData.value.version ?? ''
+    await getVersionData()
+  } catch (e) {
+    console.error((e as Error).message)
+  }
+}
+
+async function getVersionData () {
+  try {
+    versions.value = []
+    defaultFile.value = null
+    files.value = []
+
+    versions.value = (await $axios.get(`https://data.jsdelivr.com/v1/package/npm/${pkgData.value?.name ?? ''}`)).data.versions.map((item: string) => {
+      return {
+        label: item,
+        value: item
+      }
+    })
+    const {
+      default: _defaultFile,
+      files: _files
+    } = (await $axios.get(`https://data.jsdelivr.com/v1/package/npm/${pkgData.value?.name ?? ''}@${version.value}`)).data
+    defaultFile.value = _defaultFile
+    files.value = _files
+  } catch (e) {
+    console.error((e as Error).message)
+  }
+}
+
+function handleFileList (list: Array<Directory | File>, fileName?: string): Array<any> {
+  return list.map(item => {
+    const name = fileName ? `${fileName}/${item.name}` : `/${item.name}`
+    return {
+      label: item.name,
+      icon: (item.type === 'directory' ? 'Folder' : ''),
+      isLeaf: (item.type !== 'directory'),
+      fileName: name,
+      children: ((item.type === 'directory' && item.files) ? handleFileList(item.files, name) : undefined)
+    }
+  })
 }
 </script>
 
 <style scoped lang="scss">
-.ant-list-item {
-  .pkgName {
-    cursor: pointer;
+.result-list {
 
-    &:hover {
-      text-decoration: underline;
+  .result-list-item {
+    padding: 1.6rem;
+
+    &:not(:last-child) {
+      border-bottom: .1rem solid var(--el-border-color);
     }
-  }
 
-  .meta {
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-
-    .owner {
+    .pkgName {
       cursor: pointer;
-      display: inline-flex;
-      margin-right: .8rem;
-
-      img {
-        width: 2.4rem;
-        height: 2.4rem;
-        margin-right: .5rem;
-      }
 
       &:hover {
         text-decoration: underline;
       }
     }
 
-    .ant-tag {
-      height: 2.4rem;
-      font-size: 1.4rem;
-      display: inline-flex;
+    .meta {
+      font-size: 1.6rem;
+      line-height: 2.4rem;
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
 
-      [class^="i-"] {
-        font-size: 1.6rem;
-        margin-right: .5rem;
+      .owner {
+        cursor: pointer;
+        display: inline-flex;
+        margin-right: .8rem;
+        color: var(--el-text-color-primary);
+
+        img {
+          width: 2.4rem;
+          height: 2.4rem;
+          margin-right: .5rem;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .ant-tag {
+        height: 2.4rem;
+        font-size: 1.4rem;
+        display: inline-flex;
+        align-items: center;
+
+        [class^="i-"] {
+          font-size: 1.6rem;
+          margin-right: .5rem;
+        }
       }
     }
-  }
 
-  .description {
-    color: #666666;
-    font-size: 1.4rem;
-    line-height: 3rem;
-    margin: .8rem 0;
+    .description {
+      color: var(--el-text-color-secondary);
+      font-size: 1.4rem;
+      line-height: 3rem;
+      margin: .8rem 0;
+    }
   }
 }
 

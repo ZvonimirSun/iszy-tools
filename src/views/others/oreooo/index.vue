@@ -281,7 +281,7 @@ export default {
 @font-face {
   font-family: "Seto";
   src: url("./assets/font/Seto.eot");
-  src: url("./assets/font/Seto.eot?#iefix") format("embedded-opentype"), url("./assets/font/Seto.woff") format("woff"), url("./assets/font/Seto.ttf") format("truetype"), url("./assets/font/Seto.svg#Seto") format("svg");
+  src: url("./assets/font/Seto.eot") format("embedded-opentype"), url("./assets/font/Seto.woff") format("woff"), url("./assets/font/Seto.ttf") format("truetype"), url("./assets/font/Seto.svg") format("svg");
   font-style: normal;
   font-weight: normal;
 }
@@ -312,14 +312,10 @@ export default {
     @keyframes rotate {
       0% {
         transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
       }
 
       100% {
         transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
       }
     }
 
@@ -334,21 +330,19 @@ export default {
   .wrapper {
     position: relative;
     text-align: center;
-    background-color: #fff;
+    background-color: var(--el-fill-color-lighter);
     padding: 2.5rem;
-    border-radius: 2.5rem;
-    box-shadow: 0 .8rem .8rem rgb(0 0 0 / 13%);
 
     .title {
       .meta {
-        color: #515151;
+        color: var(--el-text-color-primary);
         font-size: 2.4rem;
         line-height: 3.2rem;
         margin-bottom: 1.6rem;
       }
 
       .str {
-        color: #515151;
+        color: var(--el-text-color-primary);
         font-size: 4.6rem;
         line-height: 5.4rem;
         margin-bottom: 1.6rem;
@@ -358,7 +352,7 @@ export default {
           display: flex;
           align-items: center;
           border: .2rem solid #eee;
-          background: #f6f6f6;
+          background-color: var(--el-input-bg-color, var(--el-fill-color-blank));
           padding: .8rem;
           word-break: break-all;
           border-radius: 2.5rem;
@@ -384,7 +378,7 @@ export default {
 
     .btn {
       display: inline-block;
-      border: .2rem solid #515151;
+      border: .2rem solid var(--el-text-color-primary);
       font-size: 2rem;
       line-height: 2.8rem;
       padding: .5rem 1.6rem;
@@ -392,16 +386,16 @@ export default {
       border-radius: 2.5rem;
 
       a {
-        color: #515151;
+        color: var(--el-text-color-primary);
       }
 
       &:hover {
         cursor: pointer;
         background-color: #515151;
-        color: #ffffff;
+        color: var(--el-color-white);
 
         a {
-          color: #fff;
+          color: var(--el-color-white);
         }
       }
     }

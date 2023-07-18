@@ -7,8 +7,9 @@
       <a-typography-title :level="4">
         Token
       </a-typography-title>
-      <a-textarea
-        v-model:value="token"
+      <el-input
+        v-model="token"
+        type="textarea"
         label="Token"
         @change="tokenChange"
       />
@@ -20,16 +21,18 @@
       <a-typography-title :level="4">
         Header
       </a-typography-title>
-      <a-textarea
-        v-model:value="header"
+      <el-input
+        v-model="header"
+        type="textarea"
         label="Header"
         readonly
       />
       <a-typography-title :level="4">
         Payload
       </a-typography-title>
-      <a-textarea
-        v-model:value="payload"
+      <el-input
+        v-model="payload"
+        type="textarea"
         label="Payload"
         readonly
       />
@@ -37,10 +40,12 @@
   </div>
 </template>
 
-<script setup>
-const token = ref('')
-const header = ref('')
-const payload = ref('')
+<script setup lang="ts">
+import type { Ref } from 'vue'
+
+const token: Ref<string> = ref('')
+const header: Ref<string> = ref('')
+const payload: Ref<string> = ref('')
 
 function tokenChange () {
   if (token.value) {
@@ -87,16 +92,19 @@ h3.ant-typography {
   .encoded, .decoded {
     height: 100%;
     width: calc(50% - .4rem);
-    overflow: auto;
+    overflow: hidden;
   }
 
-  .encoded .ant-input {
+  .encoded .el-textarea {
     height: calc(100% - 60px - 1.6rem);
-    resize: none;
   }
 
-  .decoded .ant-input {
+  .decoded .el-textarea {
     height: calc((100% - 88px - 2.4rem) / 2);
+  }
+
+  :deep(.el-textarea) .el-textarea__inner {
+    height: 100%;
     resize: none;
   }
 
@@ -104,13 +112,13 @@ h3.ant-typography {
     .encoded {
       height: calc(40% - .8rem);
       width: 100%;
-      overflow: auto;
+      overflow: hidden;
     }
 
     .decoded {
       height: calc(60% - .8rem);
       width: 100%;
-      overflow: auto;
+      overflow: hidden;
     }
   }
 }

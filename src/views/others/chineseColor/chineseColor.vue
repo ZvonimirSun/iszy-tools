@@ -11,7 +11,7 @@
         >
           <div
             ref="selectedColorNameWrapper"
-            class="seletedColorNameWrapper"
+            class="selectedColorNameWrapper"
           >
             <div
               v-if="selectedColor"
@@ -30,97 +30,97 @@
             v-if="selectedColor"
             class="selectedColorDataWrapper"
           >
-            <a-space
+            <el-space
               direction="vertical"
               :size="8"
             >
               <a-typography-title :level="4">
                 CMYK
               </a-typography-title>
-              <a-space :size="8">
-                <a-progress
+              <el-space :size="8">
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.CMYK[0]"
-                  stroke-color="cyan"
+                  :percentage="selectedColor.CMYK[0]"
+                  color="cyan"
                   :width="80"
                 >
-                  <template #format>
-                    <span style="color: cyan">{{ selectedColor.CMYK[0] }}</span>
+                  <template #default="{ percentage }">
+                    <span style="color: cyan">{{ percentage }}</span>
                   </template>
-                </a-progress>
-                <a-progress
+                </el-progress>
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.CMYK[1]"
-                  stroke-color="magenta"
+                  :percentage="selectedColor.CMYK[1]"
+                  color="magenta"
                   :width="80"
                 >
-                  <template #format>
-                    <span style="color: magenta">{{ selectedColor.CMYK[1] }}</span>
+                  <template #default="{ percentage }">
+                    <span style="color: magenta">{{ percentage }}</span>
                   </template>
-                </a-progress>
-                <a-progress
+                </el-progress>
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.CMYK[2]"
-                  stroke-color="yellow"
+                  :percentage="selectedColor.CMYK[2]"
+                  color="yellow"
                   :width="80"
                 >
-                  <template #format>
-                    <span style="color: yellow">{{ selectedColor.CMYK[2] }}</span>
+                  <template #default="{ percentage }">
+                    <span style="color: yellow">{{ percentage }}</span>
                   </template>
-                </a-progress>
-                <a-progress
+                </el-progress>
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.CMYK[3]"
-                  stroke-color="black"
+                  :percentage="selectedColor.CMYK[3]"
+                  color="black"
                   :width="80"
                 >
-                  <template #format>
-                    <span style="color: black">{{ selectedColor.CMYK[3] }}</span>
+                  <template #default="{ percentage }">
+                    <span style="color: black">{{ percentage }}</span>
                   </template>
-                </a-progress>
-              </a-space>
+                </el-progress>
+              </el-space>
               <a-typography-title :level="4">
                 RGB
               </a-typography-title>
-              <a-space :size="8">
-                <a-progress
+              <el-space :size="8">
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.RGB[0]/2.55"
-                  stroke-color="red"
+                  :percentage="selectedColor.RGB[0]/2.55"
+                  color="red"
                   :width="80"
                 >
-                  <template #format>
+                  <template #default>
                     <span style="color: red">{{ selectedColor.RGB[0] }}</span>
                   </template>
-                </a-progress>
-                <a-progress
+                </el-progress>
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.RGB[1]/2.55"
-                  stroke-color="green"
+                  :percentage="selectedColor.RGB[1]/2.55"
+                  color="green"
                   :width="80"
                 >
-                  <template #format>
+                  <template #default>
                     <span style="color: green">{{ selectedColor.RGB[1] }}</span>
                   </template>
-                </a-progress>
-                <a-progress
+                </el-progress>
+                <el-progress
                   type="circle"
-                  :percent="selectedColor.RGB[2]/2.55"
-                  stroke-color="blue"
+                  :percentage="selectedColor.RGB[2]/2.55"
+                  color="blue"
                   :width="80"
                 >
-                  <template #format>
+                  <template #default>
                     <span style="color: blue">{{ selectedColor.RGB[2] }}</span>
                   </template>
-                </a-progress>
-              </a-space>
+                </el-progress>
+              </el-space>
               <a-typography-title :level="4">
                 HEX
               </a-typography-title>
               <a-typography-paragraph style="font-size:20px;line-height:28px;color:white">
                 {{ selectedColor.hex }}
               </a-typography-paragraph>
-            </a-space>
+            </el-space>
           </div>
         </div>
       </transition>
@@ -198,7 +198,7 @@ function resize () {
   align-items: center;
   padding: .8rem;
 
-  .seletedColorNameWrapper {
+  .selectedColorNameWrapper {
     height: 100%;
     width: 50%;
     color: white;

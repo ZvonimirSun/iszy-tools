@@ -1,171 +1,212 @@
 <template>
-  <a-table
+  <div
     v-if="tableColumns"
-    class="ant-table-striped"
-    :columns="tableColumns"
-    :data-source="propertyList"
-    :row-key="(record)=>{return record.key}"
-    :pagination="false"
-    bordered
-    size="small"
-    :scroll="tableScroll"
-    :custom-row="rowEvents"
+    w-full
+    :style="{
+      height: height ? height + 'px' : undefined
+    }"
   >
-    <template #bodyCell="{text, index, column}">
-      <template v-if="column.dataIndex !== 'operation'">
-        <div
-          v-if="editableData[index]"
-          class="editable-cell-input-wrapper"
-        >
-          <a-input
-            v-if="typeof editableData[index][column.dataIndex] === 'string'"
-            v-model:value="editableData[index][column.dataIndex]"
-            @click.stop
-          />
-          <a-input
-            v-else-if="typeof editableData[index][column.dataIndex] === 'number'"
-            v-model:value.number="editableData[index][column.dataIndex]"
-            @click.stop
-          />
-          <a-input
-            v-else
-            :value="JSON.stringify(editableData[index][column.dataIndex])"
-            @click.stop
-            @change="saveToEditableData($event, editableData[index], column.dataIndex)"
-          />
-        </div>
-        <div
-          v-else
-          class="editable-cell-text-wrapper"
-        >
-          {{ typeof text === 'object' ? JSON.stringify(text) : text }}
-        </div>
+    <el-auto-resizer>
+      <template #default="{ height, width }">
+        <el-table-v2
+          :columns="tableColumns"
+          :data="propertyList"
+          :width="width"
+          :height="height"
+          fixed
+        />
       </template>
-      <template v-else>
-        <span v-if="editableData[index]">
-          <a @click.stop="save(index)"> 保存属性 </a>
-          <a @click.stop="cancel(index)"> 取消编辑 </a>
-        </span>
-        <span v-else>
-          <a @click.stop="edit(index)"> 编辑属性 </a>
-        </span>
-      </template>
-    </template>
-  </a-table>
-  <a-empty v-else />
+    </el-auto-resizer>
+  </div>
+  <el-empty v-else />
 </template>
 
-<script>
-import { GeoJSON } from 'leaflet'
-import { cloneDeep } from 'lodash-es'
+<script setup lang="tsx">
+import { Ref } from 'vue'
+import $eventBus from '@/plugins/EventBus'
+import type { Column, InputInstance } from 'element-plus'
+import { debounce } from 'lodash-es'
 
-export default defineComponent({
-  name: 'PropertyTable',
-  props: {
-    geoJsonLayer: { type: GeoJSON, default: null },
-    height: { type: Number, default: null }
-  },
-  data: () => ({
-    editableData: {}
-  }),
-  computed: {
-    features () {
-      if (this.geoJsonLayer) {
-        try {
-          const tmp = this.geoJsonLayer.toGeoJSON()
-          return tmp.features
-        } catch (e) {
-          return null
-        }
-      }
-      return null
-    },
-    propertyList () {
-      if (this.features) {
-        return this.features.map(item => {
-          return item.properties
-        })
-      }
-      return null
-    },
-    tableColumns () {
-      if (this.propertyList && this.propertyList.length > 0) {
-        const keys = this.getArrayKeys(this.propertyList)
-        const columns = keys.map(item => {
-          return {
-            title: item,
-            dataIndex: item,
-            key: item,
-            width: 150
-          }
-        })
-        columns.push({
-          title: '操作',
-          dataIndex: 'operation',
-          width: 100,
-          fixed: 'right'
-        })
-        return columns
-      } else {
-        return null
-      }
-    },
-    tableScroll () {
-      return { y: this.height - 96 }
-    }
-  },
-  methods: {
-    getArrayKeys (array) {
-      return [...array.reduce((s, o) => {
-        Object.keys(o).forEach(k => s.add(k))
-        return s
-      }, new Set())]
-    },
-    saveToEditableData (val, property, key) {
-      if (val instanceof InputEvent && property && key) {
-        try {
-          property[key] = JSON.parse(val.currentTarget.value)
-        } catch (e) {
-          property[key] = val.currentTarget.value
-        }
-      }
-    },
-    edit (index) {
-      this.editableData[index] = cloneDeep(this.propertyList[index])
-    },
-    save (index) {
-      Object.assign(this.propertyList[index], this.editableData[index])
-      delete this.editableData[index]
-      this.$eventBus.emit('updateEditor')
-    },
-    cancel (index) {
-      delete this.editableData[index]
-    },
-    rowEvents (record, index) {
-      return {
-        onClick: () => {
-          this.$eventBus.emit('locationGeo', this.features[index])
-        }
-      }
-    }
+withDefaults(defineProps<{
+  height: number | null
+}>(), {
+  height: null
+})
+
+onMounted(() => {
+  $eventBus.on('updateGeojsonLayer', updateTable)
+  $eventBus.on('updateEditor', updateTable)
+})
+
+const geoJSON: Ref<GeoJSON.FeatureCollection | null> = shallowRef(null)
+const edit: {
+  row: number | null
+  col: number | null
+  value: string | null
+  changed: boolean
+} = reactive({
+  row: null,
+  col: null,
+  value: null,
+  changed: false
+})
+let syncing = false
+
+const propertyList = computed(() => {
+  if (geoJSON.value?.features?.length) {
+    return geoJSON.value.features.map(feature => {
+      return feature.properties || {}
+    })
+  } else {
+    return []
   }
 })
+
+const tableColumns = computed(() => {
+  if (geoJSON.value?.features?.length) {
+    const keys = getArrayKeys(propertyList.value)
+    if (!keys.length) {
+      return null
+    }
+    const columns: Column[] = keys.map(item => {
+      return {
+        title: item,
+        dataKey: item,
+        key: item,
+        width: 150,
+        cellRenderer: ({ rowData, column, rowIndex, columnIndex }) => {
+          let data: string
+          let dataType: string
+          if (rowData[column.dataKey!] != null) {
+            dataType = typeof rowData[column.dataKey!]
+            if (~['boolean', 'number', 'string'].indexOf(dataType)) {
+              data = rowData[column.dataKey!].toString()
+            } else {
+              data = JSON.stringify(rowData[column.dataKey!])
+            }
+          } else {
+            data = ''
+          }
+
+          const startEdit = () => {
+            edit.row = rowIndex
+            edit.col = columnIndex
+            edit.value = data
+          }
+          const stopEdit = () => {
+            if (edit.changed) {
+              let value: string
+              if (edit.value != null) {
+                value = edit.value.trim()
+              } else {
+                value = ''
+              }
+              if (dataType !== 'string') {
+                try {
+                  value = JSON.parse(value!)
+                } catch (e) {
+                }
+              }
+              updateProperties(rowIndex, columnIndex, value)
+            }
+            edit.row = null
+            edit.col = null
+            edit.value = null
+            edit.changed = false
+          }
+
+          const onChange = (value: string) => {
+            edit.value = value
+            edit.changed = true
+          }
+
+          const setFocus = (el: InputInstance) => {
+            el?.focus?.()
+          }
+
+          if (edit.row === rowIndex && edit.col === columnIndex) {
+            return (
+              <el-input
+                ref={setFocus}
+                modelValue={edit.value}
+                onInput={onChange}
+                onBlur={stopEdit}
+              />
+            )
+          } else {
+            return (
+              <div class="table-v2-inline-editing-trigger" onClick={startEdit} title={data}>
+                {data}
+              </div>
+            )
+          }
+        }
+      }
+    })
+    return columns
+  } else {
+    return null
+  }
+})
+
+const syncingGeoJSONDebounced = debounce(syncingGeoJSON, 500)
+
+function updateProperties (row: number, col: number, value: any) {
+  const feature = geoJSON.value?.features?.[row]
+  if (feature) {
+    if (!feature.properties) {
+      feature.properties = {}
+    }
+    const key = tableColumns.value?.[col]?.dataKey as string
+    if (key) {
+      feature.properties[key] = value
+    }
+  }
+  if (geoJSON.value) {
+    syncingGeoJSONDebounced(toRaw(geoJSON.value))
+  }
+}
+
+function syncingGeoJSON (val: GeoJSON.FeatureCollection) {
+  if (syncing) {
+    return
+  }
+  syncing = true
+  // $eventBus.emit('updateGeojsonLayer', val)
+  $eventBus.emit('updateEditor', val)
+  syncing = false
+}
+
+function updateTable () {
+  if (syncing) {
+    return
+  }
+  $eventBus.emit('getGeoJson', function (val: GeoJSON.FeatureCollection) {
+    geoJSON.value = val
+  })
+}
+
+function getArrayKeys (array: GeoJSON.GeoJsonProperties[]): string[] {
+  return [...(array as Record<string, any>).reduce((s: Set<string>, o: Record<string, any>) => {
+    Object.keys(o).forEach(k => s.add(k))
+    return s
+  }, new Set<string>())]
+}
 </script>
 
 <style scoped lang="scss">
+:deep(.table-v2-inline-editing-trigger) {
+  border: 1px transparent dotted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  height: 4.9rem;
+  line-height: 4.9rem;
+  cursor: text;
 
-:deep(.ant-table) {
-  th {
-    background-color: #e6e6e6;
-    white-space: nowrap;
-  }
-
-  td {
-    .editable-cell-input-wrapper, .editable-cell-text-wrapper {
-      width: 100%;
-      white-space: nowrap;
-      overflow-x: auto;
-    }
+  &:hover {
+    border-color: var(--el-color-primary);
   }
 }
 </style>

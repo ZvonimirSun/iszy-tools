@@ -1,40 +1,36 @@
 <template>
-  <a-spin :spinning="spinning">
-    <a-upload-dragger
-      :file-list="[]"
-      accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
-      :show-upload-list="false"
-      :custom-request="customRequest"
-      @reject="rejectFile"
-    >
-      <p class="ant-upload-drag-icon">
-        <span class="i-icon-park-upload-one" />
-      </p>
-      <p class="ant-upload-text">
-        直接粘贴图片或拖拽图片到这里上传<br>或者直接点击选择文件上传
-      </p>
-      <p class="ant-upload-hint">
-        暂时仅支持单文件上传。
-      </p>
-    </a-upload-dragger>
-  </a-spin>
+  <el-upload
+    style="height: 100%"
+    drag
+    accept="image/bmp,image/gif,image/jpeg,image/png,image/webp"
+    :show-file-list="false"
+    :before-upload="customRequest"
+  >
+    <div class="el-icon--upload">
+      <span class="i-icon-park-upload-one?mask" />
+    </div>
+    <div class="el-upload__text">
+      直接粘贴图片或拖拽图片到这里上传<br>或者<em>直接点击选择文件上传</em>
+    </div>
+    <div class="el-upload__tip">
+      暂时仅支持单文件上传。
+    </div>
+  </el-upload>
 </template>
 
 <script lang="ts" setup>
 import * as uploaders from '../uploader/index'
 import { useImgHostingStore } from '@/stores/imgHosting'
-import $msg from 'ant-design-vue/es/message'
-import { UploadRequestOption } from 'ant-design-vue/es/vc-upload/interface'
 import { AliOssConfig } from '../uploader/index'
+import type { Ref } from 'vue'
 
-const props = defineProps({
-  activeKey: {
-    type: String,
-    default: ''
-  }
+const props = withDefaults(defineProps<{
+  activeKey: string
+}>(), {
+  activeKey: ''
 })
 
-const spinning = ref(false)
+const spinning: Ref<boolean> = ref(false)
 const timeoutIndex = ref()
 
 const imgHostingStore = useImgHostingStore()
@@ -51,8 +47,8 @@ onBeforeUnmount(() => {
   document.removeEventListener('paste', paste)
 })
 
-async function customRequest ({ file } = { } as UploadRequestOption) {
-  let tmpFile: File = file as File
+async function customRequest (file: File) {
+  let tmpFile = file
   spinning.value = true
   if (uploader && config(uploader)) {
     if (commonConfig.renameTimeStamp) {
@@ -72,25 +68,26 @@ async function customRequest ({ file } = { } as UploadRequestOption) {
           } else {
             await navigator.clipboard.writeText(result.url)
           }
-          $msg.success('上传成功，地址已复制到剪贴板')
+          ElMessage.success('上传成功，地址已复制到剪贴板')
         } catch (e) {
-          $msg.error('上传成功，但地址复制失败')
+          ElMessage.error('上传成功，但地址复制失败')
         }
       } else {
-        $msg.success('上传成功')
+        ElMessage.success('上传成功')
       }
     } catch (e) {
       console.log(e)
-      $msg.error('上传失败')
+      ElMessage.error('上传失败')
     }
   } else {
-    $msg.warn('请先进行设置')
+    ElMessage.warning('请先进行设置')
   }
   spinning.value = false
+  return false
 }
 
 function rejectFile () {
-  $msg.warning('不支持的文件类型！')
+  ElMessage.warning('不支持的文件类型！')
 }
 
 function paste (event: ClipboardEvent) {
@@ -109,7 +106,7 @@ function paste (event: ClipboardEvent) {
       }
     }
     if (file) {
-      customRequest({ file } as UploadRequestOption)
+      customRequest(file)
     } else {
       rejectFile()
       clearTimeout(timeoutIndex.value)
@@ -120,28 +117,19 @@ function paste (event: ClipboardEvent) {
 </script>
 
 <style scoped lang="scss">
-.wrapper {
-  width: 100%;
+
+:deep(.el-upload) {
   height: 100%;
-}
 
-:deep(.ant-upload-drag-icon) {
-  [class^="i-"] {
-    font-size: 4.8rem;
-  }
-}
-
-.ant-spin-nested-loading {
-  height: 100% !important;
-
-  :deep(.ant-spin) {
-    height: 100%;
-    max-height: unset;
-  }
-
-  :deep(.ant-spin-container) {
+  .el-upload-dragger {
     height: 100%;
   }
-}
 
+  .el-icon--upload {
+    [class^="i-"] {
+      font-size: 4.8rem;
+      color: var(--el-text-color-placeholder)
+    }
+  }
+}
 </style>

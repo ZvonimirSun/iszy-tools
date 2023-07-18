@@ -2,13 +2,13 @@
   <a-typography-title :level="3">
     请输入身份证号码
   </a-typography-title>
-  <a-input
-    v-model:value="idData"
+  <el-input
+    v-model="idData"
     placeholder="3205************"
     @change="analyse"
   />
   <template v-if="result && result.checkIdCard">
-    <a-divider />
+    <el-divider />
     <a-typography-title :level="3">
       信息
     </a-typography-title>

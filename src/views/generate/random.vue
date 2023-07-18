@@ -1,44 +1,45 @@
 <template>
-  <a-form
+  <el-form
     :label-col="{sm:{span:2}}"
     :wrapper-col="{sm:{span:3}}"
   >
-    <a-form-item label="最小数字">
-      <a-input-number v-model:value.number="min" />
-    </a-form-item>
-    <a-form-item label="最大数字">
-      <a-input-number v-model:value.number="max" />
-    </a-form-item>
-    <a-form-item label="次数">
-      <a-input-number
-        v-model:value.number="times"
+    <el-form-item label="最小数字">
+      <el-input-number v-model.number="min" />
+    </el-form-item>
+    <el-form-item label="最大数字">
+      <el-input-number v-model.number="max" />
+    </el-form-item>
+    <el-form-item label="次数">
+      <el-input-number
+        v-model.number="times"
         :step="1"
       />
-    </a-form-item>
-    <a-form-item label="小数">
-      <a-switch v-model:checked="float" />
-    </a-form-item>
-    <a-form-item :wrapper-col="{sm:{span:3,offset:2}}">
-      <a-space>
-        <a-button
+    </el-form-item>
+    <el-form-item label="小数">
+      <el-switch v-model="float" />
+    </el-form-item>
+    <el-form-item :wrapper-col="{sm:{span:3,offset:2}}">
+      <el-space>
+        <el-button
           type="primary"
           @click="randomNum"
         >
           生成
-        </a-button>
-        <a-button @click="clearRandomNum">
+        </el-button>
+        <el-button @click="clearRandomNum">
           清空
-        </a-button>
-      </a-space>
-    </a-form-item>
-    <a-form-item :wrapper-col="{sm:{span:5}}">
-      <a-textarea
-        :value="randomNumResult"
+        </el-button>
+      </el-space>
+    </el-form-item>
+    <el-form-item :wrapper-col="{sm:{span:5}}">
+      <el-input
+        v-model="randomNumResult"
+        type="textarea"
         readonly
-        :auto-size="{ minRows: 2, maxRows: 5 }"
+        :autosize="{ minRows: 2, maxRows: 5 }"
       />
-    </a-form-item>
-  </a-form>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -60,7 +61,7 @@ export default defineComponent({
           this.randomNumResult = random(this.min, this.max, this.float) + (this.randomNumResult === '' ? '' : '\n') + this.randomNumResult
         }
       } catch (e) {
-        this.$msg.error('计算错误')
+        ElMessage.error('计算错误')
       }
     },
     clearRandomNum () {
