@@ -47,7 +47,7 @@
     "uuid": "^9.0.0",
     "vanilla-jsoneditor": "^0.17.8",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.1",
+    "vue-router": "^4.2.4",
     "vue3-ace-editor": "^2.2.2"
   },
   "devDependencies": {
