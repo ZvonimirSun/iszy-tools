@@ -91,12 +91,12 @@
     "unocss": "^0.52.0",
     "unplugin-auto-import": "^0.16.1",
     "unplugin-vue-components": "^0.24.1",
-    "vite": "^4.3.8",
+    "vite": "^4.4.4",
     "vite-plugin-inspect": "^0.7.26",
     "vite-plugin-pwa": "^0.15.0",
     "vue-tsc": "^1.6.5",
-    "workbox-build": "^6.4.2",
-    "workbox-window": "^6.4.2"
+    "workbox-build": "^6.5.4",
+    "workbox-window": "^6.5.4"
   },
   "babel": {
     "presets": [

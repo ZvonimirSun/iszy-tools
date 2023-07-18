@@ -2,9 +2,9 @@ name: Auto Test
 
 on:
   push:
-    branches:
-      - 'main'
-      - 'dev'
+    branches-ignore:
+      - 'deploy'
+      - 'deploy-beta'
     paths-ignore:
       - '.github/**'
   pull_request:
@@ -22,25 +22,50 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 切换到当前分支
+      - name: Checkout
         uses: actions/checkout@v3
-      - name: 设置Node版本和缓存
+
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
-      - name: Install dependencies 🔧
-        run: yarn install --frozen-lockfile --registry=https://registry.npmjs.org/
-      - name: 编译应用 🔧
-        run: yarn build
-      - name: 部署应用
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build app
+        run: pnpm run build
+
+      - name: Deploy App
         if: ${{ github.ref_name == 'main' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
           branch: deploy
           force: false
-      - name: 部署测试应用
+
+      - name: Deploy App Beta
         if: ${{ github.ref_name == 'dev' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
