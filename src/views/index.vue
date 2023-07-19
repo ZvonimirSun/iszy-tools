@@ -86,7 +86,7 @@ import oriTools from '@/views/tools.json'
 import { cloneDeep, flatten } from 'lodash-es'
 import type { Ref } from 'vue'
 import { useUserStore } from '@/stores/user'
-import type { ToolMenu } from '@/env'
+import type { ToolItem, ToolMenu } from '@/env'
 
 const searchStr: Ref<string> = ref('')
 const count: Ref<number> = ref(6)
@@ -108,12 +108,12 @@ for (const item of oriTools as ToolMenu[]) {
   }
 }
 
-const settings = computed(() => userStore.settings)
-const isFav = computed(() => userStore.isFav)
+const settings = userStore.settings
+const isFav = userStore.isFav
 
 const toolsHasAuth = computed(() => {
-  let tmp: ToolMenu[]
-  if (settings.value.showType) {
+  let tmp: ToolMenu[] = []
+  if (settings.showType) {
     tmp = [...(oriTools || [])]
   } else {
     tmp = [{
@@ -123,7 +123,7 @@ const toolsHasAuth = computed(() => {
       children: allTools.value
     }]
   }
-  if (settings.value.showRecent && userStore.recent().length > 0) {
+  if (settings.showRecent && userStore.recent().length > 0) {
     tmp.unshift({
       id: uuid(),
       type: '最近访问',
@@ -131,7 +131,7 @@ const toolsHasAuth = computed(() => {
       children: userStore.recent(count.value)
     })
   }
-  if (userStore.settings.showMost && userStore.most().length > 0) {
+  if (settings.showMost && userStore.most().length > 0) {
     tmp.unshift({
       id: uuid(),
       type: '最常访问',

@@ -1,40 +1,72 @@
 <template>
   <a-typography-title :level="3">
-    用户
+    账户信息
   </a-typography-title>
-  <el-space>
-    <template
-      v-if="!userStore._user.token"
-    >
-      <el-button
-        type="primary"
-        @click="login"
-      >
-        登录
-      </el-button>
-    </template>
-    <el-button
-      v-else
-      type="primary"
-      @click="logout"
-    >
-      登出
-    </el-button>
-    <el-popconfirm
-      title="您是否确定要清空本地缓存？"
-      confirm-button-text="清空"
-      @confirm="clearOfflineCache"
-    >
-      <template #reference>
-        <el-button
-          type="danger"
-          plain
+  <div
+    flex
+    flex-col
+    text-7
+    gap-4
+    items-start
+  >
+    <template v-if="userStore._user.token">
+      <div flex>
+        <div
+          w-25
+          font-bold
         >
-          清空本地缓存
+          昵称:
+        </div>
+        <div>
+          {{ userStore._user.profile.nickName }}
+        </div>
+      </div>
+      <div flex>
+        <div
+          w-25
+          font-bold
+        >
+          邮箱:
+        </div>
+        <div>
+          {{ userStore._user.profile.email }}
+        </div>
+      </div>
+    </template>
+    <el-space>
+      <template
+        v-if="!userStore._user.token"
+      >
+        <el-button
+          type="primary"
+          @click="login"
+        >
+          登录
         </el-button>
       </template>
-    </el-popconfirm>
-  </el-space>
+      <el-button
+        v-else
+        type="primary"
+        @click="logout"
+      >
+        登出
+      </el-button>
+      <el-popconfirm
+        title="您是否确定要清空本地缓存？"
+        confirm-button-text="清空"
+        @confirm="clearOfflineCache"
+      >
+        <template #reference>
+          <el-button
+            type="danger"
+            plain
+          >
+            清空本地缓存
+          </el-button>
+        </template>
+      </el-popconfirm>
+    </el-space>
+  </div>
   <el-divider />
   <template v-if="userStore._user.token">
     <a-typography-title :level="3">
@@ -103,6 +135,9 @@
     <el-divider />
     <a-typography-title :level="3">
       应用设置
+    </a-typography-title>
+    <a-typography-title :level="4">
+      JSON 编辑器
     </a-typography-title>
     <el-space>
       <el-checkbox

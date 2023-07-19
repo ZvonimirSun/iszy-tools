@@ -24,7 +24,9 @@ export const useUserStore = defineStore('user', {
     _user: {
       token: null as string | null,
       profile: {
-        nickName: null as string | null
+        nickName: null as string | null,
+        email: null as string | null,
+        userId: null as number | null
       }
     },
 
@@ -98,8 +100,12 @@ export const useUserStore = defineStore('user', {
           if (res.success) {
             this._user.token = 'logged'
             tokenChecked = true
-            this._user.profile = res.data || { nickName: null }
-            this.downloadSettings()
+            this._user.profile = {
+              nickName: res.data.nickName,
+              userId: res.data.userId,
+              email: res.data.email
+            } || { nickName: null, userId: null, email: null }
+            await this.downloadSettings()
             return
           } else {
             this.clearToken()
@@ -195,7 +201,9 @@ export const useUserStore = defineStore('user', {
     clearToken () {
       this._user.token = null
       this._user.profile = {
-        nickName: null
+        nickName: null,
+        email: null,
+        userId: null
       }
     },
 

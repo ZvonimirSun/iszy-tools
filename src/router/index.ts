@@ -85,7 +85,10 @@ for (const tmp of data) {
             })
           } else {
             modules[path] = merge(modules[path], {
-              name: tool.name
+              name: tool.name,
+              meta: {
+                requiresAuth: tool.requiresAuth
+              }
             })
           }
           routes.push(modules[path])
@@ -99,16 +102,7 @@ for (const tmp of data) {
 routes = routes.concat([
   {
     path: '/logout',
-    name: '登出',
-    beforeEnter (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
-      if (navigator.onLine) {
-        useUserStore().logout().then(() => {
-          next(from.fullPath)
-        })
-      } else {
-        next(from.fullPath)
-      }
-    }
+    name: '登出'
   },
   {
     path: '/:any(.*)/:catchAll(.*)',
@@ -137,26 +131,41 @@ const router = createRouter(options)
 // 路由白名单
 const whiteList = ['/login', '/logout']
 
-router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+router.beforeEach(checkAuth)
+
+async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+  let _to = to
+  let redirected = false
+  if (to.path === '/logout') {
+    redirected = true
+    _to = from
+    if (navigator.onLine) {
+      await useUserStore().logout()
+    }
+  }
   // 权限控制
   const isLogged = await useUserStore().checkToken()
-  if (isLogged || whiteList.indexOf(to.path) !== -1 || !to.meta.requiresAuth) {
-    document.title = getPageTitle(to.meta.title || to.name?.toString())
-    if (to.name && to.meta.statistics) {
+  if (isLogged || whiteList.indexOf(_to.path) !== -1 || !_to.meta.requiresAuth) {
+    document.title = getPageTitle(_to.meta.title || _to.name?.toString())
+    if (_to.name && _to.meta.statistics) {
       let name:string
-      if (typeof to.name === 'string') {
-        name = to.name
+      if (typeof _to.name === 'string') {
+        name = _to.name
       } else {
-        name = to.name.toString()
+        name = _to.name.toString()
       }
-      useUserStore().access({ name, link: to.path })
+      useUserStore().access({ name, link: _to.path })
     }
-    next()
+    if (redirected) {
+      next(_to.path)
+    } else {
+      next()
+    }
   } else {
     // other pages that do not have permission to access are redirected to the login page.
-    next(`/login?redirect=${to.path}`)
+    next(`/login?redirect=${_to.path}`)
   }
-})
+}
 
 function getPageTitle (pageTitle: string | undefined | null) {
   if (pageTitle && pageTitle !== 'ISZY工具集合') {
