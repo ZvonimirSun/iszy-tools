@@ -17,7 +17,6 @@ const iconClass = tools.map(item => item.icon).filter(item => item)
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
   server: { port: 3000, https: false },
   plugins: [
     vue(),
