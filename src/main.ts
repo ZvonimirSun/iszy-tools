@@ -5,26 +5,28 @@ import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 
-const $apiBase = 'https://api.iszy.xyz'
+const $apiBase = 'https://api.iszy.xyz';
 
-const pinia = createPinia()
-const app = createApp(App)
+(async () => {
+  const pinia = createPinia()
+  const app = createApp(App)
 
-app.config.globalProperties.$axios = axios
-app.config.globalProperties.$eventBus = EventBus
+  app.config.globalProperties.$axios = axios
+  app.config.globalProperties.$eventBus = EventBus
 
-app.provide('$axios', axios)
-app.provide('$eventBus', EventBus)
+  app.provide('$axios', axios)
+  app.provide('$eventBus', EventBus)
 
-axios.$apiBase = $apiBase
+  axios.$apiBase = $apiBase
 
-const piniaPersistPlugin = await createPiniaPersist({
-  name: 'iszy_tools',
-  storeName: 'state',
-  version: 2
-})
+  const piniaPersistPlugin = await createPiniaPersist({
+    name: 'iszy_tools',
+    storeName: 'state',
+    version: 2
+  })
 
-pinia.use(piniaPersistPlugin)
+  pinia.use(piniaPersistPlugin)
 
-app.use(pinia).use(router)
-app.mount('#app')
+  app.use(pinia).use(router)
+  app.mount('#app')
+})()
