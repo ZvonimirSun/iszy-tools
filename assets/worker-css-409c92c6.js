@@ -1,0 +1,968 @@
+var x={exports:{}};(function(f,$){ace.define("ace/mode/css_highlight_rules",["require","exports","module","ace/lib/oop","ace/lib/lang","ace/mode/text_highlight_rules"],function(a,c,h){var g=a("../lib/oop");a("../lib/lang");var u=a("./text_highlight_rules").TextHighlightRules,d=c.supportType="align-content|align-items|align-self|all|animation|animation-delay|animation-direction|animation-duration|animation-fill-mode|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|backface-visibility|background|background-attachment|background-blend-mode|background-clip|background-color|background-image|background-origin|background-position|background-repeat|background-size|border|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius|border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset|border-image-repeat|border-image-slice|border-image-source|border-image-width|border-left|border-left-color|border-left-style|border-left-width|border-radius|border-right|border-right-color|border-right-style|border-right-width|border-spacing|border-style|border-top|border-top-color|border-top-left-radius|border-top-right-radius|border-top-style|border-top-width|border-width|bottom|box-shadow|box-sizing|caption-side|clear|clip|color|column-count|column-fill|column-gap|column-rule|column-rule-color|column-rule-style|column-rule-width|column-span|column-width|columns|content|counter-increment|counter-reset|cursor|direction|display|empty-cells|filter|flex|flex-basis|flex-direction|flex-flow|flex-grow|flex-shrink|flex-wrap|float|font|font-family|font-size|font-size-adjust|font-stretch|font-style|font-variant|font-weight|hanging-punctuation|height|justify-content|left|letter-spacing|line-height|list-style|list-style-image|list-style-position|list-style-type|margin|margin-bottom|margin-left|margin-right|margin-top|max-height|max-width|max-zoom|min-height|min-width|min-zoom|nav-down|nav-index|nav-left|nav-right|nav-up|opacity|order|outline|outline-color|outline-offset|outline-style|outline-width|overflow|overflow-x|overflow-y|padding|padding-bottom|padding-left|padding-right|padding-top|page-break-after|page-break-before|page-break-inside|perspective|perspective-origin|position|quotes|resize|right|tab-size|table-layout|text-align|text-align-last|text-decoration|text-decoration-color|text-decoration-line|text-decoration-style|text-indent|text-justify|text-overflow|text-shadow|text-transform|top|transform|transform-origin|transform-style|transition|transition-delay|transition-duration|transition-property|transition-timing-function|unicode-bidi|user-select|user-zoom|vertical-align|visibility|white-space|width|word-break|word-spacing|word-wrap|z-index",l=c.supportFunction="rgb|rgba|url|attr|counter|counters",e=c.supportConstant="absolute|after-edge|after|all-scroll|all|alphabetic|always|antialiased|armenian|auto|avoid-column|avoid-page|avoid|balance|baseline|before-edge|before|below|bidi-override|block-line-height|block|bold|bolder|border-box|both|bottom|box|break-all|break-word|capitalize|caps-height|caption|center|central|char|circle|cjk-ideographic|clone|close-quote|col-resize|collapse|column|consider-shifts|contain|content-box|cover|crosshair|cubic-bezier|dashed|decimal-leading-zero|decimal|default|disabled|disc|disregard-shifts|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ease-in|ease-in-out|ease-out|ease|ellipsis|end|exclude-ruby|flex-end|flex-start|fill|fixed|georgian|glyphs|grid-height|groove|hand|hanging|hebrew|help|hidden|hiragana-iroha|hiragana|horizontal|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|ideographic|inactive|include-ruby|inherit|initial|inline-block|inline-box|inline-line-height|inline-table|inline|inset|inside|inter-ideograph|inter-word|invert|italic|justify|katakana-iroha|katakana|keep-all|last|left|lighter|line-edge|line-through|line|linear|list-item|local|loose|lower-alpha|lower-greek|lower-latin|lower-roman|lowercase|lr-tb|ltr|mathematical|max-height|max-size|medium|menu|message-box|middle|move|n-resize|ne-resize|newspaper|no-change|no-close-quote|no-drop|no-open-quote|no-repeat|none|normal|not-allowed|nowrap|nw-resize|oblique|open-quote|outset|outside|overline|padding-box|page|pointer|pre-line|pre-wrap|pre|preserve-3d|progress|relative|repeat-x|repeat-y|repeat|replaced|reset-size|ridge|right|round|row-resize|rtl|s-resize|scroll|se-resize|separate|slice|small-caps|small-caption|solid|space|square|start|static|status-bar|step-end|step-start|steps|stretch|strict|sub|super|sw-resize|table-caption|table-cell|table-column-group|table-column|table-footer-group|table-header-group|table-row-group|table-row|table|tb-rl|text-after-edge|text-before-edge|text-bottom|text-size|text-top|text|thick|thin|transparent|underline|upper-alpha|upper-latin|upper-roman|uppercase|use-script|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace|z-index|zero|zoom",p=c.supportConstantColor="aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|rebeccapurple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen",t=c.supportConstantFonts="arial|century|comic|courier|cursive|fantasy|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace",n=c.numRe="\\-?(?:(?:[0-9]+(?:\\.[0-9]+)?)|(?:\\.[0-9]+))",o=c.pseudoElements="(\\:+)\\b(after|before|first-letter|first-line|moz-selection|selection)\\b",i=c.pseudoClasses="(:)\\b(active|checked|disabled|empty|enabled|first-child|first-of-type|focus|hover|indeterminate|invalid|last-child|last-of-type|link|not|nth-child|nth-last-child|nth-last-of-type|nth-of-type|only-child|only-of-type|required|root|target|valid|visited)\\b",s=function(){var r=this.createKeywordMapper({"support.function":l,"support.constant":e,"support.type":d,"support.constant.color":p,"support.constant.fonts":t},"text",!0);this.$rules={start:[{include:["strings","url","comments"]},{token:"paren.lparen",regex:"\\{",next:"ruleset"},{token:"paren.rparen",regex:"\\}"},{token:"string",regex:"@(?!viewport)",next:"media"},{token:"keyword",regex:"#[a-z0-9-_]+"},{token:"keyword",regex:"%"},{token:"variable",regex:"\\.[a-z0-9-_]+"},{token:"string",regex:":[a-z0-9-_]+"},{token:"constant.numeric",regex:n},{token:"constant",regex:"[a-z0-9-_]+"},{caseInsensitive:!0}],media:[{include:["strings","url","comments"]},{token:"paren.lparen",regex:"\\{",next:"start"},{token:"paren.rparen",regex:"\\}",next:"start"},{token:"string",regex:";",next:"start"},{token:"keyword",regex:"(?:media|supports|document|charset|import|namespace|media|supports|document|page|font|keyframes|viewport|counter-style|font-feature-values|swash|ornaments|annotation|stylistic|styleset|character-variant)"}],comments:[{token:"comment",regex:"\\/\\*",push:[{token:"comment",regex:"\\*\\/",next:"pop"},{defaultToken:"comment"}]}],ruleset:[{regex:"-(webkit|ms|moz|o)-",token:"text"},{token:"punctuation.operator",regex:"[:;]"},{token:"paren.rparen",regex:"\\}",next:"start"},{include:["strings","url","comments"]},{token:["constant.numeric","keyword"],regex:"("+n+")(ch|cm|deg|em|ex|fr|gd|grad|Hz|in|kHz|mm|ms|pc|pt|px|rad|rem|s|turn|vh|vmax|vmin|vm|vw|%)"},{token:"constant.numeric",regex:n},{token:"constant.numeric",regex:"#[a-f0-9]{6}"},{token:"constant.numeric",regex:"#[a-f0-9]{3}"},{token:["punctuation","entity.other.attribute-name.pseudo-element.css"],regex:o},{token:["punctuation","entity.other.attribute-name.pseudo-class.css"],regex:i},{include:"url"},{token:r,regex:"\\-?[a-zA-Z_][a-zA-Z0-9_\\-]*"},{caseInsensitive:!0}],url:[{token:"support.function",regex:"(?:url(:?-prefix)?|domain|regexp)\\(",push:[{token:"support.function",regex:"\\)",next:"pop"},{defaultToken:"string"}]}],strings:[{token:"string.start",regex:"'",push:[{token:"string.end",regex:"'|$",next:"pop"},{include:"escapes"},{token:"constant.language.escape",regex:/\\$/,consumeLineEnd:!0},{defaultToken:"string"}]},{token:"string.start",regex:'"',push:[{token:"string.end",regex:'"|$',next:"pop"},{include:"escapes"},{token:"constant.language.escape",regex:/\\$/,consumeLineEnd:!0},{defaultToken:"string"}]}],escapes:[{token:"constant.language.escape",regex:/\\([a-fA-F\d]{1,6}|[^a-fA-F\d])/}]},this.normalizeRules()};g.inherits(s,u),c.CssHighlightRules=s}),ace.define("ace/mode/matching_brace_outdent",["require","exports","module","ace/range"],function(a,c,h){var g=a("../range").Range,u=function(){};(function(){this.checkOutdent=function(d,l){return/^\s+$/.test(d)?/^\s*\}/.test(l):!1},this.autoOutdent=function(d,l){var e=d.getLine(l),p=e.match(/^(\s*\})/);if(!p)return 0;var t=p[1].length,n=d.findMatchingBracket({row:l,column:t});if(!n||n.row==l)return 0;var o=this.$getIndent(d.getLine(n.row));d.replace(new g(l,0,l,t-1),o)},this.$getIndent=function(d){return d.match(/^\s*/)[0]}}).call(u.prototype),c.MatchingBraceOutdent=u}),ace.define("ace/mode/css_completions",["require","exports","module"],function(a,c,h){var g={background:{"#$0":1},"background-color":{"#$0":1,transparent:1,fixed:1},"background-image":{"url('/$0')":1},"background-repeat":{repeat:1,"repeat-x":1,"repeat-y":1,"no-repeat":1,inherit:1},"background-position":{bottom:2,center:2,left:2,right:2,top:2,inherit:2},"background-attachment":{scroll:1,fixed:1},"background-size":{cover:1,contain:1},"background-clip":{"border-box":1,"padding-box":1,"content-box":1},"background-origin":{"border-box":1,"padding-box":1,"content-box":1},border:{"solid $0":1,"dashed $0":1,"dotted $0":1,"#$0":1},"border-color":{"#$0":1},"border-style":{solid:2,dashed:2,dotted:2,double:2,groove:2,hidden:2,inherit:2,inset:2,none:2,outset:2,ridged:2},"border-collapse":{collapse:1,separate:1},bottom:{px:1,em:1,"%":1},clear:{left:1,right:1,both:1,none:1},color:{"#$0":1,"rgb(#$00,0,0)":1},cursor:{default:1,pointer:1,move:1,text:1,wait:1,help:1,progress:1,"n-resize":1,"ne-resize":1,"e-resize":1,"se-resize":1,"s-resize":1,"sw-resize":1,"w-resize":1,"nw-resize":1},display:{none:1,block:1,inline:1,"inline-block":1,"table-cell":1},"empty-cells":{show:1,hide:1},float:{left:1,right:1,none:1},"font-family":{Arial:2,"Comic Sans MS":2,Consolas:2,"Courier New":2,Courier:2,Georgia:2,Monospace:2,"Sans-Serif":2,"Segoe UI":2,Tahoma:2,"Times New Roman":2,"Trebuchet MS":2,Verdana:1},"font-size":{px:1,em:1,"%":1},"font-weight":{bold:1,normal:1},"font-style":{italic:1,normal:1},"font-variant":{normal:1,"small-caps":1},height:{px:1,em:1,"%":1},left:{px:1,em:1,"%":1},"letter-spacing":{normal:1},"line-height":{normal:1},"list-style-type":{none:1,disc:1,circle:1,square:1,decimal:1,"decimal-leading-zero":1,"lower-roman":1,"upper-roman":1,"lower-greek":1,"lower-latin":1,"upper-latin":1,georgian:1,"lower-alpha":1,"upper-alpha":1},margin:{px:1,em:1,"%":1},"margin-right":{px:1,em:1,"%":1},"margin-left":{px:1,em:1,"%":1},"margin-top":{px:1,em:1,"%":1},"margin-bottom":{px:1,em:1,"%":1},"max-height":{px:1,em:1,"%":1},"max-width":{px:1,em:1,"%":1},"min-height":{px:1,em:1,"%":1},"min-width":{px:1,em:1,"%":1},overflow:{hidden:1,visible:1,auto:1,scroll:1},"overflow-x":{hidden:1,visible:1,auto:1,scroll:1},"overflow-y":{hidden:1,visible:1,auto:1,scroll:1},padding:{px:1,em:1,"%":1},"padding-top":{px:1,em:1,"%":1},"padding-right":{px:1,em:1,"%":1},"padding-bottom":{px:1,em:1,"%":1},"padding-left":{px:1,em:1,"%":1},"page-break-after":{auto:1,always:1,avoid:1,left:1,right:1},"page-break-before":{auto:1,always:1,avoid:1,left:1,right:1},position:{absolute:1,relative:1,fixed:1,static:1},right:{px:1,em:1,"%":1},"table-layout":{fixed:1,auto:1},"text-decoration":{none:1,underline:1,"line-through":1,blink:1},"text-align":{left:1,right:1,center:1,justify:1},"text-transform":{capitalize:1,uppercase:1,lowercase:1,none:1},top:{px:1,em:1,"%":1},"vertical-align":{top:1,bottom:1},visibility:{hidden:1,visible:1},"white-space":{nowrap:1,normal:1,pre:1,"pre-line":1,"pre-wrap":1},width:{px:1,em:1,"%":1},"word-spacing":{normal:1},filter:{"alpha(opacity=$0100)":1},"text-shadow":{"$02px 2px 2px #777":1},"text-overflow":{"ellipsis-word":1,clip:1,ellipsis:1},"-moz-border-radius":1,"-moz-border-radius-topright":1,"-moz-border-radius-bottomright":1,"-moz-border-radius-topleft":1,"-moz-border-radius-bottomleft":1,"-webkit-border-radius":1,"-webkit-border-top-right-radius":1,"-webkit-border-top-left-radius":1,"-webkit-border-bottom-right-radius":1,"-webkit-border-bottom-left-radius":1,"-moz-box-shadow":1,"-webkit-box-shadow":1,transform:{"rotate($00deg)":1,"skew($00deg)":1},"-moz-transform":{"rotate($00deg)":1,"skew($00deg)":1},"-webkit-transform":{"rotate($00deg)":1,"skew($00deg)":1}},u=function(){};(function(){this.completionsDefined=!1,this.defineCompletions=function(){if(document){var d=document.createElement("c").style;for(var l in d)if(typeof d[l]=="string"){var e=l.replace(/[A-Z]/g,function(p){return"-"+p.toLowerCase()});g.hasOwnProperty(e)||(g[e]=1)}}this.completionsDefined=!0},this.getCompletions=function(d,l,e,p){if(this.completionsDefined||this.defineCompletions(),d==="ruleset"||l.$mode.$id=="ace/mode/scss"){var t=l.getLine(e.row).substr(0,e.column),n=/\([^)]*$/.test(t);return n&&(t=t.substr(t.lastIndexOf("(")+1)),/:[^;]+$/.test(t)?this.getPropertyValueCompletions(d,l,e,p):this.getPropertyCompletions(d,l,e,p,n)}return[]},this.getPropertyCompletions=function(d,l,e,p,t){t=t||!1;var n=Object.keys(g);return n.map(function(o){return{caption:o,snippet:o+": $0"+(t?"":";"),meta:"property",score:1e6}})},this.getPropertyValueCompletions=function(d,l,e,p){var t=l.getLine(e.row).substr(0,e.column),n=(/([\w\-]+):[^:]*$/.exec(t)||{})[1];if(!n)return[];var o=[];return n in g&&typeof g[n]=="object"&&(o=Object.keys(g[n])),o.map(function(i){return{caption:i,snippet:i,meta:"property value",score:1e6}})}}).call(u.prototype),c.CssCompletions=u}),ace.define("ace/mode/behaviour/css",["require","exports","module","ace/lib/oop","ace/mode/behaviour","ace/mode/behaviour/cstyle","ace/token_iterator"],function(a,c,h){var g=a("../../lib/oop");a("../behaviour").Behaviour;var u=a("./cstyle").CstyleBehaviour,d=a("../../token_iterator").TokenIterator,l=function(){this.inherit(u),this.add("colon","insertion",function(e,p,t,n,o){if(o===":"&&t.selection.isEmpty()){var i=t.getCursorPosition(),s=new d(n,i.row,i.column),r=s.getCurrentToken();if(r&&r.value.match(/\s+/)&&(r=s.stepBackward()),r&&r.type==="support.type"){var b=n.doc.getLine(i.row),m=b.substring(i.column,i.column+1);if(m===":")return{text:"",selection:[1,1]};if(/^(\s+[^;]|\s*$)/.test(b.substring(i.column)))return{text:":;",selection:[1,1]}}}}),this.add("colon","deletion",function(e,p,t,n,o){var i=n.doc.getTextRange(o);if(!o.isMultiLine()&&i===":"){var s=t.getCursorPosition(),r=new d(n,s.row,s.column),b=r.getCurrentToken();if(b&&b.value.match(/\s+/)&&(b=r.stepBackward()),b&&b.type==="support.type"){var m=n.doc.getLine(o.start.row),w=m.substring(o.end.column,o.end.column+1);if(w===";")return o.end.column++,o}}}),this.add("semicolon","insertion",function(e,p,t,n,o){if(o===";"&&t.selection.isEmpty()){var i=t.getCursorPosition(),s=n.doc.getLine(i.row),r=s.substring(i.column,i.column+1);if(r===";")return{text:"",selection:[1,1]}}}),this.add("!important","insertion",function(e,p,t,n,o){if(o==="!"&&t.selection.isEmpty()){var i=t.getCursorPosition(),s=n.doc.getLine(i.row);if(/^\s*(;|}|$)/.test(s.substring(i.column)))return{text:"!important",selection:[10,10]}}})};g.inherits(l,u),c.CssBehaviour=l}),ace.define("ace/mode/folding/cstyle",["require","exports","module","ace/lib/oop","ace/range","ace/mode/folding/fold_mode"],function(a,c,h){var g=a("../../lib/oop"),u=a("../../range").Range,d=a("./fold_mode").FoldMode,l=c.FoldMode=function(e){e&&(this.foldingStartMarker=new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/,"|"+e.start)),this.foldingStopMarker=new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/,"|"+e.end)))};g.inherits(l,d),(function(){this.foldingStartMarker=/([\{\[\(])[^\}\]\)]*$|^\s*(\/\*)/,this.foldingStopMarker=/^[^\[\{\(]*([\}\]\)])|^[\s\*]*(\*\/)/,this.singleLineBlockCommentRe=/^\s*(\/\*).*\*\/\s*$/,this.tripleStarBlockCommentRe=/^\s*(\/\*\*\*).*\*\/\s*$/,this.startRegionRe=/^\s*(\/\*|\/\/)#?region\b/,this._getFoldWidgetBase=this.getFoldWidget,this.getFoldWidget=function(e,p,t){var n=e.getLine(t);if(this.singleLineBlockCommentRe.test(n)&&!this.startRegionRe.test(n)&&!this.tripleStarBlockCommentRe.test(n))return"";var o=this._getFoldWidgetBase(e,p,t);return!o&&this.startRegionRe.test(n)?"start":o},this.getFoldWidgetRange=function(e,p,t,n){var o=e.getLine(t);if(this.startRegionRe.test(o))return this.getCommentRegionBlock(e,o,t);var r=o.match(this.foldingStartMarker);if(r){var i=r.index;if(r[1])return this.openingBracketBlock(e,r[1],t,i);var s=e.getCommentFoldRange(t,i+r[0].length,1);return s&&!s.isMultiLine()&&(n?s=this.getSectionRange(e,t):p!="all"&&(s=null)),s}if(p!=="markbegin"){var r=o.match(this.foldingStopMarker);if(r){var i=r.index+r[0].length;return r[1]?this.closingBracketBlock(e,r[1],t,i):e.getCommentFoldRange(t,i,-1)}}},this.getSectionRange=function(e,p){var t=e.getLine(p),n=t.search(/\S/),o=p,i=t.length;p=p+1;for(var s=p,r=e.getLength();++p<r;){t=e.getLine(p);var b=t.search(/\S/);if(b!==-1){if(n>b)break;var m=this.getFoldWidgetRange(e,"all",p);if(m){if(m.start.row<=o)break;if(m.isMultiLine())p=m.end.row;else if(n==b)break}s=p}}return new u(o,i,s,e.getLine(s).length)},this.getCommentRegionBlock=function(e,p,t){for(var n=p.search(/\s*$/),o=e.getLength(),i=t,s=/^\s*(?:\/\*|\/\/|--)#?(end)?region\b/,r=1;++t<o;){p=e.getLine(t);var b=s.exec(p);if(b&&(b[1]?r--:r++,!r))break}var m=t;if(m>i)return new u(i,n,m,p.length)}}).call(l.prototype)}),ace.define("ace/mode/css",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/css_highlight_rules","ace/mode/matching_brace_outdent","ace/worker/worker_client","ace/mode/css_completions","ace/mode/behaviour/css","ace/mode/folding/cstyle"],function(a,c,h){var g=a("../lib/oop"),u=a("./text").Mode,d=a("./css_highlight_rules").CssHighlightRules,l=a("./matching_brace_outdent").MatchingBraceOutdent,e=a("../worker/worker_client").WorkerClient,p=a("./css_completions").CssCompletions,t=a("./behaviour/css").CssBehaviour,n=a("./folding/cstyle").FoldMode,o=function(){this.HighlightRules=d,this.$outdent=new l,this.$behaviour=new t,this.$completer=new p,this.foldingRules=new n};g.inherits(o,u),(function(){this.foldingRules="cStyle",this.blockComment={start:"/*",end:"*/"},this.getNextLineIndent=function(i,s,r){var b=this.$getIndent(s),m=this.getTokenizer().getLineTokens(s,i).tokens;if(m.length&&m[m.length-1].type=="comment")return b;var w=s.match(/^.*\{\s*$/);return w&&(b+=r),b},this.checkOutdent=function(i,s,r){return this.$outdent.checkOutdent(s,r)},this.autoOutdent=function(i,s,r){this.$outdent.autoOutdent(s,r)},this.getCompletions=function(i,s,r,b){return this.$completer.getCompletions(i,s,r,b)},this.createWorker=function(i){var s=new e(["ace"],"ace/mode/css_worker","Worker");return s.attachToDocument(i.getDocument()),s.on("annotate",function(r){i.setAnnotations(r.data)}),s.on("terminate",function(){i.clearAnnotations()}),s},this.$id="ace/mode/css",this.snippetFileId="ace/snippets/css"}).call(o.prototype),c.Mode=o}),function(){ace.require(["ace/mode/css"],function(a){f&&(f.exports=a)})}()})(x);var v={exports:{}};(function(f,$){ace.define("ace/snippets/css.snippets",["require","exports","module"],function(a,c,h){h.exports=`snippet .
+	\${1} {
+		\${2}
+	}
+snippet !
+	 !important
+snippet bdi:m+
+	-moz-border-image: url(\${1}) \${2:0} \${3:0} \${4:0} \${5:0} \${6:stretch} \${7:stretch};
+snippet bdi:m
+	-moz-border-image: \${1};
+snippet bdrz:m
+	-moz-border-radius: \${1};
+snippet bxsh:m+
+	-moz-box-shadow: \${1:0} \${2:0} \${3:0} #\${4:000};
+snippet bxsh:m
+	-moz-box-shadow: \${1};
+snippet bdi:w+
+	-webkit-border-image: url(\${1}) \${2:0} \${3:0} \${4:0} \${5:0} \${6:stretch} \${7:stretch};
+snippet bdi:w
+	-webkit-border-image: \${1};
+snippet bdrz:w
+	-webkit-border-radius: \${1};
+snippet bxsh:w+
+	-webkit-box-shadow: \${1:0} \${2:0} \${3:0} #\${4:000};
+snippet bxsh:w
+	-webkit-box-shadow: \${1};
+snippet @f
+	@font-face {
+		font-family: \${1};
+		src: url(\${2});
+	}
+snippet @i
+	@import url(\${1});
+snippet @m
+	@media \${1:print} {
+		\${2}
+	}
+snippet bg+
+	background: #\${1:FFF} url(\${2}) \${3:0} \${4:0} \${5:no-repeat};
+snippet bga
+	background-attachment: \${1};
+snippet bga:f
+	background-attachment: fixed;
+snippet bga:s
+	background-attachment: scroll;
+snippet bgbk
+	background-break: \${1};
+snippet bgbk:bb
+	background-break: bounding-box;
+snippet bgbk:c
+	background-break: continuous;
+snippet bgbk:eb
+	background-break: each-box;
+snippet bgcp
+	background-clip: \${1};
+snippet bgcp:bb
+	background-clip: border-box;
+snippet bgcp:cb
+	background-clip: content-box;
+snippet bgcp:nc
+	background-clip: no-clip;
+snippet bgcp:pb
+	background-clip: padding-box;
+snippet bgc
+	background-color: #\${1:FFF};
+snippet bgc:t
+	background-color: transparent;
+snippet bgi
+	background-image: url(\${1});
+snippet bgi:n
+	background-image: none;
+snippet bgo
+	background-origin: \${1};
+snippet bgo:bb
+	background-origin: border-box;
+snippet bgo:cb
+	background-origin: content-box;
+snippet bgo:pb
+	background-origin: padding-box;
+snippet bgpx
+	background-position-x: \${1};
+snippet bgpy
+	background-position-y: \${1};
+snippet bgp
+	background-position: \${1:0} \${2:0};
+snippet bgr
+	background-repeat: \${1};
+snippet bgr:n
+	background-repeat: no-repeat;
+snippet bgr:x
+	background-repeat: repeat-x;
+snippet bgr:y
+	background-repeat: repeat-y;
+snippet bgr:r
+	background-repeat: repeat;
+snippet bgz
+	background-size: \${1};
+snippet bgz:a
+	background-size: auto;
+snippet bgz:ct
+	background-size: contain;
+snippet bgz:cv
+	background-size: cover;
+snippet bg
+	background: \${1};
+snippet bg:ie
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='\${1}',sizingMethod='\${2:crop}');
+snippet bg:n
+	background: none;
+snippet bd+
+	border: \${1:1px} \${2:solid} #\${3:000};
+snippet bdb+
+	border-bottom: \${1:1px} \${2:solid} #\${3:000};
+snippet bdbc
+	border-bottom-color: #\${1:000};
+snippet bdbi
+	border-bottom-image: url(\${1});
+snippet bdbi:n
+	border-bottom-image: none;
+snippet bdbli
+	border-bottom-left-image: url(\${1});
+snippet bdbli:c
+	border-bottom-left-image: continue;
+snippet bdbli:n
+	border-bottom-left-image: none;
+snippet bdblrz
+	border-bottom-left-radius: \${1};
+snippet bdbri
+	border-bottom-right-image: url(\${1});
+snippet bdbri:c
+	border-bottom-right-image: continue;
+snippet bdbri:n
+	border-bottom-right-image: none;
+snippet bdbrrz
+	border-bottom-right-radius: \${1};
+snippet bdbs
+	border-bottom-style: \${1};
+snippet bdbs:n
+	border-bottom-style: none;
+snippet bdbw
+	border-bottom-width: \${1};
+snippet bdb
+	border-bottom: \${1};
+snippet bdb:n
+	border-bottom: none;
+snippet bdbk
+	border-break: \${1};
+snippet bdbk:c
+	border-break: close;
+snippet bdcl
+	border-collapse: \${1};
+snippet bdcl:c
+	border-collapse: collapse;
+snippet bdcl:s
+	border-collapse: separate;
+snippet bdc
+	border-color: #\${1:000};
+snippet bdci
+	border-corner-image: url(\${1});
+snippet bdci:c
+	border-corner-image: continue;
+snippet bdci:n
+	border-corner-image: none;
+snippet bdf
+	border-fit: \${1};
+snippet bdf:c
+	border-fit: clip;
+snippet bdf:of
+	border-fit: overwrite;
+snippet bdf:ow
+	border-fit: overwrite;
+snippet bdf:r
+	border-fit: repeat;
+snippet bdf:sc
+	border-fit: scale;
+snippet bdf:sp
+	border-fit: space;
+snippet bdf:st
+	border-fit: stretch;
+snippet bdi
+	border-image: url(\${1}) \${2:0} \${3:0} \${4:0} \${5:0} \${6:stretch} \${7:stretch};
+snippet bdi:n
+	border-image: none;
+snippet bdl+
+	border-left: \${1:1px} \${2:solid} #\${3:000};
+snippet bdlc
+	border-left-color: #\${1:000};
+snippet bdli
+	border-left-image: url(\${1});
+snippet bdli:n
+	border-left-image: none;
+snippet bdls
+	border-left-style: \${1};
+snippet bdls:n
+	border-left-style: none;
+snippet bdlw
+	border-left-width: \${1};
+snippet bdl
+	border-left: \${1};
+snippet bdl:n
+	border-left: none;
+snippet bdlt
+	border-length: \${1};
+snippet bdlt:a
+	border-length: auto;
+snippet bdrz
+	border-radius: \${1};
+snippet bdr+
+	border-right: \${1:1px} \${2:solid} #\${3:000};
+snippet bdrc
+	border-right-color: #\${1:000};
+snippet bdri
+	border-right-image: url(\${1});
+snippet bdri:n
+	border-right-image: none;
+snippet bdrs
+	border-right-style: \${1};
+snippet bdrs:n
+	border-right-style: none;
+snippet bdrw
+	border-right-width: \${1};
+snippet bdr
+	border-right: \${1};
+snippet bdr:n
+	border-right: none;
+snippet bdsp
+	border-spacing: \${1};
+snippet bds
+	border-style: \${1};
+snippet bds:ds
+	border-style: dashed;
+snippet bds:dtds
+	border-style: dot-dash;
+snippet bds:dtdtds
+	border-style: dot-dot-dash;
+snippet bds:dt
+	border-style: dotted;
+snippet bds:db
+	border-style: double;
+snippet bds:g
+	border-style: groove;
+snippet bds:h
+	border-style: hidden;
+snippet bds:i
+	border-style: inset;
+snippet bds:n
+	border-style: none;
+snippet bds:o
+	border-style: outset;
+snippet bds:r
+	border-style: ridge;
+snippet bds:s
+	border-style: solid;
+snippet bds:w
+	border-style: wave;
+snippet bdt+
+	border-top: \${1:1px} \${2:solid} #\${3:000};
+snippet bdtc
+	border-top-color: #\${1:000};
+snippet bdti
+	border-top-image: url(\${1});
+snippet bdti:n
+	border-top-image: none;
+snippet bdtli
+	border-top-left-image: url(\${1});
+snippet bdtli:c
+	border-corner-image: continue;
+snippet bdtli:n
+	border-corner-image: none;
+snippet bdtlrz
+	border-top-left-radius: \${1};
+snippet bdtri
+	border-top-right-image: url(\${1});
+snippet bdtri:c
+	border-top-right-image: continue;
+snippet bdtri:n
+	border-top-right-image: none;
+snippet bdtrrz
+	border-top-right-radius: \${1};
+snippet bdts
+	border-top-style: \${1};
+snippet bdts:n
+	border-top-style: none;
+snippet bdtw
+	border-top-width: \${1};
+snippet bdt
+	border-top: \${1};
+snippet bdt:n
+	border-top: none;
+snippet bdw
+	border-width: \${1};
+snippet bd
+	border: \${1};
+snippet bd:n
+	border: none;
+snippet b
+	bottom: \${1};
+snippet b:a
+	bottom: auto;
+snippet bxsh+
+	box-shadow: \${1:0} \${2:0} \${3:0} #\${4:000};
+snippet bxsh
+	box-shadow: \${1};
+snippet bxsh:n
+	box-shadow: none;
+snippet bxz
+	box-sizing: \${1};
+snippet bxz:bb
+	box-sizing: border-box;
+snippet bxz:cb
+	box-sizing: content-box;
+snippet cps
+	caption-side: \${1};
+snippet cps:b
+	caption-side: bottom;
+snippet cps:t
+	caption-side: top;
+snippet cl
+	clear: \${1};
+snippet cl:b
+	clear: both;
+snippet cl:l
+	clear: left;
+snippet cl:n
+	clear: none;
+snippet cl:r
+	clear: right;
+snippet cp
+	clip: \${1};
+snippet cp:a
+	clip: auto;
+snippet cp:r
+	clip: rect(\${1:0} \${2:0} \${3:0} \${4:0});
+snippet c
+	color: #\${1:000};
+snippet ct
+	content: \${1};
+snippet ct:a
+	content: attr(\${1});
+snippet ct:cq
+	content: close-quote;
+snippet ct:c
+	content: counter(\${1});
+snippet ct:cs
+	content: counters(\${1});
+snippet ct:ncq
+	content: no-close-quote;
+snippet ct:noq
+	content: no-open-quote;
+snippet ct:n
+	content: normal;
+snippet ct:oq
+	content: open-quote;
+snippet coi
+	counter-increment: \${1};
+snippet cor
+	counter-reset: \${1};
+snippet cur
+	cursor: \${1};
+snippet cur:a
+	cursor: auto;
+snippet cur:c
+	cursor: crosshair;
+snippet cur:d
+	cursor: default;
+snippet cur:ha
+	cursor: hand;
+snippet cur:he
+	cursor: help;
+snippet cur:m
+	cursor: move;
+snippet cur:p
+	cursor: pointer;
+snippet cur:t
+	cursor: text;
+snippet d
+	display: \${1};
+snippet d:mib
+	display: -moz-inline-box;
+snippet d:mis
+	display: -moz-inline-stack;
+snippet d:b
+	display: block;
+snippet d:cp
+	display: compact;
+snippet d:ib
+	display: inline-block;
+snippet d:itb
+	display: inline-table;
+snippet d:i
+	display: inline;
+snippet d:li
+	display: list-item;
+snippet d:n
+	display: none;
+snippet d:ri
+	display: run-in;
+snippet d:tbcp
+	display: table-caption;
+snippet d:tbc
+	display: table-cell;
+snippet d:tbclg
+	display: table-column-group;
+snippet d:tbcl
+	display: table-column;
+snippet d:tbfg
+	display: table-footer-group;
+snippet d:tbhg
+	display: table-header-group;
+snippet d:tbrg
+	display: table-row-group;
+snippet d:tbr
+	display: table-row;
+snippet d:tb
+	display: table;
+snippet ec
+	empty-cells: \${1};
+snippet ec:h
+	empty-cells: hide;
+snippet ec:s
+	empty-cells: show;
+snippet exp
+	expression()
+snippet fl
+	float: \${1};
+snippet fl:l
+	float: left;
+snippet fl:n
+	float: none;
+snippet fl:r
+	float: right;
+snippet f+
+	font: \${1:1em} \${2:Arial},\${3:sans-serif};
+snippet fef
+	font-effect: \${1};
+snippet fef:eb
+	font-effect: emboss;
+snippet fef:eg
+	font-effect: engrave;
+snippet fef:n
+	font-effect: none;
+snippet fef:o
+	font-effect: outline;
+snippet femp
+	font-emphasize-position: \${1};
+snippet femp:a
+	font-emphasize-position: after;
+snippet femp:b
+	font-emphasize-position: before;
+snippet fems
+	font-emphasize-style: \${1};
+snippet fems:ac
+	font-emphasize-style: accent;
+snippet fems:c
+	font-emphasize-style: circle;
+snippet fems:ds
+	font-emphasize-style: disc;
+snippet fems:dt
+	font-emphasize-style: dot;
+snippet fems:n
+	font-emphasize-style: none;
+snippet fem
+	font-emphasize: \${1};
+snippet ff
+	font-family: \${1};
+snippet ff:c
+	font-family: \${1:'Monotype Corsiva','Comic Sans MS'},cursive;
+snippet ff:f
+	font-family: \${1:Capitals,Impact},fantasy;
+snippet ff:m
+	font-family: \${1:Monaco,'Courier New'},monospace;
+snippet ff:ss
+	font-family: \${1:Helvetica,Arial},sans-serif;
+snippet ff:s
+	font-family: \${1:Georgia,'Times New Roman'},serif;
+snippet fza
+	font-size-adjust: \${1};
+snippet fza:n
+	font-size-adjust: none;
+snippet fz
+	font-size: \${1};
+snippet fsm
+	font-smooth: \${1};
+snippet fsm:aw
+	font-smooth: always;
+snippet fsm:a
+	font-smooth: auto;
+snippet fsm:n
+	font-smooth: never;
+snippet fst
+	font-stretch: \${1};
+snippet fst:c
+	font-stretch: condensed;
+snippet fst:e
+	font-stretch: expanded;
+snippet fst:ec
+	font-stretch: extra-condensed;
+snippet fst:ee
+	font-stretch: extra-expanded;
+snippet fst:n
+	font-stretch: normal;
+snippet fst:sc
+	font-stretch: semi-condensed;
+snippet fst:se
+	font-stretch: semi-expanded;
+snippet fst:uc
+	font-stretch: ultra-condensed;
+snippet fst:ue
+	font-stretch: ultra-expanded;
+snippet fs
+	font-style: \${1};
+snippet fs:i
+	font-style: italic;
+snippet fs:n
+	font-style: normal;
+snippet fs:o
+	font-style: oblique;
+snippet fv
+	font-variant: \${1};
+snippet fv:n
+	font-variant: normal;
+snippet fv:sc
+	font-variant: small-caps;
+snippet fw
+	font-weight: \${1};
+snippet fw:b
+	font-weight: bold;
+snippet fw:br
+	font-weight: bolder;
+snippet fw:lr
+	font-weight: lighter;
+snippet fw:n
+	font-weight: normal;
+snippet f
+	font: \${1};
+snippet h
+	height: \${1};
+snippet h:a
+	height: auto;
+snippet l
+	left: \${1};
+snippet l:a
+	left: auto;
+snippet lts
+	letter-spacing: \${1};
+snippet lh
+	line-height: \${1};
+snippet lisi
+	list-style-image: url(\${1});
+snippet lisi:n
+	list-style-image: none;
+snippet lisp
+	list-style-position: \${1};
+snippet lisp:i
+	list-style-position: inside;
+snippet lisp:o
+	list-style-position: outside;
+snippet list
+	list-style-type: \${1};
+snippet list:c
+	list-style-type: circle;
+snippet list:dclz
+	list-style-type: decimal-leading-zero;
+snippet list:dc
+	list-style-type: decimal;
+snippet list:d
+	list-style-type: disc;
+snippet list:lr
+	list-style-type: lower-roman;
+snippet list:n
+	list-style-type: none;
+snippet list:s
+	list-style-type: square;
+snippet list:ur
+	list-style-type: upper-roman;
+snippet lis
+	list-style: \${1};
+snippet lis:n
+	list-style: none;
+snippet mb
+	margin-bottom: \${1};
+snippet mb:a
+	margin-bottom: auto;
+snippet ml
+	margin-left: \${1};
+snippet ml:a
+	margin-left: auto;
+snippet mr
+	margin-right: \${1};
+snippet mr:a
+	margin-right: auto;
+snippet mt
+	margin-top: \${1};
+snippet mt:a
+	margin-top: auto;
+snippet m
+	margin: \${1};
+snippet m:4
+	margin: \${1:0} \${2:0} \${3:0} \${4:0};
+snippet m:3
+	margin: \${1:0} \${2:0} \${3:0};
+snippet m:2
+	margin: \${1:0} \${2:0};
+snippet m:0
+	margin: 0;
+snippet m:a
+	margin: auto;
+snippet mah
+	max-height: \${1};
+snippet mah:n
+	max-height: none;
+snippet maw
+	max-width: \${1};
+snippet maw:n
+	max-width: none;
+snippet mih
+	min-height: \${1};
+snippet miw
+	min-width: \${1};
+snippet op
+	opacity: \${1};
+snippet op:ie
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=\${1:100});
+snippet op:ms
+	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=\${1:100})';
+snippet orp
+	orphans: \${1};
+snippet o+
+	outline: \${1:1px} \${2:solid} #\${3:000};
+snippet oc
+	outline-color: \${1:#000};
+snippet oc:i
+	outline-color: invert;
+snippet oo
+	outline-offset: \${1};
+snippet os
+	outline-style: \${1};
+snippet ow
+	outline-width: \${1};
+snippet o
+	outline: \${1};
+snippet o:n
+	outline: none;
+snippet ovs
+	overflow-style: \${1};
+snippet ovs:a
+	overflow-style: auto;
+snippet ovs:mq
+	overflow-style: marquee;
+snippet ovs:mv
+	overflow-style: move;
+snippet ovs:p
+	overflow-style: panner;
+snippet ovs:s
+	overflow-style: scrollbar;
+snippet ovx
+	overflow-x: \${1};
+snippet ovx:a
+	overflow-x: auto;
+snippet ovx:h
+	overflow-x: hidden;
+snippet ovx:s
+	overflow-x: scroll;
+snippet ovx:v
+	overflow-x: visible;
+snippet ovy
+	overflow-y: \${1};
+snippet ovy:a
+	overflow-y: auto;
+snippet ovy:h
+	overflow-y: hidden;
+snippet ovy:s
+	overflow-y: scroll;
+snippet ovy:v
+	overflow-y: visible;
+snippet ov
+	overflow: \${1};
+snippet ov:a
+	overflow: auto;
+snippet ov:h
+	overflow: hidden;
+snippet ov:s
+	overflow: scroll;
+snippet ov:v
+	overflow: visible;
+snippet pb
+	padding-bottom: \${1};
+snippet pl
+	padding-left: \${1};
+snippet pr
+	padding-right: \${1};
+snippet pt
+	padding-top: \${1};
+snippet p
+	padding: \${1};
+snippet p:4
+	padding: \${1:0} \${2:0} \${3:0} \${4:0};
+snippet p:3
+	padding: \${1:0} \${2:0} \${3:0};
+snippet p:2
+	padding: \${1:0} \${2:0};
+snippet p:0
+	padding: 0;
+snippet pgba
+	page-break-after: \${1};
+snippet pgba:aw
+	page-break-after: always;
+snippet pgba:a
+	page-break-after: auto;
+snippet pgba:l
+	page-break-after: left;
+snippet pgba:r
+	page-break-after: right;
+snippet pgbb
+	page-break-before: \${1};
+snippet pgbb:aw
+	page-break-before: always;
+snippet pgbb:a
+	page-break-before: auto;
+snippet pgbb:l
+	page-break-before: left;
+snippet pgbb:r
+	page-break-before: right;
+snippet pgbi
+	page-break-inside: \${1};
+snippet pgbi:a
+	page-break-inside: auto;
+snippet pgbi:av
+	page-break-inside: avoid;
+snippet pos
+	position: \${1};
+snippet pos:a
+	position: absolute;
+snippet pos:f
+	position: fixed;
+snippet pos:r
+	position: relative;
+snippet pos:s
+	position: static;
+snippet q
+	quotes: \${1};
+snippet q:en
+	quotes: '\\201C' '\\201D' '\\2018' '\\2019';
+snippet q:n
+	quotes: none;
+snippet q:ru
+	quotes: '\\00AB' '\\00BB' '\\201E' '\\201C';
+snippet rz
+	resize: \${1};
+snippet rz:b
+	resize: both;
+snippet rz:h
+	resize: horizontal;
+snippet rz:n
+	resize: none;
+snippet rz:v
+	resize: vertical;
+snippet r
+	right: \${1};
+snippet r:a
+	right: auto;
+snippet tbl
+	table-layout: \${1};
+snippet tbl:a
+	table-layout: auto;
+snippet tbl:f
+	table-layout: fixed;
+snippet tal
+	text-align-last: \${1};
+snippet tal:a
+	text-align-last: auto;
+snippet tal:c
+	text-align-last: center;
+snippet tal:l
+	text-align-last: left;
+snippet tal:r
+	text-align-last: right;
+snippet ta
+	text-align: \${1};
+snippet ta:c
+	text-align: center;
+snippet ta:l
+	text-align: left;
+snippet ta:r
+	text-align: right;
+snippet td
+	text-decoration: \${1};
+snippet td:l
+	text-decoration: line-through;
+snippet td:n
+	text-decoration: none;
+snippet td:o
+	text-decoration: overline;
+snippet td:u
+	text-decoration: underline;
+snippet te
+	text-emphasis: \${1};
+snippet te:ac
+	text-emphasis: accent;
+snippet te:a
+	text-emphasis: after;
+snippet te:b
+	text-emphasis: before;
+snippet te:c
+	text-emphasis: circle;
+snippet te:ds
+	text-emphasis: disc;
+snippet te:dt
+	text-emphasis: dot;
+snippet te:n
+	text-emphasis: none;
+snippet th
+	text-height: \${1};
+snippet th:a
+	text-height: auto;
+snippet th:f
+	text-height: font-size;
+snippet th:m
+	text-height: max-size;
+snippet th:t
+	text-height: text-size;
+snippet ti
+	text-indent: \${1};
+snippet ti:-
+	text-indent: -9999px;
+snippet tj
+	text-justify: \${1};
+snippet tj:a
+	text-justify: auto;
+snippet tj:d
+	text-justify: distribute;
+snippet tj:ic
+	text-justify: inter-cluster;
+snippet tj:ii
+	text-justify: inter-ideograph;
+snippet tj:iw
+	text-justify: inter-word;
+snippet tj:k
+	text-justify: kashida;
+snippet tj:t
+	text-justify: tibetan;
+snippet to+
+	text-outline: \${1:0} \${2:0} #\${3:000};
+snippet to
+	text-outline: \${1};
+snippet to:n
+	text-outline: none;
+snippet tr
+	text-replace: \${1};
+snippet tr:n
+	text-replace: none;
+snippet tsh+
+	text-shadow: \${1:0} \${2:0} \${3:0} #\${4:000};
+snippet tsh
+	text-shadow: \${1};
+snippet tsh:n
+	text-shadow: none;
+snippet tt
+	text-transform: \${1};
+snippet tt:c
+	text-transform: capitalize;
+snippet tt:l
+	text-transform: lowercase;
+snippet tt:n
+	text-transform: none;
+snippet tt:u
+	text-transform: uppercase;
+snippet tw
+	text-wrap: \${1};
+snippet tw:no
+	text-wrap: none;
+snippet tw:n
+	text-wrap: normal;
+snippet tw:s
+	text-wrap: suppress;
+snippet tw:u
+	text-wrap: unrestricted;
+snippet t
+	top: \${1};
+snippet t:a
+	top: auto;
+snippet va
+	vertical-align: \${1};
+snippet va:bl
+	vertical-align: baseline;
+snippet va:b
+	vertical-align: bottom;
+snippet va:m
+	vertical-align: middle;
+snippet va:sub
+	vertical-align: sub;
+snippet va:sup
+	vertical-align: super;
+snippet va:tb
+	vertical-align: text-bottom;
+snippet va:tt
+	vertical-align: text-top;
+snippet va:t
+	vertical-align: top;
+snippet v
+	visibility: \${1};
+snippet v:c
+	visibility: collapse;
+snippet v:h
+	visibility: hidden;
+snippet v:v
+	visibility: visible;
+snippet whsc
+	white-space-collapse: \${1};
+snippet whsc:ba
+	white-space-collapse: break-all;
+snippet whsc:bs
+	white-space-collapse: break-strict;
+snippet whsc:k
+	white-space-collapse: keep-all;
+snippet whsc:l
+	white-space-collapse: loose;
+snippet whsc:n
+	white-space-collapse: normal;
+snippet whs
+	white-space: \${1};
+snippet whs:n
+	white-space: normal;
+snippet whs:nw
+	white-space: nowrap;
+snippet whs:pl
+	white-space: pre-line;
+snippet whs:pw
+	white-space: pre-wrap;
+snippet whs:p
+	white-space: pre;
+snippet wid
+	widows: \${1};
+snippet w
+	width: \${1};
+snippet w:a
+	width: auto;
+snippet wob
+	word-break: \${1};
+snippet wob:ba
+	word-break: break-all;
+snippet wob:bs
+	word-break: break-strict;
+snippet wob:k
+	word-break: keep-all;
+snippet wob:l
+	word-break: loose;
+snippet wob:n
+	word-break: normal;
+snippet wos
+	word-spacing: \${1};
+snippet wow
+	word-wrap: \${1};
+snippet wow:no
+	word-wrap: none;
+snippet wow:n
+	word-wrap: normal;
+snippet wow:s
+	word-wrap: suppress;
+snippet wow:u
+	word-wrap: unrestricted;
+snippet z
+	z-index: \${1};
+snippet z:a
+	z-index: auto;
+snippet zoo
+	zoom: 1;
+`}),ace.define("ace/snippets/css",["require","exports","module","ace/snippets/css.snippets"],function(a,c,h){c.snippetText=a("./css.snippets"),c.scope="css"}),function(){ace.require(["ace/snippets/css"],function(a){f&&(f.exports=a)})}()})(v);const y="/assets/worker-css-b8ecdb5e.js";export{y as w};
