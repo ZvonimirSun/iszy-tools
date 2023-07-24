@@ -18,7 +18,7 @@
     "paths": {
       "@/*": [ "src/*" ]
     },
-    "types": ["vite/client", "vite-plugin-pwa/client"]
+    "types": ["vite/client", "vite-plugin-pwa/vue"]
   },
   "include": [
     "src/**/*.ts",
