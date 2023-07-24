@@ -51,7 +51,7 @@
     "vue3-ace-editor": "^2.2.2"
   },
   "devDependencies": {
-    "@algolia/client-search": "~4.10.0",
+    "@algolia/client-search": "~4.19.1",
     "@babel/core": "^7.21.8",
     "@babel/eslint-parser": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
