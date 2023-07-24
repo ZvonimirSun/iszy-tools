@@ -83,6 +83,7 @@ onMounted(() => {
   $eventBus.on('getGeoJson', getGeoJson)
   $eventBus.on('addLayer', addLayer)
   $eventBus.on('removeLayer', removeLayer)
+  $eventBus.on('selectFeature', selectFeature)
   initMap()
   nextTick(() => {
   })
@@ -94,6 +95,7 @@ onBeforeUnmount(() => {
   $eventBus.off('getGeoJson', getGeoJson)
   $eventBus.off('addLayer', addLayer)
   $eventBus.off('removeLayer', removeLayer)
+  $eventBus.off('selectFeature', selectFeature)
   if (_map) {
     _map.remove()
   }
@@ -319,6 +321,14 @@ function updateEditor () {
     })
   } else {
     $eventBus.emit('updateEditor', geoJsonLayer.toGeoJSON())
+  }
+}
+
+function selectFeature (index: number) {
+  if (geoJsonLayer.getLayers().length > index) {
+    const layer = geoJsonLayer.getLayers()[index]
+    layer.openPopup()
+    _map.fitBounds(layer.getBounds())
   }
 }
 </script>

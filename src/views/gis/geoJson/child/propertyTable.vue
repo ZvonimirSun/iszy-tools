@@ -14,6 +14,7 @@
           :width="width"
           :height="height"
           fixed
+          @click="clickRow"
         />
       </template>
     </el-auto-resizer>
@@ -74,7 +75,7 @@ const tableColumns = computed(() => {
         dataKey: item,
         key: item,
         width: 150,
-        cellRenderer: ({ rowData, column, rowIndex, columnIndex }) => {
+        cellRenderer: ({ rowData, column, rowIndex, columnIndex }: {rowData: any, column: Column, rowIndex: number, columnIndex: number}) => {
           let data: string
           let dataType: string
           if (rowData[column.dataKey!] != null) {
@@ -143,6 +144,16 @@ const tableColumns = computed(() => {
         }
       }
     })
+    columns.unshift({
+      title: '序号',
+      dataKey: 'index',
+      key: 'index',
+      width: 50,
+      fixed: true,
+      cellRenderer: ({ rowIndex }: {rowIndex: number}) => {
+        return <span class="_index">{rowIndex + 1}</span>
+      }
+    })
     return columns
   } else {
     return null
@@ -150,6 +161,21 @@ const tableColumns = computed(() => {
 })
 
 const syncingGeoJSONDebounced = debounce(syncingGeoJSON, 500)
+
+function clickRow (e: PointerEvent | TouchEvent) {
+  let row : HTMLElement | null = e.target as HTMLElement
+  if (!row.classList.contains('el-table-v2__row')) {
+    row = row.closest('.el-table-v2__row')
+  }
+  if (row && row.parentElement) {
+    const virIndex = [].indexOf.call(row.parentElement.children, row as never)
+    const indexRow = row.closest('.el-table-v2__root')?.querySelectorAll('._index')[virIndex]
+    if (indexRow) {
+      const index = parseInt(indexRow.textContent || '1') - 1
+      $eventBus.emit('selectFeature', index)
+    }
+  }
+}
 
 function updateProperties (row: number, col: number, value: any) {
   const feature = geoJSON.value?.features?.[row]
