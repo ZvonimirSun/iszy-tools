@@ -326,7 +326,7 @@ function updateEditor () {
 
 function selectFeature (index: number) {
   if (geoJsonLayer.getLayers().length > index) {
-    const layer = geoJsonLayer.getLayers()[index]
+    const layer = geoJsonLayer.getLayers()[index] as GeoJSON
     layer.openPopup()
     _map.fitBounds(layer.getBounds())
   }
