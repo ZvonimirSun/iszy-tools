@@ -227,6 +227,10 @@ watch(() => route.path, () => {
       line-height: 2.2rem;
       margin-top: .8rem;
       color: var(--el-text-color-secondary);
+
+      a {
+        color: var(--el-color-primary) !important;
+      }
     }
   }
 
