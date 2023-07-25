@@ -14,13 +14,14 @@
     </el-col>
   </el-row>
   <template
-    v-for="(item) in tools"
+    v-for="(item, index) in tools"
     :key="item.id"
   >
     <el-row
       :gutter="16"
       :style="{
         padding: '0 .8rem .4rem',
+        marginTop: index === 0 && settings.showSearch ? '3.3rem' : '2.5rem'
       }"
     >
       <el-col

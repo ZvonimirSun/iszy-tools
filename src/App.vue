@@ -17,6 +17,7 @@
         <el-header
           v-show="!fullScreenStatus"
           class="main-header"
+          :class="{'in-tool': route.meta?.type === 'tool'}"
         >
           <div class="header">
             <router-link to="/">
@@ -72,7 +73,7 @@
           </Container>
         </el-main>
         <el-footer
-          v-show="!fullScreenStatus"
+          v-show="!fullScreenStatus && route.meta?.type !== 'tool'"
           class="main-footer"
         >
           <span>© {{ year }}&nbsp;</span>
@@ -210,8 +211,21 @@ watch(() => route.path, () => {
     height: 8.4rem;
     line-height: unset;
 
+    &.in-tool {
+      padding: .8rem 0 0;
+      height: 5.8rem;
+
+      .header {
+        font-size: 2rem;
+        line-height: 2.8rem;
+      }
+
+      .desc {
+        margin-top: 0;
+      }
+    }
+
     .header {
-      height: 3.2rem;
       line-height: 3.2rem;
       font-size: 2.4rem;
       font-weight: 600;
