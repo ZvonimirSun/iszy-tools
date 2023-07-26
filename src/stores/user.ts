@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/views/tools.json'
 import axios from '@/plugins/Axios'
-import { flatten, merge } from 'lodash-es'
+import { cloneDeep, flatten, merge } from 'lodash-es'
 import type { AxiosError } from 'axios'
 
 let tokenChecked = false
@@ -18,16 +18,36 @@ interface Statistic {
   lastAccessTime: number
 }
 
+interface Privilege {
+  type: string,
+}
+
+interface Role {
+  name: string,
+  alias: string,
+  privileges?: Privilege[]
+}
+
+interface User {
+  nickName: string | null,
+  email: string | null,
+  userId: number | null,
+  roles: Role[] | null
+}
+
+const emptyProfile: User = {
+  nickName: null,
+  email: null,
+  userId: null,
+  roles: null
+}
+
 export const useUserStore = defineStore('user', {
   persist: true,
   state: () => ({
     _user: {
       token: null as string | null,
-      profile: {
-        nickName: null as string | null,
-        email: null as string | null,
-        userId: null as number | null
-      }
+      profile: cloneDeep(emptyProfile)
     },
 
     favorite: [] as Favorite[],
@@ -69,6 +89,9 @@ export const useUserStore = defineStore('user', {
     syncing: false
   }),
   getters: {
+    isAdmin: state => {
+      return state._user.profile.roles?.some(item => (item.name === 'superadmin'))
+    },
     isLogged: state => !!state._user.token,
     isFav: state => (name: string): boolean => {
       return state.favorite.filter(item => (item.name === name)).length > 0
@@ -100,11 +123,7 @@ export const useUserStore = defineStore('user', {
           if (res.success) {
             this._user.token = 'logged'
             tokenChecked = true
-            this._user.profile = {
-              nickName: res.data.nickName,
-              userId: res.data.userId,
-              email: res.data.email
-            } || { nickName: null, userId: null, email: null }
+            this._user.profile = (res.data as User) || cloneDeep(emptyProfile)
             await this.downloadSettings()
             return
           } else {
@@ -135,26 +154,13 @@ export const useUserStore = defineStore('user', {
         this.clearToken()
       }
     },
-    async getProfiles () {
-      if (this._user.token) {
-        try {
-          if (await this.checkToken()) {
-            this._user.profile = (await axios.get(`${axios.$apiBase}/auth/profile`)).data.data || {}
-          }
-        } catch (e) {
-          if (axios.isCancel && !axios.isCancel(e)) {
-            console.log(e)
-          }
-        }
-      }
-    },
     async checkToken () {
       if (this._user.token) {
         if (tokenChecked) {
           return true
         } else {
           try {
-            await axios.head(`${axios.$apiBase}/auth/profile`)
+            this._user.profile = (await axios.get(`${axios.$apiBase}/auth/profile`)).data.data || {}
             tokenChecked = true
             return true
           } catch (e) {
@@ -200,11 +206,7 @@ export const useUserStore = defineStore('user', {
 
     clearToken () {
       this._user.token = null
-      this._user.profile = {
-        nickName: null,
-        email: null,
-        userId: null
-      }
+      this._user.profile = cloneDeep(emptyProfile)
     },
 
     // 收藏相关
@@ -283,6 +285,7 @@ export const useUserStore = defineStore('user', {
         return false
       }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     importConfig (data: any) {
       this.syncing = true
       let tmp = data
@@ -292,6 +295,7 @@ export const useUserStore = defineStore('user', {
       useUserStore().$patch(tmp)
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     upgradeDataToV2 (data: any) {
       delete data.profile
       delete data.token
