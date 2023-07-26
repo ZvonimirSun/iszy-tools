@@ -86,7 +86,7 @@ import oriTools from '@/views/tools.json'
 import { cloneDeep, flatten } from 'lodash-es'
 import type { Ref } from 'vue'
 import { useUserStore } from '@/stores/user'
-import type { ToolItem, ToolMenu } from '@/env'
+import type { ToolMenu } from '@/env'
 
 const searchStr: Ref<string> = ref('')
 const count: Ref<number> = ref(6)
