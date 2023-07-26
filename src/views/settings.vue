@@ -3,74 +3,70 @@
     账户信息
   </a-typography-title>
   <div
+    v-if="userStore._user.token"
     flex
     flex-col
     text-7
     gap-4
     items-start
   >
-    <template v-if="userStore._user.token">
-      <div flex>
-        <div
-          w-25
-          font-bold
-        >
-          昵称:
-        </div>
-        <div>
-          {{ userStore._user.profile.nickName }}
-        </div>
+    <div flex>
+      <div
+        w-25
+        font-bold
+      >
+        昵称:
       </div>
-      <div flex>
-        <div
-          w-25
-          font-bold
-        >
-          邮箱:
-        </div>
-        <div>
-          {{ userStore._user.profile.email }}
-        </div>
+      <div>
+        {{ userStore._user.profile.nickName }}
       </div>
-    </template>
-    <el-space>
-      <template
-        v-if="!userStore._user.token"
+    </div>
+    <div flex>
+      <div
+        w-25
+        font-bold
       >
-        <el-button
-          type="primary"
-          @click="login"
-        >
-          登录
-        </el-button>
-      </template>
-      <el-button
-        v-else
-        type="primary"
-        @click="logout"
-      >
-        登出
-      </el-button>
-      <el-popconfirm
-        title="您是否确定要清空本地缓存？"
-        confirm-button-text="清空"
-        @confirm="clearOfflineCache"
-      >
-        <template #reference>
-          <el-button
-            type="danger"
-            plain
-          >
-            清空本地缓存
-          </el-button>
-        </template>
-      </el-popconfirm>
-    </el-space>
+        邮箱:
+      </div>
+      <div>
+        {{ userStore._user.profile.email }}
+      </div>
+    </div>
+    <el-button
+      type="primary"
+      @click="logout"
+    >
+      登出
+    </el-button>
   </div>
+  <el-button
+    v-else
+    type="primary"
+    @click="login"
+  >
+    登录
+  </el-button>
   <el-divider />
+  <a-typography-title :level="3">
+    网站设置
+  </a-typography-title>
+  <el-popconfirm
+    title="您是否确定要清空本地缓存？"
+    confirm-button-text="清空"
+    @confirm="clearOfflineCache"
+  >
+    <template #reference>
+      <el-button
+        type="danger"
+        plain
+      >
+        清空本地缓存
+      </el-button>
+    </template>
+  </el-popconfirm>
   <template v-if="userStore._user.token">
-    <a-typography-title :level="3">
-      云端同步
+    <a-typography-title :level="4">
+      设置云端同步
     </a-typography-title>
     <el-space>
       <el-button
@@ -91,12 +87,11 @@
         自动同步
       </el-checkbox>
     </el-space>
-    <el-divider />
   </template>
-  <a-typography-title :level="3">
+  <a-typography-title :level="4">
     全局设置
   </a-typography-title>
-  <a-typography-title :level="4">
+  <a-typography-title :level="5">
     访问统计
   </a-typography-title>
   <el-space>
@@ -111,7 +106,7 @@
       最近访问
     </el-checkbox>
   </el-space>
-  <a-typography-title :level="4">
+  <a-typography-title :level="5">
     其他设置
   </a-typography-title>
   <el-space>
@@ -132,11 +127,10 @@
     </el-checkbox>
   </el-space>
   <template v-if="userStore._user.token">
-    <el-divider />
-    <a-typography-title :level="3">
+    <a-typography-title :level="4">
       应用设置
     </a-typography-title>
-    <a-typography-title :level="4">
+    <a-typography-title :level="5">
       JSON 编辑器
     </a-typography-title>
     <el-space>
@@ -192,6 +186,15 @@ function logout () {
 }
 </script>
 
+<script setup lang="ts">
+</script>
 <style scoped lang="scss">
-
+h3.ant-typography,
+.ant-typography h3,
+h4.ant-typography,
+.ant-typography h4,
+h5.ant-typography,
+.ant-typography h5 {
+  margin-top: .8rem;
+}
 </style>
