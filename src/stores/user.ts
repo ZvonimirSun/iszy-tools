@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/views/tools.json'
 import axios from '@/plugins/Axios'
-import { cloneDeep, flatten, merge } from 'lodash-es'
+import { clone, flatten, merge } from 'lodash-es'
 import type { AxiosError } from 'axios'
 
 let tokenChecked = false
@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     _user: {
       token: null as string | null,
-      profile: cloneDeep(emptyProfile)
+      profile: clone(emptyProfile) as User
     },
 
     favorite: [] as Favorite[],
@@ -123,7 +123,7 @@ export const useUserStore = defineStore('user', {
           if (res.success) {
             this._user.token = 'logged'
             tokenChecked = true
-            this._user.profile = (res.data as User) || cloneDeep(emptyProfile)
+            this._user.profile = res.data || clone(emptyProfile)
             await this.downloadSettings()
             return
           } else {
@@ -152,6 +152,26 @@ export const useUserStore = defineStore('user', {
         }
       } catch (e) {
         this.clearToken()
+      }
+    },
+    async updateUser (options: {
+      nickName?: string
+      email?: string
+      passwd?: string
+      oldPasswd?: string
+    }) {
+      try {
+        const data = (await axios.post(`${axios.$apiBase}/auth/profile`, options)).data
+        if (data && data.success) {
+          this._user.profile = data.data || clone(emptyProfile)
+        } else {
+          throw new Error(data.message)
+        }
+      } catch (e) {
+        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
+        }
+        throw e
       }
     },
     async checkToken () {
@@ -206,7 +226,7 @@ export const useUserStore = defineStore('user', {
 
     clearToken () {
       this._user.token = null
-      this._user.profile = cloneDeep(emptyProfile)
+      this._user.profile = clone(emptyProfile)
     },
 
     // 收藏相关

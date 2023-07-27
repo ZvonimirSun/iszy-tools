@@ -12,8 +12,7 @@
   >
     <div flex>
       <div
-        w-25
-        font-bold
+        w-32
       >
         昵称:
       </div>
@@ -23,8 +22,7 @@
     </div>
     <div flex>
       <div
-        w-25
-        font-bold
+        w-32
       >
         邮箱:
       </div>
@@ -32,12 +30,82 @@
         {{ userStore._user.profile.email }}
       </div>
     </div>
-    <el-button
-      type="primary"
-      @click="logout"
+    <el-space>
+      <el-button
+        type="primary"
+        @click="logout"
+      >
+        登出
+      </el-button>
+      <el-button
+        v-if="!editingUser"
+        @click="editUser"
+      >
+        修改信息
+      </el-button>
+      <template v-else>
+        <el-button
+          type="primary"
+          @click="updateUser(ruleFormRef)"
+        >
+          保存
+        </el-button>
+        <el-button @click="cancelEditUser">
+          取消
+        </el-button>
+      </template>
+    </el-space>
+    <el-form
+      v-if="editingUser"
+      ref="ruleFormRef"
+      :model="userForm"
+      :rules="rules"
+      label-width="8rem"
+      label-position="left"
     >
-      登出
-    </el-button>
+      <el-form-item
+        label="昵称"
+        prop="nickName"
+      >
+        <el-input v-model="userForm.nickName" />
+      </el-form-item>
+      <el-form-item
+        label="邮箱"
+        prop="email"
+      >
+        <el-input v-model="userForm.email" />
+      </el-form-item>
+      <el-form-item
+        label="旧密码"
+        prop="oldPasswd"
+      >
+        <el-input
+          v-model="userForm.oldPasswd"
+          type="password"
+          autocomplete="off"
+        />
+      </el-form-item>
+      <el-form-item
+        label="新密码"
+        prop="passwd"
+      >
+        <el-input
+          v-model="userForm.passwd"
+          type="password"
+          autocomplete="off"
+        />
+      </el-form-item>
+      <el-form-item
+        label="确认密码"
+        prop="rePasswd"
+      >
+        <el-input
+          v-model="userForm.rePasswd"
+          type="password"
+          autocomplete="off"
+        />
+      </el-form-item>
+    </el-form>
   </div>
   <el-button
     v-else
@@ -70,13 +138,11 @@
     </a-typography-title>
     <el-space>
       <el-button
-        type="primary"
         @click="uploadToCloud"
       >
         同步到云端
       </el-button>
       <el-button
-        type="primary"
         @click="downloadFromCloud"
       >
         从云端同步
@@ -146,6 +212,8 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import { useMainStore } from '@/stores/main'
+import { Ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
@@ -153,6 +221,38 @@ const userStore = useUserStore()
 
 const settings = computed(() => {
   return userStore.settings
+})
+
+const editingUser: Ref<boolean> = ref(false)
+const ruleFormRef: Ref<FormInstance | undefined> = ref<FormInstance>()
+const userForm = reactive({
+  nickName: '',
+  email: '',
+  passwd: '',
+  rePasswd: '',
+  oldPasswd: ''
+})
+const rules = reactive<FormRules<typeof userForm>>({
+  rePasswd: [{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
+      if (value && value !== userForm.passwd) {
+        callback(new Error('两次输入的密码不一致'))
+      } else {
+        callback()
+      }
+    }
+  }],
+  oldPasswd: [{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
+      if (!value && (userForm.passwd || userForm.rePasswd)) {
+        callback(new Error('请输入旧密码'))
+      } else {
+        callback()
+      }
+    }
+  }]
 })
 
 const clearOfflineCache = () => useMainStore().clearOfflineCache()
@@ -184,10 +284,61 @@ function login () {
 function logout () {
   router.push('/logout')
 }
+
+function editUser () {
+  userForm.nickName = userStore._user.profile.nickName ?? ''
+  userForm.email = userStore._user.profile.email ?? ''
+  userForm.passwd = ''
+  userForm.rePasswd = ''
+  userForm.oldPasswd = ''
+  editingUser.value = true
+}
+
+function cancelEditUser () {
+  editingUser.value = false
+}
+
+async function updateUser (formEl: FormInstance | undefined) {
+  if (!formEl) {
+    return
+  }
+  await formEl.validate(async (valid) => {
+    if (valid) {
+      const options: {
+        nickName?: string
+        email?: string
+        passwd?: string
+        oldPasswd?: string
+      } = {
+      }
+      if (userForm.nickName) {
+        options.nickName = userForm.nickName
+      }
+      if (userForm.email) {
+        options.email = userForm.email
+      }
+      if (userForm.passwd) {
+        options.passwd = userForm.passwd
+        options.oldPasswd = userForm.oldPasswd
+      }
+      if (Object.keys(options).length === 0) {
+        ElMessage.warning('没有需要修改的信息')
+        return
+      }
+      try {
+        await userStore.updateUser(options)
+      } catch (e) {
+        ElMessage.error((e as Error).message)
+      }
+      editingUser.value = false
+    } else {
+      ElMessage.warning('请检查输入')
+      return false
+    }
+  })
+}
 </script>
 
-<script setup lang="ts">
-</script>
 <style scoped lang="scss">
 h3.ant-typography,
 .ant-typography h3,
