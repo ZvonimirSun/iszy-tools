@@ -164,6 +164,7 @@ export const useUserStore = defineStore('user', {
         const data = (await axios.post(`${axios.$apiBase}/auth/profile`, options)).data
         if (data && data.success) {
           this._user.profile = data.data || clone(emptyProfile)
+          ElMessage.success('更新成功！')
         } else {
           throw new Error(data.message)
         }
