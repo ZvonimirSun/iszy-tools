@@ -1,1 +1,0 @@
-import{_,o as t,c as o}from"./index-3b11572a.js";import{E as c}from"./el-result-a866a120.js";const n={};function s(a,r){const e=c;return t(),o(e,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const f=_(n,[["render",s],["__scopeId","data-v-364fd6a5"]]);export{f as default};
