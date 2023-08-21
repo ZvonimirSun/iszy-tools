@@ -45,8 +45,8 @@ dependencies:
     specifier: ^6.0.1
     version: 6.0.1(@lezer/common@1.0.0)
   core-js:
-    specifier: ^3.31.1
-    version: 3.31.1
+    specifier: ^3.32.1
+    version: 3.32.1
   dayjs:
     specifier: ^1.11.9
     version: 1.11.9
@@ -2505,7 +2505,7 @@ packages:
   /@simonwep/pickr@1.8.2:
     resolution: {integrity: sha512-/l5w8BIkrpP6n1xsetx9MWPWlU6OblN5YgZZphxan0Tq4BByTCETL6lyIeY8lagalS2Nbt4F2W034KHLIiunKA==}
     dependencies:
-      core-js: 3.31.1
+      core-js: 3.32.1
       nanopop: 2.3.0
     dev: false
 
@@ -4048,8 +4048,8 @@ packages:
     requiresBuild: true
     dev: false
 
-  /core-js@3.31.1:
-    resolution: {integrity: sha512-2sKLtfq1eFST7l7v62zaqXacPc7uG8ZAya8ogijLhTtaKNcpzpB4TMoTw2Si+8GYKRwFPMMtUT0263QFWFfqyQ==}
+  /core-js@3.32.1:
+    resolution: {integrity: sha512-lqufgNn9NLnESg5mQeYsxQP5w7wrViSj0jr/kv6ECQiByzQkrn1MKvV0L3acttpDqfQrHLwr2KCMgX5b8X+lyQ==}
     requiresBuild: true
     dev: false
 
@@ -5430,6 +5430,7 @@ packages:
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dependencies:
       safer-buffer: 2.1.2
     dev: true
@@ -6661,6 +6662,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -6788,6 +6790,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     dev: true
     optional: true
 
