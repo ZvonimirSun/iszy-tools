@@ -85,8 +85,6 @@ onMounted(() => {
   $eventBus.on('removeLayer', removeLayer)
   $eventBus.on('selectFeature', selectFeature)
   initMap()
-  nextTick(() => {
-  })
 })
 
 onBeforeUnmount(() => {

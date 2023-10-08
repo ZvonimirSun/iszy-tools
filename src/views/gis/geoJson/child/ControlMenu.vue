@@ -13,12 +13,17 @@
     <el-button @click="exportGeoJson">
       保存
     </el-button>
+    <i
+      class="i-icon-park-outline-info"
+      @click="showInfo"
+    />
   </div>
 </template>
 
 <script setup>
 import createFile from '@/utils/createFile'
 import $eventBus from '@/plugins/EventBus'
+import { area } from '@turf/turf'
 
 function openFile (e) {
   if (e.target.files.length) {
@@ -48,12 +53,43 @@ function exportGeoJson () {
     }
   })
 }
+
+function showInfo () {
+  $eventBus.emit('getGeoJson', function (data) {
+    if (data) {
+      const areaResult = area(data)
+      if (areaResult < 1000000) {
+        ElMessageBox.alert(`面积: ${areaResult.toFixed(2)} 平方米`, '信息')
+      } else if (areaResult < 100000000) {
+        ElMessageBox.alert(`面积: ${(areaResult / 10000).toFixed(2)} 公顷`, '信息')
+      } else {
+        ElMessageBox.alert(`面积: ${(areaResult / 1000000).toFixed(2)} 平方千米`, '信息')
+      }
+    }
+  })
+}
 </script>
 
 <style scoped lang="scss">
 .controlMenu {
   background: var(--el-fill-color-lighter);
   padding: .8rem;
+  display: flex;
+  gap: .8rem;
+  align-items: center;
+
+  .el-button+.el-button {
+    margin-left: 0;
+  }
+
+  i {
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--el-color-primary);
+    }
+  }
 }
 
 .buttonWithIcon {

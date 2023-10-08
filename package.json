@@ -13,6 +13,7 @@
     "@geoman-io/leaflet-geoman-free": "^2.14.2",
     "@highlightjs/vue-plugin": "^2.1.0",
     "@supermap/iclient-common": "^11.1.0",
+    "@turf/turf": "^6.5.0",
     "@vueuse/core": "^10.2.1",
     "@vueuse/integrations": "^10.2.1",
     "ace-builds": "^1.23.4",
