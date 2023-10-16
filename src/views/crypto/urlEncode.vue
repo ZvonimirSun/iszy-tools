@@ -42,20 +42,56 @@
       placeholder="转换的内容粘贴在这里"
       :autosize="{ minRows: 5, maxRows: 8 }"
     />
+    <template v-if="urlEncodeStore.history.length">
+      <a-typography-title :level="5">
+        历史
+      </a-typography-title>
+      <div class="history-list">
+        <el-button
+          v-for="(history, index) in urlEncodeStore.history"
+          :key="index"
+          type="primary"
+          link
+          @click="revertHistory(history)"
+        >
+          <span class="origin">
+            {{ history[0] }}
+          </span>
+          &nbsp;-->&nbsp;
+          <span class="target">
+            {{ history[1] }}
+          </span>
+        </el-button>
+      </div>
+    </template>
   </el-space>
 </template>
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import { useStore } from '@/stores/urlEncode'
 
 const value: Ref<string> = ref('')
 const result: Ref<string> = ref('')
+const urlEncodeStore = useStore()
 
 function encode () {
   result.value = encodeURIComponent(value.value)
+  if (value.value && result.value) {
+    urlEncodeStore.addHistory({
+      origin: value.value,
+      target: result.value
+    })
+  }
 }
 function decode () {
   result.value = decodeURIComponent(value.value)
+  if (value.value && result.value) {
+    urlEncodeStore.addHistory({
+      origin: value.value,
+      target: result.value
+    })
+  }
 }
 function revert () {
   const tmp = value.value
@@ -65,6 +101,12 @@ function revert () {
 function clear () {
   value.value = ''
   result.value = ''
+  urlEncodeStore.clearHistory()
+}
+
+function revertHistory (history: Array<string>) {
+  value.value = history[0]
+  result.value = history[1]
 }
 </script>
 
@@ -83,5 +125,11 @@ function clear () {
       padding: 0 8px;
     }
   }
+}
+
+.history-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 </style>
