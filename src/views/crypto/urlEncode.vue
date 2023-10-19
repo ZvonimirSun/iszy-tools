@@ -46,7 +46,10 @@
       <a-typography-title :level="5">
         历史
       </a-typography-title>
-      <div class="history-list">
+      <div
+        class="history-list"
+        w-full
+      >
         <el-button
           v-for="(history, index) in urlEncodeStore.history"
           :key="index"
@@ -57,7 +60,7 @@
           <span class="origin">
             {{ history[0] }}
           </span>
-          &nbsp;-->&nbsp;
+          <span class="middle">&nbsp;-->&nbsp;</span>
           <span class="target">
             {{ history[1] }}
           </span>
@@ -131,5 +134,35 @@ function revertHistory (history: Array<string>) {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+
+  :deep(.el-button) {
+    max-width: 100%;
+
+    & > span {
+      width: 100%;
+    }
+  }
+
+  .middle {
+    white-space: nowrap;
+    height: 2.4rem;
+    line-height: 2.4rem;
+  }
+
+  .origin, .target {
+    height: 2.4rem;
+    line-height: 2.4rem;
+    max-width: calc(100% - 3rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+:deep(.el-space__item) {
+  max-width: 100%;
+}
+
+h5.ant-typography {
+  margin-bottom: 0;
 }
 </style>
