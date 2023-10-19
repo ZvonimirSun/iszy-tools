@@ -303,6 +303,12 @@
     "watchWithFilter": true,
     "whenever": true,
     "toValue": true,
-    "ElTag": true
+    "ElTag": true,
+    "ExtractDefaultPropTypes": true,
+    "ExtractPropTypes": true,
+    "ExtractPublicPropTypes": true,
+    "WritableComputedRef": true,
+    "injectLocal": true,
+    "provideLocal": true
   }
 }
