@@ -155,8 +155,8 @@ devDependencies:
     specifier: ^6.16.10
     version: 6.16.10
   '@types/esri-leaflet':
-    specifier: ^2.1.12
-    version: 2.1.12
+    specifier: ^3.0.2
+    version: 3.0.2
   '@types/file-saver':
     specifier: ^2.0.6
     version: 2.0.6
@@ -3578,8 +3578,8 @@ packages:
     resolution: {integrity: sha512-Dz39VLKZhWWeqSqbgYKF5BDJDUiPITo9M2cev/+HQBvXs+biES2d3LndnopuJ5YwaKK1h56CPWqDB+ghUXhm9A==}
     dev: false
 
-  /@types/esri-leaflet@2.1.12:
-    resolution: {integrity: sha512-6/H79YTZP58WjN5n9T3z6AQ552nSvA0aCCwHe1Q15znmJ9frvb0DcRp0E/F+nRjzPpX2Boun2mtfwpDd2RMh4w==}
+  /@types/esri-leaflet@3.0.2:
+    resolution: {integrity: sha512-tcjrO3kO90kfOuEh1FxihR1+fPbkVN44pE9ls0pCfusYzOsP6rDjrJnspwT16/JISDRXOYyELxb3mCdGejTAIw==}
     dependencies:
       '@types/leaflet': 1.9.7
     dev: true
