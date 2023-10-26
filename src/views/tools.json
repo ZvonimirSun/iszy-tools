@@ -24,6 +24,10 @@
         "link": "/idChinese"
       },
       {
+        "name": "数字中文转换",
+        "link": "/nzh"
+      },
+      {
         "name": "亲戚关系计算器",
         "link": "/relationship"
       },
@@ -139,10 +143,6 @@
       {
         "name": "图片加水印",
         "link": "/watermark"
-      },
-      {
-        "name": "图片Base64编码",
-        "link": "/imageBase64"
       }
     ]
   },
@@ -161,6 +161,10 @@
       {
         "name": "Base64编解码",
         "link": "/base64"
+      },
+      {
+        "name": "图片Base64编码",
+        "link": "/imageBase64"
       },
       {
         "name": "MD5计算",
