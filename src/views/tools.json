@@ -277,7 +277,8 @@
       },
       {
         "name": "留言反馈",
-        "link": "https://github.com/ZvonimirSun/iszy-tools/discussions"
+        "link": "https://github.com/ZvonimirSun/iszy-tools/discussions",
+        "statistics": false
       }
     ]
   }
