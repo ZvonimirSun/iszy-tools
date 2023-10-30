@@ -147,6 +147,21 @@ export default defineConfig({
   optimizeDeps: {
     include: ['vue', 'element-plus', 'ant-design-vue']
   },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js',
+        // Workaround: Vite is bundling its plugins to the main index chunk,
+        // causing circular dependencies and cascading hash changes.
+        manualChunks (id) {
+          if (id.startsWith('vite/') || id.startsWith('\0vite/')) {
+            // Put the Vite modules and virtual modules (beginning with \0) into a vite chunk.
+            return 'vite'
+          }
+        }
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': resolve('src')
