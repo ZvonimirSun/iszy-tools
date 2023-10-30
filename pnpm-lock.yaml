@@ -99,8 +99,8 @@ dependencies:
     specifier: ^0.3.3
     version: 0.3.3
   relationship.js:
-    specifier: ^1.2.3
-    version: 1.2.3
+    specifier: ^1.2.4
+    version: 1.2.4
   spark-md5:
     specifier: ^3.0.2
     version: 3.0.2
@@ -7708,8 +7708,8 @@ packages:
     resolution: {integrity: sha512-bEAtp/qrtKucxXSJkD4ebopFZYP0q1+3Vb2WECWv/T8yQEgKxDxJ7ztO285tAMaYZVR6mM1GgI6CCn8FROtL1w==}
     dev: false
 
-  /relationship.js@1.2.3:
-    resolution: {integrity: sha512-3PfNsYLQBBBFNnyJ4TmNJ/UhkZLm1Jqdg6i9unMUNUN5ptvw6uRVS/g3MHjSItXmo26gHoCF0M6Q93tm554PTA==}
+  /relationship.js@1.2.4:
+    resolution: {integrity: sha512-6HTLFGBz4a1PZxPMIg3gPZ8SNak3zAK6UDZytjtyfkCeBXBf+eCymLbfgJieJtLbzUmLCxIm4xdYYQ/FxZxqTw==}
     dev: false
 
   /require-directory@2.1.1:
