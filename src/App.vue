@@ -8,7 +8,7 @@
           type="primary"
           class="dark-mode-trigger"
           circle
-          @click="toggleDark()"
+          @click="useUserStore().toggleTheme"
         >
           <i
             class="dark:i-icon-park-outline-moon i-icon-park-outline-sun-one"
@@ -105,7 +105,6 @@ import { useUserStore } from '@/stores/user'
 import zhCN from 'element-plus/dist/locale/zh-cn.mjs'
 
 const isDark = useDark()
-const toggleDark = useToggle(isDark)
 
 const {
   offlineReady,
@@ -159,6 +158,10 @@ function fullScreen () {
     ElMessage.info('长按Esc以退出全屏')
   }
 }
+
+watch(isDark, function () {
+  useUserStore().setTheme()
+})
 
 watch(offlineReady, function (val) {
   if (val) {

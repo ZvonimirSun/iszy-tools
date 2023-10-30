@@ -158,6 +158,25 @@
     全局设置
   </a-typography-title>
   <a-typography-title :level="5">
+    外观
+  </a-typography-title>
+  <el-space>
+    <el-radio-group
+      :model-value="settings.theme.mode"
+      @change="userStore.setTheme"
+    >
+      <el-radio label="auto">
+        跟随系统
+      </el-radio>
+      <el-radio label="light">
+        浅色
+      </el-radio>
+      <el-radio label="dark">
+        深色
+      </el-radio>
+    </el-radio-group>
+  </el-space>
+  <a-typography-title :level="5">
     访问统计
   </a-typography-title>
   <el-space>
