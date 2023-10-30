@@ -1,0 +1,1 @@
+import{_,o as t,c as o}from"./index.js";import{E as c}from"./el-result-fa38a7b3.js";import"./vite-8235fac6.js";const n={};function s(r,a){const e=c;return t(),o(e,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const f=_(n,[["render",s],["__scopeId","data-v-f29106a6"]]);export{f as default};
