@@ -57,6 +57,13 @@ jobs:
       - name: Build app
         run: pnpm run build
 
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +%s)"
+
+      - name: Update index.html
+        run: sed -i 's/\/assets\/index.js/\/assets\/index.js?v=${{ steps.timestamp.outputs.timestamp }}/g' dist/index.html
+
       - name: Deploy App
         if: ${{ github.ref_name == 'main' }}
         uses: JamesIves/github-pages-deploy-action@v4
