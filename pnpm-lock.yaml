@@ -126,8 +126,8 @@ dependencies:
     specifier: ^4.2.5
     version: 4.2.5(vue@3.3.7)
   vue3-ace-editor:
-    specifier: ^2.2.3
-    version: 2.2.3(ace-builds@1.31.0)(vue@3.3.7)
+    specifier: ^2.2.4
+    version: 2.2.4(ace-builds@1.31.0)(vue@3.3.7)
 
 devDependencies:
   '@algolia/client-search':
@@ -8804,8 +8804,8 @@ packages:
       vue: 3.3.7(typescript@5.2.2)
     dev: false
 
-  /vue3-ace-editor@2.2.3(ace-builds@1.31.0)(vue@3.3.7):
-    resolution: {integrity: sha512-CkbiZSgIraZCBRa5egRqxDFUow5b949aHMcVgjce09O1n1TIJ8wVR++9mWg6F7lNWH47DkYSu0lwB6OocxUJ7g==}
+  /vue3-ace-editor@2.2.4(ace-builds@1.31.0)(vue@3.3.7):
+    resolution: {integrity: sha512-FZkEyfpbH068BwjhMyNROxfEI8135Sc+x8ouxkMdCNkuj/Tuw83VP/gStFQqZHqljyX9/VfMTCdTqtOnJZGN8g==}
     peerDependencies:
       ace-builds: '*'
       vue: ^3
