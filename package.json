@@ -16,7 +16,7 @@
     "@turf/turf": "^6.5.0",
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
-    "ace-builds": "^1.31.0",
+    "ace-builds": "^1.31.1",
     "algoliasearch": "^4.20.0",
     "ali-oss": "^6.18.1",
     "ant-design-vue": "^3.2.20",
