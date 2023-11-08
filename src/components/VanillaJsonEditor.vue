@@ -4,6 +4,7 @@ import { Content, isJSONContent, JSONEditor, JSONValue } from 'vanilla-jsonedito
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
+import { clone } from 'lodash-es'
 
 // JSONEditor properties as of version 0.3.60
 const propNames = [
@@ -119,7 +120,10 @@ const props = withDefaults(defineProps<{
   name: ''
 })
 
+let oldConfig: Record<string, any> = {}
+
 onMounted(() => {
+  oldConfig = clone(props.config)
   jsonEditor = new JSONEditor({
     target: jsonEditorDiv.value,
     props: {
@@ -131,7 +135,7 @@ onMounted(() => {
           emits('change', updatedContent.text)
         }
       },
-      ..._pickDefinedProps(props.config, propNames)
+      ..._pickDefinedProps(oldConfig, propNames)
     }
   })
   if (props.content != null) {
@@ -160,7 +164,17 @@ watch(
 )
 
 onUpdated(() => {
-  jsonEditor?.updateProps(_pickDefinedProps(props.config, propNames))
+  let needUpdate = false
+  for (const key in props.config) {
+    if (props.config[key] !== oldConfig[key]) {
+      needUpdate = true
+      break
+    }
+  }
+  if (needUpdate) {
+    oldConfig = clone(props.config)
+    jsonEditor?.updateProps(_pickDefinedProps(oldConfig, propNames))
+  }
   if (props.content != null) {
     update(props.content)
   }
