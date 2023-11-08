@@ -46,7 +46,7 @@
     "tinycolor2": "^1.6.0",
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
-    "vanilla-jsoneditor": "^0.17.10",
+    "vanilla-jsoneditor": "^0.18.12",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",
     "vue3-ace-editor": "^2.2.4"
