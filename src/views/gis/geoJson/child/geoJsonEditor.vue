@@ -16,10 +16,9 @@ import $eventBus from '@/plugins/EventBus.js'
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 import { Ref } from 'vue'
 import { JSONValue } from '@/types/vanillaJsonEditor'
-import { FeatureCollection } from 'geojson'
 
 const editor: Ref<InstanceType<typeof VanillaJsonEditor> | null> = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-let geoJson: FeatureCollection = {
+let geoJson: JSONValue = {
   type: 'FeatureCollection',
   features: []
 }
