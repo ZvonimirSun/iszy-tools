@@ -14,7 +14,7 @@
     </el-col>
   </el-row>
   <template
-    v-for="(item, index) in tools"
+    v-for="(item, index) in toolMenus"
     :key="item.id"
   >
     <el-row
@@ -81,93 +81,20 @@
 </template>
 
 <script setup lang="ts">
-import { v4 as uuid } from 'uuid'
-import oriTools from '@/views/tools.json'
-import { cloneDeep, flatten } from 'lodash-es'
 import type { Ref } from 'vue'
 import { useUserStore } from '@/stores/user'
-import type { ToolMenu } from '@/env'
+import { useToolsStore } from '@/stores/tools'
 
 const searchStr: Ref<string> = ref('')
-const count: Ref<number> = ref(6)
 const userStore = useUserStore()
+const toolsStore = useToolsStore()
 
-const allTools = computed(() => {
-  return flatten([...(oriTools || [])].map(item => {
-    return item.children
-  }))
+const toolMenus = computed(() => {
+  return toolsStore.toolMenusFilter(searchStr.value)
 })
-
-// 补充id
-for (const item of oriTools as ToolMenu[]) {
-  item.id = item.id || uuid()
-  if (item.children) {
-    for (const tool of item.children) {
-      tool.id = tool.id || uuid()
-    }
-  }
-}
 
 const settings = userStore.settings
 const isFav = userStore.isFav
-
-const toolsHasAuth = computed(() => {
-  let tmp: ToolMenu[] = []
-  if (settings.showType) {
-    tmp = [...(oriTools || [])]
-  } else {
-    tmp = [{
-      id: uuid(),
-      type: '工具',
-      icon: 'i-icon-park-solid-all-application',
-      children: allTools.value
-    }]
-  }
-  if (settings.showRecent && userStore.recent().length > 0) {
-    tmp.unshift({
-      id: uuid(),
-      type: '最近访问',
-      icon: 'i-icon-park-outline-history',
-      children: userStore.recent(count.value)
-    })
-  }
-  if (settings.showMost && userStore.most().length > 0) {
-    tmp.unshift({
-      id: uuid(),
-      type: '最常访问',
-      icon: 'i-icon-park-solid-concern',
-      children: userStore.most(count.value)
-    })
-  }
-  if (userStore.favorite.length > 0) {
-    tmp.unshift({
-      id: uuid(),
-      type: '收藏',
-      icon: 'i-icon-park-solid-folder-focus',
-      children: userStore.favorite
-    })
-  }
-  return tmp.filter(item => item.children?.length)
-})
-
-const tools = computed(() => {
-  const tmp: ToolMenu[] = toolsHasAuth.value
-  if (searchStr.value) {
-    return tmp.map(item => {
-      const a = cloneDeep(item)
-      a.children = (a.children || []).filter(item => {
-        const tags = item.tags || []
-        const tmpSearchStr = searchStr.value.toLowerCase()
-        return (item.name.toLowerCase().includes(tmpSearchStr) || item.link.toLowerCase().includes(tmpSearchStr) || tags.some((tag: string) => {
-          return tag.includes(tmpSearchStr)
-        }))
-      })
-      return a
-    }).filter(item => item.children?.length)
-  } else {
-    return tmp
-  }
-})
 
 const updateFav = userStore.updateFav
 

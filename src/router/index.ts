@@ -6,11 +6,12 @@ import {
   RouteRecordRaw,
   RouterOptions
 } from 'vue-router'
-import tools from '@/views/tools.json'
 import { merge } from 'lodash-es'
 import { useUserStore } from '@/stores/user'
 import type { DefineComponent } from 'vue'
-import type { ToolMenu } from '@/env'
+import { useToolsStore } from '@/stores/tools'
+
+const toolsStore = useToolsStore()
 
 const vueFiles = import.meta.glob('../views/**/*.vue') as Record<string, () => Promise<DefineComponent>>
 
@@ -36,38 +37,8 @@ for (const key in vueFiles) {
 
 let routes: RouteRecordRaw[] = []
 
-const data: ToolMenu[] = [...tools, {
-  children: [
-    {
-      name: '首页',
-      link: '/',
-      type: 'internal'
-    },
-    {
-      name: '403',
-      link: '/403',
-      type: 'internal'
-    },
-    {
-      name: '404',
-      link: '/404',
-      type: 'internal'
-    },
-    {
-      name: '登录',
-      link: '/login',
-      type: 'internal'
-    },
-    {
-      name: '重定向',
-      link: '/redirect',
-      type: 'internal'
-    }
-  ]
-}]
-
 // 加入所有工具路由
-for (const tmp of data) {
+for (const tmp of toolsStore.toolMenusWithInternal) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
       if (!/^(http(s)?:\/\/)\w+\S+(\.\S+)+$/.test(tool.link)) {

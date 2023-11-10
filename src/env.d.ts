@@ -14,5 +14,5 @@ export interface ToolMenu {
   type?: string,
   icon?: string,
   link?: string,
-  children?: ToolItem[]
+  children: ToolItem[]
 }

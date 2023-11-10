@@ -1,6 +1,5 @@
 import EventBus from '@/plugins/EventBus.js'
 import App from '@/App.vue'
-import router from '@/router'
 import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -13,10 +12,8 @@ const $apiBase = 'https://api.iszy.xyz';
 
   app.config.globalProperties.$axios = axios
   app.config.globalProperties.$eventBus = EventBus
-
   app.provide('$axios', axios)
   app.provide('$eventBus', EventBus)
-
   axios.$apiBase = $apiBase
 
   const piniaPersistPlugin = await createPiniaPersist({
@@ -24,9 +21,11 @@ const $apiBase = 'https://api.iszy.xyz';
     storeName: 'state',
     version: 2
   })
-
   pinia.use(piniaPersistPlugin)
+  app.use(pinia)
 
-  app.use(pinia).use(router)
+  const router = (await import('@/router')).default
+  app.use(router)
+
   app.mount('#app')
 })()

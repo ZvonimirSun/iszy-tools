@@ -1,8 +1,8 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import tools from '@/views/tools.json'
 import axios from '@/plugins/Axios'
-import { clone, flatten, merge } from 'lodash-es'
+import { clone, merge } from 'lodash-es'
 import type { AxiosError } from 'axios'
+import { useToolsStore } from '@/stores/tools'
 
 let tokenChecked = false
 
@@ -207,9 +207,7 @@ export const useUserStore = defineStore('user', {
     },
 
     fixFavorite () {
-      const allTools = flatten([...(tools || [])].map(item => {
-        return item.children
-      }))
+      const allTools = useToolsStore().oriToolItems
       for (const tool of this.favorite) {
         const tmp = allTools.find(item => (item.name === tool.name))
         if (!tmp) {
