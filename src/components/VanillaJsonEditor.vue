@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
-import { Content, isJSONContent, JSONEditor, JSONValue } from 'vanilla-jsoneditor'
+import { Content, isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
 import { clone } from 'lodash-es'
+import type { JSONValue } from '@/types/vanillaJsonEditor'
 
 // JSONEditor properties as of version 0.3.60
 const propNames = [
@@ -86,14 +87,13 @@ const documentProperties: Ref<{
   }
 })
 
-const emits = defineEmits<{
-  (e: 'change', data: string | JSONValue): void
+const emits = defineEmits<
+  {(e: 'change', data: string | JSONValue): void
   (e: 'create'): void
   (e: 'changeName', name: string): void
   (e: 'open', file: { name: string, content: string }): void
   (e: 'openRecent'): void,
-  (e: 'delete'): void
-}>()
+  (e: 'delete'): void}>()
 
 let updating = false
 

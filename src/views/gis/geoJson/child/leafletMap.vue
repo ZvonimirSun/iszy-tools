@@ -52,6 +52,7 @@ import $eventBus from '@/plugins/EventBus'
 import { Ref } from 'vue'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
+import type { GeoJsonObject, Feature } from 'geojson'
 
 const blueIcon = new Icon({
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
@@ -73,7 +74,7 @@ const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
 let geoJsonLayer: GeoJSON, _map: Map, layerControl: Control.Layers
 
-const selectedFeature: Ref<GeoJSON.Feature | undefined> = ref(undefined)
+const selectedFeature: Ref<Feature | undefined> = ref(undefined)
 const mapContainer: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
 const propertyPopup: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
 
@@ -232,12 +233,12 @@ function initMap () {
   _map.on('pm:create pm:remove pm:cut', function (e) {
     updateEditor()
     if (e.type === 'pm:create') {
-      onEachFeature(e.layer.toGeoJSON() as GeoJSON.Feature, e.layer)
+      onEachFeature(e.layer.toGeoJSON() as Feature, e.layer)
     }
   })
 }
 
-function onEachFeature (feature: GeoJSON.Feature, layer: GeoJSON | Marker) {
+function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
   layer.on('pm:change', function () {
     updateEditor()
   })
@@ -269,25 +270,14 @@ function onEachFeature (feature: GeoJSON.Feature, layer: GeoJSON | Marker) {
   })
 }
 
-// function saveToEditor (val: InputEvent, feature: GeoJSON.Feature, key: string) {
-//   if (val && feature && key) {
-//     try {
-//       feature.properties[key] = JSON.parse(val.currentTarget.value)
-//     } catch (e) {
-//       feature.properties[key] = val.currentTarget.value
-//     }
-//   }
-//   $eventBus.emit('updateEditor')
-// }
-
-function locationGeo (geoJson: GeoJSON.GeoJsonObject) {
+function locationGeo (geoJson: GeoJsonObject) {
   try {
     const layer = geoJSON(geoJson)
     _map.fitBounds(layer.getBounds())
   } catch (e) {
   }
 }
-function updateGeojsonLayer (geoJson: GeoJSON.GeoJsonObject) {
+function updateGeojsonLayer (geoJson: GeoJsonObject) {
   geoJsonLayer.clearLayers()
   try {
     geoJsonLayer.addData(geoJson)
@@ -296,7 +286,7 @@ function updateGeojsonLayer (geoJson: GeoJSON.GeoJsonObject) {
   }
 }
 
-function getGeoJson (callback: (geoJson: GeoJSON.GeoJsonObject) => void) {
+function getGeoJson (callback: (geoJson: GeoJsonObject) => void) {
   // eslint-disable-next-line n/no-callback-literal
   callback(geoJsonLayer?.toGeoJSON())
 }

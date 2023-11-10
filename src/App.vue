@@ -102,7 +102,7 @@ import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import type { Ref } from 'vue'
 import { useUserStore } from '@/stores/user'
-import zhCN from 'element-plus/dist/locale/zh-cn.mjs'
+import zhCN from 'element-plus/es/locale/lang/zh-cn'
 
 const isDark = useDark()
 

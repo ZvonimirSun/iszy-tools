@@ -7,12 +7,12 @@
     }"
   >
     <el-auto-resizer>
-      <template #default="{ height, width }">
+      <template #default="{ height: h, width }">
         <el-table-v2
           :columns="tableColumns"
           :data="propertyList"
           :width="width"
-          :height="height"
+          :height="h"
           fixed
           @click="clickRow"
         />
@@ -27,6 +27,7 @@ import { Ref } from 'vue'
 import $eventBus from '@/plugins/EventBus'
 import type { Column, InputInstance } from 'element-plus'
 import { debounce } from 'lodash-es'
+import type { FeatureCollection, GeoJsonProperties } from 'geojson'
 
 withDefaults(defineProps<{
   height: number | null
@@ -39,7 +40,7 @@ onMounted(() => {
   $eventBus.on('updateEditor', updateTable)
 })
 
-const geoJSON: Ref<GeoJSON.FeatureCollection | null> = shallowRef(null)
+const geoJSON: Ref<FeatureCollection | null> = shallowRef(null)
 const edit: {
   row: number | null
   col: number | null
@@ -193,7 +194,7 @@ function updateProperties (row: number, col: number, value: any) {
   }
 }
 
-function syncingGeoJSON (val: GeoJSON.FeatureCollection) {
+function syncingGeoJSON (val: FeatureCollection) {
   if (syncing) {
     return
   }
@@ -207,12 +208,12 @@ function updateTable () {
   if (syncing) {
     return
   }
-  $eventBus.emit('getGeoJson', function (val: GeoJSON.FeatureCollection) {
+  $eventBus.emit('getGeoJson', function (val: FeatureCollection) {
     geoJSON.value = val
   })
 }
 
-function getArrayKeys (array: GeoJSON.GeoJsonProperties[]): string[] {
+function getArrayKeys (array: GeoJsonProperties[]): string[] {
   return [...(array as Record<string, any>).reduce((s: Set<string>, o: Record<string, any>) => {
     Object.keys(o).forEach(k => s.add(k))
     return s

@@ -270,7 +270,7 @@ import dayjs from 'dayjs'
 import { getParam, setParam } from '@/utils/hashHandler'
 import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
-import { JSONValue } from 'vanilla-jsoneditor'
+import type { JSONValue } from '@/types/vanillaJsonEditor'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 
 interface MockPrj {

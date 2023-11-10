@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-this-alias': 0,
     '@typescript-eslint/no-empty-function': 0,
+    '@typescript-eslint/no-explicit-any': 0,
     'vue/no-v-text-v-html-on-component': 0
   }
 }
