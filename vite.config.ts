@@ -17,7 +17,14 @@ const iconClass = tools.map(item => item.icon).filter(item => item)
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: { port: 3000, https: false },
+  server: {
+    port: 3000,
+    https: false,
+    strictPort: true,
+    hmr: {
+      port: 3000
+    }
+  },
   plugins: [
     vue(),
     vueJsx(),
@@ -156,15 +163,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/[name].js',
-        // Workaround: Vite is bundling its plugins to the main index chunk,
-        // causing circular dependencies and cascading hash changes.
-        manualChunks (id) {
-          if (id.startsWith('vite/') || id.startsWith('\0vite/')) {
-            // Put the Vite modules and virtual modules (beginning with \0) into a vite chunk.
-            return 'vite'
-          }
-        }
+        entryFileNames: 'assets/[name].js'
       }
     }
   },
