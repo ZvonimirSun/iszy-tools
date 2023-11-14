@@ -46,7 +46,13 @@ export default defineConfig({
           display: 'inline-block'
         }
       })],
-      safelist: [...iconClass]
+      safelist: [
+        'i-icon-park-solid-all-application',
+        'i-icon-park-outline-history',
+        'i-icon-park-solid-concern',
+        'i-icon-park-solid-folder-focus',
+        ...iconClass
+      ]
     }),
     Components({
       dirs: ['src/components'],

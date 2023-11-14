@@ -309,6 +309,7 @@
     "ExtractPublicPropTypes": true,
     "WritableComputedRef": true,
     "injectLocal": true,
-    "provideLocal": true
+    "provideLocal": true,
+    "useClipboardItems": true
   }
 }
