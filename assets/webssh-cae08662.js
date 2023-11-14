@@ -1,0 +1,1 @@
+import{_ as e,o as s,r as _}from"./index.js";import"./vite-8235fac6.js";const t={},c={src:"https://webssh.iszy.xyz/",class:"webssh",title:"webssh"};function o(n,r){return s(),_("iframe",c)}const p=e(t,[["render",o],["__scopeId","data-v-dfc88303"]]);export{p as default};
