@@ -12,6 +12,7 @@ import { presetUno, presetAttributify, presetIcons } from 'unocss'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
@@ -62,6 +63,7 @@ export default defineConfig({
       ]
     }),
     Components({
+      include: [/\.vue$/, /\.vue\?/],
       dirs: ['src/components'],
       extensions: ['vue'],
       dts: './src/components.d.ts',
@@ -155,17 +157,11 @@ export default defineConfig({
       }
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
-    Inspect()
+    Inspect(),
+    manualChunksPlugin()
   ],
   optimizeDeps: {
     include: ['vue', 'element-plus', 'ant-design-vue']
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name].js'
-      }
-    }
   },
   resolve: {
     alias: {
