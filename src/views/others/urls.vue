@@ -11,7 +11,7 @@ type Url = {
   updatedAt: string
 }
 
-const urlBase = 'https://url1.iszy.xyz'
+const urlBase = 'https://url.iszy.xyz'
 const urlList: Ref<Url[]> = ref([]) as Ref<Url[]>
 const pageSize: Ref<number> = ref(10)
 const pageIndex: Ref<number> = ref(1)
@@ -94,8 +94,9 @@ async function updateUrl (url: Url) {
     })).data
     if (res.success) {
       ElMessage.success('更新成功')
-      await getUrlList(pageIndex.value - 1, pageSize.value)
+      url.url = editingUrl[url.keyword]
       editing[url.keyword] = false
+      await getUrlList(pageIndex.value - 1, pageSize.value)
     } else {
       ElMessage.error(res.message)
     }
@@ -112,8 +113,8 @@ async function deleteUrl (url: Url) {
       }
     })).data
     if (res.success) {
-      ElMessage.success('删除成功')
       await getUrlList(pageIndex.value - 1, pageSize.value)
+      ElMessage.success('删除成功')
     } else {
       ElMessage.error(res.message)
     }
@@ -181,7 +182,7 @@ function indexMethod (index: number) {
       <el-table-column
         prop="keyword"
         label="短网址"
-        width="180"
+        width="100"
         fixed="left"
       >
         <template #default="{row}">
