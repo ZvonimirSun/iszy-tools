@@ -1,0 +1,249 @@
+<script setup lang="ts">
+import { Ref } from 'vue'
+import $axios from '@/plugins/Axios'
+import dayjs from 'dayjs'
+
+type Url = {
+  keyword: string
+  title: string
+  url: string
+  createdAt: string
+  updatedAt: string
+}
+
+const urlBase = 'https://url1.iszy.xyz'
+const urlList: Ref<Url[]> = ref([]) as Ref<Url[]>
+const pageSize: Ref<number> = ref(10)
+const pageIndex: Ref<number> = ref(1)
+const count: Ref<number> = ref(0)
+const loading: Ref<boolean> = ref(false)
+
+const newUrl = reactive({
+  keyword: '',
+  url: ''
+})
+
+onMounted(() => {
+  getUrlList(pageIndex.value - 1, pageSize.value)
+})
+
+watchEffect(() => {
+  getUrlList(pageIndex.value - 1, pageSize.value)
+})
+
+watch(pageSize, () => {
+  pageIndex.value = 1
+})
+
+async function getUrlList (pageIndex: number, pageSize: number) {
+  const tmp = setTimeout(() => {
+    loading.value = true
+  }, 300)
+  try {
+    const res = (await $axios.get(`${$axios.$apiBase}/urls/admin/urls`, {
+      params: {
+        pageIndex,
+        pageSize
+      }
+    })).data
+    if (res.success) {
+      count.value = res.data.count
+      urlList.value = res.data.rows.map((item: Url) => {
+        item.createdAt = dayjs(item.createdAt).format('YYYY年MM月DD日 HH:mm')
+        item.updatedAt = dayjs(item.updatedAt).format('YYYY年MM月DD日 HH:mm')
+        return item
+      })
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (e) {
+    ElMessage.error((e as Error).message)
+  }
+  clearTimeout(tmp)
+  loading.value = false
+}
+
+async function createUrl () {
+  if (!newUrl.url) {
+    return
+  }
+  try {
+    const res = (await $axios.post(`${$axios.$apiBase}/urls/admin/url`, {
+      url: newUrl.url,
+      keyword: newUrl.keyword
+    })).data
+    if (res.success) {
+      ElMessage.success('创建成功')
+      newUrl.url = ''
+      newUrl.keyword = ''
+      await getUrlList(pageIndex.value - 1, pageSize.value)
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (e) {
+    ElMessage.error((e as Error).message)
+  }
+}
+
+async function deleteUrl (url: Url) {
+  try {
+    const res = (await $axios.delete(`${$axios.$apiBase}/urls/admin/url/${url.keyword}`, {
+      params: {
+        keyword: url.keyword
+      }
+    })).data
+    if (res.success) {
+      ElMessage.success('删除成功')
+      await getUrlList(pageIndex.value - 1, pageSize.value)
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (e) {
+    ElMessage.error((e as Error).message)
+  }
+}
+
+function editUrl (url: Url) {
+  debugger
+}
+</script>
+
+<template>
+  <div
+    flex
+    flex-col
+    gap-4
+    h-full
+  >
+    <div class="new-url-form">
+      <span>
+        输入链接:
+      </span>
+      <el-input
+        v-model="newUrl.url"
+        placeholder="https"
+        clearable
+        flex-1
+      />
+      <span>
+        自定义短网址(选):
+      </span>
+      <el-input
+        v-model="newUrl.keyword"
+        clearable
+      />
+      <el-button
+        type="primary"
+        @click="createUrl"
+      >
+        缩短
+      </el-button>
+    </div>
+    <el-table
+      v-loading="loading"
+      :data="urlList"
+      :border="true"
+      :stripe="true"
+      size="small"
+      flex-1
+    >
+      <el-table-column
+        prop="keyword"
+        label="短网址"
+        width="180"
+        fixed="left"
+      >
+        <template #default="{row}">
+          <el-link
+            :href="urlBase + '/' + row.keyword"
+            target="_blank"
+            style="white-space: nowrap;"
+          >
+            {{ row.keyword }}
+          </el-link>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="url"
+        label="原网址"
+        min-width="300"
+      >
+        <template #default="{row}">
+          <el-link
+            :href="row.url"
+            target="_blank"
+          >
+            {{ row.url }}
+          </el-link>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="createdAt"
+        label="日期"
+        width="180"
+      />
+      <el-table-column
+        prop="ip"
+        label="IP"
+        width="130"
+      />
+      <el-table-column
+        prop="clicks"
+        label="点击次数"
+        width="80"
+      />
+      <el-table-column
+        label="操作"
+        width="140"
+        fixed="right"
+      >
+        <template #default="{row}">
+          <el-button
+            size="small"
+            @click="editUrl(row)"
+          >
+            编辑
+          </el-button>
+          <el-popconfirm
+            width="160"
+            title="删除后无法恢复！"
+            confirm-button-type="danger"
+            confirm-button-text="删除"
+            @confirm="deleteUrl(row)"
+          >
+            <template #reference>
+              <el-button
+                size="small"
+                type="danger"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      v-model:current-page="pageIndex"
+      v-model:page-size="pageSize"
+      small
+      background
+      layout="prev, pager, next"
+      :total="count"
+    />
+  </div>
+</template>
+
+<style scoped lang="scss">
+.new-url-form {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+
+  & > span {
+    white-space: nowrap;
+    font-size: var(--el-form-label-font-size)
+  }
+}
+</style>

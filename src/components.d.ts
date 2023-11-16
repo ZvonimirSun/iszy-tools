@@ -47,6 +47,7 @@ declare module 'vue' {
     ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
+    ElLink: typeof import('element-plus/es')['ElLink']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
@@ -78,5 +79,8 @@ declare module 'vue' {
     Saturation: typeof import('./components/color-picker/saturation.vue')['default']
     VanillaJsonEditor: typeof import('./components/VanillaJsonEditor.vue')['default']
     VueCodemirror: typeof import('./components/vue-codemirror.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

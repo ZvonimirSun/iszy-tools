@@ -4,6 +4,11 @@
     "icon": "i-icon-park-outline-toolkit",
     "children": [
       {
+        "name": "短网址",
+        "link": "/urls",
+        "requiresAuth": true
+      },
+      {
         "name": "屏幕录制",
         "link": "/screenRecord"
       },

@@ -4,7 +4,7 @@ import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 
-const $apiBase = 'https://api.iszy.xyz';
+const $apiBase = import.meta.env.PROD ? 'https://api.iszy.xyz' : import.meta.env.VITE_API_BASE_URL || 'https://api.iszy.xyz';
 
 (async () => {
   const pinia = createPinia()
