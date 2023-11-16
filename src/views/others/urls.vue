@@ -18,6 +18,8 @@ const pageIndex: Ref<number> = ref(1)
 const count: Ref<number> = ref(0)
 const loading: Ref<boolean> = ref(false)
 
+const editing = reactive({} as Record<string, boolean>)
+const editingUrl = reactive({} as Record<string, string>)
 const newUrl = reactive({
   keyword: '',
   url: ''
@@ -85,6 +87,23 @@ async function createUrl () {
   }
 }
 
+async function updateUrl (url: Url) {
+  try {
+    const res = (await $axios.put(`${$axios.$apiBase}/urls/admin/url/${url.keyword}`, {
+      url: editingUrl[url.keyword]
+    })).data
+    if (res.success) {
+      ElMessage.success('更新成功')
+      await getUrlList(pageIndex.value - 1, pageSize.value)
+      editing[url.keyword] = false
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (e) {
+    ElMessage.error((e as Error).message)
+  }
+}
+
 async function deleteUrl (url: Url) {
   try {
     const res = (await $axios.delete(`${$axios.$apiBase}/urls/admin/url/${url.keyword}`, {
@@ -104,7 +123,14 @@ async function deleteUrl (url: Url) {
 }
 
 function editUrl (url: Url) {
-  debugger
+  editing[url.keyword] = !editing[url.keyword]
+  if (editing[url.keyword]) {
+    editingUrl[url.keyword] = url.url
+  }
+}
+
+function indexMethod (index: number) {
+  return (pageIndex.value - 1) * pageSize.value + index + 1
 }
 </script>
 
@@ -148,6 +174,11 @@ function editUrl (url: Url) {
       flex-1
     >
       <el-table-column
+        type="index"
+        :index="indexMethod"
+        fixed="left"
+      />
+      <el-table-column
         prop="keyword"
         label="短网址"
         width="180"
@@ -170,11 +201,16 @@ function editUrl (url: Url) {
       >
         <template #default="{row}">
           <el-link
+            v-if="!editing[row.keyword]"
             :href="row.url"
             target="_blank"
           >
             {{ row.url }}
           </el-link>
+          <el-input
+            v-else
+            v-model="editingUrl[row.keyword]"
+          />
         </template>
       </el-table-column>
       <el-table-column
@@ -198,28 +234,45 @@ function editUrl (url: Url) {
         fixed="right"
       >
         <template #default="{row}">
-          <el-button
-            size="small"
-            @click="editUrl(row)"
-          >
-            编辑
-          </el-button>
-          <el-popconfirm
-            width="160"
-            title="删除后无法恢复！"
-            confirm-button-type="danger"
-            confirm-button-text="删除"
-            @confirm="deleteUrl(row)"
-          >
-            <template #reference>
-              <el-button
-                size="small"
-                type="danger"
-              >
-                删除
-              </el-button>
-            </template>
-          </el-popconfirm>
+          <template v-if="!editing[row.keyword]">
+            <el-button
+              size="small"
+              @click="editUrl(row)"
+            >
+              编辑
+            </el-button>
+            <el-popconfirm
+              width="160"
+              title="删除后无法恢复！"
+              confirm-button-type="danger"
+              confirm-button-text="删除"
+              @confirm="deleteUrl(row)"
+            >
+              <template #reference>
+                <el-button
+                  size="small"
+                  type="danger"
+                >
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+          <template v-else>
+            <el-button
+              size="small"
+              @click="editUrl(row)"
+            >
+              取消
+            </el-button>
+            <el-button
+              size="small"
+              type="primary"
+              @click="updateUrl(row)"
+            >
+              更新
+            </el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
