@@ -351,6 +351,7 @@ export default {
 .mapContainer {
   width: 100%;
   height: calc(100% - 4rem);
+  font-size: 1.2rem;
 
   :deep(.leaflet-popup-content) {
     p {
