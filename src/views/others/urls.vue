@@ -201,13 +201,25 @@ function indexMethod (index: number) {
         min-width="300"
       >
         <template #default="{row}">
-          <el-link
+          <template
             v-if="!editing[row.keyword]"
-            :href="row.url"
-            target="_blank"
           >
-            {{ row.url }}
-          </el-link>
+            <template v-if=" row.title">
+              <el-link
+                :href="row.url"
+                target="_blank"
+              >
+                {{ row.title }}
+              </el-link>
+              <br>
+            </template>
+            <el-link
+              :href="row.url"
+              target="_blank"
+            >
+              {{ row.url }}
+            </el-link>
+          </template>
           <el-input
             v-else
             v-model="editingUrl[row.keyword]"
