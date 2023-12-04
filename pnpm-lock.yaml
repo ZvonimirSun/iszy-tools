@@ -27,8 +27,8 @@ dependencies:
     specifier: ^10.6.1
     version: 10.6.1(axios@1.6.1)(qrcode@1.5.3)(vue@3.3.8)
   ace-builds:
-    specifier: ^1.31.1
-    version: 1.31.1
+    specifier: ^1.32.0
+    version: 1.32.0
   algoliasearch:
     specifier: ^4.20.0
     version: 4.20.0
@@ -127,7 +127,7 @@ dependencies:
     version: 4.2.5(vue@3.3.8)
   vue3-ace-editor:
     specifier: ^2.2.4
-    version: 2.2.4(ace-builds@1.31.1)(vue@3.3.8)
+    version: 2.2.4(ace-builds@1.32.0)(vue@3.3.8)
 
 devDependencies:
   '@algolia/client-search':
@@ -4387,8 +4387,8 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dev: false
 
-  /ace-builds@1.31.1:
-    resolution: {integrity: sha512-3DnE5bZF6Ji+l4F5acoLk+rV7mxrUt1C4r61Xy9owp5rVM4lj5NL8GJfoX6Jnnbhx6kKV7Vdpb+Tco+0ORTvhg==}
+  /ace-builds@1.32.0:
+    resolution: {integrity: sha512-5EFblRIaqjwumglq1o7hF9/rA9WZBqwn6eyfYB6ZiQbf036gF5CW3HqFk+7pRx3+1A4KsNMZUnN2NEfYrJTfDA==}
     dev: false
 
   /acorn-jsx@5.3.2(acorn@8.11.2):
@@ -6855,7 +6855,7 @@ packages:
   /jsoneditor@9.10.4:
     resolution: {integrity: sha512-tr7dSARLHM65OQTE81zo5fQAjLzijLl+u/z+pcJaeaFzgkey59Gi8TDCYIejQ/plvm6RLVmuEeqgDhsQdayhiQ==}
     dependencies:
-      ace-builds: 1.31.1
+      ace-builds: 1.32.0
       ajv: 6.12.6
       javascript-natural-sort: 0.7.1
       jmespath: 0.16.0
@@ -9068,13 +9068,13 @@ packages:
       vue: 3.3.8(typescript@5.2.2)
     dev: false
 
-  /vue3-ace-editor@2.2.4(ace-builds@1.31.1)(vue@3.3.8):
+  /vue3-ace-editor@2.2.4(ace-builds@1.32.0)(vue@3.3.8):
     resolution: {integrity: sha512-FZkEyfpbH068BwjhMyNROxfEI8135Sc+x8ouxkMdCNkuj/Tuw83VP/gStFQqZHqljyX9/VfMTCdTqtOnJZGN8g==}
     peerDependencies:
       ace-builds: '*'
       vue: ^3
     dependencies:
-      ace-builds: 1.31.1
+      ace-builds: 1.32.0
       resize-observer-polyfill: 1.5.1
       vue: 3.3.8(typescript@5.2.2)
     dev: false
