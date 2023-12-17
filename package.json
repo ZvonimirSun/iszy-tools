@@ -50,7 +50,8 @@
     "vanilla-jsoneditor": "^0.18.13",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",
-    "vue3-ace-editor": "^2.2.4"
+    "vue3-ace-editor": "^2.2.4",
+    "xml-formatter": "^3.6.0"
   },
   "devDependencies": {
     "@algolia/client-search": "^4.20.0",

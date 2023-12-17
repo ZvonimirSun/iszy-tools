@@ -55,10 +55,6 @@
         "link": "/cssFormatter"
       },
       {
-        "name": "XML编辑器",
-        "link": "/xmlEditor"
-      },
-      {
         "name": "TinyEditor",
         "link": "/tinyEditor"
       },
@@ -72,6 +68,10 @@
     "type": "开发工具",
     "icon": "i-icon-park-outline-code",
     "children": [
+      {
+        "name": "XML格式化",
+        "link": "/xmlEditor"
+      },
       {
         "name": "Mock工具",
         "link": "/mock",

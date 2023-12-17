@@ -72,7 +72,7 @@
     </div>
     <div class="ace-container">
       <v-ace-editor
-        v-model="code"
+        v-model:value="code"
         lang="xml"
         :theme="theme"
         style="height: 100%;"
@@ -106,6 +106,15 @@ import workerXmlUrl from 'ace-builds/src-noconflict/worker-xml?url'
 ace.config.setModuleUrl('ace/mode/xml_worker', workerXmlUrl)
 const beautify = ace.require('ace/ext/beautify')
 
+const props = defineProps({
+  value: {
+    type: String,
+    default: ''
+  }
+})
+
+const emits = defineEmits(['change'])
+
 let aceEditor = null
 const code = ref('')
 const cursor = ref({
@@ -128,6 +137,14 @@ watch(isDark, (val) => {
   } else {
     theme.value = 'textmate'
   }
+})
+
+watch(code, (val) => {
+  emits('change', val)
+})
+
+onBeforeMount(() => {
+  code.value = props.value
 })
 
 function editorInit (editor) {

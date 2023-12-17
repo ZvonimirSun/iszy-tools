@@ -73,6 +73,7 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FixedWidgets: typeof import('./components/fixed-widgets.vue')['default']
+    FormatTransformer: typeof import('./components/FormatTransformer.vue')['default']
     Hue: typeof import('./components/color-picker/hue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

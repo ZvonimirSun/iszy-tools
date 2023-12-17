@@ -128,6 +128,9 @@ dependencies:
   vue3-ace-editor:
     specifier: ^2.2.4
     version: 2.2.4(ace-builds@1.32.0)(vue@3.3.8)
+  xml-formatter:
+    specifier: ^3.6.0
+    version: 3.6.0
 
 devDependencies:
   '@algolia/client-search':
@@ -9623,10 +9626,22 @@ packages:
   /wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  /xml-formatter@3.6.0:
+    resolution: {integrity: sha512-Wic80ENNLF/5mLcc82hVLmoOWQlLDJtVv+N1/hkP4hBuVXPLKrXo92/4V23QYPKfUxvCU6Y2AcdpHCIA/xexFw==}
+    engines: {node: '>= 14'}
+    dependencies:
+      xml-parser-xo: 4.1.1
+    dev: false
+
   /xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
     engines: {node: '>=12'}
     dev: true
+
+  /xml-parser-xo@4.1.1:
+    resolution: {integrity: sha512-Ggf2y90+Y6e9IK5hoPuembVHJ03PhDSdhldEmgzbihzu9k0XBo0sfcFxaSi4W1PlUSSI1ok+MJ0JCXUn+U4Ilw==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /xml-utils@1.7.0:
     resolution: {integrity: sha512-bWB489+RQQclC7A9OW8e5BzbT8Tu//jtAOvkYwewFr+Q9T9KDGvfzC1lp0pYPEQPEoPQLDkmxkepSC/2gIAZGw==}
