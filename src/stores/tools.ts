@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import tools from '@/views/tools.json'
+import tools from '@/tools.json'
 import type { ToolItem, ToolMenu } from '@/types/tool'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
