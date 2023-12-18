@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { debounce } from 'lodash-es'
 import { EditorView, ViewUpdate } from '@codemirror/view'
 import { Compartment, EditorState } from '@codemirror/state'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
@@ -49,15 +48,11 @@ watch(() => useStyleStore().isDark, (val) => {
   })
 })
 
-const emitChange = debounce((val: string) => {
-  emits('change', val)
-}, 1000)
-
 function onChange (update: ViewUpdate) {
   if (update.docChanged) {
     hasUndo.value = undoDepth(cm.state) > 0
     hasRedo.value = redoDepth(cm.state) > 0
-    emitChange(update.state.doc.toString())
+    emits('change', update.state.doc.toString())
   }
 }
 
