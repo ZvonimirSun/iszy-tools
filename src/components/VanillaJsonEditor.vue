@@ -5,6 +5,7 @@ import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
 import { clone } from 'lodash-es'
 import type { JSONValue } from '@/index'
+import { useStyleStore } from '@/stores/style'
 
 // JSONEditor properties as of version 0.3.60
 const propNames = [
@@ -36,7 +37,6 @@ const jsonEditorDiv = ref<HTMLDivElement>()
 const container = ref<HTMLDivElement>()
 const uploader = ref<HTMLInputElement>()
 let jsonEditor:JSONEditor
-const isDark = useDark()
 
 const _name = ref('')
 const _indent = ref(2)
@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => isDark,
+  () => useStyleStore().isDark,
   () => {
     jsonEditor?.refresh()
   }
@@ -430,7 +430,7 @@ function _pickDefinedProps (object: Record<string, any>, propNames: string[]) {
       ref="jsonEditorDiv"
       class="json-editor"
       :class="{
-        'jse-theme-dark': isDark
+        'jse-theme-dark': useStyleStore().isDark
       }"
     />
     <input

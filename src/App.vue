@@ -8,7 +8,7 @@
           type="primary"
           class="dark-mode-trigger"
           circle
-          @click="useUserStore().toggleTheme"
+          @click="useStyleStore().toggleTheme"
         >
           <i
             class="dark:i-icon-park-outline-moon i-icon-park-outline-sun-one"
@@ -101,9 +101,8 @@ import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { useUserStore } from '@/stores/user'
+import { useStyleStore } from '@/stores/style'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
-
-const isDark = useDark()
 
 const {
   offlineReady,
@@ -157,10 +156,6 @@ function fullScreen () {
     ElMessage.info('长按Esc以退出全屏')
   }
 }
-
-watch(isDark, function () {
-  useUserStore().setTheme()
-})
 
 watch(offlineReady, function (val) {
   if (val) {

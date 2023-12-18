@@ -42,8 +42,6 @@ const emptyProfile: User = {
   roles: null
 }
 
-const isDark = useDark()
-
 export const useUserStore = defineStore('user', {
   persist: true,
   state: () => ({
@@ -328,42 +326,6 @@ export const useUserStore = defineStore('user', {
       delete data.settings.jsonEditor
       data.version = 2
       return data
-    },
-
-    setTheme (value?: 'dark' | 'light' | 'auto') {
-      if (value) {
-        this.settings.theme.mode = value
-      }
-      switch (this.settings.theme.mode) {
-        case 'dark':
-          isDark.value = true
-          break
-        case 'light':
-          isDark.value = false
-          break
-        default:
-          isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-          break
-      }
-    },
-    toggleTheme () {
-      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      switch (this.settings.theme.mode) {
-        case 'dark':
-          this.settings.theme.mode = 'light'
-          break
-        case 'light':
-          this.settings.theme.mode = 'dark'
-          break
-        default:
-          if (dark) {
-            this.settings.theme.mode = 'light'
-          } else {
-            this.settings.theme.mode = 'dark'
-          }
-          break
-      }
-      this.setTheme()
     }
   }
 })

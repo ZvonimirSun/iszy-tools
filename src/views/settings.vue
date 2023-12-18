@@ -187,7 +187,7 @@
       <el-space>
         <el-radio-group
           :model-value="settings.theme.mode"
-          @change="userStore.setTheme"
+          @change="styleStore.setTheme"
         >
           <el-radio label="auto">
             跟随系统
@@ -261,9 +261,11 @@
 import { useUserStore } from '@/stores/user'
 import { useMainStore } from '@/stores/main'
 import type { FormInstance, FormRules } from 'element-plus'
+import { useStyleStore } from '@/stores/style'
 
 const router = useRouter()
 const route = useRoute()
+const styleStore = useStyleStore()
 const userStore = useUserStore()
 
 const settings = computed(() => {
