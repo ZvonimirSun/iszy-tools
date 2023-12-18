@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { debounce } from 'lodash-es'
 import { EditorView, ViewUpdate } from '@codemirror/view'
-import { EditorState } from '@codemirror/state'
+import { Compartment, EditorState } from '@codemirror/state'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
 import basic from './basic'
 import { EditorPlugin } from './editor'
+import { useStyleStore } from '@/stores/style'
 
 const editor = ref<HTMLDivElement>()
 
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{(e: 'change', v: string): void}>()
+const themeCompartment = new Compartment()
 
 const hasUndo = ref(false)
 const hasRedo = ref(false)
@@ -28,7 +30,8 @@ onMounted(() => {
     state: EditorState.create({
       extensions: [
         ...props.plugin.extensions,
-        EditorView.updateListener.of(onChange)
+        EditorView.updateListener.of(onChange),
+        themeCompartment.of(EditorView.theme({}, { dark: useStyleStore().isDark }))
       ],
       doc: props.inputDefault
     }),
@@ -38,6 +41,12 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   cm?.destroy()
+})
+
+watch(() => useStyleStore().isDark, (val) => {
+  cm.dispatch({
+    effects: themeCompartment.reconfigure(EditorView.theme({}, { dark: val }))
+  })
 })
 
 const emitChange = debounce((val: string) => {
