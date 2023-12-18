@@ -17,6 +17,9 @@ dependencies:
   '@codemirror/lang-xml':
     specifier: ^6.0.2
     version: 6.0.2(@codemirror/view@6.22.3)
+  '@codemirror/lint':
+    specifier: ^6.4.2
+    version: 6.4.2
   '@codemirror/state':
     specifier: ^6.3.3
     version: 6.3.3
@@ -74,6 +77,9 @@ dependencies:
   element-plus:
     specifier: ^2.4.4
     version: 2.4.4(vue@3.3.12)
+  eslint-linter-browserify:
+    specifier: ^8.56.0
+    version: 8.56.0
   esri-leaflet:
     specifier: ^3.0.12
     version: 3.0.12(leaflet@1.9.4)
@@ -5882,6 +5888,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /eslint-linter-browserify@8.56.0:
+    resolution: {integrity: sha512-srgKcpN5CVFZWj2/AqVfoL1rxD9+GFymynNcmkvHi0EcQDAwN2uh/ZEJSe4cm+pLZ7MVaeIUMUorXoTaLDH0ww==}
+    dev: false
 
   /eslint-module-utils@2.8.0(@typescript-eslint/parser@6.14.0)(eslint-import-resolver-node@0.3.9)(eslint@8.56.0):
     resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
