@@ -71,11 +71,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { useStore } from '@/stores/urlEncode'
 
-const value: Ref<string> = ref('')
-const result: Ref<string> = ref('')
+const value = ref('')
+const result = ref('')
 const urlEncodeStore = useStore()
 
 function encode () {

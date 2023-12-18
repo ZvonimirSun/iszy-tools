@@ -236,7 +236,6 @@
 <script lang="ts" setup>
 import cdnQuery, { AlgoliaHit, getByName } from '@/utils/cdnQuery.js'
 import $axios from '@/plugins/Axios'
-import type { Ref } from 'vue'
 
 interface File {
   type: 'file',
@@ -254,15 +253,15 @@ interface Directory {
 
 let timeoutIndex: number | null = null
 
-const loading: Ref<boolean> = ref(false)
-const keyword: Ref<string> = ref('')
-const status: Ref<string> = ref('')
-const pageIndex: Ref<number> = ref(0)
+const loading = ref(false)
+const keyword = ref('')
+const status = ref('')
+const pageIndex = ref(0)
 const pageSize = 10
-const result: Ref<Array<AlgoliaHit>> = ref([])
-const count: Ref<number> = ref(0)
-const pkgID: Ref<string | null> = ref('')
-const pkgData: Ref<{
+const result = ref<Array<AlgoliaHit>>([])
+const count = ref(0)
+const pkgID = ref<string | null>('')
+const pkgData = ref<{
   objectID: string,
   name?: string,
   homepage?: string,
@@ -277,14 +276,14 @@ const pkgData: Ref<{
     link: string
   },
   version?: string
-} | null> = ref(null)
-const version: Ref<string> = ref('')
-const versions: Ref<Array<{
+} | null>()
+const version = ref('')
+const versions = ref<Array<{
   label: string,
   value: string
-}>> = ref([])
-const defaultFile: Ref<string | null> = ref(null)
-const files: Ref<Array<Directory | File>> = ref([])
+}>>([])
+const defaultFile = ref<string | null>()
+const files = ref<Array<Directory | File>>([])
 
 const treeData = computed(() => {
   if (files.value && files.value.length) {

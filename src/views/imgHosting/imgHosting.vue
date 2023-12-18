@@ -31,9 +31,8 @@
 import ImgList from './child/imgList.vue'
 import Upload from './child/upload.vue'
 import Settings from './child/settings.vue'
-import type { Ref } from 'vue'
 
-const activeKey: Ref<string> = ref('home')
+const activeKey = ref('home')
 </script>
 
 <style scoped lang="scss">

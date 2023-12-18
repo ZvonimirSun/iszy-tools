@@ -41,11 +41,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
-
-const token: Ref<string> = ref('')
-const header: Ref<string> = ref('')
-const payload: Ref<string> = ref('')
+const token = ref('')
+const header = ref('')
+const payload = ref('')
 
 function tokenChange () {
   if (token.value) {

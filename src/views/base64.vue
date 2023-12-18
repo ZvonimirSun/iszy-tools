@@ -35,10 +35,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
-
-const data1: Ref<string> = ref('')
-const data2: Ref<string> = ref('')
+const data1 = ref('')
+const data2 = ref('')
 
 function encode () {
   data2.value = btoa(encodeURIComponent(data1.value).replace(/%([0-9A-F]{2})/g, function (match, p1) {

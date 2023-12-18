@@ -53,13 +53,12 @@
 
 <script lang="ts" setup>
 import { useImgHostingStore } from '@/stores/imgHosting'
-import type { Ref } from 'vue'
 
 const imgList = computed(() => {
   return useImgHostingStore().imgList
 })
 
-const preImgList: Ref<string[]> = computed(() => {
+const preImgList = computed(() => {
   return imgList.value.map((item) => {
     return item.url
   })

@@ -73,15 +73,14 @@
 
 <script setup lang="ts">
 import { toDataURL } from 'qrcode'
-import type { Ref } from 'vue'
 import createFile from '@/utils/createFile'
 import QrcodeDecoder from 'qrcode-decoder/src/index'
 
-const generateContent: Ref<string> = ref('')
-const generateResult: Ref<string> = ref('')
-const qrCodeFile: Ref<string> = ref('')
-const decodeResult: Ref<string> = ref('')
-const decodeImg: Ref<HTMLImageElement> = ref() as Ref<HTMLImageElement>
+const generateContent = ref('')
+const generateResult = ref('')
+const qrCodeFile = ref('')
+const decodeResult = ref('')
+const decodeImg = ref<HTMLImageElement>()
 
 async function generateQR () {
   if (!generateContent.value) {
@@ -111,6 +110,9 @@ function upload (img: File) {
     if (typeof reader.result === 'string') {
       qrCodeFile.value = reader.result
       nextTick(() => {
+        if (!decodeImg.value) {
+          return
+        }
         decodeQRCode(decodeImg.value)
       })
     } else {

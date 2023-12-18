@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Ref } from 'vue'
 import { Content, isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
@@ -33,28 +32,28 @@ const propNames = [
   'onBlur'
 ]
 
-const jsonEditorDiv: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
-const container: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
-const uploader: Ref<HTMLInputElement> = ref<HTMLInputElement>() as Ref<HTMLInputElement>
+const jsonEditorDiv = ref<HTMLDivElement>()
+const container = ref<HTMLDivElement>()
+const uploader = ref<HTMLInputElement>()
 let jsonEditor:JSONEditor
 const isDark = useDark()
 
-const _name: Ref<string> = ref('')
-const _indent: Ref<number> = ref(2)
+const _name = ref('')
+const _indent = ref(2)
 
-const settingIndent: Ref<boolean> = ref(false)
-const showDocumentProperties: Ref<boolean> = ref(false)
+const settingIndent = ref(false)
+const showDocumentProperties = ref(false)
 
-const editingName: Ref<boolean> = ref(false)
-const newName: Ref<string> = ref('')
+const editingName = ref(false)
+const newName = ref('')
 
-const documentProperties: Ref<{
+const documentProperties = computed<{
   name?: string,
   storage?: string,
   updated?: string,
   content?: string,
   size?: string
-}> = computed(() => {
+}>(() => {
   if (showDocumentProperties) {
     const data = jsonEditor.get()
     let content
@@ -123,6 +122,9 @@ const props = withDefaults(defineProps<{
 let oldConfig: Record<string, any> = {}
 
 onMounted(() => {
+  if (!jsonEditorDiv.value) {
+    return
+  }
   oldConfig = clone(props.config)
   jsonEditor = new JSONEditor({
     target: jsonEditorDiv.value,
@@ -190,7 +192,7 @@ function create () {
 function open (val: 'recent' | 'file') {
   switch (val) {
     case 'file':
-      uploader.value.click()
+      uploader.value?.click()
       break
     case 'recent':
       emits('openRecent')

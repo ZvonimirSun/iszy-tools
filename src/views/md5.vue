@@ -47,13 +47,12 @@
 
 <script setup lang="ts">
 import SparkMD5 from 'spark-md5'
-import type { Ref } from 'vue'
 import type { UploadUserFile, UploadRawFile } from 'element-plus'
 
-const data1: Ref<string> = ref('')
-const data2: Ref<string> = ref('')
-const mode: Ref<string> = ref('text')
-const fileList: Ref<UploadUserFile[]> = ref([])
+const data1 = ref('')
+const data2 = ref('')
+const mode = ref('text')
+const fileList = ref<UploadUserFile[]>([])
 
 watch(data1, async (val: string) => {
   if (!val) {

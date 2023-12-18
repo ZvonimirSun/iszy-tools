@@ -60,20 +60,15 @@
 
 <script lang="ts" setup>
 import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
-import type { Ref } from 'vue'
 
-const formState: Ref<{
-  count: number,
-  version: string,
-  hasHyphen: boolean
-}> = ref({
+const formState = ref({
   count: 1,
   version: 'v4',
   hasHyphen: true
 })
-const auto: Ref<boolean> = ref(true)
-const times: Ref<number> = ref(0)
-const result: Ref<string> = ref('')
+const auto = ref(true)
+const times = ref(0)
+const result = ref('')
 
 watch(formState, function (val) {
   if (val.version === 'nil' && val.count !== 1) {

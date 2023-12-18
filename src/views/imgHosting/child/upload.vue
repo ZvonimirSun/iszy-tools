@@ -22,7 +22,6 @@
 import * as uploaders from '../uploader/index'
 import { useImgHostingStore } from '@/stores/imgHosting'
 import { AliOssConfig } from '../uploader/index'
-import type { Ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   activeKey: string
@@ -30,8 +29,8 @@ const props = withDefaults(defineProps<{
   activeKey: ''
 })
 
-const spinning: Ref<boolean> = ref(false)
-const timeoutIndex = ref()
+const spinning = ref(false)
+const timeoutIndex = ref<number>()
 
 const imgHostingStore = useImgHostingStore()
 
@@ -92,7 +91,7 @@ function rejectFile () {
 
 function paste (event: ClipboardEvent) {
   if (props.activeKey === 'home' && !spinning.value && !timeoutIndex.value) {
-    timeoutIndex.value = setTimeout(() => {
+    timeoutIndex.value = window.setTimeout(() => {
       timeoutIndex.value = undefined
     }, 500)
     // todo ts fix

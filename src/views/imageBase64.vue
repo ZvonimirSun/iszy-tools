@@ -51,16 +51,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { AxiosStatic } from 'axios'
 
-const dataUrl: Ref<string> = ref('')
+const dataUrl = ref('')
 const $axios: AxiosStatic = inject('$axios') as AxiosStatic
-const imgPreview: Ref<HTMLImageElement> = ref() as Ref<HTMLImageElement>
-const imageSize: Ref<{
-  width: string,
-  height: string
-}> = ref({
+const imgPreview = ref<HTMLImageElement>()
+const imageSize = ref({
   width: '',
   height: ''
 })
@@ -103,6 +99,9 @@ async function convert () {
 }
 
 function onImagePreview () {
+  if (!imgPreview.value) {
+    return
+  }
   imageSize.value.height = imgPreview.value.naturalHeight + 'px'
   imageSize.value.width = imgPreview.value.naturalWidth + 'px'
 }

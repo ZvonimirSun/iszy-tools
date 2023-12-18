@@ -210,7 +210,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from 'vue'
 
 // eslint-disable-next-line no-undef
 interface MediaTrackSettingsUserShared extends MediaTrackSettings {
@@ -224,19 +223,19 @@ const RECORD_STATUS_PAUSED = 'paused'
 const RECORD_STATUS_STOPPED = 'stopped'
 
 // 视频元素
-const screenShareVideoElement: Ref<HTMLVideoElement> = ref() as Ref<HTMLVideoElement>
-const recordVideoElement: Ref<HTMLVideoElement> = ref() as Ref<HTMLVideoElement>
+const screenShareVideoElement = ref<HTMLVideoElement>()
+const recordVideoElement = ref<HTMLVideoElement>()
 // 视频流
 let localScreenShareStream: MediaStream | null = null
 // 录制对象
 let recorder: MediaRecorder | null = null
 // 录制状态
-const status: Ref<'unstart' | 'recording' | 'paused' | 'stopped' | 'unshare'> = ref(SCREEN_UNSHARE)
+const status = ref<'unstart' | 'recording' | 'paused' | 'stopped' | 'unshare'>(SCREEN_UNSHARE)
 // 录制数据
 let chunks: Array<Blob> = []
 // 录制结果
-const blobUrl: Ref<string> = ref('')
-const showSettings: Ref<boolean> = ref(false)
+const blobUrl = ref('')
+const showSettings = ref(false)
 // 录制参数
 const recordAudioOptions: Array<{
   label: string,
@@ -251,7 +250,7 @@ const recordAudioOptions: Array<{
     value: 'always'
   }
 ]
-const recordAudio: Ref<'never' | 'always'> = ref('never')
+const recordAudio = ref<'never' | 'always'>('never')
 const recordMicroOptions = [
   {
     label: '否',
@@ -262,7 +261,7 @@ const recordMicroOptions = [
     value: 'always'
   }
 ]
-const recordMicro: Ref<'never' | 'always'> = ref('never')
+const recordMicro = ref<'never' | 'always'>('never')
 const aspectRatioList = [
   {
     label: '默认',
@@ -289,7 +288,7 @@ const aspectRatioList = [
     value: 1.9
   }
 ]
-const aspectRatio: Ref<number | 'default'> = ref('default')
+const aspectRatio = ref<number | 'default'>('default')
 const frameRateList = [
   {
     label: '默认',
@@ -316,7 +315,7 @@ const frameRateList = [
     value: 5
   }
 ]
-const frameRate: Ref<number | 'default'> = ref('default')
+const frameRate = ref<number | 'default'>('default')
 const resolutionsList = [
   {
     label: '默认',
@@ -339,7 +338,7 @@ const resolutionsList = [
     value: '720p'
   }
 ]
-const resolutions: Ref<string> = ref('default')
+const resolutions = ref('default')
 const cursorList = [
   {
     label: '默认',
@@ -358,7 +357,7 @@ const cursorList = [
     value: 'never'
   }
 ]
-const cursor: Ref<string> = ref('default')
+const cursor = ref('default')
 
 // 测试浏览器支持度
 const supportedConstraints = (() => {
@@ -488,8 +487,10 @@ async function openScreenShare () {
     recorder.onstop = onRecordStopped
     recorder.ondataavailable = onDataAvailable
 
-    screenShareVideoElement.value.srcObject = localScreenShareStream
-    screenShareVideoElement.value.muted = true
+    if (screenShareVideoElement.value) {
+      screenShareVideoElement.value.srcObject = localScreenShareStream
+      screenShareVideoElement.value.muted = true
+    }
     status.value = 'unstart'
   } catch (e) {
     ElMessage.error((e as Error).message)
@@ -544,7 +545,9 @@ function onScreenShareEnded () {
   }
   ElMessage.info('屏幕分享结束')
   localScreenShareStream = null
-  screenShareVideoElement.value.srcObject = null
+  if (screenShareVideoElement.value) {
+    screenShareVideoElement.value.srcObject = null
+  }
   status.value = 'unshare'
 }
 
@@ -553,7 +556,7 @@ function onRecordStopped () {
   blobUrl.value = URL.createObjectURL(blob)
   chunks = []
   const i = setInterval(async () => {
-    if (recordVideoElement.value.readyState > 0) {
+    if (recordVideoElement.value && recordVideoElement.value.readyState > 0) {
       if (recordVideoElement.value.duration === Infinity) {
         recordVideoElement.value.currentTime = 10000000 * Math.random()
       } else {

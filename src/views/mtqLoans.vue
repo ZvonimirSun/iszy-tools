@@ -208,16 +208,15 @@
 import dayjs, { OpUnitType } from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import isBetween from 'dayjs/plugin/isBetween'
-import type { Ref } from 'vue'
 
 dayjs.extend(isBetween)
 
-const loanAmount: Ref<number> = ref(150000)
-const repaymentPeriod: Ref<number> = ref(2)
-const loanMonth: Ref<number> = ref(24)
-const lendingRates: Ref<number> = ref(4.5)
-const repayment: Ref<'equalLoan' | 'equalPrincipal'> = ref('equalLoan')
-const firstRepaymentDate: Ref<Date> = ref(new Date())
+const loanAmount = ref(150000)
+const repaymentPeriod = ref(2)
+const loanMonth = ref(24)
+const lendingRates = ref(4.5)
+const repayment = ref<'equalLoan' | 'equalPrincipal'>('equalLoan')
+const firstRepaymentDate = ref<Date>(new Date())
 
 interface SinglePayment {
   repaymentDate: Date,
@@ -234,11 +233,11 @@ interface Options {
   prepayment: Array<SinglePayment>
 }
 
-const prepayment: Ref<Array<SinglePayment>> = ref([])
+const prepayment = ref<Array<SinglePayment>>([])
 
 const dateFormat = 'YYYY/MM/DD'
 
-const options: Ref<Partial<Options>> = computed(() => {
+const options = computed<Partial<Options>>(() => {
   const newOptions: Partial<Options> = {}
   if (!isNaN(loanAmount.value) && loanAmount.value > 0) {
     newOptions.loanAmount = loanAmount.value
@@ -276,7 +275,7 @@ const options: Ref<Partial<Options>> = computed(() => {
   return newOptions
 })
 
-const validOptions: Ref<Options | null> = computed(() => {
+const validOptions = computed<Options | null>(() => {
   if (options.value.loanAmount != null && options.value.loanMonth != null && options.value.lendingRates != null && options.value.firstRepaymentDate && options.value.prepayment) {
     return options.value as Options
   } else {
@@ -342,7 +341,7 @@ const originDataSource = computed(() => {
   }
 })
 
-const dataSource: Ref<Array<Partial<{
+const dataSource = computed<Array<Partial<{
   key: number,
   times: number,
   repaymentDate: string,
@@ -350,7 +349,7 @@ const dataSource: Ref<Array<Partial<{
   interestRepayment: number,
   principalRepayment: number,
   remainingPrincipal: number
-}>>> = computed(() => {
+}>>>(() => {
   if (validOptions.value) {
     const result = []
     result.push({

@@ -57,15 +57,14 @@
 
 <script setup lang="ts">
 import xmlFormat from 'xml-formatter'
-import type { Ref } from 'vue'
 import FullEditor from './child/fullEditor.vue'
 
-const advancedMode: Ref<boolean> = ref(false)
-const value: Ref<string> = ref('<hello><world>foo</world><world>bar</world></hello>')
-const formattedValue: Ref<string> = ref('')
+const advancedMode = ref(false)
+const value = ref('<hello><world>foo</world><world>bar</world></hello>')
+const formattedValue = ref('')
 
-const collapseContent: Ref<boolean> = ref(true)
-const indentValue: Ref<number> = ref(2)
+const collapseContent = ref(true)
+const indentValue = ref(2)
 
 const rules = [{
   validator: (rule: any, val: string, callback: any) => {

@@ -222,9 +222,6 @@ watch(isDark, (val) => {
   }
 })
 
-/**
- * @type {ComputedRef<String>}
- */
 const doc = computed(() => {
   if (store.html + store.css + store.js === '') {
     return '输入内容以在此展示'

@@ -81,11 +81,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useToolsStore } from '@/stores/tools'
 
-const searchStr: Ref<string> = ref('')
+const searchStr = ref('')
 const userStore = useUserStore()
 const toolsStore = useToolsStore()
 

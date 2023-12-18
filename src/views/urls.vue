@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Ref } from 'vue'
 import $axios from '@/plugins/Axios'
 import dayjs from 'dayjs'
 
@@ -12,14 +11,14 @@ type Url = {
 }
 
 const urlBase = 'https://url.iszy.xyz'
-const urlList: Ref<Url[]> = ref([]) as Ref<Url[]>
-const pageSize: Ref<number> = ref(10)
-const pageIndex: Ref<number> = ref(1)
-const count: Ref<number> = ref(0)
-const loading: Ref<boolean> = ref(false)
+const urlList = ref<Url[]>([])
+const pageSize = ref(10)
+const pageIndex = ref(1)
+const count = ref(0)
+const loading = ref(false)
 
-const editing = reactive({} as Record<string, boolean>)
-const editingUrl = reactive({} as Record<string, string>)
+const editing = reactive<Record<string, boolean>>({})
+const editingUrl = reactive<Record<string, string>>({})
 const newUrl = reactive({
   keyword: '',
   url: ''

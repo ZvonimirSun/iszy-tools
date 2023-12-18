@@ -37,10 +37,9 @@ import GeoJsonEditor from './child/geoJsonEditor.vue'
 import PropertyTable from './child/propertyTable.vue'
 import AddService from './child/addService.vue'
 import ControlMenu from './child/ControlMenu.vue'
-import type { Ref } from 'vue'
 
-const currentTab: Ref<string> = ref('geoJson')
-const wrapper: Ref<HTMLDivElement | undefined> = ref()
+const currentTab = ref('geoJson')
+const wrapper = ref<HTMLDivElement>()
 
 const wrapperHeight = computed(() => {
   if (wrapper.value) {

@@ -175,13 +175,12 @@
 
 <script setup lang="ts">
 import { useJsonEditorStore } from '@/stores/jsonEditor'
-import type { Ref } from 'vue'
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 
-const editorPanelContainerLeft: Ref<InstanceType<typeof VanillaJsonEditor> | null> = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-const editorPanelContainerRight: Ref<InstanceType<typeof VanillaJsonEditor> | null> = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-const editorPanel: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
-const loading: Ref<boolean> = ref(true)
+const editorPanelContainerLeft = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editorPanelContainerRight = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editorPanel = ref<HTMLDivElement>()
+const loading = ref(true)
 const fullPanel = ref('')
 
 const store = useJsonEditorStore()
@@ -277,9 +276,9 @@ function change (leftOrRight: 'left' | 'right', data: any) {
 }
 
 // region 最近打开相关
-const showOpenRecent: Ref<boolean> = ref(false)
-const selectId: Ref<string> = ref('')
-const keyword: Ref<string> = ref('')
+const showOpenRecent = ref(false)
+const selectId = ref('')
+const keyword = ref('')
 let openRecentFlag: 'left' | 'right' | '' = ''
 const dataListAfterSearch = computed(() => {
   return store.dataList(keyword.value)
@@ -388,6 +387,9 @@ function startDrag (e: TouchEvent | MouseEvent) {
   }
 }
 function dragMove (e: TouchEvent | MouseEvent) {
+  if (!editorPanel.value) {
+    return
+  }
   moved = true
   let clientX = 0
   if (e instanceof TouchEvent) {
@@ -418,6 +420,9 @@ function endDrag () {
   document.removeEventListener('touchend', endDrag)
 }
 function clickDragger () {
+  if (!editorPanel.value) {
+    return
+  }
   if (moved) { return }
   if (fullPanel.value === 'left') {
     store.setSplitter(1 - 435 / (parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))

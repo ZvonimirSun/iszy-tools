@@ -260,7 +260,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import { useMainStore } from '@/stores/main'
-import { Ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 
 const router = useRouter()
@@ -271,8 +270,8 @@ const settings = computed(() => {
   return userStore.settings
 })
 
-const editingUser: Ref<boolean> = ref(false)
-const ruleFormRef: Ref<FormInstance | undefined> = ref<FormInstance>()
+const editingUser = ref(false)
+const ruleFormRef = ref<FormInstance>()
 const userForm = reactive({
   nickName: '',
   email: '',

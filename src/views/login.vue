@@ -55,20 +55,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { LocationQuery } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
-const form: Ref<{
-  userName: string,
-  password: string
-}> = ref({
+const form = reactive({
   userName: '',
   password: ''
 })
-const redirect: Ref<string> = ref() as Ref<string>
+const redirect = ref<string>()
 const otherQuery = ref({})
-const loading: Ref<boolean> = ref(false)
+const loading = ref(false)
 
 const router = useRouter()
 const route = useRoute()
@@ -95,12 +91,12 @@ async function login () {
     ElMessage.warning('已离线！')
     return
   }
-  if (form.value.userName != null && form.value.password != null) {
+  if (form.userName != null && form.password != null) {
     loading.value = true
     try {
       await userStore.login({
-        userName: form.value.userName,
-        password: form.value.password
+        userName: form.userName,
+        password: form.password
       })
       ElMessage.success('登录成功！')
       router.push({ path: redirect.value || '/', query: otherQuery.value })

@@ -111,7 +111,6 @@
 <script lang="ts" setup>
 import * as uploaders from '../uploader/index'
 import { cloneDeep, merge } from 'lodash-es'
-import type { Ref } from 'vue'
 import { useImgHostingStore } from '@/stores/imgHosting'
 import { AliOssConfig } from '../uploader/index'
 
@@ -125,11 +124,11 @@ const defaultCommonConfig = {
   copyUrlAfterUpload: true,
   customCopyContent: '$url'
 }
-const customCopyContentType: Ref<'standard'|'markdown'|'custom'> = ref('standard')
-const customContent: Ref<string> = ref('$url')
+const customCopyContentType = ref<'standard'|'markdown'|'custom'>('standard')
+const customContent = ref('$url')
 
-const currentUploader: Ref<'aliyun'> = ref('aliyun')
-const currentConfig: Ref<uploaders.Config[]> = ref([])
+const currentUploader = ref<'aliyun'>('aliyun')
+const currentConfig = ref<uploaders.Config[]>([])
 
 onMounted(() => {
   const uploader = useImgHostingStore().uploader

@@ -57,15 +57,14 @@ import dayjs from 'dayjs'
 import md from '@/utils/markdown.js'
 import duration from 'dayjs/plugin/duration'
 import { useLinuxCommandStore } from '@/stores/linuxCommand'
-import type { Ref } from 'vue'
 import $axios from '@/plugins/Axios'
 
 dayjs.extend(duration)
 
-const keyword: Ref<string> = ref('')
-const command: Ref<string> = ref('')
-const commandData: Ref<string> = ref('')
-const showModal: Ref<boolean> = ref(false)
+const keyword = ref('')
+const command = ref('')
+const commandData = ref('')
+const showModal = ref(false)
 
 const store = useLinuxCommandStore()
 

@@ -264,13 +264,11 @@
   </el-dialog>
 </template>
 <script setup lang="tsx">
-import type { Ref } from 'vue'
 import axios from '@/plugins/Axios'
 import dayjs from 'dayjs'
 import { getParam, setParam } from '@/utils/hashHandler'
 import CopyableText from '@/components/copyable-text.vue'
 import { Column } from 'element-plus'
-import type { JSONValue } from '@/index'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 
 interface MockPrj {
@@ -290,18 +288,18 @@ interface MockData {
   path: string
   description?: string
   delay: number
-  response: JSONValue | string
+  response: any
   projectId: string,
   createdAt?: string,
   url?: string
 }
 
-const prjs: Ref<MockPrj[]> = ref([])
-const selectedPrj: Ref<MockPrj | null> = ref(null)
-const datas: Ref<MockData[]> = ref([])
+const prjs = ref<MockPrj[]>([])
+const selectedPrj = ref<MockPrj | null>(null)
+const datas = ref<MockData[]>([])
 
-const showPrjDialog: Ref<boolean> = ref(false)
-const showDataDialog: Ref<boolean> = ref(false)
+const showPrjDialog = ref(false)
+const showDataDialog = ref(false)
 
 const form: MockPrj = reactive({
   id: '',
@@ -543,7 +541,7 @@ function openEditDataDialog (data: MockData) {
   showDataDialog.value = true
 }
 
-function updateResponse (response: JSONValue | string) {
+function updateResponse (response: any) {
   dataForm.response = response
 }
 

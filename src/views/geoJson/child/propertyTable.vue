@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="tsx">
-import { Ref } from 'vue'
 import $eventBus from '@/plugins/EventBus'
 import type { Column, InputInstance } from 'element-plus'
 import { debounce } from 'lodash-es'
@@ -40,7 +39,7 @@ onMounted(() => {
   $eventBus.on('updateEditor', updateTable)
 })
 
-const geoJSON: Ref<FeatureCollection | null> = shallowRef(null)
+const geoJSON = shallowRef<FeatureCollection>()
 const edit: {
   row: number | null
   col: number | null

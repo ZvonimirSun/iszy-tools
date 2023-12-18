@@ -104,17 +104,16 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from 'vue'
 import $axios from '@/plugins/Axios'
 
-const file: Ref<string> = ref('')
-const img: Ref<File | undefined> = ref(undefined)
-const fileName: Ref<string> = ref('')
-const id: Ref<string> = ref('')
-const quota: Ref<number> = ref(0)
-const quotaUsed: Ref<number> = ref(0)
-const loading: Ref<boolean> = ref(false)
-const result: Ref<Array<{
+const file = ref('')
+const img = ref<File>()
+const fileName = ref('')
+const id = ref('')
+const quota = ref(0)
+const quotaUsed = ref(0)
+const loading = ref(false)
+const result = ref<Array<{
   anilist: {
     title: {
       native: string,
@@ -128,7 +127,7 @@ const result: Ref<Array<{
   to: number,
   video: string,
   image: string
-}>> = ref([])
+}>>([])
 
 onMounted(() => {
   checkTimes()

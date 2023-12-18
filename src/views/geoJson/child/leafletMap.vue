@@ -49,7 +49,6 @@ import {
 } from 'leaflet'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import $eventBus from '@/plugins/EventBus'
-import { Ref } from 'vue'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 import type { GeoJsonObject, Feature } from 'geojson'
@@ -74,9 +73,9 @@ const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
 let geoJsonLayer: GeoJSON, _map: Map, layerControl: Control.Layers
 
-const selectedFeature: Ref<Feature | undefined> = ref(undefined)
-const mapContainer: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
-const propertyPopup: Ref<HTMLDivElement> = ref<HTMLDivElement>() as Ref<HTMLDivElement>
+const selectedFeature = ref<Feature>()
+const mapContainer = ref<HTMLDivElement>()
+const propertyPopup = ref<HTMLDivElement>()
 
 onMounted(() => {
   $eventBus.on('locationGeo', locationGeo)
@@ -101,6 +100,9 @@ onBeforeUnmount(() => {
 })
 
 function initMap () {
+  if (!mapContainer.value) {
+    return
+  }
   // 初始化地图
   _map = map(mapContainer.value, {
     attributionControl: true,
@@ -244,6 +246,9 @@ function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
   })
   if (!feature.properties) {
     feature.properties = {}
+  }
+  if (!propertyPopup.value) {
+    return
   }
   layer.bindPopup(propertyPopup.value).on('popupopen', () => {
     selectedFeature.value = feature

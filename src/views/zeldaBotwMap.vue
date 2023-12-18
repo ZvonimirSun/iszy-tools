@@ -7,11 +7,10 @@
 
 <script setup lang="ts">
 import { LatLngBounds, LatLng, map, Map, CRS, tileLayer } from 'leaflet'
-import type { Ref } from 'vue'
 import 'leaflet/dist/leaflet.css'
 
-const mapContainer: Ref<HTMLDivElement | undefined> = ref()
-const _map: Ref<Map | undefined> = ref()
+const mapContainer = ref<HTMLDivElement>()
+const _map = ref<Map>()
 
 onMounted(() => {
   if (!mapContainer.value) {

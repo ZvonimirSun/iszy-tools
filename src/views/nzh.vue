@@ -28,13 +28,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import Nzh from 'nzh'
 
-const money: Ref<string> = ref('')
-const s: Ref<string> = ref('')
-const b: Ref<string> = ref('')
-const num: Ref<string> = ref('')
+const money = ref('')
+const s = ref('')
+const b = ref('')
+const num = ref('')
 
 function fromNum (num: string) {
   if (!num) {
