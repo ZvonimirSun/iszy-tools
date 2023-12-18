@@ -13,6 +13,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
@@ -20,7 +21,6 @@ const iconClass = tools.map(item => item.icon).filter(item => item)
 export default defineConfig({
   server: {
     port: 3000,
-    https: false,
     strictPort: true,
     hmr: {
       port: 3000
@@ -29,6 +29,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    basicSsl(),
     AutoImport({
       resolvers: [
         ElementPlusResolver(),
