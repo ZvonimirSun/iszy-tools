@@ -5,7 +5,7 @@ import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
 import { clone } from 'lodash-es'
-import type { JSONValue } from '@/types/vanillaJsonEditor'
+import type { JSONValue } from '@/index'
 
 // JSONEditor properties as of version 0.3.60
 const propNames = [
