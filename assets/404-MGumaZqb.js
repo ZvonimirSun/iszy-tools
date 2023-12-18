@@ -1,1 +1,0 @@
-import{a3 as t,o as c,ax as o,b1 as n}from"./vendor-Ru-BxWlB.js";const s={};function a(_,r){const e=n;return c(),o(e,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const i=t(s,[["render",a],["__scopeId","data-v-345dc304"]]);export{i as default};
