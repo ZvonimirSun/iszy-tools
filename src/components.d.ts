@@ -22,7 +22,7 @@ declare module 'vue' {
     Checkerboard: typeof import('./components/checkerboard.vue')['default']
     Container: typeof import('./components/container.vue')['default']
     CopyableText: typeof import('./components/copyable-text.vue')['default']
-    Editor: typeof import('./components/editor/editor.vue')['default']
+    Editor: typeof import('./components/editor/Editor.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAutoResizer: typeof import('element-plus/es')['ElAutoResizer']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']

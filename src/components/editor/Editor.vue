@@ -1,37 +1,40 @@
 <script setup lang="ts">
-import { EditorView, ViewUpdate } from '@codemirror/view'
+import { EditorView, ViewUpdate, placeholder as PlaceHolder } from '@codemirror/view'
 import { Compartment, EditorState } from '@codemirror/state'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
 import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import { useStyleStore } from '@/stores/style'
 
-const editor = ref<HTMLDivElement>()
-
-let cm: EditorView
-
 const props = withDefaults(defineProps<{
   inputDefault?: string,
-  plugin?: EditorPlugin
+  plugin?: EditorPlugin,
+  placeholder?: string
 }>(), {
   inputDefault: '',
-  plugin: () => basic
+  plugin: () => basic,
+  placeholder: ''
 })
-
 const emits = defineEmits<{(e: 'change', v: string): void}>()
-const themeCompartment = new Compartment()
 
+const editor = ref<HTMLDivElement>()
+let cm: EditorView
+const themeCompartment = new Compartment()
 const hasUndo = ref(false)
 const hasRedo = ref(false)
 
 onMounted(() => {
+  const extensions = [
+    ...props.plugin.extensions,
+    EditorView.updateListener.of(onChange),
+    themeCompartment.of(EditorView.theme({}, { dark: useStyleStore().isDark }))
+  ]
+  if (props.placeholder) {
+    extensions.push(PlaceHolder(props.placeholder))
+  }
   cm = new EditorView({
     state: EditorState.create({
-      extensions: [
-        ...props.plugin.extensions,
-        EditorView.updateListener.of(onChange),
-        themeCompartment.of(EditorView.theme({}, { dark: useStyleStore().isDark }))
-      ],
+      extensions,
       doc: props.inputDefault
     }),
     parent: editor.value
@@ -56,42 +59,14 @@ function onChange (update: ViewUpdate) {
   }
 }
 
-const controls: {
+type Control = {
   title: string,
   event: () => void,
   isDisabled?: () => boolean,
   icon: string
-}[][] = [
-  [
-    {
-      title: '格式化',
-      event: function formatBtn () {
-        try {
-          const val = props.plugin.formatter(cm.state.doc.toString())
-          if (val && val !== cm.state.doc.toString()) {
-            cm.dispatch({
-              changes: { from: 0, to: cm.state.doc.length, insert: val }
-            })
-          }
-        } catch (e) {}
-      },
-      icon: 'i-iszy-editor-format'
-    },
-    {
-      title: '压缩',
-      event: function compactBtn () {
-        try {
-          const val = props.plugin.compactor(cm.state.doc.toString())
-          if (val && val !== cm.state.doc.toString()) {
-            cm.dispatch({
-              changes: { from: 0, to: cm.state.doc.length, insert: val }
-            })
-          }
-        } catch (e) {}
-      },
-      icon: 'i-iszy-editor-compact'
-    }
-  ],
+}
+
+const controls: Control[][] = [
   [
     {
       title: '撤销',
@@ -113,6 +88,49 @@ const controls: {
     }
   ]
 ]
+
+const formatControls: Control[] = []
+if (props.plugin.formatter) {
+  formatControls.push({
+    title: '格式化',
+    event: function formatBtn () {
+      if (!props.plugin.formatter) {
+        return
+      }
+      try {
+        const val = props.plugin.formatter(cm.state.doc.toString())
+        if (val && val !== cm.state.doc.toString()) {
+          cm.dispatch({
+            changes: { from: 0, to: cm.state.doc.length, insert: val }
+          })
+        }
+      } catch (e) {}
+    },
+    icon: 'i-iszy-editor-format'
+  })
+}
+if (props.plugin.compactor) {
+  formatControls.push({
+    title: '压缩',
+    event: function compactBtn () {
+      if (!props.plugin.compactor) {
+        return
+      }
+      try {
+        const val = props.plugin.compactor(cm.state.doc.toString())
+        if (val && val !== cm.state.doc.toString()) {
+          cm.dispatch({
+            changes: { from: 0, to: cm.state.doc.length, insert: val }
+          })
+        }
+      } catch (e) {}
+    },
+    icon: 'i-iszy-editor-compact'
+  })
+}
+if (formatControls.length) {
+  controls.unshift(formatControls)
+}
 </script>
 
 <template>

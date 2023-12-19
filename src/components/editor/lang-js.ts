@@ -1,5 +1,5 @@
 import { javascript, esLint } from '@codemirror/lang-javascript'
-import { linter, lintGutter } from '@codemirror/lint'
+import { linter } from '@codemirror/lint'
 import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import { js as jsBeautify } from 'js-beautify'
@@ -25,20 +25,13 @@ export function formatter (value: string, indent = 2) {
   })
 }
 
-export function compactor (value: string) {
-  return value
-}
-
 const plugin: EditorPlugin = {
   ...basic,
   formatter,
-  compactor,
   extensions: [
     ...basic.extensions,
     javascript(),
-    lintGutter(),
-    // eslint-disable-next-line
-    linter(esLint(new eslint.Linter(), config)),
+    linter(esLint(new eslint.Linter(), config))
   ]
 }
 

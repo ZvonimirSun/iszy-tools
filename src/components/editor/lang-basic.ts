@@ -1,5 +1,6 @@
 import { basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
+import { lintGutter } from '@codemirror/lint'
 import { indentWithTab } from '@codemirror/commands'
 import { keymap, drawSelection, EditorView, Panel, ViewUpdate, showPanel } from '@codemirror/view'
 import { EditorPlugin } from './editor'
@@ -37,10 +38,9 @@ const plugin: EditorPlugin = {
     EditorState.phrases.of(chinesePhrases),
     keymap.of([indentWithTab]),
     drawSelection(),
-    showPanel.of(baseInfoPanel)
-  ],
-  formatter: (value: string) => value,
-  compactor: (value: string) => value
+    showPanel.of(baseInfoPanel),
+    lintGutter()
+  ]
 }
 
 export default plugin
