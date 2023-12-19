@@ -23,7 +23,7 @@ function baseInfoPanel (view: EditorView): Panel {
   function getCursorAndSelection (): string {
     const selection = view.state.selection.main
     const line = view.state.doc.lineAt(selection.head)
-    let info = `行: ${line.number} 列: ${selection.head - line.from}`
+    let info = `总行数: ${view.state.doc.lines} 行数: ${line.number} 列数: ${selection.head - line.from}`
     if (!selection.empty) {
       info += `选中: ${Math.abs(selection.to - selection.from)} 字符`
     }

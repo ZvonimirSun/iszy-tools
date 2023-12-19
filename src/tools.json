@@ -284,10 +284,6 @@
         "name": "留言反馈",
         "link": "https://github.com/ZvonimirSun/iszy-tools/discussions",
         "statistics": false
-      },
-      {
-        "name": "测试",
-        "link": "/test"
       }
     ]
   }
