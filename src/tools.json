@@ -1,58 +1,11 @@
 [
   {
-    "type": "通用工具",
-    "icon": "i-icon-park-outline-toolkit",
-    "children": [
-      {
-        "name": "短网址",
-        "link": "/urls",
-        "requiresAuth": true
-      },
-      {
-        "name": "屏幕录制",
-        "link": "/screenRecord"
-      },
-      {
-        "name": "glTF模型浏览",
-        "link": "/3dView"
-      },
-      {
-        "name": "这是什么动漫",
-        "link": "/whatAnimeIsThis"
-      },
-      {
-        "name": "哔哩哔哩AV、BV号转换",
-        "link": "/bilibiliBv2av"
-      },
-      {
-        "name": "身份证解析",
-        "link": "/idChinese"
-      },
-      {
-        "name": "数字中文转换",
-        "link": "/nzh"
-      },
-      {
-        "name": "亲戚关系计算器",
-        "link": "/relationship"
-      },
-      {
-        "name": "Chromium下载",
-        "link": "https://chromium.cypress.io/"
-      }
-    ]
-  },
-  {
     "type": "编辑器",
     "icon": "i-icon-park-outline-editor",
     "children": [
       {
         "name": "JSON编辑器",
         "link": "/jsonEditor"
-      },
-      {
-        "name": "CSS编辑器",
-        "link": "/cssFormatter"
       },
       {
         "name": "TinyEditor",
@@ -65,29 +18,152 @@
     ]
   },
   {
+    "type": "地图工具",
+    "icon": "i-icon-park-solid-map-draw",
+    "children": [
+      {
+        "name": "GeoJSON.io",
+        "link": "/geoJson",
+        "tags": [
+          "geojson",
+          "gis"
+        ]
+      },
+      {
+        "name": "经纬度查询",
+        "link": "/latLng"
+      },
+      {
+        "name": "行政区数据",
+        "link": "https://datav.aliyun.com/tools/atlas/index.html"
+      }
+    ]
+  },
+  {
+    "type": "加密工具",
+    "icon": "i-icon-park-solid-file-lock",
+    "children": [
+      {
+        "name": "在线JWT解密",
+        "link": "/jwt"
+      },
+      {
+        "name": "MD5计算",
+        "link": "/md5"
+      },
+      {
+        "name": "GeoHash编解码",
+        "link": "/geohash"
+      },
+      {
+        "name": "UUID生成器",
+        "link": "/uuid",
+        "tags": [
+          "uuid",
+          "guid"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "转换工具",
+    "icon": "i-icon-park-outline-transform",
+    "children": [
+      {
+        "name": "颜色转换器",
+        "link": "/colorTransform"
+      },
+      {
+        "name": "Base64字符串编解码",
+        "link": "/base64"
+      },
+      {
+        "name": "Base64图片编码",
+        "link": "/imageBase64"
+      },
+      {
+        "name": "二维码生成/识别",
+        "link": "/qrcode"
+      },
+      {
+        "name": "哔哩哔哩AV、BV号转换",
+        "link": "/bilibiliBv2av"
+      },
+      {
+        "name": "数字中文转换",
+        "link": "/nzh"
+      },
+      {
+        "name": "亲戚关系计算器",
+        "link": "/relationship"
+      }
+    ]
+  },
+  {
+    "type": "网页工具",
+    "icon": "i-icon-park-outline-browser-chrome",
+    "children": [
+      {
+        "name": "短网址",
+        "link": "/urls",
+        "requiresAuth": true
+      },
+      {
+        "name": "URL编解码",
+        "link": "/urlEncode"
+      },
+      {
+        "name": "UserAgent解析",
+        "link": "/userAgent"
+      },
+      {
+        "name": "随机数生成",
+        "link": "/random"
+      },
+      {
+        "name": "渐变色生成器",
+        "link": "/gradientColor"
+      }
+    ]
+  },
+  {
+    "type": "图像和视频",
+    "icon": "i-icon-park-solid-picture-one",
+    "children": [
+      {
+        "name": "极简图床",
+        "link": "/imgHosting"
+      },
+      {
+        "name": "图片加水印",
+        "link": "/watermark"
+      },
+      {
+        "name": "屏幕录制",
+        "link": "/screenRecord"
+      }
+    ]
+  },
+  {
     "type": "开发工具",
     "icon": "i-icon-park-outline-code",
     "children": [
-      {
-        "name": "XML格式化",
-        "link": "/xmlEditor"
-      },
       {
         "name": "Mock工具",
         "link": "/mock",
         "requiresAuth": true
       },
       {
-        "name": "颜色选择器",
-        "link": "/colorTransform"
+        "name": "CSS格式化",
+        "link": "/cssFormatter"
+      },
+      {
+        "name": "XML格式化",
+        "link": "/xmlEditor"
       },
       {
         "name": "时间计算",
         "link": "/timeCompute"
-      },
-      {
-        "name": "UserAgent解析",
-        "link": "/userAgent"
       },
       {
         "name": "在线ASCII码对照表",
@@ -116,94 +192,20 @@
     ]
   },
   {
-    "type": "地图工具",
-    "icon": "i-icon-park-solid-map-draw",
+    "type": "数据工具",
+    "icon": "i-icon-park-outline-data-user",
     "children": [
       {
-        "name": "GeoJSON.io",
-        "link": "/geoJson",
-        "tags": [
-          "geojson",
-          "gis"
-        ]
+        "name": "身份证解析",
+        "link": "/idChinese"
       },
       {
-        "name": "经纬度查询",
-        "link": "/latLng"
+        "name": "glTF模型浏览",
+        "link": "/3dView"
       },
       {
-        "name": "地图选择器",
-        "link": "https://datav.aliyun.com/tools/atlas/index.html"
-      }
-    ]
-  },
-  {
-    "type": "图片工具",
-    "icon": "i-icon-park-solid-picture-one",
-    "children": [
-      {
-        "name": "极简图床",
-        "link": "/imgHosting"
-      },
-      {
-        "name": "图片加水印",
-        "link": "/watermark"
-      }
-    ]
-  },
-  {
-    "type": "编解码工具",
-    "icon": "i-icon-park-solid-file-lock",
-    "children": [
-      {
-        "name": "URL编码/解码",
-        "link": "/urlEncode"
-      },
-      {
-        "name": "在线JWT解密",
-        "link": "/jwt"
-      },
-      {
-        "name": "Base64编解码",
-        "link": "/base64"
-      },
-      {
-        "name": "图片Base64编码",
-        "link": "/imageBase64"
-      },
-      {
-        "name": "MD5计算",
-        "link": "/md5"
-      },
-      {
-        "name": "GeoHash编解码",
-        "link": "/geohash"
-      }
-    ]
-  },
-  {
-    "type": "生成工具",
-    "icon": "",
-    "children": [
-      {
-        "name": "UUID生成",
-        "link": "/uuid",
-        "tags": [
-          "uuid",
-          "guid"
-        ]
-      },
-      {
-        "name": "随机数生成",
-        "link": "/random"
-      },
-      {
-        "name": "渐变色生成器",
-        "link": "/gradientColor"
-      },
-      {
-        "name": "二维码生成/识别",
-        "link": "/qrcode"
+        "name": "这是什么动漫",
+        "link": "/whatAnimeIsThis"
       }
     ]
   },
@@ -266,6 +268,10 @@
     "icon": "i-icon-park-solid-all-application",
     "children": [
       {
+        "name": "Chromium下载",
+        "link": "https://chromium.cypress.io/"
+      },
+      {
         "name": "淘宝优惠券精选",
         "link": "https://shop.iszy.xyz"
       }
@@ -284,6 +290,10 @@
         "name": "留言反馈",
         "link": "https://github.com/ZvonimirSun/iszy-tools/discussions",
         "statistics": false
+      },
+      {
+        "name": "测试",
+        "link": "/test"
       }
     ]
   }
