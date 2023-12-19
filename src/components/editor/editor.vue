@@ -58,16 +58,20 @@ function onChange (update: ViewUpdate) {
 
 function formatBtn () {
   const val = props.plugin.formatter(cm.state.doc.toString())
-  cm.dispatch({
-    changes: { from: 0, to: cm.state.doc.length, insert: val }
-  })
+  if (val && val !== cm.state.doc.toString()) {
+    cm.dispatch({
+      changes: { from: 0, to: cm.state.doc.length, insert: val }
+    })
+  }
 }
 
 function compactBtn () {
   const val = props.plugin.compactor(cm.state.doc.toString())
-  cm.dispatch({
-    changes: { from: 0, to: cm.state.doc.length, insert: val }
-  })
+  if (val && val !== cm.state.doc.toString()) {
+    cm.dispatch({
+      changes: { from: 0, to: cm.state.doc.length, insert: val }
+    })
+  }
 }
 
 function undoBtn () {
