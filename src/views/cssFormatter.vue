@@ -6,5 +6,5 @@
 </template>
 
 <script setup>
-import Css from '@/components/editor/lang-css.js'
+import Css from '@/components/editor/lang-css'
 </script>
