@@ -32,7 +32,7 @@ function baseInfoPanel (view: EditorView): Panel {
 const plugin: EditorPlugin = {
   ...mini,
   extensions: [
-    ...mini.extensions,
+    mini.extensions,
     showPanel.of(baseInfoPanel),
     lintGutter()
   ]

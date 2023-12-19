@@ -25,8 +25,8 @@ const hightLightCompartment = new Compartment()
 
 onMounted(() => {
   const extensions = [
-    ...mini.extensions,
-    ...props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
+    mini.extensions,
+    props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
     EditorView.updateListener.of(onChange),
     themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
     hightLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))

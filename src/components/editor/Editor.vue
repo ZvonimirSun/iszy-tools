@@ -28,8 +28,8 @@ const hasRedo = ref(false)
 
 onMounted(() => {
   const extensions = [
-    ...basic.extensions,
-    ...props.plugin?.extensions || [],
+    basic.extensions,
+    props.plugin?.extensions || [],
     EditorView.updateListener.of(onChange),
     themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
     hightLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
