@@ -1,5 +1,4 @@
 import { html } from '@codemirror/lang-html'
-import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import { html as htmlBeautify } from 'js-beautify'
 
@@ -14,11 +13,9 @@ export function compactor (value: string) {
 }
 
 const plugin: EditorPlugin = {
-  ...basic,
   formatter,
   compactor,
   extensions: [
-    ...basic.extensions,
     html()
   ]
 }

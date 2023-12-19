@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   placeholder?: string
 }>(), {
   inputDefault: '',
-  plugin: () => basic,
+  plugin: undefined,
   placeholder: ''
 })
 const emits = defineEmits<{(e: 'change', v: string): void}>()
@@ -25,7 +25,8 @@ const hasRedo = ref(false)
 
 onMounted(() => {
   const extensions = [
-    ...props.plugin.extensions,
+    ...basic.extensions,
+    ...props.plugin?.extensions || [],
     EditorView.updateListener.of(onChange),
     themeCompartment.of(EditorView.theme({}, { dark: useStyleStore().isDark }))
   ]
@@ -90,11 +91,11 @@ const controls: Control[][] = [
 ]
 
 const formatControls: Control[] = []
-if (props.plugin.formatter) {
+if (props.plugin?.formatter) {
   formatControls.push({
     title: '格式化',
     event: function formatBtn () {
-      if (!props.plugin.formatter) {
+      if (!props.plugin?.formatter) {
         return
       }
       try {
@@ -109,11 +110,11 @@ if (props.plugin.formatter) {
     icon: 'i-iszy-editor-format'
   })
 }
-if (props.plugin.compactor) {
+if (props.plugin?.compactor) {
   formatControls.push({
     title: '压缩',
     event: function compactBtn () {
-      if (!props.plugin.compactor) {
+      if (!props.plugin?.compactor) {
         return
       }
       try {

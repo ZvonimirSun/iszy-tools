@@ -23,6 +23,7 @@ declare module 'vue' {
     Container: typeof import('./components/container.vue')['default']
     CopyableText: typeof import('./components/copyable-text.vue')['default']
     Editor: typeof import('./components/editor/Editor.vue')['default']
+    EditorMini: typeof import('./components/editor/EditorMini.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAutoResizer: typeof import('element-plus/es')['ElAutoResizer']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']

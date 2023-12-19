@@ -1,6 +1,5 @@
 import { javascript, esLint } from '@codemirror/lang-javascript'
 import { linter } from '@codemirror/lint'
-import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import { js as jsBeautify } from 'js-beautify'
 
@@ -26,10 +25,11 @@ export function formatter (value: string, indent = 2) {
 }
 
 const plugin: EditorPlugin = {
-  ...basic,
   formatter,
+  miniExtensions: [
+    javascript()
+  ],
   extensions: [
-    ...basic.extensions,
     javascript(),
     linter(esLint(new eslint.Linter(), config))
   ]

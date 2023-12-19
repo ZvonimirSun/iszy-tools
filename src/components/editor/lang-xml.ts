@@ -1,5 +1,4 @@
 import { xml } from '@codemirror/lang-xml'
-import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import xmlFormat from 'xml-formatter'
 
@@ -39,11 +38,9 @@ export function isValid (val: string): boolean {
 }
 
 const plugin: EditorPlugin = {
-  ...basic,
   formatter,
   compactor,
   extensions: [
-    ...basic.extensions,
     xml()
   ]
 }

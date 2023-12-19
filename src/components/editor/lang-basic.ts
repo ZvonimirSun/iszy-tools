@@ -1,10 +1,7 @@
-import { basicSetup } from 'codemirror'
-import { EditorState } from '@codemirror/state'
 import { lintGutter } from '@codemirror/lint'
-import { indentWithTab } from '@codemirror/commands'
-import { keymap, drawSelection, EditorView, Panel, ViewUpdate, showPanel } from '@codemirror/view'
+import { EditorView, Panel, ViewUpdate, showPanel } from '@codemirror/view'
 import { EditorPlugin } from './editor'
-import chinesePhrases from './chinese-phrases'
+import mini from './lang-mini'
 
 // 基本信息条
 function baseInfoPanel (view: EditorView): Panel {
@@ -33,11 +30,9 @@ function baseInfoPanel (view: EditorView): Panel {
 }
 
 const plugin: EditorPlugin = {
+  ...mini,
   extensions: [
-    basicSetup,
-    EditorState.phrases.of(chinesePhrases),
-    keymap.of([indentWithTab]),
-    drawSelection(),
+    ...mini.extensions,
     showPanel.of(baseInfoPanel),
     lintGutter()
   ]

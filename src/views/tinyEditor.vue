@@ -1,6 +1,6 @@
 <template>
   <div class="panel">
-    <Editor
+    <EditorMini
       v-show="!fullScreenStatus"
       class="inputPanel"
       placeholder="请输入HTML内容"
@@ -8,7 +8,7 @@
       :input-default="store.html"
       @change="store.html = $event"
     />
-    <Editor
+    <EditorMini
       v-show="!fullScreenStatus"
       class="inputPanel"
       placeholder="请输入JS内容"
@@ -16,7 +16,7 @@
       :input-default="store.js"
       @change="store.js = $event"
     />
-    <Editor
+    <EditorMini
       v-show="!fullScreenStatus"
       class="inputPanel"
       placeholder="请输入CSS内容"
