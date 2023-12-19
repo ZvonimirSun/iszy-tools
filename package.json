@@ -13,6 +13,7 @@
   "dependencies": {
     "@ckpack/vue-color": "^1.5.0",
     "@codemirror/commands": "^6.3.2",
+    "@codemirror/lang-css": "^6.2.1",
     "@codemirror/lang-javascript": "^6.2.1",
     "@codemirror/lang-xml": "^6.0.2",
     "@codemirror/lint": "^6.4.2",
@@ -75,6 +76,7 @@
     "@types/esri-leaflet": "^3.0.3",
     "@types/file-saver": "^2.0.7",
     "@types/geojson": "^7946.0.13",
+    "@types/js-beautify": "^1.14.3",
     "@types/jsoneditor": "^9.9.5",
     "@types/leaflet": "^1.9.8",
     "@types/lodash-es": "^4.17.12",
