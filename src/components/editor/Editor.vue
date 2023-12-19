@@ -5,6 +5,8 @@ import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
 import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import { useStyleStore } from '@/stores/style'
+import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
+import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
 
 const props = withDefaults(defineProps<{
   inputDefault?: string,
@@ -20,6 +22,7 @@ const emits = defineEmits<{(e: 'change', v: string): void}>()
 const editor = ref<HTMLDivElement>()
 let cm: EditorView
 const themeCompartment = new Compartment()
+const hightLightCompartment = new Compartment()
 const hasUndo = ref(false)
 const hasRedo = ref(false)
 
@@ -28,7 +31,8 @@ onMounted(() => {
     ...basic.extensions,
     ...props.plugin?.extensions || [],
     EditorView.updateListener.of(onChange),
-    themeCompartment.of(EditorView.theme({}, { dark: useStyleStore().isDark }))
+    themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
+    hightLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
   ]
   if (props.placeholder) {
     extensions.push(PlaceHolder(props.placeholder))
@@ -48,7 +52,10 @@ onBeforeUnmount(() => {
 
 watch(() => useStyleStore().isDark, (val) => {
   cm.dispatch({
-    effects: themeCompartment.reconfigure(EditorView.theme({}, { dark: val }))
+    effects: [
+      themeCompartment.reconfigure(val ? oneDarkTheme : EditorView.theme({}, { dark: false })),
+      hightLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
+    ]
   })
 })
 
