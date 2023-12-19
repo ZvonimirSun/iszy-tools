@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Xml from '@/components/editor/xml'
+import Xml from '@/components/editor/lang-xml'
 
 defineProps({
   value: {

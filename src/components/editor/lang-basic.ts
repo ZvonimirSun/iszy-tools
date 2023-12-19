@@ -39,12 +39,8 @@ const plugin: EditorPlugin = {
     drawSelection(),
     showPanel.of(baseInfoPanel)
   ],
-  formatter: (value: string) => {
-    return value
-  },
-  compactor: (value: string) => {
-    return value
-  }
+  formatter: (value: string) => value,
+  compactor: (value: string) => value
 }
 
 export default plugin

@@ -2,7 +2,7 @@
 import { EditorView, ViewUpdate } from '@codemirror/view'
 import { Compartment, EditorState } from '@codemirror/state'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
-import basic from './basic'
+import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import { useStyleStore } from '@/stores/style'
 
@@ -66,24 +66,28 @@ const controls: {
     {
       title: '格式化',
       event: function formatBtn () {
-        const val = props.plugin.formatter(cm.state.doc.toString())
-        if (val && val !== cm.state.doc.toString()) {
-          cm.dispatch({
-            changes: { from: 0, to: cm.state.doc.length, insert: val }
-          })
-        }
+        try {
+          const val = props.plugin.formatter(cm.state.doc.toString())
+          if (val && val !== cm.state.doc.toString()) {
+            cm.dispatch({
+              changes: { from: 0, to: cm.state.doc.length, insert: val }
+            })
+          }
+        } catch (e) {}
       },
       icon: 'i-iszy-editor-format'
     },
     {
       title: '压缩',
       event: function compactBtn () {
-        const val = props.plugin.compactor(cm.state.doc.toString())
-        if (val && val !== cm.state.doc.toString()) {
-          cm.dispatch({
-            changes: { from: 0, to: cm.state.doc.length, insert: val }
-          })
-        }
+        try {
+          const val = props.plugin.compactor(cm.state.doc.toString())
+          if (val && val !== cm.state.doc.toString()) {
+            cm.dispatch({
+              changes: { from: 0, to: cm.state.doc.length, insert: val }
+            })
+          }
+        } catch (e) {}
       },
       icon: 'i-iszy-editor-compact'
     }

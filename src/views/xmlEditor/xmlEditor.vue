@@ -1,14 +1,14 @@
 <template>
   <div class="code-container">
     <el-switch
-      :model-value="advancedMode"
+      :model-value="data.advancedMode"
       size="large"
       inactive-text="简易模式"
       active-text="高级模式"
       @change="toggleMode"
     />
     <div
-      v-if="!advancedMode"
+      v-if="!data.advancedMode"
       flex
       gap-4
       flex-col
@@ -21,7 +21,7 @@
         items-center
       >
         <el-switch
-          v-model="collapseContent"
+          v-model="options.collapseContent"
           size="large"
           inactive-text="折叠内容"
         />
@@ -29,7 +29,7 @@
           缩进大小
         </span>
         <el-input-number
-          v-model="indentValue"
+          v-model="options.indentValue"
           :min="0"
           :max="10"
           :step="1"
@@ -41,30 +41,34 @@
         input-label="你的XML内容"
         input-placeholder="在这里粘贴XML内容..."
         output-label="格式化后的XML内容"
-        :input-default="value"
+        :input-default="data.value"
         :transformer="transformer"
         :input-validation-rules="rules"
-        @format="formattedValue = $event"
+        @format="data.formattedValue = $event"
       />
     </div>
     <full-editor
       v-else
-      :value="value"
+      :value="data.value"
       @change="updateValue"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import xmlFormat from 'xml-formatter'
+import { formatter, isValid } from '@/components/editor/lang-xml'
 import FullEditor from './child/fullEditor.vue'
 
-const advancedMode = ref(false)
-const value = ref('<hello><world>foo</world><world>bar</world></hello>')
-const formattedValue = ref('')
+const data = reactive({
+  advancedMode: false,
+  value: '<hello><world>foo</world><world>bar</world></hello>',
+  formattedValue: ''
+})
 
-const collapseContent = ref(true)
-const indentValue = ref(2)
+const options = reactive({
+  collapseContent: true,
+  indentValue: 2
+})
 
 const rules = [{
   validator: (rule: any, val: string, callback: any) => {
@@ -78,20 +82,18 @@ const rules = [{
 }]
 
 function toggleMode () {
-  value.value = formattedValue.value || value.value
-  advancedMode.value = !advancedMode.value
+  data.value = data.formattedValue || data.value
+  data.advancedMode = !data.advancedMode
 }
 
 function updateValue (val: string) {
-  formattedValue.value = val
+  data.formattedValue = val
 }
 
 function transformer (value: string) {
   try {
-    return xmlFormat(value.trim(), {
-      collapseContent: collapseContent.value,
-      indentation: ' '.repeat(indentValue.value),
-      lineSeparator: '\n'
+    return formatter(value.trim(), options.indentValue, {
+      collapseContent: options.collapseContent
     })
   } catch (e) {
     return ''
@@ -103,12 +105,7 @@ function isValidXML (val: string) {
   if (!tmp) {
     return true
   }
-  try {
-    xmlFormat(tmp)
-    return true
-  } catch (e) {
-    return false
-  }
+  return isValid(tmp)
 }
 </script>
 

@@ -1,14 +1,15 @@
 import { xml } from '@codemirror/lang-xml'
-import basic from './basic'
+import basic from './lang-basic'
 import { EditorPlugin } from './editor'
 import xmlFormat from 'xml-formatter'
 
-export function formatter (val: string): string {
+export function formatter (val: string, indent = 2, options = {}): string {
   try {
     return xmlFormat(val.trim(), {
       collapseContent: true,
-      indentation: '  ',
-      lineSeparator: '\n'
+      indentation: ' '.repeat(indent),
+      lineSeparator: '\n',
+      ...options
     })
   } catch (e) {
     return val
@@ -25,6 +26,15 @@ export function compactor (val: string): string {
     })
   } catch (e) {
     return val
+  }
+}
+
+export function isValid (val: string): boolean {
+  try {
+    xmlFormat(val.trim())
+    return true
+  } catch (e) {
+    return false
   }
 }
 

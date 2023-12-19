@@ -23,7 +23,6 @@ interface ToolMenu {
   children: ToolItem[]
 }
 
-
 export const useToolsStore = defineStore('tools', {
   getters: {
     oriToolMenus (): ToolMenu[] {
