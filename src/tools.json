@@ -117,6 +117,10 @@
         "link": "/userAgent"
       },
       {
+        "name": "WHOIS查询",
+        "link": "/whois"
+      },
+      {
         "name": "随机数生成",
         "link": "/random"
       },
