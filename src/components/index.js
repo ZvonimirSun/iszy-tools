@@ -1,7 +1,0 @@
-export * from './color-picker'
-export { default as Container } from './container.vue'
-export { default as Checkerboard } from './checkerboard.vue'
-export { default as FixedWidgets } from './fixed-widgets.vue'
-export { default as VueCodemirror } from './vue-codemirror.vue'
-export { default as CopyableText } from './copyable-text.vue'
-export { default as VanillaJsonEditor } from './VanillaJsonEditor.vue'
