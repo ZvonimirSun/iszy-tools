@@ -129,6 +129,7 @@ onMounted(() => {
   jsonEditor = new JSONEditor({
     target: jsonEditorDiv.value,
     props: {
+      content: { json: {} },
       onChange: (updatedContent: Content) => {
         if (updating) return
         if (isJSONContent(updatedContent)) {
@@ -137,21 +138,13 @@ onMounted(() => {
           emits('change', updatedContent.text)
         }
       },
+      indentation: _indent.value,
       ..._pickDefinedProps(oldConfig, propNames)
     }
   })
-  if (props.content != null) {
-    if (typeof props.content === 'string') {
-      jsonEditor.set({ text: props.content })
-    } else {
-      jsonEditor.set({ json: props.content })
-    }
-  } else {
-    jsonEditor.set({ json: {} })
+  if (props.config.indentation) {
+    _indent.value = props.config.indentation
   }
-  jsonEditor.updateProps({
-    indentation: _indent.value
-  })
 })
 
 onBeforeUnmount(() => {

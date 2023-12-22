@@ -144,6 +144,7 @@
           <template #actions>
             <el-button
               type="danger"
+              @click.stop="store.deleteData({ id: item._id })"
             >
               删除
             </el-button>
