@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Content, isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
+import { type Content, isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
 import { clone } from 'lodash-es'
-import type { JSONValue } from '@/index'
 import { useStyleStore } from '@/stores/style'
+import type { EditorValue } from '@/index'
 
 // JSONEditor properties as of version 0.3.60
 const propNames = [
@@ -87,7 +87,7 @@ const documentProperties = computed<{
 })
 
 const emits = defineEmits<
-  {(e: 'change', data: string | JSONValue): void
+  {(e: 'change', data: EditorValue): void
   (e: 'create'): void
   (e: 'changeName', name: string): void
   (e: 'open', file: { name: string, content: string }): void
@@ -105,7 +105,7 @@ defineExpose({
 })
 
 const props = withDefaults(defineProps<{
-  content?: JSONValue | string,
+  content?: EditorValue,
   config?: Record<string, any>,
   showMenuBar?: boolean,
   name?: string
@@ -218,7 +218,7 @@ function openFile (e: Event) {
   target.value = ''
 }
 
-function update (val: JSONValue | string) {
+function update (val: EditorValue) {
   updating = true
   let data
   if (val != null) {
@@ -234,7 +234,7 @@ function update (val: JSONValue | string) {
   }, 0)
 }
 
-function set (val: JSONValue | string) {
+function set (val: EditorValue) {
   updating = true
   if (val != null) {
     if (typeof val === 'string') {

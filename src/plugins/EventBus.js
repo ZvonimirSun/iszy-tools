@@ -1,6 +1,6 @@
 const EventBus = {
   /**
-   * @type Map<String,Array>
+   * @type {Map<String,Array>}
    */
   events: new Map(),
   /**

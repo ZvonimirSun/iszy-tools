@@ -14,10 +14,10 @@
 import { debounce } from 'lodash-es'
 import $eventBus from '@/plugins/EventBus.js'
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
-import { JSONValue } from '@/index'
+import { EditorValue } from '@/index'
 
 const editor = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-let geoJson: JSONValue = {
+let geoJson: any = {
   type: 'FeatureCollection',
   features: []
 }
@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
 
 const onChangeDebounce = debounce(onChange, 500)
 
-function onChange (val: JSONValue | string) {
+function onChange (val: EditorValue) {
   try {
     if (typeof val === 'string') {
       geoJson = JSON.parse(val)
@@ -45,7 +45,7 @@ function onChange (val: JSONValue | string) {
   } catch (e) {}
 }
 
-function updateEditor (val: JSONValue) {
+function updateEditor (val: EditorValue) {
   editor.value?.update(val)
 }
 </script>
