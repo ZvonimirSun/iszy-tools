@@ -1,7 +1,8 @@
 <template>
-  <Editor
-    h-full
+  <FormatTransformer
+    w-full
     :plugin="Css"
+    target="CSS"
   />
 </template>
 

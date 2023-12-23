@@ -8,6 +8,7 @@ import type { Ref } from 'vue'
 const props = withDefaults(
   defineProps<{
     plugin: EditorPlugin,
+    target?: string
     inputLabel?: string
     inputDefault?: string
     inputPlaceholder?: string,
@@ -16,6 +17,7 @@ const props = withDefaults(
     options?: Record<string, any>
   }>(),
   {
+    target: '',
     inputLabel: '输入',
     inputDefault: '',
     inputPlaceholder: '输入...',
@@ -25,8 +27,21 @@ const props = withDefaults(
   }
 )
 
-const { plugin, inputLabel, inputDefault, inputPlaceholder, invalidMessage, outputLabel, options } = toRefs(props)
+const { plugin, inputDefault } = toRefs(props)
 
+const { _inputLabel, _inputPlaceholder, _invalidMessage, _outputLabel } = props.target
+  ? {
+      _inputLabel: '你的' + props.target + '内容',
+      _inputPlaceholder: '在这里粘贴' + props.target + '内容...',
+      _invalidMessage: '请输入正确的' + props.target + '内容',
+      _outputLabel: '格式化后的' + props.target + '内容'
+    }
+  : {
+      _inputLabel: props.inputLabel,
+      _inputPlaceholder: props.inputPlaceholder,
+      _invalidMessage: props.invalidMessage,
+      _outputLabel: props.outputLabel
+    }
 const emits = defineEmits<{(e: 'format', data: string): void}>()
 
 const editor = ref<InstanceType<typeof EditorMini>>() as Ref<InstanceType<typeof EditorMini>>
@@ -41,9 +56,9 @@ const valid = computed(() => isValid(form.input))
 watch(inputDefault, (val) => {
   form.input = val
 })
-watch([valid, options, editor], () => {
+watch([valid, () => props.options, editor], () => {
   if (valid.value) {
-    editor.value?.setInput(formatter(form.input, options.value))
+    editor.value?.setInput(formatter(form.input, props.options))
   } else {
     editor.value?.setInput('')
   }
@@ -55,7 +70,7 @@ const rules = reactive<FormRules<typeof form>>({
   input: [{
     validator: (rule: unknown, val: string, callback: any) => {
       if (!valid.value) {
-        callback(new Error(invalidMessage.value))
+        callback(new Error(_invalidMessage))
       } else {
         callback()
       }
@@ -73,18 +88,18 @@ const rules = reactive<FormRules<typeof form>>({
       :rules="rules"
     >
       <el-form-item
-        :label="inputLabel"
+        :label="_inputLabel"
         prop="input"
       >
         <el-input
           v-model="form.input"
-          :placeholder="inputPlaceholder"
+          :placeholder="_inputPlaceholder"
           :rows="20"
           type="textarea"
         />
       </el-form-item>
       <el-form-item
-        :label="outputLabel"
+        :label="_outputLabel"
       >
         <EditorMini
           ref="editor"
