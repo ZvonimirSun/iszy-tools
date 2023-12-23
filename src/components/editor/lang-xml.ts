@@ -1,5 +1,5 @@
 import { xml } from '@codemirror/lang-xml'
-import { EditorPlugin } from './editor'
+import { EditorPlugin } from '@/index'
 import xmlFormat from 'xml-formatter'
 
 export function formatter (val: string, indent = 2, options = {}): string {

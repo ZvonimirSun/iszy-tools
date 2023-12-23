@@ -1,6 +1,6 @@
 import { javascript, esLint } from '@codemirror/lang-javascript'
 import { linter } from '@codemirror/lint'
-import { EditorPlugin } from './editor'
+import { EditorPlugin } from '@/index'
 import { js as jsBeautify } from 'js-beautify'
 
 // Uses linter.mjs

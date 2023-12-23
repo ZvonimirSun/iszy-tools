@@ -1,6 +1,6 @@
 import { lintGutter } from '@codemirror/lint'
 import { EditorView, Panel, ViewUpdate, showPanel } from '@codemirror/view'
-import { EditorPlugin } from './editor'
+import { EditorPlugin } from '@/index'
 import mini from './lang-mini'
 
 // 基本信息条

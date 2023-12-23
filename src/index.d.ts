@@ -3,6 +3,8 @@ import { AxiosResponse } from 'axios'
 // typings.d.ts or router.ts
 import 'vue-router'
 
+import { Extension } from '@codemirror/state'
+
 // element-plus
 declare global {
   const ElMessage: typeof import('element-plus/es')['ElMessage']
@@ -52,3 +54,10 @@ declare module 'vue-router' {
 }
 
 export type EditorValue = string | unknown
+
+export type EditorPlugin = {
+  extensions: Extension[],
+  miniExtensions?: Extension[],
+  formatter?:(v: string) => string,
+  compactor?:(v: string) => string
+}

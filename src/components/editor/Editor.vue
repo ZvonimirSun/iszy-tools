@@ -3,7 +3,7 @@ import { EditorView, ViewUpdate, placeholder as PlaceHolder } from '@codemirror/
 import { Compartment, EditorState } from '@codemirror/state'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
 import basic from './lang-basic'
-import { EditorPlugin } from './editor'
+import { EditorPlugin } from '@/index'
 import { useStyleStore } from '@/stores/style'
 import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
