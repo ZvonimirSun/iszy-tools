@@ -8,15 +8,18 @@ import EditorMini from './EditorMini.vue'
 const props = withDefaults(defineProps<{
   inputDefault?: string,
   plugin?: EditorPlugin,
-  placeholder?: string
+  placeholder?: string,
+  readonly?: boolean
 }>(), {
   inputDefault: '',
   plugin: undefined,
-  placeholder: ''
+  placeholder: '',
+  readonly: false
 })
 const emits = defineEmits<{(e: 'change', v: string): void}>()
 defineExpose({
-  getView
+  getView,
+  setInput
 })
 
 const editor = ref<InstanceType<typeof EditorMini>>()
@@ -47,8 +50,12 @@ function onChange (val: string) {
   emits('change', val)
 }
 
-function getView (): EditorView {
-  return cm
+function getView () {
+  return editor.value?.getView()
+}
+
+function setInput (val: string) {
+  editor.value?.setInput(val)
 }
 
 type Control = {
@@ -158,6 +165,7 @@ if (formatControls.length) {
       :input-default="inputDefault"
       :placeholder="placeholder"
       :plugin="newPlugin"
+      :readonly="readonly"
       @change="onChange"
     />
   </div>

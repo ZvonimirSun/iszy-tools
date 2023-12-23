@@ -10,15 +10,18 @@ import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
 const props = withDefaults(defineProps<{
   inputDefault?: string,
   plugin?: EditorPlugin,
-  placeholder?: string
+  placeholder?: string,
+  readonly?: boolean
 }>(), {
   inputDefault: '',
   plugin: undefined,
-  placeholder: ''
+  placeholder: '',
+  readonly: false
 })
 const emits = defineEmits<{(e: 'change', v: string): void}>()
 defineExpose({
-  getView
+  getView,
+  setInput
 })
 
 const editor = ref<HTMLDivElement>()
@@ -35,6 +38,9 @@ const extensions = [
 ]
 if (props.placeholder) {
   extensions.push(PlaceHolder(props.placeholder))
+}
+if (props.readonly) {
+  extensions.push(EditorState.readOnly.of(true))
 }
 
 onMounted(() => {
@@ -64,6 +70,16 @@ function onChange (update: ViewUpdate) {
   if (update.docChanged) {
     emits('change', update.state.doc.toString())
   }
+}
+
+function setInput (val: string) {
+  cm.dispatch({
+    changes: {
+      from: 0,
+      to: cm.state.doc.length,
+      insert: val
+    }
+  })
 }
 
 function getView (): EditorView {
