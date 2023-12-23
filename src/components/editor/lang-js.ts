@@ -18,7 +18,7 @@ const config = {
   }
 }
 
-export function formatter (value: string, indent = 2) {
+export function formatter (value: string, { indent = 2 } = {}) {
   return jsBeautify(value, {
     indent_size: indent
   })

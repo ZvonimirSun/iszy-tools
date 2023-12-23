@@ -1,59 +1,73 @@
 <script setup lang="ts">
 import { identity } from 'lodash-es'
-import type { FormInstance, FormItemRule, FormRules } from 'element-plus'
+import type { FormRules } from 'element-plus'
+import { EditorPlugin } from '@/index'
+import EditorMini from '@/components/editor/EditorMini.vue'
+import type { Ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    transformer?:(v: string) => string
-    inputValidationRules?: FormItemRule[]
+    plugin: EditorPlugin,
     inputLabel?: string
-    inputPlaceholder?: string
     inputDefault?: string
-    outputLabel?: string
+    inputPlaceholder?: string,
+    invalidMessage?: string,
+    outputLabel?: string,
+    options?: Record<string, any>
   }>(),
   {
-    transformer: identity,
-    inputValidationRules: () => [],
     inputLabel: '输入',
     inputDefault: '',
     inputPlaceholder: '输入...',
-    outputLabel: '输出'
+    invalidMessage: '请输入正确的内容',
+    outputLabel: '输出',
+    options: () => ({})
   }
 )
 
-const { transformer, inputValidationRules, inputLabel, outputLabel, inputPlaceholder, inputDefault } = toRefs(props)
+const { plugin, inputLabel, inputDefault, inputPlaceholder, invalidMessage, outputLabel, options } = toRefs(props)
 
 const emits = defineEmits<{(e: 'format', data: string): void}>()
 
-const ruleFormRef = ref<FormInstance>()
-
+const editor = ref<InstanceType<typeof EditorMini>>() as Ref<InstanceType<typeof EditorMini>>
 const form = reactive({
   input: inputDefault.value
 })
+const formatter = props.plugin.formatter || identity<string>
+const isValid = props.plugin.isValid || (() => true)
+
+const valid = computed(() => isValid(form.input))
 
 watch(inputDefault, (val) => {
   form.input = val
 })
-
-const output = computed(() => transformer.value(form.input))
+watch([valid, options, editor], () => {
+  if (valid.value) {
+    editor.value?.setInput(formatter(form.input, options.value))
+  } else {
+    editor.value?.setInput('')
+  }
+}, {
+  deep: true
+})
 
 const rules = reactive<FormRules<typeof form>>({
-  input: inputValidationRules.value
-})
-
-onMounted(() => {
-  emits('format', output.value)
-})
-
-watch(output, () => {
-  emits('format', output.value)
+  input: [{
+    validator: (rule: unknown, val: string, callback: any) => {
+      if (!valid.value) {
+        callback(new Error(invalidMessage.value))
+      } else {
+        callback()
+      }
+    },
+    trigger: 'change'
+  }]
 })
 </script>
 
 <template>
   <div class="formatter-container">
     <el-form
-      ref="ruleFormRef"
       :model="form"
       label-position="top"
       :rules="rules"
@@ -72,11 +86,10 @@ watch(output, () => {
       <el-form-item
         :label="outputLabel"
       >
-        <el-input
-          :model-value="output"
-          :rows="20"
-          type="textarea"
-          readonly
+        <EditorMini
+          ref="editor"
+          :plugin="plugin"
+          :readonly="true"
         />
       </el-form-item>
     </el-form>
@@ -84,18 +97,13 @@ watch(output, () => {
 </template>
 
 <style scoped lang="scss">
-.formatter-container {
+.el-form {
+  width: 100%;
   display: flex;
   gap: .8rem;
 
-  .el-form {
-    width: 100%;
-    display: flex;
-    gap: .8rem;
-
-    .el-form-item {
-      width: 50%;
-    }
+  .el-form-item {
+    width: 50%;
   }
 }
 </style>

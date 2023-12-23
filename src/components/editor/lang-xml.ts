@@ -2,13 +2,14 @@ import { xml } from '@codemirror/lang-xml'
 import { EditorPlugin } from '@/index'
 import xmlFormat from 'xml-formatter'
 
-export function formatter (val: string, indent = 2, options = {}): string {
+export function formatter (val: string, options: {indent?: number} & Record<string, any> = {}): string {
   try {
+    const { indent = 2, ...other } = options
     return xmlFormat(val.trim(), {
       collapseContent: true,
       indentation: ' '.repeat(indent),
       lineSeparator: '\n',
-      ...options
+      ...other
     })
   } catch (e) {
     return val
@@ -40,6 +41,7 @@ export function isValid (val: string): boolean {
 const plugin: EditorPlugin = {
   formatter,
   compactor,
+  isValid,
   extensions: [
     xml()
   ]

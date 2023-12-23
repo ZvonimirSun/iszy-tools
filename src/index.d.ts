@@ -58,6 +58,7 @@ export type EditorValue = string | unknown
 export type EditorPlugin = {
   extensions: Extension[],
   miniExtensions?: Extension[],
-  formatter?:(v: string) => string,
+  isValid?: (v: string) => boolean,
+  formatter?:(v: string, options?: Record<string, any>) => string,
   compactor?:(v: string) => string
 }
