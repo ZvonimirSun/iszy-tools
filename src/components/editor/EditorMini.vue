@@ -17,23 +17,27 @@ const props = withDefaults(defineProps<{
   placeholder: ''
 })
 const emits = defineEmits<{(e: 'change', v: string): void}>()
+defineExpose({
+  getView
+})
 
 const editor = ref<HTMLDivElement>()
 let cm: EditorView
 const themeCompartment = new Compartment()
-const hightLightCompartment = new Compartment()
+const highLightCompartment = new Compartment()
+
+const extensions = [
+  mini.extensions,
+  props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
+  EditorView.updateListener.of(onChange),
+  themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
+  highLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
+]
+if (props.placeholder) {
+  extensions.push(PlaceHolder(props.placeholder))
+}
 
 onMounted(() => {
-  const extensions = [
-    mini.extensions,
-    props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
-    EditorView.updateListener.of(onChange),
-    themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-    hightLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
-  ]
-  if (props.placeholder) {
-    extensions.push(PlaceHolder(props.placeholder))
-  }
   cm = new EditorView({
     state: EditorState.create({
       extensions,
@@ -43,7 +47,7 @@ onMounted(() => {
   })
 })
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
   cm?.destroy()
 })
 
@@ -51,7 +55,7 @@ watch(() => useStyleStore().isDark, (val) => {
   cm.dispatch({
     effects: [
       themeCompartment.reconfigure(val ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-      hightLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
+      highLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
     ]
   })
 })
@@ -60,6 +64,10 @@ function onChange (update: ViewUpdate) {
   if (update.docChanged) {
     emits('change', update.state.doc.toString())
   }
+}
+
+function getView (): EditorView {
+  return cm
 }
 </script>
 

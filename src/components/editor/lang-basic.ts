@@ -1,7 +1,6 @@
 import { lintGutter } from '@codemirror/lint'
 import { EditorView, Panel, ViewUpdate, showPanel } from '@codemirror/view'
 import { EditorPlugin } from '@/index'
-import mini from './lang-mini'
 
 // 基本信息条
 function baseInfoPanel (view: EditorView): Panel {
@@ -30,9 +29,7 @@ function baseInfoPanel (view: EditorView): Panel {
 }
 
 const plugin: EditorPlugin = {
-  ...mini,
   extensions: [
-    mini.extensions,
     showPanel.of(baseInfoPanel),
     lintGutter()
   ]

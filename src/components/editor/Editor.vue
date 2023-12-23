@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { EditorView, ViewUpdate, placeholder as PlaceHolder } from '@codemirror/view'
-import { Compartment, EditorState } from '@codemirror/state'
+import { EditorView } from '@codemirror/view'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
 import basic from './lang-basic'
 import { EditorPlugin } from '@/index'
-import { useStyleStore } from '@/stores/style'
-import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
-import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
+import EditorMini from './EditorMini.vue'
 
 const props = withDefaults(defineProps<{
   inputDefault?: string,
@@ -18,53 +15,40 @@ const props = withDefaults(defineProps<{
   placeholder: ''
 })
 const emits = defineEmits<{(e: 'change', v: string): void}>()
+defineExpose({
+  getView
+})
 
-const editor = ref<HTMLDivElement>()
+const editor = ref<InstanceType<typeof EditorMini>>()
 let cm: EditorView
-const themeCompartment = new Compartment()
-const hightLightCompartment = new Compartment()
 const hasUndo = ref(false)
 const hasRedo = ref(false)
 
-onMounted(() => {
-  const extensions = [
+const newPlugin: EditorPlugin = {
+  ...props.plugin,
+  miniExtensions: undefined,
+  extensions: [
     basic.extensions,
-    props.plugin?.extensions || [],
-    EditorView.updateListener.of(onChange),
-    themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-    hightLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
+    ...(props.plugin?.extensions || [])
   ]
-  if (props.placeholder) {
-    extensions.push(PlaceHolder(props.placeholder))
+}
+
+onMounted(() => {
+  if (!editor.value) { return }
+  cm = editor.value.getView()
+})
+
+function onChange (val: string) {
+  if (!cm) {
+    return
   }
-  cm = new EditorView({
-    state: EditorState.create({
-      extensions,
-      doc: props.inputDefault
-    }),
-    parent: editor.value
-  })
-})
+  hasUndo.value = undoDepth(cm.state) > 0
+  hasRedo.value = redoDepth(cm.state) > 0
+  emits('change', val)
+}
 
-onBeforeUnmount(() => {
-  cm?.destroy()
-})
-
-watch(() => useStyleStore().isDark, (val) => {
-  cm.dispatch({
-    effects: [
-      themeCompartment.reconfigure(val ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-      hightLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
-    ]
-  })
-})
-
-function onChange (update: ViewUpdate) {
-  if (update.docChanged) {
-    hasUndo.value = undoDepth(cm.state) > 0
-    hasRedo.value = redoDepth(cm.state) > 0
-    emits('change', update.state.doc.toString())
-  }
+function getView (): EditorView {
+  return cm
 }
 
 type Control = {
@@ -73,7 +57,6 @@ type Control = {
   isDisabled?: () => boolean,
   icon: string
 }
-
 const controls: Control[][] = [
   [
     {
@@ -96,7 +79,6 @@ const controls: Control[][] = [
     }
   ]
 ]
-
 const formatControls: Control[] = []
 if (props.plugin?.formatter) {
   formatControls.push({
@@ -171,25 +153,17 @@ if (formatControls.length) {
         </div>
       </template>
     </div>
-    <div
+    <EditorMini
       ref="editor"
-      class="editor"
-      w-full
+      :input-default="inputDefault"
+      :placeholder="placeholder"
+      :plugin="newPlugin"
+      @change="onChange"
     />
   </div>
 </template>
 
 <style scoped lang="scss">
-:deep(.cm-editor) {
-  max-height: none;
-  border: none;
-  height: 100%;
-
-  &.cm-focused {
-    outline: none;
-  }
-}
-
 .controller {
   background: var(--el-color-primary);
   width: 100%;
@@ -224,13 +198,5 @@ if (formatControls.length) {
       font-size: 1.6rem;
     }
   }
-}
-
-.editor {
-  border: 1px solid var(--el-color-primary);;
-  height: calc(100% - 3rem);
-  overflow: auto;
-  display: block;
-  box-sizing: border-box;
 }
 </style>
