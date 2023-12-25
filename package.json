@@ -92,7 +92,7 @@
     "@vitejs/plugin-basic-ssl": "^1.0.2",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
-    "@vue/compiler-sfc": "^3.3.12",
+    "@vue/compiler-sfc": "^3.3.13",
     "@vue/runtime-dom": "^3.3.12",
     "co": "^4.6.0",
     "eslint": "^8.56.0",
