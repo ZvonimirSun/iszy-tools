@@ -19,9 +19,20 @@
       w-xl
       max-w-full
     >
-      <a-typography-title :level="4">
-        颜色
+      <div flex>
+        <a-typography-title :level="4">
+          取色器
       </a-typography-title>
+        <el-button
+          ml-5
+          size="default"
+          type="primary"
+          @click="pickColor"
+          id="colorPicker"
+        >
+          拾色器
+        </el-button>
+      </div>
       <el-form
         :label-width="100"
       >
@@ -593,6 +604,24 @@ function cmyk2rgb (c, m, y, k) {
   b = Math.round(b)
 
   return [r, g, b]
+}
+
+function pickColor() {
+  if (!window.EyeDropper) {
+    ElMessage.error("你的浏览器不支持屏幕拾色！");
+    return;
+  }
+  const eyeDropper = new EyeDropper()
+  eyeDropper
+    .open()
+    .then((result) => {
+      isValidColor(result.sRGBHex) && colorChange({ cssString: result.sRGBHex, from: 'colorPicker' })
+      document.getElementById('colorPicker').blur()
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+
 }
 </script>
 
