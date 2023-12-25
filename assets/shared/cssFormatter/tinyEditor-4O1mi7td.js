@@ -1,0 +1,1 @@
+import{c as r}from"../../common-xyEwhLF0.js";import{j as t}from"../../js-beautify-ZBorlEpi.js";function c(s,{indent:e=2}={}){return t.css(s,{indent_size:e})}function n(s){return s.replace(/\s+|\n/g," ").replace(/\s*{\s*/g,"{").replace(/\s*}\s*/g,"}").replace(/\s*:\s*/g,":").replace(/\s*;\s*/g,";")}const a={formatter:c,compactor:n,extensions:[r()]};export{a as p};
