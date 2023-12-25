@@ -6,37 +6,42 @@
     <div class="wrapper">
       <transition>
         <div
-          v-show="selectedColor"
+          v-if="selectedColor"
           class="selectedColor"
         >
           <div
             ref="selectedColorNameWrapper"
             class="selectedColorNameWrapper"
+            :style="{
+              color: selectedFontColor
+            }"
           >
             <div
-              v-if="selectedColor"
               :style="{fontSize:selectedColorNameSize-8+'px',lineHeight:selectedColorNameSize+'px'}"
             >
               {{ selectedColor.name }}
             </div>
             <div
-              v-if="selectedColor"
               :style="{fontSize:(selectedColorNameSize/2-16)+'px',lineHeight:(selectedColorNameSize/2-8)+'px'}"
             >
               {{ selectedColor.pinyin.toUpperCase() }}
             </div>
           </div>
           <div
-            v-if="selectedColor"
             class="selectedColorDataWrapper"
           >
             <el-space
               direction="vertical"
               :size="8"
             >
-              <a-typography-title :level="4">
+              <div
+                class="label"
+                :style="{
+                  color: selectedFontColor
+                }"
+              >
                 CMYK
-              </a-typography-title>
+              </div>
               <el-space :size="8">
                 <el-progress
                   type="circle"
@@ -79,9 +84,14 @@
                   </template>
                 </el-progress>
               </el-space>
-              <a-typography-title :level="4">
+              <div
+                class="label"
+                :style="{
+                  color: selectedFontColor
+                }"
+              >
                 RGB
-              </a-typography-title>
+              </div>
               <el-space :size="8">
                 <el-progress
                   type="circle"
@@ -114,12 +124,22 @@
                   </template>
                 </el-progress>
               </el-space>
-              <a-typography-title :level="4">
+              <div
+                class="label"
+                :style="{
+                  color: selectedFontColor
+                }"
+              >
                 HEX
-              </a-typography-title>
-              <a-typography-paragraph style="font-size:20px;line-height:28px;color:white">
+              </div>
+              <div
+                class="label"
+                :style="{
+                  color: selectedFontColor
+                }"
+              >
                 {{ selectedColor.hex }}
-              </a-typography-paragraph>
+              </div>
             </el-space>
           </div>
         </div>
@@ -131,7 +151,7 @@
         <div
           v-for="(color, index) in colors"
           :key="index"
-          :style="{background: color.hex}"
+          :style="{background: color.hex, color: colord(color.hex).isDark() ? 'white' : '#310f1b'}"
           class="colorListItem"
           @click="selectedColor=color"
         >
@@ -152,9 +172,15 @@
 
 <script setup>
 import colors from './colors.json'
+import { colord } from 'colord'
 
 const selectedColor = ref()
 const selectedColorNameWrapper = ref()
+
+const selectedFontColor = computed(() => {
+  if (!selectedColor.value?.hex) return 'white'
+  return colord(selectedColor.value.hex).isDark() ? 'white' : '#310f1b'
+})
 
 const selectedColorNameSize = ref(0)
 
@@ -247,5 +273,12 @@ function resize () {
       border-bottom: 1px #dedede dashed;
     }
   }
+}
+
+.label {
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.4;
 }
 </style>
