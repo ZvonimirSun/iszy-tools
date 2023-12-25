@@ -1,169 +1,166 @@
 <template>
   <div
     class="wrapper"
-    :style="{background: selectedColor?.hex || '#fff'}"
+    :style="{backgroundColor: selectedColor?.hex || '#fff'}"
   >
-    <div class="wrapper">
-      <transition>
-        <div
-          v-if="selectedColor"
-          class="selectedColor"
-        >
-          <div
-            ref="selectedColorNameWrapper"
-            class="selectedColorNameWrapper"
-            :style="{
-              color: selectedFontColor
-            }"
-          >
-            <div
-              :style="{fontSize:selectedColorNameSize-8+'px',lineHeight:selectedColorNameSize+'px'}"
-            >
-              {{ selectedColor.name }}
-            </div>
-            <div
-              :style="{fontSize:(selectedColorNameSize/2-16)+'px',lineHeight:(selectedColorNameSize/2-8)+'px'}"
-            >
-              {{ selectedColor.pinyin.toUpperCase() }}
-            </div>
-          </div>
-          <div
-            class="selectedColorDataWrapper"
-          >
-            <el-space
-              direction="vertical"
-              :size="8"
-            >
-              <div
-                class="label"
-                :style="{
-                  color: selectedFontColor
-                }"
-              >
-                CMYK
-              </div>
-              <el-space :size="8">
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.CMYK[0]"
-                  color="cyan"
-                  :width="80"
-                >
-                  <template #default="{ percentage }">
-                    <span style="color: cyan">{{ percentage }}</span>
-                  </template>
-                </el-progress>
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.CMYK[1]"
-                  color="magenta"
-                  :width="80"
-                >
-                  <template #default="{ percentage }">
-                    <span style="color: magenta">{{ percentage }}</span>
-                  </template>
-                </el-progress>
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.CMYK[2]"
-                  color="yellow"
-                  :width="80"
-                >
-                  <template #default="{ percentage }">
-                    <span style="color: yellow">{{ percentage }}</span>
-                  </template>
-                </el-progress>
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.CMYK[3]"
-                  color="black"
-                  :width="80"
-                >
-                  <template #default="{ percentage }">
-                    <span style="color: black">{{ percentage }}</span>
-                  </template>
-                </el-progress>
-              </el-space>
-              <div
-                class="label"
-                :style="{
-                  color: selectedFontColor
-                }"
-              >
-                RGB
-              </div>
-              <el-space :size="8">
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.RGB[0]/2.55"
-                  color="red"
-                  :width="80"
-                >
-                  <template #default>
-                    <span style="color: red">{{ selectedColor.RGB[0] }}</span>
-                  </template>
-                </el-progress>
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.RGB[1]/2.55"
-                  color="green"
-                  :width="80"
-                >
-                  <template #default>
-                    <span style="color: green">{{ selectedColor.RGB[1] }}</span>
-                  </template>
-                </el-progress>
-                <el-progress
-                  type="circle"
-                  :percentage="selectedColor.RGB[2]/2.55"
-                  color="blue"
-                  :width="80"
-                >
-                  <template #default>
-                    <span style="color: blue">{{ selectedColor.RGB[2] }}</span>
-                  </template>
-                </el-progress>
-              </el-space>
-              <div
-                class="label"
-                :style="{
-                  color: selectedFontColor
-                }"
-              >
-                HEX
-              </div>
-              <div
-                class="label"
-                :style="{
-                  color: selectedFontColor
-                }"
-              >
-                {{ selectedColor.hex }}
-              </div>
-            </el-space>
-          </div>
-        </div>
-      </transition>
+    <transition>
       <div
-        class="colorList"
-        :style="{height: selectedColor?'50%':'100%'}"
+        v-if="selectedColor"
+        class="selectedColor"
       >
         <div
-          v-for="(color, index) in colors"
-          :key="index"
-          :style="{background: color.hex, color: colord(color.hex).isDark() ? 'white' : '#310f1b'}"
-          class="colorListItem"
-          @click="selectedColor=color"
+          ref="selectedColorNameWrapper"
+          class="selectedColorNameWrapper"
+          :style="{
+            color: selectedFontColor
+          }"
         >
-          <div class="colorName">
-            {{ color.name }}
+          <div
+            :style="{fontSize:selectedColorNameSize-8+'px',lineHeight:selectedColorNameSize+'px'}"
+          >
+            {{ selectedColor.name }}
           </div>
-          <div class="colorPinyin">
-            {{ color.pinyin.toUpperCase() }}
+          <div
+            :style="{fontSize:(selectedColorNameSize/2-16)+'px',lineHeight:(selectedColorNameSize/2-8)+'px'}"
+          >
+            {{ selectedColor.pinyin.toUpperCase() }}
           </div>
-          <div class="colorHEX">
-            {{ color.hex.slice(1).toUpperCase() }}
-          </div>
+        </div>
+        <div
+          class="selectedColorDataWrapper"
+        >
+          <el-space
+            direction="vertical"
+            :size="8"
+          >
+            <div
+              class="label"
+              :style="{
+                color: selectedFontColor
+              }"
+            >
+              CMYK
+            </div>
+            <el-space :size="8">
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.CMYK[0]"
+                color="cyan"
+                :width="80"
+              >
+                <template #default="{ percentage }">
+                  <span style="color: cyan">{{ percentage }}</span>
+                </template>
+              </el-progress>
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.CMYK[1]"
+                color="magenta"
+                :width="80"
+              >
+                <template #default="{ percentage }">
+                  <span style="color: magenta">{{ percentage }}</span>
+                </template>
+              </el-progress>
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.CMYK[2]"
+                color="yellow"
+                :width="80"
+              >
+                <template #default="{ percentage }">
+                  <span style="color: yellow">{{ percentage }}</span>
+                </template>
+              </el-progress>
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.CMYK[3]"
+                color="black"
+                :width="80"
+              >
+                <template #default="{ percentage }">
+                  <span style="color: black">{{ percentage }}</span>
+                </template>
+              </el-progress>
+            </el-space>
+            <div
+              class="label"
+              :style="{
+                color: selectedFontColor
+              }"
+            >
+              RGB
+            </div>
+            <el-space :size="8">
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.RGB[0]/2.55"
+                color="red"
+                :width="80"
+              >
+                <template #default>
+                  <span style="color: red">{{ selectedColor.RGB[0] }}</span>
+                </template>
+              </el-progress>
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.RGB[1]/2.55"
+                color="green"
+                :width="80"
+              >
+                <template #default>
+                  <span style="color: green">{{ selectedColor.RGB[1] }}</span>
+                </template>
+              </el-progress>
+              <el-progress
+                type="circle"
+                :percentage="selectedColor.RGB[2]/2.55"
+                color="blue"
+                :width="80"
+              >
+                <template #default>
+                  <span style="color: blue">{{ selectedColor.RGB[2] }}</span>
+                </template>
+              </el-progress>
+            </el-space>
+            <div
+              class="label"
+              :style="{
+                color: selectedFontColor
+              }"
+            >
+              HEX
+            </div>
+            <div
+              class="label"
+              :style="{
+                color: selectedFontColor
+              }"
+            >
+              {{ selectedColor.hex }}
+            </div>
+          </el-space>
+        </div>
+      </div>
+    </transition>
+    <div
+      class="colorList"
+    >
+      <div
+        v-for="(color, index) in colors"
+        :key="index"
+        :style="{background: color.hex, color: colord(color.hex).isDark() ? 'white' : '#310f1b'}"
+        class="colorListItem"
+        @click="selectedColor=color"
+      >
+        <div class="colorName">
+          {{ color.name }}
+        </div>
+        <div class="colorPinyin">
+          {{ color.pinyin.toUpperCase() }}
+        </div>
+        <div class="colorHEX">
+          {{ color.hex.slice(1).toUpperCase() }}
         </div>
       </div>
     </div>
@@ -208,18 +205,17 @@ function resize () {
 
 <style scoped lang="scss">
 .wrapper {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-
-  .wrapper {
-    width: 100%;
-    height: 100%;
-    background-image: url("./texture.png");
-  }
+  border-radius: .8rem;
+  box-sizing: border-box;
+  background-image: url("./texture.png");
 }
 
 .selectedColor {
-  height: 50%;
+  flex: 1;
   display: flex;
   align-items: center;
   padding: .8rem;
@@ -243,6 +239,7 @@ function resize () {
 }
 
 .colorList {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, 30rem);
   justify-content: space-between;
@@ -250,6 +247,7 @@ function resize () {
   color: white;
   overflow: auto;
   padding: .8rem;
+  box-sizing: border-box;
 
   &Item {
     cursor: pointer;
