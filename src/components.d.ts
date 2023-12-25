@@ -10,7 +10,6 @@ declare module 'vue' {
     AList: typeof import('ant-design-vue/es')['List']
     AListItem: typeof import('ant-design-vue/es')['ListItem']
     AListItemMeta: typeof import('ant-design-vue/es')['ListItemMeta']
-    Alpha: typeof import('./components/color-picker/alpha.vue')['default']
     ASpin: typeof import('ant-design-vue/es')['Spin']
     AStatistic: typeof import('ant-design-vue/es')['Statistic']
     ATag: typeof import('ant-design-vue/es')['Tag']
@@ -76,10 +75,8 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FixedWidgets: typeof import('./components/fixed-widgets.vue')['default']
     FormatTransformer: typeof import('./components/FormatTransformer.vue')['default']
-    Hue: typeof import('./components/color-picker/hue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Saturation: typeof import('./components/color-picker/saturation.vue')['default']
     VanillaJsonEditor: typeof import('./components/VanillaJsonEditor.vue')['default']
   }
   export interface ComponentCustomProperties {

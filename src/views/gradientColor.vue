@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import tinyColor from 'tinycolor2'
+import { colord } from 'colord'
 import { Sketch } from '@ckpack/vue-color'
 
 const fromColor = ref('#ff0000')
@@ -122,7 +122,7 @@ const gradientHexColors = computed(() => {
 })
 const gradientRGBColors = computed(() => {
   return gradientHexColors.value.map(hex => {
-    return tinyColor(hex).toRgbString()
+    return colord(hex).toRgbString()
   })
 })
 
@@ -131,8 +131,8 @@ const gradientColors = computed(() => {
 })
 
 function getGradientHexArr (startHex, endHex, steps) {
-  const startColor = tinyColor(startHex).toRgb()
-  const endColor = tinyColor(endHex).toRgb()
+  const startColor = colord(startHex).toRgb()
+  const endColor = colord(endHex).toRgb()
   const stepR = (endColor.r - startColor.r) / steps
   const stepG = (endColor.g - startColor.g) / steps
   const stepB = (endColor.b - startColor.b) / steps
@@ -141,7 +141,7 @@ function getGradientHexArr (startHex, endHex, steps) {
     const r = Math.round(startColor.r + stepR * i)
     const g = Math.round(startColor.g + stepG * i)
     const b = Math.round(startColor.b + stepB * i)
-    gradientColors.push(tinyColor({ r, g, b }).toHexString())
+    gradientColors.push(colord({ r, g, b }).toHex())
   }
   return gradientColors
 }
