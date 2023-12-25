@@ -34,6 +34,7 @@
     "axios": "^1.6.2",
     "buffer": "^6.0.3",
     "codemirror": "^6.0.1",
+    "colord": "^2.9.3",
     "core-js": "^3.34.0",
     "dayjs": "^1.11.10",
     "dom-to-image": "^2.6.0",
