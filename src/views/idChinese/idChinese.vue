@@ -5,7 +5,7 @@
   <el-input
     v-model="idData"
     placeholder="3205************"
-    @change="analyse"
+    @input="analyse"
   />
   <template v-if="result && result.checkIdCard">
     <el-divider />
@@ -27,35 +27,43 @@
   </template>
 </template>
 
-<script>
-import { all } from '@/utils/idCard.js'
+<script setup lang="ts">
+import IdWorker from './idChinese.worker?worker'
 
-export default {
-  name: 'IdChinese',
-  data: () => ({
-    idData: '',
-    result: undefined
-  }),
-  methods: {
-    analyse () {
-      if (this.idData.length >= 18) {
-        try {
-          this.result = all(this.idData)
-        } catch (e) {
-          console.log(e)
-          this.result = undefined
-        }
-      } else {
-        this.result = undefined
-      }
-    }
+const { post, data: result, terminate } = useWebWorker<{
+  checkIdCard: boolean
+  sex: string
+  age: number
+  address: {
+    all: string
+    province: string
+    city: string
+    district: string
+  }
+  birthDay: {
+    year: number
+    month: number
+    day: number
+    nong: string
+    week: string
+    zodiac: string
+    zodiac_zh: string
+  }
+} | undefined>(new IdWorker())
+
+const idData = ref('')
+
+onBeforeUnmount(() => {
+  terminate()
+})
+
+async function analyse () {
+  if (idData.value.length >= 18) {
+    result.value = undefined
+    post({ idData: idData.value })
+  } else {
+    result.value = undefined
   }
 }
 </script>
 
-<style scoped lang="scss">
-:deep(.ant-input-group-addon) {
-  padding: 0;
-  border: unset;
-}
-</style>

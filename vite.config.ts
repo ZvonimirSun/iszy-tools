@@ -176,5 +176,8 @@ export default defineConfig({
         javascriptEnabled: true
       }
     }
+  },
+  worker: {
+    format: 'es'
   }
 })
