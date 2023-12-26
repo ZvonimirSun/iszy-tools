@@ -1,0 +1,33 @@
+$base: s-typography;
+
+$text-color-secondary: var(--el-text-color-secondary);
+$success-color: var(--el-color-success);
+$warning-color: var(--el-color-warning);
+$error-color: var(--el-color-error);
+
+.$base {
+  color: var(--el-text-color);
+  overflow-wrap: break-word;
+
+  &-secondary {
+    color: $text-color-secondary;
+  }
+
+  &-success {
+    color: $success-color;
+  }
+
+  &-warning {
+    color: $warning-color;
+  }
+
+  &-danger {
+    color: $error-color;
+
+    a&:active,
+    a&:focus,
+    a&:hover {
+      color: $error-color;
+    }
+  }
+}

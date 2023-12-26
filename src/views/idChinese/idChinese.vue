@@ -1,7 +1,9 @@
 <template>
-  <a-typography-title :level="3">
+  <s-typography-title
+    :level="3"
+  >
     请输入身份证号码
-  </a-typography-title>
+  </s-typography-title>
   <el-input
     v-model="idData"
     placeholder="3205************"
@@ -9,9 +11,9 @@
   />
   <template v-if="result && result.checkIdCard">
     <el-divider />
-    <a-typography-title :level="3">
+    <s-typography-title :level="3">
       信息
-    </a-typography-title>
+    </s-typography-title>
     <a-typography-paragraph>
       <ul>
         <li>性别：{{ result.sex }}</li>
