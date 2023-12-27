@@ -32,8 +32,6 @@ function getParam (key) {
   const tmp = getParamList().find(item => item.key === key)
   if (tmp) {
     return tmp.value
-  } else {
-    return null
   }
 }
 

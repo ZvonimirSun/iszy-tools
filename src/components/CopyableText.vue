@@ -11,15 +11,7 @@
 defineProps<{
   val: string
 }>()
-
-async function copy (val: string) {
-  try {
-    await navigator.clipboard.writeText(val)
-    ElMessage.success('复制成功')
-  } catch (e) {
-    ElMessage.error('复制失败')
-  }
-}
+const { copy } = useCopy({ text: '复制成功' })
 </script>
 <style scoped lang="scss">
 .copiable-text {
