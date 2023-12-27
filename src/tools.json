@@ -48,6 +48,10 @@
         "link": "/hashText"
       },
       {
+        "name": "文件HASH",
+        "link": "/hashFile"
+      },
+      {
         "name": "在线JWT解密",
         "link": "/jwt"
       },
