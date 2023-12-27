@@ -44,12 +44,12 @@
     "icon": "i-icon-park-solid-file-lock",
     "children": [
       {
-        "name": "在线JWT解密",
-        "link": "/jwt"
+        "name": "文本HASH",
+        "link": "/hashText"
       },
       {
-        "name": "MD5计算",
-        "link": "/md5"
+        "name": "在线JWT解密",
+        "link": "/jwt"
       },
       {
         "name": "GeoHash编解码",

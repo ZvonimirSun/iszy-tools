@@ -80,6 +80,9 @@ dependencies:
   core-js:
     specifier: ^3.34.0
     version: 3.34.0
+  crypto-js:
+    specifier: ^4.2.0
+    version: 4.2.0
   dayjs:
     specifier: ^1.11.10
     version: 1.11.10
@@ -131,9 +134,6 @@ dependencies:
   relationship.js:
     specifier: ^1.2.4
     version: 1.2.4
-  spark-md5:
-    specifier: ^3.0.2
-    version: 3.0.2
   three:
     specifier: ^0.160.0
     version: 0.160.0
@@ -190,6 +190,9 @@ devDependencies:
   '@types/ali-oss':
     specifier: ^6.16.11
     version: 6.16.11
+  '@types/crypto-js':
+    specifier: ^4.2.1
+    version: 4.2.1
   '@types/esri-leaflet':
     specifier: ^3.0.3
     version: 3.0.3
@@ -211,9 +214,6 @@ devDependencies:
   '@types/qrcode':
     specifier: ^1.5.5
     version: 1.5.5
-  '@types/spark-md5':
-    specifier: ^3.0.4
-    version: 3.0.4
   '@types/three':
     specifier: ^0.160.0
     version: 0.160.0
@@ -3939,6 +3939,10 @@ packages:
     resolution: {integrity: sha512-/AyemPZy93ZXGzEokMsoPFgjH37snpzH4X/fwans/n63HLaCleriCG3PyrkHCPkgHEc9vj9Uo6paqsBN3vJ3OA==}
     dev: true
 
+  /@types/crypto-js@4.2.1:
+    resolution: {integrity: sha512-FSPGd9+OcSok3RsM0UZ/9fcvMOXJ1ENE/ZbLfOPlBWj7BgXtEAM8VYfTtT760GiLbQIMoVozwVuisjvsVwqYWw==}
+    dev: true
+
   /@types/d3-timer@2.0.3:
     resolution: {integrity: sha512-jhAJzaanK5LqyLQ50jJNIrB8fjL9gwWZTgYjevPvkDLMU+kTAZkYsobI59nYoeSrH1PucuyJEi247Pb90t6XUg==}
     dev: false
@@ -4024,10 +4028,6 @@ packages:
 
   /@types/semver@7.5.6:
     resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
-    dev: true
-
-  /@types/spark-md5@3.0.4:
-    resolution: {integrity: sha512-qtOaDz+IXiNndPgYb6t1YoutnGvFRtWSNzpVjkAPCfB2UzTyybuD4Tjgs7VgRawum3JnJNRwNQd4N//SvrHg1Q==}
     dev: true
 
   /@types/stats.js@0.17.3:
@@ -5368,6 +5368,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    dev: false
 
   /crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -8560,10 +8564,6 @@ packages:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     deprecated: Please use @jridgewell/sourcemap-codec instead
     dev: true
-
-  /spark-md5@3.0.2:
-    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==}
-    dev: false
 
   /splaytree@3.1.2:
     resolution: {integrity: sha512-4OM2BJgC5UzrhVnnJA4BkHKGtjXNzzUfpQjCO8I05xYPsfS/VuQDwjCGGMi8rYQilHEV4j8NBqTFbls/PZEE7A==}
