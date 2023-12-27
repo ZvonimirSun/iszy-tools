@@ -310,6 +310,7 @@
     "WritableComputedRef": true,
     "injectLocal": true,
     "provideLocal": true,
-    "useClipboardItems": true
+    "useClipboardItems": true,
+    "useCopy": true
   }
 }

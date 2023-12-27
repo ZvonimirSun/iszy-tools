@@ -44,6 +44,7 @@ export default defineConfig({
       eslintrc: {
         enabled: true
       },
+      dirs: ['./src/composables', './src/composables/**'],
       vueTemplate: true,
       dts: './src/auto-imports.d.ts'
     }),
@@ -65,7 +66,7 @@ export default defineConfig({
     }),
     Components({
       include: [/\.vue$/, /\.vue\?/],
-      dirs: ['src/components'],
+      dirs: ['./src/components'],
       extensions: ['vue'],
       dts: './src/components.d.ts',
       resolvers: [

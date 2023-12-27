@@ -76,14 +76,10 @@ function updateColorValue (value: Colord | undefined, omitLabel?: string) {
   })
 }
 
-const { copy } = useClipboard()
+const { copy } = useCopy({ text: '复制成功' })
 
-async function copyColor (val: string) {
-  try {
-    await copy(val)
-    ElMessage.success('复制成功')
-  } catch (_) {
-  }
+function copyColor (val: string) {
+  copy(val)
 }
 </script>
 
