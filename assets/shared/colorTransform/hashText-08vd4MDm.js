@@ -1,0 +1,1 @@
+import{aL as i,a8 as u}from"../../vendor-keZiW3mP.js";function n({source:a,text:e="已复制到剪贴板",createToast:t=!0}={}){const{copy:s,...o}=i({source:a,legacy:!0});return{...o,async copy(r,{notificationMessage:c}={}){a?await s():await s(r),t&&u.success(c??e)}}}export{n as u};
