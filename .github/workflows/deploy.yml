@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -57,8 +59,15 @@ jobs:
       - name: Build app
         run: pnpm run build
 
+      - name: Get update infos
+        if: ${{ github.event_name == 'push' && github.ref_name =='main' }}
+        env:
+          BEFORE_REF: ${{ github.event.before }}
+          AFTER_REF: ${{ github.event.after }}
+        run: git log --pretty=format:%s --grep="^feat(" --grep="^fix(" "$BEFORE_REF...$AFTER_REF" | grep -v Merge > dist/CHANGELOG.md
+
       - name: Deploy App
-        if: ${{ github.ref_name == 'main' }}
+        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
@@ -66,7 +75,7 @@ jobs:
           force: false
 
       - name: Deploy App Beta
-        if: ${{ github.ref_name == 'dev' }}
+        if: ${{ github.event_name == 'push' && github.ref_name == 'dev' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
