@@ -275,8 +275,8 @@ devDependencies:
     specifier: ^8.4.32
     version: 8.4.32
   sass:
-    specifier: ^1.69.5
-    version: 1.69.5
+    specifier: ^1.69.6
+    version: 1.69.6
   sitemap:
     specifier: ^7.1.1
     version: 7.1.1
@@ -294,7 +294,7 @@ devDependencies:
     version: 0.26.0(rollup@2.79.1)(vue@3.3.13)
   vite:
     specifier: ^5.0.10
-    version: 5.0.10(less@4.2.0)(sass@1.69.5)
+    version: 5.0.10(less@4.2.0)(sass@1.69.6)
   vite-plugin-inspect:
     specifier: ^0.8.1
     version: 0.8.1(rollup@2.79.1)(vite@5.0.10)
@@ -4211,7 +4211,7 @@ packages:
       '@unocss/core': 0.58.0
       '@unocss/reset': 0.58.0
       '@unocss/vite': 0.58.0(rollup@2.79.1)(vite@5.0.10)
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -4409,7 +4409,7 @@ packages:
       chokidar: 3.5.3
       fast-glob: 3.3.2
       magic-string: 0.30.5
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -4420,7 +4420,7 @@ packages:
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
     dependencies:
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
     dev: true
 
   /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.10)(vue@3.3.13):
@@ -4433,7 +4433,7 @@ packages:
       '@babel/core': 7.23.6
       '@babel/plugin-transform-typescript': 7.23.6(@babel/core@7.23.6)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.6)
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
       vue: 3.3.13(typescript@5.3.3)
     transitivePeerDependencies:
       - supports-color
@@ -4446,7 +4446,7 @@ packages:
       vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
       vue: 3.3.13(typescript@5.3.3)
     dev: true
 
@@ -8399,8 +8399,8 @@ packages:
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sass@1.69.5:
-    resolution: {integrity: sha512-qg2+UCJibLr2LCVOt3OlPhr/dqVHWOa9XtZf2OjbLs/T4VPSJ00udtgJxH3neXZm+QqX8B+3cU7RaLqp1iVfcQ==}
+  /sass@1.69.6:
+    resolution: {integrity: sha512-qbRr3k9JGHWXCvZU77SD2OTwUlC+gNT+61JOLcmLm+XqH4h/5D+p4IIsxvpkB89S9AwJOyb5+rWNpIucaFxSFQ==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -9100,7 +9100,7 @@ packages:
       '@unocss/transformer-directives': 0.58.0
       '@unocss/transformer-variant-group': 0.58.0
       '@unocss/vite': 0.58.0(rollup@2.79.1)(vite@5.0.10)
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
     transitivePeerDependencies:
       - postcss
       - rollup
@@ -9266,7 +9266,7 @@ packages:
       lodash-es: 4.17.21
       memoize-one: 6.0.0
       natural-compare-lite: 1.4.0
-      sass: 1.69.5
+      sass: 1.69.6
       svelte: 4.2.8
       vanilla-picker: 2.12.2
     transitivePeerDependencies:
@@ -9297,7 +9297,7 @@ packages:
       lodash-es: 4.17.21
       memoize-one: 6.0.0
       natural-compare-lite: 1.4.0
-      sass: 1.69.5
+      sass: 1.69.6
       svelte: 4.2.8
       vanilla-picker: 2.12.2
     transitivePeerDependencies:
@@ -9328,7 +9328,7 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       sirv: 2.0.4
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -9345,7 +9345,7 @@ packages:
       debug: 4.3.4
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
       workbox-build: 7.0.0
       workbox-window: 7.0.0
     transitivePeerDependencies:
@@ -9364,10 +9364,10 @@ packages:
       es-module-lexer: 0.10.5
       magic-string: 0.26.7
       rollup: 2.79.1
-      vite: 5.0.10(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(less@4.2.0)(sass@1.69.6)
     dev: true
 
-  /vite@5.0.10(less@4.2.0)(sass@1.69.5):
+  /vite@5.0.10(less@4.2.0)(sass@1.69.6):
     resolution: {integrity: sha512-2P8J7WWgmc355HUMlFrwofacvr98DAjoE52BfdbwQtyLH06XKwaL/FMnmKM2crF0iX4MpmMKoDlNCB1ok7zHCw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -9399,7 +9399,7 @@ packages:
       less: 4.2.0
       postcss: 8.4.32
       rollup: 4.9.1
-      sass: 1.69.5
+      sass: 1.69.6
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
