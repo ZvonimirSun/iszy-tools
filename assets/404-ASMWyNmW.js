@@ -1,1 +1,0 @@
-import{ad as t,aH as c,o,bH as n}from"./vendor-1PeLGBgx.js";const s={};function a(_,r){const e=n;return o(),c(e,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const f=t(s,[["render",a],["__scopeId","data-v-6cf87128"]]);export{f as default};
