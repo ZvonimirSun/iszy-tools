@@ -165,7 +165,7 @@ watch(offlineReady, function (val) {
 
 watch(needRefresh, function (val) {
   if (val) {
-    ElMessageBox.confirm('存在新内容，请点击 重载 更新~', '更新', {
+    ElMessageBox.confirm('存在 <a href="https://github.com/ZvonimirSun/iszy-tools/blob/deploy/CHANGELOG.md" target="_blank"><strong>更新内容</strong></a>，请点击 <strong>重载</strong> 更新~', '更新', {
       confirmButtonText: '重载',
       cancelButtonText: '取消',
       type: 'info'
