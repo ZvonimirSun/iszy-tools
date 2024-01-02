@@ -1,4 +1,4 @@
-name: Auto Test
+name: Auto Deploy
 
 on:
   push:
@@ -64,7 +64,7 @@ jobs:
         env:
           BEFORE_REF: ${{ github.event.before }}
           AFTER_REF: ${{ github.event.after }}
-        run: git log --pretty=format:%s --grep="^feat(" --grep="^fix(" "$BEFORE_REF...$AFTER_REF" | grep -v Merge > dist/CHANGELOG.md
+        run: echo "$(git log --pretty=format:%s --grep='^feat(' --grep='^fix(' --grep='^feat:' --grep='^fix:' '$BEFORE_REF...$AFTER_REF' | grep -v Merge)" > dist/CHANGELOG.md
 
       - name: Deploy App
         if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
