@@ -61,7 +61,7 @@ jobs:
 
       - name: Get update infos
         if: ${{ github.event_name == 'push' && (github.ref_name =='main' || github.ref_name == 'dev') }}
-        run: git log --pretty=format:%s --grep="^feat(" --grep="^fix(" --grep="^feat:" --grep="^fix:" "${{ github.event.before }}...${{ github.event.after }}" | grep -v Merge
+        run: git log --pretty=format:%s --grep="^feat(" --grep="^fix(" --grep="^feat:" --grep="^fix:" "${{ github.event.before }}...${{ github.event.after }}" | grep -v Merge > dist/CHANGELOG.md
 
       - name: Deploy App
         if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
