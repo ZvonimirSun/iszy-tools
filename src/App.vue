@@ -168,7 +168,8 @@ watch(needRefresh, function (val) {
     ElMessageBox.confirm('存在 <a href="https://github.com/ZvonimirSun/iszy-tools/blob/deploy/CHANGELOG.md" target="_blank"><strong>更新内容</strong></a>，请点击 <strong>重载</strong> 更新~', '更新', {
       confirmButtonText: '重载',
       cancelButtonText: '取消',
-      type: 'info'
+      type: 'info',
+      dangerouslyUseHTMLString: true
     }).then(() => {
       updateServiceWorker()
     })
