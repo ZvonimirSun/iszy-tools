@@ -1,7 +1,6 @@
 import randomString from '@/utils/randomString.js'
 import { defineStore } from 'pinia'
 import dayjs from 'dayjs'
-import { useUserStore } from '@/stores/user'
 import { clamp, debounce } from 'lodash-es'
 import axios from '@/plugins/Axios'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'

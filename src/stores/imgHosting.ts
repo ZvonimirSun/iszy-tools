@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useUserStore } from '@/stores/user'
 import { merge } from 'lodash-es'
 import { v4 as uuidv4 } from 'uuid'
 

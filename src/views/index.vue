@@ -81,9 +81,6 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
-import { useToolsStore } from '@/stores/tools'
-
 const searchStr = ref('')
 const userStore = useUserStore()
 const toolsStore = useToolsStore()

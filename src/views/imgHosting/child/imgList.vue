@@ -52,7 +52,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useImgHostingStore } from '@/stores/imgHosting'
 
 const imgList = computed(() => {
   return useImgHostingStore().imgList

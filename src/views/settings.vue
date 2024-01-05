@@ -258,10 +258,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
-import { useMainStore } from '@/stores/main'
 import type { FormInstance, FormRules } from 'element-plus'
-import { useStyleStore } from '@/stores/style'
 
 const router = useRouter()
 const route = useRoute()

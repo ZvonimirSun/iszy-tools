@@ -62,7 +62,6 @@
 </template>
 
 <script setup>
-import { useTinyEditorStore } from '@/stores/tinyEditor'
 import html from '@/components/editor/lang-html'
 import css from '@/components/editor/lang-css'
 import js from '@/components/editor/lang-js'

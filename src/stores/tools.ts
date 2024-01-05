@@ -2,7 +2,6 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/tools.json'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
-import { useUserStore } from '@/stores/user'
 
 interface ToolItem {
   id?: string,

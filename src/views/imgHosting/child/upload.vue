@@ -20,7 +20,6 @@
 
 <script lang="ts" setup>
 import * as uploaders from '../uploader/index'
-import { useImgHostingStore } from '@/stores/imgHosting'
 import { AliOssConfig } from '../uploader/index'
 
 const props = withDefaults(defineProps<{

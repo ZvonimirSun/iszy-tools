@@ -4,7 +4,6 @@ import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
 import { clone } from 'lodash-es'
-import { useStyleStore } from '@/stores/style'
 import type { EditorValue } from '@/index'
 
 // JSONEditor properties as of version 0.3.60

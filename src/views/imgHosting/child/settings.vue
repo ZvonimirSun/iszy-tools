@@ -111,7 +111,6 @@
 <script lang="ts" setup>
 import * as uploaders from '../uploader/index'
 import { cloneDeep, merge } from 'lodash-es'
-import { useImgHostingStore } from '@/stores/imgHosting'
 import { AliOssConfig } from '../uploader/index'
 
 const imgHosingStore = useImgHostingStore()

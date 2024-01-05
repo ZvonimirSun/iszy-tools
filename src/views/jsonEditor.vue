@@ -175,7 +175,6 @@
 </template>
 
 <script setup lang="ts">
-import { useJsonEditorStore } from '@/stores/jsonEditor'
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 
 const editorPanelContainerLeft = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)

@@ -56,7 +56,6 @@
 
 <script setup lang="ts">
 import type { LocationQuery } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 
 const form = reactive({
   userName: '',

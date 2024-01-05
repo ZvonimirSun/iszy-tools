@@ -311,6 +311,16 @@
     "injectLocal": true,
     "provideLocal": true,
     "useClipboardItems": true,
-    "useCopy": true
+    "useCopy": true,
+    "use2048Store": true,
+    "useImgHostingStore": true,
+    "useJsonEditorStore": true,
+    "useLinuxCommandStore": true,
+    "useMainStore": true,
+    "useStore": true,
+    "useStyleStore": true,
+    "useTinyEditorStore": true,
+    "useToolsStore": true,
+    "useUserStore": true
   }
 }

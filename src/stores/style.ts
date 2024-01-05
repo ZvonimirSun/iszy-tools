@@ -1,5 +1,4 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { useUserStore } from '@/stores/user'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)

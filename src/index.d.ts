@@ -5,6 +5,10 @@ import 'vue-router'
 
 import { Extension } from '@codemirror/state'
 
+declare interface Window {
+  // extend the window
+}
+
 // element-plus
 declare global {
   const ElMessage: typeof import('element-plus/es')['ElMessage']

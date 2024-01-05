@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useUserStore } from '@/stores/user'
 
 export const use2048Store = defineStore('2048', {
   persist: true,

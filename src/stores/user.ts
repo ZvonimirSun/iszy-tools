@@ -2,7 +2,6 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import axios from '@/plugins/Axios'
 import { clone, merge } from 'lodash-es'
 import type { AxiosError } from 'axios'
-import { useToolsStore } from '@/stores/tools'
 
 let tokenChecked = false
 

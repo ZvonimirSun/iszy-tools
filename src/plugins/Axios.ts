@@ -1,5 +1,4 @@
 import Axios, { AxiosResponse } from 'axios'
-import { useUserStore } from '@/stores/user'
 
 Axios.$apiBase = ''
 Axios.interceptors.request.use((config) => {

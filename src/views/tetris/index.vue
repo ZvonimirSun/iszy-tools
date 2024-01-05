@@ -145,8 +145,6 @@
 import { range, shuffle, cloneDeep } from 'lodash-es'
 import TetriminosMatrix from './js/TetriminosMatrix.js'
 
-import { useUserStore } from '@/stores/user'
-
 const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
 
 export default {

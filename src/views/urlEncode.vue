@@ -71,7 +71,6 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from '@/stores/urlEncode'
 
 const value = ref('')
 const result = ref('')

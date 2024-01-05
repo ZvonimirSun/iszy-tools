@@ -100,8 +100,6 @@
 import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { useUserStore } from '@/stores/user'
-import { useStyleStore } from '@/stores/style'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
 
 const {

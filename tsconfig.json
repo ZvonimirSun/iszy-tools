@@ -1,35 +1,29 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "module": "ESNext",
     "target": "ESNext",
-    "lib": ["DOM", "ESNext"],
-    "strict": true,
-    "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
+    "lib": ["DOM", "ESNext"],
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "paths": {
       "@/*": [ "src/*" ]
     },
-    "types": ["vite/client", "vite-plugin-pwa/vue"]
+    "resolveJsonModule": true,
+    "types": [
+      "vitest",
+      "vite/client",
+      "vite-plugin-pwa/vue"
+    ],
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/**/*.d.ts",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "node_modules/element-plus/**/*",
-    "vite.config.ts"
-  ],
   "exclude": ["dist", "node_modules", "cypress"]
 }

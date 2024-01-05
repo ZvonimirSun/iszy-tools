@@ -56,7 +56,6 @@
 import dayjs from 'dayjs'
 import md from '@/utils/markdown.js'
 import duration from 'dayjs/plugin/duration'
-import { useLinuxCommandStore } from '@/stores/linuxCommand'
 import $axios from '@/plugins/Axios'
 
 dayjs.extend(duration)

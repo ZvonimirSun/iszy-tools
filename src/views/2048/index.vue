@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import { use2048Store } from '@/stores/2048'
-import { useUserStore } from '@/stores/user'
 import GameManager from './js/GameManager.js'
 
 let gameManager

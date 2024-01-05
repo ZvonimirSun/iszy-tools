@@ -2,20 +2,18 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import Sitemap from './src/plugins/Sitemap.js'
 import tools from './src/tools.json'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver, ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
-import { presetUno, presetAttributify, presetIcons } from 'unocss'
 import AutoImport from 'unplugin-auto-import/vite'
-import Inspect from 'vite-plugin-inspect'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
 import basicSsl from '@vitejs/plugin-basic-ssl'
-
-const iconClass = tools.map(item => item.icon).filter(item => item)
+import WebfontDownload from 'vite-plugin-webfont-dl'
+import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -44,31 +42,16 @@ export default defineConfig({
       eslintrc: {
         enabled: true
       },
-      dirs: ['./src/composables', './src/composables/**'],
+      dirs: ['src/composables', 'src/stores'],
       vueTemplate: true,
-      dts: './src/auto-imports.d.ts'
+      dts: 'src/auto-imports.d.ts'
     }),
-    Unocss({
-      mode: 'vue-scoped',
-      presets: [presetUno(), presetAttributify(), presetIcons({
-        mode: 'auto',
-        extraProperties: {
-          display: 'inline-block'
-        }
-      })],
-      safelist: [
-        'i-icon-park-solid-all-application',
-        'i-icon-park-outline-history',
-        'i-icon-park-solid-concern',
-        'i-icon-park-solid-folder-focus',
-        ...iconClass
-      ]
-    }),
+    Unocss(),
     Components({
-      include: [/\.vue$/, /\.vue\?/],
-      dirs: ['./src/components'],
+      include: [/\.vue$/, /\.vue\?vue/],
+      dirs: ['src/components'],
       extensions: ['vue'],
-      dts: './src/components.d.ts',
+      dts: 'src/components.d.ts',
       resolvers: [
         ElementPlusResolver(),
         AntDesignVueResolver()
@@ -159,8 +142,9 @@ export default defineConfig({
       }
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
-    Inspect(),
-    manualChunksPlugin()
+    manualChunksPlugin(),
+    WebfontDownload(),
+    VueDevTools()
   ],
   optimizeDeps: {
     include: ['vue', 'element-plus', 'ant-design-vue']
@@ -180,5 +164,8 @@ export default defineConfig({
   },
   worker: {
     format: 'es'
+  },
+  test: {
+    environment: 'jsdom'
   }
 })

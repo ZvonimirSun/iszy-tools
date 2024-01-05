@@ -7,9 +7,7 @@ import {
   RouterOptions
 } from 'vue-router'
 import { merge } from 'lodash-es'
-import { useUserStore } from '@/stores/user'
 import type { DefineComponent } from 'vue'
-import { useToolsStore } from '@/stores/tools'
 
 const toolsStore = useToolsStore()
 
