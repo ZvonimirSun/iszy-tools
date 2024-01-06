@@ -76,7 +76,7 @@
           v-show="!fullScreenStatus && route.meta?.type !== 'tool'"
           class="main-footer"
         >
-          <span>© {{ year }}&nbsp;</span>
+          <span>© {{ new Date().getFullYear().toString() }}&nbsp;</span>
           <a
             href="https://www.iszy.cc"
             target="_blank"
@@ -100,6 +100,7 @@
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
+import $axios from '@/plugins/Axios'
 
 const {
   offlineReady,
@@ -111,35 +112,54 @@ const _user = useUserStore()._user
 
 const fullScreenStatus = ref(false)
 
-const year = ref('2021')
-
-const now = new Date().getFullYear().toString()
-
-if (now !== year.value) {
-  year.value += ` - ${now}`
-}
-
-let showInfo = false
-
 onMounted(() => {
-  window.addEventListener('keydown', function (e: KeyboardEvent) {
-    if (fullScreenStatus.value) {
-      if (e.key === 'Escape') {
-        if (!e.repeat) {
-          if (!showInfo) {
-            showInfo = true
-            setTimeout(() => {
-              showInfo = false
-            }, 3000)
-            ElMessage.info('长按Esc以退出全屏')
-          }
-        } else {
-          fullScreen()
-        }
-      }
-    }
-  }, false)
+  window.addEventListener('keydown', fullScreenListener, false)
 })
+
+watch(offlineReady, function (val) {
+  if (val) {
+    ElMessage.success('离线使用已准备好~')
+  }
+})
+
+watch(needRefresh, function (val) {
+  if (val) {
+    triggerUpdate()
+  }
+})
+
+watch(() => route.path, () => {
+  fullScreenStatus.value = hasParam('fullScreen')
+})
+
+async function triggerUpdate () {
+  let updateInfoHtml = ''
+  try {
+    const text: string = await $axios.get('https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/iszy-tools@deploy/CHANGELOG.md', {
+      params: {
+        t: Date.now()
+      }
+    }).then((res) => {
+      return res.data || ''
+    })
+    if (text) {
+      const updateInfo = text.split('\n')
+      updateInfoHtml = updateInfo.filter(item => item).map((item, index) => {
+        return `<p>${index + 1}. ${item}</p>`
+      }).join('')
+    }
+  } catch (_) {
+    // ignore
+  }
+  ElMessageBox.confirm('有更新内容，请点击 <strong>重载</strong> 更新~' + (updateInfoHtml ? `<br><br><div style="max-height: 10rem;overflow: auto">${updateInfoHtml}</div>` : ''), '更新', {
+    confirmButtonText: '重载',
+    cancelButtonText: '取消',
+    type: 'info',
+    dangerouslyUseHTMLString: true
+  }).then(() => {
+    updateServiceWorker()
+  })
+}
 
 function fullScreen () {
   if (fullScreenStatus.value && hasParam('fullScreen')) {
@@ -153,28 +173,24 @@ function fullScreen () {
   }
 }
 
-watch(offlineReady, function (val) {
-  if (val) {
-    ElMessage.success('离线使用已准备好~')
+let showInfo = false
+function fullScreenListener (e: KeyboardEvent) {
+  if (fullScreenStatus.value) {
+    if (e.key === 'Escape') {
+      if (!e.repeat) {
+        if (!showInfo) {
+          showInfo = true
+          setTimeout(() => {
+            showInfo = false
+          }, 3000)
+          ElMessage.info('长按Esc以退出全屏')
+        }
+      } else {
+        fullScreen()
+      }
+    }
   }
-})
-
-watch(needRefresh, function (val) {
-  if (val) {
-    ElMessageBox.confirm('存在 <a href="https://github.com/ZvonimirSun/iszy-tools/blob/deploy/CHANGELOG.md" target="_blank"><strong>更新内容</strong></a>，请点击 <strong>重载</strong> 更新~', '更新', {
-      confirmButtonText: '重载',
-      cancelButtonText: '取消',
-      type: 'info',
-      dangerouslyUseHTMLString: true
-    }).then(() => {
-      updateServiceWorker()
-    })
-  }
-})
-
-watch(() => route.path, () => {
-  fullScreenStatus.value = hasParam('fullScreen')
-})
+}
 </script>
 
 <style lang="scss">
