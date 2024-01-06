@@ -109,41 +109,23 @@ export default defineConfig({
                 statuses: [0, 200]
               }
             }
-          },
-          {
-            urlPattern: /^https:\/\/.*cdn\.iszy\.cc/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'iszycc-cdn',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/lib\.iszy\.xyz/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'iszylib-cdn',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 7 // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
           }
         ]
       }
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
     manualChunksPlugin(),
-    WebfontDownload(),
+    WebfontDownload(
+      [
+        'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap'
+      ], {
+        injectAsStyleTag: false,
+        minifyCss: true,
+        async: true,
+        cache: true,
+        proxy: false
+      }
+    ),
     VueDevTools()
   ],
   optimizeDeps: {

@@ -3,7 +3,8 @@ import {
   presetAttributify,
   presetIcons,
   presetUno,
-  presetWebFonts
+  transformerDirectives,
+  transformerVariantGroup
 } from 'unocss'
 import tools from './src/tools.json'
 
@@ -18,14 +19,11 @@ export default defineConfig({
       extraProperties: {
         display: 'inline-block'
       }
-    }),
-    presetWebFonts({
-      fonts: {
-        sans: 'Lora:300,400,700',
-        serif: 'Noto Serif SC:300,400,700',
-        mono: 'JetBrains Mono:300,400,700'
-      }
     })
+  ],
+  transformers: [
+    transformerDirectives(),
+    transformerVariantGroup()
   ],
   safelist: [
     'i-icon-park-solid-all-application',
