@@ -21,9 +21,9 @@ export default defineConfig({
     }),
     presetWebFonts({
       fonts: {
-        sans: 'DM Sans',
-        serif: 'DM Serif Display',
-        mono: 'DM Mono'
+        sans: 'Lora:300,400,700',
+        serif: 'Noto Serif SC:300,400,700',
+        mono: 'JetBrains Mono:300,400,700'
       }
     })
   ],

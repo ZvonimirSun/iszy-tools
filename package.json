@@ -7,7 +7,13 @@
     "dev": "vite --open",
     "dev:api": "vite --mode test --open",
     "lint": "eslint .",
-    "serve": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:unit": "vitest",
+    "typecheck": "vue-tsc --noEmit",
+    "up": "taze minor -I",
+    "postinstall": "npx simple-git-hooks",
+    "sizecheck": "npx vite-bundle-visualizer"
   },
   "type": "module",
   "dependencies": {
@@ -31,7 +37,7 @@
     "algoliasearch": "^4.22.0",
     "ali-oss": "^6.19.0",
     "ant-design-vue": "^3.2.20",
-    "axios": "^1.6.3",
+    "axios": "^1.6.5",
     "buffer": "^6.0.3",
     "codemirror": "^6.0.1",
     "colord": "^2.9.3",
@@ -59,7 +65,7 @@
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
     "vanilla-jsoneditor": "^0.21.1",
-    "vue": "^3.4.3",
+    "vue": "^3.4.5",
     "vue-router": "^4.2.5",
     "xml-formatter": "^3.6.0"
   },
@@ -89,8 +95,8 @@
     "@vitejs/plugin-basic-ssl": "^1.0.2",
     "@vitejs/plugin-vue": "^5.0.2",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
-    "@vue/compiler-sfc": "^3.4.3",
-    "@vue/runtime-dom": "^3.4.3",
+    "@vue/compiler-sfc": "^3.4.5",
+    "@vue/runtime-dom": "^3.4.5",
     "@vue/test-utils": "^2.4.3",
     "co": "^4.6.0",
     "eslint": "^8.56.0",
@@ -100,11 +106,12 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-vue": "^9.19.2",
+    "jsdom": "^23.1.0",
     "less": "^4.2.0",
     "lint-staged": "^15.2.0",
     "pnpm": "^8.14.0",
-    "postcss": "^8.4.32",
-    "sass": "^1.69.6",
+    "postcss": "^8.4.33",
+    "sass": "^1.69.7",
     "simple-git-hooks": "^2.9.0",
     "sitemap": "^7.1.1",
     "taze": "^0.13.1",
@@ -112,9 +119,9 @@
     "unocss": "^0.58.3",
     "unplugin-auto-import": "^0.17.3",
     "unplugin-vue-components": "^0.26.0",
-    "vite": "^5.0.10",
+    "vite": "^5.0.11",
     "vite-plugin-pwa": "^0.17.4",
-    "vite-plugin-vue-devtools": "^7.0.5",
+    "vite-plugin-vue-devtools": "^7.0.6",
     "vite-plugin-webfont-dl": "^3.9.1",
     "vite-plugin-webpackchunkname": "^0.2.4",
     "vitest": "^1.1.3",
@@ -128,10 +135,10 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*.{js,ts,vue}": "eslint --fix"
   },
   "license": "GPL-3.0"
 }

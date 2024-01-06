@@ -97,7 +97,6 @@
 </template>
 
 <script setup lang="ts">
-import asyncLoad from '@/utils/asyncLoad.js'
 import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
@@ -123,7 +122,6 @@ if (now !== year.value) {
 let showInfo = false
 
 onMounted(() => {
-  asyncLoad('https://fonts.cdn.iszy.xyz/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap', 'style')
   window.addEventListener('keydown', function (e: KeyboardEvent) {
     if (fullScreenStatus.value) {
       if (e.key === 'Escape') {
