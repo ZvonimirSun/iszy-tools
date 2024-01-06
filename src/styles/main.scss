@@ -46,7 +46,7 @@ html, body, #app {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: Lora, 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  @apply font-main;
   font-size: 1.4rem;
   line-height: 2.2rem;
   color: var(--el-text-color-primary);
@@ -60,7 +60,7 @@ html, body, #app {
 #app {
   pre,
   code, kbd, samp {
-    font-family: JetBrains Mono, monospace;
+    @apply font-mono;
   }
 }
 

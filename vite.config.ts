@@ -12,7 +12,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
 import basicSsl from '@vitejs/plugin-basic-ssl'
-import WebfontDownload from 'vite-plugin-webfont-dl'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
@@ -115,17 +114,6 @@ export default defineConfig({
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
     manualChunksPlugin(),
-    WebfontDownload(
-      [
-        'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@300;400;700&display=swap'
-      ], {
-        injectAsStyleTag: false,
-        minifyCss: true,
-        async: true,
-        cache: true,
-        proxy: false
-      }
-    ),
     VueDevTools()
   ],
   optimizeDeps: {

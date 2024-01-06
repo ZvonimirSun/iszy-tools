@@ -3,9 +3,11 @@ import {
   presetAttributify,
   presetIcons,
   presetUno,
+  presetWebFonts,
   transformerDirectives,
   transformerVariantGroup
 } from 'unocss'
+import axios from 'axios'
 import tools from './src/tools.json'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
@@ -18,6 +20,36 @@ export default defineConfig({
       mode: 'auto',
       extraProperties: {
         display: 'inline-block'
+      }
+    }),
+    presetWebFonts({
+      customFetch: (url: string) => axios.get(url.replace('fonts.googleapis.com', 'fonts.cdn.iszy.xyz')).then(it => it.data),
+      provider: 'google',
+      fonts: {
+        main: [
+          {
+            name: 'Lora',
+            weights: ['400', '700'],
+            italic: true
+          },
+          {
+            name: 'Noto Serif SC',
+            weights: ['300', '400', '700']
+          },
+          {
+            name: 'PingFang SC',
+            provider: 'none'
+          },
+          {
+            name: 'Microsoft YaHei',
+            provider: 'none'
+          },
+          {
+            name: 'sans-serif',
+            provider: 'none'
+          }
+        ],
+        mono: 'JetBrains Mono:300,400,700'
       }
     })
   ],

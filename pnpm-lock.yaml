@@ -316,9 +316,6 @@ devDependencies:
   vite-plugin-vue-devtools:
     specifier: ^7.0.6
     version: 7.0.6(rollup@2.79.1)(vite@5.0.11)
-  vite-plugin-webfont-dl:
-    specifier: ^3.9.1
-    version: 3.9.1(vite@5.0.11)
   vite-plugin-webpackchunkname:
     specifier: ^0.2.4
     version: 0.2.4(@rollup/plugin-alias@5.1.0)(rollup@2.79.1)(vite@5.0.11)
@@ -5309,6 +5306,7 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
+    dev: false
 
   /axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -5574,13 +5572,6 @@ packages:
   /ci-info@4.0.0:
     resolution: {integrity: sha512-TdHqgGf9odd8SXNuxtUBVx8Nv+qZOejE6qyqiy5NtbYYQOeFa6zmHkxlPzmaLxWWHsU6nJmB7AETdVPi+2NBUg==}
     engines: {node: '>=8'}
-    dev: true
-
-  /clean-css@5.3.3:
-    resolution: {integrity: sha512-D5J+kHaVb/wKSFcyyV75uCn8fiY4sV38XJoe4CUyGQ+mOU/fMVYUdH1hJC+CJQ5uY3EnW27SbJYS4X8BiLrAFg==}
-    engines: {node: '>= 10.0'}
-    dependencies:
-      source-map: 0.6.1
     dev: true
 
   /clean-stack@2.2.0:
@@ -6913,6 +6904,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -9109,6 +9101,7 @@ packages:
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
@@ -10751,20 +10744,6 @@ packages:
       vite: 5.0.11(less@4.2.0)(sass@1.69.7)
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /vite-plugin-webfont-dl@3.9.1(vite@5.0.11):
-    resolution: {integrity: sha512-nr6UN0Y9ZDbtjwe0/3j+w5VdQCeYWjsgx3IaHg2EvhhbgDM44wmJLQ2ecHWduo0o+PJEmBJK6QhST6z7qxKwnA==}
-    peerDependencies:
-      vite: ^2 || ^3 || ^4 || ^5
-    dependencies:
-      axios: 1.6.5
-      clean-css: 5.3.3
-      flat-cache: 3.2.0
-      picocolors: 1.0.0
-      vite: 5.0.11(less@4.2.0)(sass@1.69.7)
-    transitivePeerDependencies:
-      - debug
     dev: true
 
   /vite-plugin-webpackchunkname@0.2.4(@rollup/plugin-alias@5.1.0)(rollup@2.79.1)(vite@5.0.11):
