@@ -1,1 +1,0 @@
-import{ad as t,aH as c,o as n,bH as o}from"./vendor-DRS8ysml.js";const s={};function r(a,_){const e=o;return n(),c(e,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const i=t(s,[["render",r]]);export{i as default};

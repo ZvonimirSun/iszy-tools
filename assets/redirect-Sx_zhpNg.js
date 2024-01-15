@@ -1,0 +1,1 @@
+import{c as r}from"./ant-design-vue-eC4MsseL.js";import{j as a,aQ as n,bG as s,l as u,o as c,aH as _,aj as p,W as l}from"./vendor-yTQQn525.js";const x=a({__name:"redirect",setup(i){const e=n(),o=s();return u(()=>{e.query.url?window.location.href=e.query.url:o.push("/")}),(m,f)=>{const t=r;return c(),_(t,{level:3},{default:p(()=>[l(" 重定向中... ")]),_:1})}}});export{x as default};
