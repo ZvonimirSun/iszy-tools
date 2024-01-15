@@ -7,12 +7,16 @@ on:
       - 'dev'
     paths-ignore:
       - '.github/**'
+      - '**/*.test.js'
+      - '**/*.test.ts'
   pull_request:
     branches-ignore:
       - 'deploy'
       - 'deploy-beta'
     paths-ignore:
       - '.github/**'
+      - '**/*.test.js'
+      - '**/*.test.ts'
   workflow_dispatch:
     branches-ignore:
       - 'deploy'
