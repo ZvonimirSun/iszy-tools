@@ -21,14 +21,14 @@
         >
           <el-form-item label="贷款金额">
             <el-input-number
-              v-model="loanAmount"
+              v-model="data.loanAmount"
               addon-after="元"
               controls-position="right"
             />
           </el-form-item>
           <el-form-item label="贷款期限">
             <el-select
-              v-model="repaymentPeriod"
+              v-model="data.repaymentPeriod"
               type="number"
             >
               <el-option
@@ -45,19 +45,19 @@
           </el-form-item>
           <el-form-item label="贷款月数">
             <el-input
-              v-model="loanMonth"
+              v-model.number="data.loanMonth"
               addon-after="月"
-              :disabled="repaymentPeriod!==0"
+              :disabled="data.repaymentPeriod!==0"
             />
           </el-form-item>
           <el-form-item label="贷款利率">
             <el-input
-              v-model="lendingRates"
+              v-model="data.lendingRates"
               addon-after="%"
             />
           </el-form-item>
           <el-form-item label="还款方式">
-            <el-select v-model="repayment">
+            <el-select v-model="data.repayment">
               <el-option
                 value="equalLoan"
                 label="等额本息"
@@ -70,7 +70,7 @@
           </el-form-item>
           <el-form-item label="首次还款">
             <el-date-picker
-              v-model="firstRepaymentDate"
+              v-model="data.firstRepaymentDate"
               type="date"
             />
           </el-form-item>
@@ -79,13 +79,13 @@
             <el-space>
               <el-button
                 type="primary"
-                :disabled="!firstRepaymentDate"
+                :disabled="!data.firstRepaymentDate"
                 @click="addPrepayment"
               >
                 添加提前还款
               </el-button>
               <el-button
-                v-if="prepayment.length > 0"
+                v-if="data.prepayment.length > 0"
                 @click="removePrepayment"
               >
                 移除
@@ -93,7 +93,7 @@
             </el-space>
           </el-form-item>
           <template
-            v-for="(item, index) of prepayment"
+            v-for="(item, index) of data.prepayment"
             :key="index"
           >
             <el-divider orientation="left">
@@ -208,21 +208,25 @@
 import dayjs, { OpUnitType } from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import isBetween from 'dayjs/plugin/isBetween'
+import pmt from './mtqLoans.service'
 
 dayjs.extend(isBetween)
-
-const loanAmount = ref(150000)
-const repaymentPeriod = ref(2)
-const loanMonth = ref(24)
-const lendingRates = ref(4.5)
-const repayment = ref<'equalLoan' | 'equalPrincipal'>('equalLoan')
-const firstRepaymentDate = ref<Date>(new Date())
 
 interface SinglePayment {
   repaymentDate: Date,
   repaymentAmount: number,
   adjustLoanMonth: number,
   lendingRates: number
+}
+
+interface TotalData {
+  loanAmount: number,
+  repaymentPeriod: number,
+  loanMonth: number,
+  lendingRates: number,
+  repayment: 'equalLoan' | 'equalPrincipal',
+  firstRepaymentDate: Date,
+  prepayment: Array<SinglePayment>
 }
 
 interface Options {
@@ -233,42 +237,50 @@ interface Options {
   prepayment: Array<SinglePayment>
 }
 
-const prepayment = ref<Array<SinglePayment>>([])
+const data = reactive<TotalData>({
+  loanAmount: 150000,
+  repaymentPeriod: 2,
+  loanMonth: 24,
+  lendingRates: 4.5,
+  repayment: 'equalLoan',
+  firstRepaymentDate: new Date(),
+  prepayment: []
+})
 
 const dateFormat = 'YYYY/MM/DD'
 
 const options = computed<Partial<Options>>(() => {
   const newOptions: Partial<Options> = {}
-  if (!isNaN(loanAmount.value) && loanAmount.value > 0) {
-    newOptions.loanAmount = loanAmount.value
+  if (!isNaN(data.loanAmount) && data.loanAmount > 0) {
+    newOptions.loanAmount = data.loanAmount
   }
-  if (Number.isInteger(loanMonth.value) && loanMonth.value > 0) {
-    newOptions.loanMonth = loanMonth.value
+  if (Number.isInteger(data.loanMonth) && data.loanMonth > 0) {
+    newOptions.loanMonth = data.loanMonth
   }
-  if (!isNaN(lendingRates.value) && lendingRates.value > 0) {
-    newOptions.lendingRates = lendingRates.value
+  if (!isNaN(data.lendingRates) && data.lendingRates > 0) {
+    newOptions.lendingRates = data.lendingRates
   }
-  if (firstRepaymentDate.value) {
-    newOptions.firstRepaymentDate = dayjs(firstRepaymentDate.value)
-    if (prepayment.value.length === 0) {
-      newOptions.prepayment = prepayment.value
+  if (data.firstRepaymentDate) {
+    newOptions.firstRepaymentDate = dayjs(data.firstRepaymentDate)
+    if (data.prepayment.length === 0) {
+      newOptions.prepayment = data.prepayment
     } else {
       let flag = true
-      for (const i in prepayment.value) {
+      for (const i in data.prepayment) {
         if (i === '0') {
-          if (!(prepayment.value[i].repaymentDate && dayjs(prepayment.value[i].repaymentDate).diff(dayjs(firstRepaymentDate.value).subtract(1, 'M'), 'days') >= 0)) {
+          if (!(data.prepayment[i].repaymentDate && dayjs(data.prepayment[i].repaymentDate).diff(dayjs(data.firstRepaymentDate).subtract(1, 'M'), 'days') >= 0)) {
             flag = false
             break
           }
         } else {
-          if (!(prepayment.value[i].repaymentDate && dayjs(prepayment.value[i].repaymentDate).diff(prepayment.value[parseInt(i) - 1].repaymentDate, 'days') >= 0)) {
+          if (!(data.prepayment[i].repaymentDate && dayjs(data.prepayment[i].repaymentDate).diff(data.prepayment[parseInt(i) - 1].repaymentDate, 'days') >= 0)) {
             flag = false
             break
           }
         }
       }
       if (flag) {
-        newOptions.prepayment = prepayment.value
+        newOptions.prepayment = data.prepayment
       }
     }
   }
@@ -291,7 +303,7 @@ const originDataSource = computed(() => {
       times: 0,
       remainingPrincipal: options.value.loanAmount
     })
-    if (repayment.value === 'equalLoan') {
+    if (data.repayment === 'equalLoan') {
       const remain = {
         loanAmount: validOptions.value.loanAmount,
         loanMonth: validOptions.value.loanMonth,
@@ -357,7 +369,7 @@ const dataSource = computed<Array<Partial<{
       times: 0,
       remainingPrincipal: validOptions.value.loanAmount
     })
-    if (repayment.value === 'equalLoan') {
+    if (data.repayment === 'equalLoan') {
       const remain = {
         loanAmount: validOptions.value.loanAmount,
         loanMonth: validOptions.value.loanMonth,
@@ -472,7 +484,7 @@ const cumulativeInterestPayment = computed(() => {
 const cumulativeRepayment = computed(() => {
   let tmp = 0
   if (validOptions.value) {
-    for (const item of prepayment.value) {
+    for (const item of data.prepayment) {
       tmp += Number(item.repaymentAmount || 0)
     }
   }
@@ -481,7 +493,7 @@ const cumulativeRepayment = computed(() => {
 const cumulativeAdjustLoanMonth = computed(() => {
   let tmp = 0
   if (validOptions.value) {
-    for (const item of prepayment.value) {
+    for (const item of data.prepayment) {
       tmp += Number(item.adjustLoanMonth || 0)
     }
   }
@@ -491,24 +503,24 @@ const savedMoney = computed(() => {
   return (originalCumulativeInterestPayment.value - cumulativeInterestPayment.value).toFixed(2)
 })
 
-watch(repaymentPeriod, (val: number) => {
+watch(() => data.repaymentPeriod, (val: number) => {
   if (val !== 0) {
-    loanMonth.value = val * 12
+    data.loanMonth = val * 12
   } else {
-    loanMonth.value = 120
+    data.loanMonth = 120
   }
 })
 
 function addPrepayment () {
   let date: Date, _lendingRates: number
-  if (prepayment.value.length === 0) {
-    date = firstRepaymentDate.value ? firstRepaymentDate.value : new Date()
-    _lendingRates = lendingRates.value || 0
+  if (data.prepayment.length === 0) {
+    date = data.firstRepaymentDate ? data.firstRepaymentDate : new Date()
+    _lendingRates = data.lendingRates || 0
   } else {
-    date = prepayment.value[prepayment.value.length - 1].repaymentDate || new Date()
-    _lendingRates = prepayment.value[prepayment.value.length - 1].lendingRates || 0
+    date = data.prepayment[data.prepayment.length - 1].repaymentDate || new Date()
+    _lendingRates = data.prepayment[data.prepayment.length - 1].lendingRates || 0
   }
-  prepayment.value.push({
+  data.prepayment.push({
     repaymentDate: date,
     repaymentAmount: 0,
     adjustLoanMonth: 0,
@@ -516,38 +528,7 @@ function addPrepayment () {
   })
 }
 function removePrepayment () {
-  prepayment.value.pop()
-}
-
-/**
- * Copy of Excel's PMT function.
- * Credit: http://stackoverflow.com/questions/2094967/excel-pmt-function-in-js
- *
- * @param ratePerPeriod       The interest rate for the loan.
- * @param numberOfPayments    The total number of payments for the loan in months.
- * @param presentValue         The present value, or the total amount that a series of future payments is worth now;
- *                              Also known as the principal.
- * @param [futureValue]          The future value, or a cash balance you want to attain after the last payment is made.
- *                              If fv is omitted, it is assumed to be 0 (zero), that is, the future value of a loan is 0.
- * @param [type]                  Optional, defaults to 0. The number 0 (zero) or 1 and indicates when payments are due.
- *                              0 = At the end of period
- *                              1 = At the beginning of the period
- * @returns {number}
- */
-function pmt (ratePerPeriod: number, numberOfPayments: number, presentValue: number, futureValue?: number, type?: 0 | 1) {
-  futureValue = typeof futureValue !== 'undefined' ? futureValue : 0
-  type = typeof type !== 'undefined' ? type : 0
-
-  if (ratePerPeriod !== 0.0) {
-    // Interest rate exists
-    const q = Math.pow(1 + ratePerPeriod, numberOfPayments)
-    return -(ratePerPeriod * (futureValue + (q * presentValue))) / ((-1 + q) * (1 + ratePerPeriod * (type)))
-  } else if (numberOfPayments !== 0.0) {
-    // No interest rate, but number of payments exists
-    return -(futureValue + presentValue) / numberOfPayments
-  }
-
-  return 0
+  data.prepayment.pop()
 }
 </script>
 
