@@ -75,6 +75,10 @@ jobs:
           branch: deploy
           force: false
 
+      - name: Purge ChangeLog
+        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+        run: curl -L https://purge.jsdelivr.net/gh/zvonimirsun/iszy-tools@deploy/CHANGELOG.md
+
       - name: Deploy App Beta
         if: ${{ github.event_name == 'push' && github.ref_name == 'dev' }}
         uses: JamesIves/github-pages-deploy-action@v4
