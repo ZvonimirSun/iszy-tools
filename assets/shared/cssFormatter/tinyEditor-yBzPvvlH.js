@@ -1,1 +1,0 @@
-import{z as r}from"../../common-VsZOP66s.js";import{j as t}from"../../js-beautify-ZBorlEpi.js";function n(s,{indent:e=2}={}){return t.css(s,{indent_size:e})}function o(s){return s.replace(/\s+|\n/g," ").replace(/\s*{\s*/g,"{").replace(/\s*}\s*/g,"}").replace(/\s*:\s*/g,":").replace(/\s*;\s*/g,";")}const a={formatter:n,compactor:o,extensions:[r()]};export{a as p};
