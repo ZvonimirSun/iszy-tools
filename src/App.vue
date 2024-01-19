@@ -136,6 +136,9 @@ async function triggerUpdate () {
   let updateInfoHtml = ''
   try {
     const text: string = await $axios.get('https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/iszy-tools@deploy/CHANGELOG.md', {
+      headers: {
+        'X-BYPASS-CACHE': 1
+      },
       params: {
         t: Date.now()
       }
