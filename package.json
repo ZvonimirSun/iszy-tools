@@ -44,7 +44,7 @@
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "dom-to-image": "^2.6.0",
-    "element-plus": "^2.5.1",
+    "element-plus": "^2.5.2",
     "eslint-linter-browserify": "^8.56.0",
     "esri-leaflet": "^3.0.12",
     "file-saver": "^2.0.5",
