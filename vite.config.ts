@@ -10,7 +10,6 @@ import { AntDesignVueResolver, ElementPlusResolver } from 'unplugin-vue-componen
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
@@ -113,7 +112,6 @@ export default defineConfig({
       }
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
-    manualChunksPlugin(),
     VueDevTools()
   ],
   optimizeDeps: {
@@ -122,6 +120,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve('src')
+    }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js'
+      }
     }
   },
   css: {
