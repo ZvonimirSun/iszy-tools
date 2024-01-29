@@ -122,13 +122,6 @@ export default defineConfig({
       '@': resolve('src')
     }
   },
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name].js'
-      }
-    }
-  },
   css: {
     preprocessorOptions: {
       scss: { charset: false },
