@@ -1,1 +1,0 @@
-import{bG as s,aH as r,aD as t,bH as c,o as _,b as l,W as u,aI as i}from"./vendor-e_qgH4qe.js";const x={__name:"403",setup(p){const e=s();function o(){e.push("/login")}return(m,b)=>{const a=i,n=c;return _(),r(n,{icon:"warning",title:"403","sub-title":"对不起，你无权访问当前页面。"},{extra:t(()=>[l(a,{type:"primary",onClick:o},{default:t(()=>[u(" 登录 ")]),_:1})]),_:1})}}};export{x as default};
