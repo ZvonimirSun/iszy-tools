@@ -112,7 +112,7 @@
     "postcss": "^8.4.33",
     "sass": "^1.70.0",
     "sitemap": "^7.1.1",
-    "taze": "^0.13.1",
+    "taze": "^0.13.2",
     "typescript": "^5.3.3",
     "unocss": "^0.58.4",
     "unplugin-auto-import": "^0.17.5",
