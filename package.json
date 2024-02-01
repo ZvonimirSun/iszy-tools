@@ -60,7 +60,7 @@
     "qrcode": "^1.5.3",
     "qrcode-decoder": "^0.3.3",
     "relationship.js": "^1.2.4",
-    "three": "^0.160.1",
+    "three": "^0.161.0",
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
     "vanilla-jsoneditor": "^0.21.4",

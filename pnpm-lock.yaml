@@ -138,8 +138,8 @@ dependencies:
     specifier: ^1.2.4
     version: 1.2.4
   three:
-    specifier: ^0.160.1
-    version: 0.160.1
+    specifier: ^0.161.0
+    version: 0.161.0
   ua-parser-js:
     specifier: ^1.0.37
     version: 1.0.37
@@ -9957,8 +9957,8 @@ packages:
       any-promise: 1.3.0
     dev: false
 
-  /three@0.160.1:
-    resolution: {integrity: sha512-Bgl2wPJypDOZ1stAxwfWAcJ0WQf7QzlptsxkjYiURPz+n5k4RBDLsq+6f9Y75TYxn6aHLcWz+JNmwTOXWrQTBQ==}
+  /three@0.161.0:
+    resolution: {integrity: sha512-LC28VFtjbOyEu5b93K0bNRLw1rQlMJ85lilKsYj6dgTu+7i17W+JCCEbvrpmNHF1F3NAUqDSWq50UD7w9H2xQw==}
     dev: false
 
   /through@2.3.8:
