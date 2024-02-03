@@ -3,6 +3,12 @@ import { iniToSettings, settingsToIni, getEmptySettings } from './palServerSetti
 import type { SettingObject } from './palServerSettings'
 import createFile from '@/utils/createFile'
 
+const scrollContainer = ref<HTMLDivElement | null>(null)
+const {
+  width,
+  height
+} = useElementSize(scrollContainer)
+
 const settings: SettingObject[] = reactive(getEmptySettings())
 
 async function getFile (file: File) {
@@ -63,45 +69,55 @@ function reset () {
     </div>
     <el-form
       flex-1
+      w-full
       overflow-auto
-      label-width="21rem"
+      label-width="17rem"
+      position-relative
       @submit.prevent
     >
       <div
-        flex
-        flex-wrap
+        ref="scrollContainer"
+        class="scroll-container"
+        w-full
+        h-full
       >
-        <el-form-item
-          v-for="setting in settings"
-          :key="setting.key"
-          :label="setting.label"
+        <div
+          class="v-scroll"
         >
-          <el-input-number
-            v-if="setting.type === 'number'"
-            v-model="setting.default"
-            :min="setting.min"
-            :max="setting.max"
-          />
-          <el-switch
-            v-else-if="setting.type === 'switch'"
-            v-model="setting.default"
-          />
-          <el-select
-            v-else-if="setting.type === 'select'"
-            v-model="setting.default"
-          >
-            <el-option
-              v-for="option in setting.options"
-              :key="option.value"
-              :label="option.label"
-              :value="option.value"
-            />
-          </el-select>
-          <el-input
-            v-else
-            v-model="setting.default"
-          />
-        </el-form-item>
+          <div class="content">
+            <el-form-item
+              v-for="setting in settings"
+              :key="setting.key"
+              :label="setting.label"
+            >
+              <el-input-number
+                v-if="setting.type === 'number'"
+                v-model="setting.default"
+                :min="setting.min"
+                :max="setting.max"
+              />
+              <el-switch
+                v-else-if="setting.type === 'switch'"
+                v-model="setting.default"
+              />
+              <el-select
+                v-else-if="setting.type === 'select'"
+                v-model="setting.default"
+              >
+                <el-option
+                  v-for="option in setting.options"
+                  :key="option.value"
+                  :label="option.label"
+                  :value="option.value"
+                />
+              </el-select>
+              <el-input
+                v-else
+                v-model="setting.default"
+              />
+            </el-form-item>
+          </div>
+        </div>
       </div>
     </el-form>
   </div>
@@ -112,8 +128,59 @@ function reset () {
   margin-left: 0;
 }
 
-.el-form-item {
-  width: 30%;
-  min-width: 40rem;
+@media(min-width: 768px) {
+  .scroll-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .v-scroll {
+    width: calc(v-bind('height') * 1px);
+    height: calc(v-bind('width') * 1px);
+    position: relative;
+    overflow: auto;
+    transform-origin: 0 0;
+    transform: translateY(calc(v-bind('height') * 1px)) rotate(-90deg);
+  }
+
+  .content {
+    height: calc(v-bind('height') * 1px);
+    position: absolute;
+    left: 100%;
+    transform-origin: 0 0;
+    rotate: 90deg;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .el-form-item {
+    width: calc(calc(v-bind('width') * 1px) / 3 - 1.6rem);
+    min-width: 40rem;
+  }
+}
+
+@media(max-width: 768px) {
+  .scroll-container {
+    position: relative;
+  }
+
+  .v-scroll {
+    width: 100%;
+    height: 100%;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .el-form-item {
+    width: 100%;
+  }
 }
 </style>
