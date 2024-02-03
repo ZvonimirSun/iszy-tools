@@ -1,0 +1,1 @@
+import{e as t,D as o,o as c}from"./index-82VMCAc5.js";import{E as n}from"./el-result-GbtBMU96.js";const r={};function s(_,a){const e=n;return c(),o(e,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const f=t(r,[["render",s]]);export{f as default};
