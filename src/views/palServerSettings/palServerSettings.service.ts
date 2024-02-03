@@ -472,7 +472,7 @@ export function iniToSettings (ini: string): SettingObject[] {
         }
         iniMap[key] = value
       })
-    for (const setting of settingList) {
+    for (const setting of settings) {
       let value: string
       if (iniMap[setting.key] == null) {
         continue
