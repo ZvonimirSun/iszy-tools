@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { merge } from 'lodash-es'
 import { v4 as uuidv4 } from 'uuid'
 
-const userImgHosting = useUserStore().modules.imgHosting
+const userImgHosting = useSettingStore().modules.imgHosting
 
 interface ImgItem {
   name: string,

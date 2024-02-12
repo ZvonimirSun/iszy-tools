@@ -11,9 +11,9 @@ export const useStyleStore = defineStore('style', {
   actions: {
     setTheme (value?: 'dark' | 'light' | 'auto') {
       if (value) {
-        useUserStore().settings.theme.mode = value
+        useSettingStore().general.theme.mode = value
       }
-      switch (useUserStore().settings.theme.mode) {
+      switch (useSettingStore().general.theme.mode) {
         case 'dark':
           this.isDark = true
           break
@@ -27,18 +27,18 @@ export const useStyleStore = defineStore('style', {
     },
     toggleTheme () {
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      switch (useUserStore().settings.theme.mode) {
+      switch (useSettingStore().general.theme.mode) {
         case 'dark':
-          useUserStore().settings.theme.mode = 'light'
+          useSettingStore().general.theme.mode = 'light'
           break
         case 'light':
-          useUserStore().settings.theme.mode = 'dark'
+          useSettingStore().general.theme.mode = 'dark'
           break
         default:
           if (dark) {
-            useUserStore().settings.theme.mode = 'light'
+            useSettingStore().general.theme.mode = 'light'
           } else {
-            useUserStore().settings.theme.mode = 'dark'
+            useSettingStore().general.theme.mode = 'dark'
           }
           break
       }

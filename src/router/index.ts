@@ -123,7 +123,7 @@ async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormal
       } else {
         name = _to.name.toString()
       }
-      useUserStore().access({ name, link: _to.path })
+      toolsStore.access({ name, link: _to.path })
     }
     if (redirected) {
       next(_to.path)

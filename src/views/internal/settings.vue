@@ -3,7 +3,7 @@
     账户信息
   </a-typography-title>
   <div
-    v-if="userStore._user.token"
+    v-if="userStore.logged"
     flex
     flex-col
     text-7
@@ -17,7 +17,7 @@
         昵称:
       </div>
       <div>
-        {{ userStore._user.profile.nickName }}
+        {{ userStore.profile.nickName }}
       </div>
     </div>
     <div flex>
@@ -27,7 +27,7 @@
         邮箱:
       </div>
       <div>
-        {{ userStore._user.profile.email }}
+        {{ userStore.profile.email }}
       </div>
     </div>
     <el-space>
@@ -152,31 +152,6 @@
     flex-wrap
     class="settings-container"
   >
-    <div
-      v-if="userStore._user.token"
-      class="settings-wrapper"
-    >
-      <a-typography-title :level="4">
-        设置云端同步
-      </a-typography-title>
-      <el-space>
-        <el-button
-          @click="uploadToCloud"
-        >
-          同步到云端
-        </el-button>
-        <el-button
-          @click="downloadFromCloud"
-        >
-          从云端同步
-        </el-button>
-        <el-checkbox
-          v-model="settings.autoSync"
-        >
-          自动同步
-        </el-checkbox>
-      </el-space>
-    </div>
     <div class="settings-wrapper">
       <a-typography-title :level="4">
         全局设置
@@ -237,7 +212,7 @@
       </el-space>
     </div>
     <div
-      v-if="userStore._user.token"
+      v-if="userStore.logged"
       class="settings-wrapper"
     >
       <a-typography-title :level="4">
@@ -248,7 +223,7 @@
       </a-typography-title>
       <el-space>
         <el-checkbox
-          v-model="userStore.modules.jsonEditor.syncCloud"
+          v-model="settingStore.modules.jsonEditor.syncCloud"
         >
           从云端获取
         </el-checkbox>
@@ -264,9 +239,10 @@ const router = useRouter()
 const route = useRoute()
 const styleStore = useStyleStore()
 const userStore = useUserStore()
+const settingStore = useSettingStore()
 
 const settings = computed(() => {
-  return userStore.settings
+  return settingStore.general
 })
 
 const editingUser = ref(false)
@@ -302,23 +278,7 @@ const rules = reactive<FormRules<typeof userForm>>({
 })
 
 const clearOfflineCache = () => useMainStore().clearOfflineCache()
-const uploadSettings = () => userStore.uploadSettings()
-const downloadSettings = () => userStore.downloadSettings()
 
-async function uploadToCloud () {
-  if (await uploadSettings()) {
-    ElMessage.success('同步成功')
-  } else {
-    ElMessage.error('同步失败')
-  }
-}
-async function downloadFromCloud () {
-  if (await downloadSettings()) {
-    ElMessage.success('同步成功')
-  } else {
-    ElMessage.error('同步失败')
-  }
-}
 function login () {
   router.push({
     path: '/login',
@@ -332,8 +292,8 @@ function logout () {
 }
 
 function editUser () {
-  userForm.nickName = userStore._user.profile.nickName ?? ''
-  userForm.email = userStore._user.profile.email ?? ''
+  userForm.nickName = userStore.profile.nickName ?? ''
+  userForm.email = userStore.profile.email ?? ''
   userForm.passwd = ''
   userForm.rePasswd = ''
   userForm.oldPasswd = ''

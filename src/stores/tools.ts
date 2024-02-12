@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/tools.json'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
+import type { Favorite, Statistic } from '@/index'
 
 interface ToolItem {
   id?: string,
@@ -23,6 +24,12 @@ interface ToolMenu {
 }
 
 export const useToolsStore = defineStore('tools', {
+  persist: true,
+  sync: true,
+  state: () => ({
+    favorite: [] as Favorite[],
+    statistics: [] as Statistic[]
+  }),
   getters: {
     oriToolMenus (): ToolMenu[] {
       return (tools || []).map((item: ToolMenu) => {
@@ -40,8 +47,7 @@ export const useToolsStore = defineStore('tools', {
       }))
     },
     toolMenus (): ToolMenu[] {
-      const userStore = useUserStore()
-      const settings = userStore.settings
+      const settings = useSettingStore().general
       const count = 6
 
       let tmp: ToolMenu[] = []
@@ -55,28 +61,28 @@ export const useToolsStore = defineStore('tools', {
           children: this.oriToolItems
         }]
       }
-      if (settings.showRecent && userStore.recent().length > 0) {
+      if (settings.showRecent && this.recent().length > 0) {
         tmp.unshift({
           id: uuid(),
           type: '最近访问',
           icon: 'i-icon-park-outline-history',
-          children: userStore.recent(count)
+          children: this.recent(count)
         })
       }
-      if (settings.showMost && userStore.most().length > 0) {
+      if (settings.showMost && this.most().length > 0) {
         tmp.unshift({
           id: uuid(),
           type: '最常访问',
           icon: 'i-icon-park-solid-concern',
-          children: userStore.most(count)
+          children: this.most(count)
         })
       }
-      if (userStore.favorite.length > 0) {
+      if (this.favorite.length > 0) {
         tmp.unshift({
           id: uuid(),
           type: '收藏',
           icon: 'i-icon-park-solid-folder-focus',
-          children: userStore.favorite
+          children: this.favorite
         })
       }
       return tmp.filter((item: ToolMenu) => {
@@ -128,6 +134,84 @@ export const useToolsStore = defineStore('tools', {
           }
         ]
       }]
+    },
+    isFav: state => (name: string): boolean => {
+      return state.favorite.filter(item => (item.name === name)).length > 0
+    },
+    recent: state => (count?: number): Statistic[] => {
+      return [...state.statistics].sort(function (a, b) {
+        return b.lastAccessTime - a.lastAccessTime
+      }).slice(0, count)
+    },
+    most: state => (count?: number): Statistic[] => {
+      return [...state.statistics].sort(function (a, b) {
+        return b.times - a.times
+      }).slice(0, count)
+    }
+  },
+  actions: {
+    // 收藏相关
+    updateFav ({ name, link, add } = {} as {
+      name: string, link?: string, add?: boolean
+    }) {
+      if (add) {
+        if (!link) {
+          return
+        }
+        const tmp = this.favorite.filter(item => (item.name === name))
+        if (tmp.length > 0) {
+          tmp[0].link = link
+        } else {
+          this.favorite.push({ name, link })
+        }
+      } else {
+        this.favorite = this.favorite.filter(item => (item.name !== name))
+      }
+    },
+    access ({ name, link } = {} as { name: string, link: string }) {
+      if (Array.isArray(this.statistics)) {
+        const tmp = this.statistics.filter(item => (item.name === name))
+        if (tmp.length > 0) {
+          tmp[0].times++
+          tmp[0].lastAccessTime = new Date().getTime()
+          tmp[0].link = link
+        } else {
+          this.statistics.push({
+            name, link, times: 1, lastAccessTime: new Date().getTime()
+          })
+        }
+      } else {
+        this.statistics = [{
+          name, link, times: 1, lastAccessTime: new Date().getTime()
+        }]
+      }
+    },
+
+    clearHistory () {
+      this.statistics = []
+    },
+
+    fixFavorite () {
+      const allTools = useToolsStore().oriToolItems
+      for (const tool of this.favorite) {
+        const tmp = allTools.find(item => (item.name === tool.name))
+        if (!tmp) {
+          this.updateFav({ name: tool.name })
+        } else if (tmp.link !== tool.link) {
+          this.updateFav({ name: tool.name, link: tmp.link, add: true })
+        }
+      }
+      for (const tool of this.statistics) {
+        const tmp = allTools.find(item => (item.name === tool.name))
+        if (!tmp) {
+          this.statistics = this.statistics.filter(item => (item.name !== tool.name))
+        } else if (tmp.link !== tool.link) {
+          const tmp = this.statistics.find(item => (item.name === tool.name))
+          if (tmp) {
+            tmp.link = tool.link
+          }
+        }
+      }
     }
   }
 })

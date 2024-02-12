@@ -29,10 +29,10 @@
             class="desc"
           >
             一个轻量的工具集合
-            <template v-if="_user.profile.nickName">
+            <template v-if="userStore.profile.nickName">
               ·
               <router-link to="/settings">
-                {{ _user.profile.nickName }}
+                {{ userStore.profile.nickName }}
               </router-link>
             </template>
           </div>
@@ -43,10 +43,10 @@
             <router-link to="/">
               <span class="i-icon-park-outline:return" />返回首页
             </router-link>
-            <template v-if="_user.profile.nickName">
+            <template v-if="userStore.profile.nickName">
               ·
               <router-link to="/settings">
-                {{ _user.profile.nickName }}
+                {{ userStore.profile.nickName }}
               </router-link>
             </template>
           </div>
@@ -108,7 +108,7 @@ const {
   updateServiceWorker
 } = useRegisterSW()
 const route = useRoute()
-const _user = useUserStore()._user
+const userStore = useUserStore()
 
 const fullScreenStatus = ref(false)
 

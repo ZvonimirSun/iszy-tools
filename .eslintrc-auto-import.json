@@ -321,6 +321,7 @@
     "useStyleStore": true,
     "useTinyEditorStore": true,
     "useToolsStore": true,
-    "useUserStore": true
+    "useUserStore": true,
+    "useSettingStore": true
   }
 }

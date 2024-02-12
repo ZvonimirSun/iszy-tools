@@ -1,38 +1,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import axios from '@/plugins/Axios'
-import { clone, merge } from 'lodash-es'
-import type { AxiosError } from 'axios'
+import { clone } from 'lodash-es'
+import type { AxiosError, AxiosResponse } from 'axios'
+import type { User } from '@/index'
 
 let tokenChecked = false
-
-interface Favorite {
-  name: string,
-  link: string
-}
-
-interface Statistic {
-  name: string,
-  link: string,
-  times: number,
-  lastAccessTime: number
-}
-
-interface Privilege {
-  type: string,
-}
-
-interface Role {
-  name: string,
-  alias: string,
-  privileges?: Privilege[]
-}
-
-interface User {
-  nickName: string | null,
-  email: string | null,
-  userId: number | null,
-  roles: Role[] | null
-}
+let checkTokenPromise: Promise<AxiosResponse> | null = null
 
 const emptyProfile: User = {
   nickName: null,
@@ -44,70 +17,12 @@ const emptyProfile: User = {
 export const useUserStore = defineStore('user', {
   persist: true,
   state: () => ({
-    _user: {
-      token: null as string | null,
-      profile: clone(emptyProfile) as User
-    },
-
-    favorite: [] as Favorite[],
-    statistics: [] as Statistic[],
-
-    settings: {
-      showMost: false,
-      showRecent: false,
-
-      showSearch: true,
-      showType: true,
-      openInNewTab: false,
-
-      autoSync: false,
-
-      theme: {
-        mode: 'auto' as 'dark' | 'light' | 'auto'
-      }
-    },
-    modules: {
-      2048: {
-        bestScore: 0
-      },
-      tetris: {
-        bestScore: 0
-      },
-      imgHosting: {
-        uploader: null as 'aliyun' | null,
-        configs: {} as Record<string, Record<string, string>>,
-        commonConfig: {
-          renameBeforeUpload: false,
-          renameTimeStamp: true,
-          copyUrlAfterUpload: true,
-          customCopyContent: '$url'
-        }
-      },
-      jsonEditor: {
-        syncCloud: false
-      }
-    },
-    version: 2,
-
-    syncing: false
+    logged: false,
+    profile: clone(emptyProfile) as User
   }),
   getters: {
     isAdmin: state => {
-      return state._user.profile.roles?.some(item => (item.name === 'superadmin'))
-    },
-    isLogged: state => !!state._user.token,
-    isFav: state => (name: string): boolean => {
-      return state.favorite.filter(item => (item.name === name)).length > 0
-    },
-    recent: state => (count?: number): Statistic[] => {
-      return [...state.statistics].sort(function (a, b) {
-        return b.lastAccessTime - a.lastAccessTime
-      }).slice(0, count)
-    },
-    most: state => (count?: number): Statistic[] => {
-      return [...state.statistics].sort(function (a, b) {
-        return b.times - a.times
-      }).slice(0, count)
+      return state.profile.roles?.some(item => (item.name === 'superadmin'))
     }
   },
 
@@ -124,9 +39,9 @@ export const useUserStore = defineStore('user', {
             password
           })).data
           if (res.success) {
-            this._user.token = 'logged'
+            this.logged = true
             tokenChecked = true
-            this._user.profile = res.data || clone(emptyProfile)
+            this.profile = res.data || clone(emptyProfile)
             await this.downloadSettings()
             return
           } else {
@@ -166,7 +81,7 @@ export const useUserStore = defineStore('user', {
       try {
         const data = (await axios.put(`${axios.$apiBase}/auth/profile`, options)).data
         if (data && data.success) {
-          this._user.profile = data.data || clone(emptyProfile)
+          this.profile = data.data || clone(emptyProfile)
           ElMessage.success('更新成功！')
         } else {
           throw new Error(data.message)
@@ -179,14 +94,23 @@ export const useUserStore = defineStore('user', {
       }
     },
     async checkToken () {
-      if (this._user.token) {
+      if (this.logged) {
         if (tokenChecked) {
           return true
         } else {
+          if (!checkTokenPromise) {
+            checkTokenPromise = axios.get(`${axios.$apiBase}/auth/profile`)
+          }
           try {
-            this._user.profile = (await axios.get(`${axios.$apiBase}/auth/profile`)).data.data || {}
-            tokenChecked = true
-            return true
+            const data = (await checkTokenPromise).data
+            if (data && data.success) {
+              this.profile = data.data || clone(emptyProfile)
+              tokenChecked = true
+              return true
+            } else {
+              this.clearToken()
+              return false
+            }
           } catch (e) {
             if (axios.isCancel && !axios.isCancel(e)) {
               this.clearToken()
@@ -199,98 +123,14 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    clearHistory () {
-      this.statistics = []
-    },
-
-    fixFavorite () {
-      const allTools = useToolsStore().oriToolItems
-      for (const tool of this.favorite) {
-        const tmp = allTools.find(item => (item.name === tool.name))
-        if (!tmp) {
-          this.updateFav({ name: tool.name })
-        } else if (tmp.link !== tool.link) {
-          this.updateFav({ name: tool.name, link: tmp.link, add: true })
-        }
-      }
-      for (const tool of this.statistics) {
-        const tmp = allTools.find(item => (item.name === tool.name))
-        if (!tmp) {
-          this.statistics = this.statistics.filter(item => (item.name !== tool.name))
-        } else if (tmp.link !== tool.link) {
-          const tmp = this.statistics.find(item => (item.name === tool.name))
-          if (tmp) {
-            tmp.link = tool.link
-          }
-        }
-      }
-    },
-
     clearToken () {
-      this._user.token = null
-      this._user.profile = clone(emptyProfile)
+      this.logged = false
+      this.profile = clone(emptyProfile)
     },
 
-    // 收藏相关
-    updateFav ({ name, link, add } = {} as {
-      name: string, link?: string, add?: boolean
-    }) {
-      if (add) {
-        if (!link) {
-          return
-        }
-        const tmp = this.favorite.filter(item => (item.name === name))
-        if (tmp.length > 0) {
-          tmp[0].link = link
-        } else {
-          this.favorite.push({ name, link })
-        }
-      } else {
-        this.favorite = this.favorite.filter(item => (item.name !== name))
-      }
-    },
-    access ({ name, link } = {} as { name: string, link: string }) {
-      if (Array.isArray(this.statistics)) {
-        const tmp = this.statistics.filter(item => (item.name === name))
-        if (tmp.length > 0) {
-          tmp[0].times++
-          tmp[0].lastAccessTime = new Date().getTime()
-          tmp[0].link = link
-        } else {
-          this.statistics.push({
-            name, link, times: 1, lastAccessTime: new Date().getTime()
-          })
-        }
-      } else {
-        this.statistics = [{
-          name, link, times: 1, lastAccessTime: new Date().getTime()
-        }]
-      }
-    },
-
-    async uploadSettings () {
-      if (this._user.token) {
-        const settings = {
-          favorite: this.favorite,
-          statistics: this.statistics,
-
-          settings: this.settings,
-          modules: this.modules,
-
-          version: this.version
-        }
-        try {
-          const res = (await axios.post(`${axios.$apiBase}/tools/settings`, settings)).data
-          return res.success && res.data
-        } catch (e) {
-          return false
-        }
-      } else {
-        return false
-      }
-    },
     async downloadSettings () {
-      if (this._user.token) {
+      if (this.logged) {
+        debugger
         try {
           if (await this.checkToken()) {
             const res = (await axios.get(`${axios.$apiBase}/tools/settings`)).data
@@ -309,22 +149,7 @@ export const useUserStore = defineStore('user', {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     importConfig (data: any) {
-      this.syncing = true
-      let tmp = data
-      if (data.version == null) {
-        tmp = this.upgradeDataToV2(data)
-      }
-      useUserStore().$patch(tmp)
-    },
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    upgradeDataToV2 (data: any) {
-      delete data.profile
-      delete data.token
-      data.modules.jsonEditor = merge(this.modules.jsonEditor, data.settings.jsonEditor)
-      delete data.settings.jsonEditor
-      data.version = 2
-      return data
+      useUserStore().$patch(data)
     }
   }
 })

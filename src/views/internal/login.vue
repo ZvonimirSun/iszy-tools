@@ -80,7 +80,7 @@ watch(route, function (val) {
 }, { immediate: true })
 
 onMounted(() => {
-  if (userStore.isLogged) {
+  if (userStore.logged) {
     router.push({ path: redirect.value || '/', query: otherQuery.value })
   }
 })

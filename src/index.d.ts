@@ -66,3 +66,32 @@ export type EditorPlugin = {
   formatter?:(v: string, options?: Record<string, any>) => string,
   compactor?:(v: string) => string
 }
+
+export interface Favorite {
+  name: string,
+  link: string
+}
+
+export interface Statistic {
+  name: string,
+  link: string,
+  times: number,
+  lastAccessTime: number
+}
+
+export interface Privilege {
+  type: string,
+}
+
+export interface Role {
+  name: string,
+  alias: string,
+  privileges?: Privilege[]
+}
+
+export interface User {
+  nickName: string | null,
+  email: string | null,
+  userId: number | null,
+  roles: Role[] | null
+}

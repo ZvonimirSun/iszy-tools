@@ -79,7 +79,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       }
     },
     syncCloud: () => {
-      return useUserStore().isLogged && useUserStore().modules.jsonEditor.syncCloud
+      return useUserStore().logged && useSettingStore().modules.jsonEditor.syncCloud
     }
   },
   actions: {

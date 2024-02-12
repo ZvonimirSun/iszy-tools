@@ -7,7 +7,7 @@ export const use2048Store = defineStore('2048', {
   }),
   actions: {
     setBestScore (bestScore: number) {
-      useUserStore().modules['2048'].bestScore = bestScore
+      useSettingStore().modules['2048'].bestScore = bestScore
     },
 
     setGameState (gameState?: never) {

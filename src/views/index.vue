@@ -82,20 +82,20 @@
 
 <script setup lang="ts">
 const searchStr = ref('')
-const userStore = useUserStore()
+const settingStore = useSettingStore()
 const toolsStore = useToolsStore()
 
 const toolMenus = computed(() => {
   return toolsStore.toolMenusFilter(searchStr.value)
 })
 
-const settings = userStore.settings
-const isFav = userStore.isFav
+const settings = settingStore.general
+const isFav = toolsStore.isFav
 
-const updateFav = userStore.updateFav
+const updateFav = toolsStore.updateFav
 
 onMounted(() => {
-  userStore.fixFavorite()
+  toolsStore.fixFavorite()
 })
 </script>
 

@@ -2,6 +2,7 @@ import EventBus from '@/plugins/EventBus.js'
 import App from '@/App.vue'
 import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
+import { createPiniaSync } from '@/plugins/PiniaSync'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:uno.css'
 
@@ -20,9 +21,10 @@ const $apiBase = import.meta.env.PROD ? 'https://api.iszy.xyz' : import.meta.env
   const piniaPersistPlugin = await createPiniaPersist({
     name: 'iszy_tools',
     storeName: 'state',
-    version: 2
+    version: 3
   })
-  pinia.use(piniaPersistPlugin)
+  const piniaSyncPlugin = createPiniaSync()
+  pinia.use(piniaPersistPlugin).use(piniaSyncPlugin)
   app.use(pinia)
 
   const router = (await import('@/router')).default
