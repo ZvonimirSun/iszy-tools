@@ -7,9 +7,9 @@
     <template #extra>
       <el-button
         type="primary"
-        @click="login"
+        @click="returnHome"
       >
-        登录
+        返回首页
       </el-button>
     </template>
   </el-result>
@@ -18,7 +18,7 @@
 <script setup>
 const router = useRouter()
 
-function login () {
-  router.push('/login')
+function returnHome () {
+  router.push('/')
 }
 </script>
