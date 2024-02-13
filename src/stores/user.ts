@@ -151,7 +151,6 @@ export const useUserStore = defineStore('user', {
 
     async downloadSettings () {
       if (this.logged) {
-        debugger
         try {
           if (await this.checkToken()) {
             const res = (await axios.get(`${axios.$apiBase}/tools/settings`)).data

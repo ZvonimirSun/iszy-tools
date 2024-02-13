@@ -96,6 +96,16 @@ export const useToolsStore = defineStore('tools', {
           children: this.oriToolItems
         }]
       }
+
+      tmp = tmp.map((item: ToolMenu) => {
+        return {
+          ...item,
+          children: item.children.filter((child: ToolItem) => {
+            return !child.requiresAuth || child.requiresAuth === true
+          })
+        }
+      })
+
       if (settings.showRecent && this.recent().length > 0) {
         tmp.unshift({
           id: uuid(),
@@ -144,6 +154,7 @@ export const useToolsStore = defineStore('tools', {
         children: internalTools
       }]
     },
+
     isFav: state => (name: string): boolean => {
       return state.favorite.filter(item => (item.name === name)).length > 0
     },
