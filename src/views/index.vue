@@ -46,8 +46,8 @@
         :xl="3"
       >
         <router-link
-          :target="(settings.openInNewTab || /^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?'_blank':''"
-          :to="(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+)+$/.test(tool.link))?('/redirect?url='+tool.link):(tool.link||'')"
+          :target="(settings.openInNewTab || isExternalLink(tool.link)) ? '_blank' : ''"
+          :to="isExternalLink(tool.link) ? ('/redirect?url='+tool.link) : (tool.link||'')"
         >
           <el-tooltip
             placement="top"
@@ -81,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+import { isExternalLink } from '@/utils/common'
+
 const searchStr = ref('')
 const settingStore = useSettingStore()
 const toolsStore = useToolsStore()

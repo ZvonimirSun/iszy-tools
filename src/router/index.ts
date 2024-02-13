@@ -8,6 +8,7 @@ import {
 } from 'vue-router'
 import { merge } from 'lodash-es'
 import type { DefineComponent } from 'vue'
+import { isExternalLink } from '@/utils/common'
 
 const toolsStore = useToolsStore()
 
@@ -39,7 +40,7 @@ let routes: RouteRecordRaw[] = []
 for (const tmp of toolsStore.toolMenusWithInternal) {
   if (Array.isArray(tmp.children) && tmp.children.length > 0) {
     for (const tool of tmp.children) {
-      if (!/^(http(s)?:\/\/)\w+\S+(\.\S+)+$/.test(tool.link)) {
+      if (!isExternalLink(tool.link)) {
         const path = (tmp.link || '') + (tool.link || '')
         if (modules[path]) {
           if (tool.type !== 'internal') {

@@ -50,6 +50,23 @@ declare module 'virtual:pwa-register/vue' {
   }
 }
 
+export interface Privilege {
+  type: string,
+}
+
+export interface Role {
+  name: string,
+  alias: string,
+  privileges?: Privilege[]
+}
+
+export interface User {
+  nickName: string | null,
+  email: string | null,
+  userId: number | null,
+  roles: Role[] | null
+}
+
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string,
@@ -77,21 +94,4 @@ export interface Statistic {
   link: string,
   times: number,
   lastAccessTime: number
-}
-
-export interface Privilege {
-  type: string,
-}
-
-export interface Role {
-  name: string,
-  alias: string,
-  privileges?: Privilege[]
-}
-
-export interface User {
-  nickName: string | null,
-  email: string | null,
-  userId: number | null,
-  roles: Role[] | null
 }
