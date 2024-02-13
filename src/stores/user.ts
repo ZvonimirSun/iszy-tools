@@ -2,13 +2,14 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import axios from '@/plugins/Axios'
 import { clone } from 'lodash-es'
 import type { AxiosError, AxiosResponse } from 'axios'
-import type { User } from '@/index'
+import type { AuthOption, User } from '@/index'
 
 let tokenChecked = false
 let checkTokenPromise: Promise<AxiosResponse> | null = null
 
 const emptyProfile: User = {
   nickName: null,
+  userName: null,
   email: null,
   userId: null,
   roles: null
@@ -119,6 +120,26 @@ export const useUserStore = defineStore('user', {
           }
         }
       } else {
+        return false
+      }
+    },
+    checkAccess (authOption: boolean | AuthOption) {
+      if (typeof authOption === 'boolean') {
+        return authOption
+      } else {
+        if (authOption.users) {
+          if (authOption.users.includes(this.profile.userName || '')) {
+            return true
+          }
+        }
+        if (authOption.roles) {
+          if (authOption.roles.some(item => (this.profile.roles?.some(role => role.name === item)))) {
+            return true
+          }
+        }
+        if (authOption.privileges) {
+          // todo
+        }
         return false
       }
     },

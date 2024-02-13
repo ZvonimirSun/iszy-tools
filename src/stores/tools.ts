@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/tools.json'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
-import type { Favorite, Statistic } from '@/index'
+import type { AuthOption, Favorite, Statistic } from '@/index'
 
 interface ToolItem {
   id?: string,
@@ -12,7 +12,7 @@ interface ToolItem {
   statistics?: boolean,
   layout?: string,
   type?: string,
-  requiresAuth?: boolean,
+  requiresAuth?: boolean | AuthOption,
 }
 
 interface ToolMenu {
@@ -22,6 +22,41 @@ interface ToolMenu {
   link?: string,
   children: ToolItem[]
 }
+
+const internalTools: ToolItem[] = [
+  {
+    name: '首页',
+    link: '/',
+    type: 'internal'
+  },
+  {
+    name: '403',
+    link: '/403',
+    type: 'internal'
+  },
+  {
+    name: '404',
+    link: '/404',
+    type: 'internal'
+  },
+  {
+    name: '登录',
+    link: '/login',
+    type: 'internal'
+  },
+  {
+    name: '重定向',
+    link: '/redirect',
+    type: 'internal'
+  },
+  {
+    name: '用户管理',
+    link: '/userManager',
+    requiresAuth: {
+      roles: ['superadmin']
+    }
+  }
+]
 
 export const useToolsStore = defineStore('tools', {
   persist: true,
@@ -106,33 +141,7 @@ export const useToolsStore = defineStore('tools', {
     },
     toolMenusWithInternal (): ToolMenu[] {
       return [...this.oriToolMenus, {
-        children: [
-          {
-            name: '首页',
-            link: '/',
-            type: 'internal'
-          },
-          {
-            name: '403',
-            link: '/403',
-            type: 'internal'
-          },
-          {
-            name: '404',
-            link: '/404',
-            type: 'internal'
-          },
-          {
-            name: '登录',
-            link: '/login',
-            type: 'internal'
-          },
-          {
-            name: '重定向',
-            link: '/redirect',
-            type: 'internal'
-          }
-        ]
+        children: internalTools
       }]
     },
     isFav: state => (name: string): boolean => {

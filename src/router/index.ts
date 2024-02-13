@@ -115,7 +115,21 @@ async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormal
   }
   // 权限控制
   const isLogged = await useUserStore().checkToken()
-  if (isLogged || whiteList.indexOf(_to.path) !== -1 || !_to.meta.requiresAuth) {
+  if (whiteList.indexOf(_to.path) !== -1 || !_to.meta.requiresAuth) {
+    goNext()
+  } else if (!isLogged) {
+    // other pages that do not have permission to access are redirected to the login page.
+    next(`/login?redirect=${_to.path}`)
+  } else {
+    const haveAccess = useUserStore().checkAccess(_to.meta.requiresAuth)
+    if (haveAccess) {
+      goNext()
+    } else {
+      next('/403')
+    }
+  }
+
+  function goNext () {
     document.title = getPageTitle(_to.meta.title || _to.name?.toString())
     if (_to.name && _to.meta.statistics) {
       let name:string
@@ -131,9 +145,6 @@ async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormal
     } else {
       next()
     }
-  } else {
-    // other pages that do not have permission to access are redirected to the login page.
-    next(`/login?redirect=${_to.path}`)
   }
 }
 
