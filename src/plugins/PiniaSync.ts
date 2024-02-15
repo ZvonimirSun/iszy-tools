@@ -20,6 +20,7 @@ declare module 'pinia' {
 
 // 队列
 const _mutex = new SimplePromiseQueue()
+const storeMap = new Map<string, StoreGeneric>()
 
 function createPiniaSync<S extends StateTree = StateTree> (): PiniaPlugin {
   return (context: PiniaPluginContext) => {
@@ -34,6 +35,7 @@ function createPiniaSync<S extends StateTree = StateTree> (): PiniaPlugin {
     if (typeof sync === 'object') {
       syncOptions = sync
     }
+    storeMap.set(syncOptions.key || store.$id, store)
 
     let syncing = false
     const userStore = useUserStore()
@@ -121,4 +123,22 @@ async function downloadSettings (store: StoreGeneric, syncOptions: SyncOptions<S
   }
 }
 
-export { createPiniaSync, uploadSettings, downloadSettings }
+async function downloadAllSettings (debug?: boolean) {
+  if (!navigator.onLine) {
+    return false
+  } else {
+    const promiseList = []
+    for (const [key, store] of storeMap) {
+      promiseList.push(downloadSettings(store, { key, debug }))
+    }
+    try {
+      await Promise.all(promiseList)
+      return true
+    } catch (e) {
+      debug && console.error(e)
+      return false
+    }
+  }
+}
+
+export { createPiniaSync, downloadAllSettings as downloadSettings }

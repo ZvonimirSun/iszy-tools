@@ -3,6 +3,7 @@ import axios from '@/plugins/Axios'
 import { clone } from 'lodash-es'
 import type { AxiosError, AxiosResponse } from 'axios'
 import type { AuthOption, User } from '@/index'
+import { downloadSettings } from '@/plugins/PiniaSync'
 
 let tokenChecked = false
 let checkTokenPromise: Promise<AxiosResponse> | null = null
@@ -43,7 +44,7 @@ export const useUserStore = defineStore('user', {
             this.logged = true
             tokenChecked = true
             this.profile = res.data || clone(emptyProfile)
-            await this.downloadSettings()
+            await downloadSettings()
             return
           } else {
             this.clearToken()
@@ -147,25 +148,6 @@ export const useUserStore = defineStore('user', {
     clearToken () {
       this.logged = false
       this.profile = clone(emptyProfile)
-    },
-
-    async downloadSettings () {
-      if (this.logged) {
-        try {
-          if (await this.checkToken()) {
-            const res = (await axios.get(`${axios.$apiBase}/tools/settings`)).data
-            if (res.success && res.data) {
-              this.importConfig(res.data)
-              return true
-            }
-          }
-        } catch (e) {
-          console.log(e)
-        }
-        return false
-      } else {
-        return false
-      }
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     importConfig (data: any) {
