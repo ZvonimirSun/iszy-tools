@@ -1,6 +1,5 @@
 import { createWriteStream } from 'fs'
 import { SitemapStream } from 'sitemap'
-import { isExternalLink } from '../utils/common'
 
 export default function VitePluginSiteMap ({ hostname, tools } = {}) {
   let outDir = 'dist'
@@ -21,7 +20,7 @@ export default function VitePluginSiteMap ({ hostname, tools } = {}) {
       for (const tmp of tools) {
         if (Array.isArray(tmp.children) && tmp.children.length > 0) {
           for (const tool of tmp.children) {
-            if (!isExternalLink(tool.link)) {
+            if (!tool.link.startsWith('http')) {
               sitemap.write(`${base}${tmp.link || ''}${tool.link || ''}`.replace(/\/\//g, '/'))
             }
           }
