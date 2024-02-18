@@ -103,7 +103,6 @@ import zhCN from 'element-plus/es/locale/lang/zh-cn'
 import $axios from '@/plugins/Axios'
 
 const {
-  offlineReady,
   needRefresh,
   updateServiceWorker
 } = useRegisterSW()
@@ -114,12 +113,6 @@ const fullScreenStatus = ref(false)
 
 onMounted(() => {
   window.addEventListener('keydown', fullScreenListener, false)
-})
-
-watch(offlineReady, function (val) {
-  if (val) {
-    ElMessage.success('离线使用已准备好~')
-  }
 })
 
 watch(needRefresh, function (val) {

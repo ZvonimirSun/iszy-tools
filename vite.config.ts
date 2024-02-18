@@ -92,19 +92,81 @@ export default defineConfig({
         display: 'standalone'
       },
       workbox: {
-        globPatterns: ['**/*'],
+        cacheId: 'iszy-cache',
+        globPatterns: [],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/.*cdn\.iszy\.xyz/,
+            urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'iszy-images',
+              expiration: {
+                // 最多30个图
+                maxEntries: 30
+              }
+            }
+          },
+          {
+            urlPattern: /\.(?:woff|eot|ttf|TTF)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'iszy-font',
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          },
+          {
+            urlPattern: /.*\.css.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'iszy-css',
+              expiration: {
+                maxEntries: 200
+              },
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          },
+          {
+            urlPattern: /.*\.js.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'iszy-js',
+              expiration: {
+                maxEntries: 300
+              },
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          },
+          {
+            urlPattern: /.*\.html.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'iszy-js',
+              expiration: {
+                maxEntries: 300
+              },
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          },
+          // cdn
+          {
+            urlPattern: ({ url }) => url.hostname.endsWith('cdn.iszy.xyz'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'iszy-cdn',
               expiration: {
-                maxEntries: 10,
+                maxEntries: 30,
                 maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
               },
               cacheableResponse: {
-                statuses: [0, 200]
+                statuses: [200]
               }
             }
           }
