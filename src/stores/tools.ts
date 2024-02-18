@@ -1,8 +1,9 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import tools from '@/tools.json'
+import oriTools from '@/tools.json'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
 import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
+import type { OptionalExcept } from '@/types/common'
 
 const internalTools: ToolItem[] = [
   {
@@ -39,6 +40,20 @@ const internalTools: ToolItem[] = [
   }
 ]
 
+const toolsMap: Record<string, ToolItem> = {}
+const oriToolMenus: ToolMenu[] = (oriTools || []).map((item: OptionalExcept<ToolMenu, 'children'>) => {
+  item.id = item.id || uuid()
+  item.children = (item.children || []).map((child: ToolItem) => {
+    child.id = child.id || uuid()
+    toolsMap[child.link.toLowerCase()] = child
+    return child
+  })
+  return item as ToolMenu
+})
+const oriToolItems = flatten(oriToolMenus.map((item: ToolMenu) => {
+  return item.children
+}))
+
 export const useToolsStore = defineStore('tools', {
   persist: true,
   sync: true,
@@ -47,34 +62,19 @@ export const useToolsStore = defineStore('tools', {
     statistics: [] as Statistic[]
   }),
   getters: {
-    oriToolMenus (): ToolMenu[] {
-      return (tools || []).map((item: ToolMenu) => {
-        item.id = item.id || uuid()
-        item.children = (item.children || []).map((child: ToolItem) => {
-          child.id = child.id || uuid()
-          return child
-        })
-        return item
-      })
-    },
-    oriToolItems (): ToolItem[] {
-      return flatten(this.oriToolMenus.map((item: ToolMenu) => {
-        return item.children
-      }))
-    },
     toolMenus (): ToolMenu[] {
       const settings = useSettingStore().general
       const count = 6
 
       let tmp: ToolMenu[] = []
       if (settings.showType) {
-        tmp = [...this.oriToolMenus]
+        tmp = [...oriToolMenus]
       } else {
         tmp = [{
           id: uuid(),
           type: '工具',
           icon: 'i-icon-park-solid-all-application',
-          children: this.oriToolItems
+          children: oriToolItems
         }]
       }
 
@@ -130,10 +130,8 @@ export const useToolsStore = defineStore('tools', {
         })
       }
     },
-    toolMenusWithInternal (): ToolMenu[] {
-      return [...this.oriToolMenus, {
-        children: internalTools
-      }]
+    toolItemsWithInternal (): ToolItem[] {
+      return oriToolItems.concat(internalTools)
     },
 
     isFav: state => (name: string): boolean => {
@@ -193,7 +191,7 @@ export const useToolsStore = defineStore('tools', {
     },
 
     fixFavorite () {
-      const allTools = useToolsStore().oriToolItems
+      const allTools = oriToolItems
       for (const tool of this.favorite) {
         const tmp = allTools.find(item => (item.name === tool.name))
         if (!tmp) {

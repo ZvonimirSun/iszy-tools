@@ -37,33 +37,29 @@ for (const key in vueFiles) {
 let routes: RouteRecordRaw[] = []
 
 // 加入所有工具路由
-for (const tmp of toolsStore.toolMenusWithInternal) {
-  if (Array.isArray(tmp.children) && tmp.children.length > 0) {
-    for (const tool of tmp.children) {
-      if (!isExternalLink(tool.link)) {
-        const path = (tmp.link || '') + (tool.link || '')
-        if (modules[path]) {
-          if (tool.type !== 'internal') {
-            modules[path] = merge(modules[path], {
-              name: tool.name,
-              meta: {
-                statistics: tool.statistics !== false,
-                layout: tool.layout,
-                type: 'tool',
-                requiresAuth: tool.requiresAuth
-              }
-            })
-          } else {
-            modules[path] = merge(modules[path], {
-              name: tool.name,
-              meta: {
-                requiresAuth: tool.requiresAuth
-              }
-            })
+for (const tool of toolsStore.toolItemsWithInternal) {
+  if (!isExternalLink(tool.link)) {
+    const path = tool.link || ''
+    if (modules[path]) {
+      if (tool.type !== 'internal') {
+        modules[path] = merge(modules[path], {
+          name: tool.name,
+          meta: {
+            statistics: tool.statistics !== false,
+            layout: tool.layout,
+            type: 'tool',
+            requiresAuth: tool.requiresAuth
           }
-          routes.push(modules[path])
-        }
+        })
+      } else {
+        modules[path] = merge(modules[path], {
+          name: tool.name,
+          meta: {
+            requiresAuth: tool.requiresAuth
+          }
+        })
       }
+      routes.push(modules[path])
     }
   }
 }
