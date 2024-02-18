@@ -93,7 +93,8 @@ export default defineConfig({
       },
       workbox: {
         cacheId: 'iszy-cache',
-        globPatterns: ['/**\/*.html'],
+        globPatterns: ['**/*.html'],
+        navigateFallback: null,
         runtimeCaching: [
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
@@ -131,19 +132,6 @@ export default defineConfig({
           },
           {
             urlPattern: /.*\.js.*/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'iszy-js',
-              expiration: {
-                maxEntries: 300
-              },
-              cacheableResponse: {
-                statuses: [200]
-              }
-            }
-          },
-          {
-            urlPattern: /.*\.html.*/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'iszy-js',
