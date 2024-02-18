@@ -124,10 +124,17 @@ export const useUserStore = defineStore('user', {
         return false
       }
     },
-    checkAccess (authOption: boolean | AuthOption) {
+    checkAccess (authOption: AuthOption) {
       if (typeof authOption === 'boolean') {
-        return authOption
+        if (authOption) {
+          return false
+        } else {
+          return this.logged
+        }
       } else {
+        if (!this.logged) {
+          return false
+        }
         if (authOption.users) {
           if (authOption.users.includes(this.profile.userName || '')) {
             return true

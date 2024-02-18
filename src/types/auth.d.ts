@@ -16,7 +16,7 @@ export interface User {
   roles: Role[] | null
 }
 
-export interface AuthOption {
+export type AuthOption = boolean | {
   users?: string[],
   roles?: string[],
   privileges?: string[]
@@ -25,6 +25,6 @@ export interface AuthOption {
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string,
-    requiresAuth?: boolean | AuthOption
+    requiresAuth?: AuthOption
   }
 }

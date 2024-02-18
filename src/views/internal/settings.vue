@@ -11,9 +11,7 @@
     items-start
   >
     <div flex>
-      <div
-        w-32
-      >
+      <div w-32>
         昵称:
       </div>
       <div>
@@ -21,22 +19,42 @@
       </div>
     </div>
     <div flex>
-      <div
-        w-32
-      >
+      <div w-32>
         邮箱:
       </div>
       <div>
         {{ userStore.profile.email }}
       </div>
     </div>
-    <el-space>
+    <div flex>
+      <div w-32>
+        角色
+      </div>
+      <div>
+        {{ userStore.profile?.roles?.[0]?.alias ?? '普通用户' }}
+      </div>
+    </div>
+    <div
+      flex
+      gap-4
+    >
       <el-button
         type="primary"
         @click="logout"
       >
         登出
       </el-button>
+      <HaveAccess
+        v-slot="{goto}"
+        link="/userManager"
+      >
+        <el-button
+          type="primary"
+          @click="goto"
+        >
+          用户权限中心
+        </el-button>
+      </HaveAccess>
       <el-button
         v-if="!editingUser"
         @click="editUser"
@@ -54,7 +72,7 @@
           取消
         </el-button>
       </template>
-    </el-space>
+    </div>
     <el-form
       v-if="editingUser"
       ref="ruleFormRef"
@@ -367,5 +385,9 @@ h5.ant-typography,
     width: 100%;
     min-width: unset;
   }
+}
+
+.el-button + .el-button {
+  margin: 0;
 }
 </style>

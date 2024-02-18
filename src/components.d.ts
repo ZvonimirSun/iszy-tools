@@ -77,6 +77,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FixedWidgets: typeof import('./components/fixed-widgets.vue')['default']
     FormatTransformer: typeof import('./components/FormatTransformer.vue')['default']
+    HaveAccess: typeof import('./components/HaveAccess.vue')['default']
     JsonEditor: typeof import('./components/JsonEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

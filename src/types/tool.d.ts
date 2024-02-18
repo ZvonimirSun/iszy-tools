@@ -8,7 +8,7 @@ export interface ToolItem {
   statistics?: boolean,
   layout?: string,
   type?: string,
-  requiresAuth?: boolean | AuthOption,
+  requiresAuth?: AuthOption,
 }
 
 export interface ToolMenu {

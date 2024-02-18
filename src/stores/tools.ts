@@ -4,6 +4,7 @@ import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
 import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
 import type { OptionalExcept } from '@/types/common'
+import type { AuthOption } from '@/types/auth'
 
 const internalTools: ToolItem[] = [
   {
@@ -146,6 +147,15 @@ export const useToolsStore = defineStore('tools', {
       return [...state.statistics].sort(function (a, b) {
         return b.times - a.times
       }).slice(0, count)
+    },
+
+    getAuth: state => (link: string): AuthOption => {
+      const tool = toolsMap[link.toLowerCase()]
+      if (tool && tool.requiresAuth) {
+        return tool.requiresAuth
+      } else {
+        return false
+      }
     }
   },
   actions: {
