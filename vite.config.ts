@@ -93,7 +93,7 @@ export default defineConfig({
       },
       workbox: {
         cacheId: 'iszy-cache',
-        globPatterns: [],
+        globPatterns: ['/'],
         runtimeCaching: [
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
