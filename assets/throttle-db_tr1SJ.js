@@ -1,1 +1,0 @@
-import{c6 as n,au as l}from"./index-jCyllJZn.js";var g="Expected a function";function c(a,t,r){var e=!0,i=!0;if(typeof a!="function")throw new TypeError(g);return n(r)&&(e="leading"in r?!!r.leading:e,i="trailing"in r?!!r.trailing:i),l(a,t,{leading:e,maxWait:t,trailing:i})}export{c as t};
