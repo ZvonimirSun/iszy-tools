@@ -1,6 +1,6 @@
 import { lintGutter } from '@codemirror/lint'
 import { EditorView, Panel, ViewUpdate, showPanel } from '@codemirror/view'
-import { EditorPlugin } from '@/index'
+import type { EditorPlugin } from '@/types/editor'
 
 // 基本信息条
 function baseInfoPanel (view: EditorView): Panel {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { identity } from 'lodash-es'
 import type { FormRules } from 'element-plus'
-import { EditorPlugin } from '@/index'
+import { EditorPlugin } from '@/types/editor'
 import EditorMini from '@/components/editor/EditorMini.vue'
 import type { Ref } from 'vue'
 

@@ -1,5 +1,5 @@
 import { html } from '@codemirror/lang-html'
-import { EditorPlugin } from '@/index'
+import type { EditorPlugin } from '@/types/editor'
 import { html as htmlBeautify } from 'js-beautify'
 
 export function formatter (value: string, { indent = 2 } = {}) {

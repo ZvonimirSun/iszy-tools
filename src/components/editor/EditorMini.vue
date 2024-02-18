@@ -2,7 +2,7 @@
 import { EditorView, ViewUpdate, placeholder as PlaceHolder } from '@codemirror/view'
 import { Compartment, EditorState } from '@codemirror/state'
 import mini from './lang-mini'
-import { EditorPlugin } from '@/index'
+import type { EditorPlugin } from '@/types/editor'
 import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
 

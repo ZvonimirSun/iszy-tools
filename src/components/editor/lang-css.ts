@@ -1,5 +1,5 @@
 import { css } from '@codemirror/lang-css'
-import { EditorPlugin } from '@/index'
+import type { EditorPlugin } from '@/types/editor'
 import { css as cssBeautify } from 'js-beautify'
 
 export function formatter (val: string, { indent = 2 } = {}) {

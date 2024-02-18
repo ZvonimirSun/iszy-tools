@@ -2,7 +2,7 @@
 import { EditorView } from '@codemirror/view'
 import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
 import basic from './lang-basic'
-import { EditorPlugin } from '@/index'
+import type { EditorPlugin } from '@/types/editor'
 import EditorMini from './EditorMini.vue'
 
 const props = withDefaults(defineProps<{

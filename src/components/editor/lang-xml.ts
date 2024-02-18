@@ -1,5 +1,5 @@
 import { xml } from '@codemirror/lang-xml'
-import { EditorPlugin } from '@/index'
+import type { EditorPlugin } from '@/types/editor'
 import xmlFormat from 'xml-formatter'
 
 export function formatter (val: string, options: {indent?: number} & Record<string, any> = {}): string {

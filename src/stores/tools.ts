@@ -2,26 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import tools from '@/tools.json'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
-import type { AuthOption, Favorite, Statistic } from '@/index'
-
-interface ToolItem {
-  id?: string,
-  name: string,
-  link: string,
-  tags?: string[],
-  statistics?: boolean,
-  layout?: string,
-  type?: string,
-  requiresAuth?: boolean | AuthOption,
-}
-
-interface ToolMenu {
-  id?: string,
-  type?: string,
-  icon?: string,
-  link?: string,
-  children: ToolItem[]
-}
+import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
 
 const internalTools: ToolItem[] = [
   {

@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import axios from '@/plugins/Axios'
 import { clone } from 'lodash-es'
 import type { AxiosError, AxiosResponse } from 'axios'
-import type { AuthOption, User } from '@/index'
+import type { AuthOption, User } from '@/types/auth'
 import { downloadSettings } from '@/plugins/PiniaSync'
 
 let tokenChecked = false
