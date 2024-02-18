@@ -107,7 +107,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /\.(?:woff|eot|ttf|TTF)$/,
+            urlPattern: /\.(?:woff|eot|otf|ttf|TTF)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'iszy-font',
