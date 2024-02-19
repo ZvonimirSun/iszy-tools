@@ -118,7 +118,7 @@ onMounted(() => {
 
 watch(offlineReady, function (val) {
   if (val) {
-    ElMessage.success('离线使用已准备好~')
+    console.log('离线使用已初步准备好~')
   }
 })
 
