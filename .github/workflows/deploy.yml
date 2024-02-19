@@ -25,9 +25,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,10 +32,10 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: 8
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -47,25 +44,21 @@ jobs:
       - name: Build app
         run: pnpm run build
 
+      - name: Get Deploy Target
+        id: target
+        run: echo "deploy=${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'main' && 'deploy') || (github.ref_name == 'dev' && 'deploy-beta') || '' }}" >> $GITHUB_OUTPUT
+
       - name: Get update infos
-        if: ${{ github.event_name == 'push' && github.ref_name =='main' }}
+        if: ${{ steps.target.outputs.deploy }}
         run: echo "$(git log --pretty=format:%s --grep='^feat(' --grep='^fix(' --grep='^feat:' --grep='^fix:' '${{ github.event.before }}...${{ github.event.after }}' | grep -v Merge)" > dist/CHANGELOG.md
 
       - name: Deploy App
-        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+        if: ${{ steps.target.outputs.deploy }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
-          branch: deploy
+          branch: ${{ steps.target.outputs.deploy }}
 
       - name: Purge ChangeLog
-        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+        if: ${{ steps.target.outputs.deploy }}
         run: curl -L https://purge.jsdelivr.net/gh/zvonimirsun/iszy-tools@deploy/CHANGELOG.md
-
-      - name: Deploy App Beta
-        if: ${{ github.event_name == 'push' && github.ref_name == 'dev' }}
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist
-          branch: deploy-beta
-          force: false
