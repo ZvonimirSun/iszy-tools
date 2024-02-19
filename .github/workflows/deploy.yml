@@ -46,7 +46,7 @@ jobs:
 
       - name: Get Deploy Target
         id: target
-        run: echo "deploy=${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'main' && 'deploy') || (github.ref_name == 'dev' && 'deploy-beta') || '' }}" >> $GITHUB_OUTPUT
+        run: echo "deploy=${{ ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'main' && 'deploy') || (github.ref_name == 'dev' && 'deploy-beta')) || '' }}" >> $GITHUB_OUTPUT
 
       - name: Get update infos
         if: ${{ steps.target.outputs.deploy }}
