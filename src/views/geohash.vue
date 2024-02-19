@@ -1,3 +1,35 @@
+<script setup>
+import { decodeGeoHash, encodeGeoHash } from '@/utils/geohash.js'
+
+const data1 = ref('')
+const data2 = ref('')
+
+function encode() {
+  try {
+    data2.value = encodeGeoHash(data1.value)
+  }
+  catch (e) {
+    ElMessage.error(`编码失败，${e.message}`)
+  }
+}
+
+function decode() {
+  try {
+    const { latitude, longitude } = decodeGeoHash(data1.value)
+    data2.value = `${latitude},${longitude}`
+  }
+  catch (e) {
+    ElMessage.error(`解码失败，${e.message}`)
+  }
+}
+
+function exchange() {
+  const tmp = data1.value
+  data1.value = data2.value
+  data2.value = tmp
+}
+</script>
+
 <template>
   <el-space
     direction="vertical"
@@ -33,32 +65,3 @@
     />
   </el-space>
 </template>
-
-<script setup>
-import { encodeGeoHash, decodeGeoHash } from '@/utils/geohash.js'
-const data1 = ref('')
-const data2 = ref('')
-
-function encode () {
-  try {
-    data2.value = encodeGeoHash(data1.value)
-  } catch (e) {
-    ElMessage.error(`编码失败，${e.message}`)
-  }
-}
-
-function decode () {
-  try {
-    const { latitude, longitude } = decodeGeoHash(data1.value)
-    data2.value = latitude + ',' + longitude
-  } catch (e) {
-    ElMessage.error(`解码失败，${e.message}`)
-  }
-}
-
-function exchange () {
-  const tmp = data1.value
-  data1.value = data2.value
-  data2.value = tmp
-}
-</script>

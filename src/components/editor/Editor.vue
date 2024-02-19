@@ -1,25 +1,27 @@
 <script setup lang="ts">
-import { EditorView } from '@codemirror/view'
-import { undo, redo, undoDepth, redoDepth } from '@codemirror/commands'
+import type { EditorView } from '@codemirror/view'
+import { redo, redoDepth, undo, undoDepth } from '@codemirror/commands'
 import basic from './lang-basic'
-import type { EditorPlugin } from '@/types/editor'
 import EditorMini from './EditorMini.vue'
+import type { EditorPlugin } from '@/types/editor'
 
 const props = withDefaults(defineProps<{
-  inputDefault?: string,
-  plugin?: EditorPlugin,
-  placeholder?: string,
+  inputDefault?: string
+  plugin?: EditorPlugin
+  placeholder?: string
   readonly?: boolean
 }>(), {
   inputDefault: '',
   plugin: undefined,
   placeholder: '',
-  readonly: false
+  readonly: false,
 })
-const emits = defineEmits<{(e: 'change', v: string): void}>()
+const emits = defineEmits<{
+  (e: 'change', v: string): void
+}>()
 defineExpose({
   getView,
-  setInput
+  setInput,
 })
 
 const editor = ref<InstanceType<typeof EditorMini>>()
@@ -32,36 +34,37 @@ const newPlugin: EditorPlugin = {
   miniExtensions: undefined,
   extensions: [
     basic.extensions,
-    ...(props.plugin?.extensions || [])
-  ]
+    ...(props.plugin?.extensions || []),
+  ],
 }
 
 onMounted(() => {
-  if (!editor.value) { return }
+  if (!editor.value)
+    return
   cm = editor.value.getView()
 })
 
-function onChange (val: string) {
-  if (!cm) {
+function onChange(val: string) {
+  if (!cm)
     return
-  }
+
   hasUndo.value = undoDepth(cm.state) > 0
   hasRedo.value = redoDepth(cm.state) > 0
   emits('change', val)
 }
 
-function getView () {
+function getView() {
   return editor.value?.getView()
 }
 
-function setInput (val: string) {
+function setInput(val: string) {
   editor.value?.setInput(val)
 }
 
-type Control = {
-  title: string,
-  event: () => void,
-  isDisabled?: () => boolean,
+interface Control {
+  title: string
+  event: () => void
+  isDisabled?: () => boolean
   icon: string
 }
 const controls: Control[][] = [
@@ -69,65 +72,68 @@ const controls: Control[][] = [
     {
       title: '撤销',
       isDisabled: () => !hasUndo.value,
-      event: function undoBtn () {
-        if (!hasUndo.value) return
+      event: function undoBtn() {
+        if (!hasUndo.value)
+          return
         undo(cm)
       },
-      icon: 'i-fa6-solid-arrow-rotate-left'
+      icon: 'i-fa6-solid-arrow-rotate-left',
     },
     {
       title: '重做',
       isDisabled: () => !hasRedo.value,
-      event: function redoBtn () {
-        if (!hasRedo.value) return
+      event: function redoBtn() {
+        if (!hasRedo.value)
+          return
         redo(cm)
       },
-      icon: 'i-fa6-solid-arrow-rotate-right'
-    }
-  ]
+      icon: 'i-fa6-solid-arrow-rotate-right',
+    },
+  ],
 ]
 const formatControls: Control[] = []
 if (props.plugin?.formatter) {
   formatControls.push({
     title: '格式化',
-    event: function formatBtn () {
-      if (!props.plugin?.formatter) {
+    event: function formatBtn() {
+      if (!props.plugin?.formatter)
         return
-      }
+
       try {
         const val = props.plugin.formatter(cm.state.doc.toString())
         if (val && val !== cm.state.doc.toString()) {
           cm.dispatch({
-            changes: { from: 0, to: cm.state.doc.length, insert: val }
+            changes: { from: 0, to: cm.state.doc.length, insert: val },
           })
         }
-      } catch (e) {}
+      }
+      catch (e) {}
     },
-    icon: 'i-iszy-editor-format'
+    icon: 'i-iszy-editor-format',
   })
 }
 if (props.plugin?.compactor) {
   formatControls.push({
     title: '压缩',
-    event: function compactBtn () {
-      if (!props.plugin?.compactor) {
+    event: function compactBtn() {
+      if (!props.plugin?.compactor)
         return
-      }
+
       try {
         const val = props.plugin.compactor(cm.state.doc.toString())
         if (val && val !== cm.state.doc.toString()) {
           cm.dispatch({
-            changes: { from: 0, to: cm.state.doc.length, insert: val }
+            changes: { from: 0, to: cm.state.doc.length, insert: val },
           })
         }
-      } catch (e) {}
+      }
+      catch (e) {}
     },
-    icon: 'i-iszy-editor-compact'
+    icon: 'i-iszy-editor-compact',
   })
 }
-if (formatControls.length) {
+if (formatControls.length)
   controls.unshift(formatControls)
-}
 </script>
 
 <template>
@@ -142,17 +148,17 @@ if (formatControls.length) {
       <template v-for="(group, i) in controls">
         <div
           v-if="i !== 0"
-          :key="'divider' + i"
+          :key="`divider${i}`"
           class="divider"
         />
         <div
           v-for="(btn, j) in group"
-          :key="'btn' + i + j"
+          :key="`btn${i}${j}`"
           :title="btn.title"
           class="controller-btn"
 
           :class="{
-            disabled: btn.isDisabled?.()
+            disabled: btn.isDisabled?.(),
           }"
           @click="btn.event"
         >

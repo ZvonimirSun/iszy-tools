@@ -21,7 +21,7 @@ const $apiBase = import.meta.env.PROD ? 'https://api.iszy.xyz' : import.meta.env
   const piniaPersistPlugin = await createPiniaPersist({
     name: 'iszy_tools',
     storeName: 'state',
-    version: 3
+    version: 3,
   })
   const piniaSyncPlugin = createPiniaSync()
   pinia.use(piniaPersistPlugin).use(piniaSyncPlugin)

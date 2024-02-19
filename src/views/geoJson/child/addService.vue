@@ -1,8 +1,95 @@
+<script setup lang="ts">
+import type { Layer } from 'leaflet'
+import { CRS, tileLayer } from 'leaflet'
+import { dynamicMapLayer as esriDynamicMapLayer, tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet'
+import { v4 as uuid } from 'uuid'
+import { tiledMapLayer } from '@/utils/iclient-leaflet'
+import $event from '@/plugins/EventBus'
+
+const data: {
+  count: number
+  name: string
+  url: string
+  type: string
+  layers: Array<{
+    id: string
+    name: string
+    url: string
+    layer: Layer
+  }>
+} = reactive({
+  count: 0,
+  name: '服务 1',
+  url: '',
+  type: 'supermap_rest',
+  layers: [],
+})
+
+function addService() {
+  const serviceUrl = data.url
+  const serviceType = data.type
+  const serviceName = data.name
+  data.count++
+  data.name = `服务 ${data.count}`
+  let layer
+  try {
+    switch (serviceType) {
+      case 'supermap_rest':
+      case 'supermap_tile': {
+        layer = tiledMapLayer(serviceUrl, {
+          prjCoordSys: { epsgCode: 3857 },
+          crs: CRS.EPSG3857,
+        })
+        break
+      }
+      case 'arcgis_rest': {
+        layer = esriDynamicMapLayer({
+          url: serviceUrl,
+          f: 'image',
+        })
+        break
+      }
+      case 'arcgis_tile': {
+        layer = esriTiledMapLayer({
+          url: serviceUrl,
+        })
+        break
+      }
+      case 'tms': {
+        layer = tileLayer(serviceUrl)
+        break
+      }
+      default:
+        break
+    }
+  }
+  catch (e) {
+    ElMessage.error('添加服务失败')
+    return
+  }
+  if (layer) {
+    $event.emit('addLayer', layer, serviceName)
+    data.layers.push({
+      name: serviceName,
+      url: serviceUrl,
+      layer,
+      id: uuid(),
+    })
+  }
+}
+function removeLayer(index: number) {
+  if (data.layers[index]?.layer) {
+    $event.emit('removeLayer', data.layers[index].layer)
+    data.layers.splice(index, 1)
+  }
+}
+</script>
+
 <template>
   <template v-if="data.layers.length">
     <div class="layer-wrapper">
       <div
-        v-for="(item,index) in data.layers"
+        v-for="(item, index) in data.layers"
         :key="item.id"
         class="layer-item"
       >
@@ -69,91 +156,6 @@
     </el-form-item>
   </el-form>
 </template>
-
-<script setup lang="ts">
-import { tiledMapLayer } from '@/utils/iclient-leaflet'
-import { CRS, Layer, tileLayer } from 'leaflet'
-import { dynamicMapLayer as esriDynamicMapLayer, tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet'
-import { v4 as uuid } from 'uuid'
-import $event from '@/plugins/EventBus'
-
-const data: {
-  count: number
-  name: string
-  url: string
-  type: string
-  layers: Array<{
-    id: string
-    name: string
-    url: string,
-    layer: Layer
-  }>
-} = reactive({
-  count: 0,
-  name: '服务 1',
-  url: '',
-  type: 'supermap_rest',
-  layers: []
-})
-
-function addService () {
-  const serviceUrl = data.url
-  const serviceType = data.type
-  const serviceName = data.name
-  data.count++
-  data.name = '服务 ' + data.count
-  let layer
-  try {
-    switch (serviceType) {
-      case 'supermap_rest':
-      case 'supermap_tile': {
-        layer = tiledMapLayer(serviceUrl, {
-          prjCoordSys: { epsgCode: 3857 },
-          crs: CRS.EPSG3857
-        })
-        break
-      }
-      case 'arcgis_rest': {
-        layer = esriDynamicMapLayer({
-          url: serviceUrl,
-          f: 'image'
-        })
-        break
-      }
-      case 'arcgis_tile': {
-        layer = esriTiledMapLayer({
-          url: serviceUrl
-        })
-        break
-      }
-      case 'tms': {
-        layer = tileLayer(serviceUrl)
-        break
-      }
-      default:
-        break
-    }
-  } catch (e) {
-    ElMessage.error('添加服务失败')
-    return
-  }
-  if (layer) {
-    $event.emit('addLayer', layer, serviceName)
-    data.layers.push({
-      name: serviceName,
-      url: serviceUrl,
-      layer,
-      id: uuid()
-    })
-  }
-}
-function removeLayer (index: number) {
-  if (data.layers[index]?.layer) {
-    $event.emit('removeLayer', data.layers[index].layer)
-    data.layers.splice(index, 1)
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .addService {

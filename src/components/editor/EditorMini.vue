@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { EditorView, ViewUpdate, placeholder as PlaceHolder } from '@codemirror/view'
+import type { ViewUpdate } from '@codemirror/view'
+import { EditorView, placeholder as PlaceHolder } from '@codemirror/view'
 import { Compartment, EditorState } from '@codemirror/state'
+import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
+import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'
 import mini from './lang-mini'
 import type { EditorPlugin } from '@/types/editor'
-import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
-import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
 
 const props = withDefaults(defineProps<{
-  inputDefault?: string,
-  plugin?: EditorPlugin,
-  placeholder?: string,
+  inputDefault?: string
+  plugin?: EditorPlugin
+  placeholder?: string
   readonly?: boolean
 }>(), {
   inputDefault: '',
   plugin: undefined,
   placeholder: '',
-  readonly: false
+  readonly: false,
 })
-const emits = defineEmits<{(e: 'change', v: string): void}>()
+const emits = defineEmits<{
+  (e: 'change', v: string): void
+}>()
 defineExpose({
   getView,
-  setInput
+  setInput,
 })
 
 const editor = ref<HTMLDivElement>()
@@ -33,22 +36,21 @@ const extensions = [
   props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
   EditorView.updateListener.of(onChange),
   themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-  highLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
+  highLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle)),
 ]
-if (props.placeholder) {
+if (props.placeholder)
   extensions.push(PlaceHolder(props.placeholder))
-}
-if (props.readonly) {
+
+if (props.readonly)
   extensions.push(EditorState.readOnly.of(true))
-}
 
 onMounted(() => {
   cm = new EditorView({
     state: EditorState.create({
       extensions,
-      doc: props.inputDefault
+      doc: props.inputDefault,
     }),
-    parent: editor.value
+    parent: editor.value,
   })
 })
 
@@ -60,28 +62,27 @@ watch(() => useStyleStore().isDark, (val) => {
   cm.dispatch({
     effects: [
       themeCompartment.reconfigure(val ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-      highLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
-    ]
+      highLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle)),
+    ],
   })
 })
 
-function onChange (update: ViewUpdate) {
-  if (update.docChanged) {
+function onChange(update: ViewUpdate) {
+  if (update.docChanged)
     emits('change', update.state.doc.toString())
-  }
 }
 
-function setInput (val: string) {
+function setInput(val: string) {
   cm.dispatch({
     changes: {
       from: 0,
       to: cm.state.doc.length,
-      insert: val
-    }
+      insert: val,
+    },
   })
 }
 
-function getView (): EditorView {
+function getView(): EditorView {
   return cm
 }
 </script>

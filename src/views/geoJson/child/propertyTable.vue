@@ -1,37 +1,13 @@
-<template>
-  <div
-    v-if="tableColumns"
-    w-full
-    :style="{
-      height: height ? height + 'px' : undefined
-    }"
-  >
-    <el-auto-resizer>
-      <template #default="{ height: h, width }">
-        <el-table-v2
-          :columns="tableColumns"
-          :data="propertyList"
-          :width="width"
-          :height="h"
-          fixed
-          @click="clickRow"
-        />
-      </template>
-    </el-auto-resizer>
-  </div>
-  <el-empty v-else />
-</template>
-
 <script setup lang="tsx">
-import $eventBus from '@/plugins/EventBus'
 import type { Column, InputInstance } from 'element-plus'
 import { debounce } from 'lodash-es'
 import type { FeatureCollection, GeoJsonProperties } from 'geojson'
+import $eventBus from '@/plugins/EventBus'
 
 withDefaults(defineProps<{
   height: number | null
 }>(), {
-  height: null
+  height: null,
 })
 
 onMounted(() => {
@@ -49,16 +25,17 @@ const edit: {
   row: null,
   col: null,
   value: null,
-  changed: false
+  changed: false,
 })
 let syncing = false
 
 const propertyList = computed(() => {
   if (geoJSON.value?.features?.length) {
-    return geoJSON.value.features.map(feature => {
+    return geoJSON.value.features.map((feature) => {
       return feature.properties || {}
     })
-  } else {
+  }
+  else {
     return []
   }
 })
@@ -66,26 +43,26 @@ const propertyList = computed(() => {
 const tableColumns = computed(() => {
   if (geoJSON.value?.features?.length) {
     const keys = getArrayKeys(propertyList.value)
-    if (!keys.length) {
+    if (!keys.length)
       return null
-    }
-    const columns: Column[] = keys.map(item => {
+
+    const columns: Column[] = keys.map((item) => {
       return {
         title: item,
         dataKey: item,
         key: item,
         width: 150,
-        cellRenderer: ({ rowData, column, rowIndex, columnIndex }: {rowData: any, column: Column, rowIndex: number, columnIndex: number}) => {
+        cellRenderer: ({ rowData, column, rowIndex, columnIndex }: { rowData: any, column: Column, rowIndex: number, columnIndex: number }) => {
           let data: string
           let dataType: string
           if (rowData[column.dataKey!] != null) {
             dataType = typeof rowData[column.dataKey!]
-            if (~['boolean', 'number', 'string'].indexOf(dataType)) {
+            if (~['boolean', 'number', 'string'].indexOf(dataType))
               data = rowData[column.dataKey!].toString()
-            } else {
+            else
               data = JSON.stringify(rowData[column.dataKey!])
-            }
-          } else {
+          }
+          else {
             data = ''
           }
 
@@ -97,15 +74,16 @@ const tableColumns = computed(() => {
           const stopEdit = () => {
             if (edit.changed) {
               let value: string
-              if (edit.value != null) {
+              if (edit.value != null)
                 value = edit.value.trim()
-              } else {
+              else
                 value = ''
-              }
+
               if (dataType !== 'string') {
                 try {
                   value = JSON.parse(value!)
-                } catch (e) {
+                }
+                catch (e) {
                 }
               }
               updateProperties(rowIndex, columnIndex, value)
@@ -134,14 +112,15 @@ const tableColumns = computed(() => {
                 onBlur={stopEdit}
               />
             )
-          } else {
+          }
+          else {
             return (
               <div class="table-v2-inline-editing-trigger" onClick={startEdit} title={data}>
                 {data}
               </div>
             )
           }
-        }
+        },
       }
     })
     columns.unshift({
@@ -150,75 +129,98 @@ const tableColumns = computed(() => {
       key: 'index',
       width: 50,
       fixed: true,
-      cellRenderer: ({ rowIndex }: {rowIndex: number}) => {
+      cellRenderer: ({ rowIndex }: { rowIndex: number }) => {
         return <span class="_index">{rowIndex + 1}</span>
-      }
+      },
     })
     return columns
-  } else {
+  }
+  else {
     return null
   }
 })
 
 const syncingGeoJSONDebounced = debounce(syncingGeoJSON, 500)
 
-function clickRow (e: PointerEvent | TouchEvent) {
-  let row : HTMLElement | null = e.target as HTMLElement
-  if (!row.classList.contains('el-table-v2__row')) {
+function clickRow(e: PointerEvent | TouchEvent) {
+  let row: HTMLElement | null = e.target as HTMLElement
+  if (!row.classList.contains('el-table-v2__row'))
     row = row.closest('.el-table-v2__row')
-  }
+
   if (row && row.parentElement) {
     const virIndex = [].indexOf.call(row.parentElement.children, row as never)
     const indexRow = row.closest('.el-table-v2__root')?.querySelectorAll('._index')[virIndex]
     if (indexRow) {
-      const index = parseInt(indexRow.textContent || '1') - 1
+      const index = Number.parseInt(indexRow.textContent || '1') - 1
       $eventBus.emit('selectFeature', index)
     }
   }
 }
 
-function updateProperties (row: number, col: number, value: any) {
+function updateProperties(row: number, col: number, value: any) {
   const feature = geoJSON.value?.features?.[row]
   if (feature) {
-    if (!feature.properties) {
+    if (!feature.properties)
       feature.properties = {}
-    }
+
     const key = tableColumns.value?.[col]?.dataKey as string
-    if (key) {
+    if (key)
       feature.properties[key] = value
-    }
   }
-  if (geoJSON.value) {
+  if (geoJSON.value)
     syncingGeoJSONDebounced(toRaw(geoJSON.value))
-  }
 }
 
-function syncingGeoJSON (val: FeatureCollection) {
-  if (syncing) {
+function syncingGeoJSON(val: FeatureCollection) {
+  if (syncing)
     return
-  }
+
   syncing = true
   // $eventBus.emit('updateGeojsonLayer', val)
   $eventBus.emit('updateEditor', val)
   syncing = false
 }
 
-function updateTable () {
-  if (syncing) {
+function updateTable() {
+  if (syncing)
     return
-  }
-  $eventBus.emit('getGeoJson', function (val: FeatureCollection) {
+
+  $eventBus.emit('getGeoJson', (val: FeatureCollection) => {
     geoJSON.value = val
   })
 }
 
-function getArrayKeys (array: GeoJsonProperties[]): string[] {
+function getArrayKeys(array: GeoJsonProperties[]): string[] {
   return [...(array as Record<string, any>).reduce((s: Set<string>, o: Record<string, any>) => {
     Object.keys(o).forEach(k => s.add(k))
     return s
   }, new Set<string>())]
 }
 </script>
+
+<template>
+  <div
+    v-if="tableColumns"
+    w-full
+    :style="{
+      height: height ? `${height}px` : undefined,
+    }"
+  >
+    <el-auto-resizer>
+      <template #default="{ height: h, width }">
+        <el-table-v2
+          :columns="tableColumns"
+          :data="propertyList"
+          :width="width"
+          :height="h"
+          fixed
+          @click="clickRow"
+        />
+      </template>
+    </el-auto-resizer>
+  </div>
+  <el-empty v-else />
+</template>
 
 <style scoped lang="scss">
 :deep(.table-v2-inline-editing-trigger) {

@@ -9,25 +9,26 @@ import { getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common/
  * @namespace L.Util
  * @category BaseTypes Util
  */
-// eslint-disable-next-line camelcase
+
 export const supermap_callbacks = {}
-// eslint-disable-next-line camelcase
+
 L.Util.supermap_callbacks = supermap_callbacks
 export const toGeoJSON = function (feature) {
-  if (!feature) {
+  if (!feature)
     return feature
-  }
+
   return new GeoJSONFormat().toGeoJSON(feature)
 }
 export const toSuperMapGeometry = function (geometry) {
-  if (!geometry) {
+  if (!geometry)
     return geometry
-  }
+
   let result
   const format = new GeoJSONFormat()
-  if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) !== -1) {
+  if (['FeatureCollection', 'Feature', 'Geometry'].includes(geometry.type)) {
     result = format.read(geometry, geometry.type)
-  } else if (typeof geometry.toGeoJSON === 'function') {
+  }
+  else if (typeof geometry.toGeoJSON === 'function') {
     const geojson = geometry.toGeoJSON()
     result = geojson ? format.read(geojson, geojson.type) : geometry
   }
@@ -36,9 +37,10 @@ export const toSuperMapGeometry = function (geometry) {
   if (L.Util.isArray(result)) {
     if (result.length === 1) {
       serverResult = result[0]
-    } else if (result.length > 1) {
+    }
+    else if (result.length > 1) {
       serverResult = []
-      result.map(function (item) {
+      result.map((item) => {
         serverResult.push(item.geometry)
         return item
       })
@@ -74,14 +76,15 @@ export const GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumA
   if (scale > 0 && dpi > 0) {
     scale = L.Util.NormalizeScale(scale)
     if (
-      coordUnit.toLowerCase() === 'degree' ||
-      coordUnit.toLowerCase() === 'degrees' ||
-      coordUnit.toLowerCase() === 'dd'
+      coordUnit.toLowerCase() === 'degree'
+      || coordUnit.toLowerCase() === 'degrees'
+      || coordUnit.toLowerCase() === 'dd'
     ) {
       // scale = SuperMap.Util.normalizeScale(scale);
       resolution = (0.0254 * ratio) / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio
       return resolution
-    } else {
+    }
+    else {
       resolution = (0.0254 * ratio) / dpi / scale / ratio
       return resolution
     }

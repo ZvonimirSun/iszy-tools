@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import { iniToSettings, settingsToIni, getEmptySettings } from './palServerSettings.service'
+import { getEmptySettings, iniToSettings, settingsToIni } from './palServerSettings.service'
 import type { SettingObject } from './palServerSettings'
 import createFile from '@/utils/createFile'
 
 const scrollContainer = ref<HTMLDivElement | null>(null)
 const {
   width,
-  height
+  height,
 } = useElementSize(scrollContainer)
 
 const settings: SettingObject[] = reactive(getEmptySettings())
 
-async function getFile (file: File) {
+async function getFile(file: File) {
   try {
     const text = await file.text()
     settings.splice(0, settings.length, ...iniToSettings(text))
     ElMessage.success('解析成功')
-  } catch (_) {
+  }
+  catch (_) {
     ElMessage.error('解析失败')
   }
   return false
 }
 
-function downloadFile () {
+function downloadFile() {
   const ini = settingsToIni(settings)
   createFile(ini, 'PalWorldSettings.ini')
 }
 
-function reset () {
+function reset() {
   settings.splice(0, settings.length, ...getEmptySettings())
 }
 </script>

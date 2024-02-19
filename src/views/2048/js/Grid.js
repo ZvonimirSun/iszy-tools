@@ -1,27 +1,26 @@
 import Tile from './Tile'
 
 export default class Grid {
-  constructor (size, previousState) {
+  constructor(size, previousState) {
     this.size = size
     this.cells = previousState ? this.fromState(previousState) : this.empty()
   }
 
   // Build a grid of the specified size
-  empty () {
+  empty() {
     const cells = []
 
     for (let x = 0; x < this.size; x++) {
       const row = cells[x] = []
 
-      for (let y = 0; y < this.size; y++) {
+      for (let y = 0; y < this.size; y++)
         row.push(null)
-      }
     }
 
     return cells
   }
 
-  fromState (state) {
+  fromState(state) {
     const cells = []
 
     for (let x = 0; x < this.size; x++) {
@@ -37,85 +36,80 @@ export default class Grid {
   }
 
   // Find the first available random position
-  randomAvailableCell () {
+  randomAvailableCell() {
     const cells = this.availableCells()
 
-    if (cells.length) {
+    if (cells.length)
       return cells[Math.floor(Math.random() * cells.length)]
-    }
   }
 
-  availableCells () {
+  availableCells() {
     const cells = []
 
-    this.eachCell(function (x, y, tile) {
-      if (!tile) {
+    this.eachCell((x, y, tile) => {
+      if (!tile)
         cells.push({ x, y })
-      }
     })
 
     return cells
   }
 
   // Call callback for every cell
-  eachCell (callback) {
+  eachCell(callback) {
     for (let x = 0; x < this.size; x++) {
-      for (let y = 0; y < this.size; y++) {
+      for (let y = 0; y < this.size; y++)
         callback(x, y, this.cells[x][y])
-      }
     }
   }
 
   // Check if there are any cells available
-  cellsAvailable () {
+  cellsAvailable() {
     return !!this.availableCells().length
   }
 
   // Check if the specified cell is taken
-  cellAvailable (cell) {
+  cellAvailable(cell) {
     return !this.cellOccupied(cell)
   }
 
-  cellOccupied (cell) {
+  cellOccupied(cell) {
     return !!this.cellContent(cell)
   }
 
-  cellContent (cell) {
-    if (this.withinBounds(cell)) {
+  cellContent(cell) {
+    if (this.withinBounds(cell))
       return this.cells[cell.x][cell.y]
-    } else {
+    else
       return null
-    }
   }
 
   // Inserts a tile at its position
-  insertTile (tile) {
+  insertTile(tile) {
     this.cells[tile.x][tile.y] = tile
   }
 
-  removeTile (tile) {
+  removeTile(tile) {
     this.cells[tile.x][tile.y] = null
   }
 
-  withinBounds (position) {
-    return position.x >= 0 && position.x < this.size &&
-      position.y >= 0 && position.y < this.size
+  withinBounds(position) {
+    return position.x >= 0 && position.x < this.size
+      && position.y >= 0 && position.y < this.size
   }
 
-  serialize () {
+  serialize() {
     const cellState = []
 
     for (let x = 0; x < this.size; x++) {
       const row = cellState[x] = []
 
-      for (let y = 0; y < this.size; y++) {
+      for (let y = 0; y < this.size; y++)
         row.push(this.cells[x][y] ? this.cells[x][y].serialize() : null)
-      }
     }
 
     return {
       size: this.size,
-      cells: cellState
+      cells: cellState,
     }
   }
 }

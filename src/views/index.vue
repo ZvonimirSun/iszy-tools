@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { isExternalLink } from '@/utils/common'
+
+const searchStr = ref('')
+const settingStore = useSettingStore()
+const toolsStore = useToolsStore()
+
+const toolMenus = computed(() => {
+  return toolsStore.toolMenusFilter(searchStr.value)
+})
+
+const settings = settingStore.general
+const isFav = toolsStore.isFav
+
+const updateFav = toolsStore.updateFav
+
+onMounted(() => {
+  toolsStore.fixFavorite()
+})
+</script>
+
 <template>
   <el-row
     v-if="settings.showSearch"
@@ -21,7 +42,7 @@
       :gutter="16"
       :style="{
         padding: '0 .8rem .4rem',
-        marginTop: index === 0 && settings.showSearch ? '3.3rem' : '2.5rem'
+        marginTop: index === 0 && settings.showSearch ? '3.3rem' : '2.5rem',
       }"
     >
       <el-col
@@ -47,7 +68,7 @@
       >
         <router-link
           :target="(settings.openInNewTab || isExternalLink(tool.link)) ? '_blank' : ''"
-          :to="isExternalLink(tool.link) ? ('/redirect?url='+tool.link) : (tool.link||'')"
+          :to="isExternalLink(tool.link) ? (`/redirect?url=${tool.link}`) : (tool.link || '')"
         >
           <el-tooltip
             placement="top"
@@ -56,18 +77,18 @@
           >
             <div
               class="tool"
-              :class="{toolCollected:isFav(tool.name)}"
+              :class="{ toolCollected: isFav(tool.name) }"
             >
               <span class="toolName">{{ tool.name }}</span>
               <span
                 v-if="isFav(tool.name)"
                 class="fav collected"
-                @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:false})"
+                @click.prevent="updateFav({ name: tool.name, link: tool.link || '', add: false })"
               ><span class="i-icon-park-solid-star" /></span>
               <span
                 v-else
                 class="fav"
-                @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})"
+                @click.prevent="updateFav({ name: tool.name, link: tool.link || '', add: true })"
               >
                 <span class="nonHover"><span class="i-icon-park-outline-star" /></span>
                 <span class="hovered"><span class="i-icon-park-solid-star" /></span>
@@ -79,27 +100,6 @@
     </el-row>
   </template>
 </template>
-
-<script setup lang="ts">
-import { isExternalLink } from '@/utils/common'
-
-const searchStr = ref('')
-const settingStore = useSettingStore()
-const toolsStore = useToolsStore()
-
-const toolMenus = computed(() => {
-  return toolsStore.toolMenusFilter(searchStr.value)
-})
-
-const settings = settingStore.general
-const isFav = toolsStore.isFav
-
-const updateFav = toolsStore.updateFav
-
-onMounted(() => {
-  toolsStore.fixFavorite()
-})
-</script>
 
 <style scoped lang="scss">
 .search-wrapper {

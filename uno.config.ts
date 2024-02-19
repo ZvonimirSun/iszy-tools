@@ -5,7 +5,7 @@ import {
   presetUno,
   presetWebFonts,
   transformerDirectives,
-  transformerVariantGroup
+  transformerVariantGroup,
 } from 'unocss'
 import axios from 'axios'
 import tools from './src/tools.json'
@@ -19,8 +19,8 @@ export default defineConfig({
     presetIcons({
       mode: 'auto',
       extraProperties: {
-        display: 'inline-block'
-      }
+        display: 'inline-block',
+      },
     }),
     presetWebFonts({
       customFetch: (url: string) => axios.get(url.replace('fonts.googleapis.com', 'fonts.cdn.iszy.xyz')).then(it => it.data),
@@ -30,38 +30,38 @@ export default defineConfig({
           {
             name: 'Lora',
             weights: ['400', '700'],
-            italic: true
+            italic: true,
           },
           {
             name: 'Noto Serif SC',
-            weights: ['300', '400', '700']
+            weights: ['300', '400', '700'],
           },
           {
             name: 'PingFang SC',
-            provider: 'none'
+            provider: 'none',
           },
           {
             name: 'Microsoft YaHei',
-            provider: 'none'
+            provider: 'none',
           },
           {
             name: 'sans-serif',
-            provider: 'none'
-          }
+            provider: 'none',
+          },
         ],
-        mono: 'JetBrains Mono:300,400,700'
-      }
-    })
+        mono: 'JetBrains Mono:300,400,700',
+      },
+    }),
   ],
   transformers: [
     transformerDirectives(),
-    transformerVariantGroup()
+    transformerVariantGroup(),
   ],
   safelist: [
     'i-icon-park-solid-all-application',
     'i-icon-park-outline-history',
     'i-icon-park-solid-concern',
     'i-icon-park-solid-folder-focus',
-    ...iconClass
-  ]
+    ...iconClass,
+  ],
 })

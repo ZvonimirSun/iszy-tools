@@ -6,13 +6,13 @@ const toggleDark = useToggle(isDark)
 export const useStyleStore = defineStore('style', {
   state: () => ({
     isDark,
-    toggleDark
+    toggleDark,
   }),
   actions: {
-    setTheme (value?: 'dark' | 'light' | 'auto') {
-      if (value) {
+    setTheme(value?: 'dark' | 'light' | 'auto') {
+      if (value)
         useSettingStore().general.theme.mode = value
-      }
+
       switch (useSettingStore().general.theme.mode) {
         case 'dark':
           this.isDark = true
@@ -25,7 +25,7 @@ export const useStyleStore = defineStore('style', {
           break
       }
     },
-    toggleTheme () {
+    toggleTheme() {
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
       switch (useSettingStore().general.theme.mode) {
         case 'dark':
@@ -35,22 +35,21 @@ export const useStyleStore = defineStore('style', {
           useSettingStore().general.theme.mode = 'dark'
           break
         default:
-          if (dark) {
+          if (dark)
             useSettingStore().general.theme.mode = 'light'
-          } else {
+          else
             useSettingStore().general.theme.mode = 'dark'
-          }
+
           break
       }
       this.setTheme()
-    }
-  }
+    },
+  },
 })
 
-watch(isDark, function () {
+watch(isDark, () => {
   useStyleStore().setTheme()
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useStyleStore, import.meta.hot))
-}

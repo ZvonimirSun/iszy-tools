@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <iframe
     src="https://webssh.iszy.xyz/"
@@ -5,9 +8,6 @@
     title="webssh"
   />
 </template>
-
-<script setup lang="ts">
-</script>
 
 <style scoped lang="scss">
 .webssh {

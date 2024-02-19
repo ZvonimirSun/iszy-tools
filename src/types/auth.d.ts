@@ -1,30 +1,30 @@
 export interface Privilege {
-  type: string,
+  type: string
 }
 
 export interface Role {
-  name: string,
-  alias: string,
+  name: string
+  alias: string
   privileges?: Privilege[]
 }
 
 export interface User {
-  nickName: string | null,
-  userName: string | null,
-  email: string | null,
-  userId: number | null,
+  nickName: string | null
+  userName: string | null
+  email: string | null
+  userId: number | null
   roles: Role[] | null
 }
 
 export type AuthOption = boolean | {
-  users?: string[],
-  roles?: string[],
+  users?: string[]
+  roles?: string[]
   privileges?: string[]
 }
 
 declare module 'vue-router' {
   interface RouteMeta {
-    title?: string,
+    title?: string
     requiresAuth?: AuthOption
   }
 }

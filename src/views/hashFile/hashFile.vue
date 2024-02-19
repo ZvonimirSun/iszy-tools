@@ -13,13 +13,12 @@ const algoNames = ref<AlgoNames[]>([])
 const algos = ref<AlgoNames[]>(['MD5'])
 const fileInfo = ref('')
 const loading = computed(() => {
-  if (!fileInfo.value) {
+  if (!fileInfo.value)
     return false
-  } else if (!data.value) {
+  else if (!data.value)
     return true
-  } else {
+  else
     return Object.keys(data.value).length !== algos.value.length
-  }
 })
 
 onBeforeMount(async () => {
@@ -30,16 +29,15 @@ onUnmounted(() => {
   terminate()
 })
 
-function updateAlgos () {
+function updateAlgos() {
   tmpFile = undefined
   data.value = undefined
   fileInfo.value = ''
-  if (algos.value.length === 0) {
+  if (algos.value.length === 0)
     algos.value = ['MD5']
-  }
 }
 
-function calculate (rawFile: File) {
+function calculate(rawFile: File) {
   tmpFile = rawFile
   fileInfo.value = `${rawFile.name} (类型: ${rawFile.type}, 大小: ${formatBytes(rawFile.size)})`
   post({ value: tmpFile, algos: toRaw(algos.value) })

@@ -4,35 +4,33 @@ export const useMainStore = defineStore('main', {
   persist: true,
   state: () => ({
     _cache: {} as Record<string, never>,
-    clearOfflineCacheTag: false
+    clearOfflineCacheTag: false,
   }),
   getters: {
-    getData: (state) => (key: string): never => {
-      if (key) {
+    getData: state => (key: string): never => {
+      if (key)
         return (state._cache || {})[key]
-      } else {
+      else
         return undefined as never
-      }
-    }
+    },
   },
   actions: {
-    setData ({ key, val } = {} as {key: string, val:never}) {
+    setData({ key, val } = {} as { key: string, val: never }) {
       if (key) {
         this._cache = this._cache || {} as Record<string, never>
         this._cache[key] = val
       }
     },
-    clear () {
+    clear() {
       this._cache = {} as Record<string, never>
     },
 
-    clearOfflineCache () {
+    clearOfflineCache() {
       console.log('clearOfflineCache')
       this.clearOfflineCacheTag = true
-    }
-  }
+    },
+  },
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useMainStore, import.meta.hot))
-}

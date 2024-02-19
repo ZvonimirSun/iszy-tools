@@ -1,3 +1,6 @@
+/* eslint-disable ts/no-this-alias */
+/* eslint-disable prefer-rest-params */
+
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */
@@ -16,14 +19,14 @@ import * as Util from './Utils.js'
  * @example
  *      L.supermap.tiledMapLayer(url).addTo(map);
  * @param {string} url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {Object} options - 参数。
+ * @param {object} options - 参数。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 是否背景透明。
  * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
  * @param {boolean} [options.clipRegionEnabled=false] - 是否启用地图裁剪。
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {object} [options.prjCoordSys] - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
@@ -62,10 +65,10 @@ export const TiledMapLayer = L.TileLayer.extend({
     // 启用托管地址。
     tileProxy: null,
     attribution: 'Map Data <span>© <a href=\'http://support.supermap.com.cn/product/iServer.aspx\' title=\'SuperMap iServer\' target=\'_blank\'>SuperMap iServer</a></span>',
-    subdomains: null
+    subdomains: null,
   },
 
-  initialize: function (url, options) {
+  initialize(url, options) {
     this._url = url
     L.TileLayer.prototype.initialize.apply(this, arguments)
     L.setOptions(this, options)
@@ -82,7 +85,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @description 添加地图。
    * @param {L.Map} map - 待添加的影像地图参数。
    */
-  onAdd: function (map) {
+  onAdd(map) {
     this._crs = this.options.crs || map.options.crs
     L.TileLayer.prototype.onAdd.call(this, map)
   },
@@ -90,23 +93,23 @@ export const TiledMapLayer = L.TileLayer.extend({
   /**
    * @function L.supermap.tiledMapLayer.prototype.getTileUrl
    * @description 根据行列号获取瓦片地址。
-   * @param {Object} coords - 行列号。
+   * @param {object} coords - 行列号。
    * @returns {string} 瓦片地址。
    */
-  getTileUrl: function (coords) {
+  getTileUrl(coords) {
     const scale = this.getScaleFromCoords(coords)
     const layerUrl = this._getLayerUrl()
-    let tileUrl = layerUrl + '&scale=' + scale + '&x=' + coords.x + '&y=' + coords.y
+    let tileUrl = `${layerUrl}&scale=${scale}&x=${coords.x}&y=${coords.y}`
     // 支持代理
-    if (this.options.tileProxy) {
+    if (this.options.tileProxy)
       tileUrl = this.options.tileProxy + encodeURIComponent(tileUrl)
-    }
-    if (!this.options.cacheEnabled) {
-      tileUrl += '&_t=' + new Date().getTime()
-    }
-    if (this.options.subdomains) {
+
+    if (!this.options.cacheEnabled)
+      tileUrl += `&_t=${new Date().getTime()}`
+
+    if (this.options.subdomains)
       tileUrl = L.Util.template(tileUrl, { s: this._getSubdomain(coords) })
-    }
+
     return tileUrl
   },
 
@@ -116,7 +119,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @param {number} zoom - 缩放级别。
    * @returns {number} 比例尺。
    */
-  getScale: function (zoom) {
+  getScale(zoom) {
     const me = this
     // 返回当前比例尺
     const z = zoom || me._map.getZoom()
@@ -126,14 +129,14 @@ export const TiledMapLayer = L.TileLayer.extend({
   /**
    * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
    * @description 通过行列号获取比例尺。
-   * @param {Object} coords - 行列号。
+   * @param {object} coords - 行列号。
    * @returns {number} 比例尺。
    */
-  getScaleFromCoords: function (coords) {
+  getScaleFromCoords(coords) {
     const me = this
-    if (me.scales && me.scales[coords.z]) {
+    if (me.scales && me.scales[coords.z])
       return me.scales[coords.z]
-    }
+
     me.scales = me.scales || {}
     const scale = me.getDefaultScale(coords)
     me.scales[coords.z] = scale
@@ -144,27 +147,28 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @private
    * @function L.supermap.tiledMapLayer.prototype.getDefaultScale
    * @description 获取默认比例尺信息。
-   * @param {Object} coords - 坐标对象参数。
+   * @param {object} coords - 坐标对象参数。
    */
-  getDefaultScale: function (coords) {
+  getDefaultScale(coords) {
     const me = this
     const crs = me._crs
     if (crs.scales) {
       return crs.scales[coords.z]
-    } else {
+    }
+    else {
       const tileBounds = me._tileCoordsToBounds(coords)
       const ne = crs.project(tileBounds.getNorthEast())
       const sw = crs.project(tileBounds.getSouthWest())
       const tileSize = me.options.tileSize
       const resolution = Math.max(
         Math.abs(ne.x - sw.x) / tileSize,
-        Math.abs(ne.y - sw.y) / tileSize
+        Math.abs(ne.y - sw.y) / tileSize,
       )
       let mapUnit = Unit.METER
       if (crs.code) {
         const array = crs.code.split(':')
         if (array && array.length > 1) {
-          const code = parseInt(array[1])
+          const code = Number.parseInt(array[1])
           mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER
         }
       }
@@ -175,23 +179,23 @@ export const TiledMapLayer = L.TileLayer.extend({
   /**
    * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
    * @description 设置瓦片集信息。
-   * @param {Object} tileSets - 瓦片对象集。
+   * @param {object} tileSets - 瓦片对象集。
    */
-  setTileSetsInfo: function (tileSets) {
+  setTileSetsInfo(tileSets) {
     this.tileSets = tileSets
-    if (L.Util.isArray(this.tileSets)) {
+    if (L.Util.isArray(this.tileSets))
       this.tileSets = this.tileSets[0]
-    }
-    if (!this.tileSets) {
+
+    if (!this.tileSets)
       return
-    }
+
     /**
      * @event L.supermap.tiledMapLayer#tilesetsinfoloaded
      * @description 瓦片集信息设置完成后触发。
-     * @property {Array.<Object>} tileVersions  - 瓦片集信息。
+     * @property {Array.<object>} tileVersions  - 瓦片集信息。
      */
     this.fire('tilesetsinfoloaded', {
-      tileVersions: this.tileSets.tileVersions
+      tileVersions: this.tileSets.tileVersions,
     })
     this.changeTilesVersion()
   },
@@ -200,7 +204,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @function L.supermap.tiledMapLayer.prototype.lastTilesVersion
    * @description 请求上一个版本切片，并重新绘制。
    */
-  lastTilesVersion: function () {
+  lastTilesVersion() {
     this.tempIndex = this.tileSetsIndex - 1
     this.changeTilesVersion()
   },
@@ -209,7 +213,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @function L.supermap.tiledMapLayer.prototype.nextTilesVersion
    * @description 请求下一个版本切片，并重新绘制。
    */
-  nextTilesVersion: function () {
+  nextTilesVersion() {
     this.tempIndex = this.tileSetsIndex + 1
     this.changeTilesVersion()
   },
@@ -218,7 +222,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @function L.supermap.tiledMapLayer.prototype.changeTilesVersion
    * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引
    */
-  changeTilesVersion: function () {
+  changeTilesVersion() {
     const me = this
     // 切片版本集信息是否存在
     if (me.tileSets == null) {
@@ -226,9 +230,9 @@ export const TiledMapLayer = L.TileLayer.extend({
       // me.getTileSetsInfo();
       return
     }
-    if (me.tempIndex === me.tileSetsIndex || this.tempIndex < 0) {
+    if (me.tempIndex === me.tileSetsIndex || this.tempIndex < 0)
       return
-    }
+
     // 检测index是否可用
     const tileVersions = me.tileSets.tileVersions
     if (tileVersions && me.tempIndex < tileVersions.length && me.tempIndex >= 0) {
@@ -239,10 +243,10 @@ export const TiledMapLayer = L.TileLayer.extend({
         /**
          * @event L.supermap.tiledMapLayer#tileversionschanged
          * @description 切片的版本切换和重绘成功之后触发。
-         * @property {Object} tileVersion  - 该版本的切片。
+         * @property {object} tileVersion  - 该版本的切片。
          */
         me.fire('tileversionschanged', {
-          tileVersion: tileVersions[me.tempIndex]
+          tileVersion: tileVersions[me.tempIndex],
         })
       }
     }
@@ -253,7 +257,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @description 手动设置当前切片集索引，目前主要提供给控件使用。
    * @param {number} index - 索引值。
    */
-  updateCurrentTileSetsIndex: function (index) {
+  updateCurrentTileSetsIndex(index) {
     this.tempIndex = index
   },
 
@@ -263,7 +267,7 @@ export const TiledMapLayer = L.TileLayer.extend({
    * @param {string} version - 切片版本号。
    * @returns {boolean} 是否成功。
    */
-  mergeTileVersionParam: function (version) {
+  mergeTileVersionParam(version) {
     if (version) {
       this.requestParams.tileversion = version
       this._paramsChanged = true
@@ -274,14 +278,14 @@ export const TiledMapLayer = L.TileLayer.extend({
     return false
   },
 
-  _getLayerUrl: function () {
-    if (this._paramsChanged) {
+  _getLayerUrl() {
+    if (this._paramsChanged)
       this._layerUrl = this._createLayerUrl()
-    }
+
     return this._layerUrl || this._createLayerUrl()
   },
 
-  _createLayerUrl: function () {
+  _createLayerUrl() {
     let layerUrl = CommonUtil.urlPathAppend(this._url, `tileImage.${this.options.format}`)
     this.requestParams = this.requestParams || this._getAllRequestParams()
     layerUrl = CommonUtil.urlAppend(layerUrl, LUtil.getParamString(this.requestParams))
@@ -290,15 +294,15 @@ export const TiledMapLayer = L.TileLayer.extend({
     return layerUrl
   },
 
-  _getAllRequestParams: function () {
+  _getAllRequestParams() {
     const me = this
     const options = me.options || {}
     const params = {}
 
     let tileSize = this.options.tileSize
-    if (!(tileSize instanceof L.Point)) {
+    if (!(tileSize instanceof L.Point))
       tileSize = L.point(tileSize, tileSize)
-    }
+
     params.width = tileSize.x
     params.height = tileSize.y
 
@@ -306,13 +310,11 @@ export const TiledMapLayer = L.TileLayer.extend({
     params.transparent = options.transparent === true
     params.cacheEnabled = !(options.cacheEnabled === false)
 
-    if (options.prjCoordSys) {
+    if (options.prjCoordSys)
       params.prjCoordSys = JSON.stringify(options.prjCoordSys)
-    }
 
-    if (options.layersID) {
+    if (options.layersID)
       params.layersID = options.layersID.toString()
-    }
 
     if (options.clipRegionEnabled && options.clipRegion) {
       options.clipRegion = ServerGeometry.fromGeometry(Util.toSuperMapGeometry(options.clipRegion))
@@ -325,35 +327,35 @@ export const TiledMapLayer = L.TileLayer.extend({
     if (crs.options && crs.options.origin) {
       params.origin = JSON.stringify({
         x: crs.options.origin[0],
-        y: crs.options.origin[1]
+        y: crs.options.origin[1],
       })
-    } else if (crs.projection && crs.projection.bounds) {
+    }
+    else if (crs.projection && crs.projection.bounds) {
       const bounds = crs.projection.bounds
       const tileOrigin = L.point(bounds.min.x, bounds.max.y)
       params.origin = JSON.stringify({
         x: tileOrigin.x,
-        y: tileOrigin.y
+        y: tileOrigin.y,
       })
     }
 
     if (options.overlapDisplayed === false) {
       params.overlapDisplayed = false
-      if (options.overlapDisplayedOptions) {
+      if (options.overlapDisplayedOptions)
         params.overlapDisplayedOptions = me.overlapDisplayedOptions.toString()
-      }
-    } else {
+    }
+    else {
       params.overlapDisplayed = true
     }
 
-    if (params.cacheEnabled === true && options.tileversion) {
+    if (params.cacheEnabled === true && options.tileversion)
       params.tileversion = options.tileversion.toString()
-    }
-    if (options.rasterfunction) {
+
+    if (options.rasterfunction)
       params.rasterfunction = JSON.stringify(options.rasterfunction)
-    }
 
     return params
-  }
+  },
 })
 
 export const tiledMapLayer = function (url, options) {

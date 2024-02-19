@@ -1,57 +1,26 @@
-<template>
-  <div
-    ref="mapContainer"
-    class="map-container"
-  />
-  <div
-    v-show="false"
-    ref="propertyPopup"
-    class="property-popup"
-  >
-    <div class="title">
-      <span>属性</span>
-    </div>
-    <div
-      v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
-      class="content"
-    >
-      <el-descriptions
-        :column="1"
-        :border="true"
-      >
-        <el-descriptions-item
-          v-for="(val,key,index) of selectedFeature.properties"
-          :key="index"
-          :label="key.toString()"
-        >
-          {{ val }}
-        </el-descriptions-item>
-      </el-descriptions>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
-import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
+import type {
+  Control,
+  GeoJSON,
+  Layer,
+  Map,
+} from 'leaflet'
 import {
-  map,
-  control,
-  layerGroup,
-  geoJSON,
-  marker,
   Icon,
   Marker,
-  GeoJSON,
-  Map,
-  Control,
-  Layer
+  control,
+  geoJSON,
+  layerGroup,
+  map,
+  marker,
 } from 'leaflet'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import $eventBus from '@/plugins/EventBus'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
-import type { GeoJsonObject, Feature } from 'geojson'
+import type { Feature, GeoJsonObject } from 'geojson'
+import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
+import $eventBus from '@/plugins/EventBus'
 
 const blueIcon = new Icon({
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
@@ -59,7 +28,7 @@ const blueIcon = new Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 })
 const yellowIcon = new Icon({
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
@@ -67,7 +36,7 @@ const yellowIcon = new Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 })
 const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
@@ -94,21 +63,20 @@ onBeforeUnmount(() => {
   $eventBus.off('addLayer', addLayer)
   $eventBus.off('removeLayer', removeLayer)
   $eventBus.off('selectFeature', selectFeature)
-  if (_map) {
+  if (_map)
     _map.remove()
-  }
 })
 
-function initMap () {
-  if (!mapContainer.value) {
+function initMap() {
+  if (!mapContainer.value)
     return
-  }
+
   // 初始化地图
   _map = map(mapContainer.value, {
     attributionControl: true,
     zoomControl: false,
     minZoom: 4,
-    trackResize: true
+    trackResize: true,
   })
   _map.setView([35, 105], 4)
 
@@ -117,7 +85,7 @@ function initMap () {
     onEachFeature,
     pointToLayer: (feature, latLng) => {
       return marker(latLng, { icon: blueIcon }).addTo(_map)
-    }
+    },
   }).addTo(_map)
   // 添加底图、图层控制
   layerControl = control.layers(
@@ -125,199 +93,200 @@ function initMap () {
       高德矢量: chineseLayer('GaoDe.Normal.Map', {
         maxNativeZoom: 18,
         maxZoom: 20,
-        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
+        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者',
       }).addTo(_map),
       高德影像: layerGroup([
         chineseLayer('GaoDe.Satellite.Map', {
           maxNativeZoom: 18,
-          maxZoom: 20
+          maxZoom: 20,
         }),
         chineseLayer('GaoDe.Satellite.Annotation', {
           maxNativeZoom: 18,
-          maxZoom: 20
-        })
+          maxZoom: 20,
+        }),
       ], {
-        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
+        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者',
       }),
       谷歌矢量: layerGroup([
         chineseLayer('Google.Normal.Map', {
-          maxZoom: 20
-        })
+          maxZoom: 20,
+        }),
       ], {
-        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者',
       }),
       谷歌影像: layerGroup([
         chineseLayer('Google.Satellite.Map', {
-          maxZoom: 20
+          maxZoom: 20,
         }),
         chineseLayer('Google.Satellite.Annotation', {
-          maxZoom: 20
-        })
+          maxZoom: 20,
+        }),
       ], {
-        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
+        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者',
       }),
       OpenStreetMap: chineseLayer('OSM.Normal.Map', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
         maxNativeZoom: 19,
-        maxZoom: 20
+        maxZoom: 20,
       }),
       天地图矢量: layerGroup([
         chineseLayer('TianDiTu.Normal.Map', {
           key: tdtToken,
           maxNativeZoom: 18,
-          maxZoom: 20
+          maxZoom: 20,
         }),
         chineseLayer('TianDiTu.Normal.Annotation', {
           key: tdtToken,
           maxNativeZoom: 18,
-          maxZoom: 20
-        })
+          maxZoom: 20,
+        }),
       ], {
-        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
+        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者',
       }),
       天地图影像: layerGroup([
         chineseLayer('TianDiTu.Satellite.Map', {
           key: tdtToken,
           maxNativeZoom: 18,
-          maxZoom: 20
+          maxZoom: 20,
         }),
         chineseLayer('TianDiTu.Satellite.Annotation', {
           key: tdtToken,
           maxNativeZoom: 18,
-          maxZoom: 20
-        })
+          maxZoom: 20,
+        }),
       ], {
-        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
+        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者',
       }),
       天地图地形: layerGroup([
         chineseLayer('TianDiTu.Terrain.Map', {
           key: tdtToken,
           maxNativeZoom: 14,
-          maxZoom: 20
+          maxZoom: 20,
         }),
         chineseLayer('TianDiTu.Terrain.Annotation', {
           key: tdtToken,
           maxNativeZoom: 14,
-          maxZoom: 20
-        })
+          maxZoom: 20,
+        }),
       ], {
-        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-      })
+        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者',
+      }),
     },
     {
-      图形: geoJsonLayer
+      图形: geoJsonLayer,
     },
     {
       hideSingleBase: true,
-      position: 'bottomleft'
-    }
+      position: 'bottomleft',
+    },
   ).addTo(_map)
   control.scale({
     imperial: false,
-    position: 'bottomright'
+    position: 'bottomright',
   }).addTo(_map)
   control.zoom({
     zoomInTitle: '放大',
     zoomOutTitle: '缩小',
-    position: 'topright'
+    position: 'topright',
   }).addTo(_map)
   _map.pm.setLang('zh')
   _map.pm.setGlobalOptions({
-    layerGroup: geoJsonLayer
+    layerGroup: geoJsonLayer,
   })
   _map.pm.addControls({
     position: 'topright',
     drawCircleMarker: false,
     drawText: false,
-    rotateMode: true
+    rotateMode: true,
   })
 
-  _map.on('pm:create pm:remove pm:cut', function (e) {
+  _map.on('pm:create pm:remove pm:cut', (e) => {
     updateEditor()
-    if (e.type === 'pm:create') {
+    if (e.type === 'pm:create')
       onEachFeature(e.layer.toGeoJSON() as Feature, e.layer)
-    }
   })
 }
 
-function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
-  layer.on('pm:change', function () {
+function onEachFeature(feature: Feature, layer: GeoJSON | Marker) {
+  layer.on('pm:change', () => {
     updateEditor()
   })
-  if (!feature.properties) {
+  if (!feature.properties)
     feature.properties = {}
-  }
-  if (!propertyPopup.value) {
+
+  if (!propertyPopup.value)
     return
-  }
+
   layer.bindPopup(propertyPopup.value).on('popupopen', () => {
     selectedFeature.value = feature
     if (_map.hasLayer(layer)) {
       if (layer instanceof Marker) {
         layer.setIcon(yellowIcon)
-      } else {
+      }
+      else {
         layer.setStyle({
           color: '#ffff00',
           weight: 5,
-          opacity: 0.65
+          opacity: 0.65,
         })
       }
     }
   }).on('popupclose', () => {
     selectedFeature.value = undefined
     if (_map.hasLayer(layer)) {
-      if (layer instanceof Marker) {
+      if (layer instanceof Marker)
         layer.setIcon(blueIcon)
-      } else {
+      else
         geoJsonLayer.resetStyle(layer)
-      }
     }
   })
 }
 
-function locationGeo (geoJson: GeoJsonObject) {
+function locationGeo(geoJson: GeoJsonObject) {
   try {
     const layer = geoJSON(geoJson)
     _map.fitBounds(layer.getBounds())
-  } catch (e) {
+  }
+  catch (e) {
   }
 }
-function updateGeojsonLayer (geoJson: GeoJsonObject) {
+function updateGeojsonLayer(geoJson: GeoJsonObject) {
   geoJsonLayer.clearLayers()
   try {
     geoJsonLayer.addData(geoJson)
     _map.fitBounds(geoJsonLayer.getBounds())
-  } catch (e) {
+  }
+  catch (e) {
   }
 }
 
-function getGeoJson (callback: (geoJson: GeoJsonObject) => void) {
-  // eslint-disable-next-line n/no-callback-literal
+function getGeoJson(callback: (geoJson: GeoJsonObject) => void) {
   callback(geoJsonLayer?.toGeoJSON())
 }
 
-function addLayer (layer: Layer, serviceName: string) {
+function addLayer(layer: Layer, serviceName: string) {
   layer.addTo(_map)
   layerControl.addOverlay(layer, serviceName)
 }
 
-function removeLayer (layer: Layer) {
+function removeLayer(layer: Layer) {
   _map.removeLayer(layer)
   layerControl.removeLayer(layer)
 }
 
-function updateEditor () {
+function updateEditor() {
   if (geoJsonLayer.getLayers().length === 0) {
     $eventBus.emit('updateEditor', {
       type: 'FeatureCollection',
-      features: []
+      features: [],
     })
-  } else {
+  }
+  else {
     $eventBus.emit('updateEditor', geoJsonLayer.toGeoJSON())
   }
 }
 
-function selectFeature (index: number) {
+function selectFeature(index: number) {
   if (geoJsonLayer.getLayers().length > index) {
     const layer = geoJsonLayer.getLayers()[index] as GeoJSON
     layer.openPopup()
@@ -325,6 +294,39 @@ function selectFeature (index: number) {
   }
 }
 </script>
+
+<template>
+  <div
+    ref="mapContainer"
+    class="map-container"
+  />
+  <div
+    v-show="false"
+    ref="propertyPopup"
+    class="property-popup"
+  >
+    <div class="title">
+      <span>属性</span>
+    </div>
+    <div
+      v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
+      class="content"
+    >
+      <el-descriptions
+        :column="1"
+        :border="true"
+      >
+        <el-descriptions-item
+          v-for="(val, key, index) of selectedFeature.properties"
+          :key="index"
+          :label="key.toString()"
+        >
+          {{ val }}
+        </el-descriptions-item>
+      </el-descriptions>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .map-container {

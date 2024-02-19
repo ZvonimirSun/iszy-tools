@@ -1,12 +1,12 @@
 import { css } from '@codemirror/lang-css'
-import type { EditorPlugin } from '@/types/editor'
 import { css as cssBeautify } from 'js-beautify'
+import type { EditorPlugin } from '@/types/editor'
 
-export function formatter (val: string, { indent = 2 } = {}) {
+export function formatter(val: string, { indent = 2 } = {}) {
   return cssBeautify(val, { indent_size: indent })
 }
 
-export function compactor (val: string): string {
+export function compactor(val: string): string {
   return val.replace(/\s+|\n/g, ' ')
     .replace(/\s*{\s*/g, '{')
     .replace(/\s*}\s*/g, '}')
@@ -18,8 +18,8 @@ const plugin: EditorPlugin = {
   formatter,
   compactor,
   extensions: [
-    css()
-  ]
+    css(),
+  ],
 }
 
 export default plugin

@@ -5,9 +5,9 @@ export const algos = {
   SHA1,
   SHA256,
   SHA512,
-  SHA3
+  SHA3,
 } as const
 
-export type AlgoNames = keyof typeof algos;
+export type AlgoNames = keyof typeof algos
 
 export const algoNames = Object.keys(algos) as AlgoNames[]

@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import xml from '@/components/editor/lang-xml'
+
+const value = ref('<hello><world>foo</world><world>bar</world></hello>')
+
+const options = reactive({
+  collapseContent: true,
+  indent: 2,
+})
+</script>
+
 <template>
   <div class="code-container">
     <div
@@ -41,17 +52,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import xml from '@/components/editor/lang-xml'
-
-const value = ref('<hello><world>foo</world><world>bar</world></hello>')
-
-const options = reactive({
-  collapseContent: true,
-  indent: 2
-})
-</script>
 
 <style scoped lang="scss">
 .code-container {

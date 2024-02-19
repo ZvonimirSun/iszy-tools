@@ -1,16 +1,16 @@
 'use strict'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { VitePWA } from 'vite-plugin-pwa'
 import { resolve } from 'node:path'
-import Sitemap from './src/plugins/Sitemap.js'
-import tools from './src/tools.json'
+import { VitePWA } from 'vite-plugin-pwa'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver, ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import Sitemap from './src/plugins/Sitemap.js'
+import tools from './src/tools.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,8 +18,8 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
     hmr: {
-      port: 3000
-    }
+      port: 3000,
+    },
   },
   plugins: [
     vue(),
@@ -27,20 +27,20 @@ export default defineConfig({
     AutoImport({
       resolvers: [
         ElementPlusResolver(),
-        AntDesignVueResolver()
+        AntDesignVueResolver(),
       ],
       imports: [
         'vue',
         'vue-router',
         'pinia',
-        '@vueuse/core'
+        '@vueuse/core',
       ],
       eslintrc: {
-        enabled: true
+        enabled: true,
       },
       dirs: ['src/composables', 'src/stores'],
       vueTemplate: true,
-      dts: 'src/auto-imports.d.ts'
+      dts: 'src/auto-imports.d.ts',
     }),
     Unocss(),
     Components({
@@ -50,8 +50,8 @@ export default defineConfig({
       dts: 'src/components.d.ts',
       resolvers: [
         ElementPlusResolver(),
-        AntDesignVueResolver()
-      ]
+        AntDesignVueResolver(),
+      ],
     }),
     VitePWA({
       scope: '/',
@@ -64,30 +64,30 @@ export default defineConfig({
             src: '/images/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any'
+            purpose: 'any',
           },
           {
             src: '/images/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'maskable'
+            purpose: 'maskable',
           },
           {
             src: '/images/android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any'
+            purpose: 'any',
           },
           {
             src: '/images/android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable'
-          }
+            purpose: 'maskable',
+          },
         ],
         theme_color: '#ffffff',
         background_color: '#ffffff',
-        display: 'standalone'
+        display: 'standalone',
       },
       workbox: {
         globPatterns: ['**/*.html'],
@@ -100,9 +100,9 @@ export default defineConfig({
               cacheName: 'iszy-images',
               expiration: {
                 // 最多30个图
-                maxEntries: 30
-              }
-            }
+                maxEntries: 30,
+              },
+            },
           },
           {
             urlPattern: /\.(?:woff|eot|otf|ttf|TTF)$/,
@@ -110,9 +110,9 @@ export default defineConfig({
             options: {
               cacheName: 'iszy-font',
               cacheableResponse: {
-                statuses: [200]
-              }
-            }
+                statuses: [200],
+              },
+            },
           },
           {
             urlPattern: /.*\.css.*/,
@@ -120,12 +120,12 @@ export default defineConfig({
             options: {
               cacheName: 'iszy-css',
               expiration: {
-                maxEntries: 200
+                maxEntries: 200,
               },
               cacheableResponse: {
-                statuses: [200]
-              }
-            }
+                statuses: [200],
+              },
+            },
           },
           {
             urlPattern: /.*\.js.*/,
@@ -133,12 +133,12 @@ export default defineConfig({
             options: {
               cacheName: 'iszy-js',
               expiration: {
-                maxEntries: 300
+                maxEntries: 300,
               },
               cacheableResponse: {
-                statuses: [200]
-              }
-            }
+                statuses: [200],
+              },
+            },
           },
           // cdn
           {
@@ -148,39 +148,39 @@ export default defineConfig({
               cacheName: 'iszy-cdn',
               expiration: {
                 maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
-                statuses: [200]
-              }
-            }
-          }
-        ]
-      }
+                statuses: [200],
+              },
+            },
+          },
+        ],
+      },
     }),
     Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
-    VueDevTools()
+    VueDevTools(),
   ],
   optimizeDeps: {
-    include: ['vue', 'element-plus', 'ant-design-vue']
+    include: ['vue', 'element-plus', 'ant-design-vue'],
   },
   resolve: {
     alias: {
-      '@': resolve('src')
-    }
+      '@': resolve('src'),
+    },
   },
   css: {
     preprocessorOptions: {
       scss: { charset: false },
       less: {
-        javascriptEnabled: true
-      }
-    }
+        javascriptEnabled: true,
+      },
+    },
   },
   worker: {
-    format: 'es'
+    format: 'es',
   },
   test: {
-    environment: 'jsdom'
-  }
+    environment: 'jsdom',
+  },
 })

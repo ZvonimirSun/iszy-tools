@@ -13,20 +13,20 @@ const encoding = ref('Hex')
 const encodingOptions = [
   {
     label: 'Binary (base 2)',
-    value: 'Bin'
+    value: 'Bin',
   },
   {
     label: 'Hexadecimal (base 16)',
-    value: 'Hex'
+    value: 'Hex',
   },
   {
     label: 'Base64 (base 64)',
-    value: 'Base64'
+    value: 'Base64',
   },
   {
     label: 'Base64url (base 64 with url safe chars)',
-    value: 'Base64url'
-  }
+    value: 'Base64url',
+  },
 ]
 
 calculate()
@@ -39,7 +39,7 @@ onUnmounted(() => {
   terminate()
 })
 
-function calculate () {
+function calculate() {
   post({ value: clearText.value, encoding: encoding.value })
 }
 </script>

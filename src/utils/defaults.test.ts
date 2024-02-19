@@ -1,18 +1,20 @@
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { withDefaultOnError, withDefaultOnErrorAsync } from './defaults'
 
-test('return function result when no error', () => {
+it('return function result when no error', () => {
   expect(withDefaultOnError(() => 'success', 'default')).toBe('success')
 })
 
-test('return default value when error', () => {
-  expect(withDefaultOnError(() => { throw new Error('error') }, 'default')).toBe('default')
+it('return default value when error', () => {
+  expect(withDefaultOnError(() => {
+    throw new Error('error')
+  }, 'default')).toBe('default')
 })
 
-test('return function result when no error', async () => {
-  expect(await withDefaultOnErrorAsync(async () => (await new Promise((resolve) => setTimeout(() => resolve('success'), 100))), 'default')).toBe('success')
+it('return async function result when no error', async () => {
+  expect(await withDefaultOnErrorAsync(async () => (await new Promise(resolve => setTimeout(() => resolve('success'), 100))), 'default')).toBe('success')
 })
 
-test('return default value when error', async () => {
+it('return async default value when error', async () => {
   expect(await withDefaultOnErrorAsync(async () => (await new Promise((resolve, reject) => setTimeout(() => reject(new Error('error')), 100))), 'default')).toBe('default')
 })

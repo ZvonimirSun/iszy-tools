@@ -1,3 +1,33 @@
+<script setup lang="ts">
+const token = ref('')
+const header = ref('')
+const payload = ref('')
+
+function tokenChange() {
+  if (token.value) {
+    try {
+      const strings = token.value.split('.')
+      if (strings.length === 3) {
+        header.value = JSON.stringify(JSON.parse(window.atob(strings[0])), null, 2)
+        payload.value = JSON.stringify(JSON.parse(window.atob(strings[1].replace(/-/g, '+').replace(/_/g, '/'))), null, 2)
+      }
+      else {
+        header.value = ''
+        payload.value = ''
+      }
+    }
+    catch (e) {
+      header.value = ''
+      payload.value = ''
+    }
+  }
+  else {
+    header.value = ''
+    payload.value = ''
+  }
+}
+</script>
+
 <template>
   <div class="wrapper">
     <div class="encoded">
@@ -39,33 +69,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-const token = ref('')
-const header = ref('')
-const payload = ref('')
-
-function tokenChange () {
-  if (token.value) {
-    try {
-      const strings = token.value.split('.')
-      if (strings.length === 3) {
-        header.value = JSON.stringify(JSON.parse(window.atob(strings[0])), null, 2)
-        payload.value = JSON.stringify(JSON.parse(window.atob(strings[1].replace(/-/g, '+').replace(/_/g, '/'))), null, 2)
-      } else {
-        header.value = ''
-        payload.value = ''
-      }
-    } catch (e) {
-      header.value = ''
-      payload.value = ''
-    }
-  } else {
-    header.value = ''
-    payload.value = ''
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .ant-typography {

@@ -1,3 +1,25 @@
+<script>
+import UAParser from 'ua-parser-js'
+
+const parser = new UAParser()
+
+export default {
+  name: 'UserAgent',
+  data: () => ({
+    data: '',
+  }),
+  computed: {
+    result() {
+      parser.setUA(this.data)
+      return parser.getResult()
+    },
+  },
+  mounted() {
+    this.data = navigator.userAgent
+  },
+}
+</script>
+
 <template>
   <a-typography-title :level="3">
     请输入一个UA开始解析
@@ -33,28 +55,6 @@
     </a-typography-paragraph>
   </template>
 </template>
-
-<script>
-import UAParser from 'ua-parser-js'
-
-const parser = new UAParser()
-
-export default {
-  name: 'UserAgent',
-  data: () => ({
-    data: ''
-  }),
-  computed: {
-    result () {
-      parser.setUA(this.data)
-      return parser.getResult()
-    }
-  },
-  mounted () {
-    this.data = navigator.userAgent
-  }
-}
-</script>
 
 <style scoped lang="scss">
 

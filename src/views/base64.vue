@@ -1,3 +1,31 @@
+<script setup lang="ts">
+const data1 = ref('')
+const data2 = ref('')
+
+function encode() {
+  data2.value = btoa(encodeURIComponent(data1.value).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+    return String.fromCharCode(Number.parseInt(`0x${p1}`))
+  }))
+}
+
+function decode() {
+  try {
+    data2.value = decodeURIComponent(atob(data1.value).split('').map((c) => {
+      return `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`
+    }).join(''))
+  }
+  catch (e) {
+    ElMessage.error('解码失败')
+  }
+}
+
+function exchange() {
+  const tmp = data1.value
+  data1.value = data2.value
+  data2.value = tmp
+}
+</script>
+
 <template>
   <el-space
     direction="vertical"
@@ -33,33 +61,6 @@
     />
   </el-space>
 </template>
-
-<script setup lang="ts">
-const data1 = ref('')
-const data2 = ref('')
-
-function encode () {
-  data2.value = btoa(encodeURIComponent(data1.value).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-    return String.fromCharCode(parseInt('0x' + p1))
-  }))
-}
-
-function decode () {
-  try {
-    data2.value = decodeURIComponent(atob(data1.value).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    }).join(''))
-  } catch (e) {
-    ElMessage.error('解码失败')
-  }
-}
-
-function exchange () {
-  const tmp = data1.value
-  data1.value = data2.value
-  data2.value = tmp
-}
-</script>
 
 <style lang="scss">
 textarea.ant-input {
