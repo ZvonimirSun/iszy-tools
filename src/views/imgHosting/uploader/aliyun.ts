@@ -24,7 +24,10 @@ export interface AliOssConfig extends Record<string, string> {
  * @param file {File} 文件
  * @return {Promise<Object>}
  */
-const handle = async (options: AliOssConfig, file: File) => {
+const handle = async (options: AliOssConfig, file: File): Promise<{
+  name: string,
+  url: string
+}> => {
   const customUrl = options.customUrl
   const path = options.path || ''
   const client = new OSS({
