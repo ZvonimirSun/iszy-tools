@@ -48,26 +48,22 @@ import {
   Layer
 } from 'leaflet'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import $eventBus from '@/plugins/EventBus'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 import type { GeoJsonObject, Feature } from 'geojson'
 
-const blueIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-})
+Icon.Default.prototype.options.iconUrl = markerIcon
+Icon.Default.prototype.options.iconRetinaUrl = markerIcon2x
+Icon.Default.prototype.options.shadowUrl = markerShadow
+
+const defaultIcon = new Icon.Default()
 const yellowIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  ...Icon.prototype.options,
+  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png',
+  iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png'
 })
 const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
@@ -116,7 +112,7 @@ function initMap () {
   geoJsonLayer = geoJSON(undefined, {
     onEachFeature,
     pointToLayer: (feature, latLng) => {
-      return marker(latLng, { icon: blueIcon }).addTo(_map)
+      return marker(latLng).addTo(_map)
     }
   }).addTo(_map)
   // 添加底图、图层控制
@@ -267,7 +263,7 @@ function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
     selectedFeature.value = undefined
     if (_map.hasLayer(layer)) {
       if (layer instanceof Marker) {
-        layer.setIcon(blueIcon)
+        layer.setIcon(defaultIcon)
       } else {
         geoJsonLayer.resetStyle(layer)
       }
