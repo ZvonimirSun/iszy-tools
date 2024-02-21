@@ -125,12 +125,10 @@ export const useUserStore = defineStore('user', {
       }
     },
     checkAccess (authOption: AuthOption) {
-      if (typeof authOption === 'boolean') {
-        if (authOption) {
-          return this.logged
-        } else {
-          return false
-        }
+      if (authOption === false) {
+        return true
+      } else if (typeof authOption === 'boolean') {
+        return this.logged
       } else {
         if (!this.logged) {
           return false

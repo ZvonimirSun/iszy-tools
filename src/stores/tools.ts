@@ -56,6 +56,10 @@ const oriToolMenus: ToolMenu[] = (oriTools || []).map((item: OptionalExcept<Tool
   })
   return item as ToolMenu
 })
+internalTools.forEach((item: ToolItem) => {
+  item.id = item.id || uuid()
+  toolsMap[item.link.toLowerCase()] = item
+})
 const oriToolItems = flatten(oriToolMenus.map((item: ToolMenu) => {
   return item.children
 }))
