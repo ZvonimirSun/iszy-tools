@@ -163,6 +163,9 @@ async function triggerUpdate () {
   }).then(() => {
     updateServiceWorker()
   })
+  window.addEventListener('beforeunload', () => {
+    updateServiceWorker(false)
+  })
 }
 
 function fullScreen () {
