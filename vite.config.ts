@@ -93,6 +93,33 @@ export default defineConfig({
         globPatterns: ['**/*.html'],
         navigateFallback: null,
         runtimeCaching: [
+          // api
+          {
+            urlPattern: ({ url }) => url.origin === 'https://api.iszy.xyz',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'iszy-api',
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          },
+          // cdn
+          {
+            urlPattern: ({ url }) => url.hostname.endsWith('cdn.iszy.xyz'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'iszy-cdn',
+              expiration: {
+                maxEntries: 30,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [200]
+              }
+            }
+          },
+          // 项目文件动态缓存
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
             handler: 'CacheFirst',
@@ -101,6 +128,9 @@ export default defineConfig({
               expiration: {
                 // 最多30个图
                 maxEntries: 30
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
               }
             }
           },
@@ -119,9 +149,6 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'iszy-css',
-              expiration: {
-                maxEntries: 200
-              },
               cacheableResponse: {
                 statuses: [200]
               }
@@ -132,24 +159,6 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'iszy-js',
-              expiration: {
-                maxEntries: 300
-              },
-              cacheableResponse: {
-                statuses: [200]
-              }
-            }
-          },
-          // cdn
-          {
-            urlPattern: ({ url }) => url.hostname.endsWith('cdn.iszy.xyz'),
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'iszy-cdn',
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-              },
               cacheableResponse: {
                 statuses: [200]
               }
