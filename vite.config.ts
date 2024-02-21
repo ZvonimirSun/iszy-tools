@@ -11,6 +11,8 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import config from './src/config'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,6 +26,15 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    VueDevTools(),
+    createHtmlPlugin({
+      entry: 'src/main.ts',
+      inject: {
+        data: {
+          ...config
+        }
+      }
+    }),
     AutoImport({
       resolvers: [
         ElementPlusResolver(),
@@ -40,14 +51,14 @@ export default defineConfig({
       },
       dirs: ['src/composables', 'src/stores'],
       vueTemplate: true,
-      dts: 'src/auto-imports.d.ts'
+      dts: 'src/types/auto-imports.d.ts'
     }),
     Unocss(),
     Components({
       include: [/\.vue$/, /\.vue\?vue/],
       dirs: ['src/components'],
       extensions: ['vue'],
-      dts: 'src/components.d.ts',
+      dts: 'src/types/components.d.ts',
       resolvers: [
         ElementPlusResolver(),
         AntDesignVueResolver()
@@ -56,9 +67,9 @@ export default defineConfig({
     VitePWA({
       scope: '/',
       manifest: {
-        id: 'iszy_tools',
-        name: 'ISZY工具集合',
-        short_name: 'ISZY TOOLS',
+        id: config.name,
+        name: config.zhName,
+        short_name: config.alias,
         icons: [
           {
             src: '/images/android-chrome-192x192.png',
@@ -95,10 +106,10 @@ export default defineConfig({
         runtimeCaching: [
           // api
           {
-            urlPattern: ({ url }) => url.origin === 'https://api.iszy.xyz',
+            urlPattern: ({ url }) => url.origin === config.apiOrigin,
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'iszy-api',
+              cacheName: `${config.key}-api`,
               cacheableResponse: {
                 statuses: [200]
               }
@@ -106,10 +117,10 @@ export default defineConfig({
           },
           // cdn
           {
-            urlPattern: ({ url }) => url.hostname.endsWith('cdn.iszy.xyz'),
+            urlPattern: ({ url }) => url.hostname.endsWith(config.cdnHost),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-cdn',
+              cacheName: `${config.key}-cdn`,
               expiration: {
                 maxEntries: 30,
                 maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
@@ -124,7 +135,7 @@ export default defineConfig({
             urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-images',
+              cacheName: `${config.key}-images`,
               expiration: {
                 // 最多30个图
                 maxEntries: 30
@@ -138,7 +149,7 @@ export default defineConfig({
             urlPattern: /\.(?:woff|eot|otf|ttf|TTF)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-font',
+              cacheName: `${config.key}-font`,
               cacheableResponse: {
                 statuses: [200]
               }
@@ -148,7 +159,7 @@ export default defineConfig({
             urlPattern: /.*\.css.*/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-css',
+              cacheName: `${config.key}-css`,
               cacheableResponse: {
                 statuses: [200]
               }
@@ -158,7 +169,7 @@ export default defineConfig({
             urlPattern: /.*\.js.*/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'iszy-js',
+              cacheName: `${config.key}-js`,
               cacheableResponse: {
                 statuses: [200]
               }
@@ -167,8 +178,7 @@ export default defineConfig({
         ]
       }
     }),
-    Sitemap({ tools, hostname: 'https://tools.iszy.xyz' }),
-    VueDevTools()
+    Sitemap({ tools, hostname: config.siteOrigin })
   ],
   optimizeDeps: {
     include: ['vue', 'element-plus', 'ant-design-vue']

@@ -9,6 +9,7 @@ import {
 import { merge } from 'lodash-es'
 import type { DefineComponent } from 'vue'
 import { isExternalLink } from '@/utils/common'
+import config from '@/config'
 
 const toolsStore = useToolsStore()
 
@@ -145,10 +146,10 @@ async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormal
 }
 
 function getPageTitle (pageTitle: string | undefined | null) {
-  if (pageTitle && pageTitle !== 'ISZY工具集合') {
-    return `${pageTitle} - ISZY工具集合`
+  if (pageTitle && pageTitle !== config.zhName) {
+    return `${pageTitle} - ${config.zhName}`
   }
-  return 'ISZY工具集合'
+  return config.zhName
 }
 
 export default router

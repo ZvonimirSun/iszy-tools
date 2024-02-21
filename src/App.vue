@@ -21,7 +21,7 @@
         >
           <div class="header">
             <router-link to="/">
-              ISZY工具集合
+              {{ config.zhName }}
             </router-link>
           </div>
           <div
@@ -101,6 +101,7 @@ import { deleteParam, setParam, hasParam } from '@/utils/hashHandler.js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
 import $axios from '@/plugins/Axios'
+import config from '@/config'
 
 const {
   offlineReady,

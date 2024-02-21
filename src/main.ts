@@ -5,8 +5,9 @@ import { createPiniaPersist } from '@/plugins/PiniaPersist'
 import { createPiniaSync } from '@/plugins/PiniaSync'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:uno.css'
+import config from './config'
 
-const $apiBase = import.meta.env.PROD ? 'https://api.iszy.xyz' : import.meta.env.VITE_API_BASE_URL || 'https://api.iszy.xyz';
+const $apiBase = import.meta.env.PROD ? config.apiOrigin : (import.meta.env.VITE_API_BASE_URL || config.apiOrigin);
 
 (async () => {
   const pinia = createPinia()
@@ -19,7 +20,7 @@ const $apiBase = import.meta.env.PROD ? 'https://api.iszy.xyz' : import.meta.env
   axios.$apiBase = $apiBase
 
   const piniaPersistPlugin = await createPiniaPersist({
-    name: 'iszy_tools',
+    name: config.name,
     storeName: 'state',
     version: 3
   })
