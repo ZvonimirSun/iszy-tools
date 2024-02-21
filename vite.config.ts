@@ -106,7 +106,7 @@ export default defineConfig({
         runtimeCaching: [
           // api
           {
-            urlPattern: ({ url }) => url.origin === config.apiOrigin,
+            urlPattern: ({ url }) => url.origin === 'https://api.iszy.xyz',
             handler: 'NetworkFirst',
             options: {
               cacheName: `${config.key}-api`,
@@ -117,7 +117,7 @@ export default defineConfig({
           },
           // cdn
           {
-            urlPattern: ({ url }) => url.hostname.endsWith(config.cdnHost),
+            urlPattern: ({ url }) => url.hostname.endsWith('cdn.iszy.xyz'),
             handler: 'CacheFirst',
             options: {
               cacheName: `${config.key}-cdn`,
