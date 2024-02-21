@@ -1,1 +1,0 @@
-import{e as o,B as i,o as m,j as c}from"./index-kuawuClI.js";import{t as g}from"./index-0Glyiw05.js";var h=function(){return m(c(),["component"])},a=function(s,r){var t=r.slots,e=r.attrs,n=o(o({},s),{},{component:"div"},e);return g(i,n,t)};a.displayName="ATypographyParagraph";a.inheritAttrs=!1;a.props=h();const l=a;export{l as _};
