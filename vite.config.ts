@@ -105,7 +105,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.html'],
         cleanupOutdatedCaches: true,
-        navigateFallback: null,
+        navigateFallback: 'index.html',
         runtimeCaching: [
           // api
           {
