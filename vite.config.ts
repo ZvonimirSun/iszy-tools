@@ -100,10 +100,7 @@ export default defineConfig({
       },
       pwaAssets: {
         config: true,
-        overrideManifestIcons: true,
-        integration: {
-          outDir: 'dist/images'
-        }
+        overrideManifestIcons: true
       },
       workbox: {
         globPatterns: ['**/*.html'],
