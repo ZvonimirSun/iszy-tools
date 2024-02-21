@@ -112,6 +112,10 @@ async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormal
   }
   // 权限控制
   const isLogged = await useUserStore().checkToken()
+  if (_to.meta.offline === false && !navigator.onLine) {
+    next('/offline')
+    return
+  }
   if (whiteList.indexOf(_to.path) !== -1 || !_to.meta.requiresAuth) {
     goNext()
   } else if (!isLogged) {

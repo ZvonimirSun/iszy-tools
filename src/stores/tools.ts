@@ -23,6 +23,11 @@ const internalTools: ToolItem[] = [
     type: 'internal'
   },
   {
+    name: '已离线',
+    link: '/offline',
+    type: 'internal'
+  },
+  {
     name: '登录',
     link: '/login',
     type: 'internal'

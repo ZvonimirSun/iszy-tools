@@ -25,6 +25,7 @@ export type AuthOption = boolean | {
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string,
-    requiresAuth?: AuthOption
+    requiresAuth?: AuthOption,
+    offline?: boolean
   }
 }
