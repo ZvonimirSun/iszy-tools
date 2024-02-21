@@ -1,1 +1,1 @@
-fix(leafletMap): 修复Marker图标异常
+feat: 添加api缓存
