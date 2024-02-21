@@ -1,0 +1,1 @@
+import{c7 as n,av as l}from"./index-uqERcsTP.js";var g="Expected a function";function d(a,t,r){var e=!0,i=!0;if(typeof a!="function")throw new TypeError(g);return n(r)&&(e="leading"in r?!!r.leading:e,i="trailing"in r?!!r.trailing:i),l(a,t,{leading:e,maxWait:t,trailing:i})}export{d as t};

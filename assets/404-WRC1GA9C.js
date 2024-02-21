@@ -1,1 +1,0 @@
-import{h as e,I as o,o as c}from"./index-o_3zfK9D.js";import{E as n}from"./el-result-K0uWYUpO.js";const r={};function s(_,a){const t=n;return c(),o(t,{icon:"warning",title:"404","sub-title":"对不起，你访问的页面不存在。"})}const f=e(r,[["render",s]]);export{f as default};
