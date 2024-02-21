@@ -1,1 +1,0 @@
-import{bU as e,ca as f,ce as h,cf as t,i as g,a as m}from"./index-bhorRYI3.js";function x(n,s){return n!=null&&s in Object(n)}function I(n,s,u){s=e(s,n);for(var r=-1,a=s.length,i=!1;++r<a;){var l=f(s[r]);if(!(i=n!=null&&u(n,l)))break;n=n[l]}return i||++r!=a?i:(a=n==null?0:n.length,!!a&&h(a)&&t(l,a)&&(g(n)||m(n)))}function v(n,s){return n!=null&&I(n,s,x)}export{v as h};
