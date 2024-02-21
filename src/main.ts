@@ -28,7 +28,7 @@ const $apiBase = import.meta.env.PROD ? config.apiOrigin : (import.meta.env.VITE
   pinia.use(piniaPersistPlugin).use(piniaSyncPlugin)
   app.use(pinia)
 
-  const router = (await import('@/router')).default
+  const router = (await import('@/plugins/Router')).default
   app.use(router)
 
   app.mount('#app')

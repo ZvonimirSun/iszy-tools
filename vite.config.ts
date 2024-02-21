@@ -101,7 +101,13 @@ export default defineConfig({
         display: 'standalone'
       },
       workbox: {
-        globPatterns: ['**/*.html'],
+        globPatterns: [
+          '**/*.html',
+          '**/settings-*.{js,css}',
+          '**/offline-*.{js,css}',
+          '**/404-*.{js,css}',
+          '**/403-*.{js,css}'
+        ],
         navigateFallback: null,
         runtimeCaching: [
           // api

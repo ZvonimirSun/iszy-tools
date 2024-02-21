@@ -40,24 +40,23 @@ let routes: RouteRecordRaw[] = []
 // 加入所有工具路由
 for (const tool of toolsStore.toolItemsWithInternal) {
   if (!isExternalLink(tool.link)) {
-    const path = tool.link || ''
+    const {
+      name, link, ...meta
+    } = tool
+    const path = link || ''
     if (modules[path]) {
       if (tool.type !== 'internal') {
         modules[path] = merge(modules[path], {
-          name: tool.name,
+          name,
           meta: {
-            statistics: tool.statistics !== false,
-            layout: tool.layout,
-            type: 'tool',
-            requiresAuth: tool.requiresAuth
+            ...meta,
+            type: 'tool'
           }
         })
       } else {
         modules[path] = merge(modules[path], {
-          name: tool.name,
-          meta: {
-            requiresAuth: tool.requiresAuth
-          }
+          name,
+          meta
         })
       }
       routes.push(modules[path])
@@ -132,7 +131,7 @@ async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormal
 
   function goNext () {
     document.title = getPageTitle(_to.meta.title || _to.name?.toString())
-    if (_to.name && _to.meta.statistics) {
+    if (_to.name && _to.meta.statistics !== false) {
       let name:string
       if (typeof _to.name === 'string') {
         name = _to.name
