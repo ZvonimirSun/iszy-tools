@@ -61,7 +61,7 @@ Icon.Default.prototype.options.shadowUrl = markerShadow
 
 const defaultIcon = new Icon.Default()
 const yellowIcon = new Icon({
-  ...Icon.prototype.options,
+  ...Icon.Default.prototype.options,
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png',
   iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png'
 })

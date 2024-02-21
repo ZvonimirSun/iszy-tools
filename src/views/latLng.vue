@@ -28,21 +28,17 @@ import { map, control, layerGroup, marker, Icon } from 'leaflet'
 import { chineseLayer, ChineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
+Icon.Default.prototype.options.shadowUrl = markerShadow
+
 const greenIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-green.png',
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  ...Icon.Default.prototype.options,
+  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-green.png',
+  iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-green.png'
 })
 const yellowIcon = new Icon({
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  ...Icon.Default.prototype.options,
+  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png',
+  iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png'
 })
 
 export default {
