@@ -32,7 +32,31 @@ export default defineConfig({
       inject: {
         data: {
           ...config
-        }
+        },
+        tags: [
+          {
+            injectTo: 'head',
+            tag: 'title',
+            children: config.zhName
+          },
+          {
+            injectTo: 'head',
+            tag: 'meta',
+            attrs: {
+              name: 'baidu-site-verification',
+              content: 'code-tvQG0Qro0b'
+            }
+          },
+          {
+            injectTo: 'head',
+            tag: 'link',
+            attrs: {
+              rel: 'preconnect',
+              href: `https://jsdelivr.${config.cdnHost}`,
+              crossorigin: 'anonymous'
+            }
+          }
+        ]
       }
     }),
     AutoImport({
@@ -65,43 +89,25 @@ export default defineConfig({
       ]
     }),
     VitePWA({
-      scope: '/',
+      base: '/',
+      strategies: 'generateSW',
+      registerType: 'prompt',
       manifest: {
         id: config.name,
         name: config.zhName,
         short_name: config.alias,
-        icons: [
-          {
-            src: '/images/android-chrome-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: '/images/android-chrome-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            purpose: 'maskable'
-          },
-          {
-            src: '/images/android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: '/images/android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable'
-          }
-        ],
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
-        display: 'standalone'
+        theme_color: '#ffffff'
+      },
+      pwaAssets: {
+        config: true,
+        overrideManifestIcons: true,
+        integration: {
+          outDir: 'dist/images'
+        }
       },
       workbox: {
         globPatterns: ['**/*.html'],
+        cleanupOutdatedCaches: true,
         navigateFallback: null,
         runtimeCaching: [
           // api
