@@ -14,7 +14,7 @@ import { Home, Offline, Page404, Page403, Redirect } from '@/pages'
 
 const toolsStore = useToolsStore()
 
-const vueFiles = import.meta.glob('../views/**/*.vue') as Record<string, () => Promise<DefineComponent>>
+const vueFiles = import.meta.glob('../tools/**/*.vue') as Record<string, () => Promise<DefineComponent>>
 
 const modules: Record<string, {
   path: string,

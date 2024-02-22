@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import axios from '@/plugins/Axios'
 import { getNewMockData, selectedProject, setProject, deleteData, editData, createData, mockData } from './mockData.service'
-import type { MockData } from '@/views/mock/child/mock'
+import type { MockData } from './mock'
 import type { Column } from 'element-plus'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 
