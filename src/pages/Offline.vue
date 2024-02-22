@@ -2,7 +2,7 @@
   <el-result
     icon="warning"
     title="离线不可用"
-    sub-title="当前页面需要网络连接~"
+    sub-title="当前页面未缓存完成或需要网络连接~"
   >
     <template #extra>
       <el-button

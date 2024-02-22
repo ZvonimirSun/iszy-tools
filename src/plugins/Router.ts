@@ -10,6 +10,7 @@ import { merge } from 'lodash-es'
 import type { DefineComponent } from 'vue'
 import { isExternalLink } from '@/utils/common'
 import config from '@/config'
+import { Home, Offline, Page404, Page403, Redirect } from '@/pages'
 
 const toolsStore = useToolsStore()
 
@@ -31,7 +32,15 @@ for (const key in vueFiles) {
       const tmp1 = tmpKey.split('/')
       path += tmp1[tmp1.length - 1]
     }
-    modules[path] = { path, component: vueFiles[key] }
+    modules[path] = {
+      path,
+      component: () => defineAsyncComponent({
+        loader: vueFiles[key],
+        delay: 200,
+        timeout: 3000,
+        errorComponent: Offline
+      })
+    }
   }
 }
 
@@ -66,6 +75,31 @@ for (const tool of toolsStore.toolItemsWithInternal) {
 
 // 加入固定页面路由
 routes = routes.concat([
+  {
+    path: '/',
+    name: '首页',
+    component: Home
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: Page404
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: Page403
+  },
+  {
+    path: '/redirect',
+    name: '重定向',
+    component: Redirect
+  },
+  {
+    path: '/offline',
+    name: '离线',
+    component: Offline
+  },
   {
     path: '/logout',
     name: '登出'

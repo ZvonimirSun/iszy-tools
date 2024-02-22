@@ -8,33 +8,8 @@ import type { AuthOption } from '@/types/auth'
 
 const internalTools: ToolItem[] = [
   {
-    name: '首页',
-    link: '/',
-    type: 'internal'
-  },
-  {
-    name: '403',
-    link: '/403',
-    type: 'internal'
-  },
-  {
-    name: '404',
-    link: '/404',
-    type: 'internal'
-  },
-  {
-    name: '已离线',
-    link: '/offline',
-    type: 'internal'
-  },
-  {
     name: '登录',
     link: '/login',
-    type: 'internal'
-  },
-  {
-    name: '重定向',
-    link: '/redirect',
     type: 'internal'
   },
   {
