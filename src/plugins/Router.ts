@@ -32,15 +32,7 @@ for (const key in vueFiles) {
       const tmp1 = tmpKey.split('/')
       path += tmp1[tmp1.length - 1]
     }
-    modules[path] = {
-      path,
-      component: () => defineAsyncComponent({
-        loader: vueFiles[key],
-        delay: 200,
-        timeout: 3000,
-        errorComponent: Offline
-      })
-    }
+    modules[path] = { path, component: vueFiles[key] }
   }
 }
 
