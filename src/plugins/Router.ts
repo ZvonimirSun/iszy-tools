@@ -149,16 +149,18 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   }
 })
 
-router.afterEach((to) => {
-  document.title = getPageTitle(to.meta.title || to.name?.toString())
-  if (to.name && to.meta.type === 'tool') {
-    let name: string
-    if (typeof to.name === 'string') {
-      name = to.name
-    } else {
-      name = to.name.toString()
+router.afterEach((to, from, failure) => {
+  if (!failure) {
+    document.title = getPageTitle(to.meta.title || to.name?.toString())
+    if (to.name && to.meta.type === 'tool') {
+      let name: string
+      if (typeof to.name === 'string') {
+        name = to.name
+      } else {
+        name = to.name.toString()
+      }
+      toolsStore.access({ name, link: to.path })
     }
-    toolsStore.access({ name, link: to.path })
   }
 
   function getPageTitle (pageTitle?: string) {
