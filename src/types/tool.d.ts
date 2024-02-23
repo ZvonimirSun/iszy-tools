@@ -4,7 +4,7 @@ interface ToolMeta {
   tags?: string[],
   statistics?: boolean,
   layout?: string,
-  type?: string,
+  type?: 'tool' | 'internal',
   requiresAuth?: AuthOption,
   offline?: boolean
 }

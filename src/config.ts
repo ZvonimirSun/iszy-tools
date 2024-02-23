@@ -1,4 +1,27 @@
-const config = {
+const config: {
+  readonly name: string,
+  readonly alias: string,
+  readonly zhName: string,
+
+  readonly key: string,
+
+  readonly domain: string,
+  readonly site: string,
+  readonly api: string,
+  readonly cdn: string,
+
+  readonly schema: string,
+
+  readonly whiteList: string[],
+
+  readonly siteHost: string,
+  readonly apiHost: string,
+  readonly cdnHost: string,
+
+  readonly siteOrigin: string,
+  readonly apiOrigin: string,
+  readonly cdnOrigin: string,
+} = {
   name: 'iszy_tools',
   alias: 'ISZY TOOLS',
   zhName: 'ISZY工具集合',
@@ -11,6 +34,8 @@ const config = {
   cdn: 'cdn',
 
   schema: 'https',
+
+  whiteList: ['/login', '/logout'],
 
   get siteHost () {
     return `${this.site}.${this.domain}`
@@ -31,6 +56,6 @@ const config = {
   get cdnOrigin () {
     return `${this.schema}://${this.cdnHost}`
   }
-} as const
+}
 
 export default config

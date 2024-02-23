@@ -3,36 +3,37 @@ import {
   createWebHistory,
   NavigationGuardNext,
   RouteLocationNormalized,
+  RouteLocationRaw,
   RouteRecordRaw,
-  RouterOptions
+  RouterView
 } from 'vue-router'
-import { merge } from 'lodash-es'
 import type { DefineComponent } from 'vue'
 import { isExternalLink } from '@/utils/common'
 import config from '@/config'
 import { Home, Offline, Page404, Page403, Redirect } from '@/pages'
 
 const toolsStore = useToolsStore()
+const userStore = useUserStore()
 
-const vueFiles = import.meta.glob('../tools/**/*.vue') as Record<string, () => Promise<DefineComponent>>
+const vueFiles = import.meta.glob(['@/tools/**/*.vue', '!@/tools/**/child/**/*']) as Record<string, () => Promise<DefineComponent>>
 
-const modules: Record<string, {
-  path: string,
-  component: () => Promise<DefineComponent> | DefineComponent
-}> = {}
+const routeMap: Record<string, RouteRecordRaw> = {}
 
 for (const key in vueFiles) {
-  if (!key.includes('/child/')) {
-    let tmpKey = key.slice(8, -4)
-    let path = '/'
-    if (tmpKey.endsWith('index')) {
-      tmpKey = tmpKey.slice(0, -6)
-    }
-    if (tmpKey) {
-      const tmp1 = tmpKey.split('/')
-      path += tmp1[tmp1.length - 1]
-    }
-    modules[path] = { path, component: vueFiles[key] }
+  let tmpKey = key.slice(11, -4)
+  if (tmpKey.endsWith('index')) {
+    tmpKey = tmpKey.slice(0, -6)
+  }
+
+  let path = '/'
+  if (tmpKey) {
+    const tmp1 = tmpKey.split('/')
+    path += tmp1[tmp1.length - 1]
+  }
+
+  routeMap[path] = {
+    path,
+    component: vueFiles[key]
   }
 }
 
@@ -45,28 +46,18 @@ for (const tool of toolsStore.toolItemsWithInternal) {
       name, link, ...meta
     } = tool
     const path = link || ''
-    if (modules[path]) {
+    if (routeMap[path]) {
       if (tool.type !== 'internal') {
-        modules[path] = merge(modules[path], {
-          name,
-          meta: {
-            ...meta,
-            type: 'tool'
-          }
-        })
-      } else {
-        modules[path] = merge(modules[path], {
-          name,
-          meta
-        })
+        meta.type = 'tool'
       }
-      routes.push(modules[path])
+      routeMap[path].name = name
+      routeMap[path].meta = meta
+      routes.push(routeMap[path])
     }
   }
 }
 
-// 加入固定页面路由
-routes = routes.concat([
+const internalRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: '首页',
@@ -94,16 +85,23 @@ routes = routes.concat([
   },
   {
     path: '/logout',
-    name: '登出'
+    name: '登出',
+    component: () => h(RouterView),
+    beforeEnter: (to, from, next) => {
+      userStore.logout().then(() => next(from))
+    }
   },
   {
     path: '/:any(.*)/:catchAll(.*)',
     name: 'redirect',
-    beforeEnter (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+    redirect: (to): RouteLocationRaw => {
       if (to?.params?.catchAll) {
-        next(to.params.catchAll as string)
+        return {
+          path: '/' + to.params.catchAll,
+          query: to.query
+        }
       } else {
-        next('/404')
+        return '/404'
       }
     }
   },
@@ -111,74 +109,64 @@ routes = routes.concat([
     path: '/:catchAll(.*)',
     redirect: '/404'
   }
-] as RouteRecordRaw[])
+]
 
-const options: RouterOptions = {
+// 加入固定页面路由
+routes = routes.concat(internalRoutes)
+
+const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
-}
+})
 
-const router = createRouter(options)
-
-// 路由白名单
-const whiteList = ['/login', '/logout']
-
-router.beforeEach(checkAuth)
-
-async function checkAuth (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
-  let _to = to
-  let redirected = false
-  if (to.path === '/logout') {
-    redirected = true
-    _to = from
-    if (navigator.onLine) {
-      await useUserStore().logout()
-    }
-  }
-  // 权限控制
-  const isLogged = await useUserStore().checkToken()
-  if (_to.meta.offline === false && !navigator.onLine) {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  userStore.checkToken().then()
+  // 在线应用离线直接跳转
+  if (to.meta.offline === false && !navigator.onLine) {
     next('/offline')
     return
   }
-  if (whiteList.indexOf(_to.path) !== -1 || !_to.meta.requiresAuth) {
-    goNext()
-  } else if (!isLogged) {
-    // other pages that do not have permission to access are redirected to the login page.
-    next(`/login?redirect=${_to.path}`)
+  // 白名单或无需权限直接跳过
+  if (config.whiteList.includes(to.path) || !to.meta.requiresAuth) {
+    next()
+    return
+  }
+  // 权限控制
+  const isLogged = await userStore.checkToken()
+  if (!isLogged) {
+    // 未登录跳转
+    next(`/login?redirect=${to.path}`)
   } else {
-    const haveAccess = useUserStore().checkAccess(_to.meta.requiresAuth)
+    // 检查权限
+    const haveAccess = userStore.checkAccess(to.meta.requiresAuth)
     if (haveAccess) {
-      goNext()
+      // 有权限
+      next()
     } else {
+      // 没有权限
       next('/403')
     }
   }
+})
 
-  function goNext () {
-    document.title = getPageTitle(_to.meta.title || _to.name?.toString())
-    if (_to.name && _to.meta.statistics !== false) {
-      let name:string
-      if (typeof _to.name === 'string') {
-        name = _to.name
-      } else {
-        name = _to.name.toString()
-      }
-      toolsStore.access({ name, link: _to.path })
-    }
-    if (redirected) {
-      next(_to.path)
+router.afterEach((to) => {
+  document.title = getPageTitle(to.meta.title || to.name?.toString())
+  if (to.name && to.meta.type === 'tool') {
+    let name: string
+    if (typeof to.name === 'string') {
+      name = to.name
     } else {
-      next()
+      name = to.name.toString()
     }
+    toolsStore.access({ name, link: to.path })
   }
-}
 
-function getPageTitle (pageTitle: string | undefined | null) {
-  if (pageTitle && pageTitle !== config.zhName) {
-    return `${pageTitle} - ${config.zhName}`
+  function getPageTitle (pageTitle?: string) {
+    if (pageTitle && pageTitle !== config.zhName) {
+      return `${pageTitle} - ${config.zhName}`
+    }
+    return config.zhName
   }
-  return config.zhName
-}
+})
 
 export default router

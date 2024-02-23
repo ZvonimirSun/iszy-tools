@@ -102,11 +102,17 @@ export const useUserStore = defineStore('user', {
         } else {
           if (!checkTokenPromise) {
             checkTokenPromise = axios.get(`${axios.$apiBase}/auth/profile`)
+            checkTokenPromise.then((res) => {
+              console.log('已登录')
+              const data = res.data
+              if (data && data.success) {
+                this.profile = data.data || clone(emptyProfile)
+              }
+            })
           }
           try {
             const data = (await checkTokenPromise).data
             if (data && data.success) {
-              this.profile = data.data || clone(emptyProfile)
               tokenChecked = true
               return true
             } else {
