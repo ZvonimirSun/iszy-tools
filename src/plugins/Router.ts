@@ -87,7 +87,7 @@ const internalRoutes: RouteRecordRaw[] = [
     path: '/logout',
     name: '登出',
     component: () => h(RouterView),
-    beforeEnter: (to, from, next) => {
+    beforeEnter: (_, from, next) => {
       userStore.logout().then(() => next(from))
     }
   },
@@ -119,7 +119,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized, next: NavigationGuardNext) => {
   userStore.checkToken().then()
   // 在线应用离线直接跳转
   if (to.meta.offline === false && !navigator.onLine) {
@@ -149,7 +149,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   }
 })
 
-router.afterEach((to, from, failure) => {
+router.afterEach((to, _, failure) => {
   if (!failure) {
     document.title = getPageTitle(to.meta.title || to.name?.toString())
     if (to.name && to.meta.type === 'tool') {

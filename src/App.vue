@@ -61,6 +61,8 @@
           <div
             v-if="route.meta?.type !== 'tool'"
             class="container"
+            w-full
+            h-full
           >
             <router-view />
           </div>

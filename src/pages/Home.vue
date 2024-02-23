@@ -1,83 +1,85 @@
 <template>
-  <el-row
-    v-if="settings.showSearch"
-    :gutter="8"
-  >
-    <el-col>
-      <div class="search-wrapper">
-        <span class="i-icon-park-outline-search" />
-        <el-input
-          v-model="searchStr"
-          placeholder="搜索工具"
-        />
-      </div>
-    </el-col>
-  </el-row>
-  <template
-    v-for="(item, index) in toolMenus"
-    :key="item.id"
-  >
+  <div class="home-page">
     <el-row
-      :gutter="16"
-      :style="{
-        padding: '0 .8rem .4rem',
-        marginTop: index === 0 && settings.showSearch ? '3.3rem' : '2.5rem'
-      }"
+      v-if="settings.showSearch"
+      :gutter="8"
     >
-      <el-col
-        :span="24"
-        class="typeNameCol"
-      >
-        <div class="typeName">
-          <span
-            v-if="item.icon"
-            :class="item.icon"
+      <el-col>
+        <div class="search-wrapper">
+          <span class="i-icon-park-outline-search" />
+          <el-input
+            v-model="searchStr"
+            placeholder="搜索工具"
           />
-          <div>{{ item.type }}</div>
         </div>
       </el-col>
-      <el-col
-        v-for="(tool) in item.children"
-        :key="tool.id"
-        :xs="12"
-        :sm="8"
-        :md="6"
-        :lg="4"
-        :xl="3"
-      >
-        <router-link
-          :target="(settings.openInNewTab || isExternalLink(tool.link)) ? '_blank' : ''"
-          :to="isExternalLink(tool.link) ? ('/redirect?url='+tool.link) : (tool.link||'')"
-        >
-          <el-tooltip
-            placement="top"
-            :show-after="200"
-            :content="tool.name"
-          >
-            <div
-              class="tool"
-              :class="{toolCollected:isFav(tool.name)}"
-            >
-              <span class="toolName">{{ tool.name }}</span>
-              <span
-                v-if="isFav(tool.name)"
-                class="fav collected"
-                @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:false})"
-              ><span class="i-icon-park-solid-star" /></span>
-              <span
-                v-else
-                class="fav"
-                @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})"
-              >
-                <span class="nonHover"><span class="i-icon-park-outline-star" /></span>
-                <span class="hovered"><span class="i-icon-park-solid-star" /></span>
-              </span>
-            </div>
-          </el-tooltip>
-        </router-link>
-      </el-col>
     </el-row>
-  </template>
+    <template
+      v-for="(item, index) in toolMenus"
+      :key="item.id"
+    >
+      <el-row
+        :gutter="16"
+        :style="{
+          padding: '0 .8rem .4rem',
+          marginTop: index === 0 && settings.showSearch ? '3.3rem' : '2.5rem'
+        }"
+      >
+        <el-col
+          :span="24"
+          class="typeNameCol"
+        >
+          <div class="typeName">
+            <span
+              v-if="item.icon"
+              :class="item.icon"
+            />
+            <div>{{ item.type }}</div>
+          </div>
+        </el-col>
+        <el-col
+          v-for="(tool) in item.children"
+          :key="tool.id"
+          :xs="12"
+          :sm="8"
+          :md="6"
+          :lg="4"
+          :xl="3"
+        >
+          <router-link
+            :target="(settings.openInNewTab || isExternalLink(tool.link)) ? '_blank' : ''"
+            :to="isExternalLink(tool.link) ? ('/redirect?url='+tool.link) : (tool.link||'')"
+          >
+            <el-tooltip
+              placement="top"
+              :show-after="200"
+              :content="tool.name"
+            >
+              <div
+                class="tool"
+                :class="{toolCollected:isFav(tool.name)}"
+              >
+                <span class="toolName">{{ tool.name }}</span>
+                <span
+                  v-if="isFav(tool.name)"
+                  class="fav collected"
+                  @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:false})"
+                ><span class="i-icon-park-solid-star" /></span>
+                <span
+                  v-else
+                  class="fav"
+                  @click.prevent="updateFav({name:tool.name,link:tool.link||'',add:true})"
+                >
+                  <span class="nonHover"><span class="i-icon-park-outline-star" /></span>
+                  <span class="hovered"><span class="i-icon-park-solid-star" /></span>
+                </span>
+              </div>
+            </el-tooltip>
+          </router-link>
+        </el-col>
+      </el-row>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -102,6 +104,13 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.home-page {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 1.6rem;
+}
+
 .search-wrapper {
   display: inline-flex;
   width: 100%;
