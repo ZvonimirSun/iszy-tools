@@ -135,8 +135,8 @@ dependencies:
     specifier: ^0.3.3
     version: 0.3.3
   relationship.js:
-    specifier: ^1.2.4
-    version: 1.2.4
+    specifier: ^1.2.5
+    version: 1.2.5
   three:
     specifier: ^0.161.0
     version: 0.161.0
@@ -153,8 +153,8 @@ dependencies:
     specifier: ^3.4.19
     version: 3.4.19(typescript@5.3.3)
   vue-router:
-    specifier: ^4.2.5
-    version: 4.2.5(vue@3.4.19)
+    specifier: ^4.3.0
+    version: 4.3.0(vue@3.4.19)
   xml-formatter:
     specifier: ^3.6.2
     version: 3.6.2
@@ -9691,8 +9691,8 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
-  /relationship.js@1.2.4:
-    resolution: {integrity: sha512-6HTLFGBz4a1PZxPMIg3gPZ8SNak3zAK6UDZytjtyfkCeBXBf+eCymLbfgJieJtLbzUmLCxIm4xdYYQ/FxZxqTw==}
+  /relationship.js@1.2.5:
+    resolution: {integrity: sha512-obM3+ODlujyEwRdaBxVWVL42ctQlPOlZ8a5vdawLuJWkqT6A6Hx7mEpMbpx4AOmFX8SC+ENG4p/IfUkDIB1rPw==}
     dev: false
 
   /require-directory@2.1.1:
@@ -11355,8 +11355,8 @@ packages:
       - supports-color
     dev: true
 
-  /vue-router@4.2.5(vue@3.4.19):
-    resolution: {integrity: sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw==}
+  /vue-router@4.3.0(vue@3.4.19):
+    resolution: {integrity: sha512-dqUcs8tUeG+ssgWhcPbjHvazML16Oga5w34uCUmsk7i0BcnskoLGwjpa15fqMr2Fa5JgVBrdL2MEgqz6XZ/6IQ==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:

@@ -59,13 +59,13 @@
     "pinia": "^2.1.7",
     "qrcode": "^1.5.3",
     "qrcode-decoder": "^0.3.3",
-    "relationship.js": "^1.2.4",
+    "relationship.js": "^1.2.5",
     "three": "^0.161.0",
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
     "vanilla-jsoneditor": "^0.21.6",
     "vue": "^3.4.19",
-    "vue-router": "^4.2.5",
+    "vue-router": "^4.3.0",
     "xml-formatter": "^3.6.2"
   },
   "devDependencies": {
