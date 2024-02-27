@@ -1,5 +1,0 @@
-export { default as Page403 } from './403.vue'
-export { default as Page404 } from './404.vue'
-export { default as Home } from './Home.vue'
-export { default as Offline } from './Offline.vue'
-export { default as Redirect } from './Redirect.vue'
