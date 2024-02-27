@@ -10,7 +10,7 @@ import {
 import type { DefineComponent } from 'vue'
 import { isExternalLink } from '@/utils/common'
 import config from '@/config'
-import { Home, Offline, Page404, Page403, Redirect } from '@/pages'
+import { Home, Offline, Page403, Page404, Redirect } from '@/pages'
 
 const toolsStore = useToolsStore()
 const userStore = useUserStore()

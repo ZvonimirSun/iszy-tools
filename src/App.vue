@@ -8,7 +8,7 @@
           type="primary"
           class="dark-mode-trigger"
           circle
-          @click="useStyleStore().toggleTheme"
+          @click="useGlobalStore().toggleTheme"
         >
           <i
             class="dark:i-icon-park-outline-moon i-icon-park-outline-sun-one"
@@ -104,6 +104,7 @@ import { useRegisterSW } from 'virtual:pwa-register/vue'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
 import $axios from '@/plugins/Axios'
 import config from '@/config'
+import { useGlobalStore } from '@/stores/global'
 
 const {
   offlineReady,

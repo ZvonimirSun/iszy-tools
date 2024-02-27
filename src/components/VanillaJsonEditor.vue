@@ -151,7 +151,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => useStyleStore().isDark,
+  () => useGlobalStore().isDark,
   () => {
     jsonEditor?.refresh()
   }
@@ -422,7 +422,7 @@ function _pickDefinedProps (object: Record<string, any>, propNames: string[]) {
       ref="jsonEditorDiv"
       class="json-editor"
       :class="{
-        'jse-theme-dark': useStyleStore().isDark
+        'jse-theme-dark': useGlobalStore().isDark
       }"
     />
     <input

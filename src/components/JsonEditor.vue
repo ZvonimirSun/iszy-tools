@@ -2,7 +2,7 @@
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import JsonEditorVue from 'json-editor-vue'
 
-const isDark = useStyleStore().isDark
+const isDark = useGlobalStore().isDark
 </script>
 
 <template>

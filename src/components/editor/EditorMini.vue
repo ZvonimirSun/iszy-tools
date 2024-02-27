@@ -32,8 +32,8 @@ const extensions = [
   mini.extensions,
   props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
   EditorView.updateListener.of(onChange),
-  themeCompartment.of(useStyleStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-  highLightCompartment.of(useStyleStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
+  themeCompartment.of(useGlobalStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
+  highLightCompartment.of(useGlobalStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle))
 ]
 if (props.placeholder) {
   extensions.push(PlaceHolder(props.placeholder))
@@ -56,7 +56,7 @@ onUnmounted(() => {
   cm?.destroy()
 })
 
-watch(() => useStyleStore().isDark, (val) => {
+watch(() => useGlobalStore().isDark, (val) => {
   cm.dispatch({
     effects: [
       themeCompartment.reconfigure(val ? oneDarkTheme : EditorView.theme({}, { dark: false })),

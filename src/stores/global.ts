@@ -1,12 +1,8 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-
 const isDark = useDark()
-const toggleDark = useToggle(isDark)
 
-export const useStyleStore = defineStore('style', {
+export const useGlobalStore = defineStore('global', {
   state: () => ({
-    isDark,
-    toggleDark
+    isDark
   }),
   actions: {
     setTheme (value?: 'dark' | 'light' | 'auto') {
@@ -48,9 +44,9 @@ export const useStyleStore = defineStore('style', {
 })
 
 watch(isDark, function () {
-  useStyleStore().setTheme()
+  useGlobalStore().setTheme()
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useStyleStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useGlobalStore, import.meta.hot))
 }

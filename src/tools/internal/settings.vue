@@ -255,7 +255,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
-const styleStore = useStyleStore()
+const styleStore = useGlobalStore()
 const userStore = useUserStore()
 const settingStore = useSettingStore()
 
