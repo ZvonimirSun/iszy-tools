@@ -215,7 +215,7 @@ export default {
       return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
     },
     bestScore: function () {
-      return useUserStore().modules.tetris.bestScore
+      return useSettingStore().modules.tetris.bestScore
     }
   },
   mounted () {

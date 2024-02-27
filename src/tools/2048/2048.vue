@@ -74,7 +74,7 @@ export default {
       return use2048Store().gameState
     },
     bestScore () {
-      return useUserStore().modules['2048'].bestScore
+      return useSettingStore().modules['2048'].bestScore
     }
   },
   mounted () {
