@@ -93,8 +93,8 @@ export default {
 
 <style scoped lang="scss">
 @use "sass:math";
-@import "./style/helpers";
-@import "./style/clear-sans";
+@use "./style/helpers" as *;
+@use "./style/clear-sans" as *;
 
 :deep(.panel) {
 
