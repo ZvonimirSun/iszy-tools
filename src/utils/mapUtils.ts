@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 
 import $axios from '@/plugins/Axios'
-import { map, Map, Icon, MapOptions, control, layerGroup, ControlPosition, TileLayer, LatLng } from 'leaflet'
+import { map, Map, Icon, MapOptions, control, layerGroup, ControlPosition, TileLayer, LatLng, Control } from 'leaflet'
 import { ChineseLayer, chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
@@ -25,9 +25,6 @@ interface InitMapOptions {
   }
 }
 
-const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
-const gaodeToken = '868d6830a7409520ae283cde3a3f84d1'
-
 interface ChineseLayerOptions {
   type: string,
   chinese: true,
@@ -50,11 +47,31 @@ const defaultMapOptions: MapOptions = {
   trackResize: true
 }
 
-function initMap (options: InitMapOptions) {
+const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
+const gaodeToken = '868d6830a7409520ae283cde3a3f84d1'
+
+const persistMap = new WeakMap<Map, {
+  controls: {
+    layers?: Control.Layers,
+    zoom?: Control.Zoom,
+    scale?: Control.Scale
+  }
+}>()
+
+function createMap (options: InitMapOptions) {
   const map = getMap(options.dom, options.options)
   map.setView(options.view.center, options.view.zoom)
+  const controlMap: {
+    layers?: Control.Layers,
+    zoom?: Control.Zoom,
+    scale?: Control.Scale
+  } = {
+  }
+  persistMap.set(map, {
+    controls: controlMap
+  })
   if (options.controls?.layers) {
-    control.layers({
+    controlMap.layers = control.layers({
       高德矢量: getLayer({
         type: 'GaoDe.Normal.Map',
         chinese: true,
@@ -141,13 +158,13 @@ function initMap (options: InitMapOptions) {
     }).addTo(map)
   }
   if (options.controls?.scale !== false) {
-    control.scale({
+    controlMap.scale = control.scale({
       imperial: false,
       position: typeof options.controls?.scale === 'string' ? options.controls.scale : 'bottomright'
     }).addTo(map)
   }
   if (options.controls?.zoom !== false) {
-    control.zoom({
+    controlMap.zoom = control.zoom({
       zoomInTitle: '放大',
       zoomOutTitle: '缩小',
       position: typeof options.controls?.zoom === 'string' ? options.controls.zoom : 'topright'
@@ -287,6 +304,10 @@ async function getAddress (location: LatLng): Promise<string> {
   }
 }
 
+function getMapStatus (map: Map) {
+  return persistMap.get(map)
+}
+
 const utils = {
   formatDegree,
   getAddress,
@@ -296,7 +317,8 @@ const utils = {
 export {
   tdtToken,
   gaodeToken,
-  initMap,
+  createMap,
   addLayer,
+  getMapStatus,
   utils
 }

@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { marker, Icon, Map, Marker, LatLng, Popup } from 'leaflet'
-import { initMap, utils } from '@/utils/mapUtils'
+import { createMap, utils } from '@/utils/mapUtils'
 import { Ref } from 'vue'
 
 const yellowIcon = new Icon({
@@ -41,7 +41,7 @@ const keyword = ref('')
 const mapContainer = ref<HTMLDivElement>() as Ref<HTMLDivElement>
 
 onMounted(() => {
-  map = initMap({
+  map = createMap({
     dom: mapContainer.value,
     view: {
       center: [35, 105],
