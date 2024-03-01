@@ -1,1 +1,3 @@
-feat(fonts): 字体文件抽取到全局，相对路径无法处理
+feat(leafletMap): 使用通用组件
+feat(mapUtils): 维护map内部状态
+feat(mapUtils): 抽取地图通用方法
