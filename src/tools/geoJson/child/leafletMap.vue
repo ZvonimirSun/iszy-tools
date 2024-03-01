@@ -33,11 +33,7 @@
 
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
-import { chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import {
-  map,
-  control,
-  layerGroup,
   geoJSON,
   marker,
   Icon,
@@ -47,17 +43,11 @@ import {
   Control,
   Layer
 } from 'leaflet'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import $eventBus from '@/plugins/EventBus'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 import type { GeoJsonObject, Feature } from 'geojson'
-
-Icon.Default.prototype.options.iconUrl = markerIcon
-Icon.Default.prototype.options.iconRetinaUrl = markerIcon2x
-Icon.Default.prototype.options.shadowUrl = markerShadow
+import { createMap, getMapStatus } from '@/utils/mapUtils'
 
 const defaultIcon = new Icon.Default()
 const yellowIcon = new Icon({
@@ -65,7 +55,6 @@ const yellowIcon = new Icon({
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png',
   iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png'
 })
-const tdtToken = 'bed806b1ccb34b268ab1c0700123d444'
 
 let geoJsonLayer: GeoJSON, _map: Map, layerControl: Control.Layers
 
@@ -100,14 +89,16 @@ function initMap () {
     return
   }
   // 初始化地图
-  _map = map(mapContainer.value, {
-    attributionControl: true,
-    zoomControl: false,
-    minZoom: 4,
-    trackResize: true
+  _map = createMap({
+    dom: mapContainer.value,
+    view: {
+      center: [35, 105],
+      zoom: 4
+    },
+    controls: {
+      layers: true
+    }
   })
-  _map.setView([35, 105], 4)
-
   // 添加GeoJson图层
   geoJsonLayer = geoJSON(undefined, {
     onEachFeature,
@@ -116,107 +107,8 @@ function initMap () {
     }
   }).addTo(_map)
   // 添加底图、图层控制
-  layerControl = control.layers(
-    {
-      高德矢量: chineseLayer('GaoDe.Normal.Map', {
-        maxNativeZoom: 18,
-        maxZoom: 20,
-        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
-      }).addTo(_map),
-      高德影像: layerGroup([
-        chineseLayer('GaoDe.Satellite.Map', {
-          maxNativeZoom: 18,
-          maxZoom: 20
-        }),
-        chineseLayer('GaoDe.Satellite.Annotation', {
-          maxNativeZoom: 18,
-          maxZoom: 20
-        })
-      ], {
-        attribution: '&copy; <a href="https://lbs.amap.com/pages/terms/" target="_blank">高德地图</a> 贡献者'
-      }),
-      谷歌矢量: layerGroup([
-        chineseLayer('Google.Normal.Map', {
-          maxZoom: 20
-        })
-      ], {
-        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
-      }),
-      谷歌影像: layerGroup([
-        chineseLayer('Google.Satellite.Map', {
-          maxZoom: 20
-        }),
-        chineseLayer('Google.Satellite.Annotation', {
-          maxZoom: 20
-        })
-      ], {
-        attribution: '&copy; <a href="https://www.google.com/maps" target="_blank">谷歌地图</a> 贡献者'
-      }),
-      OpenStreetMap: chineseLayer('OSM.Normal.Map', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 贡献者',
-        maxNativeZoom: 19,
-        maxZoom: 20
-      }),
-      天地图矢量: layerGroup([
-        chineseLayer('TianDiTu.Normal.Map', {
-          key: tdtToken,
-          maxNativeZoom: 18,
-          maxZoom: 20
-        }),
-        chineseLayer('TianDiTu.Normal.Annotation', {
-          key: tdtToken,
-          maxNativeZoom: 18,
-          maxZoom: 20
-        })
-      ], {
-        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-      }),
-      天地图影像: layerGroup([
-        chineseLayer('TianDiTu.Satellite.Map', {
-          key: tdtToken,
-          maxNativeZoom: 18,
-          maxZoom: 20
-        }),
-        chineseLayer('TianDiTu.Satellite.Annotation', {
-          key: tdtToken,
-          maxNativeZoom: 18,
-          maxZoom: 20
-        })
-      ], {
-        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-      }),
-      天地图地形: layerGroup([
-        chineseLayer('TianDiTu.Terrain.Map', {
-          key: tdtToken,
-          maxNativeZoom: 14,
-          maxZoom: 20
-        }),
-        chineseLayer('TianDiTu.Terrain.Annotation', {
-          key: tdtToken,
-          maxNativeZoom: 14,
-          maxZoom: 20
-        })
-      ], {
-        attribution: '&copy; <a href="https://www.tianditu.gov.cn/" target="_blank">天地图</a> 贡献者'
-      })
-    },
-    {
-      图形: geoJsonLayer
-    },
-    {
-      hideSingleBase: true,
-      position: 'bottomleft'
-    }
-  ).addTo(_map)
-  control.scale({
-    imperial: false,
-    position: 'bottomright'
-  }).addTo(_map)
-  control.zoom({
-    zoomInTitle: '放大',
-    zoomOutTitle: '缩小',
-    position: 'topright'
-  }).addTo(_map)
+  layerControl = getMapStatus(_map).controls.layers as Control.Layers
+  layerControl.addOverlay(geoJsonLayer, '图形')
   _map.pm.setLang('zh')
   _map.pm.setGlobalOptions({
     layerGroup: geoJsonLayer

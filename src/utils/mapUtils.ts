@@ -305,7 +305,11 @@ async function getAddress (location: LatLng): Promise<string> {
 }
 
 function getMapStatus (map: Map) {
-  return persistMap.get(map)
+  const status = persistMap.get(map)
+  if (!status) {
+    throw new Error('map not found')
+  }
+  return status
 }
 
 const utils = {
