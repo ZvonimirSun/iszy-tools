@@ -93,8 +93,8 @@ dependencies:
     specifier: ^2.5.6
     version: 2.5.6(vue@3.4.19)
   eslint-linter-browserify:
-    specifier: ^8.56.0
-    version: 8.56.0
+    specifier: ^8.57.0
+    version: 8.57.0
   esri-leaflet:
     specifier: ^3.0.12
     version: 3.0.12(leaflet@1.9.4)
@@ -6697,8 +6697,8 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-linter-browserify@8.56.0:
-    resolution: {integrity: sha512-srgKcpN5CVFZWj2/AqVfoL1rxD9+GFymynNcmkvHi0EcQDAwN2uh/ZEJSe4cm+pLZ7MVaeIUMUorXoTaLDH0ww==}
+  /eslint-linter-browserify@8.57.0:
+    resolution: {integrity: sha512-/idNlk9+YK55RTUnH/ZFpos0QsVgK2poNCczSH5jyjeqKHQ96nYDugpDrDpqPNfI+i414IddxDDwspVKzBPQ2A==}
     dev: false
 
   /eslint-module-utils@2.8.0(@typescript-eslint/parser@7.0.2)(eslint-import-resolver-node@0.3.9)(eslint@8.56.0):
