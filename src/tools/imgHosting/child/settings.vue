@@ -148,7 +148,7 @@ onMounted(() => {
   }
   changeUploader()
 })
-function updateCustomCopyContent (val: string | number | boolean) {
+function updateCustomCopyContent (val?: string | number | boolean) {
   switch (val) {
     case 'standard':
       commonConfig.customCopyContent = '$url'
@@ -158,6 +158,8 @@ function updateCustomCopyContent (val: string | number | boolean) {
       break
     case 'custom':
       commonConfig.customCopyContent = customContent.value
+      break
+    default:
       break
   }
 }
