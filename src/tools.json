@@ -12,6 +12,10 @@
         "link": "/tinyEditor"
       },
       {
+        "name": "简易白板",
+        "link": "/tlDraw"
+      },
+      {
         "name": "在线流程图",
         "link": "https://app.diagrams.net/"
       }

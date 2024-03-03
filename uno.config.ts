@@ -47,7 +47,8 @@ export default defineConfig({
             provider: 'none'
           }
         ],
-        mono: 'JetBrains Mono:300,400,700'
+        mono: 'JetBrains Mono:300,400,700',
+        inter: 'Inter:500,700'
       }
     })
   ],
