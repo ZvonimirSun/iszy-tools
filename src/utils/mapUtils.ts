@@ -2,15 +2,13 @@ import 'leaflet/dist/leaflet.css'
 
 import type { Control, ControlPosition, Map, MapOptions, TileLayer } from 'leaflet'
 import { Icon, LatLng, control, layerGroup, map } from 'leaflet'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import config from '@/config'
 import { ChineseLayer, chineseLayer } from '@/utils/leaflet.ChineseLayer.js'
 import $axios from '@/plugins/Axios'
 
-Icon.Default.prototype.options.iconUrl = markerIcon
-Icon.Default.prototype.options.iconRetinaUrl = markerIcon2x
-Icon.Default.prototype.options.shadowUrl = markerShadow
+Icon.Default.prototype.options.iconUrl = `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-blue.png`
+Icon.Default.prototype.options.iconRetinaUrl = `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-blue.png`
+Icon.Default.prototype.options.shadowUrl = `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/marker-shadow.png`
 
 interface InitMapOptions {
   dom: HTMLDivElement
