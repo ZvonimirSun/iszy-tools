@@ -338,10 +338,7 @@ function removePrepayment() {
 
 <template>
   <div
-    flex
-    flex-col
-    h-full
-    overflow-auto
+    h-full flex flex-col overflow-auto
   >
     <span class="tips">计算仅供参考，请以银行数据为准!</span>
     <div
@@ -464,9 +461,7 @@ function removePrepayment() {
       </div>
       <div
         class="panel"
-        flex-1
-        flex
-        flex-col
+        flex flex-1 flex-col
       >
         <el-form
           :label-width="120"

@@ -85,16 +85,10 @@ function copyColor(val: string) {
 
 <template>
   <div
-    w-full
-    h-full
-    overflow-auto
-    flex
-    flex-col
-    items-center
+    h-full w-full flex flex-col items-center overflow-auto
   >
     <el-form
-      w-250
-      max-w-full
+      max-w-full w-250
       :label-width="100"
       :rules="rules"
       :model="ruleForm"

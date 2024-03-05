@@ -389,7 +389,7 @@ function clickDragger() {
     <VanillaJsonEditor
       ref="editorPanelContainerRight"
       show-menu-bar
-      class="editorPanelContainer editorPanelContainerRight noShowMobile"
+      class="editorPanelContainer noShowMobile editorPanelContainerRight"
       :class="{ full: fullPanel === 'right', hide: fullPanel === 'left' }"
       :style="{ flex: `${1 - store.splitterValue} 1 0` }"
       :name="store.rightData?.name"

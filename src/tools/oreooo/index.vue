@@ -253,7 +253,7 @@ export default {
         <div class="meta">
           这是你的
         </div>
-        <div class="output str">
+        <div class="str output">
           {{ oreoStr }}
         </div>
       </div>

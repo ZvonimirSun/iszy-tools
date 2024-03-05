@@ -77,10 +77,8 @@ function openNew() {
         />
       </el-space>
       <iframe
-        w-full
-        h-full
         :srcdoc="doc"
-        seamless
+        seamless h-full w-full
         title="展示面板"
         allowTransparency="true"
       />

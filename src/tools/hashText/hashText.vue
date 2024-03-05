@@ -46,18 +46,10 @@ function calculate() {
 
 <template>
   <div
-    w-full
-    h-full
-    overflow-auto
-    flex
-    flex-col
-    items-center
+    h-full w-full flex flex-col items-center overflow-auto
   >
     <div
-      w-250
-      max-w-full
-      flex
-      flex-col
+      max-w-full w-250 flex flex-col
     >
       <el-text mb-2>
         待计算的内容

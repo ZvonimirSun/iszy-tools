@@ -23,10 +23,7 @@ async function search() {
 
 <template>
   <div
-    flex
-    flex-col
-    h-full
-    w-full
+    h-full w-full flex flex-col
   >
     <el-input
       v-model="domains"

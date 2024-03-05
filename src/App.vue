@@ -119,7 +119,7 @@ function fullScreenListener(e: KeyboardEvent) {
           @click="useGlobalStore().toggleTheme"
         >
           <i
-            class="dark:i-icon-park-outline-moon i-icon-park-outline-sun-one"
+            class="i-icon-park-outline-sun-one dark:i-icon-park-outline-moon"
           />
         </el-button>
         <el-header
@@ -169,8 +169,7 @@ function fullScreenListener(e: KeyboardEvent) {
           <div
             v-if="route.meta?.type !== 'tool'"
             class="container"
-            w-full
-            h-full
+            h-full w-full
           >
             <router-view />
           </div>

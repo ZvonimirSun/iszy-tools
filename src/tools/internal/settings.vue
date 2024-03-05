@@ -119,11 +119,7 @@ async function updateUser(formEl: FormInstance | undefined) {
   </a-typography-title>
   <div
     v-if="userStore.logged"
-    flex
-    flex-col
-    text-7
-    gap-4
-    items-start
+    flex flex-col items-start gap-4 text-7
   >
     <div flex>
       <div w-32>
@@ -278,11 +274,7 @@ async function updateUser(formEl: FormInstance | undefined) {
   </el-space>
   <el-divider />
   <div
-    flex
-    text-7
-    gap-4
-    items-start
-    flex-wrap
+    flex flex-wrap items-start gap-4 text-7
     class="settings-container"
   >
     <div class="settings-wrapper">

@@ -22,7 +22,7 @@ function fullScreen() {
         <div class="typeName">
           <span>{{ route.meta?.title || route.name }}</span>
           <span
-            class="i-icon-park-outline-full-screen fullScreen"
+            class="fullScreen i-icon-park-outline-full-screen"
             title="全屏"
             @click="fullScreen"
           />

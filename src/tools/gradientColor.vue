@@ -70,26 +70,12 @@ function copyAll() {
 
 <template>
   <div
-    flex
-    flex-col
-    w-fit
-    mx-auto
-    justify-start
-    items-center
-    h-full
-    overflow-auto
-    p-t-1
+    mx-auto h-full w-fit flex flex-col items-center justify-start overflow-auto p-t-1
     class="gap-3.2"
   >
     <div
-      flex
-      w-fit
-      flex-wrap
-      max-w-full
-      mx-auto
-      justify-start
-      items-center
-      class="gap-3.2 selector"
+      mx-auto max-w-full w-fit flex flex-wrap items-center justify-start
+      class="selector gap-3.2"
     >
       <Sketch
         v-model="computedFromColor"
@@ -97,10 +83,7 @@ function copyAll() {
         mx-auto
       />
       <div
-        flex
-        flex-col
-        items-center
-        mx-auto
+        mx-auto flex flex-col items-center
       >
         <a-typography-paragraph>
           渐变个数
@@ -118,23 +101,13 @@ function copyAll() {
       />
     </div>
     <div
-      flex
-      flex-row
-      w-fit
-      mx-auto
-      justify-start
-      flex-wrap
-      items-stretch
+      mx-auto w-fit flex flex-row flex-wrap items-stretch justify-start
       class="gap-3.2"
     >
       <div
         v-for="(item, index) in gradientColors"
         :key="index"
-        display-block
-        cursor-pointer
-        truncate
-        h-fit
-        text-center
+        display-block h-fit cursor-pointer truncate text-center
         class="p-3.2"
         :style="{
           background: item,

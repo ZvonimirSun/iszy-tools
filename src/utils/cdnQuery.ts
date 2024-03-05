@@ -81,6 +81,7 @@ function parseQuery(queryString: string) {
   const filters = []
   let match
 
+  // eslint-disable-next-line no-cond-assign
   while ((match = ATTR_REGEXP.exec(substr)) !== null) {
     const temp = match[0].split(':')
 

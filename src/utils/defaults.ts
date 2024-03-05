@@ -1,5 +1,3 @@
-export { withDefaultOnError, withDefaultOnErrorAsync }
-
 function withDefaultOnError<A, B>(cb: () => A, defaultValue: B): A | B {
   try {
     return cb()
@@ -17,3 +15,5 @@ async function withDefaultOnErrorAsync<A, B>(cb: () => A, defaultValue: B): Prom
     return defaultValue
   }
 }
+
+export { withDefaultOnError, withDefaultOnErrorAsync }

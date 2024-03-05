@@ -35,13 +35,7 @@ function reset() {
 
 <template>
   <div
-    flex
-    flex-col
-    gap-4
-    w-full
-    h-full
-    overflow-auto
-    items-center
+    h-full w-full flex flex-col items-center gap-4 overflow-auto
   >
     <div
       flex
@@ -69,18 +63,14 @@ function reset() {
       </el-button>
     </div>
     <el-form
-      flex-1
-      w-full
-      overflow-auto
       label-width="17rem"
-      position-relative
+      position-relative w-full flex-1 overflow-auto
       @submit.prevent
     >
       <div
         ref="scrollContainer"
         class="scroll-container"
-        w-full
-        h-full
+        h-full w-full
       >
         <div
           class="v-scroll"

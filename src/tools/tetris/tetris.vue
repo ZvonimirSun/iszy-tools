@@ -474,7 +474,7 @@ export default {
             class="controlButton pause"
             @click="pauseGame"
           />
-          <div class="controlInfo pause">
+          <div class="pause controlInfo">
             暂停P
           </div>
           <div

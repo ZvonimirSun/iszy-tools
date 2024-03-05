@@ -144,10 +144,7 @@ function indexMethod(index: number) {
 
 <template>
   <div
-    flex
-    flex-col
-    gap-4
-    h-full
+    h-full flex flex-col gap-4
   >
     <div class="new-url-form">
       <span>

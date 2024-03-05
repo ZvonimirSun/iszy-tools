@@ -58,7 +58,7 @@ async function copyImgUrl({ url } = {} as { url: string }) {
           {{ item.name }}
         </div>
         <div class="card-action">
-          <span class="py-3 flex">
+          <span class="flex py-3">
             <span
               class="i-icon-park-outline-copy-link"
               @click="copyImgUrl(item)"
@@ -72,7 +72,7 @@ async function copyImgUrl({ url } = {} as { url: string }) {
             @confirm="removeImage(item)"
           >
             <template #reference>
-              <span class="py-3 flex">
+              <span class="flex py-3">
                 <span class="i-icon-park-outline-delete" />
               </span>
             </template>

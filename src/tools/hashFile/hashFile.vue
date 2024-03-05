@@ -51,19 +51,10 @@ function calculate(rawFile: File) {
 
 <template>
   <div
-    w-full
-    h-full
-    overflow-auto
-    flex
-    flex-col
-    items-center
+    h-full w-full flex flex-col items-center overflow-auto
   >
     <div
-      w-250
-      max-w-full
-      flex
-      flex-col
-      gap-4
+      max-w-full w-250 flex flex-col gap-4
     >
       <el-alert
         title="文件不会被上传"
@@ -79,7 +70,7 @@ function calculate(rawFile: File) {
         :disabled="loading"
         :show-file-list="false"
       >
-        <i class="i-icon-park-outline-upload-one el-icon--upload" />
+        <i class="el-icon--upload i-icon-park-outline-upload-one" />
         <div class="el-upload__text">
           将文件拖拽到此处 或 <em>点击选择文件</em>
         </div>
@@ -118,8 +109,7 @@ function calculate(rawFile: File) {
       </div>
       <template v-if="algos && fileInfo">
         <el-divider
-          mt-4
-          mb-4
+          mb-4 mt-4
         />
         <div
           v-loading="loading"

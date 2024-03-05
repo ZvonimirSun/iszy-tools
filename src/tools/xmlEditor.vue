@@ -12,16 +12,10 @@ const options = reactive({
 <template>
   <div class="code-container">
     <div
-      flex
-      gap-4
-      flex-col
-      w-full
-      items-center
+      w-full flex flex-col items-center gap-4
     >
       <div
-        flex
-        gap-4
-        items-center
+        flex items-center gap-4
       >
         <el-switch
           v-model="options.collapseContent"

@@ -89,9 +89,7 @@ function updateFromValue() {
 
 <template>
   <div
-    w-full
-    h-full
-    overflow-auto
+    h-full w-full overflow-auto
   >
     <a-typography-paragraph>
       <blockquote>仅供参考，采用第三方接口，数据可能存在延迟</blockquote>
