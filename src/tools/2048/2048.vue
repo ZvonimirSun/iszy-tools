@@ -31,38 +31,46 @@ export default {
 </script>
 
 <template>
+  <!-- eslint-disable vue/no-unused-refs -->
   <div>
     <div class="panel">
       <div class="wrapper">
         <div class="above-game">
           <div class="scores-container">
             <div
+              ref="scoreContainer"
               class="score-container"
             >
               0
             </div>
             <div
+              ref="bestContainer"
               class="best-container"
             >
               0
             </div>
           </div>
           <a
+            ref="restartButton"
             class="restart-button"
           >新游戏</a>
         </div>
         <div
+          ref="gameContainer"
           class="game-container"
         >
           <div
+            ref="messageContainer"
             class="game-message"
           >
             <p />
             <div class="lower">
               <a
+                ref="keepPlayingButton"
                 class="keep-playing-button"
               >继续挑战</a>
               <a
+                ref="retryButton"
                 class="retry-button"
               >重新开始</a>
             </div>
@@ -75,6 +83,7 @@ export default {
             />
           </div>
           <div
+            ref="tileContainer"
             class="tile-container"
           />
         </div>
