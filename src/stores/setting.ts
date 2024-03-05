@@ -11,15 +11,15 @@ export const useSettingStore = defineStore('setting', {
       openInNewTab: false,
 
       theme: {
-        mode: 'auto' as 'dark' | 'light' | 'auto'
-      }
+        mode: 'auto' as 'dark' | 'light' | 'auto',
+      },
     },
     modules: {
       2048: {
-        bestScore: 0
+        bestScore: 0,
       },
       tetris: {
-        bestScore: 0
+        bestScore: 0,
       },
       imgHosting: {
         uploader: null as 'aliyun' | null,
@@ -28,14 +28,14 @@ export const useSettingStore = defineStore('setting', {
           renameBeforeUpload: false,
           renameTimeStamp: true,
           copyUrlAfterUpload: true,
-          customCopyContent: '$url'
-        }
+          customCopyContent: '$url',
+        },
       },
       jsonEditor: {
-        syncCloud: false
-      }
-    }
-  })
+        syncCloud: false,
+      },
+    },
+  }),
 })
 
 if (import.meta.hot) {

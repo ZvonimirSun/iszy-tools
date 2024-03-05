@@ -1,54 +1,59 @@
-function getParamList () {
+function getParamList() {
   let hash = window.location.hash
   if (hash) {
     if (hash.startsWith('#!')) {
       hash = hash.slice(2)
-    } else if (hash.startsWith('#')) {
+    }
+    else if (hash.startsWith('#')) {
       hash = hash.slice(1)
     }
-    return hash.split('&').map(item => {
+    return hash.split('&').map((item) => {
       const tmp = item.split('=')
       if (tmp.length >= 2) {
         return {
           key: tmp[0],
-          value: tmp[1]
+          value: tmp[1],
         }
-      } else {
+      }
+      else {
         return {
-          key: tmp[0]
+          key: tmp[0],
         }
       }
     })
-  } else {
+  }
+  else {
     return []
   }
 }
 
-function hasParam (key) {
+function hasParam(key) {
   return !!getParamList().find(item => item.key === key)
 }
 
-function getParam (key) {
+function getParam(key) {
   const tmp = getParamList().find(item => item.key === key)
   if (tmp) {
     return tmp.value
   }
 }
 
-function setParam (key, value) {
+function setParam(key, value) {
   const list = getParamList()
   const tmp = list.find(item => item.key === key)
   if (tmp) {
     tmp.value = value
-  } else {
+  }
+  else {
     list.push({
-      key, value
+      key,
+      value,
     })
   }
   updateHash(list)
 }
 
-function deleteParam (key) {
+function deleteParam(key) {
   const list = getParamList()
   const tmp = list.findIndex(item => item.key === key)
   if (tmp !== -1) {
@@ -57,18 +62,20 @@ function deleteParam (key) {
   updateHash(list)
 }
 
-function updateHash (list = []) {
+function updateHash(list = []) {
   let hash = ''
   for (const item of list) {
     if (item.value != null) {
-      hash += '&' + item.key + '=' + item.value
-    } else {
-      hash += '&' + item.key
+      hash += `&${item.key}=${item.value}`
+    }
+    else {
+      hash += `&${item.key}`
     }
   }
   if (hash.length) {
-    window.location.hash = '!' + hash.slice(1)
-  } else {
+    window.location.hash = `!${hash.slice(1)}`
+  }
+  else {
     window.location.hash = ''
   }
 }

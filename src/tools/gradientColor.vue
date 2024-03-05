@@ -1,3 +1,73 @@
+<script setup>
+import { colord } from 'colord'
+import { Sketch } from '@ckpack/vue-color'
+
+const fromColor = ref('#ff0000')
+const toColor = ref('#00ffff')
+const steps = ref(10)
+const showRGB = ref(false)
+
+const computedFromColor = computed({
+  get() {
+    return fromColor.value
+  },
+  set(value) {
+    if (value && value.hex) {
+      fromColor.value = value.hex
+    }
+  },
+})
+const computedToColor = computed({
+  get() {
+    return toColor.value
+  },
+  set(value) {
+    if (value && value.hex) {
+      toColor.value = value.hex
+    }
+  },
+})
+const gradientHexColors = computed(() => {
+  return getGradientHexArr(fromColor.value, toColor.value, steps.value)
+})
+const gradientRGBColors = computed(() => {
+  return gradientHexColors.value.map((hex) => {
+    return colord(hex).toRgbString()
+  })
+})
+
+const gradientColors = computed(() => {
+  return showRGB.value ? gradientRGBColors.value : gradientHexColors.value
+})
+
+function getGradientHexArr(startHex, endHex, steps) {
+  const startColor = colord(startHex).toRgb()
+  const endColor = colord(endHex).toRgb()
+  const stepR = (endColor.r - startColor.r) / steps
+  const stepG = (endColor.g - startColor.g) / steps
+  const stepB = (endColor.b - startColor.b) / steps
+  const gradientColors = []
+  for (let i = 0; i < steps; i++) {
+    const r = Math.round(startColor.r + stepR * i)
+    const g = Math.round(startColor.g + stepG * i)
+    const b = Math.round(startColor.b + stepB * i)
+    gradientColors.push(colord({ r, g, b }).toHex())
+  }
+  return gradientColors
+}
+
+function copyColor(hex) {
+  window.navigator.clipboard.writeText(hex)
+  ElMessage.success('复制成功')
+}
+
+function copyAll() {
+  const hex = gradientColors.value.join(',')
+  window.navigator.clipboard.writeText(hex)
+  ElMessage.success('复制成功')
+}
+</script>
+
 <template>
   <div
     flex
@@ -68,7 +138,7 @@
         class="p-3.2"
         :style="{
           background: item,
-          width: showRGB ? '15rem' : '9rem'
+          width: showRGB ? '15rem' : '9rem',
         }"
         @click="copyColor(item)"
       >
@@ -77,7 +147,7 @@
       <div relative>
         <el-button
           h-full
-          @click="showRGB=!showRGB"
+          @click="showRGB = !showRGB"
         >
           {{ showRGB ? '显示HEX' : '显示RGB' }}
         </el-button>
@@ -91,72 +161,6 @@
     </el-button>
   </div>
 </template>
-
-<script setup>
-import { colord } from 'colord'
-import { Sketch } from '@ckpack/vue-color'
-
-const fromColor = ref('#ff0000')
-const toColor = ref('#00ffff')
-const steps = ref(10)
-const showRGB = ref(false)
-
-const computedFromColor = computed({
-  get () {
-    return fromColor.value
-  },
-  set (value) {
-    if (value && value.hex) { fromColor.value = value.hex }
-  }
-})
-const computedToColor = computed({
-  get () {
-    return toColor.value
-  },
-  set (value) {
-    if (value && value.hex) { toColor.value = value.hex }
-  }
-})
-const gradientHexColors = computed(() => {
-  return getGradientHexArr(fromColor.value, toColor.value, steps.value)
-})
-const gradientRGBColors = computed(() => {
-  return gradientHexColors.value.map(hex => {
-    return colord(hex).toRgbString()
-  })
-})
-
-const gradientColors = computed(() => {
-  return showRGB.value ? gradientRGBColors.value : gradientHexColors.value
-})
-
-function getGradientHexArr (startHex, endHex, steps) {
-  const startColor = colord(startHex).toRgb()
-  const endColor = colord(endHex).toRgb()
-  const stepR = (endColor.r - startColor.r) / steps
-  const stepG = (endColor.g - startColor.g) / steps
-  const stepB = (endColor.b - startColor.b) / steps
-  const gradientColors = []
-  for (let i = 0; i < steps; i++) {
-    const r = Math.round(startColor.r + stepR * i)
-    const g = Math.round(startColor.g + stepG * i)
-    const b = Math.round(startColor.b + stepB * i)
-    gradientColors.push(colord({ r, g, b }).toHex())
-  }
-  return gradientColors
-}
-
-function copyColor (hex) {
-  window.navigator.clipboard.writeText(hex)
-  ElMessage.success('复制成功')
-}
-
-function copyAll () {
-  const hex = gradientColors.value.join(',')
-  window.navigator.clipboard.writeText(hex)
-  ElMessage.success('复制成功')
-}
-</script>
 
 <style scoped lang="scss">
 .selector {

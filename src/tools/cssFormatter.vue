@@ -1,3 +1,7 @@
+<script setup>
+import Css from '@/components/editor/lang-css'
+</script>
+
 <template>
   <FormatTransformer
     w-full
@@ -5,7 +9,3 @@
     target="CSS"
   />
 </template>
-
-<script setup>
-import Css from '@/components/editor/lang-css'
-</script>

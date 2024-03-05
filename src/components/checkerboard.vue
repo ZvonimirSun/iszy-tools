@@ -1,10 +1,3 @@
-<template>
-  <div
-    class="checkerboard"
-    :style="bgStyle"
-  />
-</template>
-
 <script>
 const _checkerboardCache = {}
 
@@ -13,34 +6,34 @@ export default defineComponent({
   props: {
     size: {
       type: [Number, String],
-      default: 8
+      default: 8,
     },
     white: {
       type: String,
-      default: '#fff'
+      default: '#fff',
     },
     grey: {
       type: String,
-      default: '#e6e6e6'
-    }
+      default: '#e6e6e6',
+    },
   },
   computed: {
-    bgStyle () {
+    bgStyle() {
       return {
-        'background-image': `url(${getCheckerboard(this.white, this.grey, this.size)})`
+        'background-image': `url(${getCheckerboard(this.white, this.grey, this.size)})`,
       }
-    }
-  }
+    },
+  },
 })
 
 /**
  * get base 64 data by canvas
  *
- * @param {String} c1 hex color
- * @param {String} c2 hex color
- * @param {Number} size
+ * @param {string} c1 hex color
+ * @param {string} c2 hex color
+ * @param {number} size
  */
-function renderCheckerboard (c1, c2, size) {
+function renderCheckerboard(c1, c2, size) {
   // Dont Render On Server
   if (typeof document === 'undefined') {
     return null
@@ -63,11 +56,11 @@ function renderCheckerboard (c1, c2, size) {
 /**
  * get checkerboard base data and cache
  *
- * @param {String} c1 hex color
- * @param {String} c2 hex color
- * @param {Number} size
+ * @param {string} c1 hex color
+ * @param {string} c2 hex color
+ * @param {number} size
  */
-function getCheckerboard (c1, c2, size) {
+function getCheckerboard(c1, c2, size) {
   const key = `${c1},${c2},${size}`
   if (_checkerboardCache[key]) {
     return _checkerboardCache[key]
@@ -77,6 +70,13 @@ function getCheckerboard (c1, c2, size) {
   return checkerboard
 }
 </script>
+
+<template>
+  <div
+    class="checkerboard"
+    :style="bgStyle"
+  />
+</template>
 
 <style scoped lang="scss">
 .checkerboard {

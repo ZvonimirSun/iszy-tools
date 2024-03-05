@@ -1,3 +1,92 @@
+<script>
+// eslint-disable-next-line unicorn/prefer-node-protocol
+import { Buffer } from 'buffer'
+import { Compact } from '@ckpack/vue-color'
+import domToImage from 'dom-to-image'
+import createFile from '@/utils/createFile'
+
+export default {
+  name: 'WatermarkTool',
+  components: {
+    Compact,
+  },
+  data: () => ({
+    file: '',
+    fileName: '',
+    loading: false,
+
+    options: {
+      fontSize: 14,
+      text: '仅供 xxx 验证使用',
+      alpha: 5,
+      color: '#000000',
+      rotate: 23,
+      width: 10,
+    },
+  }),
+  computed: {
+    color: {
+      get() {
+        return {
+          hex: this.options.color,
+        }
+      },
+      set(val) {
+        if (val && val.hex) {
+          this.options.color = val.hex
+        }
+      },
+    },
+    svg() {
+      let width = this.options.fontSize * this.options.text.length
+      width = width + (this.options.width / 100) * width
+      const svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}px" height="${width}px">
+                <text x="50%" y="50%"
+                    alignment-baseline="middle"
+                    text-anchor="middle"
+                    stroke="${this.options.color}"
+                    opacity="${this.options.alpha / 10}"
+                    transform="translate(${width / 2}, ${width / 2}) rotate(${
+        this.options.rotate
+      }) translate(-${width / 2}, -${width / 2})"
+                    font-weight="100"
+                    font-size="${this.options.fontSize}"
+                    font-family="microsoft yahe"
+                    >
+                    ${this.options.text}
+                </text>
+            </svg>`
+      return (
+        `data:image/svg+xml;base64,${
+        Buffer.from(svgText).toString('base64')}`
+      )
+    },
+  },
+  methods: {
+    upload(img) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        this.fileName = img.name
+        this.file = reader.result
+      }
+      reader.readAsDataURL(img)
+      return false
+    },
+    async addWatermark() {
+      this.loading = true
+      try {
+        const result = await domToImage.toBlob(this.$refs.preview, {})
+        createFile(result, 'watermark.png')
+      }
+      catch (e) {
+        ElMessage.error('生成失败')
+      }
+      this.loading = false
+    },
+  },
+}
+</script>
+
 <template>
   <a-typography-paragraph>
     <blockquote>全部过程均在本地进行，本工具可离线使用</blockquote>
@@ -87,93 +176,6 @@
     </el-form-item>
   </el-form>
 </template>
-
-<script>
-import { Buffer } from 'buffer'
-import { Compact } from '@ckpack/vue-color'
-import domToImage from 'dom-to-image'
-import createFile from '@/utils/createFile'
-
-export default {
-  name: 'WatermarkTool',
-  components: {
-    Compact
-  },
-  data: () => ({
-    file: '',
-    fileName: '',
-    loading: false,
-
-    options: {
-      fontSize: 14,
-      text: '仅供 xxx 验证使用',
-      alpha: 5,
-      color: '#000000',
-      rotate: 23,
-      width: 10
-    }
-  }),
-  computed: {
-    color: {
-      get () {
-        return {
-          hex: this.options.color
-        }
-      },
-      set (val) {
-        if (val && val.hex) {
-          this.options.color = val.hex
-        }
-      }
-    },
-    svg () {
-      let width = this.options.fontSize * this.options.text.length
-      width = width + (this.options.width / 100) * width
-      const svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}px" height="${width}px">
-                <text x="50%" y="50%"
-                    alignment-baseline="middle"
-                    text-anchor="middle"
-                    stroke="${this.options.color}"
-                    opacity="${this.options.alpha / 10}"
-                    transform="translate(${width / 2}, ${width / 2}) rotate(${
-        this.options.rotate
-      }) translate(-${width / 2}, -${width / 2})"
-                    font-weight="100"
-                    font-size="${this.options.fontSize}"
-                    font-family="microsoft yahe"
-                    >
-                    ${this.options.text}
-                </text>
-            </svg>`
-      return (
-        'data:image/svg+xml;base64,' +
-        Buffer.from(svgText).toString('base64')
-      )
-    }
-  },
-  methods: {
-    upload (img) {
-      const reader = new FileReader()
-      reader.onload = () => {
-        this.fileName = img.name
-        this.file = reader.result
-      }
-      reader.readAsDataURL(img)
-      return false
-    },
-    async addWatermark () {
-      this.loading = true
-      try {
-        const result = await domToImage.toBlob(this.$refs.preview, {})
-        createFile(result, 'watermark.png')
-      } catch (e) {
-        ElMessage.error('生成失败')
-      }
-      this.loading = false
-    }
-  }
-}
-</script>
 
 <style scoped lang="scss">
 :deep(.ant-upload) {

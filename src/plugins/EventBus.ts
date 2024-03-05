@@ -1,18 +1,19 @@
 export default class EventBus {
   static _events: Map<string, ((...payload: any[]) => any)[]> = new Map()
 
-  static on (name: string, event: (...payload: any[]) => any) {
+  static on(name: string, event: (...payload: any[]) => any) {
     if (name && typeof event === 'function') {
       const tmp = this._events.get(name)
       if (tmp) {
         tmp.push(event)
-      } else {
+      }
+      else {
         this._events.set(name, [event])
       }
     }
   }
 
-  static off (name: string, event?: (...payload: any[]) => any) {
+  static off(name: string, event?: (...payload: any[]) => any) {
     const tmp = this._events.get(name)
     if (tmp) {
       if (typeof event === 'function') {
@@ -24,13 +25,14 @@ export default class EventBus {
         if (tmp.length === 0) {
           this._events.delete(name)
         }
-      } else {
+      }
+      else {
         this._events.delete(name)
       }
     }
   }
 
-  static emit (name: string, ...payload: any[]) {
+  static emit(name: string, ...payload: any[]) {
     const tmp = this._events.get(name)
     if (tmp) {
       for (const fn of tmp) {

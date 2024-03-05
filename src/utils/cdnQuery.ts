@@ -5,15 +5,15 @@ const algolia = algoliaSearch('OFCNCOG2CU', 'f54e21fa3a2a0160595bb058179bfb1e')
 const index = algolia.initIndex('npm-search')
 
 export interface AlgoliaHit {
-  name: string,
-  version: string,
-  description: string,
-  githubRepo: { user: string, project: string, path: string, head: string },
-  owner: { 'name': string, 'avatar': string, 'link': string },
-  deprecated: boolean,
-  homepage: string,
-  license: string,
-  keywords: Array<string>,
+  name: string
+  version: string
+  description: string
+  githubRepo: { user: string, project: string, path: string, head: string }
+  owner: { name: string, avatar: string, link: string }
+  deprecated: boolean
+  homepage: string
+  license: string
+  keywords: Array<string>
   objectID: string
 }
 
@@ -23,7 +23,7 @@ export default async (queryString: string, page = 0, hitsPerPage = 10) => {
     if (!parsed) {
       return {
         response: null,
-        query: queryString
+        query: queryString,
       }
     }
     const options: SearchOptions = {
@@ -32,33 +32,36 @@ export default async (queryString: string, page = 0, hitsPerPage = 10) => {
       attributesToHighlight: [],
       attributesToRetrieve: ['deprecated', 'description', 'githubRepo', 'homepage', 'keywords', 'license', 'name', 'owner', 'version'],
       analyticsTags: ['jsdelivr'],
-      facetFilters: parsed.facetFilters ? parsed.facetFilters : undefined
+      facetFilters: parsed.facetFilters ? parsed.facetFilters : undefined,
     }
 
     const response = await index.search<AlgoliaHit>(parsed.query, options)
     response.hits.sort((a, b) => {
       if (a.name === parsed.query) {
         return -1
-      } else if (b.name === parsed.query) {
+      }
+      else if (b.name === parsed.query) {
         return 1
-      } else {
+      }
+      else {
         return 0
       }
     })
 
     return {
       response,
-      query: queryString
+      query: queryString,
     }
-  } catch (e) {
+  }
+  catch (e) {
     return {
       response: null,
-      query: queryString
+      query: queryString,
     }
   }
 }
 
-export const getByName = async (name: string) => {
+export async function getByName(name: string) {
   return index.getObject(name)
 }
 
@@ -66,10 +69,10 @@ const ATTR_REGEXP = /\s*(?:[a-z]+)\s*:\s*(?:.(?![a-z]*\s*:))*/gi
 const QUERY_REGEXP = /^((?:(?:[^\s:]+(?![a-z]*\s*:))\s*)*)/i
 const filterMapping: Record<string, string> = {
   author: 'owner.name',
-  type: 'moduleTypes'
+  type: 'moduleTypes',
 }
 
-function parseQuery (queryString: string) {
+function parseQuery(queryString: string) {
   const query = queryString.match(QUERY_REGEXP)?.[0].trim()
   if (query == null) {
     return
@@ -82,12 +85,12 @@ function parseQuery (queryString: string) {
     const temp = match[0].split(':')
 
     if (filterMapping[temp[0].trim()]) {
-      filters.push(filterMapping[temp[0].trim()] + ':' + temp[1].trim())
+      filters.push(`${filterMapping[temp[0].trim()]}:${temp[1].trim()}`)
     }
   }
 
   return {
     query,
-    facetFilters: filters.join(',')
+    facetFilters: filters.join(','),
   }
 }

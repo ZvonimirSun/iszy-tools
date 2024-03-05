@@ -1,10 +1,72 @@
+<script setup lang="ts">
+import type { LocationQuery } from 'vue-router'
+
+const form = reactive({
+  userName: '',
+  password: '',
+})
+const redirect = ref<string>()
+const otherQuery = ref({})
+const loading = ref(false)
+
+const router = useRouter()
+const route = useRoute()
+const userStore = useUserStore()
+
+watch(route, (val) => {
+  const query = val.query
+  if (query) {
+    if (typeof query.redirect === 'string') {
+      redirect.value = query.redirect
+    }
+    otherQuery.value = getOtherQuery(query)
+  }
+}, { immediate: true })
+
+onMounted(() => {
+  if (userStore.logged) {
+    router.push({ path: redirect.value || '/', query: otherQuery.value })
+  }
+})
+
+async function login() {
+  if (!navigator.onLine) {
+    ElMessage.warning('已离线！')
+    return
+  }
+  if (form.userName != null && form.password != null) {
+    loading.value = true
+    try {
+      await userStore.login({
+        userName: form.userName,
+        password: form.password,
+      })
+      ElMessage.success('登录成功！')
+      router.push({ path: redirect.value || '/', query: otherQuery.value })
+    }
+    catch (e) {
+      if (e instanceof Error) {
+        ElMessage.error(e.message)
+      }
+    }
+    loading.value = false
+  }
+}
+
+function getOtherQuery(query: LocationQuery) {
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  const { redirect, ...result } = query
+  return result
+}
+</script>
+
 <template>
   <div class="login-container">
     <div class="main">
       <el-form
         layout="horizontal"
         :model="form"
-        v-bind="{wrapperCol: { span: 24 }}"
+        v-bind="{ wrapperCol: { span: 24 } }"
       >
         <el-form-item required>
           <el-input
@@ -53,64 +115,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { LocationQuery } from 'vue-router'
-
-const form = reactive({
-  userName: '',
-  password: ''
-})
-const redirect = ref<string>()
-const otherQuery = ref({})
-const loading = ref(false)
-
-const router = useRouter()
-const route = useRoute()
-const userStore = useUserStore()
-
-watch(route, function (val) {
-  const query = val.query
-  if (query) {
-    if (typeof query.redirect === 'string') {
-      redirect.value = query.redirect
-    }
-    otherQuery.value = getOtherQuery(query)
-  }
-}, { immediate: true })
-
-onMounted(() => {
-  if (userStore.logged) {
-    router.push({ path: redirect.value || '/', query: otherQuery.value })
-  }
-})
-
-async function login () {
-  if (!navigator.onLine) {
-    ElMessage.warning('已离线！')
-    return
-  }
-  if (form.userName != null && form.password != null) {
-    loading.value = true
-    try {
-      await userStore.login({
-        userName: form.userName,
-        password: form.password
-      })
-      ElMessage.success('登录成功！')
-      router.push({ path: redirect.value || '/', query: otherQuery.value })
-    } catch (e) {
-      if (e instanceof Error) { ElMessage.error(e.message) }
-    }
-    loading.value = false
-  }
-}
-
-function getOtherQuery (query: LocationQuery) {
-  const { redirect, ...result } = query
-  return result
-}
-</script>
 
 <style scoped lang="scss">
 .login-container {

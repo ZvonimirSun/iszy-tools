@@ -1,5 +1,5 @@
-import { type SettingKey, type SettingObject } from './palServerSettings'
 import { cloneDeep } from 'lodash-es'
+import type { SettingKey, SettingObject } from './palServerSettings'
 
 export const settingList: SettingObject[] = [
   {
@@ -10,8 +10,8 @@ export const settingList: SettingObject[] = [
     options: [
       { value: 'None', label: '正常' },
       { value: 'Easy', label: '简单' },
-      { value: 'Difficult', label: '困难' }
-    ]
+      { value: 'Difficult', label: '困难' },
+    ],
   },
   {
     key: 'DayTimeSpeedRate',
@@ -20,7 +20,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.1,
     max: 5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'NightTimeSpeedRate',
@@ -29,7 +29,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.1,
     max: 5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'ExpRate',
@@ -37,7 +37,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalCaptureRate',
@@ -46,7 +46,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.5,
     max: 2,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalSpawnNumRate',
@@ -54,7 +54,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1,
     min: 0.5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalDamageRateAttack',
@@ -62,7 +62,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalDamageRateDefense',
@@ -70,7 +70,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PlayerDamageRateAttack',
@@ -78,7 +78,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PlayerDamageRateDefense',
@@ -86,7 +86,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PlayerStomachDecreaceRate',
@@ -95,7 +95,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.1,
     max: 5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PlayerStaminaDecreaceRate',
@@ -104,7 +104,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.1,
     max: 5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PlayerAutoHPRegeneRate',
@@ -112,7 +112,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PlayerAutoHpRegeneRateInSleep',
@@ -120,7 +120,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalStomachDecreaceRate',
@@ -129,7 +129,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.1,
     max: 5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalStaminaDecreaceRate',
@@ -138,7 +138,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.1,
     max: 5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalAutoHPRegeneRate',
@@ -146,7 +146,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'PalAutoHpRegeneRateInSleep',
@@ -154,7 +154,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'BuildObjectDamageRate',
@@ -163,7 +163,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.5,
     max: 3,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'BuildObjectDeteriorationDamageRate',
@@ -172,7 +172,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0,
     max: 10,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'CollectionDropRate',
@@ -180,7 +180,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'CollectionObjectHpRate',
@@ -189,7 +189,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.5,
     max: 3,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'CollectionObjectRespawnSpeedRate',
@@ -198,7 +198,7 @@ export const settingList: SettingObject[] = [
     default: 1.000000,
     min: 0.5,
     max: 3,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'EnemyDropItemRate',
@@ -206,7 +206,7 @@ export const settingList: SettingObject[] = [
     type: 'number',
     default: 1.000000,
     min: 0.5,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'DeathPenalty',
@@ -217,242 +217,242 @@ export const settingList: SettingObject[] = [
       { value: 'None', label: '不掉落' },
       { value: 'Item', label: '仅掉落道具' },
       { value: 'ItemAndEquipment', label: '掉落道具和装备' },
-      { value: 'All', label: '全部掉落' }
-    ]
+      { value: 'All', label: '全部掉落' },
+    ],
   },
   {
     key: 'bEnablePlayerToPlayerDamage',
     label: '玩家之间伤害',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bEnableFriendlyFire',
     label: '友方伤害',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bEnableInvaderEnemy',
     label: '袭击事件',
     type: 'switch',
-    default: true
+    default: true,
   },
   {
     key: 'bActiveUNKO',
     label: '大便',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bEnableAimAssistPad',
     label: '手柄辅助瞄准',
     type: 'switch',
-    default: true
+    default: true,
   },
   {
     key: 'bEnableAimAssistKeyboard',
     label: '键盘辅助瞄准',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'DropItemMaxNum',
     label: '最大掉落数',
     type: 'number',
-    default: 3000
+    default: 3000,
   },
   {
     key: 'DropItemMaxNum_UNKO',
     label: '最大掉落大便数',
     type: 'number',
-    default: 100
+    default: 100,
   },
   {
     key: 'BaseCampMaxNum',
     label: '最大基地数',
     type: 'number',
-    default: 128
+    default: 128,
   },
   {
     key: 'BaseCampWorkerMaxNum',
     label: '最大基地内工人数',
     type: 'number',
-    default: 20
+    default: 20,
   },
   {
     key: 'DropItemAliveMaxHours',
     label: '掉落物保存时间',
     type: 'number',
     default: 1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'bAutoResetGuildNoOnlinePlayers',
     label: '不在线玩家自动退出公会',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'AutoResetGuildTimeNoOnlinePlayers',
     label: '自动退出公会时间',
     type: 'number',
     default: 72,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'GuildPlayerMaxNum',
     label: '工会最大人数',
     type: 'number',
-    default: 20
+    default: 20,
   },
   {
     key: 'PalEggDefaultHatchingTime',
     label: '巨大蛋孵化时间(h)',
     type: 'number',
     default: 1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'WorkSpeedRate',
     label: '工作效率',
     type: 'number',
     default: 1,
-    formatter: (value: number) => value.toFixed(6)
+    formatter: (value: number) => value.toFixed(6),
   },
   {
     key: 'bIsMultiplay',
     label: '多人游戏',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bIsPvP',
     label: 'PVP模式',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bCanPickupOtherGuildDeathPenaltyDrop',
     label: '其他公会死亡掉落物捡取',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bEnableNonLoginPenalty',
     label: '登陆惩罚?',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bEnableFastTravel',
     label: '快速旅行',
     type: 'switch',
-    default: true
+    default: true,
   },
   {
     key: 'bIsStartLocationSelectByMap',
     label: '选择出生点',
     type: 'switch',
-    default: true
+    default: true,
   },
   {
     key: 'bExistPlayerAfterLogout',
     label: '登出自动关服',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'bEnableDefenseOtherGuildPlayer',
     label: '工会间伤害',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'CoopPlayerMaxNum',
     label: 'CoopPlayerMaxNum',
     type: 'number',
-    default: 4
+    default: 4,
   },
   {
     key: 'ServerPlayerMaxNum',
     label: '服务器最大玩家人数',
     type: 'number',
-    default: 32
+    default: 32,
   },
   {
     key: 'ServerName',
     label: '服务器名称',
     type: 'input',
-    default: 'Palworld Server'
+    default: 'Palworld Server',
   },
   {
     key: 'ServerDescription',
     label: '服务器描述',
     type: 'input',
-    default: ''
+    default: '',
   },
   {
     key: 'AdminPassword',
     label: '管理员密码',
     type: 'input',
-    default: ''
+    default: '',
   },
   {
     key: 'ServerPassword',
     label: '服务器密码',
     type: 'input',
-    default: ''
+    default: '',
   },
   {
     key: 'PublicPort',
     label: '服务器端口',
     type: 'number',
-    default: 8211
+    default: 8211,
   },
   {
     key: 'PublicIP',
     label: '服务器IP',
     type: 'input',
-    default: ''
+    default: '',
   },
   {
     key: 'RCONEnabled',
     label: 'RCONEnabled',
     type: 'switch',
-    default: false
+    default: false,
   },
   {
     key: 'RCONPort',
     label: 'RCONPort',
     type: 'number',
-    default: 25575
+    default: 25575,
   },
   {
     key: 'Region',
     label: '地区',
     type: 'input',
-    default: ''
+    default: '',
   },
   {
     key: 'bUseAuth',
     label: 'bUseAuth',
     type: 'switch',
-    default: true
+    default: true,
   },
   {
     key: 'BanListURL',
     label: '封禁名单地址',
     type: 'input',
-    default: 'https://api.palworldgame.com/api/banlist.txt'
-  }
+    default: 'https://api.palworldgame.com/api/banlist.txt',
+  },
 ]
 
-export function getEmptySettings (): SettingObject[] {
+export function getEmptySettings(): SettingObject[] {
   return cloneDeep(settingList)
 }
 
-export function iniToSettings (ini: string): SettingObject[] {
+export function iniToSettings(ini: string): SettingObject[] {
   if (!ini) {
     throw new Error('ini is empty')
   }
@@ -476,7 +476,8 @@ export function iniToSettings (ini: string): SettingObject[] {
       let value: string
       if (iniMap[setting.key] == null) {
         continue
-      } else {
+      }
+      else {
         value = iniMap[setting.key] as string
       }
       switch (setting.type) {
@@ -494,13 +495,14 @@ export function iniToSettings (ini: string): SettingObject[] {
           break
       }
     }
-  } catch (e) {
+  }
+  catch (e) {
     throw new Error('wrong ini format')
   }
   return settings
 }
 
-export function settingsToIni (settings: SettingObject[]): string {
+export function settingsToIni(settings: SettingObject[]): string {
   let result = ''
   for (const setting of settings) {
     switch (setting.type) {

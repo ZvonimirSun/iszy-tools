@@ -2,10 +2,10 @@ const isDark = useDark()
 
 export const useGlobalStore = defineStore('global', {
   state: () => ({
-    isDark
+    isDark,
   }),
   actions: {
-    setTheme (value?: 'dark' | 'light' | 'auto') {
+    setTheme(value?: 'dark' | 'light' | 'auto') {
       if (value) {
         useSettingStore().general.theme.mode = value
       }
@@ -21,7 +21,7 @@ export const useGlobalStore = defineStore('global', {
           break
       }
     },
-    toggleTheme () {
+    toggleTheme() {
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
       switch (useSettingStore().general.theme.mode) {
         case 'dark':
@@ -33,17 +33,18 @@ export const useGlobalStore = defineStore('global', {
         default:
           if (dark) {
             useSettingStore().general.theme.mode = 'light'
-          } else {
+          }
+          else {
             useSettingStore().general.theme.mode = 'dark'
           }
           break
       }
       this.setTheme()
-    }
-  }
+    },
+  },
 })
 
-watch(isDark, function () {
+watch(isDark, () => {
   useGlobalStore().setTheme()
 })
 

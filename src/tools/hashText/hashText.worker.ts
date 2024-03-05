@@ -1,7 +1,7 @@
-import { type lib, enc } from 'crypto-js'
-import { algos, algoNames, type AlgoNames, type Encoding } from './hashText.service'
+import { enc, type lib } from 'crypto-js'
+import { type AlgoNames, type Encoding, algoNames, algos } from './hashText.service'
 
-function convertHexToBin (hex: string) {
+function convertHexToBin(hex: string) {
   return hex
     .trim()
     .split('')
@@ -9,7 +9,7 @@ function convertHexToBin (hex: string) {
     .join('')
 }
 
-function formatWithEncoding (words: lib.WordArray, encoding: Encoding) {
+function formatWithEncoding(words: lib.WordArray, encoding: Encoding) {
   if (encoding === 'Bin') {
     return convertHexToBin(words.toString(enc.Hex))
   }
@@ -19,7 +19,7 @@ function formatWithEncoding (words: lib.WordArray, encoding: Encoding) {
 
 const hashText = (algo: AlgoNames, value: string, encoding: Encoding = 'Hex') => formatWithEncoding(algos[algo](value), encoding)
 
-self.addEventListener('message', function (event) {
+self.addEventListener('message', (event) => {
   if (event.data) {
     const result = {} as { [key in AlgoNames]: string }
     for (const algo of algoNames) {

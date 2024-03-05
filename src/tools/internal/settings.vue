@@ -1,3 +1,118 @@
+<script setup lang="ts">
+import type { FormInstance, FormRules } from 'element-plus'
+
+const router = useRouter()
+const route = useRoute()
+const styleStore = useGlobalStore()
+const userStore = useUserStore()
+const settingStore = useSettingStore()
+
+const settings = computed(() => {
+  return settingStore.general
+})
+
+const editingUser = ref(false)
+const ruleFormRef = ref<FormInstance>()
+const userForm = reactive({
+  nickName: '',
+  email: '',
+  passwd: '',
+  rePasswd: '',
+  oldPasswd: '',
+})
+const rules = reactive<FormRules<typeof userForm>>({
+  rePasswd: [{
+    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
+      if (value && value !== userForm.passwd) {
+        callback(new Error('两次输入的密码不一致'))
+      }
+      else {
+        callback()
+      }
+    },
+  }],
+  oldPasswd: [{
+    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
+      if (!value && (userForm.passwd || userForm.rePasswd)) {
+        callback(new Error('请输入旧密码'))
+      }
+      else {
+        callback()
+      }
+    },
+  }],
+})
+
+const clearOfflineCache = () => useMainStore().clearOfflineCache()
+
+function login() {
+  router.push({
+    path: '/login',
+    query: {
+      redirect: route.fullPath,
+    },
+  })
+}
+function logout() {
+  router.push('/logout')
+}
+
+function editUser() {
+  userForm.nickName = userStore.profile.nickName ?? ''
+  userForm.email = userStore.profile.email ?? ''
+  userForm.passwd = ''
+  userForm.rePasswd = ''
+  userForm.oldPasswd = ''
+  editingUser.value = true
+}
+
+function cancelEditUser() {
+  editingUser.value = false
+}
+
+async function updateUser(formEl: FormInstance | undefined) {
+  if (!formEl) {
+    return
+  }
+  await formEl.validate(async (valid) => {
+    if (valid) {
+      const options: {
+        nickName?: string
+        email?: string
+        passwd?: string
+        oldPasswd?: string
+      } = {
+      }
+      if (userForm.nickName) {
+        options.nickName = userForm.nickName
+      }
+      if (userForm.email) {
+        options.email = userForm.email
+      }
+      if (userForm.passwd) {
+        options.passwd = userForm.passwd
+        options.oldPasswd = userForm.oldPasswd
+      }
+      if (Object.keys(options).length === 0) {
+        ElMessage.warning('没有需要修改的信息')
+        return
+      }
+      try {
+        await userStore.updateUser(options)
+      }
+      catch (e) {
+        ElMessage.error((e as Error).message)
+      }
+      editingUser.value = false
+    }
+    else {
+      ElMessage.warning('请检查输入')
+      return false
+    }
+  })
+}
+</script>
+
 <template>
   <a-typography-title :level="3">
     账户信息
@@ -45,7 +160,7 @@
         登出
       </el-button>
       <HaveAccess
-        v-slot="{goto}"
+        v-slot="{ goto }"
         link="/userManager"
       >
         <el-button
@@ -249,119 +364,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
-
-const router = useRouter()
-const route = useRoute()
-const styleStore = useGlobalStore()
-const userStore = useUserStore()
-const settingStore = useSettingStore()
-
-const settings = computed(() => {
-  return settingStore.general
-})
-
-const editingUser = ref(false)
-const ruleFormRef = ref<FormInstance>()
-const userForm = reactive({
-  nickName: '',
-  email: '',
-  passwd: '',
-  rePasswd: '',
-  oldPasswd: ''
-})
-const rules = reactive<FormRules<typeof userForm>>({
-  rePasswd: [{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
-      if (value && value !== userForm.passwd) {
-        callback(new Error('两次输入的密码不一致'))
-      } else {
-        callback()
-      }
-    }
-  }],
-  oldPasswd: [{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
-      if (!value && (userForm.passwd || userForm.rePasswd)) {
-        callback(new Error('请输入旧密码'))
-      } else {
-        callback()
-      }
-    }
-  }]
-})
-
-const clearOfflineCache = () => useMainStore().clearOfflineCache()
-
-function login () {
-  router.push({
-    path: '/login',
-    query: {
-      redirect: route.fullPath
-    }
-  })
-}
-function logout () {
-  router.push('/logout')
-}
-
-function editUser () {
-  userForm.nickName = userStore.profile.nickName ?? ''
-  userForm.email = userStore.profile.email ?? ''
-  userForm.passwd = ''
-  userForm.rePasswd = ''
-  userForm.oldPasswd = ''
-  editingUser.value = true
-}
-
-function cancelEditUser () {
-  editingUser.value = false
-}
-
-async function updateUser (formEl: FormInstance | undefined) {
-  if (!formEl) {
-    return
-  }
-  await formEl.validate(async (valid) => {
-    if (valid) {
-      const options: {
-        nickName?: string
-        email?: string
-        passwd?: string
-        oldPasswd?: string
-      } = {
-      }
-      if (userForm.nickName) {
-        options.nickName = userForm.nickName
-      }
-      if (userForm.email) {
-        options.email = userForm.email
-      }
-      if (userForm.passwd) {
-        options.passwd = userForm.passwd
-        options.oldPasswd = userForm.oldPasswd
-      }
-      if (Object.keys(options).length === 0) {
-        ElMessage.warning('没有需要修改的信息')
-        return
-      }
-      try {
-        await userStore.updateUser(options)
-      } catch (e) {
-        ElMessage.error((e as Error).message)
-      }
-      editingUser.value = false
-    } else {
-      ElMessage.warning('请检查输入')
-      return false
-    }
-  })
-}
-</script>
 
 <style scoped lang="scss">
 h3.ant-typography,

@@ -1,3 +1,167 @@
+<script lang="ts" setup>
+import type { AlgoliaHit } from '@/utils/cdnQuery.js'
+import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
+import $axios from '@/plugins/Axios'
+
+interface File {
+  type: 'file'
+  name: string
+  hash: string
+  time: string
+  size: number
+}
+
+interface Directory {
+  type: 'directory'
+  name: string
+  files: Array<Directory | File>
+}
+
+let timeoutIndex: number | null = null
+
+const loading = ref(false)
+const keyword = ref('')
+const status = ref('')
+const pageIndex = ref(0)
+const pageSize = 10
+const result = ref<Array<AlgoliaHit>>([])
+const count = ref(0)
+const pkgID = ref<string | null>('')
+const pkgData = ref<{
+  objectID: string
+  name?: string
+  homepage?: string
+  description?: string
+  repository?: {
+    type: string
+    url: string
+  }
+  license?: string
+  owner?: {
+    name: string
+    link: string
+  }
+  version?: string
+} | null>()
+const version = ref('')
+const versions = ref<Array<{
+  label: string
+  value: string
+}>>([])
+const defaultFile = ref<string | null>()
+const files = ref<Array<Directory | File>>([])
+
+const treeData = computed(() => {
+  if (files.value && files.value.length) {
+    return handleFileList(files.value)
+  }
+  else {
+    return []
+  }
+})
+
+async function search(_pageIndex = 0) {
+  if (!keyword.value) {
+    loading.value = false
+    pkgData.value = null
+    version.value = ''
+    versions.value = []
+    result.value = []
+    pageIndex.value = 0
+    count.value = 0
+    status.value = ''
+    return
+  }
+  if (timeoutIndex) {
+    clearTimeout(timeoutIndex)
+  }
+  timeoutIndex = window.setTimeout(async () => {
+    loading.value = true
+    const {
+      response,
+      query,
+    } = await cdnQuery(keyword.value, _pageIndex, pageSize)
+    if (query === keyword.value) {
+      if (response) {
+        const {
+          hits,
+          page,
+          nbHits,
+        } = response
+        result.value = hits
+        count.value = nbHits
+        pageIndex.value = page
+        status.value = 'done'
+      }
+      else {
+        ElMessage.warning('搜索失败')
+      }
+      loading.value = false
+    }
+  }, 200)
+}
+
+function searchByOwner(owner: string) {
+  keyword.value = `author:${owner}`
+  search(0)
+}
+
+async function showDetail(objectID: string) {
+  pkgID.value = objectID
+  pkgData.value = null
+  version.value = ''
+  versions.value = []
+  defaultFile.value = null
+  files.value = []
+
+  try {
+    pkgData.value = await getByName(objectID)
+    version.value = pkgData.value.version ?? ''
+    await getVersionData()
+  }
+  catch (e) {
+    console.error((e as Error).message)
+  }
+}
+
+async function getVersionData() {
+  try {
+    versions.value = []
+    defaultFile.value = null
+    files.value = []
+
+    versions.value = (await $axios.get(`https://data.jsdelivr.com/v1/package/npm/${pkgData.value?.name ?? ''}`)).data.versions.map((item: string) => {
+      return {
+        label: item,
+        value: item,
+      }
+    })
+    const {
+      default: _defaultFile,
+      files: _files,
+    } = (await $axios.get(`https://data.jsdelivr.com/v1/package/npm/${pkgData.value?.name ?? ''}@${version.value}`)).data
+    defaultFile.value = _defaultFile
+    files.value = _files
+  }
+  catch (e) {
+    console.error((e as Error).message)
+  }
+}
+
+function handleFileList(list: Array<Directory | File>, fileName?: string): Array<any> {
+  return list.map((item) => {
+    const name = fileName ? `${fileName}/${item.name}` : `/${item.name}`
+    return {
+      label: item.name,
+      icon: (item.type === 'directory' ? 'Folder' : ''),
+      isLeaf: (item.type !== 'directory'),
+      fileName: name,
+      children: ((item.type === 'directory' && item.files) ? handleFileList(item.files, name) : undefined),
+    }
+  })
+}
+</script>
+
 <template>
   <a-typography-paragraph>
     <blockquote>
@@ -33,7 +197,7 @@
     @change="search(0)"
   />
   <keep-alive>
-    <template v-if="status==='done'">
+    <template v-if="status === 'done'">
       <el-divider />
       <template v-if="!pkgID">
         <a-typography-title :level="4">
@@ -89,7 +253,7 @@
             </div>
             <div v-if="item.keywords && item.keywords.length">
               <a-tag
-                v-for="(key,index) of item.keywords"
+                v-for="(key, index) of item.keywords"
                 :key="index"
               >
                 {{ key }}
@@ -108,7 +272,7 @@
         <a-typography-link
           href="javascript:;"
           style="margin-bottom: .8rem;display: block"
-          @click="pkgID=null"
+          @click="pkgID = null"
         >
           <span class="i-icon-park-outline-return" />
           返回
@@ -174,7 +338,7 @@
               <b>默认文件: </b>
               <a-typography-text
                 :copyable="{
-                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`
+                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${defaultFile}`,
                 }"
               >
                 <a-typography-link
@@ -207,7 +371,7 @@
               />
               <a-typography-text
                 :copyable="{
-                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${data.fileName}`
+                  text: `https://cdn.jsdelivr.net/npm/${pkgData.name}@${version}${data.fileName}`,
                 }"
               >
                 {{ data.label }}
@@ -232,165 +396,6 @@
     </template>
   </keep-alive>
 </template>
-
-<script lang="ts" setup>
-import cdnQuery, { AlgoliaHit, getByName } from '@/utils/cdnQuery.js'
-import $axios from '@/plugins/Axios'
-
-interface File {
-  type: 'file',
-  name: string,
-  hash: string,
-  time: string,
-  size: number
-}
-
-interface Directory {
-  type: 'directory',
-  name: string,
-  files: Array<Directory | File>
-}
-
-let timeoutIndex: number | null = null
-
-const loading = ref(false)
-const keyword = ref('')
-const status = ref('')
-const pageIndex = ref(0)
-const pageSize = 10
-const result = ref<Array<AlgoliaHit>>([])
-const count = ref(0)
-const pkgID = ref<string | null>('')
-const pkgData = ref<{
-  objectID: string,
-  name?: string,
-  homepage?: string,
-  description?: string,
-  repository?: {
-    type: string,
-    url: string
-  },
-  license?: string,
-  owner?: {
-    name: string,
-    link: string
-  },
-  version?: string
-} | null>()
-const version = ref('')
-const versions = ref<Array<{
-  label: string,
-  value: string
-}>>([])
-const defaultFile = ref<string | null>()
-const files = ref<Array<Directory | File>>([])
-
-const treeData = computed(() => {
-  if (files.value && files.value.length) {
-    return handleFileList(files.value)
-  } else {
-    return []
-  }
-})
-
-async function search (_pageIndex = 0) {
-  if (!keyword.value) {
-    loading.value = false
-    pkgData.value = null
-    version.value = ''
-    versions.value = []
-    result.value = []
-    pageIndex.value = 0
-    count.value = 0
-    status.value = ''
-    return
-  }
-  if (timeoutIndex) {
-    clearTimeout(timeoutIndex)
-  }
-  timeoutIndex = window.setTimeout(async () => {
-    loading.value = true
-    const {
-      response,
-      query
-    } = await cdnQuery(keyword.value, _pageIndex, pageSize)
-    if (query === keyword.value) {
-      if (response) {
-        const {
-          hits,
-          page,
-          nbHits
-        } = response
-        result.value = hits
-        count.value = nbHits
-        pageIndex.value = page
-        status.value = 'done'
-      } else {
-        ElMessage.warning('搜索失败')
-      }
-      loading.value = false
-    }
-  }, 200)
-}
-
-function searchByOwner (owner: string) {
-  keyword.value = 'author:' + owner
-  search(0)
-}
-
-async function showDetail (objectID: string) {
-  pkgID.value = objectID
-  pkgData.value = null
-  version.value = ''
-  versions.value = []
-  defaultFile.value = null
-  files.value = []
-
-  try {
-    pkgData.value = await getByName(objectID)
-    version.value = pkgData.value.version ?? ''
-    await getVersionData()
-  } catch (e) {
-    console.error((e as Error).message)
-  }
-}
-
-async function getVersionData () {
-  try {
-    versions.value = []
-    defaultFile.value = null
-    files.value = []
-
-    versions.value = (await $axios.get(`https://data.jsdelivr.com/v1/package/npm/${pkgData.value?.name ?? ''}`)).data.versions.map((item: string) => {
-      return {
-        label: item,
-        value: item
-      }
-    })
-    const {
-      default: _defaultFile,
-      files: _files
-    } = (await $axios.get(`https://data.jsdelivr.com/v1/package/npm/${pkgData.value?.name ?? ''}@${version.value}`)).data
-    defaultFile.value = _defaultFile
-    files.value = _files
-  } catch (e) {
-    console.error((e as Error).message)
-  }
-}
-
-function handleFileList (list: Array<Directory | File>, fileName?: string): Array<any> {
-  return list.map(item => {
-    const name = fileName ? `${fileName}/${item.name}` : `/${item.name}`
-    return {
-      label: item.name,
-      icon: (item.type === 'directory' ? 'Folder' : ''),
-      isLeaf: (item.type !== 'directory'),
-      fileName: name,
-      children: ((item.type === 'directory' && item.files) ? handleFileList(item.files, name) : undefined)
-    }
-  })
-}
-</script>
 
 <style scoped lang="scss">
 .result-list {

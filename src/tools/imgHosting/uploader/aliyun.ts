@@ -1,13 +1,13 @@
 import OSS from 'ali-oss'
-import { Config } from './index'
+import type { Config } from './index'
 
 export interface AliOssConfig extends Record<string, string> {
-  accessKeyId: string,
-  accessKeySecret: string,
-  bucket: string,
-  area: string,
-  path: string,
-  customUrl: string,
+  accessKeyId: string
+  accessKeySecret: string
+  bucket: string
+  area: string
+  path: string
+  customUrl: string
   options: string
 }
 
@@ -22,32 +22,34 @@ export interface AliOssConfig extends Record<string, string> {
  * @param options.customUrl {String} 自定义域名，注意要加 `http://` 或者 `https://`
  * @param options.options {String} 针对图片的一些后缀处理参数
  * @param file {File} 文件
- * @return {Promise<Object>}
+ * @return {Promise<object>}
  */
-const handle = async (options: AliOssConfig, file: File): Promise<{
-  name: string,
+async function handle(options: AliOssConfig, file: File): Promise<{
+  name: string
   url: string
-}> => {
+}> {
   const customUrl = options.customUrl
   const path = options.path || ''
   const client = new OSS({
     region: options.area,
     accessKeyId: options.accessKeyId,
     accessKeySecret: options.accessKeySecret,
-    bucket: options.bucket
+    bucket: options.bucket,
   })
   const result = await client.put(path + file.name, new Blob([file]))
   if (result.res && result.res.status === 200) {
     const optionUrl = options.options || ''
     if (customUrl) {
       return { name: file.name, url: `${customUrl}/${path}${file.name}${optionUrl}` }
-    } else {
+    }
+    else {
       return {
         name: file.name,
-        url: `https://${options.bucket}.${options.area}.aliyuncs.com/${path}${file.name}${optionUrl}`
+        url: `https://${options.bucket}.${options.area}.aliyuncs.com/${path}${file.name}${optionUrl}`,
       }
     }
-  } else {
+  }
+  else {
     throw new Error('上传失败')
   }
 }
@@ -55,7 +57,7 @@ const handle = async (options: AliOssConfig, file: File): Promise<{
 /**
  * 获取配置
  */
-const config = (options = {} as AliOssConfig): Config[] => {
+function config(options = {} as AliOssConfig): Config[] {
   return [
     {
       name: 'accessKeyId',
@@ -63,7 +65,7 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.accessKeyId || '',
       required: true,
       label: '设定KeyId',
-      hint: 'AccessKeyId'
+      hint: 'AccessKeyId',
     },
     {
       name: 'accessKeySecret',
@@ -71,7 +73,7 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.accessKeySecret || '',
       required: true,
       label: '设定KeySecret',
-      hint: 'AccessKeySecret'
+      hint: 'AccessKeySecret',
     },
     {
       name: 'bucket',
@@ -79,7 +81,7 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.bucket || '',
       required: true,
       label: '设定存储空间名',
-      hint: 'Bucket'
+      hint: 'Bucket',
     },
     {
       name: 'area',
@@ -87,7 +89,7 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.area || '',
       required: true,
       label: '确认存储区域',
-      hint: '例如oss-cn-beijing'
+      hint: '例如oss-cn-beijing',
     },
     {
       name: 'path',
@@ -95,7 +97,7 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.path || '',
       required: false,
       label: '指定存储路径',
-      hint: '例如img/'
+      hint: '例如img/',
     },
     {
       name: 'options',
@@ -103,7 +105,7 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.options || '',
       required: false,
       label: '设定网址后缀',
-      hint: '例如?x-oss-process=xxx'
+      hint: '例如?x-oss-process=xxx',
     },
     {
       name: 'customUrl',
@@ -111,13 +113,13 @@ const config = (options = {} as AliOssConfig): Config[] => {
       default: options.customUrl || '',
       required: false,
       label: '设定自定义域名',
-      hint: '例如https://example.com'
-    }
+      hint: '例如https://example.com',
+    },
   ]
 }
 
 export const aliyun = {
   name: '阿里云OSS',
   handle,
-  config
+  config,
 }

@@ -1,3 +1,36 @@
+<script lang="ts" setup>
+const imgList = computed(() => {
+  return useImgHostingStore().imgList
+})
+
+const preImgList = computed(() => {
+  return imgList.value.map((item) => {
+    return item.url
+  })
+})
+
+const commonConfig = computed(() => {
+  return useImgHostingStore().commonConfig
+})
+
+const removeImage = useImgHostingStore().removeImage
+
+async function copyImgUrl({ url } = {} as { url: string }) {
+  try {
+    if (commonConfig.value.customCopyContent) {
+      await navigator.clipboard.writeText(commonConfig.value.customCopyContent.replace(/\$url/g, url))
+    }
+    else {
+      await navigator.clipboard.writeText(url)
+    }
+    ElMessage.success('地址已复制到剪贴板')
+  }
+  catch (e) {
+    ElMessage.error('复制失败')
+  }
+}
+</script>
+
 <template>
   <div
     v-if="imgList.length"
@@ -5,7 +38,7 @@
   >
     <el-space :size="8">
       <el-card
-        v-for="(item,index) in imgList"
+        v-for="(item, index) in imgList"
         :key="item.id"
         :body-style="{ padding: '0px' }"
       >
@@ -50,38 +83,6 @@
   </div>
   <el-empty v-else />
 </template>
-
-<script lang="ts" setup>
-
-const imgList = computed(() => {
-  return useImgHostingStore().imgList
-})
-
-const preImgList = computed(() => {
-  return imgList.value.map((item) => {
-    return item.url
-  })
-})
-
-const commonConfig = computed(() => {
-  return useImgHostingStore().commonConfig
-})
-
-const removeImage = useImgHostingStore().removeImage
-
-async function copyImgUrl ({ url } = {} as {url: string}) {
-  try {
-    if (commonConfig.value.customCopyContent) {
-      await navigator.clipboard.writeText(commonConfig.value.customCopyContent.replace(/\$url/g, url))
-    } else {
-      await navigator.clipboard.writeText(url)
-    }
-    ElMessage.success('地址已复制到剪贴板')
-  } catch (e) {
-    ElMessage.error('复制失败')
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .imgList {

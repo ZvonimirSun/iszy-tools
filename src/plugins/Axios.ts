@@ -1,4 +1,5 @@
-import Axios, { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
+import Axios from 'axios'
 
 Axios.$apiBase = ''
 Axios.interceptors.request.use((config) => {
@@ -13,9 +14,10 @@ Axios.interceptors.response.use(
       useUserStore().logout()
     }
     return response
-  }, async error => {
+  },
+  async (error) => {
     return await Promise.reject(error)
-  }
+  },
 )
 
 Axios.getData = function (res: AxiosResponse) {

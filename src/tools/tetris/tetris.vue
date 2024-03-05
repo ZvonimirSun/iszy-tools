@@ -1,11 +1,407 @@
+<script>
+import { cloneDeep, range, shuffle } from 'lodash-es'
+import TetriminosMatrix from './js/TetriminosMatrix.js'
+
+const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
+
+export default {
+  name: 'TetrisGame',
+  data: () => ({
+    inited: false,
+    gridCells: {
+      col: 10,
+      row: 20,
+    },
+
+    matrix: null,
+    rotate: 0,
+    position: null,
+    currentTetrimino: null,
+    nextTetrimino: null,
+    tetriminosShuffle: [],
+    score: 0,
+    lines: 0,
+
+    start: false,
+    end: false,
+    pause: false,
+    lock: false,
+
+    clearing: false,
+    clearIndexs: [],
+
+    intervalID: undefined,
+  }),
+  computed: {
+    movable() {
+      return this.start && !this.end && !this.clearing && !this.pause
+    },
+    level() {
+      return Math.ceil(this.lines / 10)
+    },
+    nextTetriminoMatrixLegend() {
+      if (this.nextTetrimino) {
+        return TetriminosMatrix[`${this.nextTetrimino}Legend`]
+      }
+      else {
+        return null
+      }
+    },
+    positions() {
+      if (this.currentTetrimino) {
+        return this._getPositions(this._getRotatedMatrix(this.rotate), this.position)
+      }
+      else {
+        return null
+      }
+    },
+    currentMatrix() {
+      if (this.currentTetrimino) {
+        const tmp = cloneDeep(this.matrix)
+        for (const position of this.positions) {
+          if (position[0] >= 0 && position[0] < this.gridCells.row
+            && position[1] >= 0 && position[1] < this.gridCells.col) {
+            tmp[position[0]][position[1]] = this.currentTetrimino
+          }
+        }
+        return tmp
+      }
+      else {
+        return this.matrix
+      }
+    },
+    speed() {
+      const level = this.level <= 20 ? this.level : 20
+      return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
+    },
+    bestScore() {
+      return useSettingStore().modules.tetris.bestScore
+    },
+  },
+  mounted() {
+    this.resetGame()
+    this.getNextTetrimino()
+    this.addListener()
+    this.inited = true
+  },
+  beforeUnmount() {
+    this.removeListener()
+  },
+  methods: {
+    playGame() {
+      if (!this.start) {
+        this.score = 0
+        this.lines = 0
+        this.getNextTetrimino()
+        this.start = true
+        this.intervalID = setInterval(() => {
+          if (!this.clearing) {
+            this.moveDown()
+          }
+        }, this.speed)
+      }
+    },
+    resetGame() {
+      clearInterval(this.intervalID)
+      const tmp = Array(this.gridCells.row)
+      for (const x of range(this.gridCells.row)) {
+        tmp[x] = Array(this.gridCells.col).fill('')
+      }
+      this.matrix = tmp
+      this.rotate = 0
+      this.resetPosition()
+      this.currentTetrimino = undefined
+      this.start = false
+      this.end = false
+      this.pause = false
+      this.lock = false
+      this.clearing = false
+    },
+    pauseGame(lock) {
+      if (lock) {
+        this.lock = true
+      }
+      else if (lock === false) {
+        this.lock = false
+      }
+      if (this.start && (this.lock === false || lock)) {
+        if (this.pause) {
+          this.pause = !this.pause
+          this.intervalID = setInterval(() => {
+            if (!this.clearing) {
+              this.moveDown()
+            }
+          }, this.speed)
+        }
+        else {
+          this.pause = !this.pause
+          clearInterval(this.intervalID)
+        }
+      }
+    },
+    resetPosition() {
+      this.rotate = 0
+      this.position = [0, Math.ceil(this.gridCells.col / 2)]
+    },
+    updateMatrix() {
+      if (this.start) {
+        for (const position of this.positions) {
+          if (position[0] < 0) {
+            this.end = true
+          }
+        }
+        this.matrix = cloneDeep(this.currentMatrix)
+        if (this.end) {
+          this.pauseGame(true)
+          this.clearIndexs = []
+          for (const x of range(this.gridCells.row)) {
+            this.clearIndexs.push(x)
+          }
+          setTimeout(() => {
+            if (this.score > this.bestScore) {
+              this.setBestScore(this.score)
+            }
+            this.clearIndexs = []
+            this.resetGame()
+          }, 600)
+          return
+        }
+        this.score += 4
+        const indexs = []
+        for (const i in this.matrix) {
+          const tmp = this.matrix[i].filter(item => (item === ''))
+          if (tmp.length === 0) {
+            indexs.push(Number.parseInt(i))
+          }
+        }
+        if (indexs.length > 0) {
+          this.clearing = true
+          this.pauseGame(true)
+          this.clearIndexs = indexs
+          const tmp = cloneDeep(this.matrix)
+          for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
+            tmp.splice(this.clearIndexs[i], 1)
+          }
+          const tmp1 = Array(this.clearIndexs.length)
+          for (const x of range(this.clearIndexs.length)) {
+            tmp1[x] = Array(this.gridCells.col).fill('')
+          }
+          setTimeout(() => {
+            this.lines += this.clearIndexs.length
+            switch (this.clearIndexs.length) {
+              case 1:
+                this.score += 40 * this.level
+                break
+              case 2:
+                this.score += 100 * this.level
+                break
+              case 3:
+                this.score += 300 * this.level
+                break
+              case 4:
+                this.score += 1200 * this.level
+                break
+              default:
+                break
+            }
+            this.clearIndexs = []
+            this.matrix = [...tmp1, ...tmp]
+            this.getNextTetrimino()
+            this.resetPosition()
+            this.clearing = false
+            this.pauseGame(false)
+          }, 600)
+        }
+        else {
+          this.getNextTetrimino()
+          this.resetPosition()
+        }
+      }
+    },
+    getNextTetrimino() {
+      this.currentTetrimino = this.nextTetrimino
+      if (this.tetriminosShuffle.length <= 7) {
+        this.tetriminosShuffle = this.tetriminosShuffle.concat(shuffle(tetriminos))
+      }
+      this.nextTetrimino = this.tetriminosShuffle.shift()
+    },
+
+    rotateRight() {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
+        this.rotate++
+      }
+    },
+    rotateLeft() {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
+        this.rotate--
+      }
+    },
+    moveLeft() {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] - 1]))) {
+        this.position[1]--
+      }
+    },
+    moveRight() {
+      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] + 1]))) {
+        this.position[1]++
+      }
+    },
+    moveDown() {
+      if (this.movable) {
+        if (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + 1, this.position[1]]))) {
+          this.position[0]++
+        }
+        else {
+          this.updateMatrix()
+        }
+      }
+    },
+    moveBottom() {
+      if (this.movable) {
+        let time = 0
+        while (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + time + 1, this.position[1]]))) {
+          time++
+        }
+        this.position[0] += time
+        this.updateMatrix()
+      }
+    },
+
+    addListener() {
+      document.addEventListener('keydown', this._keyboardEvent.bind(this))
+    },
+    removeListener() {
+      document.removeEventListener('keydown', this._keyboardEvent.bind(this))
+    },
+
+    _getRotatedMatrix(rotate) {
+      let index = rotate % TetriminosMatrix[this.currentTetrimino].length
+      if (index < 0) {
+        index += TetriminosMatrix[this.currentTetrimino].length
+      }
+      return TetriminosMatrix[this.currentTetrimino][index]
+    },
+    _getPositions(matrix, position) {
+      const positions = []
+      for (let x = 0; x < matrix.length; x++) {
+        for (let y = 0; y < matrix[x].length; y++) {
+          if (matrix[x][y] === 1) {
+            switch (this.currentTetrimino) {
+              case 'i':
+              case 'o':
+                positions.push([position[0] - 2 + x, position[1] - 2 + y])
+                break
+              case 'j':
+              case 'l':
+              case 't':
+                positions.push([position[0] - 1 + x, position[1] - 1 + y])
+                break
+              case 's':
+              case 'z':
+                positions.push([position[0] - 2 + x, position[1] - 1 + y])
+                break
+              default:
+                return null
+            }
+          }
+        }
+      }
+      return positions
+    },
+    _keyboardEvent(event) {
+      const modifiers = event.altKey || event.ctrlKey || event.metaKey
+        || event.shiftKey
+
+      if (!modifiers) {
+        switch (event.code) {
+          case 'Space':
+            if (!this.start) {
+              this.playGame()
+            }
+            else {
+              if (this.pause) {
+                this.pauseGame()
+              }
+              this.moveBottom()
+            }
+            break
+          case 'KeyW':
+          case 'KeyE':
+          case 'ArrowUp':
+            if (this.pause) {
+              this.pauseGame()
+            }
+            this.rotateRight()
+            break
+          case 'KeyQ':
+            if (this.pause) {
+              this.pauseGame()
+            }
+            this.rotateLeft()
+            break
+          case 'KeyS':
+          case 'ArrowDown':
+            if (this.pause) {
+              this.pauseGame()
+            }
+            this.moveDown()
+            break
+          case 'KeyA':
+          case 'ArrowLeft':
+            if (this.pause) {
+              this.pauseGame()
+            }
+            this.moveLeft()
+            break
+          case 'KeyD':
+          case 'ArrowRight':
+            if (this.pause) {
+              this.pauseGame()
+            }
+            this.moveRight()
+            break
+          case 'KeyP':
+            this.pauseGame()
+            break
+          case 'KeyR':
+            if (this.start) {
+              this.resetGame()
+            }
+            else {
+              this.playGame()
+            }
+            break
+          default:
+            break
+        }
+      }
+    },
+    _hasConflict(positions) {
+      for (const position of positions) {
+        if (position[0] >= this.gridCells.row || position[1] < 0 || position[1] >= this.gridCells.col) {
+          return true
+        }
+        else if (position[0] >= 0 && this.matrix[position[0]][position[1]] !== '') {
+          return true
+        }
+      }
+      return false
+    },
+    setBestScore(score) {
+      useUserStore().modules.tetris.bestScore = score
+    },
+  },
+}
+</script>
+
 <template>
   <div>
     <div class="gamePanel">
       <div class="tetrisPanel">
         <div
-          v-for="item in (gridCells.col*2+gridCells.row*2+4)"
-          :key="'tetrisFrameGrid'+item"
-          :class="['tetrisCell','tetrisCellGrid']"
+          v-for="item in (gridCells.col * 2 + gridCells.row * 2 + 4)"
+          :key="`tetrisFrameGrid${item}`"
+          class="tetrisCell tetrisCellGrid"
         />
         <div class="tetrisMainPanel">
           <template v-if="inited">
@@ -18,8 +414,8 @@
                 :key="y"
               >
                 <div
-                  v-if="currentMatrix[x-1][y-1]"
-                  :class="['tetrisCell', 'tetrisCellColor-'+currentMatrix[x-1][y-1], clearIndexs.includes(x-1) ? 'blink': '']"
+                  v-if="currentMatrix[x - 1][y - 1]"
+                  class="tetrisCell" :class="[`tetrisCellColor-${currentMatrix[x - 1][y - 1]}`, clearIndexs.includes(x - 1) ? 'blink' : '']"
                 />
                 <div
                   v-else
@@ -61,8 +457,8 @@
                   :key="y"
                 >
                   <div
-                    v-if="nextTetriminoMatrixLegend[x-1][y-1]"
-                    :class="['tetrisCell', 'tetrisCellColor-'+nextTetrimino]"
+                    v-if="nextTetriminoMatrixLegend[x - 1][y - 1]"
+                    class="tetrisCell" :class="[`tetrisCellColor-${nextTetrimino}`]"
                   />
                   <div
                     v-else
@@ -140,392 +536,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { range, shuffle, cloneDeep } from 'lodash-es'
-import TetriminosMatrix from './js/TetriminosMatrix.js'
-
-const tetriminos = ['i', 'j', 'l', 'o', 's', 't', 'z']
-
-export default {
-  name: 'TetrisGame',
-  data: () => ({
-    inited: false,
-    gridCells: {
-      col: 10,
-      row: 20
-    },
-
-    matrix: null,
-    rotate: 0,
-    position: null,
-    currentTetrimino: null,
-    nextTetrimino: null,
-    tetriminosShuffle: [],
-    score: 0,
-    lines: 0,
-
-    start: false,
-    end: false,
-    pause: false,
-    lock: false,
-
-    clearing: false,
-    clearIndexs: [],
-
-    intervalID: undefined
-  }),
-  computed: {
-    movable: function () {
-      return this.start && !this.end && !this.clearing && !this.pause
-    },
-    level: function () {
-      return Math.ceil(this.lines / 10)
-    },
-    nextTetriminoMatrixLegend: function () {
-      if (this.nextTetrimino) {
-        return TetriminosMatrix[this.nextTetrimino + 'Legend']
-      } else {
-        return null
-      }
-    },
-    positions: function () {
-      if (this.currentTetrimino) {
-        return this._getPositions(this._getRotatedMatrix(this.rotate), this.position)
-      } else {
-        return null
-      }
-    },
-    currentMatrix: function () {
-      if (this.currentTetrimino) {
-        const tmp = cloneDeep(this.matrix)
-        for (const position of this.positions) {
-          if (position[0] >= 0 && position[0] < this.gridCells.row &&
-            position[1] >= 0 && position[1] < this.gridCells.col) {
-            tmp[position[0]][position[1]] = this.currentTetrimino
-          }
-        }
-        return tmp
-      } else {
-        return this.matrix
-      }
-    },
-    speed: function () {
-      const level = this.level <= 20 ? this.level : 20
-      return 1000 * ((0.8 - ((level - 1) * 0.007)) ** (level - 1))
-    },
-    bestScore: function () {
-      return useSettingStore().modules.tetris.bestScore
-    }
-  },
-  mounted () {
-    this.resetGame()
-    this.getNextTetrimino()
-    this.addListener()
-    this.inited = true
-  },
-  beforeUnmount () {
-    this.removeListener()
-  },
-  methods: {
-    playGame () {
-      if (!this.start) {
-        this.score = 0
-        this.lines = 0
-        this.getNextTetrimino()
-        this.start = true
-        this.intervalID = setInterval(() => {
-          if (!this.clearing) {
-            this.moveDown()
-          }
-        }, this.speed)
-      }
-    },
-    resetGame () {
-      clearInterval(this.intervalID)
-      const tmp = Array(this.gridCells.row)
-      for (const x of range(this.gridCells.row)) {
-        tmp[x] = Array(this.gridCells.col).fill('')
-      }
-      this.matrix = tmp
-      this.rotate = 0
-      this.resetPosition()
-      this.currentTetrimino = undefined
-      this.start = false
-      this.end = false
-      this.pause = false
-      this.lock = false
-      this.clearing = false
-    },
-    pauseGame (lock) {
-      if (lock) {
-        this.lock = true
-      } else if (lock === false) {
-        this.lock = false
-      }
-      if (this.start && (this.lock === false || lock)) {
-        if (this.pause) {
-          this.pause = !this.pause
-          this.intervalID = setInterval(() => {
-            if (!this.clearing) {
-              this.moveDown()
-            }
-          }, this.speed)
-        } else {
-          this.pause = !this.pause
-          clearInterval(this.intervalID)
-        }
-      }
-    },
-    resetPosition () {
-      this.rotate = 0
-      this.position = [0, Math.ceil(this.gridCells.col / 2)]
-    },
-    updateMatrix () {
-      if (this.start) {
-        for (const position of this.positions) {
-          if (position[0] < 0) {
-            this.end = true
-          }
-        }
-        this.matrix = cloneDeep(this.currentMatrix)
-        if (this.end) {
-          this.pauseGame(true)
-          this.clearIndexs = []
-          for (const x of range(this.gridCells.row)) {
-            this.clearIndexs.push(x)
-          }
-          setTimeout(() => {
-            if (this.score > this.bestScore) {
-              this.setBestScore(this.score)
-            }
-            this.clearIndexs = []
-            this.resetGame()
-          }, 600)
-          return
-        }
-        this.score += 4
-        const indexs = []
-        for (const i in this.matrix) {
-          const tmp = this.matrix[i].filter(item => (item === ''))
-          if (tmp.length === 0) {
-            indexs.push(parseInt(i))
-          }
-        }
-        if (indexs.length > 0) {
-          this.clearing = true
-          this.pauseGame(true)
-          this.clearIndexs = indexs
-          const tmp = cloneDeep(this.matrix)
-          for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
-            tmp.splice(this.clearIndexs[i], 1)
-          }
-          const tmp1 = Array(this.clearIndexs.length)
-          for (const x of range(this.clearIndexs.length)) {
-            tmp1[x] = Array(this.gridCells.col).fill('')
-          }
-          setTimeout(() => {
-            this.lines += this.clearIndexs.length
-            switch (this.clearIndexs.length) {
-              case 1:
-                this.score += 40 * this.level
-                break
-              case 2:
-                this.score += 100 * this.level
-                break
-              case 3:
-                this.score += 300 * this.level
-                break
-              case 4:
-                this.score += 1200 * this.level
-                break
-              default:
-                break
-            }
-            this.clearIndexs = []
-            this.matrix = [...tmp1, ...tmp]
-            this.getNextTetrimino()
-            this.resetPosition()
-            this.clearing = false
-            this.pauseGame(false)
-          }, 600)
-        } else {
-          this.getNextTetrimino()
-          this.resetPosition()
-        }
-      }
-    },
-    getNextTetrimino () {
-      this.currentTetrimino = this.nextTetrimino
-      if (this.tetriminosShuffle.length <= 7) {
-        this.tetriminosShuffle = this.tetriminosShuffle.concat(shuffle(tetriminos))
-      }
-      this.nextTetrimino = this.tetriminosShuffle.shift()
-    },
-
-    rotateRight () {
-      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
-        this.rotate++
-      }
-    },
-    rotateLeft () {
-      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate - 1), this.position))) {
-        this.rotate--
-      }
-    },
-    moveLeft () {
-      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] - 1]))) {
-        this.position[1]--
-      }
-    },
-    moveRight () {
-      if (this.movable && !this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0], this.position[1] + 1]))) {
-        this.position[1]++
-      }
-    },
-    moveDown () {
-      if (this.movable) {
-        if (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + 1, this.position[1]]))) {
-          this.position[0]++
-        } else {
-          this.updateMatrix()
-        }
-      }
-    },
-    moveBottom () {
-      if (this.movable) {
-        let time = 0
-        while (!this._hasConflict(this._getPositions(this._getRotatedMatrix(this.rotate), [this.position[0] + time + 1, this.position[1]]))) {
-          time++
-        }
-        this.position[0] += time
-        this.updateMatrix()
-      }
-    },
-
-    addListener () {
-      document.addEventListener('keydown', this._keyboardEvent.bind(this))
-    },
-    removeListener () {
-      document.removeEventListener('keydown', this._keyboardEvent.bind(this))
-    },
-
-    _getRotatedMatrix (rotate) {
-      let index = rotate % TetriminosMatrix[this.currentTetrimino].length
-      if (index < 0) {
-        index += TetriminosMatrix[this.currentTetrimino].length
-      }
-      return TetriminosMatrix[this.currentTetrimino][index]
-    },
-    _getPositions (matrix, position) {
-      const positions = []
-      for (let x = 0; x < matrix.length; x++) {
-        for (let y = 0; y < matrix[x].length; y++) {
-          if (matrix[x][y] === 1) {
-            switch (this.currentTetrimino) {
-              case 'i':
-              case 'o':
-                positions.push([position[0] - 2 + x, position[1] - 2 + y])
-                break
-              case 'j':
-              case 'l':
-              case 't':
-                positions.push([position[0] - 1 + x, position[1] - 1 + y])
-                break
-              case 's':
-              case 'z':
-                positions.push([position[0] - 2 + x, position[1] - 1 + y])
-                break
-              default:
-                return null
-            }
-          }
-        }
-      }
-      return positions
-    },
-    _keyboardEvent (event) {
-      const modifiers = event.altKey || event.ctrlKey || event.metaKey ||
-        event.shiftKey
-
-      if (!modifiers) {
-        switch (event.code) {
-          case 'Space':
-            if (!this.start) {
-              this.playGame()
-            } else {
-              if (this.pause) {
-                this.pauseGame()
-              }
-              this.moveBottom()
-            }
-            break
-          case 'KeyW':
-          case 'KeyE':
-          case 'ArrowUp':
-            if (this.pause) {
-              this.pauseGame()
-            }
-            this.rotateRight()
-            break
-          case 'KeyQ':
-            if (this.pause) {
-              this.pauseGame()
-            }
-            this.rotateLeft()
-            break
-          case 'KeyS':
-          case 'ArrowDown':
-            if (this.pause) {
-              this.pauseGame()
-            }
-            this.moveDown()
-            break
-          case 'KeyA':
-          case 'ArrowLeft':
-            if (this.pause) {
-              this.pauseGame()
-            }
-            this.moveLeft()
-            break
-          case 'KeyD':
-          case 'ArrowRight':
-            if (this.pause) {
-              this.pauseGame()
-            }
-            this.moveRight()
-            break
-          case 'KeyP':
-            this.pauseGame()
-            break
-          case 'KeyR':
-            if (this.start) {
-              this.resetGame()
-            } else {
-              this.playGame()
-            }
-            break
-          default:
-            break
-        }
-      }
-    },
-    _hasConflict (positions) {
-      for (const position of positions) {
-        if (position[0] >= this.gridCells.row || position[1] < 0 || position[1] >= this.gridCells.col) {
-          return true
-        } else if (position[0] >= 0 && this.matrix[position[0]][position[1]] !== '') {
-          return true
-        }
-      }
-      return false
-    },
-    setBestScore (score) {
-      useUserStore().modules.tetris.bestScore = score
-    }
-  }
-}
-</script>
 
 <style scoped lang="scss">
 @import "./style/ds-digital";

@@ -1,3 +1,165 @@
+<script>
+import Axios from 'axios'
+import O from './assets/image/O.png'
+import R from './assets/image/R.png'
+import Ob from './assets/image/Ob.png'
+import Oreo from './assets/image/oreo.png'
+import random from './assets/image/random.png'
+
+export default {
+  name: 'GameOreooo',
+  data: () => ({
+    output: false,
+    loading: true,
+    oreoArr: [],
+    imgUrl: '',
+
+    assets: {
+      O,
+      R,
+      Ob,
+      Oreo,
+      random,
+    },
+  }),
+  computed: {
+    oreoStr() {
+      let str = ''
+      for (let index = 0; index < this.oreoArr.length; index++) {
+        const item = this.oreoArr[index]
+        switch (item) {
+          case 'O':
+          case 'Ob':
+            str += '奥'
+            break
+          case 'R':
+            str += '利'
+            break
+          case '-':
+            str += '与'
+            break
+          default:
+            break
+        }
+      }
+      return str
+    },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.loading = false
+    }, 1000)
+  },
+  methods: {
+    strAdd(str) {
+      switch (str) {
+        case 'o':
+          if (this.oreoArr.length === 0) {
+            this.oreoArr.push('O')
+          }
+          else {
+            this.oreoArr.push('Ob')
+          }
+          break
+        case 'r':
+          this.oreoArr.push('R')
+          break
+        case '-':
+          if (this.oreoArr.length > 0 && this.oreoArr[this.oreoArr.length - 1] !== '-') {
+            this.oreoArr.push('-')
+          }
+          break
+        case '-1':
+          if (this.oreoArr.length > 0) {
+            this.oreoArr.pop()
+          }
+          break
+        default:
+          break
+      }
+    },
+    getRandom() {
+      for (let i = 0; i < Math.floor(Math.random() * 8) + 1; i++) {
+        const random = Math.random() * 5
+        let str = ''
+        if (random < 1) {
+          str = '-'
+        }
+        else if (random < 3) {
+          str = 'o'
+        }
+        else {
+          str = 'r'
+        }
+        for (let j = 0; j < Math.floor(Math.random() * 4) + 1; j++) {
+          console.log(i, str, j)
+          this.strAdd(str)
+        }
+      }
+      if (this.oreoArr[this.oreoArr.length - 1] === '-') {
+        this.oreoArr.pop()
+      }
+      if (this.oreoArr.length === 0) {
+        this.getRandom()
+      }
+    },
+    generateImage() {
+      if (this.oreoArr.length > 0) {
+        this.loading = true
+        this.output = true
+        const oreoArr = this.oreoArr
+        const drawArr = []
+
+        // Delete '-' at the end
+        if (oreoArr[oreoArr.length - 1] === '-') {
+          oreoArr.pop()
+        }
+
+        // Canvas height calculation
+        let height = 0
+        for (let index = 0; index < oreoArr.length; index++) {
+          const thisLayer = oreoArr[index]
+          if (thisLayer !== '-') {
+            const drawItem = {
+              image: this.$refs[thisLayer],
+              x: thisLayer === 'R' ? 10 : 0,
+              y: height,
+              width: thisLayer === 'R' ? 220 : 240,
+              height: thisLayer === 'R' ? 155 : 160,
+            }
+            drawArr.splice(0, 0, drawItem)
+            height += 24
+          }
+          else {
+            height += 72
+          }
+        }
+        height += 160 - 24 // Add the last image's height.
+
+        const canvas = this.$refs.oreo_canvas
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+
+        drawArr.forEach((item) => {
+          ctx.drawImage(item.image, item.x, item.y, item.width, item.height)
+        })
+        Axios.get(canvas.toDataURL('image/png'), { responseType: 'blob' }).then((res) => {
+          this.imgUrl = URL.createObjectURL(res.data)
+        })
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+      }
+    },
+    backToInput() {
+      this.output = false
+      this.oreoArr = []
+      this.imgUrl = ''
+    },
+  },
+}
+</script>
+
 <template>
   <div class="oreooo">
     <div
@@ -108,7 +270,7 @@
           target="_blank"
         >查看图片</a>
       </div>
-      <!--      <div v-else @click="downloadImage" class="btn">保存图片</div>-->
+      <!--      <div v-else @click="downloadImage" class="btn">保存图片</div> -->
       <div
         class="btn"
         @click="backToInput"
@@ -118,164 +280,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import O from './assets/image/O.png'
-import R from './assets/image/R.png'
-import Ob from './assets/image/Ob.png'
-import Oreo from './assets/image/oreo.png'
-import random from './assets/image/random.png'
-import Axios from 'axios'
-
-export default {
-  name: 'GameOreooo',
-  data: () => ({
-    output: false,
-    loading: true,
-    oreoArr: [],
-    imgUrl: '',
-
-    assets: {
-      O,
-      R,
-      Ob,
-      Oreo,
-      random
-    }
-  }),
-  computed: {
-    oreoStr: function () {
-      let str = ''
-      for (let index = 0; index < this.oreoArr.length; index++) {
-        const item = this.oreoArr[index]
-        switch (item) {
-          case 'O':
-          case 'Ob':
-            str += '奥'
-            break
-          case 'R':
-            str += '利'
-            break
-          case '-':
-            str += '与'
-            break
-          default:
-            break
-        }
-      }
-      return str
-    }
-  },
-  mounted () {
-    setTimeout(() => {
-      this.loading = false
-    }, 1000)
-  },
-  methods: {
-    strAdd (str) {
-      switch (str) {
-        case 'o':
-          if (this.oreoArr.length === 0) {
-            this.oreoArr.push('O')
-          } else {
-            this.oreoArr.push('Ob')
-          }
-          break
-        case 'r':
-          this.oreoArr.push('R')
-          break
-        case '-':
-          if (this.oreoArr.length > 0 && this.oreoArr[this.oreoArr.length - 1] !== '-') {
-            this.oreoArr.push('-')
-          }
-          break
-        case '-1':
-          if (this.oreoArr.length > 0) {
-            this.oreoArr.pop()
-          }
-          break
-        default:
-          break
-      }
-    },
-    getRandom () {
-      for (let i = 0; i < Math.floor(Math.random() * 8) + 1; i++) {
-        const random = Math.random() * 5
-        let str = ''
-        if (random < 1) {
-          str = '-'
-        } else if (random < 3) {
-          str = 'o'
-        } else {
-          str = 'r'
-        }
-        for (let j = 0; j < Math.floor(Math.random() * 4) + 1; j++) {
-          console.log(i, str, j)
-          this.strAdd(str)
-        }
-      }
-      if (this.oreoArr[this.oreoArr.length - 1] === '-') {
-        this.oreoArr.pop()
-      }
-      if (this.oreoArr.length === 0) {
-        this.getRandom()
-      }
-    },
-    generateImage () {
-      if (this.oreoArr.length > 0) {
-        this.loading = true
-        this.output = true
-        const oreoArr = this.oreoArr
-        const drawArr = []
-
-        // Delete '-' at the end
-        if (oreoArr[oreoArr.length - 1] === '-') {
-          oreoArr.pop()
-        }
-
-        // Canvas height calculation
-        let height = 0
-        for (let index = 0; index < oreoArr.length; index++) {
-          const thisLayer = oreoArr[index]
-          if (thisLayer !== '-') {
-            const drawItem = {
-              image: this.$refs[thisLayer],
-              x: thisLayer === 'R' ? 10 : 0,
-              y: height,
-              width: thisLayer === 'R' ? 220 : 240,
-              height: thisLayer === 'R' ? 155 : 160
-            }
-            drawArr.splice(0, 0, drawItem)
-            height += 24
-          } else {
-            height += 72
-          }
-        }
-        height += 160 - 24 // Add the last image's height.
-
-        const canvas = this.$refs.oreo_canvas
-        canvas.height = height
-        const ctx = canvas.getContext('2d')
-
-        drawArr.forEach(item => {
-          ctx.drawImage(item.image, item.x, item.y, item.width, item.height)
-        })
-        Axios.get(canvas.toDataURL('image/png'), { responseType: 'blob' }).then(res => {
-          this.imgUrl = URL.createObjectURL(res.data)
-        })
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
-      }
-    },
-    backToInput () {
-      this.output = false
-      this.oreoArr = []
-      this.imgUrl = ''
-    }
-  }
-}
-</script>
 
 <style scoped lang="scss">
 @font-face {

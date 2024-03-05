@@ -1,4 +1,4 @@
-export type MockPrj = {
+export interface MockPrj {
   id: string
   name: string
   path: string
@@ -7,7 +7,7 @@ export type MockPrj = {
 
 type RequestType = 'post' | 'get' | 'delete' | 'put'
 
-export type MockData = {
+export interface MockData {
   id: number
   name: string
   type: RequestType
@@ -21,7 +21,7 @@ export type MockData = {
   url?: string
 }
 
-export type ResultDto<T> = {
+export interface ResultDto<T> {
   success: boolean
   data?: T
   message?: string

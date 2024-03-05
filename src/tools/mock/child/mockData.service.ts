@@ -1,8 +1,8 @@
+import dayjs from 'dayjs'
+import ElMessage from 'element-plus/es/components/message/index'
 import type { MockData, MockPrj, ResultDto } from './mock'
 import axios from '@/plugins/Axios'
-import dayjs from 'dayjs'
 import { deleteParam, setParam } from '@/utils/hashHandler'
-import ElMessage from 'element-plus/es/components/message/index'
 
 const emptyMockData: MockData = {
   id: -1,
@@ -13,108 +13,117 @@ const emptyMockData: MockData = {
   description: '',
   delay: 0,
   response: '',
-  projectId: ''
+  projectId: '',
 }
 
 export const selectedProject = ref<MockPrj>()
 export const mockData = ref<MockData[]>([])
 
-export function getNewMockData () {
+export function getNewMockData() {
   if (!selectedProject.value) {
     throw new Error('未选择项目')
   }
   return {
     ...emptyMockData,
-    projectId: selectedProject.value.id
+    projectId: selectedProject.value.id,
   }
 }
 
-export async function setProject (prj?: MockPrj) {
+export async function setProject(prj?: MockPrj) {
   selectedProject.value = prj
   mockData.value = []
   if (selectedProject.value) {
     setParam('prjId', selectedProject.value.id)
     await refreshMockData()
-  } else {
+  }
+  else {
     deleteParam('prjId')
   }
 }
 
-export async function editData (data: MockData) {
+export async function editData(data: MockData) {
   try {
     const res: ResultDto<never> = await axios.put(`${axios.$apiBase}/mock/api/data/${data.id}`, {
       ...data,
       id: undefined,
-      projectId: undefined
+      projectId: undefined,
     }).then(axios.getData)
     if (res.success) {
       ElMessage.success('修改数据成功')
       refreshMockData().then()
       return true
-    } else {
+    }
+    else {
       ElMessage.error('修改数据失败')
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error('修改数据失败')
   }
   return false
 }
 
-export async function createData (data: MockData) {
+export async function createData(data: MockData) {
   try {
     const res: ResultDto<never> = await axios.post(`${axios.$apiBase}/mock/api/data`, { ...data, id: undefined, projectId: selectedProject.value?.id }).then(axios.getData)
     if (res.success) {
       ElMessage.success('创建数据成功')
       refreshMockData().then()
       return true
-    } else {
+    }
+    else {
       ElMessage.error('创建数据失败')
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error('创建数据失败')
   }
   return false
 }
 
-export async function deleteData (data: MockData) {
+export async function deleteData(data: MockData) {
   try {
     const res: ResultDto<never> = await axios.delete(`${axios.$apiBase}/mock/api/data/${data.id}`).then(axios.getData)
     if (res.success) {
       ElMessage.success('删除数据成功')
       refreshMockData().then()
       return true
-    } else {
+    }
+    else {
       ElMessage.error('删除数据失败')
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error('删除数据失败')
   }
   return false
 }
 
-async function refreshMockData () {
+async function refreshMockData() {
   if (!selectedProject.value) {
     ElMessage.error('未选择项目')
     return
   }
   try {
     mockData.value = await getMockData(selectedProject.value)
-  } catch (e) {
+  }
+  catch (e) {
     console.log(e)
     ElMessage.error('获取数据列表失败')
   }
 }
 
 // 获取接口列表
-async function getMockData (prj: MockPrj) {
+async function getMockData(prj: MockPrj) {
   const data: ResultDto<MockData[]> = await (axios.get(`${axios.$apiBase}/mock/api/prj/${prj.id}/list`).then(axios.getData))
   if (data.success) {
-    return (data.data || []).map(item => {
+    return (data.data || []).map((item) => {
       item.createdAt = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')
       item.url = `${axios.$apiBase}/mock/${prj.id}${prj.path}${item.path}`
       return item
     })
-  } else {
+  }
+  else {
     throw new Error(data.message)
   }
 }

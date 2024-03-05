@@ -1,3 +1,62 @@
+<script setup lang="ts">
+import type { AxiosStatic } from 'axios'
+
+const dataUrl = ref('')
+const $axios: AxiosStatic = inject('$axios') as AxiosStatic
+const imgPreview = ref<HTMLImageElement>()
+const imageSize = ref({
+  width: '',
+  height: '',
+})
+
+const isUrl = computed(() => {
+  return dataUrl.value && (dataUrl.value.startsWith('http://') || dataUrl.value.startsWith('https://'))
+})
+
+function upload(img: File): false {
+  const reader = new FileReader()
+  reader.onloadend = () => {
+    dataUrl.value = reader.result as string
+  }
+  reader.readAsDataURL(img)
+  return false
+}
+
+async function copy() {
+  try {
+    await window.navigator.clipboard.writeText(dataUrl.value)
+    ElMessage.success('复制成功')
+  }
+  catch (e) {
+    ElMessage.error((e as Error)?.message)
+  }
+}
+
+async function convert() {
+  try {
+    const res = await $axios.get(dataUrl.value, {
+      responseType: 'blob',
+    })
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      dataUrl.value = reader.result as string
+    }
+    reader.readAsDataURL(res.data)
+  }
+  catch (e) {
+    ElMessage.error((e as Error)?.message)
+  }
+}
+
+function onImagePreview() {
+  if (!imgPreview.value) {
+    return
+  }
+  imageSize.value.height = `${imgPreview.value.naturalHeight}px`
+  imageSize.value.width = `${imgPreview.value.naturalWidth}px`
+}
+</script>
+
 <template>
   <div class="wrapper">
     <el-space>
@@ -28,7 +87,7 @@
       v-model="dataUrl"
       type="textarea"
       allow-clear
-      :autosize="{minRows: 5,maxRows: 10}"
+      :autosize="{ minRows: 5, maxRows: 10 }"
       placeholder="请输入 图片地址 或 Base64格式的图片"
     />
     <template v-if="dataUrl">
@@ -42,70 +101,13 @@
         alt="preview"
         :style="{
           width: imageSize.width ? imageSize.width : '',
-          height: imageSize.height ? imageSize.height : ''
+          height: imageSize.height ? imageSize.height : '',
         }"
         @load="onImagePreview"
       >
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { AxiosStatic } from 'axios'
-
-const dataUrl = ref('')
-const $axios: AxiosStatic = inject('$axios') as AxiosStatic
-const imgPreview = ref<HTMLImageElement>()
-const imageSize = ref({
-  width: '',
-  height: ''
-})
-
-const isUrl = computed(() => {
-  return dataUrl.value && (dataUrl.value.startsWith('http://') || dataUrl.value.startsWith('https://'))
-})
-
-function upload (img: File): false {
-  const reader = new FileReader()
-  reader.onloadend = () => {
-    dataUrl.value = reader.result as string
-  }
-  reader.readAsDataURL(img)
-  return false
-}
-
-async function copy () {
-  try {
-    await window.navigator.clipboard.writeText(dataUrl.value)
-    ElMessage.success('复制成功')
-  } catch (e) {
-    ElMessage.error((e as Error)?.message)
-  }
-}
-
-async function convert () {
-  try {
-    const res = await $axios.get(dataUrl.value, {
-      responseType: 'blob'
-    })
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      dataUrl.value = reader.result as string
-    }
-    reader.readAsDataURL(res.data)
-  } catch (e) {
-    ElMessage.error((e as Error)?.message)
-  }
-}
-
-function onImagePreview () {
-  if (!imgPreview.value) {
-    return
-  }
-  imageSize.value.height = imgPreview.value.naturalHeight + 'px'
-  imageSize.value.width = imgPreview.value.naturalWidth + 'px'
-}
-</script>
 
 <style scoped lang="scss">
 .wrapper {

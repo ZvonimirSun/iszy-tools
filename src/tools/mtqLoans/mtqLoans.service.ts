@@ -11,17 +11,18 @@
  * @param [type]                  Optional, defaults to 0. The number 0 (zero) or 1 and indicates when payments are due.
  *                              0 = At the end of period
  *                              1 = At the beginning of the period
- * @returns {number}
+ * @returns {number} The monthly payment required to pay off a loan.
  */
-export default function pmt (ratePerPeriod: number, numberOfPayments: number, presentValue: number, futureValue?: number, type?: 0 | 1) {
+export default function pmt(ratePerPeriod: number, numberOfPayments: number, presentValue: number, futureValue?: number, type?: 0 | 1): number {
   futureValue = typeof futureValue !== 'undefined' ? futureValue : 0
   type = typeof type !== 'undefined' ? type : 0
 
   if (ratePerPeriod !== 0.0) {
     // Interest rate exists
-    const q = Math.pow(1 + ratePerPeriod, numberOfPayments)
+    const q = (1 + ratePerPeriod) ** numberOfPayments
     return -(ratePerPeriod * (futureValue + (q * presentValue))) / ((-1 + q) * (1 + ratePerPeriod * (type)))
-  } else if (numberOfPayments !== 0.0) {
+  }
+  else if (numberOfPayments !== 0.0) {
     // No interest rate, but number of payments exists
     return -(futureValue + presentValue) / numberOfPayments
   }

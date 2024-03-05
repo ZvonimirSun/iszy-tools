@@ -1,3 +1,35 @@
+<script>
+import GameManager from './js/GameManager.js'
+
+let gameManager
+
+export default {
+  name: '2048Game',
+  data: () => ({
+    state: {},
+  }),
+  computed: {
+    gameState() {
+      return use2048Store().gameState
+    },
+    bestScore() {
+      return useSettingStore().modules['2048'].bestScore
+    },
+  },
+  mounted() {
+    gameManager = new GameManager(4, this)
+  },
+  beforeUnmount() {
+    gameManager.destroy()
+  },
+  methods: {
+    setBestScore: use2048Store().setBestScore,
+    setGameState: use2048Store().setGameState,
+    clearGameState: use2048Store().clearGameState,
+  },
+}
+</script>
+
 <template>
   <div>
     <div class="panel">
@@ -5,39 +37,32 @@
         <div class="above-game">
           <div class="scores-container">
             <div
-              ref="scoreContainer"
               class="score-container"
             >
               0
             </div>
             <div
-              ref="bestContainer"
               class="best-container"
             >
               0
             </div>
           </div>
           <a
-            ref="restartButton"
             class="restart-button"
           >新游戏</a>
         </div>
         <div
-          ref="gameContainer"
           class="game-container"
         >
           <div
-            ref="messageContainer"
             class="game-message"
           >
             <p />
             <div class="lower">
               <a
-                ref="keepPlayingButton"
                 class="keep-playing-button"
               >继续挑战</a>
               <a
-                ref="retryButton"
                 class="retry-button"
               >重新开始</a>
             </div>
@@ -50,7 +75,6 @@
             />
           </div>
           <div
-            ref="tileContainer"
             class="tile-container"
           />
         </div>
@@ -58,38 +82,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import GameManager from './js/GameManager.js'
-
-let gameManager
-
-export default {
-  name: '2048Game',
-  data: () => ({
-    state: {}
-  }),
-  computed: {
-    gameState () {
-      return use2048Store().gameState
-    },
-    bestScore () {
-      return useSettingStore().modules['2048'].bestScore
-    }
-  },
-  mounted () {
-    gameManager = new GameManager(4, this)
-  },
-  beforeUnmount () {
-    gameManager.destroy()
-  },
-  methods: {
-    setBestScore: use2048Store().setBestScore,
-    setGameState: use2048Store().setGameState,
-    clearGameState: use2048Store().clearGameState
-  }
-}
-</script>
 
 <style scoped lang="scss">
 @use "sass:math";

@@ -1,9 +1,20 @@
+<script setup>
+defineProps({
+  fullScreenStatus: { type: Boolean, default: false },
+})
+const emit = defineEmits(['fullScreen'])
+const route = useRoute()
+
+function fullScreen() {
+  emit('fullScreen')
+}
+</script>
+
 <template>
   <div
-    ref="container"
     class="containerBase"
     :class="{
-      'full-screen': fullScreenStatus
+      'full-screen': fullScreenStatus,
     }"
   >
     <div class="containerAll">
@@ -26,19 +37,6 @@
     </div>
   </div>
 </template>
-<script setup>
-// eslint-disable-next-line no-undef
-const emit = defineEmits(['fullScreen'])
-const route = useRoute()
-
-defineProps({
-  fullScreenStatus: { type: Boolean, default: false }
-})
-
-function fullScreen () {
-  emit('fullScreen')
-}
-</script>
 
 <style scoped lang="scss">
 .containerBase {

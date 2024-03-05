@@ -1,5 +1,5 @@
 export default class KeyboardInputManager {
-  constructor (vue) {
+  constructor(vue) {
     this.events = {}
     this.vue = vue
 
@@ -15,7 +15,7 @@ export default class KeyboardInputManager {
       KeyW: 0, // W
       KeyD: 1, // D
       KeyS: 2, // S
-      KeyA: 3 // A
+      KeyA: 3, // A
     }
 
     if (window.navigator.msPointerEnabled) {
@@ -23,7 +23,8 @@ export default class KeyboardInputManager {
       this.eventTouchstart = 'MSPointerDown'
       this.eventTouchmove = 'MSPointerMove'
       this.eventTouchend = 'MSPointerUp'
-    } else {
+    }
+    else {
       this.eventTouchstart = 'touchstart'
       this.eventTouchmove = 'touchmove'
       this.eventTouchend = 'touchend'
@@ -41,23 +42,23 @@ export default class KeyboardInputManager {
     this.listen()
   }
 
-  on (event, callback) {
+  on(event, callback) {
     if (!this.events[event]) {
       this.events[event] = []
     }
     this.events[event].push(callback)
   }
 
-  emit (event, data) {
+  emit(event, data) {
     const callbacks = this.events[event]
     if (callbacks) {
-      callbacks.forEach(function (callback) {
+      callbacks.forEach((callback) => {
         callback(data)
       })
     }
   }
 
-  listen () {
+  listen() {
     // Respond to direction keys
     document.addEventListener('keydown', this._keyboardEvent.bind(this))
 
@@ -69,7 +70,7 @@ export default class KeyboardInputManager {
     this.gameContainer.addEventListener(this.eventTouchstart, this._touchStartEvent.bind(this))
     this.gameContainer.addEventListener('mousedown', this._touchStartEvent.bind(this))
 
-    this.gameContainer.addEventListener(this.eventTouchmove, function (event) {
+    this.gameContainer.addEventListener(this.eventTouchmove, (event) => {
       event.preventDefault()
     })
 
@@ -77,29 +78,29 @@ export default class KeyboardInputManager {
     this.gameContainer.addEventListener('mouseup', this._touchEndEvent.bind(this))
   }
 
-  restart (event) {
+  restart(event) {
     event.preventDefault()
     this.emit('restart')
   }
 
-  keepPlaying (event) {
+  keepPlaying(event) {
     event.preventDefault()
     this.emit('keepPlaying')
   }
 
-  bindButtonPress (button, fn) {
+  bindButtonPress(button, fn) {
     button.addEventListener('click', fn.bind(this))
     button.addEventListener(this.eventTouchend, fn.bind(this))
   }
 
-  removeButtonPress (button) {
+  removeButtonPress(button) {
     button.addEventListener('click')
     button.addEventListener(this.eventTouchend)
   }
 
-  _keyboardEvent (event) {
-    const modifiers = event.altKey || event.ctrlKey || event.metaKey ||
-      event.shiftKey
+  _keyboardEvent(event) {
+    const modifiers = event.altKey || event.ctrlKey || event.metaKey
+      || event.shiftKey
     const mapped = this.map[event.code]
 
     if (!modifiers) {
@@ -115,16 +116,17 @@ export default class KeyboardInputManager {
     }
   }
 
-  _touchStartEvent (event) {
-    if (!(event.type === 'mousedown') && ((!window.navigator.msPointerEnabled && event.touches.length > 1) ||
-      event.targetTouches.length > 1)) {
+  _touchStartEvent(event) {
+    if (!(event.type === 'mousedown') && ((!window.navigator.msPointerEnabled && event.touches.length > 1)
+      || event.targetTouches.length > 1)) {
       return // Ignore if touching with more than 1 finger
     }
 
     if (window.navigator.msPointerEnabled || event.type === 'mousedown') {
       this.touchStartClientX = event.pageX
       this.touchStartClientY = event.pageY
-    } else {
+    }
+    else {
       this.touchStartClientX = event.touches[0].clientX
       this.touchStartClientY = event.touches[0].clientY
     }
@@ -132,9 +134,9 @@ export default class KeyboardInputManager {
     event.preventDefault()
   }
 
-  _touchEndEvent (event) {
-    if (!(event.type === 'mouseup') && ((!window.navigator.msPointerEnabled && event.touches.length > 0) ||
-      event.targetTouches.length > 0)) {
+  _touchEndEvent(event) {
+    if (!(event.type === 'mouseup') && ((!window.navigator.msPointerEnabled && event.touches.length > 0)
+      || event.targetTouches.length > 0)) {
       return // Ignore if still touching with one or more fingers
     }
 
@@ -143,7 +145,8 @@ export default class KeyboardInputManager {
     if (window.navigator.msPointerEnabled || event.type === 'mouseup') {
       touchEndClientX = event.pageX
       touchEndClientY = event.pageY
-    } else {
+    }
+    else {
       touchEndClientX = event.changedTouches[0].clientX
       touchEndClientY = event.changedTouches[0].clientY
     }
@@ -160,7 +163,7 @@ export default class KeyboardInputManager {
     }
   }
 
-  destroy () {
+  destroy() {
     document.removeEventListener('keydown', this._keyboardEvent)
     this.removeButtonPress(this.retryButton)
     this.removeButtonPress(this.restartButton)

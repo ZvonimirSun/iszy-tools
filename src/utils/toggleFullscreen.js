@@ -4,19 +4,25 @@ export default async (dom) => {
       try {
         if (dom.requestFullscreen) {
           await dom.requestFullscreen()
-        } else if (dom.webkitRequestFullScreen) {
+        }
+        else if (dom.webkitRequestFullScreen) {
           await dom.webkitRequestFullScreen()
-        } else if (dom.mozRequestFullScreen) {
+        }
+        else if (dom.mozRequestFullScreen) {
           await dom.mozRequestFullScreen()
-        } else if (dom.msRequestFullscreen) {
+        }
+        else if (dom.msRequestFullscreen) {
           await dom.msRequestFullscreen()
-        } else {
+        }
+        else {
           ElMessage.error('不支持全屏')
         }
-      } catch (e) {
+      }
+      catch (e) {
         ElMessage.error('无法进入全屏')
       }
-    } else {
+    }
+    else {
       await document.exitFullscreen()
     }
   }

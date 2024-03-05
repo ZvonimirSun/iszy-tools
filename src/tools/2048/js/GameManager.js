@@ -4,7 +4,7 @@ import InputManager from './KeyboardInputManager'
 import Actuator from './HtmlActuator.js'
 
 export default class GameManager {
-  constructor (size, vue) {
+  constructor(size, vue) {
     this.vue = vue
     this.size = size // Size of the grid
     this.inputManager = new InputManager(vue)
@@ -20,35 +20,35 @@ export default class GameManager {
     this.setup()
   }
 
-  destroy () {}
+  destroy() {}
 
-  restart () {
+  restart() {
     this.vue.clearGameState()
     this.actuator.continueGame() // Clear the game won/lost message
     this.setup()
   }
 
-  keepPlaying () {
+  keepPlaying() {
     this.keepPlaying = true
     this.actuator.continueGame() // Clear the game won/lost message
   }
 
-  isGameTerminated () {
+  isGameTerminated() {
     return this.over || (this.won && !this.keepPlaying)
   }
 
-  setup () {
+  setup() {
     const previousState = this.vue.gameState
 
     // Reload the game from a previous game if present
     if (previousState) {
-      this.grid = new Grid(previousState.grid.size,
-        previousState.grid.cells) // Reload grid
+      this.grid = new Grid(previousState.grid.size, previousState.grid.cells) // Reload grid
       this.score = previousState.score
       this.over = previousState.over
       this.won = previousState.won
       this.keepPlaying = previousState.keepPlaying
-    } else {
+    }
+    else {
       this.grid = new Grid(this.size)
       this.score = 0
       this.over = false
@@ -63,13 +63,13 @@ export default class GameManager {
     this.actuate()
   }
 
-  addStartTiles () {
+  addStartTiles() {
     for (let i = 0; i < this.startTiles; i++) {
       this.addRandomTile()
     }
   }
 
-  addRandomTile () {
+  addRandomTile() {
     if (this.grid.cellsAvailable()) {
       const value = Math.random() < 0.9 ? 2 : 4
       const tile = new Tile(this.grid.randomAvailableCell(), value)
@@ -78,7 +78,7 @@ export default class GameManager {
     }
   }
 
-  actuate () {
+  actuate() {
     if (this.vue.bestScore < this.score) {
       this.vue.setBestScore(this.score)
     }
@@ -86,7 +86,8 @@ export default class GameManager {
     // Clear the state when the game is over (game over only, not win)
     if (this.over) {
       this.vue.clearGameState()
-    } else {
+    }
+    else {
       this.vue.setGameState(this.serialize())
     }
 
@@ -96,7 +97,7 @@ export default class GameManager {
       over: this.over,
       won: this.won,
       bestScore: this.vue.bestScore,
-      terminated: this.isGameTerminated()
+      terminated: this.isGameTerminated(),
     }
 
     this.actuator.actuate(this.grid, {
@@ -104,22 +105,22 @@ export default class GameManager {
       over: this.over,
       won: this.won,
       bestScore: this.vue.bestScore,
-      terminated: this.isGameTerminated()
+      terminated: this.isGameTerminated(),
     })
   }
 
-  serialize () {
+  serialize() {
     return {
       grid: this.grid.serialize(),
       score: this.score,
       over: this.over,
       won: this.won,
-      keepPlaying: this.keepPlaying
+      keepPlaying: this.keepPlaying,
     }
   }
 
-  prepareTiles () {
-    this.grid.eachCell(function (x, y, tile) {
+  prepareTiles() {
+    this.grid.eachCell((x, y, tile) => {
       if (tile) {
         tile.mergedFrom = null
         tile.savePosition()
@@ -127,17 +128,18 @@ export default class GameManager {
     })
   }
 
-  moveTile (tile, cell) {
+  moveTile(tile, cell) {
     this.grid.cells[tile.x][tile.y] = null
     this.grid.cells[cell.x][cell.y] = tile
     tile.updatePosition(cell)
   }
 
-  move (direction) {
+  move(direction) {
     // 0: up, 1: right, 2: down, 3: left
     const self = this
 
-    if (this.isGameTerminated()) return // Don't do anything if the game's over
+    if (this.isGameTerminated())
+      return // Don't do anything if the game's over
 
     let cell, tile
 
@@ -149,8 +151,8 @@ export default class GameManager {
     this.prepareTiles()
 
     // Traverse the grid in the right direction and move tiles
-    traversals.x.forEach(function (x) {
-      traversals.y.forEach(function (y) {
+    traversals.x.forEach((x) => {
+      traversals.y.forEach((y) => {
         cell = { x, y }
         tile = self.grid.cellContent(cell)
 
@@ -173,8 +175,10 @@ export default class GameManager {
             self.score += merged.value
 
             // The mighty 2048 tile
-            if (merged.value === 2048) self.won = true
-          } else {
+            if (merged.value === 2048)
+              self.won = true
+          }
+          else {
             self.moveTile(tile, positions.farthest)
           }
 
@@ -196,19 +200,19 @@ export default class GameManager {
     }
   }
 
-  getVector (direction) {
+  getVector(direction) {
     // Vectors representing tile movement
     const map = {
       0: { x: 0, y: -1 }, // Up
       1: { x: 1, y: 0 }, // Right
       2: { x: 0, y: 1 }, // Down
-      3: { x: -1, y: 0 } // Left
+      3: { x: -1, y: 0 }, // Left
     }
 
     return map[direction]
   }
 
-  buildTraversals (vector) {
+  buildTraversals(vector) {
     const traversals = { x: [], y: [] }
 
     for (let pos = 0; pos < this.size; pos++) {
@@ -217,33 +221,35 @@ export default class GameManager {
     }
 
     // Always traverse from the farthest cell in the chosen direction
-    if (vector.x === 1) traversals.x = traversals.x.reverse()
-    if (vector.y === 1) traversals.y = traversals.y.reverse()
+    if (vector.x === 1)
+      traversals.x = traversals.x.reverse()
+    if (vector.y === 1)
+      traversals.y = traversals.y.reverse()
 
     return traversals
   }
 
-  findFarthestPosition (cell, vector) {
+  findFarthestPosition(cell, vector) {
     let previous
 
     // Progress towards the vector direction until an obstacle is found
     do {
       previous = cell
       cell = { x: previous.x + vector.x, y: previous.y + vector.y }
-    } while (this.grid.withinBounds(cell) &&
-    this.grid.cellAvailable(cell))
+    } while (this.grid.withinBounds(cell)
+    && this.grid.cellAvailable(cell))
 
     return {
       farthest: previous,
-      next: cell // Used to check if a merge is required
+      next: cell, // Used to check if a merge is required
     }
   }
 
-  movesAvailable () {
+  movesAvailable() {
     return this.grid.cellsAvailable() || this.tileMatchesAvailable()
   }
 
-  tileMatchesAvailable () {
+  tileMatchesAvailable() {
     const self = this
 
     let tile
@@ -270,7 +276,7 @@ export default class GameManager {
     return false
   }
 
-  positionsEqual (first, second) {
+  positionsEqual(first, second) {
     return first.x === second.x && first.y === second.y
   }
 }

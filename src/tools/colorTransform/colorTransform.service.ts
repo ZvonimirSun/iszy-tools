@@ -1,18 +1,16 @@
-import { withDefaultOnError } from '@/utils/defaults'
 import { type Colord, colord } from 'colord'
 import type { FormRules } from 'element-plus'
 import type { Arrayable } from 'element-plus/es/utils'
-import { FormItemRule } from 'element-plus/es/components/form/src/types'
+import type { FormItemRule } from 'element-plus/es/components/form/src/types'
+import { withDefaultOnError } from '@/utils/defaults'
 
-export { buildColorFormat, buildColorForm }
-
-function buildColorFormat ({
+function buildColorFormat({
   label,
   parse = value => colord(value),
   format,
   placeholder,
   invalidMessage = `错误的 ${label} 格式。`,
-  type = 'text'
+  type = 'text',
 }: {
   label: string
   parse?: (value: string) => Colord
@@ -30,19 +28,21 @@ function buildColorFormat ({
     validation: (rule: unknown, value: string, callback: (e?: Error) => void): undefined => {
       if (!value) {
         callback()
-      } else {
+      }
+      else {
         if (parse(value).isValid()) {
           callback()
-        } else {
+        }
+        else {
           callback(new Error(invalidMessage))
         }
       }
-    }
+    },
   }
 }
 
-function buildColorForm<T extends { [p: string]: ReturnType<typeof buildColorFormat> }> (formats: T): {
-  ruleForm: { [K in keyof T]: string },
+function buildColorForm<T extends { [p: string]: ReturnType<typeof buildColorFormat> }>(formats: T): {
+  ruleForm: { [K in keyof T]: string }
   rules: FormRules<{ [K in keyof T]: string }>
 } {
   const record: Partial<{ [K in keyof T]: string }> = {}
@@ -54,12 +54,14 @@ function buildColorForm<T extends { [p: string]: ReturnType<typeof buildColorFor
     rules[key] = [
       {
         validator: formats[key].validation,
-        trigger: 'change'
-      }
+        trigger: 'change',
+      },
     ]
   }
   return {
     ruleForm: reactive(record) as { [K in keyof T]: string },
-    rules: reactive(rules) as FormRules<{ [K in keyof T]: string }>
+    rules: reactive(rules) as FormRules<{ [K in keyof T]: string }>,
   }
 }
+
+export { buildColorFormat, buildColorForm }

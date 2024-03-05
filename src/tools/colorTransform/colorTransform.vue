@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { colord, type Colord, extend } from 'colord'
+import { type Colord, colord, extend } from 'colord'
 import cmykPlugin from 'colord/plugins/cmyk'
 import hwbPlugin from 'colord/plugins/hwb'
 import namesPlugin from 'colord/plugins/names'
 import lchPlugin from 'colord/plugins/lch'
-import { buildColorForm, buildColorFormat } from './colorTransform.service'
 import { forEach } from 'lodash-es'
+import { buildColorForm, buildColorFormat } from './colorTransform.service'
 
 extend([cmykPlugin, hwbPlugin, namesPlugin, lchPlugin])
 
@@ -13,43 +13,43 @@ const formats = {
   picker: buildColorFormat({
     label: '颜色选择器',
     format: (v: Colord) => v.toHex(),
-    type: 'color-picker'
+    type: 'color-picker',
   }),
   hex: buildColorFormat({
     label: 'HEX',
     format: (v: Colord) => v.toHex(),
-    placeholder: 'e.g. #ff0000'
+    placeholder: 'e.g. #ff0000',
   }),
   rgb: buildColorFormat({
     label: 'RGB',
     format: (v: Colord) => v.toRgbString(),
-    placeholder: 'e.g. rgb(255, 0, 0)'
+    placeholder: 'e.g. rgb(255, 0, 0)',
   }),
   hsl: buildColorFormat({
     label: 'HSL',
     format: (v: Colord) => v.toHslString(),
-    placeholder: 'e.g. hsl(0, 100%, 50%)'
+    placeholder: 'e.g. hsl(0, 100%, 50%)',
   }),
   hwb: buildColorFormat({
     label: 'HWB',
     format: (v: Colord) => v.toHwbString(),
-    placeholder: 'e.g. hwb(0, 0%, 0%)'
+    placeholder: 'e.g. hwb(0, 0%, 0%)',
   }),
   lch: buildColorFormat({
     label: 'LCH',
     format: (v: Colord) => v.toLchString(),
-    placeholder: 'e.g. lch(53.24, 104.55, 40.85)'
+    placeholder: 'e.g. lch(53.24, 104.55, 40.85)',
   }),
   cmyk: buildColorFormat({
     label: 'CMYK',
     format: (v: Colord) => v.toCmykString(),
-    placeholder: 'e.g. cmyk(0, 100%, 100%, 0)'
+    placeholder: 'e.g. cmyk(0, 100%, 100%, 0)',
   }),
   name: buildColorFormat({
     label: '名称',
     format: (v: Colord) => v.toName({ closest: true }) ?? 'Unknown',
-    placeholder: 'e.g. red'
-  })
+    placeholder: 'e.g. red',
+  }),
 }
 
 const { rules, ruleForm } = buildColorForm<typeof formats>(formats)
@@ -58,7 +58,7 @@ const colorInput = ref<HTMLInputElement[]>()
 
 updateColorValue(colord('#16b0f6'))
 
-function updateColorValue (value: Colord | undefined, omitLabel?: string) {
+function updateColorValue(value: Colord | undefined, omitLabel?: string) {
   if (value === undefined) {
     return
   }
@@ -78,7 +78,7 @@ function updateColorValue (value: Colord | undefined, omitLabel?: string) {
 
 const { copy } = useCopy({ text: '复制成功' })
 
-function copyColor (val: string) {
+function copyColor(val: string) {
   copy(val)
 }
 </script>
@@ -125,10 +125,10 @@ function copyColor (val: string) {
           <div
             class="picker"
             :class="{
-              dark: isDark
+              dark: isDark,
             }"
             :style="{
-              backgroundColor: ruleForm[key]
+              backgroundColor: ruleForm[key],
             }"
           >
             {{ ruleForm[key] }}

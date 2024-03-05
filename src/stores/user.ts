@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import axios from '@/plugins/Axios'
 import { clone } from 'lodash-es'
 import type { AxiosError, AxiosResponse } from 'axios'
+import axios from '@/plugins/Axios'
 import type { AuthOption, User } from '@/types/auth'
 import { downloadSettings } from '@/plugins/PiniaSync'
 
@@ -13,24 +13,24 @@ const emptyProfile: User = {
   userName: null,
   email: null,
   userId: null,
-  roles: null
+  roles: null,
 }
 
 export const useUserStore = defineStore('user', {
   persist: true,
   state: () => ({
     logged: false,
-    profile: clone(emptyProfile) as User
+    profile: clone(emptyProfile) as User,
   }),
   getters: {
-    isAdmin: state => {
+    isAdmin: (state) => {
       return state.profile.roles?.some(item => (item.name === 'superadmin'))
-    }
+    },
   },
 
   actions: {
-    async login ({ userName, password } = {} as {
-      userName: string,
+    async login({ userName, password } = {} as {
+      userName: string
       password: string
     }) {
       let error = ''
@@ -38,7 +38,7 @@ export const useUserStore = defineStore('user', {
         if (userName && password) {
           const res = (await axios.post(`${axios.$apiBase}/auth/login`, {
             username: userName.trim(),
-            password
+            password,
           })).data
           if (res.success) {
             this.logged = true
@@ -46,14 +46,17 @@ export const useUserStore = defineStore('user', {
             this.profile = res.data || clone(emptyProfile)
             await downloadSettings()
             return
-          } else {
+          }
+          else {
             this.clearToken()
             error = res.message
           }
-        } else {
+        }
+        else {
           error = '用户名或密码错误'
         }
-      } catch (e) {
+      }
+      catch (e) {
         this.clearToken()
         if (((e as AxiosError)?.response?.data as { message: string })?.message) {
           throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
@@ -62,19 +65,21 @@ export const useUserStore = defineStore('user', {
       }
       throw new Error(error)
     },
-    async logout () {
+    async logout() {
       try {
         const data = (await axios.post(`${axios.$apiBase}/auth/logout`)).data
         if (data && data.success) {
           this.clearToken()
-        } else {
+        }
+        else {
           ElMessage.warning('登出失败！')
         }
-      } catch (e) {
+      }
+      catch (e) {
         this.clearToken()
       }
     },
-    async updateUser (options: {
+    async updateUser(options: {
       nickName?: string
       email?: string
       passwd?: string
@@ -85,21 +90,24 @@ export const useUserStore = defineStore('user', {
         if (data && data.success) {
           this.profile = data.data || clone(emptyProfile)
           ElMessage.success('更新成功！')
-        } else {
+        }
+        else {
           throw new Error(data.message)
         }
-      } catch (e) {
+      }
+      catch (e) {
         if (((e as AxiosError)?.response?.data as { message: string })?.message) {
           throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
         }
         throw e
       }
     },
-    async checkToken () {
+    async checkToken() {
       if (this.logged) {
         if (tokenChecked) {
           return true
-        } else {
+        }
+        else {
           if (!checkTokenPromise) {
             checkTokenPromise = axios.get(`${axios.$apiBase}/auth/profile`)
             checkTokenPromise.then((res) => {
@@ -115,27 +123,32 @@ export const useUserStore = defineStore('user', {
             if (data && data.success) {
               tokenChecked = true
               return true
-            } else {
+            }
+            else {
               this.clearToken()
               return false
             }
-          } catch (e) {
+          }
+          catch (e) {
             if (axios.isCancel && !axios.isCancel(e)) {
               this.clearToken()
             }
             return false
           }
         }
-      } else {
+      }
+      else {
         return false
       }
     },
-    checkAccess (authOption: AuthOption) {
+    checkAccess(authOption: AuthOption) {
       if (authOption === false) {
         return true
-      } else if (typeof authOption === 'boolean') {
+      }
+      else if (typeof authOption === 'boolean') {
         return this.logged
-      } else {
+      }
+      else {
         if (!this.logged) {
           return false
         }
@@ -156,15 +169,14 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    clearToken () {
+    clearToken() {
       this.logged = false
       this.profile = clone(emptyProfile)
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    importConfig (data: any) {
+    importConfig(data: any) {
       useUserStore().$patch(data)
-    }
-  }
+    },
+  },
 })
 
 if (import.meta.hot) {

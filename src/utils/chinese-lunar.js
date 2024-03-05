@@ -27,7 +27,7 @@ const MAPPING = [
     '1023',
     '1122',
     '1222',
-    '1320'
+    '1320',
   ], // 1900
   [
     0,
@@ -42,7 +42,7 @@ const MAPPING = [
     '1012',
     '1111',
     '1211',
-    '1310'
+    '1310',
   ], // 1901
   [
     0,
@@ -57,7 +57,7 @@ const MAPPING = [
     '1002',
     '1031',
     '1130',
-    '1230'
+    '1230',
   ], // 1902
   [
     5,
@@ -73,7 +73,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1219',
-    '1317'
+    '1317',
   ], // 1903
   [
     0,
@@ -88,7 +88,7 @@ const MAPPING = [
     '1009',
     '1107',
     '1207',
-    '1306'
+    '1306',
   ], // 1904
   [
     0,
@@ -103,7 +103,7 @@ const MAPPING = [
     '0929',
     '1028',
     '1127',
-    '1226'
+    '1226',
   ], // 1905
   [
     4,
@@ -119,7 +119,7 @@ const MAPPING = [
     '1018',
     '1116',
     '1216',
-    '1314'
+    '1314',
   ], // 1906
   [
     0,
@@ -134,7 +134,7 @@ const MAPPING = [
     '1007',
     '1106',
     '1205',
-    '1304'
+    '1304',
   ], // 1907
   [
     0,
@@ -149,7 +149,7 @@ const MAPPING = [
     '0925',
     '1025',
     '1124',
-    '1223'
+    '1223',
   ], // 1908
   [
     2,
@@ -165,7 +165,7 @@ const MAPPING = [
     '1014',
     '1113',
     '1213',
-    '1311'
+    '1311',
   ], // 1909
   [
     0,
@@ -180,7 +180,7 @@ const MAPPING = [
     '1003',
     '1102',
     '1202',
-    '1301'
+    '1301',
   ], // 1910
   [
     6,
@@ -196,7 +196,7 @@ const MAPPING = [
     '1022',
     '1121',
     '1220',
-    '1319'
+    '1319',
   ], // 1911
   [
     0,
@@ -211,7 +211,7 @@ const MAPPING = [
     '1010',
     '1109',
     '1209',
-    '1307'
+    '1307',
   ], // 1912
   [
     0,
@@ -226,7 +226,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1227'
+    '1227',
   ], // 1913
   [
     5,
@@ -242,7 +242,7 @@ const MAPPING = [
     '1019',
     '1117',
     '1217',
-    '1315'
+    '1315',
   ], // 1914
   [
     0,
@@ -257,7 +257,7 @@ const MAPPING = [
     '1009',
     '1107',
     '1207',
-    '1305'
+    '1305',
   ], // 1915
   [
     0,
@@ -272,7 +272,7 @@ const MAPPING = [
     '0927',
     '1027',
     '1125',
-    '1225'
+    '1225',
   ], // 1916
   [
     2,
@@ -288,7 +288,7 @@ const MAPPING = [
     '1016',
     '1115',
     '1214',
-    '1313'
+    '1313',
   ], // 1917
   [
     0,
@@ -303,7 +303,7 @@ const MAPPING = [
     '1005',
     '1104',
     '1203',
-    '1302'
+    '1302',
   ], // 1918
   [
     7,
@@ -319,7 +319,7 @@ const MAPPING = [
     '1024',
     '1122',
     '1222',
-    '1321'
+    '1321',
   ], // 1919
   [
     0,
@@ -334,7 +334,7 @@ const MAPPING = [
     '1012',
     '1110',
     '1210',
-    '1309'
+    '1309',
   ], // 1920
   [
     0,
@@ -349,7 +349,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1129',
-    '1229'
+    '1229',
   ], // 1921
   [
     5,
@@ -365,7 +365,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1218',
-    '1317'
+    '1317',
   ], // 1922
   [
     0,
@@ -380,7 +380,7 @@ const MAPPING = [
     '1010',
     '1108',
     '1208',
-    '1306'
+    '1306',
   ], // 1923
   [
     0,
@@ -395,7 +395,7 @@ const MAPPING = [
     '0929',
     '1028',
     '1127',
-    '1226'
+    '1226',
   ], // 1924
   [
     4,
@@ -411,7 +411,7 @@ const MAPPING = [
     '1018',
     '1116',
     '1216',
-    '1314'
+    '1314',
   ], // 1925
   [
     0,
@@ -426,7 +426,7 @@ const MAPPING = [
     '1007',
     '1105',
     '1205',
-    '1304'
+    '1304',
   ], // 1926
   [
     0,
@@ -441,7 +441,7 @@ const MAPPING = [
     '0926',
     '1025',
     '1124',
-    '1224'
+    '1224',
   ], // 1927
   [
     2,
@@ -457,7 +457,7 @@ const MAPPING = [
     '1013',
     '1112',
     '1212',
-    '1311'
+    '1311',
   ], // 1928
   [
     0,
@@ -472,7 +472,7 @@ const MAPPING = [
     '1003',
     '1101',
     '1201',
-    '1231'
+    '1231',
   ], // 1929
   [
     6,
@@ -488,7 +488,7 @@ const MAPPING = [
     '1022',
     '1120',
     '1220',
-    '1319'
+    '1319',
   ], // 1930
   [
     0,
@@ -503,7 +503,7 @@ const MAPPING = [
     '1011',
     '1110',
     '1209',
-    '1308'
+    '1308',
   ], // 1931
   [
     0,
@@ -518,7 +518,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1227'
+    '1227',
   ], // 1932
   [
     5,
@@ -534,7 +534,7 @@ const MAPPING = [
     '1019',
     '1118',
     '1217',
-    '1315'
+    '1315',
   ], // 1933
   [
     0,
@@ -549,7 +549,7 @@ const MAPPING = [
     '1008',
     '1107',
     '1207',
-    '1305'
+    '1305',
   ], // 1934
   [
     0,
@@ -564,7 +564,7 @@ const MAPPING = [
     '0928',
     '1027',
     '1126',
-    '1226'
+    '1226',
   ], // 1935
   [
     3,
@@ -580,7 +580,7 @@ const MAPPING = [
     '1015',
     '1114',
     '1214',
-    '1313'
+    '1313',
   ], // 1936
   [
     0,
@@ -595,7 +595,7 @@ const MAPPING = [
     '1004',
     '1103',
     '1203',
-    '1302'
+    '1302',
   ], // 1937
   [
     7,
@@ -611,7 +611,7 @@ const MAPPING = [
     '1023',
     '1122',
     '1222',
-    '1320'
+    '1320',
   ], // 1938
   [
     0,
@@ -626,7 +626,7 @@ const MAPPING = [
     '1013',
     '1111',
     '1211',
-    '1309'
+    '1309',
   ], // 1939
   [
     0,
@@ -641,7 +641,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1129',
-    '1229'
+    '1229',
   ], // 1940
   [
     6,
@@ -657,7 +657,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1218',
-    '1317'
+    '1317',
   ], // 1941
   [
     0,
@@ -672,7 +672,7 @@ const MAPPING = [
     '1010',
     '1108',
     '1208',
-    '1306'
+    '1306',
   ], // 1942
   [
     0,
@@ -687,7 +687,7 @@ const MAPPING = [
     '0929',
     '1029',
     '1127',
-    '1227'
+    '1227',
   ], // 1943
   [
     4,
@@ -703,7 +703,7 @@ const MAPPING = [
     '1017',
     '1116',
     '1215',
-    '1314'
+    '1314',
   ], // 1944
   [
     0,
@@ -718,7 +718,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1205',
-    '1303'
+    '1303',
   ], // 1945
   [
     0,
@@ -733,7 +733,7 @@ const MAPPING = [
     '0925',
     '1025',
     '1124',
-    '1223'
+    '1223',
   ], // 1946
   [
     2,
@@ -749,7 +749,7 @@ const MAPPING = [
     '1014',
     '1113',
     '1212',
-    '1311'
+    '1311',
   ], // 1947
   [
     0,
@@ -764,7 +764,7 @@ const MAPPING = [
     '1003',
     '1101',
     '1201',
-    '1230'
+    '1230',
   ], // 1948
   [
     7,
@@ -780,7 +780,7 @@ const MAPPING = [
     '1022',
     '1120',
     '1220',
-    '1318'
+    '1318',
   ], // 1949
   [
     0,
@@ -795,7 +795,7 @@ const MAPPING = [
     '1011',
     '1110',
     '1209',
-    '1308'
+    '1308',
   ], // 1950
   [
     0,
@@ -810,7 +810,7 @@ const MAPPING = [
     '1001',
     '1030',
     '1129',
-    '1228'
+    '1228',
   ], // 1951
   [
     5,
@@ -826,7 +826,7 @@ const MAPPING = [
     '1019',
     '1117',
     '1217',
-    '1315'
+    '1315',
   ], // 1952
   [
     0,
@@ -841,7 +841,7 @@ const MAPPING = [
     '1008',
     '1107',
     '1206',
-    '1305'
+    '1305',
   ], // 1953
   [
     0,
@@ -856,7 +856,7 @@ const MAPPING = [
     '0927',
     '1027',
     '1126',
-    '1225'
+    '1225',
   ], // 1954
   [
     3,
@@ -872,7 +872,7 @@ const MAPPING = [
     '1016',
     '1114',
     '1214',
-    '1313'
+    '1313',
   ], // 1955
   [
     0,
@@ -887,7 +887,7 @@ const MAPPING = [
     '1004',
     '1103',
     '1203',
-    '1301'
+    '1301',
   ], // 1956
   [
     8,
@@ -903,7 +903,7 @@ const MAPPING = [
     '1023',
     '1122',
     '1221',
-    '1320'
+    '1320',
   ], // 1957
   [
     0,
@@ -918,7 +918,7 @@ const MAPPING = [
     '1013',
     '1111',
     '1211',
-    '1309'
+    '1309',
   ], // 1958
   [
     0,
@@ -933,7 +933,7 @@ const MAPPING = [
     '1002',
     '1101',
     '1130',
-    '1230'
+    '1230',
   ], // 1959
   [
     6,
@@ -949,7 +949,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1218',
-    '1317'
+    '1317',
   ], // 1960
   [
     0,
@@ -964,7 +964,7 @@ const MAPPING = [
     '1010',
     '1108',
     '1208',
-    '1306'
+    '1306',
   ], // 1961
   [
     0,
@@ -979,7 +979,7 @@ const MAPPING = [
     '0929',
     '1028',
     '1127',
-    '1227'
+    '1227',
   ], // 1962
   [
     4,
@@ -995,7 +995,7 @@ const MAPPING = [
     '1017',
     '1116',
     '1216',
-    '1315'
+    '1315',
   ], // 1963
   [
     0,
@@ -1010,7 +1010,7 @@ const MAPPING = [
     '1006',
     '1104',
     '1204',
-    '1303'
+    '1303',
   ], // 1964
   [
     0,
@@ -1025,7 +1025,7 @@ const MAPPING = [
     '0925',
     '1024',
     '1123',
-    '1223'
+    '1223',
   ], // 1965
   [
     3,
@@ -1041,7 +1041,7 @@ const MAPPING = [
     '1014',
     '1112',
     '1212',
-    '1311'
+    '1311',
   ], // 1966
   [
     0,
@@ -1056,7 +1056,7 @@ const MAPPING = [
     '1004',
     '1102',
     '1202',
-    '1231'
+    '1231',
   ], // 1967
   [
     7,
@@ -1072,7 +1072,7 @@ const MAPPING = [
     '1022',
     '1120',
     '1220',
-    '1318'
+    '1318',
   ], // 1968
   [
     0,
@@ -1087,7 +1087,7 @@ const MAPPING = [
     '1011',
     '1110',
     '1209',
-    '1308'
+    '1308',
   ], // 1969
   [
     0,
@@ -1102,7 +1102,7 @@ const MAPPING = [
     '0930',
     '1030',
     '1129',
-    '1228'
+    '1228',
   ], // 1970
   [
     5,
@@ -1118,7 +1118,7 @@ const MAPPING = [
     '1019',
     '1118',
     '1218',
-    '1316'
+    '1316',
   ], // 1971
   [
     0,
@@ -1133,7 +1133,7 @@ const MAPPING = [
     '1007',
     '1106',
     '1206',
-    '1304'
+    '1304',
   ], // 1972
   [
     0,
@@ -1148,7 +1148,7 @@ const MAPPING = [
     '0926',
     '1026',
     '1125',
-    '1224'
+    '1224',
   ], // 1973
   [
     4,
@@ -1164,7 +1164,7 @@ const MAPPING = [
     '1015',
     '1114',
     '1214',
-    '1312'
+    '1312',
   ], // 1974
   [
     0,
@@ -1179,7 +1179,7 @@ const MAPPING = [
     '1005',
     '1103',
     '1203',
-    '1301'
+    '1301',
   ], // 1975
   [
     8,
@@ -1195,7 +1195,7 @@ const MAPPING = [
     '1023',
     '1121',
     '1221',
-    '1319'
+    '1319',
   ], // 1976
   [
     0,
@@ -1210,7 +1210,7 @@ const MAPPING = [
     '1013',
     '1111',
     '1211',
-    '1309'
+    '1309',
   ], // 1977
   [
     0,
@@ -1225,7 +1225,7 @@ const MAPPING = [
     '1002',
     '1101',
     '1130',
-    '1230'
+    '1230',
   ], // 1978
   [
     6,
@@ -1241,7 +1241,7 @@ const MAPPING = [
     '1021',
     '1120',
     '1219',
-    '1318'
+    '1318',
   ], // 1979
   [
     0,
@@ -1256,7 +1256,7 @@ const MAPPING = [
     '1009',
     '1108',
     '1207',
-    '1306'
+    '1306',
   ], // 1980
   [
     0,
@@ -1271,7 +1271,7 @@ const MAPPING = [
     '0928',
     '1028',
     '1126',
-    '1226'
+    '1226',
   ], // 1981
   [
     4,
@@ -1287,7 +1287,7 @@ const MAPPING = [
     '1017',
     '1115',
     '1215',
-    '1314'
+    '1314',
   ], // 1982
   [
     0,
@@ -1302,7 +1302,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1204',
-    '1303'
+    '1303',
   ], // 1983
   [
     10,
@@ -1318,7 +1318,7 @@ const MAPPING = [
     '1024',
     '1123',
     '1222',
-    '1321'
+    '1321',
   ], // 1984
   [
     0,
@@ -1333,7 +1333,7 @@ const MAPPING = [
     '1014',
     '1112',
     '1212',
-    '1310'
+    '1310',
   ], // 1985
   [
     0,
@@ -1348,7 +1348,7 @@ const MAPPING = [
     '1004',
     '1102',
     '1202',
-    '1231'
+    '1231',
   ], // 1986
   [
     6,
@@ -1364,7 +1364,7 @@ const MAPPING = [
     '1023',
     '1121',
     '1221',
-    '1319'
+    '1319',
   ], // 1987
   [
     0,
@@ -1379,7 +1379,7 @@ const MAPPING = [
     '1011',
     '1109',
     '1209',
-    '1308'
+    '1308',
   ], // 1988
   [
     0,
@@ -1394,7 +1394,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1228'
+    '1228',
   ], // 1989
   [
     5,
@@ -1410,7 +1410,7 @@ const MAPPING = [
     '1018',
     '1117',
     '1217',
-    '1316'
+    '1316',
   ], // 1990
   [
     0,
@@ -1425,7 +1425,7 @@ const MAPPING = [
     '1008',
     '1106',
     '1206',
-    '1305'
+    '1305',
   ], // 1991
   [
     0,
@@ -1440,7 +1440,7 @@ const MAPPING = [
     '0926',
     '1026',
     '1124',
-    '1224'
+    '1224',
   ], // 1992
   [
     3,
@@ -1456,7 +1456,7 @@ const MAPPING = [
     '1015',
     '1114',
     '1213',
-    '1312'
+    '1312',
   ], // 1993
   [
     0,
@@ -1471,7 +1471,7 @@ const MAPPING = [
     '1005',
     '1103',
     '1203',
-    '1301'
+    '1301',
   ], // 1994
   [
     8,
@@ -1487,7 +1487,7 @@ const MAPPING = [
     '1024',
     '1122',
     '1222',
-    '1320'
+    '1320',
   ], // 1995
   [
     0,
@@ -1502,7 +1502,7 @@ const MAPPING = [
     '1012',
     '1111',
     '1211',
-    '1309'
+    '1309',
   ], // 1996
   [
     0,
@@ -1517,7 +1517,7 @@ const MAPPING = [
     '1002',
     '1031',
     '1130',
-    '1230'
+    '1230',
   ], // 1997
   [
     5,
@@ -1533,7 +1533,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1219',
-    '1317'
+    '1317',
   ], // 1998
   [
     0,
@@ -1548,7 +1548,7 @@ const MAPPING = [
     '1009',
     '1108',
     '1208',
-    '1307'
+    '1307',
   ], // 1999
   [
     0,
@@ -1563,7 +1563,7 @@ const MAPPING = [
     '0928',
     '1027',
     '1126',
-    '1226'
+    '1226',
   ], // 2000
   [
     4,
@@ -1579,7 +1579,7 @@ const MAPPING = [
     '1017',
     '1115',
     '1215',
-    '1313'
+    '1313',
   ], // 2001
   [
     0,
@@ -1594,7 +1594,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1204',
-    '1303'
+    '1303',
   ], // 2002
   [
     0,
@@ -1609,7 +1609,7 @@ const MAPPING = [
     '0926',
     '1025',
     '1124',
-    '1223'
+    '1223',
   ], // 2003
   [
     2,
@@ -1625,7 +1625,7 @@ const MAPPING = [
     '1014',
     '1112',
     '1212',
-    '1310'
+    '1310',
   ], // 2004
   [
     0,
@@ -1640,7 +1640,7 @@ const MAPPING = [
     '1003',
     '1102',
     '1201',
-    '1231'
+    '1231',
   ], // 2005
   [
     7,
@@ -1656,7 +1656,7 @@ const MAPPING = [
     '1022',
     '1121',
     '1220',
-    '1319'
+    '1319',
   ], // 2006
   [
     0,
@@ -1671,7 +1671,7 @@ const MAPPING = [
     '1011',
     '1110',
     '1210',
-    '1308'
+    '1308',
   ], // 2007
   [
     0,
@@ -1686,7 +1686,7 @@ const MAPPING = [
     '0929',
     '1029',
     '1128',
-    '1227'
+    '1227',
   ], // 2008
   [
     5,
@@ -1702,7 +1702,7 @@ const MAPPING = [
     '1018',
     '1117',
     '1216',
-    '1315'
+    '1315',
   ], // 2009
   [
     0,
@@ -1717,7 +1717,7 @@ const MAPPING = [
     '1008',
     '1106',
     '1206',
-    '1304'
+    '1304',
   ], // 2010
   [
     0,
@@ -1732,7 +1732,7 @@ const MAPPING = [
     '0927',
     '1027',
     '1125',
-    '1225'
+    '1225',
   ], // 2011
   [
     4,
@@ -1748,7 +1748,7 @@ const MAPPING = [
     '1015',
     '1114',
     '1213',
-    '1312'
+    '1312',
   ], // 2012
   [
     0,
@@ -1763,7 +1763,7 @@ const MAPPING = [
     '1005',
     '1103',
     '1203',
-    '1301'
+    '1301',
   ], // 2013
   [
     9,
@@ -1779,7 +1779,7 @@ const MAPPING = [
     '1024',
     '1122',
     '1222',
-    '1320'
+    '1320',
   ], // 2014
   [
     0,
@@ -1794,7 +1794,7 @@ const MAPPING = [
     '1013',
     '1112',
     '1211',
-    '1310'
+    '1310',
   ], // 2015
   [
     0,
@@ -1809,7 +1809,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1129',
-    '1229'
+    '1229',
   ], // 2016
   [
     6,
@@ -1825,7 +1825,7 @@ const MAPPING = [
     '1020',
     '1118',
     '1218',
-    '1317'
+    '1317',
   ], // 2017
   [
     0,
@@ -1840,7 +1840,7 @@ const MAPPING = [
     '1009',
     '1108',
     '1207',
-    '1306'
+    '1306',
   ], // 2018
   [
     0,
@@ -1855,7 +1855,7 @@ const MAPPING = [
     '0929',
     '1028',
     '1126',
-    '1226'
+    '1226',
   ], // 2019
   [
     4,
@@ -1871,7 +1871,7 @@ const MAPPING = [
     '1017',
     '1115',
     '1215',
-    '1313'
+    '1313',
   ], // 2020
   [
     0,
@@ -1886,7 +1886,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1204',
-    '1303'
+    '1303',
   ], // 2021
   [
     0,
@@ -1901,7 +1901,7 @@ const MAPPING = [
     '0926',
     '1025',
     '1124',
-    '1223'
+    '1223',
   ], // 2022
   [
     2,
@@ -1917,7 +1917,7 @@ const MAPPING = [
     '1015',
     '1113',
     '1213',
-    '1311'
+    '1311',
   ], // 2023
   [
     0,
@@ -1932,7 +1932,7 @@ const MAPPING = [
     '1003',
     '1101',
     '1201',
-    '1231'
+    '1231',
   ], // 2024
   [
     6,
@@ -1948,7 +1948,7 @@ const MAPPING = [
     '1021',
     '1120',
     '1220',
-    '1319'
+    '1319',
   ], // 2025
   [
     0,
@@ -1963,7 +1963,7 @@ const MAPPING = [
     '1010',
     '1109',
     '1209',
-    '1308'
+    '1308',
   ], // 2026
   [
     0,
@@ -1978,7 +1978,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1228'
+    '1228',
   ], // 2027
   [
     5,
@@ -1994,7 +1994,7 @@ const MAPPING = [
     '1018',
     '1116',
     '1216',
-    '1315'
+    '1315',
   ], // 2028
   [
     0,
@@ -2009,7 +2009,7 @@ const MAPPING = [
     '1008',
     '1106',
     '1205',
-    '1304'
+    '1304',
   ], // 2029
   [
     0,
@@ -2024,7 +2024,7 @@ const MAPPING = [
     '0927',
     '1027',
     '1125',
-    '1225'
+    '1225',
   ], // 2030
   [
     3,
@@ -2040,7 +2040,7 @@ const MAPPING = [
     '1016',
     '1115',
     '1214',
-    '1313'
+    '1313',
   ], // 2031
   [
     0,
@@ -2055,7 +2055,7 @@ const MAPPING = [
     '1004',
     '1103',
     '1203',
-    '1301'
+    '1301',
   ], // 2032
   [
     7,
@@ -2071,7 +2071,7 @@ const MAPPING = [
     '1023',
     '1122',
     '1222',
-    '1320'
+    '1320',
   ], // 2033
   [
     0,
@@ -2086,7 +2086,7 @@ const MAPPING = [
     '1012',
     '1111',
     '1211',
-    '1309'
+    '1309',
   ], // 2034
   [
     0,
@@ -2101,7 +2101,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1130',
-    '1229'
+    '1229',
   ], // 2035
   [
     6,
@@ -2117,7 +2117,7 @@ const MAPPING = [
     '1019',
     '1118',
     '1217',
-    '1316'
+    '1316',
   ], // 2036
   [
     0,
@@ -2132,7 +2132,7 @@ const MAPPING = [
     '1009',
     '1107',
     '1207',
-    '1305'
+    '1305',
   ], // 2037
   [
     0,
@@ -2147,7 +2147,7 @@ const MAPPING = [
     '0929',
     '1028',
     '1126',
-    '1226'
+    '1226',
   ], // 2038
   [
     5,
@@ -2163,7 +2163,7 @@ const MAPPING = [
     '1018',
     '1116',
     '1216',
-    '1314'
+    '1314',
   ], // 2039
   [
     0,
@@ -2178,7 +2178,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1204',
-    '1303'
+    '1303',
   ], // 2040
   [
     0,
@@ -2193,7 +2193,7 @@ const MAPPING = [
     '0925',
     '1025',
     '1124',
-    '1223'
+    '1223',
   ], // 2041
   [
     2,
@@ -2209,7 +2209,7 @@ const MAPPING = [
     '1014',
     '1113',
     '1212',
-    '1311'
+    '1311',
   ], // 2042
   [
     0,
@@ -2224,7 +2224,7 @@ const MAPPING = [
     '1003',
     '1102',
     '1201',
-    '1231'
+    '1231',
   ], // 2043
   [
     7,
@@ -2240,7 +2240,7 @@ const MAPPING = [
     '1021',
     '1119',
     '1219',
-    '1318'
+    '1318',
   ], // 2044
   [
     0,
@@ -2255,7 +2255,7 @@ const MAPPING = [
     '1010',
     '1109',
     '1208',
-    '1307'
+    '1307',
   ], // 2045
   [
     0,
@@ -2270,7 +2270,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1227'
+    '1227',
   ], // 2046
   [
     5,
@@ -2286,7 +2286,7 @@ const MAPPING = [
     '1019',
     '1117',
     '1217',
-    '1315'
+    '1315',
   ], // 2047
   [
     0,
@@ -2301,7 +2301,7 @@ const MAPPING = [
     '1008',
     '1106',
     '1205',
-    '1304'
+    '1304',
   ], // 2048
   [
     0,
@@ -2316,7 +2316,7 @@ const MAPPING = [
     '0927',
     '1027',
     '1125',
-    '1225'
+    '1225',
   ], // 2049
   [
     3,
@@ -2332,7 +2332,7 @@ const MAPPING = [
     '1016',
     '1114',
     '1214',
-    '1313'
+    '1313',
   ], // 2050
   [
     0,
@@ -2347,7 +2347,7 @@ const MAPPING = [
     '1005',
     '1103',
     '1203',
-    '1302'
+    '1302',
   ], // 2051
   [
     8,
@@ -2363,7 +2363,7 @@ const MAPPING = [
     '1022',
     '1121',
     '1221',
-    '1320'
+    '1320',
   ], // 2052
   [
     0,
@@ -2378,7 +2378,7 @@ const MAPPING = [
     '1012',
     '1110',
     '1210',
-    '1309'
+    '1309',
   ], // 2053
   [
     0,
@@ -2393,7 +2393,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1129',
-    '1229'
+    '1229',
   ], // 2054
   [
     6,
@@ -2409,7 +2409,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1218',
-    '1317'
+    '1317',
   ], // 2055
   [
     0,
@@ -2424,7 +2424,7 @@ const MAPPING = [
     '1009',
     '1107',
     '1207',
-    '1305'
+    '1305',
   ], // 2056
   [
     0,
@@ -2439,7 +2439,7 @@ const MAPPING = [
     '0929',
     '1028',
     '1126',
-    '1226'
+    '1226',
   ], // 2057
   [
     4,
@@ -2455,7 +2455,7 @@ const MAPPING = [
     '1017',
     '1116',
     '1216',
-    '1314'
+    '1314',
   ], // 2058
   [
     0,
@@ -2470,7 +2470,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1205',
-    '1304'
+    '1304',
   ], // 2059
   [
     0,
@@ -2485,7 +2485,7 @@ const MAPPING = [
     '0924',
     '1024',
     '1123',
-    '1223'
+    '1223',
   ], // 2060
   [
     3,
@@ -2501,7 +2501,7 @@ const MAPPING = [
     '1013',
     '1112',
     '1212',
-    '1311'
+    '1311',
   ], // 2061
   [
     0,
@@ -2516,7 +2516,7 @@ const MAPPING = [
     '1003',
     '1101',
     '1201',
-    '1231'
+    '1231',
   ], // 2062
   [
     7,
@@ -2532,7 +2532,7 @@ const MAPPING = [
     '1022',
     '1120',
     '1220',
-    '1318'
+    '1318',
   ], // 2063
   [
     0,
@@ -2547,7 +2547,7 @@ const MAPPING = [
     '1010',
     '1109',
     '1208',
-    '1307'
+    '1307',
   ], // 2064
   [
     0,
@@ -2562,7 +2562,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1227'
+    '1227',
   ], // 2065
   [
     5,
@@ -2578,7 +2578,7 @@ const MAPPING = [
     '1019',
     '1117',
     '1217',
-    '1315'
+    '1315',
   ], // 2066
   [
     0,
@@ -2593,7 +2593,7 @@ const MAPPING = [
     '1008',
     '1107',
     '1206',
-    '1305'
+    '1305',
   ], // 2067
   [
     0,
@@ -2608,7 +2608,7 @@ const MAPPING = [
     '0926',
     '1026',
     '1125',
-    '1224'
+    '1224',
   ], // 2068
   [
     4,
@@ -2624,7 +2624,7 @@ const MAPPING = [
     '1015',
     '1114',
     '1214',
-    '1312'
+    '1312',
   ], // 2069
   [
     0,
@@ -2639,7 +2639,7 @@ const MAPPING = [
     '1004',
     '1103',
     '1203',
-    '1301'
+    '1301',
   ], // 2070
   [
     8,
@@ -2655,7 +2655,7 @@ const MAPPING = [
     '1023',
     '1122',
     '1221',
-    '1320'
+    '1320',
   ], // 2071
   [
     0,
@@ -2670,7 +2670,7 @@ const MAPPING = [
     '1012',
     '1110',
     '1210',
-    '1308'
+    '1308',
   ], // 2072
   [
     0,
@@ -2685,7 +2685,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1129',
-    '1229'
+    '1229',
   ], // 2073
   [
     6,
@@ -2701,7 +2701,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1218',
-    '1317'
+    '1317',
   ], // 2074
   [
     0,
@@ -2716,7 +2716,7 @@ const MAPPING = [
     '1010',
     '1108',
     '1208',
-    '1306'
+    '1306',
   ], // 2075
   [
     0,
@@ -2731,7 +2731,7 @@ const MAPPING = [
     '0928',
     '1028',
     '1126',
-    '1226'
+    '1226',
   ], // 2076
   [
     4,
@@ -2747,7 +2747,7 @@ const MAPPING = [
     '1017',
     '1116',
     '1215',
-    '1314'
+    '1314',
   ], // 2077
   [
     0,
@@ -2762,7 +2762,7 @@ const MAPPING = [
     '1006',
     '1105',
     '1204',
-    '1303'
+    '1303',
   ], // 2078
   [
     0,
@@ -2777,7 +2777,7 @@ const MAPPING = [
     '0925',
     '1025',
     '1123',
-    '1223'
+    '1223',
   ], // 2079
   [
     3,
@@ -2793,7 +2793,7 @@ const MAPPING = [
     '1013',
     '1111',
     '1211',
-    '1310'
+    '1310',
   ], // 2080
   [
     0,
@@ -2808,7 +2808,7 @@ const MAPPING = [
     '1003',
     '1101',
     '1130',
-    '1230'
+    '1230',
   ], // 2081
   [
     7,
@@ -2824,7 +2824,7 @@ const MAPPING = [
     '1022',
     '1120',
     '1219',
-    '1318'
+    '1318',
   ], // 2082
   [
     0,
@@ -2839,7 +2839,7 @@ const MAPPING = [
     '1011',
     '1110',
     '1209',
-    '1308'
+    '1308',
   ], // 2083
   [
     0,
@@ -2854,7 +2854,7 @@ const MAPPING = [
     '0930',
     '1029',
     '1128',
-    '1227'
+    '1227',
   ], // 2084
   [
     5,
@@ -2870,7 +2870,7 @@ const MAPPING = [
     '1019',
     '1117',
     '1217',
-    '1315'
+    '1315',
   ], // 2085
   [
     0,
@@ -2885,7 +2885,7 @@ const MAPPING = [
     '1008',
     '1106',
     '1206',
-    '1305'
+    '1305',
   ], // 2086
   [
     0,
@@ -2900,7 +2900,7 @@ const MAPPING = [
     '0927',
     '1026',
     '1125',
-    '1225'
+    '1225',
   ], // 2087
   [
     4,
@@ -2916,7 +2916,7 @@ const MAPPING = [
     '1014',
     '1113',
     '1213',
-    '1312'
+    '1312',
   ], // 2088
   [
     0,
@@ -2931,7 +2931,7 @@ const MAPPING = [
     '1004',
     '1102',
     '1202',
-    '1301'
+    '1301',
   ], // 2089
   [
     8,
@@ -2947,7 +2947,7 @@ const MAPPING = [
     '1023',
     '1121',
     '1221',
-    '1320'
+    '1320',
   ], // 2090
   [
     0,
@@ -2962,7 +2962,7 @@ const MAPPING = [
     '1013',
     '1111',
     '1210',
-    '1309'
+    '1309',
   ], // 2091
   [
     0,
@@ -2977,7 +2977,7 @@ const MAPPING = [
     '1001',
     '1031',
     '1129',
-    '1229'
+    '1229',
   ], // 2092
   [
     6,
@@ -2993,7 +2993,7 @@ const MAPPING = [
     '1020',
     '1119',
     '1218',
-    '1317'
+    '1317',
   ], // 2093
   [
     0,
@@ -3008,7 +3008,7 @@ const MAPPING = [
     '1009',
     '1108',
     '1208',
-    '1306'
+    '1306',
   ], // 2094
   [
     0,
@@ -3023,7 +3023,7 @@ const MAPPING = [
     '0928',
     '1028',
     '1127',
-    '1227'
+    '1227',
   ], // 2095
   [
     4,
@@ -3039,7 +3039,7 @@ const MAPPING = [
     '1016',
     '1115',
     '1215',
-    '1313'
+    '1313',
   ], // 2096
   [
     0,
@@ -3054,7 +3054,7 @@ const MAPPING = [
     '1005',
     '1104',
     '1204',
-    '1302'
+    '1302',
   ], // 2097
   [
     0,
@@ -3069,7 +3069,7 @@ const MAPPING = [
     '0925',
     '1024',
     '1123',
-    '1222'
+    '1222',
   ], // 2098
   [
     2,
@@ -3085,14 +3085,14 @@ const MAPPING = [
     '1014',
     '1112',
     '1212',
-    '1310'
-  ] // 2099
+    '1310',
+  ], // 2099
 ]
 const MIN_YEAR = 1900
 const _chineseLunar = {}
 
 export class Lunar {
-  constructor ({ leap, year, month, day, leapMonth } = {}) {
+  constructor({ leap, year, month, day, leapMonth } = {}) {
     this.leap = leap
     this.year = year
     this.month = month
@@ -3110,12 +3110,13 @@ const _expression = function (expr) {
   for (let i = 0; i < list.length; i++) {
     // 提取单位和数值
     if (/([+-])(\d+)(.+)/.test(list[i])) {
-      let val = parseInt(RegExp.$2)
-      if (RegExp.$1 === '-') val = -val
+      let val = Number.parseInt(RegExp.$2)
+      if (RegExp.$1 === '-')
+        val = -val
 
       result.push({
         value: val,
-        unit: RegExp.$3
+        unit: RegExp.$3,
       })
     }
   }
@@ -3127,11 +3128,11 @@ const _solarDiff = function (left, right, interval) {
   const span = left.getTime() - right.getTime() // 相差毫秒
   switch (interval) {
     case 'y':
-      return parseInt((left.getFullYear() - right.getFullYear()).toString())
+      return Number.parseInt((left.getFullYear() - right.getFullYear()).toString())
     case 'M':
-      return parseInt(
-        ((left.getFullYear() - right.getFullYear()) * 12 +
-        (left.getMonth() - right.getMonth()).toString())
+      return Number.parseInt(
+        ((left.getFullYear() - right.getFullYear()) * 12
+        + (left.getMonth() - right.getMonth()).toString()),
       )
     case 'd':
       return Math.ceil(span / 1000 / 60 / 60 / 24)
@@ -3144,7 +3145,7 @@ const _solarDiff = function (left, right, interval) {
     case 's':
       return Math.floor(span / 1000)
     case 'ms':
-      return parseInt(span.toString())
+      return Number.parseInt(span.toString())
   }
 }
 /*
@@ -3154,7 +3155,8 @@ const _solarDiff = function (left, right, interval) {
 const _findLunar = function (solar, index, minMonth, maxMonth, isPreYear) {
   // 取得映射的数据
   const mapping = MAPPING[index]
-  if (!mapping) return false
+  if (!mapping)
+    return false
 
   let year = solar.getFullYear()
   const month = solar.getMonth() + 1
@@ -3171,21 +3173,24 @@ const _findLunar = function (solar, index, minMonth, maxMonth, isPreYear) {
     segDay = Number(mapping[i].substring(2, 4))
 
     solarMonth = isPreYear && segMonth > 12 ? segMonth - 12 : segMonth
-    find =
-      solarMonth < month ||
-      (solarMonth === month && segDay <= date) ||
-      ((segMonth <= minMonth || segMonth >= maxMonth) && isPreYear)
+    find
+      = solarMonth < month
+      || (solarMonth === month && segDay <= date)
+      || ((segMonth <= minMonth || segMonth >= maxMonth) && isPreYear)
     if (solarMonth === 12 && solarMonth > month && i === 1) {
       find = true
       year--
     }
-    if (find) break
+    if (find)
+      break
   }
 
   // 如果找到，则赋值
-  if (!find) return false
+  if (!find)
+    return false
   // 取前一年
-  if (isPreYear && segMonth === 12) year = year - 1
+  if (isPreYear && segMonth === 12)
+    year = year - 1
   lunarYear = isPreYear ? lunarYear - 1 : lunarYear
   return {
     year,
@@ -3193,7 +3198,7 @@ const _findLunar = function (solar, index, minMonth, maxMonth, isPreYear) {
     day: segDay,
     lunarYear,
     lunarMonth,
-    leapMonth: mapping[0] // 闰月
+    leapMonth: mapping[0], // 闰月
   }
 }
 
@@ -3201,7 +3206,8 @@ const _findLunar = function (solar, index, minMonth, maxMonth, isPreYear) {
 const _dateAdd = function (lunar, value, unit) {
   if (unit === 'M') {
     return _chineseLunar.monthAdd(lunar, value)
-  } else {
+  }
+  else {
     // 转换为阳历，计算完再转为农历
     const solar = _chineseLunar.lunarToSolar(lunar)
     return _chineseLunar.solarToLunar(solar)
@@ -3242,8 +3248,10 @@ _chineseLunar.dateDiff = function (lunar1, lunar2, expr) {
  */
 _chineseLunar.monthAdd = function (lunar, inc) {
   // 如果是Date，则转换为农历
-  if (lunar instanceof Date) lunar = _chineseLunar.solarToLunar(lunar)
-  if (inc === 0) return lunar
+  if (lunar instanceof Date)
+    lunar = _chineseLunar.solarToLunar(lunar)
+  if (inc === 0)
+    return lunar
 
   let year = lunar.year
   let count
@@ -3258,7 +3266,8 @@ _chineseLunar.monthAdd = function (lunar, inc) {
     if (inc <= 0) {
       run = false
       month = year === lunar.year ? count + inc : count + inc - month
-    } else {
+    }
+    else {
       year++
       month = 1
     }
@@ -3278,7 +3287,7 @@ _chineseLunar.monthAdd = function (lunar, inc) {
     year,
     month,
     leap,
-    leapMonth
+    leapMonth,
   }
 }
 
@@ -3291,23 +3300,26 @@ _chineseLunar.monthDiff = function (lunar1, lunar2) {
   let count
 
   // 如果数据类型是日期，则转换为农历
-  if (lunar1 instanceof Date) lunar1 = _chineseLunar.solarToLunar(lunar1)
-  if (lunar2 instanceof Date) lunar2 = _chineseLunar.solarToLunar(lunar2)
+  if (lunar1 instanceof Date)
+    lunar1 = _chineseLunar.solarToLunar(lunar1)
+  if (lunar2 instanceof Date)
+    lunar2 = _chineseLunar.solarToLunar(lunar2)
 
   // 两个日期是同一年
   if (lunar1.year === lunar2.year) {
     count = lunar2.month - lunar1.month
     // 中间有闰月的存在，计数器加一
     if (
-      lunar1.leapMonth >= lunar1.month &&
-      lunar1.leapMonth <= lunar2.month
+      lunar1.leapMonth >= lunar1.month
+      && lunar1.leapMonth <= lunar2.month
     ) { count++ }
-  } else {
+  }
+  else {
     // 计算首年，如果当前的闰月大于当前月，或者当前年有闰月且当前月等于闰月，但当前月又不是闰月，则要多添加一个月
     count = 12
     if (
-      lunar1.leapMonth > lunar1.month ||
-      (lunar1.leapMonth === lunar1.month && !lunar1.isLeapMonth)
+      lunar1.leapMonth > lunar1.month
+      || (lunar1.leapMonth === lunar1.month && !lunar1.isLeapMonth)
     ) { count += 1 }
     count -= lunar1.month
 
@@ -3318,7 +3330,8 @@ _chineseLunar.monthDiff = function (lunar1, lunar2) {
     }
     // 计算最后一年
     count += lunar2.month
-    if (lunar2.isLeapMonth || lunar2.month < lunar2.leapMonth) count++
+    if (lunar2.isLeapMonth || lunar2.month < lunar2.leapMonth)
+      count++
   }
   return count
 }
@@ -3339,11 +3352,13 @@ _chineseLunar.daysOfMonth = function (year, month, leap) {
   if (leapMonth === month && !leap) {
     // 如果是闰月和当前一月一至，且当前月不是闰月，说明下一个月是闰月，例如2009年5月，这一年闰5月，如果传过来的不是闰月，那么下一个月就是闰月
     leap = true
-  } else if (month === 12) {
+  }
+  else if (month === 12) {
     // 农历的最后一个月
     year++
     month = 1
-  } else {
+  }
+  else {
     leap = false
     month++
   }
@@ -3426,7 +3441,8 @@ _chineseLunar.solarToLunar = function (solar, format) {
   data = data || _findLunar(solar, offset - 1, 12, 99, true)
 
   // 还是没有找到，表示超出范围
-  if (!data) return false
+  if (!data)
+    return false
 
   // 农历初一对应公历的哪一天
   const firstDay = new Date(data.year, data.month - 1, data.day)
@@ -3441,7 +3457,7 @@ _chineseLunar.solarToLunar = function (solar, format) {
         ? data.lunarMonth - 1
         : data.lunarMonth,
     day,
-    leapMonth: data.leapMonth
+    leapMonth: data.leapMonth,
   })
 
   // 判断是否要格式化结果
@@ -3453,7 +3469,7 @@ _chineseLunar.traditionalYearName = function (year) {
   const Gan = '甲乙丙丁戊己庚辛壬癸'.split('')
   const Zhi = '子丑寅卯辰巳午未申酉戌亥'.split('')
   year = year - MIN_YEAR + 36
-  return Gan[year % 10] + Zhi[year % 12] + '年'
+  return `${Gan[year % 10] + Zhi[year % 12]}年`
 }
 
 // 获取中文的年
@@ -3462,9 +3478,9 @@ _chineseLunar.yearName = function (year) {
   const cYear = year.toString()
   let result = ''
   for (let i = 0; i < cYear.length; i++) {
-    result += cnStr[parseInt(cYear.charAt(i))]
+    result += cnStr[Number.parseInt(cYear.charAt(i))]
   }
-  return result + '年'
+  return `${result}年`
 }
 
 // 获取中国的生肖
@@ -3478,7 +3494,7 @@ _chineseLunar.monthName = function (month, traditional, leap) {
   if (traditional) {
     monthName[11] = '腊'
   }
-  return (leap ? '闰' : '') + monthName[month - 1] + '月'
+  return `${(leap ? '闰' : '') + monthName[month - 1]}月`
 }
 
 // 获取农历传统天的名称
@@ -3492,15 +3508,15 @@ _chineseLunar.dayName = function (lunar) {
       return '三十'
     default:
       return (
-        '初十廿卅'.split('')[Math.floor(lunar / 10)] +
-        '一二三四五六七八九十'.split('')[(lunar - 1) % 10] || lunar
+        '初十廿卅'.split('')[Math.floor(lunar / 10)]
+        + '一二三四五六七八九十'.split('')[(lunar - 1) % 10] || lunar
       )
   }
 }
 
 // 格式化农历日期，date是农历的日期
 _chineseLunar.format = function (lunar, expr) {
-  return expr.replace(/[TAYyMmdD]/g, function (m) {
+  return expr.replace(/[TAYyMmdD]/g, (m) => {
     switch (m) {
       // 获取传统的年
       case 'T':
@@ -3529,9 +3545,10 @@ _chineseLunar.format = function (lunar, expr) {
           return _chineseLunar.monthName(
             lunar.month,
             false,
-            lunar.leap
+            lunar.leap,
           )
-        } else {
+        }
+        else {
           return _chineseLunar.dayName(lunar.day)
         }
     }
@@ -3553,7 +3570,7 @@ export const {
   animalName,
   monthName,
   dayName,
-  format
+  format,
 } = _chineseLunar
 
 export default _chineseLunar

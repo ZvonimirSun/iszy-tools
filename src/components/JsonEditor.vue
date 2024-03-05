@@ -9,7 +9,7 @@ const isDark = useGlobalStore().isDark
   <JsonEditorVue
     v-bind="$attrs"
     :class="{
-      'jse-theme-dark': isDark
+      'jse-theme-dark': isDark,
     }"
   />
 </template>

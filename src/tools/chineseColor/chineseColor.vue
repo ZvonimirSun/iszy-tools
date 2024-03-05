@@ -1,7 +1,43 @@
+<script setup>
+import { colord } from 'colord'
+import colors from './colors.json'
+
+const selectedColor = ref()
+const selectedColorNameWrapper = ref()
+
+const selectedFontColor = computed(() => {
+  if (!selectedColor.value?.hex)
+    return 'white'
+  return colord(selectedColor.value.hex).isDark() ? 'white' : '#310f1b'
+})
+
+const selectedColorNameSize = ref(0)
+
+watch(selectedColor, () => {
+  resize()
+})
+
+function resize() {
+  nextTick(() => {
+    let minSize = Number.parseFloat(getComputedStyle(selectedColorNameWrapper.value).height) / 3 * 2 - 50
+    const width = Number.parseFloat(getComputedStyle(selectedColorNameWrapper.value).width) - 50
+    const nameSize = width / selectedColor.value.name.length
+    if (nameSize < minSize) {
+      minSize = nameSize
+    }
+    const pinyinSize = (width / selectedColor.value.pinyin.length) * 2
+    if (pinyinSize < minSize) {
+      minSize = pinyinSize
+    }
+    selectedColorNameSize.value = minSize
+  })
+}
+</script>
+
 <template>
   <div
     class="wrapper"
-    :style="{backgroundColor: selectedColor?.hex || '#fff'}"
+    :style="{ backgroundColor: selectedColor?.hex || '#fff' }"
   >
     <transition>
       <div
@@ -12,16 +48,16 @@
           ref="selectedColorNameWrapper"
           class="selectedColorNameWrapper"
           :style="{
-            color: selectedFontColor
+            color: selectedFontColor,
           }"
         >
           <div
-            :style="{fontSize:selectedColorNameSize-8+'px',lineHeight:selectedColorNameSize+'px'}"
+            :style="{ fontSize: `${selectedColorNameSize - 8}px`, lineHeight: `${selectedColorNameSize}px` }"
           >
             {{ selectedColor.name }}
           </div>
           <div
-            :style="{fontSize:(selectedColorNameSize/2-16)+'px',lineHeight:(selectedColorNameSize/2-8)+'px'}"
+            :style="{ fontSize: `${selectedColorNameSize / 2 - 16}px`, lineHeight: `${selectedColorNameSize / 2 - 8}px` }"
           >
             {{ selectedColor.pinyin.toUpperCase() }}
           </div>
@@ -36,7 +72,7 @@
             <div
               class="label"
               :style="{
-                color: selectedFontColor
+                color: selectedFontColor,
               }"
             >
               CMYK
@@ -86,7 +122,7 @@
             <div
               class="label"
               :style="{
-                color: selectedFontColor
+                color: selectedFontColor,
               }"
             >
               RGB
@@ -94,7 +130,7 @@
             <el-space :size="8">
               <el-progress
                 type="circle"
-                :percentage="selectedColor.RGB[0]/2.55"
+                :percentage="selectedColor.RGB[0] / 2.55"
                 color="red"
                 :width="80"
               >
@@ -104,7 +140,7 @@
               </el-progress>
               <el-progress
                 type="circle"
-                :percentage="selectedColor.RGB[1]/2.55"
+                :percentage="selectedColor.RGB[1] / 2.55"
                 color="green"
                 :width="80"
               >
@@ -114,7 +150,7 @@
               </el-progress>
               <el-progress
                 type="circle"
-                :percentage="selectedColor.RGB[2]/2.55"
+                :percentage="selectedColor.RGB[2] / 2.55"
                 color="blue"
                 :width="80"
               >
@@ -126,7 +162,7 @@
             <div
               class="label"
               :style="{
-                color: selectedFontColor
+                color: selectedFontColor,
               }"
             >
               HEX
@@ -134,7 +170,7 @@
             <div
               class="label"
               :style="{
-                color: selectedFontColor
+                color: selectedFontColor,
               }"
             >
               {{ selectedColor.hex }}
@@ -149,9 +185,9 @@
       <div
         v-for="(color, index) in colors"
         :key="index"
-        :style="{background: color.hex, color: colord(color.hex).isDark() ? 'white' : '#310f1b'}"
+        :style="{ background: color.hex, color: colord(color.hex).isDark() ? 'white' : '#310f1b' }"
         class="colorListItem"
-        @click="selectedColor=color"
+        @click="selectedColor = color"
       >
         <div class="colorName">
           {{ color.name }}
@@ -166,42 +202,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import colors from './colors.json'
-import { colord } from 'colord'
-
-const selectedColor = ref()
-const selectedColorNameWrapper = ref()
-
-const selectedFontColor = computed(() => {
-  if (!selectedColor.value?.hex) return 'white'
-  return colord(selectedColor.value.hex).isDark() ? 'white' : '#310f1b'
-})
-
-const selectedColorNameSize = ref(0)
-
-watch(selectedColor, function () {
-  resize()
-})
-
-function resize () {
-  nextTick(() => {
-    let minSize = parseFloat(getComputedStyle(selectedColorNameWrapper.value).height) / 3 * 2 - 50
-    const width = parseFloat(getComputedStyle(selectedColorNameWrapper.value).width) - 50
-    const nameSize = width / selectedColor.value.name.length
-    if (nameSize < minSize) {
-      minSize = nameSize
-    }
-    const pinyinSize = (width / selectedColor.value.pinyin.length) * 2
-    if (pinyinSize < minSize) {
-      minSize = pinyinSize
-    }
-    selectedColorNameSize.value = minSize
-  })
-}
-
-</script>
 
 <style scoped lang="scss">
 .wrapper {

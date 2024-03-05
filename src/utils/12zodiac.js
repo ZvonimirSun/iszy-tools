@@ -1,8 +1,8 @@
 const days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 const zodiac = function (mon, day) {
-  mon = parseInt(mon)
-  day = parseInt(day)
+  mon = Number.parseInt(mon)
+  day = Number.parseInt(day)
 
   const words = [
     '白羊座',
@@ -16,7 +16,7 @@ const zodiac = function (mon, day) {
     '射手座',
     '摩羯座',
     '水瓶座',
-    '双鱼座'
+    '双鱼座',
   ]
 
   if (mon < 1 || mon > 12) {
@@ -31,27 +31,38 @@ const zodiac = function (mon, day) {
 
   if (val >= 321 && val <= 419) {
     return words[0]
-  } else if (val >= 420 && val <= 520) {
+  }
+  else if (val >= 420 && val <= 520) {
     return words[1]
-  } else if (val >= 521 && val <= 621) {
+  }
+  else if (val >= 521 && val <= 621) {
     return words[2]
-  } else if (val >= 622 && val <= 722) {
+  }
+  else if (val >= 622 && val <= 722) {
     return words[3]
-  } else if (val >= 723 && val <= 822) {
+  }
+  else if (val >= 723 && val <= 822) {
     return words[4]
-  } else if (val >= 823 && val <= 922) {
+  }
+  else if (val >= 823 && val <= 922) {
     return words[5]
-  } else if (val >= 923 && val <= 1023) {
+  }
+  else if (val >= 923 && val <= 1023) {
     return words[6]
-  } else if (val >= 1024 && val <= 1122) {
+  }
+  else if (val >= 1024 && val <= 1122) {
     return words[7]
-  } else if (val >= 1123 && val <= 1221) {
+  }
+  else if (val >= 1123 && val <= 1221) {
     return words[8]
-  } else if (val >= 1222 || val <= 119) {
+  }
+  else if (val >= 1222 || val <= 119) {
     return words[9]
-  } else if (val >= 120 && val <= 218) {
+  }
+  else if (val >= 120 && val <= 218) {
     return words[10]
-  } else if (val >= 219 && val <= 320) {
+  }
+  else if (val >= 219 && val <= 320) {
     return words[11]
   }
 

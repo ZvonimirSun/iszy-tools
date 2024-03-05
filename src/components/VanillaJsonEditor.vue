@@ -1,10 +1,34 @@
 <script setup lang="ts">
-import { type Content, isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
+import { type Content, JSONEditor, isJSONContent } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
+import { clone } from 'lodash-es'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
-import { clone } from 'lodash-es'
 import type { EditorValue } from '@/types/editor'
+
+const props = withDefaults(defineProps<{
+  content?: EditorValue
+  config?: Record<string, any>
+  showMenuBar?: boolean
+  name?: string
+}>(), {
+  content: undefined,
+  config: () => ({
+    mode: 'text',
+  }),
+  showMenuBar: false,
+
+  name: '',
+})
+
+const emits = defineEmits<{
+  (e: 'change', data: EditorValue): void
+  (e: 'create'): void
+  (e: 'changeName', name: string): void
+  (e: 'open', file: { name: string, content: string }): void
+  (e: 'openRecent'): void
+  (e: 'delete'): void
+}>()
 
 // JSONEditor properties as of version 0.3.60
 const propNames = [
@@ -29,13 +53,13 @@ const propNames = [
   'queryLanguageId',
   'onChangeQueryLanguage',
   'onFocus',
-  'onBlur'
+  'onBlur',
 ]
 
 const jsonEditorDiv = ref<HTMLDivElement>()
 const container = ref<HTMLDivElement>()
 const uploader = ref<HTMLInputElement>()
-let jsonEditor:JSONEditor
+let jsonEditor: JSONEditor
 
 const _name = ref('')
 const _indent = ref(2)
@@ -47,10 +71,10 @@ const editingName = ref(false)
 const newName = ref('')
 
 const documentProperties = computed<{
-  name?: string,
-  storage?: string,
-  updated?: string,
-  content?: string,
+  name?: string
+  storage?: string
+  updated?: string
+  content?: string
   size?: string
 }>(() => {
   if (showDocumentProperties) {
@@ -59,16 +83,20 @@ const documentProperties = computed<{
     let code
     if (isJSONContent(data)) {
       code = data.json
-    } else {
+    }
+    else {
       code = data.text
     }
     if (typeof code === 'string') {
       content = '字符串类型'
-    } else if (Array.isArray(code)) {
+    }
+    else if (Array.isArray(code)) {
       content = `数组类型，包含 ${code.length} 个对象`
-    } else if (code && typeof code === 'object') {
+    }
+    else if (code && typeof code === 'object') {
       content = `对象类型，包含 ${Object.keys(code).length} 个属性`
-    } else {
+    }
+    else {
       content = '其他类型'
     }
     return {
@@ -78,20 +106,13 @@ const documentProperties = computed<{
       // updated: store.leftData?.updated,
       updated: '',
       content,
-      size: formatBytes(typeof code === 'string' ? code.length : JSON.stringify(code, null, _indent.value).length)
+      size: formatBytes(typeof code === 'string' ? code.length : JSON.stringify(code, null, _indent.value).length),
     }
-  } else {
+  }
+  else {
     return {}
   }
 })
-
-const emits = defineEmits<
-  {(e: 'change', data: EditorValue): void
-  (e: 'create'): void
-  (e: 'changeName', name: string): void
-  (e: 'open', file: { name: string, content: string }): void
-  (e: 'openRecent'): void,
-  (e: 'delete'): void}>()
 
 let updating = false
 
@@ -100,22 +121,7 @@ defineExpose({
   update,
   set,
   refresh,
-  get
-})
-
-const props = withDefaults(defineProps<{
-  content?: EditorValue,
-  config?: Record<string, any>,
-  showMenuBar?: boolean,
-  name?: string
-}>(), {
-  content: undefined,
-  config: () => ({
-    mode: 'text'
-  }),
-  showMenuBar: false,
-
-  name: ''
+  get,
 })
 
 let oldConfig: Record<string, any> = {}
@@ -130,16 +136,18 @@ onMounted(() => {
     props: {
       content: { json: {} },
       onChange: (updatedContent: Content) => {
-        if (updating) return
+        if (updating)
+          return
         if (isJSONContent(updatedContent)) {
           emits('change', updatedContent.json)
-        } else {
+        }
+        else {
           emits('change', updatedContent.text)
         }
       },
       indentation: _indent.value,
-      ..._pickDefinedProps(oldConfig, propNames)
-    }
+      ..._pickDefinedProps(oldConfig, propNames),
+    },
   })
   if (props.config.indentation) {
     _indent.value = props.config.indentation
@@ -154,7 +162,7 @@ watch(
   () => useGlobalStore().isDark,
   () => {
     jsonEditor?.refresh()
-  }
+  },
 )
 
 onUpdated(() => {
@@ -176,12 +184,12 @@ onUpdated(() => {
   jsonEditor?.refresh()
 })
 
-function create () {
+function create() {
   jsonEditor.set({ json: {} })
   emits('create')
 }
 
-function open (val: 'recent' | 'file') {
+function open(val: 'recent' | 'file') {
   switch (val) {
     case 'file':
       uploader.value?.click()
@@ -192,7 +200,7 @@ function open (val: 'recent' | 'file') {
   }
 }
 
-function openFile (e: Event) {
+function openFile(e: Event) {
   const target = e.target as HTMLInputElement
   if (target.files && target.files.length) {
     const file = target.files[0]
@@ -201,7 +209,7 @@ function openFile (e: Event) {
       if (reader.result) {
         emits('open', {
           name: file.name,
-          content: reader.result as string
+          content: reader.result as string,
         })
       }
     }
@@ -210,13 +218,14 @@ function openFile (e: Event) {
   target.value = ''
 }
 
-function update (val: EditorValue) {
+function update(val: EditorValue) {
   updating = true
   let data
   if (val != null) {
     if (typeof val === 'string') {
       data = val
-    } else {
+    }
+    else {
       data = JSON.stringify(val, null, _indent.value)
     }
     jsonEditor.update({ text: data })
@@ -226,12 +235,13 @@ function update (val: EditorValue) {
   }, 0)
 }
 
-function set (val: EditorValue) {
+function set(val: EditorValue) {
   updating = true
   if (val != null) {
     if (typeof val === 'string') {
       jsonEditor.set({ text: val })
-    } else {
+    }
+    else {
       jsonEditor.set({ json: val })
     }
   }
@@ -240,31 +250,33 @@ function set (val: EditorValue) {
   }, 0)
 }
 
-function get () {
+function get() {
   const data = jsonEditor.get()
   if (isJSONContent(data)) {
     return data.json
-  } else {
+  }
+  else {
     return data.text
   }
 }
 
-function refresh () {
+function refresh() {
   jsonEditor?.refresh()
 }
 
-function download () {
+function download() {
   const data = jsonEditor.get()
-  const name = _name.value ? _name.value + '.json' : '未命名.json'
+  const name = _name.value ? `${_name.value}.json` : '未命名.json'
   if (isJSONContent(data)) {
     createFile(JSON.stringify(data.json), name)
-  } else {
+  }
+  else {
     createFile(data.text, name)
   }
 }
 
 let lastIndent = _indent.value
-function changeOption (val: 'indentation' | 'properties' | 'delete') {
+function changeOption(val: 'indentation' | 'properties' | 'delete') {
   switch (val) {
     case 'indentation':
       lastIndent = _indent.value
@@ -279,37 +291,37 @@ function changeOption (val: 'indentation' | 'properties' | 'delete') {
   }
 }
 
-function cancelIndentation () {
+function cancelIndentation() {
   _indent.value = lastIndent
   settingIndent.value = false
 }
 
-function changeIndentation () {
+function changeIndentation() {
   jsonEditor.updateProps({
-    indentation: _indent.value
+    indentation: _indent.value,
   })
   settingIndent.value = false
 }
 
-function startEditName () {
+function startEditName() {
   newName.value = _name.value
   editingName.value = true
 }
 
-function cancelEdit () {
+function cancelEdit() {
   editingName.value = false
 }
 
-function changeName () {
+function changeName() {
   if (newName.value) {
     emits('changeName', newName.value)
   }
   editingName.value = false
 }
 
-/** ************************* 辅助方法 *******************************/
+/** ************************* 辅助方法 */
 
-function _pickDefinedProps (object: Record<string, any>, propNames: string[]) {
+function _pickDefinedProps(object: Record<string, any>, propNames: string[]) {
   const props: Record<string, any> = {}
   for (const propName of propNames) {
     if (object[propName] !== undefined) {
@@ -422,7 +434,7 @@ function _pickDefinedProps (object: Record<string, any>, propNames: string[]) {
       ref="jsonEditorDiv"
       class="json-editor"
       :class="{
-        'jse-theme-dark': useGlobalStore().isDark
+        'jse-theme-dark': useGlobalStore().isDark,
       }"
     />
     <input

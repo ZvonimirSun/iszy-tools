@@ -1,3 +1,30 @@
+<script setup>
+import html from '@/components/editor/lang-html'
+import css from '@/components/editor/lang-css'
+import js from '@/components/editor/lang-js'
+
+const store = useTinyEditorStore()
+
+const doc = computed(() => {
+  if (store.html + store.css + store.js === '') {
+    return '输入内容以在此展示'
+  }
+  else {
+    return `${store.html}<style>${store.css}<\/style><script>${store.js}<\/script>`
+  }
+})
+
+const fullScreenStatus = ref(false)
+
+function fullScreen() {
+  fullScreenStatus.value = !fullScreenStatus.value
+}
+function openNew() {
+  const newTab = window.open('', '_blank')
+  newTab.document.write(doc.value)
+}
+</script>
+
 <template>
   <div class="panel">
     <EditorMini
@@ -27,7 +54,7 @@
     <div
       class="displayPanel"
       :class="{
-        fullPanel: fullScreenStatus
+        fullPanel: fullScreenStatus,
       }"
     >
       <el-space class="fullScreen">
@@ -60,32 +87,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import html from '@/components/editor/lang-html'
-import css from '@/components/editor/lang-css'
-import js from '@/components/editor/lang-js'
-
-const store = useTinyEditorStore()
-
-const doc = computed(() => {
-  if (store.html + store.css + store.js === '') {
-    return '输入内容以在此展示'
-  } else {
-    return store.html + '<style>' + store.css + '<\/style><script>' + store.js + '<\/script>'
-  }
-})
-
-const fullScreenStatus = ref(false)
-
-function fullScreen () {
-  fullScreenStatus.value = !fullScreenStatus.value
-}
-function openNew () {
-  const newTab = window.open('', '_blank')
-  newTab.document.write(doc.value)
-}
-</script>
 
 <style scoped lang="scss">
 .panel {

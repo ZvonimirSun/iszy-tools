@@ -1,14 +1,14 @@
 <script setup lang="tsx">
-import axios from '@/plugins/Axios'
-import { getNewMockData, selectedProject, setProject, deleteData, editData, createData, mockData } from './mockData.service'
-import type { MockData } from './mock'
 import type { Column } from 'element-plus'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
+import { createData, deleteData, editData, getNewMockData, mockData, selectedProject, setProject } from './mockData.service'
+import type { MockData } from './mock'
+import axios from '@/plugins/Axios'
 
 const { copy } = useCopy({ text: '复制成功' })
 
 const showDataDialog = ref(false)
-const dataForm: MockData & {response: any} = reactive(getNewMockData())
+const dataForm: MockData & { response: any } = reactive(getNewMockData())
 
 const columns: Column[] = [
   {
@@ -16,7 +16,7 @@ const columns: Column[] = [
     key: 'name',
     dataKey: 'name',
     width: 300,
-    fixed: FixedDir.LEFT
+    fixed: FixedDir.LEFT,
   },
   {
     title: '请求类型',
@@ -24,7 +24,7 @@ const columns: Column[] = [
     dataKey: 'type',
     width: 100,
     align: 'center',
-    cellRenderer: ({ cellData: type }: {cellData: string}) => <el-tag>{type}</el-tag>
+    cellRenderer: ({ cellData: type }: { cellData: string }) => <el-tag>{type}</el-tag>,
   },
   {
     title: '请求状态',
@@ -32,32 +32,32 @@ const columns: Column[] = [
     dataKey: 'enabled',
     width: 100,
     align: 'center',
-    cellRenderer: ({ cellData: enabled }: {cellData: boolean}) => <el-tag type="success">{enabled ? '开启' : '关闭'}</el-tag>
+    cellRenderer: ({ cellData: enabled }: { cellData: boolean }) => <el-tag type="success">{enabled ? '开启' : '关闭'}</el-tag>,
   },
   {
     title: '接口地址',
     key: 'path',
     dataKey: 'path',
     width: 300,
-    cellRenderer: ({ cellData: path }: {cellData: string}) => <copyable-text val={path} />
+    cellRenderer: ({ cellData: path }: { cellData: string }) => <copyable-text val={path} />,
   },
   {
     title: '接口描述',
     key: 'description',
     dataKey: 'description',
-    width: 300
+    width: 300,
   },
   {
     title: '创建时间',
     key: 'createdAt',
     dataKey: 'createdAt',
-    width: 200
+    width: 200,
   },
   {
     title: '操作',
     key: 'operations',
     fixed: FixedDir.RIGHT,
-    cellRenderer: ({ rowData: data }: {rowData: MockData}) => (
+    cellRenderer: ({ rowData: data }: { rowData: MockData }) => (
       <>
         <el-button size="small" onClick={() => copy(data.url ?? '')}>复制</el-button>
         <el-button size="small" onClick={() => openEditDataDialog(data)}>编辑</el-button>
@@ -69,27 +69,28 @@ const columns: Column[] = [
               <el-button size="small" type="danger">
                 删除
               </el-button>
-            )
+            ),
           }}
         >
         </el-popconfirm>
       </>
     ),
     width: 200,
-    align: 'center'
-  }
+    align: 'center',
+  },
 ]
 
-function openCreateDataDialog () {
+function openCreateDataDialog() {
   Object.assign(dataForm, getNewMockData())
   showDataDialog.value = true
 }
 
-function openEditDataDialog (data: MockData) {
+function openEditDataDialog(data: MockData) {
   let response: string | unknown
   try {
     response = JSON.parse(data.response) as unknown
-  } catch (e) {
+  }
+  catch (e) {
     response = data.response
   }
   Object.assign(dataForm, {
@@ -101,12 +102,12 @@ function openEditDataDialog (data: MockData) {
     description: data.description,
     delay: data.delay,
     response,
-    projectId: data.projectId
+    projectId: data.projectId,
   })
   showDataDialog.value = true
 }
 
-async function createOrEditData (data: MockData & {response: any}) {
+async function createOrEditData(data: MockData & { response: any }) {
   let response = data.response
   if (!response) {
     ElMessage.error('请填写接口返回数据')
@@ -115,18 +116,22 @@ async function createOrEditData (data: MockData & {response: any}) {
   if (typeof response !== 'string') {
     try {
       response = JSON.stringify(response)
-    } catch (e) {
+    }
+    catch (e) {
       response = response.toString()
     }
-  } else {
+  }
+  else {
     try {
       response = JSON.stringify(JSON.parse(response))
-    } catch (e) {}
+    }
+    catch (e) {}
   }
   let status: boolean
   if (data.id > -1) {
     status = await editData({ ...data, response })
-  } else {
+  }
+  else {
     status = await createData({ ...data, response })
   }
   if (status) {
@@ -151,7 +156,7 @@ async function createOrEditData (data: MockData & {response: any}) {
           接口根地址
         </div>
         <CopyableText
-          :val="axios.$apiBase + '/mock/' + selectedProject.id + selectedProject.path"
+          :val="`${axios.$apiBase}/mock/${selectedProject.id}${selectedProject.path}`"
           class="prj-meta-content"
         />
       </div>

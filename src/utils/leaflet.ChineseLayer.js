@@ -1,7 +1,7 @@
 import { Bounds, Browser, DomUtil, TileLayer } from 'leaflet'
 
 export const ChineseLayer = TileLayer.extend({
-  initialize: function (type, options = {}) { // (type, Object)
+  initialize(type, options = {}) { // (type, Object)
     const providers = this.providers
 
     const parts = type.split('.')
@@ -18,15 +18,15 @@ export const ChineseLayer = TileLayer.extend({
     }
 
     TileLayer.prototype.initialize.call(this, url, options)
-  }
+  },
 })
 
-export function chineseLayer (type, options = {}) {
+export function chineseLayer(type, options = {}) {
   options.csysType = getCsysType(type)
   return new ChineseLayer(type, options)
 
   // 获取坐标类型
-  function getCsysType (type) {
+  function getCsysType(type) {
     const parts = type.split('.')
     const providerName = parts[0]
     let zbName = 'wgs84'
@@ -60,40 +60,40 @@ ChineseLayer.include({
     TianDiTu: {
       Normal: {
         Map: '//t{s}.tianditu.gov.cn/DataServer?T=vec_w&X={x}&Y={y}&L={z}&tk={key}',
-        Annotation: '//t{s}.tianditu.gov.cn/DataServer?T=cva_w&X={x}&Y={y}&L={z}&tk={key}'
+        Annotation: '//t{s}.tianditu.gov.cn/DataServer?T=cva_w&X={x}&Y={y}&L={z}&tk={key}',
       },
       Satellite: {
         Map: '//t{s}.tianditu.gov.cn/DataServer?T=img_w&X={x}&Y={y}&L={z}&tk={key}',
-        Annotation: '//t{s}.tianditu.gov.cn/DataServer?T=cia_w&X={x}&Y={y}&L={z}&tk={key}'
+        Annotation: '//t{s}.tianditu.gov.cn/DataServer?T=cia_w&X={x}&Y={y}&L={z}&tk={key}',
       },
       Terrain: {
         Map: '//t{s}.tianditu.gov.cn/DataServer?T=ter_w&X={x}&Y={y}&L={z}&tk={key}',
-        Annotation: '//t{s}.tianditu.gov.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}&tk={key}'
+        Annotation: '//t{s}.tianditu.gov.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}&tk={key}',
       },
       Subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
-      key: ''
+      key: '',
     },
 
     GaoDe: {
       Normal: {
-        Map: '//webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'
+        Map: '//webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
       },
       Satellite: {
         Map: '//webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
-        Annotation: '//webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}'
+        Annotation: '//webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',
       },
-      Subdomains: ['1', '2', '3', '4']
+      Subdomains: ['1', '2', '3', '4'],
     },
 
     Google: {
       Normal: {
-        Map: '//www.google.com/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        Map: '//www.google.com/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}',
       },
       Satellite: {
         Map: '//www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
-        Annotation: '//www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}'
+        Annotation: '//www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}',
       },
-      Subdomains: []
+      Subdomains: [],
     },
 
     Geoq: {
@@ -101,46 +101,46 @@ ChineseLayer.include({
         Map: '//map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}',
         PurplishBlue: '//map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}',
         Gray: '//map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetGray/MapServer/tile/{z}/{y}/{x}',
-        Warm: '//map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetWarm/MapServer/tile/{z}/{y}/{x}'
+        Warm: '//map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetWarm/MapServer/tile/{z}/{y}/{x}',
       },
       Theme: {
-        Hydro: '//thematic.geoq.cn/arcgis/rest/services/ThematicMaps/WorldHydroMap/MapServer/tile/{z}/{y}/{x}'
+        Hydro: '//thematic.geoq.cn/arcgis/rest/services/ThematicMaps/WorldHydroMap/MapServer/tile/{z}/{y}/{x}',
       },
-      Subdomains: []
+      Subdomains: [],
     },
 
     OSM: {
       Normal: {
-        Map: '//{s}.tile.osm.org/{z}/{x}/{y}.png'
+        Map: '//{s}.tile.osm.org/{z}/{x}/{y}.png',
       },
-      Subdomains: ['a', 'b', 'c']
+      Subdomains: ['a', 'b', 'c'],
     },
 
     Baidu: {
       Normal: {
-        Map: '//online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1'
+        Map: '//online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1',
       },
       Satellite: {
         Map: '//shangetu{s}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46',
-        Annotation: '//online{s}.map.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}&styles=sl&v=020'
+        Annotation: '//online{s}.map.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}&styles=sl&v=020',
       },
       Subdomains: '0123456789',
-      tms: true
-    }
+      tms: true,
+    },
   },
   csysConvert: {
     /** 百度转84 */
-    bd09_To_gps84: function (lng, lat) {
+    bd09_To_gps84(lng, lat) {
       const gcj02 = this.bd09_To_gcj02(lng, lat)
       return this.gcj02_To_gps84(gcj02.lng, gcj02.lat)
     },
     /** 84转百度 */
-    gps84_To_bd09: function (lng, lat) {
+    gps84_To_bd09(lng, lat) {
       const gcj02 = this.gps84_To_gcj02(lng, lat)
       return this.gcj02_To_bd09(gcj02.lng, gcj02.lat)
     },
     /** 84转火星 */
-    gps84_To_gcj02: function (lng, lat) {
+    gps84_To_gcj02(lng, lat) {
       let dLat = transformLat(lng - 105.0, lat - 35.0)
       let dLng = transformLng(lng - 105.0, lat - 35.0)
       const radLat = lat / 180.0 * pi
@@ -153,32 +153,32 @@ ChineseLayer.include({
       const mgLng = lng + dLng
       return {
         lng: mgLng,
-        lat: mgLat
+        lat: mgLat,
       }
     },
     /** 火星转84 */
-    gcj02_To_gps84: function (lng, lat) {
+    gcj02_To_gps84(lng, lat) {
       const coord = transform(lng, lat)
       const lontitude = lng * 2 - coord.lng
       const latitude = lat * 2 - coord.lat
       return {
         lng: lontitude,
-        lat: latitude
+        lat: latitude,
       }
     },
     /** 火星转百度 */
-    gcj02_To_bd09: function (x, y) {
+    gcj02_To_bd09(x, y) {
       const z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * xPi)
       const theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * xPi)
       const bdLng = z * Math.cos(theta) + 0.0065
       const bdLat = z * Math.sin(theta) + 0.006
       return {
         lng: bdLng,
-        lat: bdLat
+        lat: bdLat,
       }
     },
     /** 百度转火星 */
-    bd09_To_gcj02: function (bdLng, bdLat) {
+    bd09_To_gcj02(bdLng, bdLat) {
       const x = bdLng - 0.0065
       const y = bdLat - 0.006
       const z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * xPi)
@@ -187,16 +187,17 @@ ChineseLayer.include({
       const ggLat = z * Math.sin(theta)
       return {
         lng: ggLng,
-        lat: ggLat
+        lat: ggLat,
       }
-    }
+    },
   },
-  _setZoomTransform: function (level, _center, zoom) {
+  _setZoomTransform(level, _center, zoom) {
     let center = _center
     if (center != null && this.options) {
       if (this.options.csysType === 'gcj02') {
         center = this.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
-      } else if (this.options.csysType === 'bd09') {
+      }
+      else if (this.options.csysType === 'bd09') {
         center = this.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
       }
     }
@@ -206,16 +207,18 @@ ChineseLayer.include({
 
     if (Browser.any3d) {
       DomUtil.setTransform(level.el, translate, scale)
-    } else {
+    }
+    else {
       DomUtil.setPosition(level.el, translate)
     }
   },
-  _getTiledPixelBounds: function (_center) {
+  _getTiledPixelBounds(_center) {
     let center = _center
     if (center != null && this.options) {
       if (this.options.csysType === 'gcj02') {
         center = this.csysConvert.gps84_To_gcj02(_center.lng, _center.lat)
-      } else if (this.options.csysType === 'bd09') {
+      }
+      else if (this.options.csysType === 'bd09') {
         center = this.csysConvert.gps84_To_bd09(_center.lng, _center.lat)
       }
     }
@@ -226,10 +229,10 @@ ChineseLayer.include({
     const halfSize = map.getSize().divideBy(scale * 2)
 
     return new Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize))
-  }
+  },
 })
 
-function transform (lng, lat) {
+function transform(lng, lat) {
   let dLat = transformLat(lng - 105.0, lat - 35.0)
   let dLng = transformLng(lng - 105.0, lat - 35.0)
   const radLat = lat / 180.0 * pi
@@ -242,11 +245,11 @@ function transform (lng, lat) {
   const mgLng = lng + dLng
   return {
     lng: mgLng,
-    lat: mgLat
+    lat: mgLat,
   }
 }
 
-function transformLat (x, y) {
+function transformLat(x, y) {
   let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x))
   ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0
   ret += (20.0 * Math.sin(y * pi) + 40.0 * Math.sin(y / 3.0 * pi)) * 2.0 / 3.0
@@ -254,7 +257,7 @@ function transformLat (x, y) {
   return ret
 }
 
-function transformLng (x, y) {
+function transformLng(x, y) {
   let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x))
   ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0
   ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0

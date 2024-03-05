@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { type MockPrj } from './mock'
+import type { MockPrj } from './mock'
 import {
-  projects,
-  selectProject,
+  createProject,
   deleteProject,
   getNewMockProject,
+  projects,
+  selectProject,
   updateProject,
-  createProject
 } from './mockProject.service'
 
 const showPrjDialog = ref(false)
@@ -14,29 +14,30 @@ const form: MockPrj = reactive({
   id: '',
   name: '',
   path: '',
-  description: ''
+  description: '',
 })
 
-function openCreatePrjDialog () {
+function openCreatePrjDialog() {
   Object.assign(form, getNewMockProject())
   showPrjDialog.value = true
 }
 
-function openEditPrjDialog (prj: MockPrj) {
+function openEditPrjDialog(prj: MockPrj) {
   Object.assign(form, {
     id: prj.id ?? '',
     name: prj.name,
     path: prj.path,
-    description: prj.description ?? ''
+    description: prj.description ?? '',
   })
   showPrjDialog.value = true
 }
 
-async function createOrEditPrj (prj: MockPrj) {
+async function createOrEditPrj(prj: MockPrj) {
   let status: boolean
   if (prj.id) {
     status = await updateProject(prj)
-  } else {
+  }
+  else {
     status = await createProject(prj)
   }
   if (status) {

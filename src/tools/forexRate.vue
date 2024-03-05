@@ -1,68 +1,3 @@
-<template>
-  <div
-    w-full
-    h-full
-    overflow-auto
-  >
-    <a-typography-paragraph>
-      <blockquote>仅供参考，采用第三方接口，数据可能存在延迟</blockquote>
-    </a-typography-paragraph>
-    <el-space
-      :gap="8"
-      direction="vertical"
-      style="margin: 0 auto"
-    >
-      <div>
-        <a-statistic
-          :title="`1 ${forexMap[curFromCode]} 等于`"
-          :value="`${rate} ${forexMap[curToCode]}`"
-        />
-        <a-typography-paragraph>
-          <blockquote>查询时间: {{ time }}</blockquote>
-        </a-typography-paragraph>
-      </div>
-      <el-space :gap="8">
-        <el-input-number
-          v-model.number="fromValue"
-          class="w-50"
-          @change="updateToValue"
-        />
-        <el-select
-          v-model="fromCode"
-          class="w-50"
-        >
-          <el-option
-            v-for="(item,index) in forexList"
-            :key="index"
-            :value="item.code"
-          >
-            {{ item.label }}
-          </el-option>
-        </el-select>
-      </el-space>
-      <el-space :gap="8">
-        <el-input-number
-          v-model.number="toValue"
-          class="w-50"
-          @change="updateFromValue"
-        />
-        <el-select
-          v-model="toCode"
-          class="w-50"
-        >
-          <el-option
-            v-for="(item,index) in forexList"
-            :key="index"
-            :value="item.code"
-          >
-            {{ item.label }}
-          </el-option>
-        </el-select>
-      </el-space>
-    </el-space>
-  </div>
-</template>
-
 <script setup>
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -100,12 +35,12 @@ const forexList = ref([
   { code: 'SEK', label: '瑞典克朗' },
   { code: 'RUB', label: '卢布' },
   { code: 'MYR', label: '林吉特' },
-  { code: 'ZAR', label: '南非兰特' }
+  { code: 'ZAR', label: '南非兰特' },
 ])
 
 const forexMap = computed(() => {
   const map = {}
-  forexList.value.forEach(item => {
+  forexList.value.forEach((item) => {
     map[item.code] = item.label
   })
   return map
@@ -116,8 +51,8 @@ const time = ref('')
 const { data, execute } = useAxios('https://api.it120.cc/iszy/forex/rate', {
   params: {
     fromCode: toCode.value,
-    toCode: fromCode.value
-  }
+    toCode: fromCode.value,
+  },
 })
 
 const rate = computed(() => {
@@ -131,8 +66,8 @@ watch([fromCode, toCode], () => {
   execute?.('https://api.it120.cc/iszy/forex/rate', {
     params: {
       fromCode: toCode.value,
-      toCode: fromCode.value
-    }
+      toCode: fromCode.value,
+    },
   })
 })
 
@@ -143,14 +78,79 @@ watch(rate, () => {
   toValue.value = fromValue.value * rate.value
 })
 
-function updateToValue () {
-  toValue.value = parseFloat((fromValue.value * rate.value).toFixed(4))
+function updateToValue() {
+  toValue.value = Number.parseFloat((fromValue.value * rate.value).toFixed(4))
 }
 
-function updateFromValue () {
-  fromValue.value = parseFloat((toValue.value / rate.value).toFixed(4))
+function updateFromValue() {
+  fromValue.value = Number.parseFloat((toValue.value / rate.value).toFixed(4))
 }
 </script>
+
+<template>
+  <div
+    w-full
+    h-full
+    overflow-auto
+  >
+    <a-typography-paragraph>
+      <blockquote>仅供参考，采用第三方接口，数据可能存在延迟</blockquote>
+    </a-typography-paragraph>
+    <el-space
+      :gap="8"
+      direction="vertical"
+      style="margin: 0 auto"
+    >
+      <div>
+        <a-statistic
+          :title="`1 ${forexMap[curFromCode]} 等于`"
+          :value="`${rate} ${forexMap[curToCode]}`"
+        />
+        <a-typography-paragraph>
+          <blockquote>查询时间: {{ time }}</blockquote>
+        </a-typography-paragraph>
+      </div>
+      <el-space :gap="8">
+        <el-input-number
+          v-model.number="fromValue"
+          class="w-50"
+          @change="updateToValue"
+        />
+        <el-select
+          v-model="fromCode"
+          class="w-50"
+        >
+          <el-option
+            v-for="(item, index) in forexList"
+            :key="index"
+            :value="item.code"
+          >
+            {{ item.label }}
+          </el-option>
+        </el-select>
+      </el-space>
+      <el-space :gap="8">
+        <el-input-number
+          v-model.number="toValue"
+          class="w-50"
+          @change="updateFromValue"
+        />
+        <el-select
+          v-model="toCode"
+          class="w-50"
+        >
+          <el-option
+            v-for="(item, index) in forexList"
+            :key="index"
+            :value="item.code"
+          >
+            {{ item.label }}
+          </el-option>
+        </el-select>
+      </el-space>
+    </el-space>
+  </div>
+</template>
 
 <style scoped lang="scss">
 :deep(.ant-statistic) * {

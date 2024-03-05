@@ -1,3 +1,57 @@
+<script lang="ts" setup>
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+import md from '@/utils/markdown.js'
+import $axios from '@/plugins/Axios'
+
+dayjs.extend(duration)
+
+const keyword = ref('')
+const command = ref('')
+const commandData = ref('')
+const showModal = ref(false)
+
+const store = useLinuxCommandStore()
+
+const searchResults = computed(() => {
+  if (keyword.value) {
+    return Object.keys(store.data).filter(key => (store.data[key].n.toString().toLowerCase().includes(keyword.value.toLowerCase())))
+  }
+  else {
+    return []
+  }
+})
+const commandDetail = computed(() => {
+  return commandData.value ? md(commandData.value) : ''
+})
+const modalWidth = computed(() => {
+  return document.body.clientWidth < 832 ? document.body.clientWidth - 32 : 800
+})
+
+onMounted(() => {
+  if (store.time) {
+    const currentDate = dayjs()
+    const storageDate = dayjs(store.time)
+    if (dayjs.duration(currentDate.diff(storageDate)).asDays() <= 1) {
+      return
+    }
+  }
+  store.getData()
+})
+
+async function query(c: string) {
+  try {
+    const res = await $axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${c}.md`)
+    command.value = c
+    commandData.value = res.data
+    showModal.value = true
+  }
+  catch (e) {
+    ElMessage.error('查询失败')
+  }
+}
+</script>
+
 <template>
   <a-typography-paragraph>
     <blockquote>
@@ -30,7 +84,7 @@
         <b>没有结果</b>
       </li>
       <li
-        v-for="(item,index) in searchResults"
+        v-for="(item, index) in searchResults"
         :key="index"
         class="resultListItem"
       >
@@ -44,65 +98,13 @@
   </a-typography-paragraph>
   <el-dialog
     v-model="showModal"
-    :title="command + ' 命令详情'"
+    :title="`${command} 命令详情`"
     :width="modalWidth"
   >
-    <!-- eslint-disable vue/no-v-html -->
+    <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
     <a-typography v-html="commandDetail" />
   </el-dialog>
 </template>
-
-<script lang="ts" setup>
-import dayjs from 'dayjs'
-import md from '@/utils/markdown.js'
-import duration from 'dayjs/plugin/duration'
-import $axios from '@/plugins/Axios'
-
-dayjs.extend(duration)
-
-const keyword = ref('')
-const command = ref('')
-const commandData = ref('')
-const showModal = ref(false)
-
-const store = useLinuxCommandStore()
-
-const searchResults = computed(() => {
-  if (keyword.value) {
-    return Object.keys(store.data).filter(key => (store.data[key].n.toString().toLowerCase().includes(keyword.value.toLowerCase())))
-  } else {
-    return []
-  }
-})
-const commandDetail = computed(() => {
-  return commandData.value ? md(commandData.value) : ''
-})
-const modalWidth = computed(() => {
-  return document.body.clientWidth < 832 ? document.body.clientWidth - 32 : 800
-})
-
-onMounted(() => {
-  if (store.time) {
-    const currentDate = dayjs()
-    const storageDate = dayjs(store.time)
-    if (dayjs.duration(currentDate.diff(storageDate)).asDays() <= 1) {
-      return
-    }
-  }
-  store.getData()
-})
-
-async function query (c: string) {
-  try {
-    const res = await $axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${c}.md`)
-    command.value = c
-    commandData.value = res.data
-    showModal.value = true
-  } catch (e) {
-    ElMessage.error('查询失败')
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .resultListItem {

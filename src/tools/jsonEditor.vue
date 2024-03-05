@@ -1,3 +1,286 @@
+<script setup lang="ts">
+import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
+
+const editorPanelContainerLeft = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editorPanelContainerRight = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editorPanel = ref<HTMLDivElement>()
+const loading = ref(true)
+const fullPanel = ref('')
+
+const store = useJsonEditorStore()
+
+const defaultData = {
+  array: [
+    1,
+    2,
+    3,
+  ],
+  boolean: true,
+  color: 'gold',
+  null: null,
+  number: 123,
+  object: {
+    a: 'b',
+    c: 'd',
+  },
+  string: 'Hello World',
+}
+
+onMounted(() => {
+  init()
+})
+
+async function init() {
+  if (store.syncCloud) {
+    await store.getSyncData()
+    loading.value = false
+  }
+  else {
+    loading.value = false
+  }
+  if (store.leftData && store.leftData.content) {
+    if (store.leftData.content.json) {
+      editorPanelContainerLeft.value?.set(store.leftData.content.json)
+    }
+    else if (store.leftData.content.text) {
+      editorPanelContainerLeft.value?.set(store.leftData.content.text)
+    }
+  }
+  else {
+    editorPanelContainerLeft.value?.set(defaultData)
+  }
+  if (store.rightData && store.rightData.content) {
+    if (store.rightData.content.json) {
+      editorPanelContainerRight.value?.set(store.rightData.content.json)
+    }
+    else if (store.rightData.content.text) {
+      editorPanelContainerRight.value?.set(store.rightData.content.text)
+    }
+  }
+  fullPanel.value = store.fullStatus
+}
+
+function create(leftOrRight: 'left' | 'right') {
+  store.saveData({
+    [leftOrRight]: true,
+  })
+  if (leftOrRight === 'left') {
+    editorPanelContainerLeft.value?.set({})
+  }
+  else if (leftOrRight === 'right') {
+    editorPanelContainerRight.value?.set({})
+  }
+}
+
+function changeName(leftOrRight: 'left' | 'right', name: string) {
+  let id: string | null = null
+  if (leftOrRight === 'left') {
+    id = store.leftId
+  }
+  else if (leftOrRight === 'right') {
+    id = store.rightId
+  }
+  if (id) {
+    store.saveData({
+      id,
+      name,
+    })
+  }
+}
+
+function change(leftOrRight: 'left' | 'right', data: any) {
+  let id: string | null = null
+  if (leftOrRight === 'left') {
+    id = store.leftId
+  }
+  else if (leftOrRight === 'right') {
+    id = store.rightId
+  }
+  const tmp = {
+    [leftOrRight]: true,
+    content: data,
+  }
+  if (id) {
+    tmp.id = id
+  }
+  store.saveData(tmp)
+}
+
+// region 最近打开相关
+const showOpenRecent = ref(false)
+const selectId = ref('')
+const keyword = ref('')
+let openRecentFlag: 'left' | 'right' | '' = ''
+const dataListAfterSearch = computed(() => {
+  return store.dataList(keyword.value)
+})
+
+function beforeOpenRecent(leftOrRight: 'left' | 'right') {
+  selectId.value = ''
+  keyword.value = ''
+  openRecentFlag = leftOrRight
+  showOpenRecent.value = true
+}
+
+function openRecent() {
+  if (selectId.value) {
+    const tmp = store.data(selectId.value)
+    if (tmp && tmp.content) {
+      const data = tmp.content
+      if (openRecentFlag === 'left') {
+        store.saveData({
+          left: true,
+          id: selectId.value,
+        })
+        if (data.json) {
+          editorPanelContainerLeft.value?.set(data.json)
+        }
+        else if (data.text) {
+          editorPanelContainerLeft.value?.set(data.text)
+        }
+      }
+      else if (openRecentFlag === 'right') {
+        store.saveData({
+          right: true,
+          id: selectId.value,
+        })
+        if (data.json) {
+          editorPanelContainerRight.value?.set(data.json)
+        }
+        else if (data.text) {
+          editorPanelContainerRight.value?.set(data.text)
+        }
+      }
+    }
+  }
+  showOpenRecent.value = false
+}
+
+function open(leftOrRight: 'left' | 'right', { name, content }: { name: string, content: string }) {
+  store.saveData({
+    [leftOrRight]: true,
+    name,
+    content,
+  })
+  if (leftOrRight === 'left') {
+    editorPanelContainerLeft.value?.set(content)
+  }
+  else if (leftOrRight === 'right') {
+    editorPanelContainerRight.value?.set(content)
+  }
+}
+
+function deleteJson(leftOrRight: 'left' | 'right') {
+  const id = leftOrRight === 'left' ? store.leftId : store.rightId
+  if (id) {
+    store.deleteData({ id })
+  }
+}
+// endregion
+
+function copyRight() {
+  const data = editorPanelContainerLeft.value?.get()
+  if (data != null) {
+    editorPanelContainerRight.value?.set(data)
+  }
+}
+
+function copyLeft() {
+  const data = editorPanelContainerRight.value?.get()
+  if (data != null) {
+    editorPanelContainerLeft.value?.set(data)
+  }
+}
+
+let startX = 0
+let originWidth = 0
+let moved = false
+
+// region 拖拽相关
+function startDrag(e: TouchEvent | MouseEvent) {
+  // 只允许左键
+  if (e instanceof MouseEvent && e.button !== 0) {
+    return
+  }
+  const dom = editorPanelContainerLeft.value?.container
+  if (!dom) {
+    return
+  }
+  moved = false
+  originWidth = Number.parseFloat(window.getComputedStyle(dom).width)
+  if (Number.isNaN(originWidth)) {
+    originWidth = 0
+  }
+  if (e instanceof TouchEvent) {
+    startX = e.touches[0].clientX
+    document.addEventListener('touchend', endDrag)
+    document.addEventListener('touchmove', dragMove)
+  }
+  else {
+    startX = e.clientX
+    document.addEventListener('mouseup', endDrag)
+    document.addEventListener('mousemove', dragMove)
+  }
+}
+function dragMove(e: TouchEvent | MouseEvent) {
+  if (!editorPanel.value) {
+    return
+  }
+  moved = true
+  let clientX = 0
+  if (e instanceof TouchEvent) {
+    clientX = e.touches[0].clientX
+  }
+  else {
+    clientX = e.clientX
+  }
+  const width = originWidth - startX + clientX
+  const editorPanelWidth = Number.parseFloat(window.getComputedStyle(editorPanel.value).width)
+  if (width < 435) {
+    fullPanel.value = 'right'
+    if (fullPanel.value !== store.fullStatus) {
+      store.setFullStatus('right')
+    }
+  }
+  else if (editorPanelWidth - 100 - width < 435) {
+    fullPanel.value = 'left'
+    if (fullPanel.value !== store.fullStatus) {
+      store.setFullStatus('left')
+    }
+  }
+  else {
+    fullPanel.value = ''
+    store.setSplitter(width / (editorPanelWidth - 100))
+    if (fullPanel.value !== store.fullStatus) {
+      store.setFullStatus()
+    }
+  }
+}
+function endDrag() {
+  document.removeEventListener('mousemove', dragMove)
+  document.removeEventListener('touchmove', dragMove)
+  document.removeEventListener('mouseup', endDrag)
+  document.removeEventListener('touchend', endDrag)
+}
+function clickDragger() {
+  if (!editorPanel.value) {
+    return
+  }
+  if (moved) {
+    return
+  }
+  if (fullPanel.value === 'left') {
+    store.setSplitter(1 - 435 / (Number.parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))
+    fullPanel.value = ''
+  }
+  else if (fullPanel.value === 'right') {
+    store.setSplitter(435 / (Number.parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))
+    fullPanel.value = ''
+  }
+}
+// endregion
+</script>
+
 <template>
   <div
     v-show="loading"
@@ -14,11 +297,11 @@
       ref="editorPanelContainerLeft"
       show-menu-bar
       class="editorPanelContainer editorPanelContainerLeft"
-      :class="{full:fullPanel==='left',hide:fullPanel==='right'}"
-      :style="{flex: store.splitterValue + ' 1 0'}"
+      :class="{ full: fullPanel === 'left', hide: fullPanel === 'right' }"
+      :style="{ flex: `${store.splitterValue} 1 0` }"
       :name="store.leftData?.name"
       :config="{
-        mode: 'text'
+        mode: 'text',
       }"
       @change="change('left', $event)"
       @open-recent="beforeOpenRecent('left')"
@@ -29,7 +312,7 @@
     />
     <div
       class="controller noShowMobile"
-      :class="{full:fullPanel}"
+      :class="{ full: fullPanel }"
     >
       <el-space
         direction="vertical"
@@ -61,7 +344,7 @@
         >
           <div class="dragIcon">
             <svg
-              v-if="fullPanel==='right'"
+              v-if="fullPanel === 'right'"
               aria-hidden="true"
               focusable="false"
               data-prefix="fas"
@@ -74,7 +357,7 @@
               d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
             /></svg>
             <svg
-              v-else-if="fullPanel==='left'"
+              v-else-if="fullPanel === 'left'"
               aria-hidden="true"
               focusable="false"
               data-prefix="fas"
@@ -107,11 +390,11 @@
       ref="editorPanelContainerRight"
       show-menu-bar
       class="editorPanelContainer editorPanelContainerRight noShowMobile"
-      :class="{full:fullPanel==='right',hide:fullPanel==='left'}"
-      :style="{flex: (1-store.splitterValue) + ' 1 0'}"
+      :class="{ full: fullPanel === 'right', hide: fullPanel === 'left' }"
+      :style="{ flex: `${1 - store.splitterValue} 1 0` }"
       :name="store.rightData?.name"
       :config="{
-        mode: 'tree'
+        mode: 'tree',
       }"
       @change="change('right', $event)"
       @open-recent="beforeOpenRecent('right')"
@@ -138,8 +421,8 @@
     >
       <template #renderItem="{ item }">
         <a-list-item
-          :class="{selected: item._id === selectId}"
-          @click="selectId=item._id"
+          :class="{ selected: item._id === selectId }"
+          @click="selectId = item._id"
         >
           <template #actions>
             <el-button
@@ -150,7 +433,7 @@
             </el-button>
           </template>
           <a-list-item-meta
-            :description="'最后修改: '+item.updated"
+            :description="`最后修改: ${item.updated}`"
           >
             <template #title>
               {{ item.name }}
@@ -162,7 +445,7 @@
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="showOpenRecent=false">取消</el-button>
+        <el-button @click="showOpenRecent = false">取消</el-button>
         <el-button
           type="primary"
           @click="openRecent"
@@ -173,267 +456,6 @@
     </template>
   </el-dialog>
 </template>
-
-<script setup lang="ts">
-import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
-
-const editorPanelContainerLeft = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-const editorPanelContainerRight = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-const editorPanel = ref<HTMLDivElement>()
-const loading = ref(true)
-const fullPanel = ref('')
-
-const store = useJsonEditorStore()
-
-const defaultData = {
-  array: [
-    1,
-    2,
-    3
-  ],
-  boolean: true,
-  color: 'gold',
-  null: null,
-  number: 123,
-  object: {
-    a: 'b',
-    c: 'd'
-  },
-  string: 'Hello World'
-}
-
-onMounted(() => {
-  init()
-})
-
-async function init () {
-  if (store.syncCloud) {
-    await store.getSyncData()
-    loading.value = false
-  } else {
-    loading.value = false
-  }
-  if (store.leftData && store.leftData.content) {
-    if (store.leftData.content.json) {
-      editorPanelContainerLeft.value?.set(store.leftData.content.json)
-    } else if (store.leftData.content.text) {
-      editorPanelContainerLeft.value?.set(store.leftData.content.text)
-    }
-  } else {
-    editorPanelContainerLeft.value?.set(defaultData)
-  }
-  if (store.rightData && store.rightData.content) {
-    if (store.rightData.content.json) {
-      editorPanelContainerRight.value?.set(store.rightData.content.json)
-    } else if (store.rightData.content.text) {
-      editorPanelContainerRight.value?.set(store.rightData.content.text)
-    }
-  }
-  fullPanel.value = store.fullStatus
-}
-
-function create (leftOrRight: 'left' | 'right') {
-  store.saveData({
-    [leftOrRight]: true
-  })
-  if (leftOrRight === 'left') {
-    editorPanelContainerLeft.value?.set({})
-  } else if (leftOrRight === 'right') {
-    editorPanelContainerRight.value?.set({})
-  }
-}
-
-function changeName (leftOrRight: 'left' | 'right', name: string) {
-  let id: string | null = null
-  if (leftOrRight === 'left') {
-    id = store.leftId
-  } else if (leftOrRight === 'right') {
-    id = store.rightId
-  }
-  if (id) {
-    store.saveData({
-      id,
-      name
-    })
-  }
-}
-
-function change (leftOrRight: 'left' | 'right', data: any) {
-  let id: string | null = null
-  if (leftOrRight === 'left') {
-    id = store.leftId
-  } else if (leftOrRight === 'right') {
-    id = store.rightId
-  }
-  const tmp = {
-    [leftOrRight]: true,
-    content: data
-  }
-  if (id) {
-    tmp.id = id
-  }
-  store.saveData(tmp)
-}
-
-// region 最近打开相关
-const showOpenRecent = ref(false)
-const selectId = ref('')
-const keyword = ref('')
-let openRecentFlag: 'left' | 'right' | '' = ''
-const dataListAfterSearch = computed(() => {
-  return store.dataList(keyword.value)
-})
-
-function beforeOpenRecent (leftOrRight: 'left' | 'right') {
-  selectId.value = ''
-  keyword.value = ''
-  openRecentFlag = leftOrRight
-  showOpenRecent.value = true
-}
-
-function openRecent () {
-  if (selectId.value) {
-    const tmp = store.data(selectId.value)
-    if (tmp && tmp.content) {
-      const data = tmp.content
-      if (openRecentFlag === 'left') {
-        store.saveData({
-          left: true,
-          id: selectId.value
-        })
-        if (data.json) {
-          editorPanelContainerLeft.value?.set(data.json)
-        } else if (data.text) {
-          editorPanelContainerLeft.value?.set(data.text)
-        }
-      } else if (openRecentFlag === 'right') {
-        store.saveData({
-          right: true,
-          id: selectId.value
-        })
-        if (data.json) {
-          editorPanelContainerRight.value?.set(data.json)
-        } else if (data.text) {
-          editorPanelContainerRight.value?.set(data.text)
-        }
-      }
-    }
-  }
-  showOpenRecent.value = false
-}
-
-function open (leftOrRight: 'left' | 'right', { name, content } : {name: string, content: string}) {
-  store.saveData({
-    [leftOrRight]: true,
-    name,
-    content
-  })
-  if (leftOrRight === 'left') {
-    editorPanelContainerLeft.value?.set(content)
-  } else if (leftOrRight === 'right') {
-    editorPanelContainerRight.value?.set(content)
-  }
-}
-
-function deleteJson (leftOrRight: 'left' | 'right') {
-  const id = leftOrRight === 'left' ? store.leftId : store.rightId
-  if (id) {
-    store.deleteData({ id })
-  }
-}
-// endregion
-
-function copyRight () {
-  const data = editorPanelContainerLeft.value?.get()
-  if (data != null) {
-    editorPanelContainerRight.value?.set(data)
-  }
-}
-
-function copyLeft () {
-  const data = editorPanelContainerRight.value?.get()
-  if (data != null) {
-    editorPanelContainerLeft.value?.set(data)
-  }
-}
-
-let startX = 0
-let originWidth = 0
-let moved = false
-
-// region 拖拽相关
-function startDrag (e: TouchEvent | MouseEvent) {
-  // 只允许左键
-  if (e instanceof MouseEvent && e.button !== 0) {
-    return
-  }
-  const dom = editorPanelContainerLeft.value?.container
-  if (!dom) {
-    return
-  }
-  moved = false
-  originWidth = parseFloat(window.getComputedStyle(dom).width)
-  if (isNaN(originWidth)) {
-    originWidth = 0
-  }
-  if (e instanceof TouchEvent) {
-    startX = e.touches[0].clientX
-    document.addEventListener('touchend', endDrag)
-    document.addEventListener('touchmove', dragMove)
-  } else {
-    startX = e.clientX
-    document.addEventListener('mouseup', endDrag)
-    document.addEventListener('mousemove', dragMove)
-  }
-}
-function dragMove (e: TouchEvent | MouseEvent) {
-  if (!editorPanel.value) {
-    return
-  }
-  moved = true
-  let clientX = 0
-  if (e instanceof TouchEvent) {
-    clientX = e.touches[0].clientX
-  } else {
-    clientX = e.clientX
-  }
-  const width = originWidth - startX + clientX
-  const editorPanelWidth = parseFloat(window.getComputedStyle(editorPanel.value).width)
-  if (width < 435) {
-    fullPanel.value = 'right'
-    if (fullPanel.value !== store.fullStatus) { store.setFullStatus('right') }
-  } else if (editorPanelWidth - 100 - width < 435) {
-    fullPanel.value = 'left'
-    if (fullPanel.value !== store.fullStatus) { store.setFullStatus('left') }
-  } else {
-    fullPanel.value = ''
-    store.setSplitter(width / (editorPanelWidth - 100))
-    if (fullPanel.value !== store.fullStatus) {
-      store.setFullStatus()
-    }
-  }
-}
-function endDrag () {
-  document.removeEventListener('mousemove', dragMove)
-  document.removeEventListener('touchmove', dragMove)
-  document.removeEventListener('mouseup', endDrag)
-  document.removeEventListener('touchend', endDrag)
-}
-function clickDragger () {
-  if (!editorPanel.value) {
-    return
-  }
-  if (moved) { return }
-  if (fullPanel.value === 'left') {
-    store.setSplitter(1 - 435 / (parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))
-    fullPanel.value = ''
-  } else if (fullPanel.value === 'right') {
-    store.setSplitter(435 / (parseFloat(window.getComputedStyle(editorPanel.value).width) - 100))
-    fullPanel.value = ''
-  }
-}
-// endregion
-</script>
 
 <style lang="scss" scoped>
 .loadingPanel {

@@ -1,26 +1,26 @@
 const config: {
-  readonly name: string,
-  readonly alias: string,
-  readonly zhName: string,
+  readonly name: string
+  readonly alias: string
+  readonly zhName: string
 
-  readonly key: string,
+  readonly key: string
 
-  readonly domain: string,
-  readonly site: string,
-  readonly api: string,
-  readonly cdn: string,
+  readonly domain: string
+  readonly site: string
+  readonly api: string
+  readonly cdn: string
 
-  readonly schema: string,
+  readonly schema: string
 
-  readonly whiteList: string[],
+  readonly whiteList: string[]
 
-  readonly siteHost: string,
-  readonly apiHost: string,
-  readonly cdnHost: string,
+  readonly siteHost: string
+  readonly apiHost: string
+  readonly cdnHost: string
 
-  readonly siteOrigin: string,
-  readonly apiOrigin: string,
-  readonly cdnOrigin: string,
+  readonly siteOrigin: string
+  readonly apiOrigin: string
+  readonly cdnOrigin: string
 } = {
   name: 'iszy_tools',
   alias: 'ISZY TOOLS',
@@ -37,25 +37,25 @@ const config: {
 
   whiteList: ['/login', '/logout'],
 
-  get siteHost () {
+  get siteHost() {
     return `${this.site}.${this.domain}`
   },
-  get apiHost () {
+  get apiHost() {
     return `${this.api}.${this.domain}`
   },
-  get cdnHost () {
+  get cdnHost() {
     return `${this.cdn}.${this.domain}`
   },
 
-  get siteOrigin () {
+  get siteOrigin() {
     return `${this.schema}://${this.siteHost}`
   },
-  get apiOrigin () {
+  get apiOrigin() {
     return `${this.schema}://${this.apiHost}`
   },
-  get cdnOrigin () {
+  get cdnOrigin() {
     return `${this.schema}://${this.cdnHost}`
-  }
+  },
 }
 
 export default config

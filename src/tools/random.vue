@@ -1,7 +1,37 @@
+<script>
+import { random } from 'lodash-es'
+
+export default defineComponent({
+  name: 'RandomNumber',
+  data: () => ({
+    min: 0,
+    max: 10,
+    times: 1,
+    float: false,
+    randomNumResult: '',
+  }),
+  methods: {
+    randomNum() {
+      try {
+        for (let i = 0; i < this.times; i++) {
+          this.randomNumResult = random(this.min, this.max, this.float) + (this.randomNumResult === '' ? '' : '\n') + this.randomNumResult
+        }
+      }
+      catch (e) {
+        ElMessage.error('计算错误')
+      }
+    },
+    clearRandomNum() {
+      this.randomNumResult = ''
+    },
+  },
+})
+</script>
+
 <template>
   <el-form
-    :label-col="{sm:{span:2}}"
-    :wrapper-col="{sm:{span:3}}"
+    :label-col="{ sm: { span: 2 } }"
+    :wrapper-col="{ sm: { span: 3 } }"
   >
     <el-form-item label="最小数字">
       <el-input-number v-model.number="min" />
@@ -18,7 +48,7 @@
     <el-form-item label="小数">
       <el-switch v-model="float" />
     </el-form-item>
-    <el-form-item :wrapper-col="{sm:{span:3,offset:2}}">
+    <el-form-item :wrapper-col="{ sm: { span: 3, offset: 2 } }">
       <el-space>
         <el-button
           type="primary"
@@ -31,7 +61,7 @@
         </el-button>
       </el-space>
     </el-form-item>
-    <el-form-item :wrapper-col="{sm:{span:5}}">
+    <el-form-item :wrapper-col="{ sm: { span: 5 } }">
       <el-input
         v-model="randomNumResult"
         type="textarea"
@@ -41,35 +71,6 @@
     </el-form-item>
   </el-form>
 </template>
-
-<script>
-import { random } from 'lodash-es'
-
-export default defineComponent({
-  name: 'RandomNumber',
-  data: () => ({
-    min: 0,
-    max: 10,
-    times: 1,
-    float: false,
-    randomNumResult: ''
-  }),
-  methods: {
-    randomNum () {
-      try {
-        for (let i = 0; i < this.times; i++) {
-          this.randomNumResult = random(this.min, this.max, this.float) + (this.randomNumResult === '' ? '' : '\n') + this.randomNumResult
-        }
-      } catch (e) {
-        ElMessage.error('计算错误')
-      }
-    },
-    clearRandomNum () {
-      this.randomNumResult = ''
-    }
-  }
-})
-</script>
 
 <style scoped lang="scss">
 .ant-input-number {

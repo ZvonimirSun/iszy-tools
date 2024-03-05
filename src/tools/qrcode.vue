@@ -1,3 +1,77 @@
+<script setup lang="ts">
+import { toDataURL } from 'qrcode'
+import QrcodeDecoder from 'qrcode-decoder/src/index'
+import createFile from '@/utils/createFile'
+
+const generateContent = ref('')
+const generateResult = ref('')
+const qrCodeFile = ref('')
+const decodeResult = ref('')
+const decodeImg = ref<HTMLImageElement>()
+
+async function generateQR() {
+  if (!generateContent.value) {
+    generateResult.value = ''
+    return
+  }
+  try {
+    generateResult.value = await toDataURL(generateContent.value)
+  }
+  catch (e) {
+    generateResult.value = ''
+    if (e instanceof Error) {
+      ElMessage.error(e.message)
+    }
+  }
+}
+
+function saveResult() {
+  if (!generateResult.value) {
+    return
+  }
+  createFile(generateResult.value, 'result.png', 'url')
+}
+
+function upload(img: File) {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => {
+    if (typeof reader.result === 'string') {
+      qrCodeFile.value = reader.result
+      nextTick(() => {
+        if (!decodeImg.value) {
+          return
+        }
+        decodeQRCode(decodeImg.value)
+      })
+    }
+    else {
+      ElMessage.error('读取文件失败')
+    }
+  })
+  reader.addEventListener('error', () => {
+    ElMessage.error('读取文件失败')
+  })
+  reader.readAsDataURL(img)
+  return false
+}
+
+async function decodeQRCode(img: HTMLImageElement) {
+  try {
+    const qrcodeDecoder = new QrcodeDecoder()
+    const res = await qrcodeDecoder.decodeFromImage(img) as { data: string }
+    if (res) {
+      decodeResult.value = res.data
+    }
+  }
+  catch (e) {
+    console.error(e)
+    if (e instanceof Error) {
+      ElMessage.error(e.message)
+    }
+  }
+}
+</script>
+
 <template>
   <a-typography-title :level="3">
     生成二维码
@@ -70,75 +144,6 @@
     </el-form-item>
   </el-form>
 </template>
-
-<script setup lang="ts">
-import { toDataURL } from 'qrcode'
-import createFile from '@/utils/createFile'
-import QrcodeDecoder from 'qrcode-decoder/src/index'
-
-const generateContent = ref('')
-const generateResult = ref('')
-const qrCodeFile = ref('')
-const decodeResult = ref('')
-const decodeImg = ref<HTMLImageElement>()
-
-async function generateQR () {
-  if (!generateContent.value) {
-    generateResult.value = ''
-    return
-  }
-  try {
-    generateResult.value = await toDataURL(generateContent.value)
-  } catch (e) {
-    generateResult.value = ''
-    if (e instanceof Error) {
-      ElMessage.error(e.message)
-    }
-  }
-}
-
-function saveResult () {
-  if (!generateResult.value) {
-    return
-  }
-  createFile(generateResult.value, 'result.png', 'url')
-}
-
-function upload (img: File) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => {
-    if (typeof reader.result === 'string') {
-      qrCodeFile.value = reader.result
-      nextTick(() => {
-        if (!decodeImg.value) {
-          return
-        }
-        decodeQRCode(decodeImg.value)
-      })
-    } else {
-      ElMessage.error('读取文件失败')
-    }
-  })
-  reader.addEventListener('error', () => {
-    ElMessage.error('读取文件失败')
-  })
-  reader.readAsDataURL(img)
-  return false
-}
-
-async function decodeQRCode (img: HTMLImageElement) {
-  try {
-    const qrcodeDecoder = new QrcodeDecoder()
-    const res = await qrcodeDecoder.decodeFromImage(img) as { data: string }
-    if (res) {
-      decodeResult.value = res.data
-    }
-  } catch (e) {
-    console.error(e)
-    if (e instanceof Error) { ElMessage.error(e.message) }
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .ant-form-item {

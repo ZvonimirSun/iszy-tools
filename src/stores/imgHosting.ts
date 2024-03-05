@@ -5,64 +5,68 @@ import { v4 as uuidv4 } from 'uuid'
 const userImgHosting = useSettingStore().modules.imgHosting
 
 interface ImgItem {
-  name: string,
-  url: string,
+  name: string
+  url: string
   id: string
 }
 
 export const useImgHostingStore = defineStore('imgHosting', {
   persist: true,
   state: () => ({
-    imgList: [] as ImgItem[]
+    imgList: [] as ImgItem[],
   }),
   getters: {
-    uploader () {
+    uploader() {
       return userImgHosting.uploader
     },
-    config () {
+    config() {
       return (uploader: string): Record<string, string> => {
         return userImgHosting.configs[uploader]
       }
     },
-    commonConfig () {
+    commonConfig() {
       return userImgHosting.commonConfig
-    }
+    },
   },
   actions: {
-    saveConfig ({ uploader, config } = {} as {
-      uploader: 'aliyun', config: Record<string, string>
+    saveConfig({ uploader, config } = {} as {
+      uploader: 'aliyun'
+      config: Record<string, string>
     }) {
       userImgHosting.uploader = uploader
       userImgHosting.configs[uploader] = config
     },
-    addImage ({ name, url } = {} as { name: string, url: string }) {
+    addImage({ name, url } = {} as { name: string, url: string }) {
       if (name && url) {
         this.imgList.unshift({
-          name, url, id: uuidv4()
+          name,
+          url,
+          id: uuidv4(),
         })
       }
     },
-    removeImage ({ id } = {} as {id: string}) {
+    removeImage({ id } = {} as { id: string }) {
       for (const i in this.imgList || []) {
         if (this.imgList[i].id === id) {
-          this.imgList.splice(parseInt(i), 1)
+          this.imgList.splice(Number.parseInt(i), 1)
         }
       }
     },
-    async importConfig ({
+    async importConfig({
       uploader = '' as 'aliyun' | null,
       imgList = [],
       configs = {},
-      commonConfig = { renameTimeStamp: true }
+      commonConfig = { renameTimeStamp: true },
     }) {
       if (typeof uploader === 'string' && Array.isArray(imgList) && configs && commonConfig) {
         this.imgList = imgList
         userImgHosting.uploader = uploader
         userImgHosting.configs = configs
         userImgHosting.commonConfig = merge(userImgHosting.commonConfig, commonConfig)
-      } else {
+      }
+      else {
         throw new Error('配置有误')
       }
-    }
-  }
+    },
+  },
 })

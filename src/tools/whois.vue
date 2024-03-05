@@ -5,14 +5,16 @@ const loading = ref(false)
 const domains = ref('')
 const result = ref<string>()
 
-async function search () {
-  if (!domains.value) return
+async function search() {
+  if (!domains.value)
+    return
   loading.value = true
   try {
     const res = (await $axios.get(`https://cors.iszy.xyz/https://www.iana.org/whois?q=${domains.value}`)).data
     const tree = new DOMParser().parseFromString(res, 'text/html')
     result.value = tree.querySelector('#results + pre')?.innerHTML
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error('查询失败')
   }
   loading.value = false

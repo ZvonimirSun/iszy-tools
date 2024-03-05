@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { identity } from 'lodash-es'
 import type { FormRules } from 'element-plus'
-import { EditorPlugin } from '@/types/editor'
-import EditorMini from '@/components/editor/EditorMini.vue'
 import type { Ref } from 'vue'
+import type { EditorPlugin } from '@/types/editor'
+import EditorMini from '@/components/editor/EditorMini.vue'
 
 const props = withDefaults(
   defineProps<{
-    plugin: EditorPlugin,
+    plugin: EditorPlugin
     target?: string
     inputLabel?: string
     inputDefault?: string
-    inputPlaceholder?: string,
-    invalidMessage?: string,
-    outputLabel?: string,
+    inputPlaceholder?: string
+    invalidMessage?: string
+    outputLabel?: string
     options?: Record<string, any>
   }>(),
   {
@@ -23,30 +23,32 @@ const props = withDefaults(
     inputPlaceholder: '输入...',
     invalidMessage: '请输入正确的内容',
     outputLabel: '输出',
-    options: () => ({})
-  }
+    options: () => ({}),
+  },
 )
+
+defineEmits<{
+  (e: 'format', data: string): void
+}>()
 
 const { plugin, inputDefault } = toRefs(props)
 
 const { _inputLabel, _inputPlaceholder, _invalidMessage, _outputLabel } = props.target
   ? {
-      _inputLabel: '你的' + props.target + '内容',
-      _inputPlaceholder: '在这里粘贴' + props.target + '内容...',
-      _invalidMessage: '请输入正确的' + props.target + '内容',
-      _outputLabel: '格式化后的' + props.target + '内容'
+      _inputLabel: `你的${props.target}内容`,
+      _inputPlaceholder: `在这里粘贴${props.target}内容...`,
+      _invalidMessage: `请输入正确的${props.target}内容`,
+      _outputLabel: `格式化后的${props.target}内容`,
     }
   : {
       _inputLabel: props.inputLabel,
       _inputPlaceholder: props.inputPlaceholder,
       _invalidMessage: props.invalidMessage,
-      _outputLabel: props.outputLabel
+      _outputLabel: props.outputLabel,
     }
-const emits = defineEmits<{(e: 'format', data: string): void}>()
-
 const editor = ref<InstanceType<typeof EditorMini>>() as Ref<InstanceType<typeof EditorMini>>
 const form = reactive({
-  input: inputDefault.value
+  input: inputDefault.value,
 })
 const formatter = props.plugin.formatter || identity<string>
 const isValid = props.plugin.isValid || (() => true)
@@ -59,11 +61,12 @@ watch(inputDefault, (val) => {
 watch([valid, () => props.options, editor], () => {
   if (valid.value) {
     editor.value?.setInput(formatter(form.input, props.options))
-  } else {
+  }
+  else {
     editor.value?.setInput('')
   }
 }, {
-  deep: true
+  deep: true,
 })
 
 const rules = reactive<FormRules<typeof form>>({
@@ -71,12 +74,13 @@ const rules = reactive<FormRules<typeof form>>({
     validator: (rule: unknown, val: string, callback: any) => {
       if (!valid.value) {
         callback(new Error(_invalidMessage))
-      } else {
+      }
+      else {
         callback()
       }
     },
-    trigger: 'change'
-  }]
+    trigger: 'change',
+  }],
 })
 </script>
 

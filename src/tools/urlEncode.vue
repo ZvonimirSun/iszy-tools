@@ -1,3 +1,43 @@
+<script setup lang="ts">
+const value = ref('')
+const result = ref('')
+const urlEncodeStore = useStore()
+
+function encode() {
+  result.value = encodeURIComponent(value.value)
+  if (value.value && result.value) {
+    urlEncodeStore.addHistory({
+      origin: value.value,
+      target: result.value,
+    })
+  }
+}
+function decode() {
+  result.value = decodeURIComponent(value.value)
+  if (value.value && result.value) {
+    urlEncodeStore.addHistory({
+      origin: value.value,
+      target: result.value,
+    })
+  }
+}
+function revert() {
+  const tmp = value.value
+  value.value = result.value
+  result.value = tmp
+}
+function clear() {
+  value.value = ''
+  result.value = ''
+  urlEncodeStore.clearHistory()
+}
+
+function revertHistory(history: Array<string>) {
+  value.value = history[0]
+  result.value = history[1]
+}
+</script>
+
 <template>
   <el-space
     direction="vertical"
@@ -69,47 +109,6 @@
     </template>
   </el-space>
 </template>
-
-<script setup lang="ts">
-
-const value = ref('')
-const result = ref('')
-const urlEncodeStore = useStore()
-
-function encode () {
-  result.value = encodeURIComponent(value.value)
-  if (value.value && result.value) {
-    urlEncodeStore.addHistory({
-      origin: value.value,
-      target: result.value
-    })
-  }
-}
-function decode () {
-  result.value = decodeURIComponent(value.value)
-  if (value.value && result.value) {
-    urlEncodeStore.addHistory({
-      origin: value.value,
-      target: result.value
-    })
-  }
-}
-function revert () {
-  const tmp = value.value
-  value.value = result.value
-  result.value = tmp
-}
-function clear () {
-  value.value = ''
-  result.value = ''
-  urlEncodeStore.clearHistory()
-}
-
-function revertHistory (history: Array<string>) {
-  value.value = history[0]
-  result.value = history[1]
-}
-</script>
 
 <style scoped lang="scss">
 .ant-space-vertical {

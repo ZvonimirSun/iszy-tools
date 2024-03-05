@@ -801,7 +801,7 @@
         }
 
         function SlowBuffer (length) {
-          if (+length != length) { // eslint-disable-line eqeqeq
+          if (+length != length) {  
             length = 0
           }
           return Buffer.alloc(+length)
@@ -2267,7 +2267,7 @@
         }
 
         function isnan (val) {
-          return val !== val // eslint-disable-line no-self-compare
+          return val !== val  
         }
       }).call(this, typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {})
     }, { 'base64-js': 2, ieee754: 33, isarray: 37 }],
@@ -2297,7 +2297,7 @@
     }, {}],
     9: [function (require, module, exports) {
       const core = module.exports = { version: '2.3.0' }
-      if (typeof __e === 'number')__e = core // eslint-disable-line no-undef
+      if (typeof __e === 'number')__e = core  
     }, {}],
     10: [function (require, module, exports) {
     // optional / simple context binding
@@ -2413,7 +2413,7 @@
       const global = module.exports = typeof window !== 'undefined' && window.Math == Math
         ? window
         : typeof self !== 'undefined' && self.Math == Math ? self : Function('return this')()
-      if (typeof __g === 'number')__g = global // eslint-disable-line no-undef
+      if (typeof __g === 'number')__g = global  
     }, {}],
     16: [function (require, module, exports) {
       const dP = require('./_object-dp')
@@ -13095,7 +13095,7 @@ exports.inflateUndermine = inflateUndermine;
       const REPZ_11_138 = 18
       /* repeat a zero length 11-138 times  (7 bits of repeat count) */
 
-      /* eslint-disable comma-spacing,array-bracket-spacing */
+       
       const extra_lbits = /* extra bits for each length code */
       [0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0]
 

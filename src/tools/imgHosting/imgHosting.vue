@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import ImgList from './child/imgList.vue'
+import Upload from './child/upload.vue'
+import Settings from './child/settings.vue'
+
+const activeKey = ref('home')
+</script>
+
 <template>
   <div class="wrapper">
     <el-tabs
@@ -26,14 +34,6 @@
     </el-tabs>
   </div>
 </template>
-
-<script setup lang="ts">
-import ImgList from './child/imgList.vue'
-import Upload from './child/upload.vue'
-import Settings from './child/settings.vue'
-
-const activeKey = ref('home')
-</script>
 
 <style scoped lang="scss">
 .wrapper {

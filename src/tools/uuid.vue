@@ -1,3 +1,78 @@
+<script lang="ts" setup>
+import { NIL as NIL_UUID, v1 as uuidv1, v4 as uuidv4 } from 'uuid'
+
+const formState = ref({
+  count: 1,
+  version: 'v4',
+  hasHyphen: true,
+})
+const auto = ref(true)
+const times = ref(0)
+const result = ref('')
+
+watch(formState, (val) => {
+  if (val.version === 'nil' && val.count !== 1) {
+    val.count = 1
+  }
+  if (auto.value) {
+    generate()
+  }
+}, {
+  deep: true,
+})
+
+watch(auto, (val) => {
+  if (val) {
+    generate()
+  }
+})
+
+function generate() {
+  times.value++
+  result.value = ''
+  const _times = times.value
+  const version = formState.value.version
+  const count = formState.value.count
+  const hasHyphen = formState.value.hasHyphen
+  for (let i = 0; i < count; i++) {
+    if (_times !== times.value) {
+      break
+    }
+    let tmp = ''
+    switch (version) {
+      case 'v1': {
+        tmp = uuidv1()
+        break
+      }
+      case 'v4': {
+        tmp = uuidv4()
+        break
+      }
+      case 'nil': {
+        tmp = NIL_UUID
+        break
+      }
+      default:
+        break
+    }
+    if (hasHyphen) {
+      result.value += `${tmp}\n`
+    }
+    else {
+      result.value += `${tmp.replaceAll('-', '')}\n`
+    }
+  }
+}
+function reset() {
+  times.value = 0
+  formState.value = {
+    count: 1,
+    version: 'v4',
+    hasHyphen: true,
+  }
+}
+</script>
+
 <template>
   <el-form
     layout="inline"
@@ -17,7 +92,7 @@
       </el-select>
     </el-form-item>
     <el-form-item
-      v-show="formState.version!=='nil'"
+      v-show="formState.version !== 'nil'"
       label="数量"
     >
       <el-input-number
@@ -53,84 +128,10 @@
       v-model="result"
       type="textarea"
       placeholder="结果栏"
-      :autosize="{ minRows: 10,maxRows:20 }"
+      :autosize="{ minRows: 10, maxRows: 20 }"
     />
   </div>
 </template>
-
-<script lang="ts" setup>
-import { v1 as uuidv1, v4 as uuidv4, NIL as NIL_UUID } from 'uuid'
-
-const formState = ref({
-  count: 1,
-  version: 'v4',
-  hasHyphen: true
-})
-const auto = ref(true)
-const times = ref(0)
-const result = ref('')
-
-watch(formState, function (val) {
-  if (val.version === 'nil' && val.count !== 1) {
-    val.count = 1
-  }
-  if (auto.value) {
-    generate()
-  }
-}, {
-  deep: true
-})
-
-watch(auto, function (val) {
-  if (val) {
-    generate()
-  }
-})
-
-function generate () {
-  times.value++
-  result.value = ''
-  const _times = times.value
-  const version = formState.value.version
-  const count = formState.value.count
-  const hasHyphen = formState.value.hasHyphen
-  for (let i = 0; i < count; i++) {
-    if (_times !== times.value) {
-      break
-    }
-    let tmp = ''
-    switch (version) {
-      case 'v1': {
-        tmp = uuidv1()
-        break
-      }
-      case 'v4': {
-        tmp = uuidv4()
-        break
-      }
-      case 'nil': {
-        tmp = NIL_UUID
-        break
-      }
-      default:
-        break
-    }
-    if (hasHyphen) {
-      result.value += tmp + '\n'
-    } else {
-      result.value += tmp.replaceAll('-', '') + '\n'
-    }
-  }
-}
-function reset () {
-  times.value = 0
-  formState.value = {
-    count: 1,
-    version: 'v4',
-    hasHyphen: true
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .resultPanel {

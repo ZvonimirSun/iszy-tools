@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import 'tldraw/tldraw.css'
-import config from '@/config'
 import { applyReactInVue } from 'veaury'
 import { Tldraw } from 'tldraw'
 import { getAssetUrls } from '@tldraw/assets/selfHosted'
+import config from '@/config'
 
 const assetUrls = getAssetUrls({
-  baseUrl: `https://jsdelivr.${config.cdnHost}/npm/@tldraw/assets@2.0.0/`
+  baseUrl: `https://jsdelivr.${config.cdnHost}/npm/@tldraw/assets@2.0.0/`,
 })
 const TldrawComponent = applyReactInVue(Tldraw)
 </script>

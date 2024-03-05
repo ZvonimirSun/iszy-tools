@@ -1,3 +1,57 @@
+<script setup>
+import { area } from '@turf/turf'
+import createFile from '@/utils/createFile'
+import $eventBus from '@/plugins/EventBus'
+
+function openFile(e) {
+  if (e.target.files.length) {
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (reader.result && typeof reader.result === 'string') {
+        try {
+          const data = JSON.parse(reader.result)
+          $eventBus.emit('updateEditor', data)
+          $eventBus.emit('updateGeojsonLayer', data)
+        }
+        catch (e) {
+        }
+      }
+    }
+    reader.readAsText(file)
+  }
+  e.target.value = ''
+}
+
+function exportGeoJson() {
+  $eventBus.emit('getGeoJson', (data) => {
+    if (data) {
+      createFile(JSON.stringify(data), 'exportFile.geojson')
+    }
+    else {
+      ElMessage.warning('无可导出数据')
+    }
+  })
+}
+
+function showInfo() {
+  $eventBus.emit('getGeoJson', (data) => {
+    if (data) {
+      const areaResult = area(data)
+      if (areaResult < 1000000) {
+        ElMessageBox.alert(`面积: ${areaResult.toFixed(2)} 平方米`, '信息')
+      }
+      else if (areaResult < 100000000) {
+        ElMessageBox.alert(`面积: ${(areaResult / 10000).toFixed(2)} 公顷`, '信息')
+      }
+      else {
+        ElMessageBox.alert(`面积: ${(areaResult / 1000000).toFixed(2)} 平方千米`, '信息')
+      }
+    }
+  })
+}
+</script>
+
 <template>
   <div class="controlMenu">
     <input
@@ -19,56 +73,6 @@
     />
   </div>
 </template>
-
-<script setup>
-import createFile from '@/utils/createFile'
-import $eventBus from '@/plugins/EventBus'
-import { area } from '@turf/turf'
-
-function openFile (e) {
-  if (e.target.files.length) {
-    const file = e.target.files[0]
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (reader.result && typeof reader.result === 'string') {
-        try {
-          const data = JSON.parse(reader.result)
-          $eventBus.emit('updateEditor', data)
-          $eventBus.emit('updateGeojsonLayer', data)
-        } catch (e) {
-        }
-      }
-    }
-    reader.readAsText(file)
-  }
-  e.target.value = ''
-}
-
-function exportGeoJson () {
-  $eventBus.emit('getGeoJson', function (data) {
-    if (data) {
-      createFile(JSON.stringify(data), 'exportFile.geojson')
-    } else {
-      ElMessage.warning('无可导出数据')
-    }
-  })
-}
-
-function showInfo () {
-  $eventBus.emit('getGeoJson', function (data) {
-    if (data) {
-      const areaResult = area(data)
-      if (areaResult < 1000000) {
-        ElMessageBox.alert(`面积: ${areaResult.toFixed(2)} 平方米`, '信息')
-      } else if (areaResult < 100000000) {
-        ElMessageBox.alert(`面积: ${(areaResult / 10000).toFixed(2)} 公顷`, '信息')
-      } else {
-        ElMessageBox.alert(`面积: ${(areaResult / 1000000).toFixed(2)} 平方千米`, '信息')
-      }
-    }
-  })
-}
-</script>
 
 <style scoped lang="scss">
 .controlMenu {

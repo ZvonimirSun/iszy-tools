@@ -1,4 +1,4 @@
-export default async function asyncLoad (url, type = 'script', reload = false) {
+export default async function asyncLoad(url, type = 'script', reload = false) {
   if (type === 'script') {
     const srcArr = document.getElementsByTagName('script')
     let hasLoaded = false
@@ -16,7 +16,8 @@ export default async function asyncLoad (url, type = 'script', reload = false) {
       script.defer = true
       document.head.appendChild(script)
     }
-  } else if (type === 'style') {
+  }
+  else if (type === 'style') {
     const srcArr = document.getElementsByTagName('link')
     let hasLoaded = false
     for (let i = 0; i < srcArr.length; i++) {

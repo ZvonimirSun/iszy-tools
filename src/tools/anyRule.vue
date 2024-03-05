@@ -1,3 +1,42 @@
+<script setup>
+import { v4 as uuid } from 'uuid'
+import anyRule from '@/utils/anyRule.js'
+
+const model = ref({})
+const anyRules = ref([])
+const keyword = ref('')
+const dict = ref({})
+
+function isShow(item) {
+  return item.title.includes(keyword.value)
+}
+
+onMounted(() => {
+  anyRules.value = anyRule.map((item) => {
+    const result = {
+      ...item,
+      key: uuid(),
+    }
+    model.value[result.key] = ''
+    dict.value[result.key] = result
+    return result
+  })
+})
+
+function validator(rule, value, callback) {
+  if (rule && rule.field && dict.value[rule.field]) {
+    const { rule: _rule } = dict.value[rule.field]
+    if (value) {
+      if (!_rule.test(value)) {
+        callback(new Error('不通过'))
+        return
+      }
+    }
+  }
+  callback()
+}
+</script>
+
 <template>
   <a-typography-paragraph>
     <blockquote>
@@ -10,7 +49,7 @@
     </blockquote>
   </a-typography-paragraph>
   <el-form
-    :label-position="'top'"
+    label-position="top"
     :model="model"
   >
     <el-form-item>
@@ -23,15 +62,15 @@
       />
     </el-form-item>
     <div
-      v-for="(item,index) in anyRules"
+      v-for="(item, index) in anyRules"
       :key="index"
     >
       <el-divider v-show="isShow(item)" />
       <el-form-item
         v-show="isShow(item)"
         :rules="[{
-          validator: validator,
-          trigger: 'change'
+          validator,
+          trigger: 'change',
         }]"
         :prop="item.key"
       >
@@ -45,57 +84,18 @@
         </template>
         <el-input
           v-model="model[item.key]"
-          :placeholder="'例如: '+item.examples.join(', ') + (item.counterExamples ? '; 反例: ' + item.counterExamples.join(', '): '')"
+          :placeholder="`例如: ${item.examples.join(', ')}${item.counterExamples ? `; 反例: ${item.counterExamples.join(', ')}` : ''}`"
         />
       </el-form-item>
       <a-typography-paragraph
         v-show="isShow(item)"
-        :copyable="{text:item.rule.toString()}"
+        :copyable="{ text: item.rule.toString() }"
       >
         <pre>{{ item.rule.toString() }}</pre>
       </a-typography-paragraph>
     </div>
   </el-form>
 </template>
-
-<script setup>
-import { v4 as uuid } from 'uuid'
-import anyRule from '@/utils/anyRule.js'
-
-const model = ref({})
-const anyRules = ref([])
-const keyword = ref('')
-const dict = ref({})
-
-function isShow (item) {
-  return item.title.includes(keyword.value)
-}
-
-onMounted(() => {
-  anyRules.value = anyRule.map(item => {
-    const result = {
-      ...item,
-      key: uuid()
-    }
-    model.value[result.key] = ''
-    dict.value[result.key] = result
-    return result
-  })
-})
-
-function validator (rule, value, callback) {
-  if (rule && rule.field && dict.value[rule.field]) {
-    const { rule: _rule } = dict.value[rule.field]
-    if (value) {
-      if (!_rule.test(value)) {
-        callback(new Error('不通过'))
-        return
-      }
-    }
-  }
-  callback()
-}
-</script>
 
 <style scoped lang="scss">
 .ant-typography {

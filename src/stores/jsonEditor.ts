@@ -1,24 +1,24 @@
-import randomString from '@/utils/randomString.js'
 import { defineStore } from 'pinia'
 import dayjs from 'dayjs'
 import { clamp, debounce } from 'lodash-es'
+import randomString from '@/utils/randomString.js'
 import axios from '@/plugins/Axios'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 
 interface EditorData {
-  name: string,
-  updated?: string,
+  name: string
+  updated?: string
   content: {
-    text?: string,
+    text?: string
     json?: any
   }
 }
 
 interface SyncDto {
-  key: string,
-  name: string,
-  text?: string,
-  json?: never,
+  key: string
+  name: string
+  text?: string
+  json?: never
   updatedAt?: string
 }
 
@@ -33,28 +33,30 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
     rightId: null as string | null,
     splitterValue: 0.5,
     fullStatus: '',
-    $_data: {} as Record<string, EditorData>
+    $_data: {} as Record<string, EditorData>,
   }),
   getters: {
-    dataList: (state) => (keyword: string) => {
+    dataList: state => (keyword: string) => {
       const result = []
       for (const key in state.$_data) {
         result.push({
           _id: key,
           name: state.$_data[key].name,
-          updated: dayjs(state.$_data[key].updated).format('YYYY-MM-DD HH:mm')
+          updated: dayjs(state.$_data[key].updated).format('YYYY-MM-DD HH:mm'),
         })
       }
       if (keyword) {
         return result.filter(item => (item.name.includes(keyword)))
-      } else {
+      }
+      else {
         return result
       }
     },
-    data: (state) => (id: string) => {
+    data: state => (id: string) => {
       if (state.$_data[id]) {
         return { ...state.$_data[id], updated: dayjs(state.$_data[id].updated).format('YYYY-MM-DD HH:mm') }
-      } else {
+      }
+      else {
         return null
       }
     },
@@ -62,9 +64,10 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       if (state.leftId && state.$_data[state.leftId]) {
         return {
           ...state.$_data[state.leftId],
-          updated: dayjs(state.$_data[state.leftId].updated).format('YYYY-MM-DD HH:mm')
+          updated: dayjs(state.$_data[state.leftId].updated).format('YYYY-MM-DD HH:mm'),
         }
-      } else {
+      }
+      else {
         return null
       }
     },
@@ -72,37 +75,40 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       if (state.rightId && state.$_data[state.rightId]) {
         return {
           ...state.$_data[state.rightId],
-          updated: dayjs(state.$_data[state.rightId].updated).format('YYYY-MM-DD HH:mm')
+          updated: dayjs(state.$_data[state.rightId].updated).format('YYYY-MM-DD HH:mm'),
         }
-      } else {
+      }
+      else {
         return null
       }
     },
     syncCloud: () => {
       return useUserStore().logged && useSettingStore().modules.jsonEditor.syncCloud
-    }
+    },
   },
   actions: {
-    setSplitter (val = 0.5) {
+    setSplitter(val = 0.5) {
       this.splitterValue = clamp(val, 0, 1)
     },
-    setFullStatus (val?: 'left' | 'right' | unknown) {
+    setFullStatus(val?: 'left' | 'right' | unknown) {
       if (val === 'left' || val === 'right') {
         this.fullStatus = val
-      } else {
+      }
+      else {
         this.fullStatus = ''
       }
     },
-    replaceState (val = [] as Array<SyncDto>) {
+    replaceState(val = [] as Array<SyncDto>) {
       const data = {} as Record<string, EditorData>
       for (const d of val) {
         data[d.key] = {
           name: d.name,
-          content: {}
+          content: {},
         }
         if (d.text != null) {
           data[d.key].content.text = d.text
-        } else if (d.json != null) {
+        }
+        else if (d.json != null) {
           data[d.key].content.json = d.json
         }
         data[d.key].updated = dayjs(d.updatedAt).format()
@@ -110,31 +116,34 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       this.$_data = data as Record<string, EditorData>
     },
 
-    async getSyncData () {
+    async getSyncData() {
       try {
         const data = (await (axios.get(`${axios.$apiBase}/tools/jsoneditor`))).data
         if (data.success) {
           this.replaceState(data.data)
-        } else {
+        }
+        else {
           console.log(data.message)
         }
-      } catch (e) {
+      }
+      catch (e) {
         console.log((e as Error).message)
       }
     },
     syncData: debounce(({ id, data } = {} as {
-      id: string,
+      id: string
       data: SyncDto
     }) => {
       if (navigator.onLine) {
         _mutex.enqueue(axios.post(`${axios.$apiBase}/tools/jsoneditor/${id}`, data))
-      } else {
+      }
+      else {
         waitList[id] = data
 
         if (!listened) {
           listened = true
 
-          function reSync () {
+          function reSync() {
             window.removeEventListener('online', reSync)
             for (const id in waitList) {
               useJsonEditorStore().syncData({ id, data: waitList[id] })
@@ -146,8 +155,12 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
         }
       }
     }, 500),
-    saveData ({ left, right, id, content, name }: {
-      left?: boolean, right?: boolean, id?: string, content?: any, name?: string
+    saveData({ left, right, id, content, name }: {
+      left?: boolean
+      right?: boolean
+      id?: string
+      content?: any
+      name?: string
     } = {}) {
       if (this.syncCloud) {
         id = id || randomString(6)
@@ -155,7 +168,8 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
           const item: Partial<SyncDto> = { name: name || (this.$_data[id] || {}).name || `文档-${id}` }
           if (typeof content === 'string') {
             item.text = content
-          } else if (typeof content === 'object') {
+          }
+          else if (typeof content === 'object') {
             item.json = markRaw(content)
           }
           this.syncData({ id, data: item })
@@ -167,11 +181,12 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
         this.$_data[id].name = name || this.$_data[id].name || `文档-${id}`
         if (typeof content === 'string') {
           this.$_data[id].content = {
-            text: content
+            text: content,
           }
-        } else {
+        }
+        else {
           this.$_data[id].content = {
-            json: markRaw(content)
+            json: markRaw(content),
           }
         }
         this.$_data[id].updated = dayjs().format()
@@ -181,7 +196,8 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
         if (right) {
           this.rightId = id
         }
-      } else if (id && this.$_data[id]) {
+      }
+      else if (id && this.$_data[id]) {
         if (left) {
           this.leftId = id
         }
@@ -189,7 +205,8 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
           this.rightId = id
         }
         this.$_data[id].name = name || this.$_data[id].name
-      } else {
+      }
+      else {
         if (left) {
           this.leftId = null
         }
@@ -198,7 +215,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
         }
       }
     },
-    async deleteData ({ id } = {} as { id: string }) {
+    async deleteData({ id } = {} as { id: string }) {
       if (this.syncCloud) {
         try {
           const data = (await axios.delete(`${axios.$apiBase}/tools/jsoneditor/${id}`)).data
@@ -212,13 +229,16 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
             if (this.$_data[id]) {
               delete (this.$_data[id])
             }
-          } else {
+          }
+          else {
             console.log(data.message)
           }
-        } catch (e) {
+        }
+        catch (e) {
           console.log(e)
         }
-      } else {
+      }
+      else {
         if (this.leftId === id) {
           this.leftId = null
         }
@@ -229,6 +249,6 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
           delete (this.$_data[id])
         }
       }
-    }
-  }
+    },
+  },
 })

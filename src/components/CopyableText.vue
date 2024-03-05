@@ -1,3 +1,10 @@
+<script setup lang="ts">
+defineProps<{
+  val: string
+}>()
+const { copy } = useCopy({ text: '复制成功' })
+</script>
+
 <template>
   <div
     :title="val"
@@ -7,12 +14,7 @@
     {{ val }}
   </div>
 </template>
-<script setup lang="ts">
-defineProps<{
-  val: string
-}>()
-const { copy } = useCopy({ text: '复制成功' })
-</script>
+
 <style scoped lang="scss">
 .copiable-text {
   position: relative;

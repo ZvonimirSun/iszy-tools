@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import $axios from '@/plugins/Axios'
 import dayjs from 'dayjs'
+import $axios from '@/plugins/Axios'
 
-type Url = {
+interface Url {
   keyword: string
   title: string
   url: string
@@ -21,7 +21,7 @@ const editing = reactive<Record<string, boolean>>({})
 const editingUrl = reactive<Record<string, string>>({})
 const newUrl = reactive({
   keyword: '',
-  url: ''
+  url: '',
 })
 
 onMounted(() => {
@@ -36,7 +36,7 @@ watch(pageSize, () => {
   pageIndex.value = 1
 })
 
-async function getUrlList (pageIndex: number, pageSize: number) {
+async function getUrlList(pageIndex: number, pageSize: number) {
   const tmp = setTimeout(() => {
     loading.value = true
   }, 300)
@@ -44,8 +44,8 @@ async function getUrlList (pageIndex: number, pageSize: number) {
     const res = (await $axios.get(`${$axios.$apiBase}/urls/admin/urls`, {
       params: {
         pageIndex,
-        pageSize
-      }
+        pageSize,
+      },
     })).data
     if (res.success) {
       count.value = res.data.count
@@ -54,82 +54,90 @@ async function getUrlList (pageIndex: number, pageSize: number) {
         item.updatedAt = dayjs(item.updatedAt).format('YYYY年MM月DD日 HH:mm')
         return item
       })
-    } else {
+    }
+    else {
       ElMessage.error(res.message)
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error((e as Error).message)
   }
   clearTimeout(tmp)
   loading.value = false
 }
 
-async function createUrl () {
+async function createUrl() {
   if (!newUrl.url) {
     return
   }
   try {
     const res = (await $axios.post(`${$axios.$apiBase}/urls/admin/url`, {
       url: newUrl.url,
-      keyword: newUrl.keyword
+      keyword: newUrl.keyword,
     })).data
     if (res.success) {
       ElMessage.success('创建成功')
       newUrl.url = ''
       newUrl.keyword = ''
       await getUrlList(pageIndex.value - 1, pageSize.value)
-    } else {
+    }
+    else {
       ElMessage.error(res.message)
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error((e as Error).message)
   }
 }
 
-async function updateUrl (url: Url) {
+async function updateUrl(url: Url) {
   try {
     const res = (await $axios.put(`${$axios.$apiBase}/urls/admin/url/${url.keyword}`, {
-      url: editingUrl[url.keyword]
+      url: editingUrl[url.keyword],
     })).data
     if (res.success) {
       ElMessage.success('更新成功')
       url.url = editingUrl[url.keyword]
       editing[url.keyword] = false
       await getUrlList(pageIndex.value - 1, pageSize.value)
-    } else {
+    }
+    else {
       ElMessage.error(res.message)
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error((e as Error).message)
   }
 }
 
-async function deleteUrl (url: Url) {
+async function deleteUrl(url: Url) {
   try {
     const res = (await $axios.delete(`${$axios.$apiBase}/urls/admin/url/${url.keyword}`, {
       params: {
-        keyword: url.keyword
-      }
+        keyword: url.keyword,
+      },
     })).data
     if (res.success) {
       await getUrlList(pageIndex.value - 1, pageSize.value)
       ElMessage.success('删除成功')
-    } else {
+    }
+    else {
       ElMessage.error(res.message)
     }
-  } catch (e) {
+  }
+  catch (e) {
     ElMessage.error((e as Error).message)
   }
 }
 
-function editUrl (url: Url) {
+function editUrl(url: Url) {
   editing[url.keyword] = !editing[url.keyword]
   if (editing[url.keyword]) {
     editingUrl[url.keyword] = url.url
   }
 }
 
-function indexMethod (index: number) {
+function indexMethod(index: number) {
   return (pageIndex.value - 1) * pageSize.value + index + 1
 }
 </script>
@@ -184,9 +192,9 @@ function indexMethod (index: number) {
         width="100"
         fixed="left"
       >
-        <template #default="{row}">
+        <template #default="{ row }">
           <el-link
-            :href="urlBase + '/' + row.keyword"
+            :href="`${urlBase}/${row.keyword}`"
             target="_blank"
             style="white-space: nowrap;"
           >
@@ -199,7 +207,7 @@ function indexMethod (index: number) {
         label="原网址"
         min-width="300"
       >
-        <template #default="{row}">
+        <template #default="{ row }">
           <template
             v-if="!editing[row.keyword]"
           >
@@ -245,7 +253,7 @@ function indexMethod (index: number) {
         width="140"
         fixed="right"
       >
-        <template #default="{row}">
+        <template #default="{ row }">
           <template v-if="!editing[row.keyword]">
             <el-button
               size="small"

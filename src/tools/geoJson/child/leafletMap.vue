@@ -1,59 +1,28 @@
-<template>
-  <div
-    ref="mapContainer"
-    class="map-container"
-  />
-  <div
-    v-show="false"
-    ref="propertyPopup"
-    class="property-popup"
-  >
-    <div class="title">
-      <span>属性</span>
-    </div>
-    <div
-      v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
-      class="content"
-    >
-      <el-descriptions
-        :column="1"
-        :border="true"
-      >
-        <el-descriptions-item
-          v-for="(val,key,index) of selectedFeature.properties"
-          :key="index"
-          :label="key.toString()"
-        >
-          {{ val }}
-        </el-descriptions-item>
-      </el-descriptions>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
+import type {
+  Control,
+  GeoJSON,
+  Layer,
+  Map,
+} from 'leaflet'
 import {
-  geoJSON,
-  marker,
   Icon,
   Marker,
-  GeoJSON,
-  Map,
-  Control,
-  Layer
+  geoJSON,
+  marker,
 } from 'leaflet'
+import type { Feature, GeoJsonObject } from 'geojson'
 import $eventBus from '@/plugins/EventBus'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
-import type { GeoJsonObject, Feature } from 'geojson'
 import { createMap, getMapStatus } from '@/utils/mapUtils'
 
 const defaultIcon = new Icon.Default()
 const yellowIcon = new Icon({
   ...Icon.Default.prototype.options,
   iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png',
-  iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png'
+  iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
 })
 
 let geoJsonLayer: GeoJSON, _map: Map, layerControl: Control.Layers
@@ -84,7 +53,7 @@ onBeforeUnmount(() => {
   }
 })
 
-function initMap () {
+function initMap() {
   if (!mapContainer.value) {
     return
   }
@@ -93,34 +62,34 @@ function initMap () {
     dom: mapContainer.value,
     view: {
       center: [35, 105],
-      zoom: 4
+      zoom: 4,
     },
     controls: {
-      layers: true
-    }
+      layers: true,
+    },
   })
   // 添加GeoJson图层
   geoJsonLayer = geoJSON(undefined, {
     onEachFeature,
     pointToLayer: (feature, latLng) => {
       return marker(latLng).addTo(_map)
-    }
+    },
   }).addTo(_map)
   // 添加底图、图层控制
   layerControl = getMapStatus(_map).controls.layers as Control.Layers
   layerControl.addOverlay(geoJsonLayer, '图形')
   _map.pm.setLang('zh')
   _map.pm.setGlobalOptions({
-    layerGroup: geoJsonLayer
+    layerGroup: geoJsonLayer,
   })
   _map.pm.addControls({
     position: 'topright',
     drawCircleMarker: false,
     drawText: false,
-    rotateMode: true
+    rotateMode: true,
   })
 
-  _map.on('pm:create pm:remove pm:cut', function (e) {
+  _map.on('pm:create pm:remove pm:cut', (e) => {
     updateEditor()
     if (e.type === 'pm:create') {
       onEachFeature(e.layer.toGeoJSON() as Feature, e.layer)
@@ -128,8 +97,8 @@ function initMap () {
   })
 }
 
-function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
-  layer.on('pm:change', function () {
+function onEachFeature(feature: Feature, layer: GeoJSON | Marker) {
+  layer.on('pm:change', () => {
     updateEditor()
   })
   if (!feature.properties) {
@@ -143,11 +112,12 @@ function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
     if (_map.hasLayer(layer)) {
       if (layer instanceof Marker) {
         layer.setIcon(yellowIcon)
-      } else {
+      }
+      else {
         layer.setStyle({
           color: '#ffff00',
           weight: 5,
-          opacity: 0.65
+          opacity: 0.65,
         })
       }
     }
@@ -156,56 +126,59 @@ function onEachFeature (feature: Feature, layer: GeoJSON | Marker) {
     if (_map.hasLayer(layer)) {
       if (layer instanceof Marker) {
         layer.setIcon(defaultIcon)
-      } else {
+      }
+      else {
         geoJsonLayer.resetStyle(layer)
       }
     }
   })
 }
 
-function locationGeo (geoJson: GeoJsonObject) {
+function locationGeo(geoJson: GeoJsonObject) {
   try {
     const layer = geoJSON(geoJson)
     _map.fitBounds(layer.getBounds())
-  } catch (e) {
+  }
+  catch (e) {
   }
 }
-function updateGeojsonLayer (geoJson: GeoJsonObject) {
+function updateGeojsonLayer(geoJson: GeoJsonObject) {
   geoJsonLayer.clearLayers()
   try {
     geoJsonLayer.addData(geoJson)
     _map.fitBounds(geoJsonLayer.getBounds())
-  } catch (e) {
+  }
+  catch (e) {
   }
 }
 
-function getGeoJson (callback: (geoJson: GeoJsonObject) => void) {
-  // eslint-disable-next-line n/no-callback-literal
+function getGeoJson(callback: (geoJson: GeoJsonObject) => void) {
   callback(geoJsonLayer?.toGeoJSON())
 }
 
-function addLayer (layer: Layer, serviceName: string) {
+function addLayer(layer: Layer, serviceName: string) {
   layer.addTo(_map)
   layerControl.addOverlay(layer, serviceName)
 }
 
-function removeLayer (layer: Layer) {
+function removeLayer(layer: Layer) {
   _map.removeLayer(layer)
   layerControl.removeLayer(layer)
 }
 
-function updateEditor () {
+function updateEditor() {
   if (geoJsonLayer.getLayers().length === 0) {
     $eventBus.emit('updateEditor', {
       type: 'FeatureCollection',
-      features: []
+      features: [],
     })
-  } else {
+  }
+  else {
     $eventBus.emit('updateEditor', geoJsonLayer.toGeoJSON())
   }
 }
 
-function selectFeature (index: number) {
+function selectFeature(index: number) {
   if (geoJsonLayer.getLayers().length > index) {
     const layer = geoJsonLayer.getLayers()[index] as GeoJSON
     layer.openPopup()
@@ -213,6 +186,39 @@ function selectFeature (index: number) {
   }
 }
 </script>
+
+<template>
+  <div
+    ref="mapContainer"
+    class="map-container"
+  />
+  <div
+    v-show="false"
+    ref="propertyPopup"
+    class="property-popup"
+  >
+    <div class="title">
+      <span>属性</span>
+    </div>
+    <div
+      v-if="selectedFeature?.properties && Object.keys(selectedFeature?.properties).length"
+      class="content"
+    >
+      <el-descriptions
+        :column="1"
+        :border="true"
+      >
+        <el-descriptions-item
+          v-for="(val, key, index) of selectedFeature.properties"
+          :key="index"
+          :label="key.toString()"
+        >
+          {{ val }}
+        </el-descriptions-item>
+      </el-descriptions>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .map-container {

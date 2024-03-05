@@ -1,36 +1,38 @@
 <script setup lang="ts">
 import type { AuthOption } from '@/types/auth'
-const userStore = useUserStore()
-const toolsStore = useToolsStore()
-const router = useRouter()
 
 defineOptions({
-  inheritAttrs: false
+  inheritAttrs: false,
 })
-
 const props = withDefaults(defineProps<{
-  auth?: AuthOption,
+  auth?: AuthOption
   link?: string
 }>(), {
   auth: false,
-  link: ''
+  link: '',
 })
+const userStore = useUserStore()
+const toolsStore = useToolsStore()
+const router = useRouter()
 
 const haveAccess = computed(() => {
   if (!props.auth) {
     if (props.link) {
       return userStore.checkAccess(toolsStore.getAuth(props.link))
-    } else {
+    }
+    else {
       return true
     }
-  } else if (typeof props.auth === 'boolean') {
+  }
+  else if (typeof props.auth === 'boolean') {
     return userStore.logged
-  } else {
+  }
+  else {
     return userStore.checkAccess(props.auth)
   }
 })
 
-function goto () {
+function goto() {
   if (props.link) {
     router.push(props.link)
   }

@@ -1,18 +1,19 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, StoreGeneric, SubscriptionCallbackMutation } from 'pinia'
-import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import { debounce } from 'lodash-es'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import $axios from '@/plugins/Axios'
 
 interface SyncOptions<S> {
-  key?: string,
+  key?: string
   serializer?: {
-    serialize: (value: S) => any,
+    serialize: (value: S) => any
     deserialize: (value: any) => S
-  },
+  }
   debug?: boolean
 }
 
 declare module 'pinia' {
+  // eslint-disable-next-line unused-imports/no-unused-vars
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     sync?: boolean | SyncOptions<S>
   }
@@ -22,14 +23,16 @@ declare module 'pinia' {
 const _mutex = new SimplePromiseQueue()
 const storeMap = new Map<string, StoreGeneric>()
 
-function createPiniaSync<S extends StateTree = StateTree> (): PiniaPlugin {
+function createPiniaSync<S extends StateTree = StateTree>(): PiniaPlugin {
   return (context: PiniaPluginContext) => {
     const {
-      store, options: {
-        sync
-      }
+      store,
+      options: {
+        sync,
+      },
     } = context
-    if (!sync) return
+    if (!sync)
+      return
 
     let syncOptions: SyncOptions<S> = {}
     if (typeof sync === 'object') {
@@ -65,7 +68,7 @@ function createPiniaSync<S extends StateTree = StateTree> (): PiniaPlugin {
 
     store.$subscribe(
       (
-        _mutation: SubscriptionCallbackMutation<StateTree>
+        _mutation: SubscriptionCallbackMutation<StateTree>,
       ) => {
         if (!syncing) {
           uploadFunc()
@@ -73,38 +76,41 @@ function createPiniaSync<S extends StateTree = StateTree> (): PiniaPlugin {
       },
       {
         detached: true,
-        deep: true
-      }
+        deep: true,
+      },
     )
   }
 }
 
-async function uploadSettings (store: StoreGeneric, syncOptions: SyncOptions<StateTree>) {
+async function uploadSettings(store: StoreGeneric, syncOptions: SyncOptions<StateTree>) {
   if (!navigator.onLine) {
     return false
-  } else {
+  }
+  else {
     const {
       key = store.$id,
-      debug = false
+      debug = false,
       // serializer
     } = syncOptions
     try {
       const data = (await $axios.post(`${$axios.$apiBase}/tools/settings/${key}`, toRaw(store.$state))).data
       return data.success as boolean
-    } catch (e) {
+    }
+    catch (e) {
       debug && console.error(e)
       return false
     }
   }
 }
 
-async function downloadSettings (store: StoreGeneric, syncOptions: SyncOptions<StateTree>) {
+async function downloadSettings(store: StoreGeneric, syncOptions: SyncOptions<StateTree>) {
   if (!navigator.onLine) {
     return false
-  } else {
+  }
+  else {
     const {
       key = store.$id,
-      debug = false
+      debug = false,
       // serializer
     } = syncOptions
     try {
@@ -112,21 +118,24 @@ async function downloadSettings (store: StoreGeneric, syncOptions: SyncOptions<S
       let status = data.success as boolean
       if (data.data) {
         store.$patch(data.data)
-      } else {
+      }
+      else {
         status = await uploadSettings(store, syncOptions)
       }
       return status
-    } catch (e) {
+    }
+    catch (e) {
       debug && console.error(e)
       return false
     }
   }
 }
 
-async function downloadAllSettings (debug?: boolean) {
+async function downloadAllSettings(debug?: boolean) {
   if (!navigator.onLine) {
     return false
-  } else {
+  }
+  else {
     const promiseList = []
     for (const [key, store] of storeMap) {
       promiseList.push(downloadSettings(store, { key, debug }))
@@ -134,7 +143,8 @@ async function downloadAllSettings (debug?: boolean) {
     try {
       await Promise.all(promiseList)
       return true
-    } catch (e) {
+    }
+    catch (e) {
       debug && console.error(e)
       return false
     }

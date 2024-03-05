@@ -1,3 +1,68 @@
+<script setup>
+import dayjs from 'dayjs'
+
+const date = new Date()
+
+const time = ref(date)
+const timestamp = ref(date.getTime())
+const timestampUnit = ref('ms')
+const baseTime = ref(date)
+const addDays = ref(100)
+const resultTime = ref(dayjs(date).add(100, 'days').format('YYYY-MM-DD'))
+const startTime = ref(date)
+const endTime = ref(dayjs(date).add(100, 'days').toDate())
+const duration = ref(100)
+
+function toTime() {
+  if (timestamp.value && !Number.isNaN(Number.parseInt(timestamp.value))) {
+    const _time = dayjs(Number.parseInt(timestamp.value + (timestampUnit.value === 's' ? '000' : '')))
+    if (_time.isValid()) {
+      time.value = _time
+    }
+    else {
+      time.value = undefined
+    }
+  }
+  else {
+    time.value = undefined
+  }
+}
+function toTimeStamp() {
+  if (time.value) {
+    switch (timestampUnit.value) {
+      case 'ms':
+        timestamp.value = dayjs(time.value).format('x')
+        break
+      case 's':
+        timestamp.value = dayjs(time.value).format('X')
+        break
+      default:
+        timestamp.value = undefined
+        break
+    }
+  }
+  else {
+    timestamp.value = undefined
+  }
+}
+function calculateDate() {
+  if (baseTime.value && !Number.isNaN(Number.parseInt(addDays.value))) {
+    resultTime.value = dayjs(baseTime.value).add(Number.parseInt(addDays.value), 'days').format('YYYY-MM-DD')
+  }
+  else {
+    resultTime.value = ''
+  }
+}
+function calculateDuration() {
+  if (startTime.value && endTime.value) {
+    duration.value = dayjs(endTime.value).diff(dayjs(startTime.value), 'days')
+  }
+  else {
+    duration.value = ''
+  }
+}
+</script>
+
 <template>
   <el-form label-position="top">
     <a-typography-title :level="3">
@@ -84,66 +149,6 @@
     </el-form-item>
   </el-form>
 </template>
-
-<script setup>
-import dayjs from 'dayjs'
-
-const date = new Date()
-
-const time = ref(date)
-const timestamp = ref(date.getTime())
-const timestampUnit = ref('ms')
-const baseTime = ref(date)
-const addDays = ref(100)
-const resultTime = ref(dayjs(date).add(100, 'days').format('YYYY-MM-DD'))
-const startTime = ref(date)
-const endTime = ref(dayjs(date).add(100, 'days').toDate())
-const duration = ref(100)
-
-function toTime () {
-  if (timestamp.value && !isNaN(parseInt(timestamp.value))) {
-    const _time = dayjs(parseInt(timestamp.value + (timestampUnit.value === 's' ? '000' : '')))
-    if (_time.isValid()) {
-      time.value = _time
-    } else {
-      time.value = undefined
-    }
-  } else {
-    time.value = undefined
-  }
-}
-function toTimeStamp () {
-  if (time.value) {
-    switch (timestampUnit.value) {
-      case 'ms':
-        timestamp.value = dayjs(time.value).format('x')
-        break
-      case 's':
-        timestamp.value = dayjs(time.value).format('X')
-        break
-      default:
-        timestamp.value = undefined
-        break
-    }
-  } else {
-    timestamp.value = undefined
-  }
-}
-function calculateDate () {
-  if (baseTime.value && !isNaN(parseInt(addDays.value))) {
-    resultTime.value = dayjs(baseTime.value).add(parseInt(addDays.value), 'days').format('YYYY-MM-DD')
-  } else {
-    resultTime.value = ''
-  }
-}
-function calculateDuration () {
-  if (startTime.value && endTime.value) {
-    duration.value = dayjs(endTime.value).diff(dayjs(startTime.value), 'days')
-  } else {
-    duration.value = ''
-  }
-}
-</script>
 
 <style scoped>
 

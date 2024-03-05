@@ -1,12 +1,15 @@
 {
   "name": "iszy_tools",
+  "type": "module",
   "version": "2.0.2",
   "private": true,
+  "license": "GPL-3.0",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vite",
     "dev:api": "vite --mode test",
-    "lint": "eslint --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
@@ -14,7 +17,6 @@
     "up": "taze minor -I",
     "sizecheck": "npx vite-bundle-visualizer"
   },
-  "type": "module",
   "dependencies": {
     "@ckpack/vue-color": "^1.5.0",
     "@codemirror/commands": "^6.3.3",
@@ -73,6 +75,7 @@
   },
   "devDependencies": {
     "@algolia/client-search": "^4.22.1",
+    "@antfu/eslint-config": "^2.6.4",
     "@babel/core": "^7.24.0",
     "@babel/eslint-parser": "^7.23.10",
     "@babel/preset-env": "^7.24.0",
@@ -103,12 +106,6 @@
     "@vue/test-utils": "^2.4.4",
     "co": "^4.6.0",
     "eslint": "^8.57.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-vue": "^9.22.0",
     "jsdom": "^24.0.0",
     "less": "^4.2.0",
     "postcss": "^8.4.35",
@@ -132,6 +129,5 @@
     "presets": [
       "@babel/preset-env"
     ]
-  },
-  "license": "GPL-3.0"
+  }
 }

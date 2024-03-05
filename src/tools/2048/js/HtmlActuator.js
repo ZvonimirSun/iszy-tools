@@ -1,5 +1,5 @@
 export default class HtmlActuator {
-  constructor (vue) {
+  constructor(vue) {
     this.vue = vue
 
     this.tileContainer = this.vue.$refs.tileContainer
@@ -10,14 +10,14 @@ export default class HtmlActuator {
     this.score = 0
   }
 
-  actuate (grid, metadata) {
+  actuate(grid, metadata) {
     const self = this
 
-    window.requestAnimationFrame(function () {
+    window.requestAnimationFrame(() => {
       self.clearContainer(self.tileContainer)
 
-      grid.cells.forEach(function (column) {
-        column.forEach(function (cell) {
+      grid.cells.forEach((column) => {
+        column.forEach((cell) => {
           if (cell) {
             self.addTile(cell)
           }
@@ -30,7 +30,8 @@ export default class HtmlActuator {
       if (metadata.terminated) {
         if (metadata.over) {
           self.message(false) // You lose
-        } else if (metadata.won) {
+        }
+        else if (metadata.won) {
           self.message(true) // You win!
         }
       }
@@ -38,17 +39,17 @@ export default class HtmlActuator {
   }
 
   // Continues the game (both restart and keep playing)
-  continueGame () {
+  continueGame() {
     this.clearMessage()
   }
 
-  clearContainer (container) {
+  clearContainer(container) {
     while (container.firstChild) {
       container.removeChild(container.firstChild)
     }
   }
 
-  addTile (tile) {
+  addTile(tile) {
     const self = this
 
     const wrapper = document.createElement('div')
@@ -57,9 +58,10 @@ export default class HtmlActuator {
     const positionClass = this.positionClass(position)
 
     // We can't use classlist because it somehow glitches when replacing classes
-    const classes = ['tile', 'tile-' + tile.value, positionClass]
+    const classes = ['tile', `tile-${tile.value}`, positionClass]
 
-    if (tile.value > 2048) classes.push('tile-super')
+    if (tile.value > 2048)
+      classes.push('tile-super')
 
     this.applyClasses(wrapper, classes)
 
@@ -68,19 +70,21 @@ export default class HtmlActuator {
 
     if (tile.previousPosition) {
     // Make sure that the tile gets rendered in the previous position first
-      window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(() => {
         classes[2] = self.positionClass({ x: tile.x, y: tile.y })
         self.applyClasses(wrapper, classes) // Update the position
       })
-    } else if (tile.mergedFrom) {
+    }
+    else if (tile.mergedFrom) {
       classes.push('tile-merged')
       this.applyClasses(wrapper, classes)
 
       // Render the tiles that merged
-      tile.mergedFrom.forEach(function (merged) {
+      tile.mergedFrom.forEach((merged) => {
         self.addTile(merged)
       })
-    } else {
+    }
+    else {
       classes.push('tile-new')
       this.applyClasses(wrapper, classes)
     }
@@ -92,20 +96,20 @@ export default class HtmlActuator {
     this.tileContainer.appendChild(wrapper)
   }
 
-  applyClasses (element, classes) {
+  applyClasses(element, classes) {
     element.setAttribute('class', classes.join(' '))
   }
 
-  normalizePosition (position) {
+  normalizePosition(position) {
     return { x: position.x + 1, y: position.y + 1 }
   }
 
-  positionClass (position) {
+  positionClass(position) {
     position = this.normalizePosition(position)
-    return 'tile-position-' + position.x + '-' + position.y
+    return `tile-position-${position.x}-${position.y}`
   }
 
-  updateScore (score) {
+  updateScore(score) {
     this.clearContainer(this.scoreContainer)
 
     const difference = score - this.score
@@ -116,17 +120,17 @@ export default class HtmlActuator {
     if (difference > 0) {
       const addition = document.createElement('div')
       addition.classList.add('score-addition')
-      addition.textContent = '+' + difference
+      addition.textContent = `+${difference}`
 
       this.scoreContainer.appendChild(addition)
     }
   }
 
-  updateBestScore (bestScore) {
+  updateBestScore(bestScore) {
     this.bestContainer.textContent = bestScore
   }
 
-  message (won) {
+  message(won) {
     const type = won ? 'game-won' : 'game-over'
     const message = won ? '你赢啦!' : '游戏结束!'
 
@@ -134,7 +138,7 @@ export default class HtmlActuator {
     this.messageContainer.getElementsByTagName('p')[0].textContent = message
   }
 
-  clearMessage () {
+  clearMessage() {
   // IE only takes one value to remove at a time.
     this.messageContainer.classList.remove('game-won')
     this.messageContainer.classList.remove('game-over')

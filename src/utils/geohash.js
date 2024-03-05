@@ -11,13 +11,13 @@ const NEIGHBORS = {
   right: { even: 'bc01fg45238967deuvhjyznpkmstqrwx' },
   left: { even: '238967debc01fg45kmstqrwxuvhjyznp' },
   top: { even: 'p0r21436x8zb9dcf5h7kjnmqesgutwvy' },
-  bottom: { even: '14365h7k9dcfesgujnmqp0r2twvyx8zb' }
+  bottom: { even: '14365h7k9dcfesgujnmqp0r2twvyx8zb' },
 }
 const BORDERS = {
   right: { even: 'bcfguvyz' },
   left: { even: '0145hjnp' },
   top: { even: 'prxz' },
-  bottom: { even: '028b' }
+  bottom: { even: '028b' },
 }
 
 NEIGHBORS.bottom.odd = NEIGHBORS.left.even
@@ -31,19 +31,21 @@ BORDERS.left.odd = BORDERS.bottom.even
 BORDERS.right.odd = BORDERS.top.even
 
 const refineInterval = function (interval, cd, mask) {
-  if (cd & mask) { interval[0] = (interval[0] + interval[1]) / 2 } else { interval[1] = (interval[0] + interval[1]) / 2 }
+  if (cd & mask) { interval[0] = (interval[0] + interval[1]) / 2 }
+  else { interval[1] = (interval[0] + interval[1]) / 2 }
 }
 
-function encodeGeoHash (latitude, longitude) {
+function encodeGeoHash(latitude, longitude) {
   if (typeof latitude === 'string') {
     const tmp = latitude.split(',')
     if (tmp.length >= 2) {
-      latitude = parseFloat(tmp[0])
-      longitude = parseFloat(tmp[1])
+      latitude = Number.parseFloat(tmp[0])
+      longitude = Number.parseFloat(tmp[1])
       if (isNaN(latitude) || isNaN(longitude)) {
-        throw new Error('Not Supported')
+        throw new TypeError('Not Supported')
       }
-    } else {
+    }
+    else {
       throw new Error('Not Supported')
     }
   }
@@ -65,17 +67,21 @@ function encodeGeoHash (latitude, longitude) {
       if (longitude > mid) {
         ch |= BITS[bit]
         lon[0] = mid
-      } else { lon[1] = mid }
-    } else {
+      }
+      else { lon[1] = mid }
+    }
+    else {
       const mid = (lat[0] + lat[1]) / 2
       if (latitude > mid) {
         ch |= BITS[bit]
         lat[0] = mid
-      } else { lat[1] = mid }
+      }
+      else { lat[1] = mid }
     }
 
     isEven = !isEven
-    if (bit < 4) { bit++ } else {
+    if (bit < 4) { bit++ }
+    else {
       geohash += BASE32[ch]
       bit = 0
       ch = 0
@@ -83,7 +89,7 @@ function encodeGeoHash (latitude, longitude) {
   }
   return geohash
 }
-function decodeGeoHash (geohash) {
+function decodeGeoHash(geohash) {
   let isEven = 1
   const lat = []; const lon = []
   lat[0] = -90.0; lat[1] = 90.0
@@ -98,7 +104,8 @@ function decodeGeoHash (geohash) {
       if (isEven) {
         lonErr /= 2
         refineInterval(lon, cd, mask)
-      } else {
+      }
+      else {
         latErr /= 2
         refineInterval(lat, cd, mask)
       }
@@ -110,12 +117,12 @@ function decodeGeoHash (geohash) {
 
   return { latitude: lat[2], longitude: lon[2] }
 }
-function calculateAdjacent (srcHash, dir) {
+function calculateAdjacent(srcHash, dir) {
   srcHash = srcHash.toLowerCase()
   const lastChr = srcHash.charAt(srcHash.length - 1)
   const type = (srcHash.length % 2) ? 'odd' : 'even'
   let base = srcHash.substring(0, srcHash.length - 1)
-  if (BORDERS[dir][type].indexOf(lastChr) !== -1) { base = calculateAdjacent(base, dir) }
+  if (BORDERS[dir][type].includes(lastChr)) { base = calculateAdjacent(base, dir) }
   return base + BASE32[NEIGHBORS[dir][type].indexOf(lastChr)]
 }
 

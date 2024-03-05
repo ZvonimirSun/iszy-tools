@@ -3,24 +3,24 @@ name: Auto Deploy
 on:
   push:
     branches:
-      - 'main'
-      - 'dev'
+      - main
+      - dev
     paths-ignore:
       - '.github/**'
       - '**/*.test.js'
       - '**/*.test.ts'
   pull_request:
     branches-ignore:
-      - 'deploy'
-      - 'deploy-beta'
+      - deploy
+      - deploy-beta
     paths-ignore:
       - '.github/**'
       - '**/*.test.js'
       - '**/*.test.ts'
   workflow_dispatch:
     branches-ignore:
-      - 'deploy'
-      - 'deploy-beta'
+      - deploy
+      - deploy-beta
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install

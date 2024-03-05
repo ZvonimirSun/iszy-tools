@@ -1,3 +1,52 @@
+<script setup>
+import relationship from 'relationship.js'
+
+const type = ref('default')
+const sex = ref(1)
+const reverse = ref(0)
+const input = ref('')
+
+const result = computed(() => {
+  try {
+    const rel = relationship({
+      text: input.value,
+      sex: sex.value,
+      type: type.value,
+      reverse: Boolean(reverse.value),
+    })
+    return `${rel.join('\n')}\n`
+  }
+  catch (e) {
+    return '\n'
+  }
+})
+
+function add(val) {
+  if (!val) {
+    return
+  }
+  const tmp = input.value.split('的').map((item) => {
+    return item.trim()
+  }).filter(item => Boolean(item))
+  tmp.push(val)
+  input.value = tmp.join('的')
+}
+
+function clear() {
+  input.value = ''
+}
+
+function backspace() {
+  const tmp = input.value.split('的').map((item) => {
+    return item.trim()
+  }).filter(item => (item))
+  if (tmp.length) {
+    tmp.pop()
+  }
+  input.value = tmp.join('的')
+}
+</script>
+
 <template>
   <a-typography>
     <blockquote>
@@ -121,54 +170,6 @@
     </ol>
   </a-typography>
 </template>
-
-<script setup>
-import relationship from 'relationship.js'
-
-const type = ref('default')
-const sex = ref(1)
-const reverse = ref(0)
-const input = ref('')
-
-const result = computed(() => {
-  try {
-    const rel = relationship({
-      text: input.value,
-      sex: sex.value,
-      type: type.value,
-      reverse: Boolean(reverse.value)
-    })
-    return rel.join('\n') + '\n'
-  } catch (e) {
-    return '\n'
-  }
-})
-
-function add (val) {
-  if (!val) {
-    return
-  }
-  const tmp = input.value.split('的').map(item => {
-    return item.trim()
-  }).filter(item => Boolean(item))
-  tmp.push(val)
-  input.value = tmp.join('的')
-}
-
-function clear () {
-  input.value = ''
-}
-
-function backspace () {
-  const tmp = input.value.split('的').map(item => {
-    return item.trim()
-  }).filter(item => (item))
-  if (tmp.length) {
-    tmp.pop()
-  }
-  input.value = tmp.join('的')
-}
-</script>
 
 <style scoped lang="scss">
 .ant-form-item {

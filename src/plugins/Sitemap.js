@@ -1,18 +1,18 @@
-import { createWriteStream } from 'fs'
+import { createWriteStream } from 'node:fs'
 import { SitemapStream } from 'sitemap'
 
-export default function VitePluginSiteMap ({ hostname, tools } = {}) {
+export default function VitePluginSiteMap({ hostname, tools } = {}) {
   let outDir = 'dist'
   let base = '/'
 
   return {
     name: 'vite-plugin-sitemap',
     apply: 'build',
-    configResolved (c) {
+    configResolved(c) {
       base = c.base
       outDir = c.build.outDir
     },
-    async closeBundle () {
+    async closeBundle() {
       const sitemap = new SitemapStream({ hostname })
       const writeStream = createWriteStream(`${outDir}/sitemap.xml`)
       sitemap.pipe(writeStream)
@@ -27,6 +27,6 @@ export default function VitePluginSiteMap ({ hostname, tools } = {}) {
         }
       }
       sitemap.end()
-    }
+    },
   }
 }

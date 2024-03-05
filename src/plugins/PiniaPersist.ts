@@ -4,30 +4,32 @@ import localforage from 'localforage'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
 interface PersistOptions<S> {
-  key?: string,
+  key?: string
   serializer?: {
-    serialize: (value: S) => any,
+    serialize: (value: S) => any
     deserialize: (value: any) => S
-  },
+  }
   debug?: boolean
 }
 
 declare module 'pinia' {
+  // eslint-disable-next-line unused-imports/no-unused-vars
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     persist?: boolean | PersistOptions<S>
   }
 }
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 export interface PluginOptions<S extends StateTree = StateTree> {
-  name?: string,
-  storeName?: string,
+  name?: string
+  storeName?: string
   version?: number
 }
 
 // 队列
 const _mutex = new SimplePromiseQueue()
 
-async function createPiniaPersist<S extends StateTree = StateTree> (pluginOptions: PluginOptions<S> = ({} as PluginOptions)): Promise<PiniaPlugin> {
+async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions: PluginOptions<S> = ({} as PluginOptions)): Promise<PiniaPlugin> {
   // 应用名称
   const name = (pluginOptions.name != null ? pluginOptions.name : 'pinia')
   // 库名
@@ -38,7 +40,7 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
   // 设置库
   const localStore = localforage.createInstance({
     name,
-    storeName: version > 1 ? `${storeName}_${version}` : storeName
+    storeName: version > 1 ? `${storeName}_${version}` : storeName,
   })
   const keys = await localStore.keys()
   if (!keys.length) {
@@ -46,19 +48,20 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
     if (version > 1) {
       const lastVersionStore = localforage.createInstance({
         name,
-        storeName: version - 1 > 1 ? `${storeName}_${version - 1}` : storeName
+        storeName: version - 1 > 1 ? `${storeName}_${version - 1}` : storeName,
       })
       const lastKeys = await lastVersionStore.keys()
       if (lastKeys.length) {
         if (version === 2) {
           await migrateToV2(lastVersionStore, localStore)
-        } else if (version === 3) {
+        }
+        else if (version === 3) {
           await migrateToV3(lastVersionStore, localStore)
         }
       }
       await localforage.dropInstance({
         name,
-        storeName: version - 1 !== 1 ? `${storeName}_${version - 1}` : storeName
+        storeName: version - 1 !== 1 ? `${storeName}_${version - 1}` : storeName,
       })
     }
 
@@ -91,7 +94,8 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
         sessionStorage.removeItem(key)
       }
       return JSON.parse(data)
-    } else {
+    }
+    else {
       return null
     }
   }
@@ -103,11 +107,13 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
 
   return (context: PiniaPluginContext) => {
     const {
-      store, options: {
-        persist
-      }
+      store,
+      options: {
+        persist,
+      },
     } = context
-    if (!persist) return
+    if (!persist)
+      return
 
     let persistOptions: PersistOptions<S> = {}
 
@@ -118,7 +124,7 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
     const {
       key = store.$id,
       debug = false,
-      serializer
+      serializer,
     } = persistOptions
 
     // 恢复持久化数据
@@ -127,14 +133,14 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
 
     // let flag = true
     // 更新数据
-    const updateState = debounce(function () {
-      _mutex.enqueue(setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch(e => {
+    const updateState = debounce(() => {
+      _mutex.enqueue(setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch((e) => {
         debug && console.log(e)
       }))
     }, 100)
     store.$subscribe(
       (
-        _mutation: SubscriptionCallbackMutation<StateTree>
+        _mutation: SubscriptionCallbackMutation<StateTree>,
       ) => {
         if (_mutation.storeId === 'main') {
           if (!Array.isArray(_mutation.events) && _mutation.events.key === 'clearOfflineCacheTag') {
@@ -148,13 +154,13 @@ async function createPiniaPersist<S extends StateTree = StateTree> (pluginOption
       },
       {
         detached: true,
-        deep: true
-      }
+        deep: true,
+      },
     )
   }
 }
 
-async function migrateToV2 (lastStore: typeof localforage, store: typeof localforage) {
+async function migrateToV2(lastStore: typeof localforage, store: typeof localforage) {
   await store.clear()
   const keys = await lastStore.keys()
   for (const key of keys) {
@@ -189,7 +195,7 @@ async function migrateToV2 (lastStore: typeof localforage, store: typeof localfo
   await store.setItem('version', 2)
 }
 
-async function migrateToV3 (lastStore: typeof localforage, store: typeof localforage) {
+async function migrateToV3(lastStore: typeof localforage, store: typeof localforage) {
   await store.clear()
   const keys = await lastStore.keys()
   for (const key of keys) {
@@ -198,15 +204,15 @@ async function migrateToV3 (lastStore: typeof localforage, store: typeof localfo
         const data: any = await lastStore.getItem('user')
         await store.setItem('tools', {
           favorite: data.favorite,
-          statistics: data.statistics
+          statistics: data.statistics,
         })
         await store.setItem('setting', {
           general: data.settings,
-          modules: data.modules
+          modules: data.modules,
         })
         await store.setItem('user', {
           logged: Boolean(data._user.token),
-          profile: data._user.profile
+          profile: data._user.profile,
         })
         break
       }

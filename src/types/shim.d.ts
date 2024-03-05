@@ -3,8 +3,8 @@
 
 // vue
 declare module '*.vue' {
-  import { DefineComponent } from 'vue'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+  import type { DefineComponent } from 'vue'
+  // eslint-disable-next-line ts/ban-types
   const component: DefineComponent<{}, {}, any>
   export default component
 }
@@ -18,9 +18,10 @@ declare global {
 // axios
 export type { AxiosStatic } from 'axios'
 declare module 'axios' {
-  import { AxiosResponse } from 'axios'
+  import type { AxiosResponse } from 'axios'
+
   export interface AxiosInstance {
-    $apiBase?: string,
+    $apiBase?: string
     getData?: (res: AxiosResponse) => any
   }
 }

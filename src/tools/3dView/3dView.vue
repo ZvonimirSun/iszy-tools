@@ -1,45 +1,12 @@
-<template>
-  <el-upload
-    ref="uploadRef"
-    v-model:file-list="fileList"
-    :show-file-list="false"
-    :auto-upload="false"
-    multiple
-  >
-    <el-input
-      readonly
-      placeholder="点击这里选择 gltf 文件所在文件夹"
-      :value="fileName"
-      @click="startUpload"
-    >
-      <template #append>
-        <el-button
-          block
-          :disabled="!fileName"
-          :loading="loading"
-          @click.stop="loadScene"
-        >
-          <span v-if="loading">加载中</span>
-          <span v-else>加载</span>
-        </el-button>
-      </template>
-    </el-input>
-  </el-upload>
-  <div
-    ref="treeContainer"
-    class="threeContainer"
-  />
-</template>
-
 <script setup>
 import {
-  WebGLRenderer,
-  PerspectiveCamera,
   AmbientLight,
-  Scene,
   Color,
   LoaderUtils,
-  LoadingManager
+  LoadingManager,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -58,10 +25,10 @@ const MAP_NAMES = [
   'metalnessMap',
   'normalMap',
   'roughnessMap',
-  'specularMap'
+  'specularMap',
 ]
 
-const animate = () => {
+function animate() {
   requestAnimationFrame(animate)
   controls.update()
   renderer.render(scene, camera)
@@ -121,18 +88,18 @@ const rootPath = computed(() => {
   }
 })
 
-function initScene () {
+function initScene() {
   // Scene
   scene = new Scene()
   scene.background = new Color(0x999999)
 
   // Renderer
   renderer = new WebGLRenderer({ antialias: true })
-  renderer.setSize(parseFloat(window.getComputedStyle(treeContainer.value).width), parseFloat(window.getComputedStyle(treeContainer.value).height))
+  renderer.setSize(Number.parseFloat(window.getComputedStyle(treeContainer.value).width), Number.parseFloat(window.getComputedStyle(treeContainer.value).height))
   treeContainer.value.appendChild(renderer.domElement)
 
   // Camera
-  const aspect = parseFloat(window.getComputedStyle(treeContainer.value).width) / parseFloat(window.getComputedStyle(treeContainer.value).height)
+  const aspect = Number.parseFloat(window.getComputedStyle(treeContainer.value).width) / Number.parseFloat(window.getComputedStyle(treeContainer.value).height)
   camera = new PerspectiveCamera(60, aspect, 0.01, 5000)
   camera.position.set(5, 2, 0)
   renderer.render(scene, camera)
@@ -141,18 +108,18 @@ function initScene () {
   controls = new OrbitControls(camera, renderer.domElement)
 
   // Light
-  ambientLight = new AmbientLight(0xaaaaaa, 20)
+  ambientLight = new AmbientLight(0xAAAAAA, 20)
   scene.add(ambientLight)
 
   manager = new LoadingManager()
   animate()
 }
 
-function startUpload () {
+function startUpload() {
   fileList.value = []
 }
 
-function loadScene () {
+function loadScene() {
   if (modelScene) {
     clearScene()
   }
@@ -183,22 +150,57 @@ function loadScene () {
     blobURLs.forEach(URL.revokeObjectURL)
   })
 }
-function clearScene () {
+function clearScene() {
   scene.remove(modelScene)
   modelScene.traverse((node) => {
-    if (!node.isMesh) return
+    if (!node.isMesh)
+      return
     node.geometry.dispose()
     const materials = Array.isArray(node.material)
       ? node.material
       : [node.material]
     materials.forEach((material) => {
       MAP_NAMES.forEach((map) => {
-        if (material[map]) material[map].dispose()
+        if (material[map])
+          material[map].dispose()
       })
     })
   })
 }
 </script>
+
+<template>
+  <el-upload
+    ref="uploadRef"
+    v-model:file-list="fileList"
+    :show-file-list="false"
+    :auto-upload="false"
+    multiple
+  >
+    <el-input
+      readonly
+      placeholder="点击这里选择 gltf 文件所在文件夹"
+      :value="fileName"
+      @click="startUpload"
+    >
+      <template #append>
+        <el-button
+          block
+          :disabled="!fileName"
+          :loading="loading"
+          @click.stop="loadScene"
+        >
+          <span v-if="loading">加载中</span>
+          <span v-else>加载</span>
+        </el-button>
+      </template>
+    </el-input>
+  </el-upload>
+  <div
+    ref="treeContainer"
+    class="threeContainer"
+  />
+</template>
 
 <style scoped lang="scss">
 .threeContainer {

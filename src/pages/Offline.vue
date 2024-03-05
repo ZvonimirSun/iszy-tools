@@ -1,3 +1,11 @@
+<script setup>
+const router = useRouter()
+
+function returnBack() {
+  router.back()
+}
+</script>
+
 <template>
   <el-result
     icon="warning"
@@ -14,11 +22,3 @@
     </template>
   </el-result>
 </template>
-
-<script setup>
-const router = useRouter()
-
-function returnBack () {
-  router.back()
-}
-</script>

@@ -1,11 +1,13 @@
-import {
-  createRouter,
-  createWebHistory,
+import type {
   NavigationGuardNext,
   RouteLocationNormalized,
   RouteLocationRaw,
   RouteRecordRaw,
-  RouterView
+} from 'vue-router'
+import {
+  RouterView,
+  createRouter,
+  createWebHistory,
 } from 'vue-router'
 import type { DefineComponent } from 'vue'
 import { isExternalLink } from '@/utils/common'
@@ -33,7 +35,7 @@ for (const key in vueFiles) {
 
   routeMap[path] = {
     path,
-    component: vueFiles[key]
+    component: vueFiles[key],
   }
 }
 
@@ -43,7 +45,9 @@ let routes: RouteRecordRaw[] = []
 for (const tool of toolsStore.toolItemsWithInternal) {
   if (!isExternalLink(tool.link)) {
     const {
-      name, link, ...meta
+      name,
+      link,
+      ...meta
     } = tool
     const path = link || ''
     if (routeMap[path]) {
@@ -61,27 +65,27 @@ const internalRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: '首页',
-    component: Home
+    component: Home,
   },
   {
     path: '/404',
     name: '404',
-    component: Page404
+    component: Page404,
   },
   {
     path: '/403',
     name: '403',
-    component: Page403
+    component: Page403,
   },
   {
     path: '/redirect',
     name: '重定向',
-    component: Redirect
+    component: Redirect,
   },
   {
     path: '/offline',
     name: '离线',
-    component: Offline
+    component: Offline,
   },
   {
     path: '/logout',
@@ -89,7 +93,7 @@ const internalRoutes: RouteRecordRaw[] = [
     component: () => h(RouterView),
     beforeEnter: (_, from, next) => {
       userStore.logout().then(() => next(from))
-    }
+    },
   },
   {
     path: '/:any(.*)/:catchAll(.*)',
@@ -97,18 +101,19 @@ const internalRoutes: RouteRecordRaw[] = [
     redirect: (to): RouteLocationRaw => {
       if (to?.params?.catchAll) {
         return {
-          path: '/' + to.params.catchAll,
-          query: to.query
+          path: `/${to.params.catchAll}`,
+          query: to.query,
         }
-      } else {
+      }
+      else {
         return '/404'
       }
-    }
+    },
   },
   {
     path: '/:catchAll(.*)',
-    redirect: '/404'
-  }
+    redirect: '/404',
+  },
 ]
 
 // 加入固定页面路由
@@ -116,7 +121,7 @@ routes = routes.concat(internalRoutes)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
 })
 
 router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized, next: NavigationGuardNext) => {
@@ -136,13 +141,15 @@ router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized
   if (!isLogged) {
     // 未登录跳转
     next(`/login?redirect=${to.path}`)
-  } else {
+  }
+  else {
     // 检查权限
     const haveAccess = userStore.checkAccess(to.meta.requiresAuth)
     if (haveAccess) {
       // 有权限
       next()
-    } else {
+    }
+    else {
       // 没有权限
       next('/403')
     }
@@ -156,14 +163,15 @@ router.afterEach((to, _, failure) => {
       let name: string
       if (typeof to.name === 'string') {
         name = to.name
-      } else {
+      }
+      else {
         name = to.name.toString()
       }
       toolsStore.access({ name, link: to.path })
     }
   }
 
-  function getPageTitle (pageTitle?: string) {
+  function getPageTitle(pageTitle?: string) {
     if (pageTitle && pageTitle !== config.zhName) {
       return `${pageTitle} - ${config.zhName}`
     }
