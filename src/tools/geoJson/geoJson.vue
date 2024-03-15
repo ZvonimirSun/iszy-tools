@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import LeafletMap from './child/leafletMap.vue'
-import GeoJsonEditor from './child/geoJsonEditor.vue'
-import PropertyTable from './child/propertyTable.vue'
-import AddService from './child/addService.vue'
+import MainMap from './child/MainMap.vue'
+import GeoJsonEditor from './child/Editor.vue'
+import PropertyTable from './child/PropertyTable.vue'
+import AddService from './child/AddService.vue'
 import ControlMenu from './child/ControlMenu.vue'
 
 const currentTab = ref('geoJson')
@@ -23,7 +23,7 @@ const wrapperHeight = computed(() => {
     ref="wrapper"
     class="wrapper"
   >
-    <LeafletMap />
+    <MainMap />
     <el-tabs
       v-model="currentTab"
       type="card"

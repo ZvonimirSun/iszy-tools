@@ -86,6 +86,7 @@ const rootPath = computed(() => {
     const path = rootFile.value.webkitRelativePath || rootFile.value.name
     return path.replace(fileName.value || '', '')
   }
+  return ''
 })
 
 function initScene() {

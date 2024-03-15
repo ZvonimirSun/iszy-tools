@@ -3,6 +3,7 @@ import { html_beautify as htmlBeatify } from 'js-beautify'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
 import 'highlight.js/styles/idea.css'
+import $axios from '@/plugins/Axios'
 
 export default {
   name: 'ViewSourceCode',
@@ -17,7 +18,7 @@ export default {
       if (this.url) {
         this.loading = true
         try {
-          const res = await this.$axios(`https://cors.iszy.xyz/${this.url}`)
+          const res = await $axios(`https://cors.iszy.xyz/${this.url}`)
           this.data = htmlBeatify(res.data || '')
           ElMessage.success('解析成功')
         }

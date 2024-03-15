@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { Layer } from 'leaflet'
-import { CRS, tileLayer } from 'leaflet'
-import { dynamicMapLayer as esriDynamicMapLayer, tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet'
+import type { Layer, Map } from 'leaflet'
 import { v4 as uuid } from 'uuid'
-import { tiledMapLayer } from '@/utils/iclient-leaflet'
 import $event from '@/plugins/EventBus'
+import { addLayer, removeLayer } from '@/utils/gisUtils'
 
+let _map: Map
 const data: {
   count: number
   name: string
@@ -25,50 +24,31 @@ const data: {
   layers: [],
 })
 
+onMounted(() => {
+  $event.emit('getMap', (map: Map) => {
+    _map = map
+  })
+})
+
 function addService() {
   const serviceUrl = data.url
   const serviceType = data.type
   const serviceName = data.name
   data.count++
   data.name = `服务 ${data.count}`
-  let layer
+  let layer: Layer
   try {
-    switch (serviceType) {
-      case 'supermap_rest':
-      case 'supermap_tile': {
-        layer = tiledMapLayer(serviceUrl, {
-          prjCoordSys: { epsgCode: 3857 },
-          crs: CRS.EPSG3857,
-        })
-        break
-      }
-      case 'arcgis_rest': {
-        layer = esriDynamicMapLayer({
-          url: serviceUrl,
-          f: 'image',
-        })
-        break
-      }
-      case 'arcgis_tile': {
-        layer = esriTiledMapLayer({
-          url: serviceUrl,
-        })
-        break
-      }
-      case 'tms': {
-        layer = tileLayer(serviceUrl)
-        break
-      }
-      default:
-        break
-    }
+    layer = addLayer(_map, {
+      name: serviceName,
+      type: serviceType,
+      url: serviceUrl,
+    })
   }
   catch (e) {
     ElMessage.error('添加服务失败')
     return
   }
   if (layer) {
-    $event.emit('addLayer', layer, serviceName)
     data.layers.push({
       name: serviceName,
       url: serviceUrl,
@@ -77,9 +57,9 @@ function addService() {
     })
   }
 }
-function removeLayer(index: number) {
+function remove(index: number) {
   if (data.layers[index]?.layer) {
-    $event.emit('removeLayer', data.layers[index].layer)
+    removeLayer(_map, data.layers[index].layer)
     data.layers.splice(index, 1)
   }
 }
@@ -105,7 +85,7 @@ function removeLayer(index: number) {
         >
           {{ item.url }}
         </div>
-        <el-button @click="removeLayer(index)">
+        <el-button @click="remove(index)">
           移除
         </el-button>
       </div>

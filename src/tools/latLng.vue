@@ -2,12 +2,11 @@
 import type { Map, Marker } from 'leaflet'
 import { Icon, LatLng, Popup, marker } from 'leaflet'
 import type { Ref } from 'vue'
-import { createMap, utils } from '@/utils/mapUtils'
+import { addDefaultBaseLayers, createMap, formatDegree, getAddress, getLocation } from '@/utils/gisUtils'
 
-const yellowIcon = new Icon({
-  ...Icon.Default.prototype.options,
-  iconUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png',
-  iconRetinaUrl: 'https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png',
+const yellowIcon = new Icon.Default({
+  iconUrl: 'marker-icon-yellow.png',
+  iconRetinaUrl: 'marker-icon-2x-yellow.png',
 })
 
 let map: Map
@@ -24,10 +23,8 @@ onMounted(() => {
       center: [35, 105],
       zoom: 4,
     },
-    controls: {
-      layers: true,
-    },
   })
+  addDefaultBaseLayers(map)
   centerMarker = marker(map.getCenter(), { icon: new Icon.Default() })
     .addTo(map)
     .bindPopup(updatePopupContent(map.getCenter()))
@@ -104,16 +101,16 @@ function updatePopupContent(location: LatLng, popup?: Popup, address?: string): 
     content += `<p>西经W: ${Math.abs(lng)}</p>`
   }
   if (lat >= 0) {
-    content += `<p>北纬N: ${utils.formatDegree(Math.abs(lat))}</p>`
+    content += `<p>北纬N: ${formatDegree(Math.abs(lat))}</p>`
   }
   else {
-    content += `<p>南纬S: ${utils.formatDegree(Math.abs(lat))}</p>`
+    content += `<p>南纬S: ${formatDegree(Math.abs(lat))}</p>`
   }
   if (lng >= 0) {
-    content += `<p>东经E: ${utils.formatDegree(lng)}</p>`
+    content += `<p>东经E: ${formatDegree(lng)}</p>`
   }
   else {
-    content += `<p>西经W: ${utils.formatDegree(lng)}</p>`
+    content += `<p>西经W: ${formatDegree(lng)}</p>`
   }
   if (address) {
     content += `<p>地址: ${address}</p>`
@@ -145,7 +142,7 @@ function locateLocation(location: LatLng, fly?: boolean, address?: string) {
     const index = setTimeout(() => {
       helper()
     }, 500)
-    utils.getAddress(location).then((res) => {
+    getAddress(location).then((res) => {
       clearTimeout(index)
       address = res
       helper()
@@ -163,7 +160,7 @@ function locateLocation(location: LatLng, fly?: boolean, address?: string) {
 
 async function locateAddress(address: string) {
   try {
-    const info = await utils.getLocation(address)
+    const info = await getLocation(address)
     locateLocation(info.latLng, true, info.address)
   }
   catch (e) {

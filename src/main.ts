@@ -1,5 +1,4 @@
 import config from './config'
-import EventBus from '@/plugins/EventBus.js'
 import App from '@/App.vue'
 import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
@@ -13,10 +12,6 @@ const $apiBase = import.meta.env.PROD ? config.apiOrigin : (import.meta.env.VITE
   const pinia = createPinia()
   const app = createApp(App)
 
-  app.config.globalProperties.$axios = axios
-  app.config.globalProperties.$eventBus = EventBus
-  app.provide('$axios', axios)
-  app.provide('$eventBus', EventBus)
   axios.$apiBase = $apiBase
 
   const piniaPersistPlugin = await createPiniaPersist({

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { AxiosStatic } from 'axios'
+import $axios from '@/plugins/Axios'
 
 const dataUrl = ref('')
-const $axios: AxiosStatic = inject('$axios') as AxiosStatic
 const imgPreview = ref<HTMLImageElement>()
 const imageSize = ref({
   width: '',

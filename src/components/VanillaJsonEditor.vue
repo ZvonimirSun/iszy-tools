@@ -77,7 +77,7 @@ const documentProperties = computed<{
   content?: string
   size?: string
 }>(() => {
-  if (showDocumentProperties) {
+  if (showDocumentProperties.value) {
     const data = jsonEditor.get()
     let content
     let code
