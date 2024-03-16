@@ -232,6 +232,8 @@ ChineseLayer.include({
   },
 })
 
+export const csysConvert = ChineseLayer.prototype.csysConvert
+
 function transform(lng, lat) {
   let dLat = transformLat(lng - 105.0, lat - 35.0)
   let dLng = transformLng(lng - 105.0, lat - 35.0)
