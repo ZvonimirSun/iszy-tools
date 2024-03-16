@@ -24,7 +24,7 @@ defineExpose({
   setInput,
 })
 
-const editor = ref<InstanceType<typeof EditorMini>>()
+const editor = useComponentRef(EditorMini)
 let cm: EditorView
 const hasUndo = ref(false)
 const hasRedo = ref(false)

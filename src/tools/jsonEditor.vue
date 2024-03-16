@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 
-const editorPanelContainerLeft = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
-const editorPanelContainerRight = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editorPanelContainerLeft = useComponentRef(VanillaJsonEditor)
+const editorPanelContainerRight = useComponentRef(VanillaJsonEditor)
 const editorPanel = ref<HTMLDivElement>()
 const loading = ref(true)
 const fullPanel = ref('')

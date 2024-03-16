@@ -323,6 +323,7 @@
     "useToolsStore": true,
     "useUserStore": true,
     "useSettingStore": true,
-    "useGlobalStore": true
+    "useGlobalStore": true,
+    "useComponentRef": true
   }
 }

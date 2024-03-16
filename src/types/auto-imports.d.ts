@@ -149,6 +149,7 @@ declare global {
   const useClipboardItems: typeof import('@vueuse/core')['useClipboardItems']
   const useCloned: typeof import('@vueuse/core')['useCloned']
   const useColorMode: typeof import('@vueuse/core')['useColorMode']
+  const useComponentRef: typeof import('../composables/useComponentRef')['useComponentRef']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
   const useCopy: typeof import('../composables/useCopy')['useCopy']
   const useCounter: typeof import('@vueuse/core')['useCounter']
@@ -466,6 +467,7 @@ declare module 'vue' {
     readonly useClipboardItems: UnwrapRef<typeof import('@vueuse/core')['useClipboardItems']>
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>
     readonly useColorMode: UnwrapRef<typeof import('@vueuse/core')['useColorMode']>
+    readonly useComponentRef: UnwrapRef<typeof import('../composables/useComponentRef')['useComponentRef']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
     readonly useCopy: UnwrapRef<typeof import('../composables/useCopy')['useCopy']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
@@ -775,6 +777,7 @@ declare module '@vue/runtime-core' {
     readonly useClipboardItems: UnwrapRef<typeof import('@vueuse/core')['useClipboardItems']>
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>
     readonly useColorMode: UnwrapRef<typeof import('@vueuse/core')['useColorMode']>
+    readonly useComponentRef: UnwrapRef<typeof import('../composables/useComponentRef')['useComponentRef']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
     readonly useCopy: UnwrapRef<typeof import('../composables/useCopy')['useCopy']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>

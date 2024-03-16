@@ -4,7 +4,7 @@ import $eventBus from '@/plugins/EventBus.js'
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 import type { EditorValue } from '@/types/editor'
 
-const editor = ref<InstanceType<typeof VanillaJsonEditor> | null>(null)
+const editor = useComponentRef(VanillaJsonEditor)
 let geoJson: any = {
   type: 'FeatureCollection',
   features: [],

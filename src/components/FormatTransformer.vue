@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { identity } from 'lodash-es'
 import type { FormRules } from 'element-plus'
-import type { Ref } from 'vue'
 import type { EditorPlugin } from '@/types/editor'
 import EditorMini from '@/components/editor/EditorMini.vue'
 
@@ -46,7 +45,7 @@ const { _inputLabel, _inputPlaceholder, _invalidMessage, _outputLabel } = props.
       _invalidMessage: props.invalidMessage,
       _outputLabel: props.outputLabel,
     }
-const editor = ref<InstanceType<typeof EditorMini>>() as Ref<InstanceType<typeof EditorMini>>
+const editor = useComponentRef(EditorMini)
 const form = reactive({
   input: inputDefault.value,
 })
