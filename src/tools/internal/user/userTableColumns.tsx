@@ -1,8 +1,9 @@
 import dayjs from 'dayjs'
 import type { Columns } from 'element-plus'
-import { ElButton, ElTag } from 'element-plus'
+import { ElButton, ElPopconfirm, ElTag } from 'element-plus'
 import 'element-plus/es/components/tag/style/css'
 import 'element-plus/es/components/button/style/css'
+import 'element-plus/es/components/popconfirm/style/css'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 import type { User } from '@/types/auth'
 
@@ -93,29 +94,56 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
     {
       key: 'operations',
       title: '操作',
-      width: 150,
+      width: 200,
       fixed: FixedDir.RIGHT,
       cellRenderer: ({ rowData }: { rowData: User }) => {
         return (
-          rowData.status === UserStatus.DEACTIVATED || rowData.status === UserStatus.DISABLED
-            ? (
-              <ElButton
-                size="small"
-                plain
-                onClick={() => onClick(rowData, 'activate')}
-              >
-                启用
-              </ElButton>
-              )
-            : (
-              <ElButton
-                size="small"
-                plain
-                onClick={() => onClick(rowData, 'disable')}
-              >
-                禁用
-              </ElButton>
-              )
+          <>
+            <ElButton
+              size="small"
+              plain
+              onClick={() => onClick(rowData, 'edit')}
+            >
+              修改
+            </ElButton>
+            {
+              rowData.status === UserStatus.DEACTIVATED || rowData.status === UserStatus.DISABLED
+                ? (
+                  <ElButton
+                    size="small"
+                    plain
+                    onClick={() => onClick(rowData, 'activate')}
+                  >
+                    启用
+                  </ElButton>
+                  )
+                : (
+                  <ElButton
+                    size="small"
+                    plain
+                    onClick={() => onClick(rowData, 'disable')}
+                  >
+                    禁用
+                  </ElButton>
+                  )
+            }
+            <ElPopconfirm
+              title="确定要删除吗？"
+              onConfirm={() => onClick(rowData, 'delete')}
+            >
+              {{
+                reference: () => (
+                  <ElButton
+                    size="small"
+                    plain
+                    type="danger"
+                  >
+                    删除
+                  </ElButton>
+                ),
+              }}
+            </ElPopconfirm>
+          </>
         )
       },
     },

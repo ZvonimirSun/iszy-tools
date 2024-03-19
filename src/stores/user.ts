@@ -4,16 +4,18 @@ import type { AxiosError, AxiosResponse } from 'axios'
 import axios from '@/plugins/Axios'
 import type { AuthOption, User } from '@/types/auth'
 import { downloadSettings } from '@/plugins/PiniaSync'
+import config from '@/config'
 
 let tokenChecked = false
 let checkTokenPromise: Promise<AxiosResponse> | null = null
 
 const emptyProfile: User = {
-  nickName: null,
-  userName: null,
-  email: null,
-  userId: null,
-  roles: null,
+  nickName: '',
+  userName: '',
+  email: '',
+  userId: -1,
+  roles: [],
+  mobile: '',
 }
 
 export const useUserStore = defineStore('user', {
@@ -77,6 +79,23 @@ export const useUserStore = defineStore('user', {
       }
       catch (e) {
         this.clearToken()
+      }
+    },
+    async register(form: Omit<User, 'roles' | 'userId'>) {
+      try {
+        const data = (await axios.post(`${config.apiOrigin}/auth/register`, form)).data
+        if (data && data.success) {
+          return true
+        }
+        else {
+          throw new Error(data.message)
+        }
+      }
+      catch (e) {
+        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
+        }
+        throw e
       }
     },
     async updateUser(options: {

@@ -9,11 +9,12 @@ export interface Role {
 }
 
 export interface User {
-  nickName: string | null
-  userName: string | null
-  email: string | null
-  userId: number | null
-  roles: Role[] | null
+  nickName: string
+  userName: string
+  email: string
+  userId: number
+  mobile: string
+  roles: Role[]
   createdAt?: string
   updatedAt?: string
   status?: UserStatus

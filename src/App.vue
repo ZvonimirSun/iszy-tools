@@ -140,6 +140,9 @@ function fullScreenListener(e: KeyboardEvent) {
               <span class="i-icon-park-outline:return" />返回首页
             </router-link>
             ·
+            <span
+              class="i-icon-park-outline-user"
+            />
             <router-link v-if="userStore.profile.nickName" to="/settings">
               {{ userStore.profile.nickName }}
             </router-link>
@@ -252,6 +255,10 @@ function fullScreenListener(e: KeyboardEvent) {
       line-height: 2.2rem;
       margin-top: .8rem;
       color: var(--el-text-color-secondary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .4rem;
 
       a {
         color: var(--el-color-primary) !important;

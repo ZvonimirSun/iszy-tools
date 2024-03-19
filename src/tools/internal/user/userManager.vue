@@ -38,11 +38,17 @@ async function getUsers(pageIndex: number, pageSize: number) {
 
 function operation(row: User, operation: string) {
   switch (operation) {
+    case 'edit':
+      // todo
+      break
     case 'disable':
       disableUser(row)
       break
     case 'activate':
       activateUser(row)
+      break
+    case 'delete':
+      deleteUser(row)
       break
   }
 }
@@ -70,6 +76,26 @@ async function disableUser(row: User) {
 async function activateUser(row: User) {
   try {
     const data = (await $axios.post(`${config.apiOrigin}/user/activate`, null, {
+      params: {
+        id: row.userId,
+      },
+    })).data
+    if (data.success) {
+      ElMessage.success(data.message)
+      await getUsers(page.index, page.size)
+    }
+    else {
+      throw new Error(data.message)
+    }
+  }
+  catch (e) {
+    ElMessage.error((e as Error).message)
+  }
+}
+
+async function deleteUser(row: User) {
+  try {
+    const data = (await $axios.post(`${config.apiOrigin}/user/remove`, null, {
       params: {
         id: row.userId,
       },
