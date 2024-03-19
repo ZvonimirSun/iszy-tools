@@ -132,31 +132,20 @@ function fullScreenListener(e: KeyboardEvent) {
               {{ config.zhName }}
             </router-link>
           </div>
-          <div
-            v-if="route.path === '/'"
-            class="desc"
-          >
-            一个轻量的工具集合
-            <template v-if="userStore.profile.nickName">
-              ·
-              <router-link to="/settings">
-                {{ userStore.profile.nickName }}
-              </router-link>
-            </template>
-          </div>
-          <div
-            v-else
-            class="desc"
-          >
-            <router-link to="/">
+          <div class="desc">
+            <span
+              v-if="route.path === '/'"
+            >一个轻量的工具集合</span>
+            <router-link v-else to="/">
               <span class="i-icon-park-outline:return" />返回首页
             </router-link>
-            <template v-if="userStore.profile.nickName">
-              ·
-              <router-link to="/settings">
-                {{ userStore.profile.nickName }}
-              </router-link>
-            </template>
+            ·
+            <router-link v-if="userStore.profile.nickName" to="/settings">
+              {{ userStore.profile.nickName }}
+            </router-link>
+            <router-link v-else to="/login">
+              未登录
+            </router-link>
           </div>
         </el-header>
         <el-main
