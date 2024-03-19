@@ -14,6 +14,9 @@ export interface User {
   email: string | null
   userId: number | null
   roles: Role[] | null
+  createdAt?: string
+  updatedAt?: string
+  status?: UserStatus
 }
 
 export type AuthOption = boolean | {
