@@ -128,6 +128,10 @@ function register() {
 function resetFields() {
   registerFormRef.value?.resetFields()
 }
+
+function login() {
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -242,6 +246,14 @@ function resetFields() {
             @click="resetFields"
           >
             重置
+          </el-button>
+          <el-button
+            block
+            size="large"
+            :disabled="loading"
+            @click="login"
+          >
+            返回登录
           </el-button>
         </el-form-item>
       </el-form>

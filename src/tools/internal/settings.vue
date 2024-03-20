@@ -147,7 +147,7 @@ async function updateUser(formEl: FormInstance | undefined) {
         角色
       </div>
       <div>
-        {{ userStore.profile?.roles?.[0]?.alias ?? '普通用户' }}
+        {{ userStore.profile?.roles?.[0]?.alias ?? '注册用户' }}
       </div>
     </div>
     <div

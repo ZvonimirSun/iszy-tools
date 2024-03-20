@@ -53,6 +53,10 @@ async function login() {
   }
 }
 
+function register() {
+  router.push('/register')
+}
+
 function getOtherQuery(query: LocationQuery) {
   // eslint-disable-next-line unused-imports/no-unused-vars
   const { redirect, ...result } = query
@@ -99,17 +103,23 @@ function getOtherQuery(query: LocationQuery) {
           </el-input>
         </el-form-item>
         <el-form-item>
-          <div class="btn-wrapper">
-            <el-button
-              type="primary"
-              block
-              size="large"
-              :loading="loading"
-              @click="login"
-            >
-              登录
-            </el-button>
-          </div>
+          <el-button
+            type="primary"
+            block
+            size="large"
+            :loading="loading"
+            @click="login"
+          >
+            登录
+          </el-button>
+          <el-button
+            block
+            size="large"
+            :disabled="loading"
+            @click="register"
+          >
+            注册
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -128,11 +138,5 @@ function getOtherQuery(query: LocationQuery) {
     width: 36.8rem;
     margin: 0 auto;
   }
-}
-
-.btn-wrapper {
-  width: 100%;
-  display: flex;
-  gap: 8px;
 }
 </style>
