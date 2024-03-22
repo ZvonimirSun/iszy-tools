@@ -2,7 +2,6 @@
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'
 import { deleteParam, hasParam, setParam } from '@/utils/hashHandler.js'
-import $axios from '@/plugins/Axios'
 import config from '@/config'
 import { useGlobalStore } from '@/stores/global'
 
@@ -37,33 +36,10 @@ watch(() => route.path, () => {
 })
 
 async function triggerUpdate() {
-  let updateInfoHtml = ''
-  try {
-    const text: string = await $axios.get('https://jsdelivr.cdn.iszy.xyz/gh/zvonimirsun/iszy-tools@deploy/CHANGELOG.md', {
-      headers: {
-        'X-BYPASS-CACHE': 1,
-      },
-      params: {
-        t: Date.now(),
-      },
-    }).then((res) => {
-      return res.data || ''
-    })
-    if (text) {
-      const updateInfo = text.split('\n')
-      updateInfoHtml = updateInfo.filter(item => item).map((item, index) => {
-        return `<p>${index + 1}. ${item}</p>`
-      }).join('')
-    }
-  }
-  catch (_) {
-    // ignore
-  }
-  ElMessageBox.confirm(`有更新内容，请点击 <strong>重载</strong> 更新~${updateInfoHtml ? `<br><br><div style="max-height: 10rem;overflow: auto">${updateInfoHtml}</div>` : ''}`, '更新', {
+  ElMessageBox.confirm('有更新内容，请点击 <strong>重载</strong> 更新~', '更新', {
     confirmButtonText: '重载',
     cancelButtonText: '取消',
     type: 'info',
-    dangerouslyUseHTMLString: true,
   }).then(() => {
     updateServiceWorker()
   })
