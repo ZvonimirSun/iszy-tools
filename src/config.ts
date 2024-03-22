@@ -1,3 +1,5 @@
+let devApiOrigin = ''
+
 const config: {
   readonly name: string
   readonly alias: string
@@ -19,7 +21,7 @@ const config: {
   readonly cdnHost: string
 
   readonly siteOrigin: string
-  readonly apiOrigin: string
+  apiOrigin: string
   readonly cdnOrigin: string
 } = {
   name: 'iszy_tools',
@@ -51,7 +53,10 @@ const config: {
     return `${this.schema}://${this.siteHost}`
   },
   get apiOrigin() {
-    return `${this.schema}://${this.apiHost}`
+    return devApiOrigin || `${this.schema}://${this.apiHost}`
+  },
+  set apiOrigin(value: string) {
+    devApiOrigin = value
   },
   get cdnOrigin() {
     return `${this.schema}://${this.cdnHost}`
