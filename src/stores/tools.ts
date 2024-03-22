@@ -2,29 +2,10 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
 import oriTools from '@/tools.json'
+import { internalTools } from '@/tools/internal'
 import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
 import type { OptionalExcept } from '@/types/common'
 import type { AuthOption } from '@/types/auth'
-
-const internalTools: ToolItem[] = [
-  {
-    name: '登录',
-    link: '/login',
-    type: 'internal',
-  },
-  {
-    name: '注册',
-    link: '/register',
-    type: 'internal',
-  },
-  {
-    name: '用户管理',
-    link: '/userManager',
-    requiresAuth: {
-      roles: ['superadmin'],
-    },
-  },
-]
 
 const toolsMap: Record<string, ToolItem> = {}
 const oriToolMenus: ToolMenu[] = (oriTools || []).map((item: OptionalExcept<ToolMenu, 'children'>) => {
