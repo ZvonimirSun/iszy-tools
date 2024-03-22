@@ -1,104 +1,34 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
+import EditUser from './child/editUser.vue'
 
 const userStore = useUserStore()
-
 const editingUser = ref(false)
-const ruleFormRef = ref<FormInstance>()
-const userForm = reactive({
-  nickName: '',
-  email: '',
-  passwd: '',
-  rePasswd: '',
-  oldPasswd: '',
-})
-const rules = reactive<FormRules<typeof userForm>>({
-  rePasswd: [{
-    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
-      if (value && value !== userForm.passwd) {
-        callback(new Error('两次输入的密码不一致'))
-      }
-      else {
-        callback()
-      }
-    },
-  }],
-  oldPasswd: [{
-    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
-      if (!value && (userForm.passwd || userForm.rePasswd)) {
-        callback(new Error('请输入旧密码'))
-      }
-      else {
-        callback()
-      }
-    },
-  }],
-})
+const route = useRoute()
 
-function editUser() {
-  userForm.nickName = userStore.profile.nickName ?? ''
-  userForm.email = userStore.profile.email ?? ''
-  userForm.passwd = ''
-  userForm.rePasswd = ''
-  userForm.oldPasswd = ''
+function startEditUser() {
   editingUser.value = true
 }
 
-function cancelEditUser() {
-  editingUser.value = false
-}
+function updateUser(user: {
+  nickName?: string
+  email?: string
+  passwd?: string
+  oldPasswd?: string
+}) {
+  console.log(user)
 
-async function updateUser(formEl: FormInstance | undefined) {
-  if (!formEl) {
-    return
-  }
-  await formEl.validate(async (valid) => {
-    if (valid) {
-      const options: {
-        nickName?: string
-        email?: string
-        passwd?: string
-        oldPasswd?: string
-      } = {
-      }
-      if (userForm.nickName) {
-        options.nickName = userForm.nickName
-      }
-      if (userForm.email) {
-        options.email = userForm.email
-      }
-      if (userForm.passwd) {
-        options.passwd = userForm.passwd
-        options.oldPasswd = userForm.oldPasswd
-      }
-      if (Object.keys(options).length === 0) {
-        ElMessage.warning('没有需要修改的信息')
-        return
-      }
-      try {
-        await userStore.updateUser(options)
-      }
-      catch (e) {
-        ElMessage.error((e as Error).message)
-      }
-      editingUser.value = false
-    }
-    else {
-      ElMessage.warning('请检查输入')
-      return false
-    }
-  })
+  // return userStore.updateUser(user)
 }
 </script>
 
 <template>
   <div h-full w-full flex flex-col>
-    <el-breadcrumb v-if="$route.meta.parentInfo">
-      <el-breadcrumb-item :to="$route.meta.parentInfo.link">
-        {{ $route.meta.parentInfo.name }}
+    <el-breadcrumb v-if="route.meta.parentInfo">
+      <el-breadcrumb-item :to="route.meta.parentInfo.link">
+        {{ route.meta.parentInfo.name }}
       </el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{ $route.name }}
+        {{ route.name }}
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-scrollbar flex-1>
@@ -137,76 +67,19 @@ async function updateUser(formEl: FormInstance | undefined) {
           gap-4
         >
           <el-button
-            v-if="!editingUser"
-            @click="editUser"
+            @click="startEditUser"
           >
             修改信息
           </el-button>
-          <template v-else>
-            <el-button
-              type="primary"
-              @click="updateUser(ruleFormRef)"
-            >
-              保存
-            </el-button>
-            <el-button @click="cancelEditUser">
-              取消
-            </el-button>
-          </template>
         </div>
-        <el-form
-          v-if="editingUser"
-          ref="ruleFormRef"
-          :model="userForm"
-          :rules="rules"
-          label-width="8rem"
-          label-position="left"
-        >
-          <el-form-item
-            label="昵称"
-            prop="nickName"
-          >
-            <el-input v-model="userForm.nickName" />
-          </el-form-item>
-          <el-form-item
-            label="邮箱"
-            prop="email"
-          >
-            <el-input v-model="userForm.email" />
-          </el-form-item>
-          <el-form-item
-            label="旧密码"
-            prop="oldPasswd"
-          >
-            <el-input
-              v-model="userForm.oldPasswd"
-              type="password"
-              autocomplete="off"
-            />
-          </el-form-item>
-          <el-form-item
-            label="新密码"
-            prop="passwd"
-          >
-            <el-input
-              v-model="userForm.passwd"
-              type="password"
-              autocomplete="off"
-            />
-          </el-form-item>
-          <el-form-item
-            label="确认密码"
-            prop="rePasswd"
-          >
-            <el-input
-              v-model="userForm.rePasswd"
-              type="password"
-              autocomplete="off"
-            />
-          </el-form-item>
-        </el-form>
       </div>
     </el-scrollbar>
+    <EditUser
+      v-if="editingUser"
+      v-model="editingUser"
+      :ok="updateUser"
+      :user="userStore.profile"
+    />
   </div>
 </template>
 
