@@ -56,6 +56,12 @@ for (const tool of toolsStore.toolItemsWithInternal) {
       }
       routeMap[path].name = name
       routeMap[path].meta = meta
+      if (meta.parent) {
+        meta.parentInfo = {
+          name: routeMap[meta.parent].name as string,
+          link: meta.parent,
+        }
+      }
       routes.push(routeMap[path])
     }
   }

@@ -7,6 +7,11 @@ interface ToolMeta {
   type?: 'tool' | 'internal'
   requiresAuth?: AuthOption
   offline?: boolean
+  parent?: string
+  parentInfo?: {
+    name: string
+    link: string
+  }
 }
 
 export interface ToolItem extends ToolMeta {

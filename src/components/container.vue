@@ -20,7 +20,7 @@ function fullScreen() {
     <div class="containerAll">
       <div class="containerTitle">
         <div class="typeName">
-          <span>{{ route.meta?.title || route.name }}</span>
+          <span>{{ route.meta?.parentInfo?.name || route.meta?.title || route.name }}</span>&nbsp;
           <span
             class="fullScreen i-icon-park-outline-full-screen"
             title="全屏"
