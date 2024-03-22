@@ -131,7 +131,6 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
     const data = getState(key, true)
     store.$patch(merge({}, store.$state, serializer ? serializer.deserialize(data) : data))
 
-    // let flag = true
     // 更新数据
     const updateState = debounce(() => {
       _mutex.enqueue(setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch((e) => {
@@ -143,7 +142,14 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
         _mutation: SubscriptionCallbackMutation<StateTree>,
       ) => {
         if (_mutation.storeId === 'main') {
-          if (!Array.isArray(_mutation.events) && _mutation.events.key === 'clearOfflineCacheTag') {
+          let flag = false
+          if (_mutation.events && !Array.isArray(_mutation.events) && _mutation.events.key === 'clearOfflineCacheTag') {
+            flag = true
+          }
+          else if (store.$state.clearOfflineCacheTag) {
+            flag = true
+          }
+          if (flag) {
             localStore.clear().then(() => {
               window.location.reload()
             })
