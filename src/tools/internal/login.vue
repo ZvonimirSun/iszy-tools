@@ -129,9 +129,8 @@ function getOtherQuery(query: LocationQuery) {
 <style scoped lang="scss">
 .login-container {
   width: 100%;
-  min-height: 100%;
   position: relative;
-  padding: 5rem 0 14.4rem;
+  padding: 5rem 0 .8rem;
 
   .main {
     min-width: 26rem;

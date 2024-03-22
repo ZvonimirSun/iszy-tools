@@ -30,9 +30,6 @@ function fullScreen() {
       </div>
       <div class="main">
         <slot />
-        <el-backtop
-          :visibility-height="100"
-        />
       </div>
     </div>
   </div>

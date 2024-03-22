@@ -155,15 +155,13 @@ function fullScreenListener(e: KeyboardEvent) {
           class="main-content"
           :class="{ 'full-screen': fullScreenStatus }"
         >
-          <el-backtop
-            :visibility-height="100"
-          />
           <div
             v-if="route.meta?.type !== 'tool'"
-            class="container"
             h-full w-full
           >
-            <router-view />
+            <el-scrollbar>
+              <router-view />
+            </el-scrollbar>
           </div>
           <Container
             v-else
@@ -202,10 +200,6 @@ function fullScreenListener(e: KeyboardEvent) {
 </style>
 
 <style lang="scss" scoped>
-.container {
-  margin: 0 auto;
-}
-
 .global-wrapper {
   background: var(--el-bg-color-page);
   position: relative;
