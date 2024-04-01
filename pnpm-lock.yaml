@@ -311,8 +311,8 @@ devDependencies:
     specifier: ^3.2.2
     version: 3.2.2(vite@5.1.6)
   vite-plugin-pwa:
-    specifier: ^0.19.4
-    version: 0.19.4(@vite-pwa/assets-generator@0.2.4)(vite@5.1.6)(workbox-build@7.0.0)(workbox-window@7.0.0)
+    specifier: ^0.19.7
+    version: 0.19.7(@vite-pwa/assets-generator@0.2.4)(vite@5.1.6)(workbox-build@7.0.0)(workbox-window@7.0.0)
   vite-plugin-vue-devtools:
     specifier: ^7.0.17
     version: 7.0.17(rollup@2.79.1)(vite@5.1.6)(vue@3.4.21)
@@ -13158,8 +13158,8 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-pwa@0.19.4(@vite-pwa/assets-generator@0.2.4)(vite@5.1.6)(workbox-build@7.0.0)(workbox-window@7.0.0):
-    resolution: {integrity: sha512-KiEFXaYEj2Hg1it+yECy75oqNmlXimI7BaLx7Sxl7Qsd9EIVxaf3GX1mZdLpHe83pDgHBNwm9USGQxSCNp5m7A==}
+  /vite-plugin-pwa@0.19.7(@vite-pwa/assets-generator@0.2.4)(vite@5.1.6)(workbox-build@7.0.0)(workbox-window@7.0.0):
+    resolution: {integrity: sha512-18TECxoGPQE7tVZzKxbf5Icrl5688n1JGMPSgGotTsh89vLDxevY7ICfD3CFVfonZXh8ckuyJXg0NXE5+FAl2A==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@vite-pwa/assets-generator': ^0.2.4
