@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { flatten } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
-import oriTools from '@/tools.json'
+import oriTools from '@/tools'
 import { internalTools } from '@/tools/internal'
 import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
 import type { OptionalExcept } from '@/types/common'

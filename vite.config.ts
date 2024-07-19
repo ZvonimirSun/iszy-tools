@@ -12,7 +12,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import config from './src/config'
 import Sitemap from './src/plugins/Sitemap.js'
-import tools from './src/tools.json'
+import tools from './src/tools'
 
 // https://vitejs.dev/config/
 export default defineConfig({

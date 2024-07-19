@@ -7,7 +7,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import tools from './src/tools.json'
+import tools from './src/tools'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
