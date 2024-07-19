@@ -7,7 +7,9 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import axios from 'axios'
 import tools from './src/tools'
+import config from './src/config'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 
@@ -23,6 +25,10 @@ export default defineConfig({
     }),
     presetWebFonts({
       provider: 'google',
+      async customFetch(url) {
+        url = url.replace('fonts.googleapis.com', `fonts.${config.cdnHost}`)
+        return axios.get(url).then(res => res.data)
+      },
       fonts: {
         main: [
           {

@@ -8,6 +8,7 @@ const config: {
   readonly key: string
 
   readonly domain: string
+  readonly cdnDomain: string
   readonly site: string
   readonly api: string
   readonly cdn: string
@@ -31,6 +32,7 @@ const config: {
   key: 'iszy',
 
   domain: 'iszy.xyz',
+  cdnDomain: 'iszy.cc',
   site: 'tools',
   api: 'api',
   cdn: 'cdn',
@@ -46,7 +48,7 @@ const config: {
     return `${this.api}.${this.domain}`
   },
   get cdnHost() {
-    return `${this.cdn}.${this.domain}`
+    return `${this.cdn}.${this.cdnDomain || this.domain}`
   },
 
   get siteOrigin() {
