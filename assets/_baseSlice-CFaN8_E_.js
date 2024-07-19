@@ -1,1 +1,0 @@
-import{t as u}from"./toFinite-DRT-1_wm.js";function c(o){var i=u(o),e=i%1;return i===i?e?i-e:i:0}function g(o,i,e){var l=-1,r=o.length;i<0&&(i=-i>r?0:r+i),e=e>r?r:e,e<0&&(e+=r),r=i>e?0:e-i>>>0,i>>>=0;for(var n=Array(r);++l<r;)n[l]=o[l+i];return n}export{g as b,c as t};
