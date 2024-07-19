@@ -1,4 +1,7 @@
-export default [
+import type { ToolMenu } from '@/types/tool'
+import type { Optional } from '@/types/common'
+
+const tools: Optional<ToolMenu, 'id'>[] = [
   {
     type: '编辑器',
     icon: 'i-icon-park-outline-editor',
@@ -310,3 +313,5 @@ export default [
     ],
   },
 ]
+
+export default tools

@@ -312,8 +312,10 @@ export default {
         }
       }
 
-      @include animation(fade-in 800ms ease $transition-speed * 12);
-      @include animation-fill-mode(both);
+      & {
+        @include animation(fade-in 800ms ease $transition-speed * 12);
+        @include animation-fill-mode(both);
+      }
 
       &.game-won {
         background: rgba($tile-gold-color, .5);
@@ -393,11 +395,13 @@ export default {
       font-size: 5.5rem;
     }
 
-    // Movement transition
-    @include transition($transition-speed ease-in-out);
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    transition-property: transform;
+    & {
+      // Movement transition
+      @include transition($transition-speed ease-in-out);
+      -webkit-transition-property: -webkit-transform;
+      -moz-transition-property: -moz-transform;
+      transition-property: transform;
+    }
 
     $base: 2;
     $exponent: 1;
@@ -643,8 +647,10 @@ export default {
           }
         }
 
-        @include animation(fade-in 800ms ease $transition-speed * 12);
-        @include animation-fill-mode(both);
+        & {
+          @include animation(fade-in 800ms ease $transition-speed * 12);
+          @include animation-fill-mode(both);
+        }
 
         &.game-won {
           background: rgba($tile-gold-color, .5);
