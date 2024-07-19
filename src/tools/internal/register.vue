@@ -39,7 +39,7 @@ const rules = reactive<FormRules<RegisterForm>>({
         if (form.rePassword !== '') {
           if (!registerFormRef.value)
             return
-          registerFormRef.value.validateField('rePassword', () => null)
+          registerFormRef.value.validateField('rePassword', () => undefined)
         }
         callback()
       }
@@ -82,7 +82,7 @@ const rules = reactive<FormRules<RegisterForm>>({
         callback()
       }
       else {
-        if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)) {
+        if (!/^[\w-]+@[\w-]+(?:\.[\w-]+)+$/.test(value)) {
           callback('请输入正确的邮箱')
         }
         else {
@@ -118,9 +118,6 @@ function register() {
       }).finally(() => {
         loading.value = false
       })
-    }
-    else {
-      return false
     }
   })
 }

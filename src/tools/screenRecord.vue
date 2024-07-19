@@ -347,13 +347,13 @@ function onRecordStopped() {
   const blob = new Blob(chunks, { type: 'video/mp4' })
   blobUrl.value = URL.createObjectURL(blob)
   chunks = []
-  const i = setInterval(async () => {
+  const i = window.setInterval(async () => {
     if (recordVideoElement.value && recordVideoElement.value.readyState > 0) {
       if (recordVideoElement.value.duration === Number.POSITIVE_INFINITY) {
         recordVideoElement.value.currentTime = 10000000 * Math.random()
       }
       else {
-        clearInterval(i)
+        window.clearInterval(i)
         recordVideoElement.value.currentTime = 0
       }
     }

@@ -85,7 +85,6 @@ async function updateUser(formEl: FormInstance | undefined) {
     }
     else {
       ElMessage.warning('请检查输入')
-      return false
     }
   })
 }
