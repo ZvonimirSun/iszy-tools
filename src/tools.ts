@@ -3,13 +3,27 @@ import type { Optional } from '@/types/common'
 
 const tools: Optional<ToolMenu, 'id'>[] = [
   {
-    type: '编辑器',
-    icon: 'i-icon-park-outline-editor',
+    type: 'JSON工具',
+    icon: '',
     children: [
       {
         name: 'JSON编辑器',
         link: '/jsonEditor',
       },
+      {
+        name: 'GeoJSON.io',
+        link: '/geoJson',
+        tags: [
+          'geojson',
+          'gis',
+        ],
+      },
+    ],
+  },
+  {
+    type: '编辑器',
+    icon: 'i-icon-park-outline-editor',
+    children: [
       {
         name: 'TinyEditor',
         link: '/tinyEditor',
@@ -28,14 +42,6 @@ const tools: Optional<ToolMenu, 'id'>[] = [
     type: '地图工具',
     icon: 'i-icon-park-solid-map-draw',
     children: [
-      {
-        name: 'GeoJSON.io',
-        link: '/geoJson',
-        tags: [
-          'geojson',
-          'gis',
-        ],
-      },
       {
         name: '经纬度查询',
         link: '/latLng',
