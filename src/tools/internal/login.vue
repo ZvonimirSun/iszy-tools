@@ -58,7 +58,6 @@ function register() {
 }
 
 function getOtherQuery(query: LocationQuery) {
-  // eslint-disable-next-line unused-imports/no-unused-vars
   const { redirect, ...result } = query
   return result
 }
