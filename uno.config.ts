@@ -2,6 +2,7 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
+  presetTypography,
   presetUno,
   presetWebFonts,
   transformerDirectives,
@@ -25,7 +26,7 @@ export default defineConfig({
     }),
     presetWebFonts({
       provider: 'google',
-      async customFetch(url) {
+      customFetch(url) {
         url = url.replace('fonts.googleapis.com', `fonts.${config.cdnHost}`)
         return axios.get(url).then(res => res.data)
       },
@@ -57,6 +58,7 @@ export default defineConfig({
         inter: 'Inter:500,700',
       },
     }),
+    presetTypography(),
   ],
   transformers: [
     transformerDirectives(),

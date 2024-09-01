@@ -39,12 +39,16 @@ const tools: Optional<ToolMenu, 'id'>[] = [
     ],
   },
   {
-    type: '地图工具',
+    type: 'GIS工具',
     icon: 'i-icon-park-solid-map-draw',
     children: [
       {
         name: '经纬度查询',
         link: '/latLng',
+      },
+      {
+        name: '切片方案计算',
+        link: '/lodCalculator',
       },
       {
         name: '行政区数据',
