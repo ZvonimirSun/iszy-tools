@@ -13,13 +13,12 @@ interface PersistOptions<S> {
 }
 
 declare module 'pinia' {
-  // eslint-disable-next-line unused-imports/no-unused-vars
+
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     persist?: boolean | PersistOptions<S>
   }
 }
 
-// eslint-disable-next-line unused-imports/no-unused-vars
 export interface PluginOptions<S extends StateTree = StateTree> {
   name?: string
   storeName?: string
@@ -134,6 +133,7 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
     // 更新数据
     const updateState = debounce(() => {
       _mutex.enqueue(setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch((e) => {
+        // eslint-disable-next-line ts/no-unused-expressions
         debug && console.log(e)
       }))
     }, 100)

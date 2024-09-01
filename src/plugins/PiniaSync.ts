@@ -13,7 +13,7 @@ interface SyncOptions<S> {
 }
 
 declare module 'pinia' {
-  // eslint-disable-next-line unused-imports/no-unused-vars
+
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     sync?: boolean | SyncOptions<S>
   }
@@ -97,6 +97,7 @@ async function uploadSettings(store: StoreGeneric, syncOptions: SyncOptions<Stat
       return data.success as boolean
     }
     catch (e) {
+      // eslint-disable-next-line ts/no-unused-expressions
       debug && console.error(e)
       return false
     }
@@ -125,6 +126,7 @@ async function downloadSettings(store: StoreGeneric, syncOptions: SyncOptions<St
       return status
     }
     catch (e) {
+      // eslint-disable-next-line ts/no-unused-expressions
       debug && console.error(e)
       return false
     }
@@ -145,6 +147,7 @@ async function downloadAllSettings(debug?: boolean) {
       return true
     }
     catch (e) {
+      // eslint-disable-next-line ts/no-unused-expressions
       debug && console.error(e)
       return false
     }

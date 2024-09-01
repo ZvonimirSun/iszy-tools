@@ -7,9 +7,9 @@ export function formatter(val: string, { indent = 2 } = {}) {
 }
 
 export function compactor(val: string): string {
-  return val.replace(/\s+|\n/g, ' ')
-    .replace(/\s*{\s*/g, '{')
-    .replace(/\s*}\s*/g, '}')
+  return val.replace(/\s+/g, ' ')
+    .replace(/\s*\{\s*/g, '{')
+    .replace(/\s*\}\s*/g, '}')
     .replace(/\s*:\s*/g, ':')
     .replace(/\s*;\s*/g, ';')
 }

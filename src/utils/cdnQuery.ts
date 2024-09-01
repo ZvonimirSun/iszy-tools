@@ -65,8 +65,9 @@ export async function getByName(name: string) {
   return index.getObject(name)
 }
 
-const ATTR_REGEXP = /\s*(?:[a-z]+)\s*:\s*(?:.(?![a-z]*\s*:))*/gi
-const QUERY_REGEXP = /^((?:(?:[^\s:]+(?![a-z]*\s*:))\s*)*)/i
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const ATTR_REGEXP = /\s*[a-z]+\s*:\s*(?:.(?![a-z]*\s*:))*/gi
+const QUERY_REGEXP = /^((?:[^\s:]+(?!\s*:)\s*)*)/
 const filterMapping: Record<string, string> = {
   author: 'owner.name',
   type: 'moduleTypes',

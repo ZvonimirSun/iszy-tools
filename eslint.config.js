@@ -5,7 +5,7 @@ import autoImport from './.eslintrc-auto-import.json' assert {type: 'json'}
 export default antfu(
   {
     unocss: true,
-    ignores: ['src/assets/**/*', 'src/utils/**/*.js'],
+    ignores: ['src/assets/**/*', 'src/utils/**/*.js', 'eslint.config.js'],
   },
   {
     languageOptions: {
@@ -19,6 +19,7 @@ export default antfu(
       'eslint-comments/no-unlimited-disable': 'off',
       'no-restricted-globals': 'off',
       'ts/no-this-alias': 'off',
+      'unused-imports/no-unused-vars': 'off'
     },
   },
 )

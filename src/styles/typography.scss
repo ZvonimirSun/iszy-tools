@@ -1,0 +1,28 @@
+@mixin typography($tag) {
+  #{$tag+'.i-typography,'+'.i-typography '+$tag} {
+    @content;
+  }
+}
+
+.i-typography {
+  font-size: var(--el-font-size-base);
+  font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
+  &.i-typography-small {
+    font-size: var(--el-font-size-small);
+  }
+}
+
+@include typography('h1') {
+  font-size: var(--el-font-size-extra-large);
+}
+
+@include typography('h2') {
+  font-size: var(--el-font-size-large);
+}
+
+@each $tag in h3, h4, h5, h6 {
+  @include typography($tag) {
+    font-weight: var(--el-font-weight-medium);
+  }
+}

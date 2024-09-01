@@ -106,7 +106,7 @@
     "@vue/runtime-dom": "^3.4.32",
     "@vue/test-utils": "^2.4.6",
     "co": "^4.6.0",
-    "eslint": "^8.56.0",
+    "eslint": "^9.9.1",
     "jsdom": "^24.1.0",
     "less": "^4.2.0",
     "lint-staged": "^15.2.7",
@@ -127,6 +127,11 @@
     "vue-tsc": "^2.0.26",
     "workbox-build": "^7.1.1",
     "workbox-window": "^7.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "eslint": "^9.9.1"
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

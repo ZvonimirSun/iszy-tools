@@ -1,4 +1,4 @@
-[class^="i-"] {
+[class^="i-"]:not([class^="i-typography"]) {
   mask: var(--un-icon) no-repeat;
   mask-size: 100% 100%;
   -webkit-mask: var(--un-icon) no-repeat;

@@ -293,8 +293,8 @@ const tools: Optional<ToolMenu, 'id'>[] = [
     icon: 'i-icon-park-solid-all-application',
     children: [
       {
-        name: 'Chromium下载',
-        link: 'https://chromium.cypress.io/',
+        name: 'Chromium下载工具',
+        link: '/chromiumDownload',
       },
       {
         name: '淘宝优惠券精选',

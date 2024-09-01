@@ -109,22 +109,22 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
             {
               rowData.status === UserStatus.DEACTIVATED || rowData.status === UserStatus.DISABLED
                 ? (
-                  <ElButton
-                    size="small"
-                    plain
-                    onClick={() => onClick(rowData, 'activate')}
-                  >
-                    启用
-                  </ElButton>
+                    <ElButton
+                      size="small"
+                      plain
+                      onClick={() => onClick(rowData, 'activate')}
+                    >
+                      启用
+                    </ElButton>
                   )
                 : (
-                  <ElButton
-                    size="small"
-                    plain
-                    onClick={() => onClick(rowData, 'disable')}
-                  >
-                    禁用
-                  </ElButton>
+                    <ElButton
+                      size="small"
+                      plain
+                      onClick={() => onClick(rowData, 'disable')}
+                    >
+                      禁用
+                    </ElButton>
                   )
             }
             <ElPopconfirm
