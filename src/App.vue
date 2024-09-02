@@ -186,13 +186,12 @@ function fullScreenListener(e: KeyboardEvent) {
 .main {
   height: 100%;
   width: 100%;
-  font-size: 1.4rem;
   overflow: hidden;
 
   &-header {
     padding: 1.6rem 0 .8rem;
     text-align: center;
-    height: 8.4rem;
+    height: unset;
     line-height: unset;
 
     &.in-tool {
@@ -200,8 +199,8 @@ function fullScreenListener(e: KeyboardEvent) {
       height: 5.8rem;
 
       .header {
-        font-size: 2rem;
-        line-height: 2.8rem;
+        font-size: var(--el-font-size-large);
+        line-height: 1.5;
       }
 
       .desc {
@@ -210,9 +209,9 @@ function fullScreenListener(e: KeyboardEvent) {
     }
 
     .header {
-      line-height: 3.2rem;
-      font-size: 2.4rem;
-      font-weight: 600;
+      line-height: 1.7;
+      font-size: var(--el-font-size-extra-large);
+      font-weight: 700;
 
       a {
         color: var(--el-text-color-primary) !important;
@@ -220,10 +219,8 @@ function fullScreenListener(e: KeyboardEvent) {
     }
 
     .desc {
-      height: 2.2rem;
-      font-size: 1.4rem;
-      line-height: 2.2rem;
-      margin-top: .8rem;
+      font-size: var(--el-font-size-base);
+      line-height: 1.3;
       color: var(--el-text-color-secondary);
       display: flex;
       justify-content: center;
@@ -239,7 +236,7 @@ function fullScreenListener(e: KeyboardEvent) {
   &-content {
     width: 100%;
     margin: 0 auto;
-    padding: 0 1.6rem 1.6rem;
+    padding: 0 1.6rem 0;
     overflow-y: auto;
     flex: 1;
 
@@ -249,8 +246,8 @@ function fullScreenListener(e: KeyboardEvent) {
   }
 
   &-footer {
-    font-size: 1.4rem;
-    line-height: 2.2rem;
+    font-size: var(--el-font-size-base);
+    line-height: 1.5;
     padding: 0.8rem 0;
 
     height: 6rem;

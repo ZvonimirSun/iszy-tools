@@ -71,31 +71,25 @@ onMounted(() => {
             :target="(settings.openInNewTab || isExternalLink(tool.link)) ? '_blank' : ''"
             :to="isExternalLink(tool.link) ? (`/redirect?url=${tool.link}`) : (tool.link || '')"
           >
-            <el-tooltip
-              placement="top"
-              :show-after="200"
-              :content="tool.name"
+            <div
+              class="tool"
+              :class="{ toolCollected: isFav(tool.name) }"
             >
-              <div
-                class="tool"
-                :class="{ toolCollected: isFav(tool.name) }"
+              <span class="toolName">{{ tool.name }}</span>
+              <span
+                v-if="isFav(tool.name)"
+                class="fav collected"
+                @click.prevent="updateFav({ name: tool.name, link: tool.link || '', add: false })"
+              ><span class="i-icon-park-solid-star" /></span>
+              <span
+                v-else
+                class="fav"
+                @click.prevent="updateFav({ name: tool.name, link: tool.link || '', add: true })"
               >
-                <span class="toolName">{{ tool.name }}</span>
-                <span
-                  v-if="isFav(tool.name)"
-                  class="fav collected"
-                  @click.prevent="updateFav({ name: tool.name, link: tool.link || '', add: false })"
-                ><span class="i-icon-park-solid-star" /></span>
-                <span
-                  v-else
-                  class="fav"
-                  @click.prevent="updateFav({ name: tool.name, link: tool.link || '', add: true })"
-                >
-                  <span class="nonHover"><span class="i-icon-park-outline-star" /></span>
-                  <span class="hovered"><span class="i-icon-park-solid-star" /></span>
-                </span>
-              </div>
-            </el-tooltip>
+                <span class="nonHover"><span class="i-icon-park-outline-star" /></span>
+                <span class="hovered"><span class="i-icon-park-solid-star" /></span>
+              </span>
+            </div>
           </router-link>
         </el-col>
       </el-row>
@@ -106,9 +100,10 @@ onMounted(() => {
 <style scoped lang="scss">
 .home-page {
   width: 100%;
+  max-width: 120rem;
   height: 100%;
   overflow: auto;
-  padding: 1.6rem;
+  padding: 0 1.6rem;
 }
 
 .search-wrapper {
@@ -160,9 +155,8 @@ onMounted(() => {
     display: inline-flex;
     align-items: center;
 
-    font-size: 1.6rem;
-    font-weight: 700;
-    line-height: 2.4rem;
+    font-size: var(--el-font-size-medium);
+    line-height: 1.5;
 
     color: var(--el-color-white);
     background-color: var(--el-color-primary);
@@ -185,9 +179,8 @@ onMounted(() => {
 
 .tool {
   color: var(--el-text-color-primary);
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  font-weight: 600;
+  font-size: var(--el-font-size-medium);
+  line-height: 1.5;
   border-radius: var(--el-border-radius-middle);
   margin: .8rem 0;
   padding: .8rem 1.6rem;
@@ -226,7 +219,6 @@ onMounted(() => {
     &:hover {
       background-color: var(--el-color-primary);
       color: var(--el-color-white);
-      //transform: scale3d(1.1, 1.1, 1.1);
       padding-right: 1.5rem * 2;
 
       .fav {

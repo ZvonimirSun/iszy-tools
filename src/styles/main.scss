@@ -47,9 +47,9 @@ html, body, #app {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  @apply font-main;
-  font-size: 1.4rem;
-  line-height: 2.2rem;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-size: var(--el-font-size-base);
+  line-height: var(--el-font-line-height-primary);
   color: var(--el-text-color-primary);
 }
 

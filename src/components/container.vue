@@ -62,9 +62,8 @@ function fullScreen() {
       display: inline-flex;
       align-items: center;
 
-      font-size: 1.6rem;
-      font-weight: 700;
-      line-height: 2.4rem;
+      font-size: var(--el-font-size-base);
+      line-height: 1.5;
 
       color: var(--el-color-white);
       background-color: var(--el-color-primary);

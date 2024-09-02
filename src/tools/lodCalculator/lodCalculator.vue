@@ -129,7 +129,7 @@ function generate() {
           <el-input v-model="formInfo.pixelSize" @input="changePixelSize" />
         </el-form-item>
         <el-form-item label="切片层级数" class="form-item">
-          <el-input-number v-model.number="lodInfo.count" :min="0" :step="1" @change="changeCount" />
+          <el-input-number v-model.number="lodInfo.count" controls-position="right" :min="0" :step="1" @change="changeCount" />
         </el-form-item>
         <el-form-item label="ScaleDomination" class="form-item">
           <el-input v-model="formInfo.scaleDomination" @input="changeScaleDomination" />
@@ -138,10 +138,10 @@ function generate() {
           <el-input v-model="formInfo.resolution" @input="changeResolution" />
         </el-form-item>
         <el-form-item label="当前层级" class="form-item">
-          <el-input-number v-model.number="lodInfo.lod" :min="0" :max="lodInfo.count" :step="1" />
+          <el-input-number v-model.number="lodInfo.lod" controls-position="right" :min="0" :max="lodInfo.count" :step="1" />
         </el-form-item>
         <el-form-item class="form-item">
-          <el-button @click="generate">
+          <el-button type="primary" @click="generate">
             生成
           </el-button>
         </el-form-item>
@@ -162,5 +162,17 @@ function generate() {
 .form-item.el-form-item  {
   width: calc(calc(100% - 0.5rem * 2 - 1.6rem) / 3);
   margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .form-item.el-form-item  {
+    width: calc(calc(100% - 0.5rem - 1.6rem) / 2);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-item.el-form-item  {
+    width: 100%
+  }
 }
 </style>

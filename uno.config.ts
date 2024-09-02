@@ -31,29 +31,6 @@ export default defineConfig({
         return axios.get(url).then(res => res.data)
       },
       fonts: {
-        main: [
-          {
-            name: 'Lora',
-            weights: ['400', '700'],
-            italic: true,
-          },
-          {
-            name: 'Noto Serif SC',
-            weights: ['300', '400', '700'],
-          },
-          {
-            name: 'PingFang SC',
-            provider: 'none',
-          },
-          {
-            name: 'Microsoft YaHei',
-            provider: 'none',
-          },
-          {
-            name: 'sans-serif',
-            provider: 'none',
-          },
-        ],
         mono: 'JetBrains Mono:300,400,700',
         inter: 'Inter:500,700',
       },
