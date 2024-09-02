@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
 
+const $route = useRoute()
 const userStore = useUserStore()
 
 const editingUser = ref(false)

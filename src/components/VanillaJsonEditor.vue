@@ -30,6 +30,8 @@ const emits = defineEmits<{
   (e: 'delete'): void
 }>()
 
+const globalStore = useGlobalStore()
+
 // JSONEditor properties as of version 0.3.60
 const propNames = [
   'content',
@@ -434,7 +436,7 @@ function _pickDefinedProps(object: Record<string, any>, propNames: string[]) {
       ref="jsonEditorDiv"
       class="json-editor"
       :class="{
-        'jse-theme-dark': useGlobalStore().isDark,
+        'jse-theme-dark': globalStore.isDark,
       }"
     />
     <input

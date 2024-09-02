@@ -5,7 +5,11 @@ export const useGlobalStore = defineStore('global', {
     isDark,
   }),
   actions: {
-    setTheme(value?: 'dark' | 'light' | 'auto') {
+    setTheme(val?: string | boolean | number) {
+      if (typeof val !== 'string') {
+        return
+      }
+      const value = val as 'dark' | 'light' | 'auto'
       if (value) {
         useSettingStore().general.theme.mode = value
       }
