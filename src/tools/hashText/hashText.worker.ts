@@ -19,12 +19,12 @@ function formatWithEncoding(words: lib.WordArray, encoding: Encoding) {
 
 const hashText = (algo: AlgoNames, value: string, encoding: Encoding = 'Hex') => formatWithEncoding(algos[algo](value), encoding)
 
-self.addEventListener('message', (event) => {
+globalThis.addEventListener('message', (event) => {
   if (event.data) {
     const result = {} as { [key in AlgoNames]: string }
     for (const algo of algoNames) {
       result[algo] = hashText(algo, event.data.value, event.data.encoding)
     }
-    self.postMessage(result)
+    globalThis.postMessage(result)
   }
 })

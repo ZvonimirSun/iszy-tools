@@ -14,6 +14,7 @@ interface SyncOptions<S> {
 
 declare module 'pinia' {
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     sync?: boolean | SyncOptions<S>
   }

@@ -46,9 +46,7 @@ export default {
                     text-anchor="middle"
                     stroke="${this.options.color}"
                     opacity="${this.options.alpha / 10}"
-                    transform="translate(${width / 2}, ${width / 2}) rotate(${
-        this.options.rotate
-      }) translate(-${width / 2}, -${width / 2})"
+                    transform="translate(${width / 2}, ${width / 2}) rotate(${this.options.rotate}) translate(-${width / 2}, -${width / 2})"
                     font-weight="100"
                     font-size="${this.options.fontSize}"
                     font-family="microsoft yahe"
@@ -57,8 +55,7 @@ export default {
                 </text>
             </svg>`
       return (
-        `data:image/svg+xml;base64,${
-        Buffer.from(svgText).toString('base64')}`
+        `data:image/svg+xml;base64,${Buffer.from(svgText).toString('base64')}`
       )
     },
   },

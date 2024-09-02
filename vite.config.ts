@@ -69,7 +69,6 @@ export default defineConfig({
     AutoImport({
       resolvers: [
         ElementPlusResolver(),
-        AntDesignVueResolver(),
       ],
       imports: [
         'vue',
@@ -92,7 +91,9 @@ export default defineConfig({
       dts: 'src/types/components.d.ts',
       resolvers: [
         ElementPlusResolver(),
-        AntDesignVueResolver(),
+        AntDesignVueResolver({
+          importStyle: false,
+        }),
       ],
     }),
     VitePWA({

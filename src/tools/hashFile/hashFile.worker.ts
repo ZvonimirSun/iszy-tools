@@ -3,7 +3,7 @@ import { type AlgoNames, algos } from './hashFile.service'
 
 const hashFile = (algo: AlgoNames, value: lib.WordArray) => algos[algo](value).toString()
 
-self.addEventListener('message', (event) => {
+globalThis.addEventListener('message', (event) => {
   if (event.data && event.data.value && event.data.value instanceof File) {
     const algos = (event.data.algos || ['MD5']) as AlgoNames[]
     const reader = new FileReader()
@@ -14,11 +14,11 @@ self.addEventListener('message', (event) => {
       for (const algo of algos) {
         result[algo] = hashFile(algo, wordArray)
 
-        self.postMessage(result)
+        globalThis.postMessage(result)
       }
     }
   }
   else {
-    self.postMessage(null)
+    globalThis.postMessage(null)
   }
 })

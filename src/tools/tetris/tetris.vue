@@ -103,9 +103,9 @@ export default {
     },
     resetGame() {
       clearInterval(this.intervalID)
-      const tmp = Array(this.gridCells.row)
+      const tmp = Array.from({ length: this.gridCells.row })
       for (const x of range(this.gridCells.row)) {
-        tmp[x] = Array(this.gridCells.col).fill('')
+        tmp[x] = Array.from({ length: this.gridCells.col }).fill('')
       }
       this.matrix = tmp
       this.rotate = 0
@@ -182,9 +182,9 @@ export default {
           for (let i = this.clearIndexs.length - 1; i >= 0; i--) {
             tmp.splice(this.clearIndexs[i], 1)
           }
-          const tmp1 = Array(this.clearIndexs.length)
+          const tmp1 = Array.from({ length: this.clearIndexs.length })
           for (const x of range(this.clearIndexs.length)) {
-            tmp1[x] = Array(this.gridCells.col).fill('')
+            tmp1[x] = Array.from({ length: this.gridCells.col }).fill('')
           }
           setTimeout(() => {
             this.lines += this.clearIndexs.length

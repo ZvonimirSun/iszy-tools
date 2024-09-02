@@ -15,11 +15,15 @@ export default antfu(
   {
     rules: {
       'no-console': 'off',
-      'curly': 'off',
-      'eslint-comments/no-unlimited-disable': 'off',
-      'no-restricted-globals': 'off',
-      'ts/no-this-alias': 'off',
-      'unused-imports/no-unused-vars': 'off'
+      'unicorn/consistent-function-scoping': 'off',
+      'unused-imports/no-unused-vars': [
+        'error', {
+          argsIgnorePattern: '^_',
+          caughtErrors: 'none',
+          destructuredArrayIgnorePattern: '^_',
+          ignoreRestSiblings: true
+        }
+      ],
     },
   },
 )
