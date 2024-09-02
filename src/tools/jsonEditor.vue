@@ -414,34 +414,32 @@ function clickDragger() {
       placeholder="请输入文档名称"
     />
 
-    <a-list
-      class="dataList"
-      item-layout="horizontal"
-      :data-source="dataListAfterSearch"
-    >
-      <template #renderItem="{ item }">
-        <a-list-item
-          :class="{ selected: item._id === selectId }"
-          @click="selectId = item._id"
-        >
-          <template #actions>
-            <el-button
-              type="danger"
-              @click.stop="store.deleteData({ id: item._id })"
-            >
-              删除
-            </el-button>
-          </template>
-          <a-list-item-meta
-            :description="`最后修改: ${item.updated}`"
+    <div class="data-list">
+      <div
+        v-for="(item) in dataListAfterSearch"
+        :key="item._id"
+        class="data-list-item"
+        :class="{ selected: item._id === selectId }"
+        @click="selectId = item._id"
+      >
+        <div class="data-list-item-info">
+          <div class="data-list-item-info-title">
+            {{ item.name }}
+          </div>
+          <div class="data-list-item-info-description">
+            {{ `最后修改: ${item.updated}` }}
+          </div>
+        </div>
+        <div class="data-list-item-actions">
+          <el-button
+            type="danger"
+            @click.stop="store.deleteData({ id: item._id })"
           >
-            <template #title>
-              {{ item.name }}
-            </template>
-          </a-list-item-meta>
-        </a-list-item>
-      </template>
-    </a-list>
+            删除
+          </el-button>
+        </div>
+      </div>
+    </div>
 
     <template #footer>
       <span class="dialog-footer">
@@ -585,22 +583,42 @@ function clickDragger() {
   }
 }
 
-.dataList {
+.data-list {
   max-height: 50vh;
   overflow: auto;
   margin-top: .8rem;
   padding: 0 .8rem;
   border: 1px solid #dedede;
 
-  .ant-list-item {
+  .data-list-item {
     cursor: pointer;
+    padding: 1.2rem 0;
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    box-sizing: content-box;
+
+    .data-list-item-info {
+      height: 4.8rem;
+      flex: 1;
+    }
+
+    .data-list-item-actions {
+      padding-right: .8rem;
+      margin-left: 4.8rem;
+    }
 
     &.selected {
-      background: #dedede;
+      background: var(--el-color-primary);
+      color: var(--el-color-white);
     }
 
     &:hover {
-      background: #dedede;
+      background: var(--el-border-color);
+    }
+
+    & + .data-list-item {
+      border-top: 1px solid var(--el-border-color);
     }
   }
 }
