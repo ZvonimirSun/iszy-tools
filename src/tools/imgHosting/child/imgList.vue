@@ -123,25 +123,5 @@ async function copyImgUrl({ url } = {} as { url: string }) {
       color: var(--el-text-color-placeholder);
     }
   }
-
-  :deep(.ant-image) {
-    cursor: pointer;
-  }
-
-  :deep(.ant-card-body) {
-    padding: .8rem;
-    width: 20rem;
-  }
-
-  :deep(.ant-card-actions) {
-    & > li {
-      margin: 0;
-    }
-
-  }
-
-  .ant-space {
-    flex-wrap: wrap;
-  }
 }
 </style>

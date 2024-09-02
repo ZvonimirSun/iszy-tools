@@ -73,7 +73,4 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-.ant-input-number {
-  width: 100%;
-}
 </style>

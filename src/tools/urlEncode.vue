@@ -111,22 +111,6 @@ function revertHistory(history: Array<string>) {
 </template>
 
 <style scoped lang="scss">
-.ant-space-vertical {
-  width: 100%;
-}
-
-.ant-btn-group {
-  flex-flow: row wrap;
-
-  .ant-btn {
-    margin-bottom: 5px;
-
-    @media (max-width: 450px) {
-      padding: 0 8px;
-    }
-  }
-}
-
 .history-list {
   display: flex;
   flex-direction: row;

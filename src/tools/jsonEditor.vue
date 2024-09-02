@@ -631,16 +631,4 @@ function clickDragger() {
     width: calc(100% - 42px);
   }
 }
-
-:deep(.ant-list-item) {
-  &.selected, &:hover {
-    .ant-list-item-meta-title {
-      color: var(--el-color-black) !important;
-    }
-
-    .ant-list-item-meta-description {
-      color: var(--el-color-black) !important;
-    }
-  }
-}
 </style>

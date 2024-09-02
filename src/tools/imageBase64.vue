@@ -118,11 +118,6 @@ function onImagePreview() {
   gap: .8rem;
 }
 
-.ant-input-textarea {
-  margin: 0;
-  resize: none;
-}
-
 .preview {
   margin: 0;
   padding: 0;

@@ -192,7 +192,7 @@ export default defineConfig({
     Sitemap({ tools, hostname: config.siteOrigin }),
   ],
   optimizeDeps: {
-    include: ['vue', 'element-plus', 'ant-design-vue'],
+    include: ['vue', 'element-plus'],
   },
   resolve: {
     alias: {

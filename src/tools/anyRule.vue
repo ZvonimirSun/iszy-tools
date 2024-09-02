@@ -106,12 +106,6 @@ function validator(rule, value, callback) {
     right: .8rem;
     top: .8rem;
     display: block;
-
-    & + div {
-      .ant-tooltip-inner {
-        white-space: nowrap;
-      }
-    }
   }
 }
 </style>

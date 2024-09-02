@@ -63,7 +63,4 @@ function exchange() {
 </template>
 
 <style lang="scss">
-textarea.ant-input {
-  resize: none;
-}
 </style>

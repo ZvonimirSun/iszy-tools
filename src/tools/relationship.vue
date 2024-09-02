@@ -172,10 +172,6 @@ function backspace() {
 </template>
 
 <style scoped lang="scss">
-.ant-form-item {
-  margin-bottom: .8rem;
-}
-
 .ant-typography {
   textarea {
     margin-bottom: .8rem;
@@ -184,11 +180,5 @@ function backspace() {
   h5 {
     margin: 0 0 .8rem;
   }
-}
-
-.ant-space {
-  flex-wrap: wrap;
-  width: 100%;
-  margin-bottom: .8rem;
 }
 </style>

@@ -138,11 +138,4 @@ function reset() {
   width: 100%;
   margin-top: 1.6rem;
 }
-
-.btnGroup {
-
-  .ant-btn + .ant-btn {
-    margin-left: .8rem;
-  }
-}
 </style>

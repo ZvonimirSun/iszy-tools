@@ -253,14 +253,6 @@ function selectFeature(index: number) {
             display: flex;
             gap: .8rem;
             margin-top: .8rem;
-
-            .ant-form-item {
-              margin: unset;
-            }
-
-            & + .ant-form-item {
-              margin-top: .8rem;
-            }
           }
         }
 

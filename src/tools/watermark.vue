@@ -175,23 +175,6 @@ export default {
 </template>
 
 <style scoped lang="scss">
-:deep(.ant-upload) {
-  width: 100% !important;
-}
-
-:deep(.ant-input-group-addon) {
-  padding: 0;
-  border: unset;
-}
-
-.ant-form-item {
-  margin-bottom: .8rem;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
 .preview {
   width: 100%;
   position: relative;

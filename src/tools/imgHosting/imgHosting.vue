@@ -51,11 +51,6 @@ const activeKey = ref('home')
   .el-tabs__header {
     height: 4rem !important;
     margin-bottom: .8rem;
-
-    .ant-tabs-tab {
-      height: 4rem !important;
-      line-height: 4rem !important;
-    }
   }
 
   .el-tabs__content {

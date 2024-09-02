@@ -146,14 +146,6 @@ async function decodeQRCode(img: HTMLImageElement) {
 </template>
 
 <style scoped lang="scss">
-.ant-form-item {
-  margin-bottom: .8rem;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
 .upload-container {
   cursor: pointer;
   font-size: 30px;

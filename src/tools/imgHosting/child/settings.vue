@@ -205,23 +205,11 @@ function save() {
   }
 }
 
-.commonConfigPanel {
-  .ant-space {
-    flex-wrap: wrap;
-  }
-}
-
 .el-form-item {
   margin-bottom: .8rem;
 
   &:last-child {
     margin-bottom: 0;
   }
-}
-
-.custom-copy-wrapper :deep(.ant-radio-wrapper) {
-  display: flex;
-  height: 32px;
-  line-height: 32px;
 }
 </style>
