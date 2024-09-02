@@ -1,0 +1,1 @@
+import{ch as n,d as f,ci as p}from"./index-len2DOAp.js";import{a as u}from"./_baseIteratee-t4ZODsgW.js";import{b}from"./_baseEach-DAGX6Rot.js";function o(a,r){var s=-1,e=n(a)?Array(a.length):[];return b(a,function(t,i,m){e[++s]=r(t,i,m)}),e}function d(a,r){var s=f(a)?p:o;return s(a,u(r))}export{o as b,d as m};

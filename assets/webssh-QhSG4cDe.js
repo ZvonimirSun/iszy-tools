@@ -1,0 +1,1 @@
+import{a2 as s,F as e,o as t}from"./index-len2DOAp.js";const c={},a={src:"https://webssh.iszy.xyz/",class:"webssh",title:"webssh"};function o(r,_){return t(),e("iframe",a)}const f=s(c,[["render",o],["__scopeId","data-v-36bac2be"]]);export{f as default};
