@@ -284,10 +284,10 @@ function clickDragger() {
 <template>
   <div
     v-show="loading"
+    v-loading="true"
+    element-loading-text="同步中..."
     class="loadingPanel"
-  >
-    <a-spin tip="同步中..." />
-  </div>
+  />
   <div
     v-show="!loading"
     ref="editorPanel"

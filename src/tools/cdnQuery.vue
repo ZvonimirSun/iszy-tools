@@ -232,18 +232,18 @@ function handleFileList(list: Array<Directory | File>, fileName?: string): Array
                 >
                 <div>{{ item.owner.name }}</div>
               </div>
-              <a-tag v-if="item.version">
-                <template #icon>
-                  <span class="i-icon-park-outline-tag-one" />
-                </template>
-                <span :title="item.version">{{ item.version }}</span>
-              </a-tag>
-              <a-tag v-if="item.license">
-                <template #icon>
-                  <span class="i-icon-park-outline-balance-two" />
-                </template>
-                {{ item.license }}
-              </a-tag>
+              <el-tag
+                v-if="item.version"
+                effect="plain"
+              >
+                <span class="i-icon-park-outline-tag-one" /><span :title="item.version">{{ item.version }}</span>
+              </el-tag>
+              <el-tag
+                v-if="item.license"
+                effect="plain"
+              >
+                <span class="i-icon-park-outline-balance-two" />{{ item.license }}
+              </el-tag>
             </div>
             <div
               v-if="item.description"
@@ -251,13 +251,14 @@ function handleFileList(list: Array<Directory | File>, fileName?: string): Array
             >
               {{ item.description }}
             </div>
-            <div v-if="item.keywords && item.keywords.length">
-              <a-tag
+            <div v-if="item.keywords && item.keywords.length" flex gap-2>
+              <el-tag
                 v-for="(key, index) of item.keywords"
                 :key="index"
+                effect="plain"
               >
                 {{ key }}
-              </a-tag>
+              </el-tag>
             </div>
           </div>
         </div>
@@ -421,6 +422,7 @@ function handleFileList(list: Array<Directory | File>, fileName?: string): Array
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      gap: 0.5rem;
 
       .owner {
         cursor: pointer;
@@ -439,7 +441,7 @@ function handleFileList(list: Array<Directory | File>, fileName?: string): Array
         }
       }
 
-      .ant-tag {
+      .el-tag {
         height: 2.4rem;
         font-size: 1.4rem;
         display: inline-flex;
@@ -461,8 +463,8 @@ function handleFileList(list: Array<Directory | File>, fileName?: string): Array
   }
 }
 
-.ant-tree {
-  border: #16b0f6 solid;
+.el-tag span {
+  vertical-align: middle;
 }
 
 .metaDetail {

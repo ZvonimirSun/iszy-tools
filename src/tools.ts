@@ -260,10 +260,6 @@ const tools: Optional<ToolMenu, 'id'>[] = [
         name: '基金股票信息查询',
         link: 'http://www.zodiacn.ltd',
       },
-      {
-        name: '实时汇率',
-        link: '/forexRate',
-      },
     ],
   },
   {

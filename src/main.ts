@@ -6,7 +6,7 @@ import { createPiniaSync } from '@/plugins/PiniaSync'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:uno.css'
 
-const $apiBase = import.meta.env.PROD ? config.apiOrigin : (import.meta.env.VITE_API_BASE_URL || config.apiOrigin)
+const $apiBase = import.meta.env.PROD ? config.apiOrigin : (import.meta.env.VITE_API_BASE_URL || '/api')
 if (!import.meta.env.PROD) {
   config.apiOrigin = $apiBase
 }
