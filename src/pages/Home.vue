@@ -104,6 +104,7 @@ onMounted(() => {
   height: 100%;
   overflow: auto;
   padding: 0 1.6rem;
+  box-sizing: border-box;
 }
 
 .search-wrapper {
