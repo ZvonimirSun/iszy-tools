@@ -15,6 +15,7 @@ const lodInfo = reactive({
 })
 const lodsStr = ref('')
 const resolutionStr = ref('')
+const canEdit = ref(true)
 
 function changePPI(val: string) {
   if (!val) {
@@ -27,11 +28,13 @@ function changePPI(val: string) {
   lodInfo.ppi = ppi
   formInfo.pixelSize = (0.0254 / lodInfo.ppi * 1000).toFixed(2)
   lodInfo.pixelSize = Number.parseFloat(formInfo.pixelSize)
-  if (formInfo.scaleDomination) {
-    changeScaleDomination(formInfo.scaleDomination)
-  }
-  else if (formInfo.resolution) {
-    changeResolution(formInfo.resolution)
+  if (canEdit.value) {
+    if (formInfo.scaleDomination) {
+      changeScaleDomination(formInfo.scaleDomination)
+    }
+    else if (formInfo.resolution) {
+      changeResolution(formInfo.resolution)
+    }
   }
 }
 
@@ -46,11 +49,13 @@ function changePixelSize(val: string) {
   lodInfo.pixelSize = pixelSize
   formInfo.ppi = (0.0254 / lodInfo.pixelSize * 1000).toFixed(3)
   lodInfo.ppi = Number.parseFloat(formInfo.ppi)
-  if (formInfo.scaleDomination) {
-    changeScaleDomination(formInfo.scaleDomination)
-  }
-  else if (formInfo.resolution) {
-    changeResolution(formInfo.resolution)
+  if (canEdit.value) {
+    if (formInfo.scaleDomination) {
+      changeScaleDomination(formInfo.scaleDomination)
+    }
+    else if (formInfo.resolution) {
+      changeResolution(formInfo.resolution)
+    }
   }
 }
 
@@ -63,8 +68,14 @@ function changeScaleDomination(val: string) {
     return
   }
   lodInfo.scaleDomination = scaleDomination
-  formInfo.resolution = (lodInfo.scaleDomination / lodInfo.ppi * 0.0254).toPrecision(11)
-  lodInfo.resolution = Number.parseFloat(formInfo.resolution)
+  if (canEdit.value) {
+    formInfo.resolution = (lodInfo.scaleDomination / lodInfo.ppi * 0.0254).toPrecision(11)
+    lodInfo.resolution = Number.parseFloat(formInfo.resolution)
+  }
+  else {
+    formInfo.ppi = (lodInfo.scaleDomination / lodInfo.resolution * 0.0254).toFixed(3)
+    changePPI(formInfo.ppi)
+  }
 }
 
 function changeResolution(val: string) {
@@ -76,8 +87,14 @@ function changeResolution(val: string) {
     return
   }
   lodInfo.resolution = resolution
-  formInfo.scaleDomination = (lodInfo.resolution / 0.0254 * lodInfo.ppi).toPrecision(11)
-  lodInfo.scaleDomination = Number.parseFloat(formInfo.scaleDomination)
+  if (canEdit.value) {
+    formInfo.scaleDomination = (lodInfo.resolution / 0.0254 * lodInfo.ppi).toPrecision(11)
+    lodInfo.scaleDomination = Number.parseFloat(formInfo.scaleDomination)
+  }
+  else {
+    formInfo.ppi = (lodInfo.scaleDomination / lodInfo.resolution * 0.0254).toFixed(3)
+    changePPI(formInfo.ppi)
+  }
 }
 
 function changeCount() {
@@ -123,10 +140,26 @@ function generate() {
     <el-form :label-width="130">
       <div flex flex-wrap gap-2>
         <el-form-item label="屏幕分辨率" class="form-item">
-          <el-input v-model="formInfo.ppi" @input="changePPI" />
+          <el-input v-model="formInfo.ppi" :readonly="!canEdit" @input="changePPI">
+            <template #append>
+              <el-button
+                class="edit-btn"
+                @click="canEdit = !canEdit"
+              >
+                <i
+                  v-if="!canEdit"
+                  class="i-icon-park-outline-edit"
+                />
+                <i
+                  v-else
+                  class="i-icon-park-outline-lock-one"
+                />
+              </el-button>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item label="像元大小(mm)" class="form-item">
-          <el-input v-model="formInfo.pixelSize" @input="changePixelSize" />
+          <el-input v-model="formInfo.pixelSize" :readonly="!canEdit" @input="changePixelSize" />
         </el-form-item>
         <el-form-item label="切片层级数" class="form-item">
           <el-input-number v-model.number="lodInfo.count" controls-position="right" :min="0" :step="1" @change="changeCount" />
@@ -135,7 +168,9 @@ function generate() {
           <el-input v-model="formInfo.scaleDomination" @input="changeScaleDomination" />
         </el-form-item>
         <el-form-item label="Resolution" class="form-item">
-          <el-input v-model="formInfo.resolution" @input="changeResolution" />
+          <div flex>
+            <el-input v-model="formInfo.resolution" @input="changeResolution" />
+          </div>
         </el-form-item>
         <el-form-item label="当前层级" class="form-item">
           <el-input-number v-model.number="lodInfo.lod" controls-position="right" :min="0" :max="lodInfo.count" :step="1" />
@@ -158,21 +193,25 @@ function generate() {
   </div>
 </template>
 
-<style lang="scss">
-.form-item.el-form-item  {
+<style lang="scss" scoped>
+.form-item.el-form-item {
   width: calc(calc(100% - 0.5rem * 2 - 1.6rem) / 3);
   margin: 0;
-}
 
-@media screen and (max-width: 768px) {
-  .form-item.el-form-item  {
+  @media screen and (max-width: 768px) {
     width: calc(calc(100% - 0.5rem - 1.6rem) / 2);
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .form-item.el-form-item  {
-    width: 100%
+.el-button.edit-btn {
+  color: var(--el-color-primary);
+
+  &:hover {
+    color: var(--el-color-primary);
   }
 }
 </style>
