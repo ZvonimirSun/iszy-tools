@@ -100,7 +100,6 @@ onMounted(() => {
 <style scoped lang="scss">
 .home-page {
   width: 100%;
-  max-width: 120rem;
   height: 100%;
   overflow: auto;
   padding: 0 1.6rem;

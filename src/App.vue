@@ -40,6 +40,7 @@ async function triggerUpdate() {
     confirmButtonText: '重载',
     cancelButtonText: '取消',
     type: 'info',
+    dangerouslyUseHTMLString: true,
   }).then(() => {
     updateServiceWorker()
   })
