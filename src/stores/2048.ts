@@ -11,7 +11,7 @@ export const use2048Store = defineStore('2048', {
     },
 
     setGameState(gameState?: never) {
-      this.gameState = gameState || {} as never
+      this.gameState = gameState as never
     },
     clearGameState() {
       this.setGameState()
