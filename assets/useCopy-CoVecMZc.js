@@ -1,0 +1,1 @@
+import{bA as i,aA as u}from"./index-Abyzm83G.js";function n({source:s,text:e="已复制到剪贴板",createToast:t=!0}={}){const{copy:a,...o}=i({source:s,legacy:!0});return{...o,async copy(r,{notificationMessage:c}={}){s?await a():await a(r),t&&u.success(c??e)}}}export{n as u};
