@@ -6,7 +6,7 @@ export const useGlobalStore = defineStore('global', {
   }),
   actions: {
     setTheme(val?: string | boolean | number) {
-      if (typeof val !== 'string') {
+      if (val != null && typeof val !== 'string') {
         return
       }
       const value = val as 'dark' | 'light' | 'auto'
