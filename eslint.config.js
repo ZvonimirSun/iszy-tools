@@ -1,6 +1,6 @@
 // eslint.config.js
 import antfu from '@antfu/eslint-config'
-import autoImport from './.eslintrc-auto-import.json' assert {type: 'json'}
+import autoImport from './.eslintrc-auto-import.json' with {type: 'json'}
 
 export default antfu(
   {

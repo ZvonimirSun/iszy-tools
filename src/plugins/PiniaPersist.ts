@@ -73,14 +73,14 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
     }
   }
 
-  // 转储到 sessionStorage
-  sessionStorage.clear()
+  // 转储到内存
+  const tmpStorage: any = {}
   const promiseList: Array<Promise<void>> = []
   for (const key of keys) {
     promiseList.push((async () => {
       const data = await localStore.getItem(key)
       if (data != null) {
-        sessionStorage.setItem(key, JSON.stringify(data))
+        tmpStorage[key] = JSON.stringify(data)
       }
     })())
   }
@@ -89,10 +89,10 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
 
   // 获取state的值
   const getState = (key: string, clear: boolean) => {
-    const data = sessionStorage.getItem(key)
+    const data = tmpStorage[key]
     if (data != null) {
       if (clear) {
-        sessionStorage.removeItem(key)
+        delete tmpStorage[key]
       }
       return JSON.parse(data)
     }
