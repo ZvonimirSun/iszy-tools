@@ -324,6 +324,13 @@
     "useUserStore": true,
     "useSettingStore": true,
     "useGlobalStore": true,
-    "useComponentRef": true
+    "useComponentRef": true,
+    "DirectiveBinding": true,
+    "MaybeRef": true,
+    "MaybeRefOrGetter": true,
+    "onWatcherCleanup": true,
+    "useId": true,
+    "useModel": true,
+    "useTemplateRef": true
   }
 }
