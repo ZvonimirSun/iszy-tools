@@ -154,7 +154,21 @@ function generate() {
   <div h-full w-full flex flex-col gap-2 overflow-hidden>
     <el-form :label-width="130">
       <el-row :gutter="8">
-        <el-col :span="4">
+        <el-col :xl="8" :lg="12" :sm="12">
+          <el-form-item label="地图分辨率" class="form-item">
+            <el-input v-model="formInfo.resolution" @input="changeResolution">
+              <template #prepend>
+                1 :
+              </template>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xl="8" :lg="12" :sm="12">
+          <el-form-item label="地图比例尺" class="form-item">
+            <el-input v-model="formInfo.scaleDomination" @input="changeScaleDomination" />
+          </el-form-item>
+        </el-col>
+        <el-col :xl="4" :lg="12" :sm="12">
           <el-form-item label="屏幕分辨率(ppi)" class="form-item">
             <el-input v-model="formInfo.ppi" :readonly="!canEdit" @input="changePPI">
               <template #append>
@@ -175,26 +189,12 @@ function generate() {
             </el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :xl="4" :lg="12" :sm="12">
           <el-form-item label="像元大小(mm)" class="form-item">
             <el-input v-model="formInfo.pixelSize" :readonly="!canEdit" @input="changePixelSize" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="地图分辨率" class="form-item">
-            <el-input v-model="formInfo.resolution" @input="changeResolution">
-              <template #prepend>
-                1 :
-              </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="地图比例尺" class="form-item">
-            <el-input v-model="formInfo.scaleDomination" @input="changeScaleDomination" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="3">
+        <el-col :xl="4" :lg="6" :sm="12">
           <el-form-item label="单位" class="form-item">
             <el-select v-model="formInfo.unit" @change="changeUnit">
               <el-option label="度" value="degree" />
@@ -202,17 +202,17 @@ function generate() {
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="切片层级数" class="form-item">
-            <el-input-number v-model.number="lodInfo.count" controls-position="right" :min="0" :step="1" @change="changeCount" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
+        <el-col :xl="4" :md="6" :sm="12">
           <el-form-item label="当前层级" class="form-item">
             <el-input-number v-model.number="lodInfo.lod" controls-position="right" :min="0" :max="lodInfo.count" :step="1" />
           </el-form-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :xl="4" :md="6" :sm="12">
+          <el-form-item label="切片层级数" class="form-item">
+            <el-input-number v-model.number="lodInfo.count" controls-position="right" :min="0" :step="1" @change="changeCount" />
+          </el-form-item>
+        </el-col>
+        <el-col :md="24" :sm="12">
           <el-form-item class="form-item">
             <el-button type="primary" @click="generate">
               生成
