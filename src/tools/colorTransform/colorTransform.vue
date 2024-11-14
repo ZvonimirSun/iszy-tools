@@ -2,8 +2,8 @@
 import { type Colord, colord, extend } from 'colord'
 import cmykPlugin from 'colord/plugins/cmyk'
 import hwbPlugin from 'colord/plugins/hwb'
-import namesPlugin from 'colord/plugins/names'
 import lchPlugin from 'colord/plugins/lch'
+import namesPlugin from 'colord/plugins/names'
 import { forEach } from 'lodash-es'
 import { buildColorForm, buildColorFormat } from './colorTransform.service'
 

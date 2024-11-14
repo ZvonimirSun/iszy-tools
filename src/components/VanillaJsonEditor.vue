@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { type Content, JSONEditor, isJSONContent } from 'vanilla-jsoneditor'
-import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
-import { clone } from 'lodash-es'
+import type { EditorValue } from '@/types/editor'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
-import type { EditorValue } from '@/types/editor'
+import { clone } from 'lodash-es'
+import { type Content, isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
+import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 
 const props = withDefaults(defineProps<{
   content?: EditorValue

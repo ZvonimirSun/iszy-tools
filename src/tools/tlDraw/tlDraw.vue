@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import 'tldraw/tldraw.css'
-import { applyReactInVue } from 'veaury'
-import { Tldraw } from 'tldraw'
-import { getAssetUrls } from '@tldraw/assets/selfHosted'
 import config from '@/config'
+import { getAssetUrls } from '@tldraw/assets/selfHosted'
+import { Tldraw } from 'tldraw'
+import { applyReactInVue } from 'veaury'
+import 'tldraw/tldraw.css'
 
 const assetUrls = getAssetUrls({
   baseUrl: `https://jsdelivr.${config.cdnHost}/npm/@tldraw/assets@2.0.0/`,

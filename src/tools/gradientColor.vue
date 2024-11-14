@@ -1,6 +1,6 @@
 <script setup>
-import { colord } from 'colord'
 import { Sketch } from '@ckpack/vue-color'
+import { colord } from 'colord'
 
 const fromColor = ref('#ff0000')
 const toColor = ref('#00ffff')

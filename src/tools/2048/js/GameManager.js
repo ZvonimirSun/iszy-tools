@@ -1,7 +1,7 @@
-import Tile from './Tile'
 import Grid from './Grid'
-import InputManager from './KeyboardInputManager'
 import Actuator from './HtmlActuator.js'
+import InputManager from './KeyboardInputManager'
+import Tile from './Tile'
 
 export default class GameManager {
   constructor(size, vue) {
@@ -242,7 +242,7 @@ export default class GameManager {
       previous = cell
       cell = { x: previous.x + vector.x, y: previous.y + vector.y }
     } while (this.grid.withinBounds(cell)
-    && this.grid.cellAvailable(cell))
+      && this.grid.cellAvailable(cell))
 
     return {
       farthest: previous,

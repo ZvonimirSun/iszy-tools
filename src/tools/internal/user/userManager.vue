@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getUserTableColumns } from './userTableColumns'
-import $axios from '@/plugins/Axios'
-import config from '@/config'
 import type { User } from '@/types/auth'
+import config from '@/config'
+import $axios from '@/plugins/Axios'
+import { getUserTableColumns } from './userTableColumns'
 
 const userList = reactive<User[]>([])
 const page = reactive({

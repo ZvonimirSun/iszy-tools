@@ -1,6 +1,6 @@
+import type { EditorPlugin } from '@/types/editor'
 import { xml } from '@codemirror/lang-xml'
 import xmlFormat from 'xml-formatter'
-import type { EditorPlugin } from '@/types/editor'
 
 export function formatter(val: string, options: { indent?: number } & Record<string, any> = {}): string {
   try {

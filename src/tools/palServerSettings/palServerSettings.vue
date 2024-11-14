@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getEmptySettings, iniToSettings, settingsToIni } from './palServerSettings.service'
 import type { SettingObject } from './palServerSettings'
 import createFile from '@/utils/createFile'
+import { getEmptySettings, iniToSettings, settingsToIni } from './palServerSettings.service'
 
 const scrollContainer = ref<HTMLDivElement | null>(null)
 const {

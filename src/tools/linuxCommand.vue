@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import $axios from '@/plugins/Axios'
+import md from '@/utils/markdown.js'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-import md from '@/utils/markdown.js'
-import $axios from '@/plugins/Axios'
 
 dayjs.extend(duration)
 

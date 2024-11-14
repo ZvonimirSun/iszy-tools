@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { EditorPlugin } from '@/types/editor'
 import type { EditorView } from '@codemirror/view'
 import { redo, redoDepth, undo, undoDepth } from '@codemirror/commands'
-import basic from './lang-basic'
 import EditorMini from './EditorMini.vue'
-import type { EditorPlugin } from '@/types/editor'
+import basic from './lang-basic'
 
 const props = withDefaults(defineProps<{
   inputDefault?: string

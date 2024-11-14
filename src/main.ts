@@ -1,8 +1,8 @@
-import config from './config'
 import App from '@/App.vue'
 import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
 import { createPiniaSync } from '@/plugins/PiniaSync'
+import config from './config'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:uno.css'
 

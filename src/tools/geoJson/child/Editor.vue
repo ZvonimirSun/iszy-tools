@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { debounce } from 'lodash-es'
-import $eventBus from '@/plugins/EventBus'
-import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
 import type { EditorValue } from '@/types/editor'
+import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
+import $eventBus from '@/plugins/EventBus'
+import { debounce } from 'lodash-es'
 
 const editor = useComponentRef(VanillaJsonEditor)
 let geoJson: any = {

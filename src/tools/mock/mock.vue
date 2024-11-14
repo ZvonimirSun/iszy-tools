@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import { selectedProject } from './child/mockData.service'
-import { init } from './child/mockProject.service'
-import MockList from './child/mockList.vue'
 import MockDetail from './child/mockDetail.vue'
+import MockList from './child/mockList.vue'
+import { init } from './child/mockProject.service'
 
 onMounted(() => {
   init()

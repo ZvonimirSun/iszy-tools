@@ -1,11 +1,11 @@
 import type { ControlPosition, Layer, LayerGroup, Map, TileLayer } from 'leaflet'
-import { CRS, control, layerGroup, tileLayer } from 'leaflet'
-import { dynamicMapLayer as esriDynamicMapLayer, tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet'
-import type { ChineseLayerOption, LayerOption, LayerOptionWithName, LayerOptionsWithName } from '../../type'
-import { get } from '../persistMap'
+import type { ChineseLayerOption, LayerOption, LayerOptionsWithName, LayerOptionWithName } from '../../type'
 import { tdtToken } from '@/utils/gisUtils/common'
 import { chineseLayer } from '@/utils/gisUtils/core/leaflet.ChineseLayer'
 import { tiledMapLayer } from '@/utils/iclient-leaflet'
+import { dynamicMapLayer as esriDynamicMapLayer, tiledMapLayer as esriTiledMapLayer } from 'esri-leaflet'
+import { control, CRS, layerGroup, tileLayer } from 'leaflet'
+import { get } from '../persistMap'
 
 function addLayerControl(map: Map, { position }: { position?: ControlPosition } = {}) {
   const status = get(map)

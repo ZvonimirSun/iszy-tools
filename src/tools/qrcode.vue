@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import createFile from '@/utils/createFile'
 import { toDataURL } from 'qrcode'
 import QrcodeDecoder from 'qrcode-decoder/src/index'
-import createFile from '@/utils/createFile'
 
 const generateContent = ref('')
 const generateResult = ref('')

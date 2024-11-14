@@ -1,10 +1,10 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-import { clone } from 'lodash-es'
-import type { AxiosError, AxiosResponse } from 'axios'
-import axios from '@/plugins/Axios'
 import type { AuthOption, User } from '@/types/auth'
-import { downloadSettings } from '@/plugins/PiniaSync'
+import type { AxiosError, AxiosResponse } from 'axios'
 import config from '@/config'
+import axios from '@/plugins/Axios'
+import { downloadSettings } from '@/plugins/PiniaSync'
+import { clone } from 'lodash-es'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 
 let tokenChecked = false
 let checkTokenPromise: Promise<AxiosResponse> | null = null

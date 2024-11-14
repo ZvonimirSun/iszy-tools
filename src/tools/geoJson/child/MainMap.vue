@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import 'leaflet/dist/leaflet.css'
+import type { Feature, GeoJsonObject } from 'geojson'
 import type {
   GeoJSON,
   Map,
 } from 'leaflet'
-import {
-  Icon,
-  Marker,
-} from 'leaflet'
-import type { Feature, GeoJsonObject } from 'geojson'
 import $eventBus from '@/plugins/EventBus'
 import {
   addDefaultBaseLayers,
@@ -18,6 +13,11 @@ import {
   initDrawLayer,
   initDrawMap,
 } from '@/utils/gisUtils'
+import {
+  Icon,
+  Marker,
+} from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
 const defaultIcon = new Icon.Default()
 const yellowIcon = new Icon.Default({

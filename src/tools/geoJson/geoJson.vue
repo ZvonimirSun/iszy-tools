@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import MainMap from './child/MainMap.vue'
-import GeoJsonEditor from './child/Editor.vue'
-import PropertyTable from './child/PropertyTable.vue'
 import AddService from './child/AddService.vue'
 import ControlMenu from './child/ControlMenu.vue'
+import GeoJsonEditor from './child/Editor.vue'
+import MainMap from './child/MainMap.vue'
+import PropertyTable from './child/PropertyTable.vue'
 
 const currentTab = ref('geoJson')
 const wrapper = ref<HTMLDivElement>()

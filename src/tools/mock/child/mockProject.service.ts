@@ -1,7 +1,7 @@
-import { setProject } from './mockData.service'
 import type { MockPrj, ResultDto } from './mock'
 import axios from '@/plugins/Axios'
 import { getParam } from '@/utils/hashHandler'
+import { setProject } from './mockData.service'
 
 const emptyMockPrj: MockPrj = {
   id: '',

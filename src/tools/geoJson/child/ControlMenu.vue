@@ -1,7 +1,7 @@
 <script setup>
-import { area } from '@turf/turf'
-import createFile from '@/utils/createFile'
 import $eventBus from '@/plugins/EventBus'
+import createFile from '@/utils/createFile'
+import { area } from '@turf/turf'
 
 function openFile(e) {
   if (e.target.files.length) {

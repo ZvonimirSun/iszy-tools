@@ -1,5 +1,5 @@
 import type { enc } from 'crypto-js'
-import { MD5, RIPEMD160, SHA1, SHA224, SHA256, SHA3, SHA384, SHA512 } from 'crypto-js'
+import { MD5, RIPEMD160, SHA1, SHA3, SHA224, SHA256, SHA384, SHA512 } from 'crypto-js'
 
 export const algos = {
   MD5,

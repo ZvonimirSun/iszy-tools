@@ -1,11 +1,11 @@
-import dayjs from 'dayjs'
+import type { User } from '@/types/auth'
 import type { Columns } from 'element-plus'
+import dayjs from 'dayjs'
 import { ElButton, ElPopconfirm, ElTag } from 'element-plus'
+import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 import 'element-plus/es/components/tag/style/css'
 import 'element-plus/es/components/button/style/css'
 import 'element-plus/es/components/popconfirm/style/css'
-import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
-import type { User } from '@/types/auth'
 
 enum UserStatus {
   DELETED = -1,

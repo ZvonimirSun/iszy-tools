@@ -1,6 +1,6 @@
+import type { EditorPlugin } from '@/types/editor'
 import { css } from '@codemirror/lang-css'
 import { css as cssBeautify } from 'js-beautify'
-import type { EditorPlugin } from '@/types/editor'
 
 export function formatter(val: string, { indent = 2 } = {}) {
   return cssBeautify(val, { indent_size: indent })

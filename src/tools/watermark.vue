@@ -1,9 +1,9 @@
 <script>
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import { Buffer } from 'buffer'
+import createFile from '@/utils/createFile'
 import { Compact } from '@ckpack/vue-color'
 import domToImage from 'dom-to-image'
-import createFile from '@/utils/createFile'
 
 export default {
   name: 'WatermarkTool',

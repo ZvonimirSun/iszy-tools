@@ -1,11 +1,11 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-import { flatten } from 'lodash-es'
-import { v4 as uuid } from 'uuid'
+import type { AuthOption } from '@/types/auth'
+import type { OptionalExcept } from '@/types/common'
+import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
 import oriTools from '@/tools'
 import { internalTools } from '@/tools/internal'
-import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
-import type { OptionalExcept } from '@/types/common'
-import type { AuthOption } from '@/types/auth'
+import { flatten } from 'lodash-es'
+import { acceptHMRUpdate, defineStore } from 'pinia'
+import { v4 as uuid } from 'uuid'
 
 const toolsMap: Record<string, ToolItem> = {}
 const oriToolMenus: ToolMenu[] = (oriTools || []).map((item: OptionalExcept<ToolMenu, 'children'>) => {

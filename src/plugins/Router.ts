@@ -1,18 +1,18 @@
+import type { DefineComponent } from 'vue'
 import type {
   NavigationGuardNext,
   RouteLocationNormalized,
   RouteLocationRaw,
   RouteRecordRaw,
 } from 'vue-router'
-import {
-  RouterView,
-  createRouter,
-  createWebHistory,
-} from 'vue-router'
-import type { DefineComponent } from 'vue'
-import { isExternalLink } from '@/utils/common'
 import config from '@/config'
 import { Home, Offline, Page403, Page404, Redirect } from '@/pages'
+import { isExternalLink } from '@/utils/common'
+import {
+  createRouter,
+  createWebHistory,
+  RouterView,
+} from 'vue-router'
 
 const toolsStore = useToolsStore()
 const userStore = useUserStore()

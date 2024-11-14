@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ViewUpdate } from '@codemirror/view'
-import { EditorView, placeholder as PlaceHolder } from '@codemirror/view'
-import { Compartment, EditorState } from '@codemirror/state'
-import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
-import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'
-import mini from './lang-mini'
 import type { EditorPlugin } from '@/types/editor'
+import type { ViewUpdate } from '@codemirror/view'
+import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
+import { Compartment, EditorState } from '@codemirror/state'
+import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'
+import { EditorView, placeholder as PlaceHolder } from '@codemirror/view'
+import mini from './lang-mini'
 
 const props = withDefaults(defineProps<{
   inputDefault?: string

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AlgoliaHit } from '@/utils/cdnQuery.js'
-import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
 import $axios from '@/plugins/Axios'
+import cdnQuery, { getByName } from '@/utils/cdnQuery.js'
 
 interface File {
   type: 'file'

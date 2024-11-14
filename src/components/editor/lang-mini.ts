@@ -1,9 +1,9 @@
-import { basicSetup } from 'codemirror'
-import { EditorState } from '@codemirror/state'
-import { indentWithTab } from '@codemirror/commands'
-import { drawSelection, keymap } from '@codemirror/view'
-import chinesePhrases from './chinese-phrases'
 import type { EditorPlugin } from '@/types/editor'
+import { indentWithTab } from '@codemirror/commands'
+import { EditorState } from '@codemirror/state'
+import { drawSelection, keymap } from '@codemirror/view'
+import { basicSetup } from 'codemirror'
+import chinesePhrases from './chinese-phrases'
 
 const plugin: EditorPlugin = {
   extensions: [

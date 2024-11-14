@@ -22,3 +22,5 @@ globalThis.addEventListener('message', (event) => {
     globalThis.postMessage(null)
   }
 })
+
+export default {}

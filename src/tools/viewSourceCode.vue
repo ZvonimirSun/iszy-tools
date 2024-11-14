@@ -1,9 +1,9 @@
 <script>
+import $axios from '@/plugins/Axios'
+import hljsVuePlugin from '@highlightjs/vue-plugin'
 import { html_beautify as htmlBeatify } from 'js-beautify'
 import 'highlight.js/lib/common'
-import hljsVuePlugin from '@highlightjs/vue-plugin'
 import 'highlight.js/styles/idea.css'
-import $axios from '@/plugins/Axios'
 
 export default {
   name: 'ViewSourceCode',

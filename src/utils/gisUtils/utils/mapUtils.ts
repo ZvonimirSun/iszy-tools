@@ -1,10 +1,10 @@
-import 'leaflet/dist/leaflet.css'
+import type { InitMapOptions } from '@/utils/gisUtils/type'
 
 import type { Map, MapOptions } from 'leaflet'
-import { Icon, control, map } from 'leaflet'
-import persistMap, { add } from './persistMap'
 import config from '@/config'
-import type { InitMapOptions } from '@/utils/gisUtils/type'
+import { control, Icon, map } from 'leaflet'
+import persistMap, { add } from './persistMap'
+import 'leaflet/dist/leaflet.css'
 
 Icon.Default.prototype.options.imagePath = `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/`
 Icon.Default.prototype.options.iconUrl = 'marker-icon-blue.png'

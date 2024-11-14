@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {
   defineConfig,
   presetAttributify,
@@ -8,9 +9,8 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import axios from 'axios'
-import tools from './src/tools'
 import config from './src/config'
+import tools from './src/tools'
 
 const iconClass = tools.map(item => item.icon).filter(item => item)
 

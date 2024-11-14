@@ -1,9 +1,9 @@
 <script>
 import Axios from 'axios'
 import O from './assets/image/O.png'
-import R from './assets/image/R.png'
 import Ob from './assets/image/Ob.png'
 import Oreo from './assets/image/oreo.png'
+import R from './assets/image/R.png'
 import random from './assets/image/random.png'
 
 export default {

@@ -1,7 +1,7 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, SubscriptionCallbackMutation } from 'pinia'
-import { cloneDeep, debounce, merge } from 'lodash-es'
-import localforage from 'localforage'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
+import localforage from 'localforage'
+import { cloneDeep, debounce, merge } from 'lodash-es'
 
 interface PersistOptions<S> {
   key?: string
@@ -135,7 +135,6 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
     // 更新数据
     const updateState = debounce(() => {
       _mutex.enqueue(setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch((e) => {
-        // eslint-disable-next-line ts/no-unused-expressions
         debug && console.log(e)
       }))
     }, 100)

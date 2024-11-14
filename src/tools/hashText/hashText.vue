@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HashWorker from './hashText.worker?worker'
 import type { AlgoNames } from './hashText.service'
+import HashWorker from './hashText.worker?worker'
 
 const { post, data, terminate } = useWebWorker<{
   [K in AlgoNames]: string

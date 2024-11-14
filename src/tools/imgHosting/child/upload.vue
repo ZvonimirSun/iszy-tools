@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import * as uploaders from '../uploader/index'
 import type { AliOssConfig } from '../uploader/index'
+import * as uploaders from '../uploader/index'
 
 const props = withDefaults(defineProps<{
   activeKey: string

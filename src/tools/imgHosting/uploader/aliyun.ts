@@ -1,5 +1,5 @@
-import OSS from 'ali-oss'
 import type { Config } from './index'
+import OSS from 'ali-oss'
 
 export interface AliOssConfig extends Record<string, string> {
   accessKeyId: string

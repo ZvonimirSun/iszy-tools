@@ -1,5 +1,5 @@
-import { cloneDeep } from 'lodash-es'
 import type { SettingKey, SettingObject } from './palServerSettings'
+import { cloneDeep } from 'lodash-es'
 
 export const settingList: SettingObject[] = [
   {
@@ -461,17 +461,15 @@ export function iniToSettings(ini: string): SettingObject[] {
     const iniMap: Partial<{
       [key in SettingKey]: string
     }> = {}
-    ini.replaceAll('\n', '').replaceAll('\r', '').slice(0, -1)
-      .split('OptionSettings=(')[1].split(',')
-      .forEach((item) => {
-        const tmp = item.split('=')
-        const key: SettingKey = tmp[0].trim() as SettingKey
-        let value = tmp[1].trim()
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.slice(1, -1)
-        }
-        iniMap[key] = value
-      })
+    ini.replaceAll('\n', '').replaceAll('\r', '').slice(0, -1).split('OptionSettings=(')[1].split(',').forEach((item) => {
+      const tmp = item.split('=')
+      const key: SettingKey = tmp[0].trim() as SettingKey
+      let value = tmp[1].trim()
+      if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.slice(1, -1)
+      }
+      iniMap[key] = value
+    })
     for (const setting of settings) {
       let value: string
       if (iniMap[setting.key] == null) {

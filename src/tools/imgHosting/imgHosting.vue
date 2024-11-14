@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ImgList from './child/imgList.vue'
-import Upload from './child/upload.vue'
 import Settings from './child/settings.vue'
+import Upload from './child/upload.vue'
 
 const activeKey = ref('home')
 </script>

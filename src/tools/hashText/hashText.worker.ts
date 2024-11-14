@@ -1,5 +1,5 @@
 import { enc, type lib } from 'crypto-js'
-import { type AlgoNames, type Encoding, algoNames, algos } from './hashText.service'
+import { type AlgoNames, algoNames, algos, type Encoding } from './hashText.service'
 
 function convertHexToBin(hex: string) {
   return hex
@@ -28,3 +28,5 @@ globalThis.addEventListener('message', (event) => {
     globalThis.postMessage(result)
   }
 })
+
+export default {}

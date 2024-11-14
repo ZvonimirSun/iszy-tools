@@ -1,7 +1,7 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, StoreGeneric, SubscriptionCallbackMutation } from 'pinia'
-import { debounce } from 'lodash-es'
-import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import $axios from '@/plugins/Axios'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
+import { debounce } from 'lodash-es'
 
 interface SyncOptions<S> {
   key?: string
@@ -98,7 +98,6 @@ async function uploadSettings(store: StoreGeneric, syncOptions: SyncOptions<Stat
       return data.success as boolean
     }
     catch (e) {
-      // eslint-disable-next-line ts/no-unused-expressions
       debug && console.error(e)
       return false
     }
@@ -127,7 +126,6 @@ async function downloadSettings(store: StoreGeneric, syncOptions: SyncOptions<St
       return status
     }
     catch (e) {
-      // eslint-disable-next-line ts/no-unused-expressions
       debug && console.error(e)
       return false
     }
@@ -148,7 +146,6 @@ async function downloadAllSettings(debug?: boolean) {
       return true
     }
     catch (e) {
-      // eslint-disable-next-line ts/no-unused-expressions
       debug && console.error(e)
       return false
     }

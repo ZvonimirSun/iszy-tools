@@ -1,9 +1,9 @@
 <script setup lang="tsx">
 import type { Column } from 'element-plus'
-import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
-import { createData, deleteData, editData, getNewMockData, mockData, selectedProject, setProject } from './mockData.service'
 import type { MockData } from './mock'
 import axios from '@/plugins/Axios'
+import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
+import { createData, deleteData, editData, getNewMockData, mockData, selectedProject, setProject } from './mockData.service'
 
 const { copy } = useCopy({ text: '复制成功' })
 

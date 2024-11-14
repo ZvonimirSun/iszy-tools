@@ -1,6 +1,6 @@
 <script setup>
-import html from '@/components/editor/lang-html'
 import css from '@/components/editor/lang-css'
+import html from '@/components/editor/lang-html'
 import js from '@/components/editor/lang-js'
 
 const store = useTinyEditorStore()

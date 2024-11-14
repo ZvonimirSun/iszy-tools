@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import $axios from '@/plugins/Axios'
+import dayjs from 'dayjs'
 
 interface Url {
   keyword: string

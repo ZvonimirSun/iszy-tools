@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HashFileWorker from './hashFile.worker?worker'
 import type { AlgoNames } from './hashFile.service'
 import formatBytes from '@/utils/formatBytes'
+import HashFileWorker from './hashFile.worker?worker'
 
 const { post, data, terminate } = useWebWorker<{
   [K in AlgoNames]: string
@@ -64,8 +64,8 @@ function calculate(rawFile: File) {
       />
       <el-upload
         class="upload-demo"
-        drag
-        multiple
+
+        drag multiple
         :before-upload="calculate"
         :disabled="loading"
         :show-file-list="false"

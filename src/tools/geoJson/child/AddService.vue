@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Layer, Map } from 'leaflet'
-import { v4 as uuid } from 'uuid'
 import $event from '@/plugins/EventBus'
 import { addLayer, removeLayer } from '@/utils/gisUtils'
+import { v4 as uuid } from 'uuid'
 
 let _map: Map
 const data: {
