@@ -1,6 +1,3 @@
-/// <reference types="vite/client" />
-/// <reference types="vite-plugin-pwa/vue" />
-
 // vue
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
