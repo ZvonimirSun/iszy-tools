@@ -133,9 +133,9 @@ function generate() {
     baseResolution = lodInfo.resolution * (2 ** lodInfo.lod)
   }
   const lods: {
-    lod: number
+    level: number
     resolution: number
-    scaleDomination: number
+    scale: number
   }[] = []
   for (let i = 0; i < lodInfo.count; i++) {
     const resolution = baseResolution / (2 ** i)
