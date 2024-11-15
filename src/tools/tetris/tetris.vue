@@ -538,8 +538,8 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import "./style/ds-digital";
-@import "./style/variables";
+@use "./style/ds-digital";
+@use "./style/variables" as *;
 
 @keyframes blink {
   0%,

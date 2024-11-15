@@ -171,7 +171,10 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      scss: { charset: false },
+      scss: {
+        charset: false,
+        api: 'modern-compiler',
+      },
       less: {
         javascriptEnabled: true,
       },

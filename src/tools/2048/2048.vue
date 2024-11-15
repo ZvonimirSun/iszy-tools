@@ -94,6 +94,8 @@ export default {
 
 <style scoped lang="scss">
 @use "sass:math";
+@use "sass:list";
+@use "sass:color";
 @use "./style/helpers" as *;
 @use "./style/clear-sans" as *;
 
@@ -112,7 +114,7 @@ export default {
 
   $tile-color: #eee4da;
   $tile-gold-color: #edc22e;
-  $tile-gold-glow-color: lighten($tile-gold-color, 15%);
+  $tile-gold-glow-color: color.adjust($tile-gold-color, $lightness: 15%);
 
   $game-container-margin-top: 4rem;
   $game-container-background: #bbada0;
@@ -215,7 +217,7 @@ export default {
 
   hr {
     border: none;
-    border-bottom: .1rem solid lighten($text-color, 40%);
+    border-bottom: .1rem solid color.adjust($text-color, $lightness: 40%);
     margin-top: 2rem;
     margin-bottom: 3rem;
   }
@@ -241,7 +243,7 @@ export default {
   // Styles for buttons
   @mixin button {
     display: inline-block;
-    background: darken($game-container-background, 20%);
+    background: color.adjust($game-container-background, $lightness: -20%);
     border-radius: .3rem;
     padding: 0 2rem;
     text-decoration: none;
@@ -364,17 +366,17 @@ export default {
 
   .tile {
     &, .tile-inner {
-      width: ceil($tile-size);
-      height: ceil($tile-size);
-      line-height: ceil($tile-size);
+      width: math.ceil($tile-size);
+      height: math.ceil($tile-size);
+      line-height: math.ceil($tile-size);
     }
 
     // Build position classes
     @for $x from 1 through $grid-row-cells {
       @for $y from 1 through $grid-row-cells {
         &.tile-position-#{$x}-#{$y} {
-          $xPos: floor(($tile-size + $grid-spacing) * ($x - 1));
-          $yPos: floor(($tile-size + $grid-spacing) * ($y - 1));
+          $xPos: math.floor(($tile-size + $grid-spacing) * ($x - 1));
+          $yPos: math.floor(($tile-size + $grid-spacing) * ($y - 1));
           @include transform(translate($xPos, $yPos));
         }
       }
@@ -427,15 +429,15 @@ export default {
       &.tile-#{$power} .tile-inner {
         // Calculate base background color
         $gold-percent: math.div($exponent - 1, $limit - 1) * 100%;
-        $mixed-background: mix($tile-gold-color, $tile-color, $gold-percent);
+        $mixed-background: color.mix($tile-gold-color, $tile-color, $gold-percent);
 
-        $nth-color: nth($special-colors, $exponent);
+        $nth-color: list.nth($special-colors, $exponent);
 
-        $special-background: nth($nth-color, 1);
-        $bright-color: nth($nth-color, 2);
+        $special-background: list.nth($nth-color, 1);
+        $bright-color: list.nth($nth-color, 2);
 
         @if $special-background {
-          $mixed-background: mix($special-background, $mixed-background, 55%);
+          $mixed-background: color.mix($special-background, $mixed-background, 55%);
         }
 
         @if $bright-color {
@@ -476,7 +478,7 @@ export default {
     // Super tiles (above 2048)
     &.tile-super .tile-inner {
       color: $bright-text-color;
-      background: mix(#333, $tile-gold-color, 95%);
+      background: color.mix(#333, $tile-gold-color, 95%);
 
       font-size: 3rem;
 
@@ -699,17 +701,17 @@ export default {
 
     .tile {
       &, .tile-inner {
-        width: ceil($tile-size);
-        height: ceil($tile-size);
-        line-height: ceil($tile-size);
+        width: math.ceil($tile-size);
+        height: math.ceil($tile-size);
+        line-height: math.ceil($tile-size);
       }
 
       // Build position classes
       @for $x from 1 through $grid-row-cells {
         @for $y from 1 through $grid-row-cells {
           &.tile-position-#{$x}-#{$y} {
-            $xPos: floor(($tile-size + $grid-spacing) * ($x - 1));
-            $yPos: floor(($tile-size + $grid-spacing) * ($y - 1));
+            $xPos: math.floor(($tile-size + $grid-spacing) * ($x - 1));
+            $yPos: math.floor(($tile-size + $grid-spacing) * ($y - 1));
             @include transform(translate($xPos, $yPos));
           }
         }
