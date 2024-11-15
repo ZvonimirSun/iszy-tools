@@ -111,7 +111,7 @@ export default defineConfig({
         overrideManifestIcons: true,
       },
       workbox: {
-        globPatterns: ['**/*.html'],
+        globPatterns: ['**/*'],
         cleanupOutdatedCaches: true,
         navigateFallback: 'index.html',
         runtimeCaching: [
@@ -128,7 +128,7 @@ export default defineConfig({
           },
           // cdn
           {
-            urlPattern: ({ url }) => url.hostname.endsWith('cdn.iszy.xyz'),
+            urlPattern: /^https:\/\/.*cdn\.iszy\.xyz/,
             handler: 'CacheFirst',
             options: {
               cacheName: `${config.key}-cdn`,
@@ -137,52 +137,22 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
-                statuses: [200],
+                statuses: [0, 200],
               },
             },
           },
-          // 项目文件动态缓存
+          // cdn
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
+            urlPattern: /^https:\/\/.*cdn\.iszy\.cc/,
             handler: 'CacheFirst',
             options: {
-              cacheName: `${config.key}-images`,
+              cacheName: `${config.key}cc-cdn`,
               expiration: {
-                // 最多30个图
                 maxEntries: 30,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
-                statuses: [200],
-              },
-            },
-          },
-          {
-            urlPattern: /\.(?:woff|eot|otf|ttf|TTF)$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: `${config.key}-font`,
-              cacheableResponse: {
-                statuses: [200],
-              },
-            },
-          },
-          {
-            urlPattern: /.*\.css.*/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: `${config.key}-css`,
-              cacheableResponse: {
-                statuses: [200],
-              },
-            },
-          },
-          {
-            urlPattern: /.*\.js.*/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: `${config.key}-js`,
-              cacheableResponse: {
-                statuses: [200],
+                statuses: [0, 200],
               },
             },
           },
