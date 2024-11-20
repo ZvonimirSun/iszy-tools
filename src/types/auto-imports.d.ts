@@ -260,7 +260,6 @@ declare global {
   const useStepper: typeof import('@vueuse/core')['useStepper']
   const useStorage: typeof import('@vueuse/core')['useStorage']
   const useStorageAsync: typeof import('@vueuse/core')['useStorageAsync']
-  const useStore: typeof import('../stores/urlEncode')['useStore']
   const useStyleTag: typeof import('@vueuse/core')['useStyleTag']
   const useSupported: typeof import('@vueuse/core')['useSupported']
   const useSwipe: typeof import('@vueuse/core')['useSwipe']
@@ -284,6 +283,7 @@ declare global {
   const useToggle: typeof import('@vueuse/core')['useToggle']
   const useToolsStore: typeof import('../stores/tools')['useToolsStore']
   const useTransition: typeof import('@vueuse/core')['useTransition']
+  const useUrlEncodeStore: typeof import('../stores/urlEncode')['useUrlEncodeStore']
   const useUrlSearchParams: typeof import('@vueuse/core')['useUrlSearchParams']
   const useUserMedia: typeof import('@vueuse/core')['useUserMedia']
   const useUserStore: typeof import('../stores/user')['useUserStore']
@@ -581,7 +581,6 @@ declare module 'vue' {
     readonly useStepper: UnwrapRef<typeof import('@vueuse/core')['useStepper']>
     readonly useStorage: UnwrapRef<typeof import('@vueuse/core')['useStorage']>
     readonly useStorageAsync: UnwrapRef<typeof import('@vueuse/core')['useStorageAsync']>
-    readonly useStore: UnwrapRef<typeof import('../stores/urlEncode')['useStore']>
     readonly useStyleTag: UnwrapRef<typeof import('@vueuse/core')['useStyleTag']>
     readonly useSupported: UnwrapRef<typeof import('@vueuse/core')['useSupported']>
     readonly useSwipe: UnwrapRef<typeof import('@vueuse/core')['useSwipe']>
@@ -605,6 +604,7 @@ declare module 'vue' {
     readonly useToggle: UnwrapRef<typeof import('@vueuse/core')['useToggle']>
     readonly useToolsStore: UnwrapRef<typeof import('../stores/tools')['useToolsStore']>
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
+    readonly useUrlEncodeStore: UnwrapRef<typeof import('../stores/urlEncode')['useUrlEncodeStore']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
     readonly useUserStore: UnwrapRef<typeof import('../stores/user')['useUserStore']>

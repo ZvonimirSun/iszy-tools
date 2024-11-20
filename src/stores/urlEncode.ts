@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-export const useStore = defineStore('urlEncode', {
+export const useUrlEncodeStore = defineStore('urlEncode', {
   persist: true,
   state: () => ({
     history: [] as Array<Array<string>>,
@@ -18,5 +18,5 @@ export const useStore = defineStore('urlEncode', {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useUrlEncodeStore, import.meta.hot))
 }

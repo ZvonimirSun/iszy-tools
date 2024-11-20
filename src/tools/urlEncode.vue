@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const value = ref('')
 const result = ref('')
-const urlEncodeStore = useStore()
+const urlEncodeStore = useUrlEncodeStore()
 
 function encode() {
   result.value = encodeURIComponent(value.value)
