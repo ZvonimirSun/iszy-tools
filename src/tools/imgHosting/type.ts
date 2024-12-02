@@ -20,9 +20,9 @@ export interface S3Config {
 
 export interface Uploader<T = any> {
   name: string
-  handle: (config: T, file: File) => Promise<{
+  config: (options: Partial<T>) => Config[]
+  upload: (config: T, file: File) => Promise<{
     name: string
     url: string
   }>
-  config: (options: Partial<T>) => Config[]
 }
