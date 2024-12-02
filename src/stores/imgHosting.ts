@@ -11,7 +11,6 @@ interface ImgItem {
 }
 
 export const useImgHostingStore = defineStore('imgHosting', {
-  persist: true,
   state: () => ({
     imgList: [] as ImgItem[],
   }),
@@ -36,6 +35,9 @@ export const useImgHostingStore = defineStore('imgHosting', {
       userImgHosting.uploader = uploader
       userImgHosting.configs[uploader] = config
     },
+    importImages(images: ImgItem[]) {
+      this.imgList = images.slice()
+    },
     addImage({ name, url } = {} as { name: string, url: string }) {
       if (name && url) {
         this.imgList.unshift({
@@ -54,12 +56,10 @@ export const useImgHostingStore = defineStore('imgHosting', {
     },
     async importConfig({
       uploader = '' as 'aliyun' | null,
-      imgList = [],
       configs = {},
       commonConfig = { renameTimeStamp: true },
     }) {
-      if (typeof uploader === 'string' && Array.isArray(imgList) && configs && commonConfig) {
-        this.imgList = imgList
+      if (typeof uploader === 'string' && configs && commonConfig) {
         userImgHosting.uploader = uploader
         userImgHosting.configs = configs
         userImgHosting.commonConfig = merge(userImgHosting.commonConfig, commonConfig)

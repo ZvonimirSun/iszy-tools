@@ -4,6 +4,13 @@ import Settings from './child/settings.vue'
 import Upload from './child/upload.vue'
 
 const activeKey = ref('home')
+const imgListLoaded = ref(false)
+
+watch(activeKey, (val) => {
+  if (val === 'uploaded') {
+    imgListLoaded.value = true
+  }
+})
 </script>
 
 <template>
@@ -23,7 +30,7 @@ const activeKey = ref('home')
         name="uploaded"
         label="相册"
       >
-        <ImgList />
+        <ImgList v-if="activeKey === 'uploaded' || imgListLoaded" />
       </el-tab-pane>
       <el-tab-pane
         name="settings"

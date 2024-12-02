@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import type { ImageItem } from '../type'
+import * as uploaders from '../uploader/index'
+
 const imgList = computed(() => {
   return useImgHostingStore().imgList
 })
@@ -9,16 +12,34 @@ const preImgList = computed(() => {
   })
 })
 
-const commonConfig = computed(() => {
-  return useImgHostingStore().commonConfig
+const imgHostingStore = useImgHostingStore()
+const config = imgHostingStore.config
+const uploader = imgHostingStore.uploader
+const commonConfig = imgHostingStore.commonConfig
+
+const isLoading = ref(true)
+
+const uploaderConfig = computed(() => {
+  if (uploader) {
+    return config(uploader)
+  }
+  else {
+    return null
+  }
 })
 
-const removeImage = useImgHostingStore().removeImage
+watch(uploaderConfig, () => {
+  getImageList()
+})
+
+onMounted(() => {
+  getImageList()
+})
 
 async function copyImgUrl({ url } = {} as { url: string }) {
   try {
-    if (commonConfig.value.customCopyContent) {
-      await navigator.clipboard.writeText(commonConfig.value.customCopyContent.replace(/\$url/g, url))
+    if (commonConfig.customCopyContent) {
+      await navigator.clipboard.writeText(commonConfig.customCopyContent.replace(/\$url/g, url))
     }
     else {
       await navigator.clipboard.writeText(url)
@@ -29,14 +50,34 @@ async function copyImgUrl({ url } = {} as { url: string }) {
     ElMessage.error('复制失败')
   }
 }
+
+async function getImageList() {
+  if (uploader && uploaderConfig.value) {
+    isLoading.value = true
+    imgHostingStore.importImages(await uploaders[uploader].list(uploaderConfig.value as any))
+    isLoading.value = false
+  }
+  else {
+    imgHostingStore.importImages([])
+    isLoading.value = false
+  }
+}
+
+async function removeImage(imageItem: ImageItem) {
+  if (uploader && uploaderConfig.value) {
+    await uploaders[uploader].remove(uploaderConfig.value as any, imageItem)
+    imgHostingStore.removeImage(imageItem)
+    ElMessage.success('删除成功')
+  }
+}
 </script>
 
 <template>
   <div
-    v-if="imgList.length"
+    v-if="imgList.length || isLoading"
     class="imgList"
   >
-    <el-space :size="8">
+    <div class="img-wrapper">
       <el-card
         v-for="(item, index) in imgList"
         :key="item.id"
@@ -79,7 +120,21 @@ async function copyImgUrl({ url } = {} as { url: string }) {
           </el-popconfirm>
         </div>
       </el-card>
-    </el-space>
+      <template v-if="isLoading">
+        <el-skeleton v-for="(i) in 10" :key="i" :loading="true" animated>
+          <template #template>
+            <el-skeleton-item variant="image" style="width: 20rem; height: 12.36rem" />
+            <div style="padding: 14px">
+              <el-skeleton-item variant="h3" style="width: 50%" />
+              <div style="display: flex;align-items: center;justify-items: space-between;margin-top: 16px;height: 16px;">
+                <el-skeleton-item variant="text" style="margin-right: 16px" />
+                <el-skeleton-item variant="text" style="width: 30%" />
+              </div>
+            </div>
+          </template>
+        </el-skeleton>
+      </template>
+    </div>
   </div>
   <el-empty v-else />
 </template>
@@ -88,7 +143,26 @@ async function copyImgUrl({ url } = {} as { url: string }) {
 .imgList {
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .img-wrapper {
+    display: grid;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 20rem);
+    gap: .8rem;
+
+    .el-card {
+      height: 20rem;
+      width: 20rem;
+    }
+
+    .el-skeleton {
+      height: 20rem;
+      width: 20rem;
+    }
+  }
 
   .card-meta {
     text-align: center;

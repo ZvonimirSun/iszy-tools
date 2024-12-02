@@ -1,5 +1,6 @@
-import type { Config, S3Config, Uploader } from '../type'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import type { Config, ImageItem, S3Config, Uploader } from '../type'
+import { DeleteObjectsCommand, paginateListObjectsV2, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { v4 as uuidv4 } from 'uuid'
 
 /**
  * 获取配置
@@ -78,10 +79,7 @@ function config(options: Partial<S3Config> = {}): Config[] {
  * @param file {File} 文件
  * @return {Promise<object>}
  */
-async function upload(options: S3Config, file: File): Promise<{
-  name: string
-  url: string
-}> {
+async function upload(options: S3Config, file: File): Promise<ImageItem> {
   const customUrl = options.customUrl
   const path = options.path || ''
   const s3Client = new S3Client({
@@ -104,10 +102,15 @@ async function upload(options: S3Config, file: File): Promise<{
     await s3Client.send(command)
     const optionUrl = options.options || ''
     if (customUrl) {
-      return { name: file.name, url: `${customUrl}/${path}${file.name}${optionUrl}` }
+      return {
+        id: uuidv4(),
+        name: file.name,
+        url: `${customUrl}/${path}${file.name}${optionUrl}`,
+      }
     }
     else {
       return {
+        id: uuidv4(),
         name: file.name,
         url: `https://${options.bucket}.${options.area}.aliyuncs.com/${path}${file.name}${optionUrl}`,
       }
@@ -118,8 +121,80 @@ async function upload(options: S3Config, file: File): Promise<{
   }
 }
 
+async function list(config: S3Config) {
+  const customUrl = config.customUrl
+  const path = config.path || ''
+  const optionUrl = config.options || ''
+
+  const s3Client = new S3Client({
+    region: config.area,
+    endpoint: `https://${config.area}.aliyuncs.com`,
+    credentials: {
+      accessKeyId: config.accessKeyId,
+      secretAccessKey: config.accessKeySecret,
+    },
+  })
+  const paginator = paginateListObjectsV2(
+    { client: s3Client, pageSize: 10 },
+    { Bucket: config.bucket },
+  )
+  const objects = []
+  for await (const page of paginator) {
+    objects.push(...page.Contents || [])
+  }
+  return objects.sort((a, b) => {
+    return b.LastModified!.getTime() - a.LastModified!.getTime()
+  }).map((item) => {
+    if (customUrl) {
+      return {
+        id: uuidv4(),
+        name: item.Key!,
+        url: `${customUrl}/${path}${item.Key}${optionUrl}`,
+      }
+    }
+    else {
+      return {
+        id: uuidv4(),
+        name: item.Key!,
+        url: `https://${config.bucket}.${config.area}.aliyuncs.com/${path}${item.Key}${optionUrl}`,
+      }
+    }
+  }) || []
+}
+
+async function remove(config: S3Config, imageItem: ImageItem) {
+  const path = config.path || ''
+  const s3Client = new S3Client({
+    region: config.area,
+    endpoint: `https://${config.area}.aliyuncs.com`,
+    credentials: {
+      accessKeyId: config.accessKeyId,
+      secretAccessKey: config.accessKeySecret,
+    },
+  })
+  const command = new DeleteObjectsCommand({
+    // 填写Bucket名称。
+    Bucket: config.bucket,
+    Delete: {
+      Objects: [
+        {
+          Key: path + imageItem.name,
+        },
+      ],
+    },
+  })
+  try {
+    await s3Client.send(command)
+  }
+  catch (error) {
+    throw new Error('删除失败')
+  }
+}
+
 export const aliyun: Uploader<S3Config> = {
   name: '阿里云OSS',
   config,
   upload,
+  list,
+  remove,
 }

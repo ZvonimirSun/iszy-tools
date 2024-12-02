@@ -7,6 +7,12 @@ export interface Config {
   hint: string
 }
 
+export interface ImageItem {
+  id: string
+  name: string
+  url: string
+}
+
 export interface S3Config {
   accessKeyId: string
   accessKeySecret: string
@@ -25,4 +31,6 @@ export interface Uploader<T = any> {
     name: string
     url: string
   }>
+  list: (config: T) => Promise<ImageItem[]>
+  remove: (config: T, imageItem: ImageItem) => Promise<void>
 }
