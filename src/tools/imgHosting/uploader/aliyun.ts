@@ -1,15 +1,5 @@
-import type { Config } from './index'
-import OSS from 'ali-oss'
-
-export interface AliOssConfig extends Record<string, string> {
-  accessKeyId: string
-  accessKeySecret: string
-  bucket: string
-  area: string
-  path: string
-  customUrl: string
-  options: string
-}
+import type { Config, S3Config, Uploader } from '../type'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 /**
  * handle
@@ -24,20 +14,30 @@ export interface AliOssConfig extends Record<string, string> {
  * @param file {File} 文件
  * @return {Promise<object>}
  */
-async function handle(options: AliOssConfig, file: File): Promise<{
+async function handle(options: S3Config, file: File): Promise<{
   name: string
   url: string
 }> {
   const customUrl = options.customUrl
   const path = options.path || ''
-  const client = new OSS({
+  const s3Client = new S3Client({
     region: options.area,
-    accessKeyId: options.accessKeyId,
-    accessKeySecret: options.accessKeySecret,
-    bucket: options.bucket,
+    endpoint: `https://${options.area}.aliyuncs.com`,
+    credentials: {
+      accessKeyId: options.accessKeyId,
+      secretAccessKey: options.accessKeySecret,
+    },
   })
-  const result = await client.put(path + file.name, new Blob([file]))
-  if (result.res && result.res.status === 200) {
+  const command = new PutObjectCommand({
+    // 填写Bucket名称。
+    Bucket: options.bucket,
+    // 填写OSS文件完整路径和本地文件的完整路径。OSS文件完整路径中不能包含Bucket名称。
+    Key: path + file.name,
+    // 指定文件内容或Buffer。
+    Body: new Blob([file]),
+  })
+  try {
+    await s3Client.send(command)
     const optionUrl = options.options || ''
     if (customUrl) {
       return { name: file.name, url: `${customUrl}/${path}${file.name}${optionUrl}` }
@@ -49,7 +49,7 @@ async function handle(options: AliOssConfig, file: File): Promise<{
       }
     }
   }
-  else {
+  catch (error) {
     throw new Error('上传失败')
   }
 }
@@ -57,7 +57,7 @@ async function handle(options: AliOssConfig, file: File): Promise<{
 /**
  * 获取配置
  */
-function config(options = {} as AliOssConfig): Config[] {
+function config(options: Partial<S3Config> = {}): Config[] {
   return [
     {
       name: 'accessKeyId',
@@ -118,7 +118,7 @@ function config(options = {} as AliOssConfig): Config[] {
   ]
 }
 
-export const aliyun = {
+export const aliyun: Uploader<S3Config> = {
   name: '阿里云OSS',
   handle,
   config,

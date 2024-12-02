@@ -20,6 +20,7 @@
     "sizecheck": "npx vite-bundle-visualizer"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.703.0",
     "@ckpack/vue-color": "^1.6.0",
     "@codemirror/commands": "^6.7.1",
     "@codemirror/lang-css": "^6.3.0",
@@ -39,7 +40,6 @@
     "@vueuse/core": "^11.2.0",
     "@vueuse/integrations": "^11.2.0",
     "algoliasearch": "^4.24.0",
-    "ali-oss": "^6.21.0",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.7.7",
     "buffer": "^6.0.3",
@@ -83,7 +83,6 @@
     "@iconify-json/icon-park": "^1.2.1",
     "@iconify-json/icon-park-outline": "^1.2.1",
     "@iconify-json/icon-park-solid": "^1.2.1",
-    "@types/ali-oss": "^6.16.11",
     "@types/crypto-js": "^4.2.2",
     "@types/esri-leaflet": "^3.0.3",
     "@types/file-saver": "^2.0.7",

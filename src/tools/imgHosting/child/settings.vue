@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { AliOssConfig } from '../uploader/index'
-import { cloneDeep, merge } from 'lodash-es'
+import type { Config } from '../type'
+import { merge } from 'lodash-es'
 import * as uploaders from '../uploader/index'
 
 const imgHosingStore = useImgHostingStore()
@@ -17,7 +17,7 @@ const customCopyContentType = ref<'standard' | 'markdown' | 'custom'>('standard'
 const customContent = ref('$url')
 
 const currentUploader = ref<'aliyun'>('aliyun')
-const currentConfig = ref<uploaders.Config[]>([])
+const currentConfig = ref<Config[]>([])
 
 onMounted(() => {
   const uploader = useImgHostingStore().uploader
@@ -60,8 +60,9 @@ watch(customContent, (val: string) => {
 })
 
 function changeUploader() {
+  const savedConfig = config(currentUploader.value)
   if (currentUploader.value === 'aliyun') {
-    currentConfig.value = cloneDeep(uploaders[currentUploader.value].config(config(currentUploader.value) as AliOssConfig))
+    currentConfig.value = uploaders[currentUploader.value].config(savedConfig)
   }
 }
 

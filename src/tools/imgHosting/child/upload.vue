@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { AliOssConfig } from '../uploader/index'
 import * as uploaders from '../uploader/index'
 
 const props = withDefaults(defineProps<{
@@ -37,7 +36,7 @@ async function customRequest(file: File) {
       })
     }
     try {
-      const result = await uploaders[uploader].handle(config(uploader) as AliOssConfig, tmpFile)
+      const result = await uploaders[uploader].handle(config(uploader) as any, tmpFile)
       useImgHostingStore().addImage(result)
       if (commonConfig.copyUrlAfterUpload) {
         try {
