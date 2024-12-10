@@ -99,6 +99,10 @@ const tools: Optional<ToolMenu, 'id'>[] = [
         link: '/base64',
       },
       {
+        name: 'Base64转文件',
+        link: '/base64ToFile',
+      },
+      {
         name: 'Base64图片编码',
         link: '/imageBase64',
       },
