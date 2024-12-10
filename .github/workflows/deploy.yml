@@ -35,6 +35,10 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+      - name: Create .npmrc
+        env:
+          NPMRC: ${{ secrets.NPMRC }}
+        run: echo "$NPMRC" >> .npmrc
 
       - name: Install dependencies
         run: pnpm install
