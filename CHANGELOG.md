@@ -1,1 +1,1 @@
-feat(imgHosting): 不再在本地缓存图片列表
+feat(base64ToFile): base64转文件工具
