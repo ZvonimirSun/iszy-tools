@@ -6,10 +6,9 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { AntDesignVueResolver, ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { VitePWA } from 'vite-plugin-pwa'
-import VueDevTools from 'vite-plugin-vue-devtools'
+import { defineConfig } from 'vitest/config'
 import config from './src/config'
 import Sitemap from './src/plugins/Sitemap.js'
 import tools from './src/tools'
@@ -33,7 +32,6 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    VueDevTools(),
     createHtmlPlugin({
       entry: 'src/main.ts',
       inject: {

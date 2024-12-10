@@ -14,6 +14,7 @@
     "types": [
       "vitest",
       "vite/client",
+      "vitest/config",
       "vitest/importMeta",
       "vite-plugin-pwa/vue"
     ],
