@@ -8,6 +8,7 @@ import { AntDesignVueResolver, ElementPlusResolver } from 'unplugin-vue-componen
 import Components from 'unplugin-vue-components/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { VitePWA } from 'vite-plugin-pwa'
+import vueDevTools from 'vite-plugin-vue-devtools'
 import { defineConfig } from 'vitest/config'
 import config from './src/config'
 import Sitemap from './src/plugins/Sitemap.js'
@@ -30,6 +31,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    vueDevTools(),
     vue(),
     vueJsx(),
     createHtmlPlugin({
