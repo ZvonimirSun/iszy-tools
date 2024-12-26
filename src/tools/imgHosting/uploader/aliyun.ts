@@ -1,11 +1,11 @@
-import type { Config, ImageItem, S3Config, Uploader } from '../type'
+import type { AliOssConfig, Config, ImageItem, Uploader } from '../type'
 import { DeleteObjectsCommand, paginateListObjectsV2, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
  * 获取配置
  */
-function config(options: Partial<S3Config> = {}): Config[] {
+function config(options: Partial<AliOssConfig> = {}): Config[] {
   return [
     {
       name: 'accessKeyId',
@@ -22,6 +22,14 @@ function config(options: Partial<S3Config> = {}): Config[] {
       required: true,
       label: '设定KeySecret',
       hint: 'AccessKeySecret',
+    },
+    {
+      name: 'securityToken',
+      type: 'password',
+      default: options.securityToken || '',
+      required: false,
+      label: '设定SecurityToken',
+      hint: 'SecurityToken',
     },
     {
       name: 'bucket',
@@ -79,7 +87,7 @@ function config(options: Partial<S3Config> = {}): Config[] {
  * @param file {File} 文件
  * @return {Promise<object>}
  */
-async function upload(options: S3Config, file: File): Promise<ImageItem> {
+async function upload(options: AliOssConfig, file: File): Promise<ImageItem> {
   const customUrl = options.customUrl
   const path = options.path || ''
   const s3Client = new S3Client({
@@ -88,6 +96,7 @@ async function upload(options: S3Config, file: File): Promise<ImageItem> {
     credentials: {
       accessKeyId: options.accessKeyId,
       secretAccessKey: options.accessKeySecret,
+      sessionToken: options.securityToken,
     },
   })
   const command = new PutObjectCommand({
@@ -121,7 +130,7 @@ async function upload(options: S3Config, file: File): Promise<ImageItem> {
   }
 }
 
-async function list(config: S3Config) {
+async function list(config: AliOssConfig) {
   const customUrl = config.customUrl
   const path = config.path || ''
   const optionUrl = config.options || ''
@@ -132,6 +141,7 @@ async function list(config: S3Config) {
     credentials: {
       accessKeyId: config.accessKeyId,
       secretAccessKey: config.accessKeySecret,
+      sessionToken: config.securityToken,
     },
   })
   const paginator = paginateListObjectsV2(
@@ -162,7 +172,7 @@ async function list(config: S3Config) {
   }) || []
 }
 
-async function remove(config: S3Config, imageItem: ImageItem) {
+async function remove(config: AliOssConfig, imageItem: ImageItem) {
   const path = config.path || ''
   const s3Client = new S3Client({
     region: config.area,
@@ -170,6 +180,7 @@ async function remove(config: S3Config, imageItem: ImageItem) {
     credentials: {
       accessKeyId: config.accessKeyId,
       secretAccessKey: config.accessKeySecret,
+      sessionToken: config.securityToken,
     },
   })
   const command = new DeleteObjectsCommand({
@@ -191,7 +202,7 @@ async function remove(config: S3Config, imageItem: ImageItem) {
   }
 }
 
-export const aliyun: Uploader<S3Config> = {
+export const aliyun: Uploader<AliOssConfig> = {
   name: '阿里云OSS',
   config,
   upload,

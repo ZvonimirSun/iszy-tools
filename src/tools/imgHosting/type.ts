@@ -24,6 +24,10 @@ export interface S3Config {
   [key: string]: string
 }
 
+export interface AliOssConfig extends S3Config {
+  securityToken: string
+}
+
 export interface Uploader<T = any> {
   name: string
   config: (options: Partial<T>) => Config[]
