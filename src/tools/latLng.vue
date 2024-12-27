@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import type { Map, Marker } from 'leaflet'
 import type { Ref } from 'vue'
-import { addDefaultBaseLayers, createMap, formatDegree, getAddress, getLocation } from '@/utils/gisUtils'
+import config from '@/config'
+import { addDefaultLayers, formatDegree, getAddress, getLocation, initMap } from '@/utils/gis'
 import { Icon, LatLng, marker, Popup } from 'leaflet'
 
 const yellowIcon = new Icon.Default({
-  iconUrl: 'marker-icon-yellow.png',
-  iconRetinaUrl: 'marker-icon-2x-yellow.png',
+  iconUrl: `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-yellow.png`,
+  iconRetinaUrl: `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/marker-icon-2x-yellow.png`,
 })
 
 let map: Map
@@ -17,14 +18,14 @@ const keyword = ref('')
 const mapContainer = ref<HTMLDivElement>() as Ref<HTMLDivElement>
 
 onMounted(() => {
-  map = createMap({
+  map = initMap({
     dom: mapContainer.value,
     view: {
-      center: [35, 105],
+      center: [105, 35],
       zoom: 4,
     },
   })
-  addDefaultBaseLayers(map)
+  addDefaultLayers(map)
   centerMarker = marker(map.getCenter(), { icon: new Icon.Default() })
     .addTo(map)
     .bindPopup(updatePopupContent(map.getCenter()))

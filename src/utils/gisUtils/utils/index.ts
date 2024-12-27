@@ -1,4 +1,3 @@
-export * from './addressUtils'
 export * from './drawUtils'
 export * from './geojsonUtils'
 export * from './layerUtils'

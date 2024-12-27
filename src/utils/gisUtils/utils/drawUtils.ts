@@ -1,8 +1,6 @@
 import type { GeoJSON, Layer, Map } from 'leaflet'
 import { circle } from '@turf/turf'
 import L from 'leaflet'
-import '@geoman-io/leaflet-geoman-free'
-import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 
 export function initDrawLayer(layer: Layer, {
   onChange,

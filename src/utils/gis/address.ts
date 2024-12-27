@@ -1,7 +1,7 @@
 import $axios from '@/plugins/Axios'
-import { gaodeToken } from '@/utils/gisUtils'
+import { CrsUtils } from '@tip-develop/maputils'
 import { LatLng } from 'leaflet'
-import { csysConvert } from '../core/leaflet.ChineseLayer'
+import { gaodeToken } from './common'
 
 export async function getLocation(address: string): Promise<{
   latLng: LatLng
@@ -15,9 +15,10 @@ export async function getLocation(address: string): Promise<{
   })
   if (res.data.status === '1' && Number(res.data.count) > 0) {
     const info = res.data.geocodes[0]
-    const latLng = csysConvert.gcj02_To_gps84(Number.parseFloat(info.location.split(',')[0]), Number.parseFloat(info.location.split(',')[1]))
+    const [lng, lat] = info.location.split(',')
+    const latLng = CrsUtils.transformPoint('gcj02', 'wgs84', [Number.parseFloat(lng), Number.parseFloat(lat)])
     return {
-      latLng: new LatLng(latLng.lat, latLng.lng),
+      latLng: new LatLng(latLng[1], latLng[1]),
       address: info.formatted_address,
     }
   }
@@ -27,10 +28,10 @@ export async function getLocation(address: string): Promise<{
 }
 
 export async function getAddress(location: LatLng): Promise<string> {
-  const gaodeLatLng = csysConvert.gps84_To_gcj02(location.lng, location.lat)
+  const gaodeLatLng = CrsUtils.transformPoint('wgs84', 'gcj02', [location.lng, location.lat])
   const res = await $axios.get('https://amap.api.iszy.xyz/v3/geocode/regeo', {
     params: {
-      location: `${gaodeLatLng.lng},${gaodeLatLng.lat}`,
+      location: `${gaodeLatLng[0]},${gaodeLatLng[1]}`,
       output: 'json',
       key: gaodeToken,
       homeorcorp: 1,
