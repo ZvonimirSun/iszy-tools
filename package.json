@@ -65,7 +65,7 @@
     "qrcode": "^1.5.4",
     "qrcode-decoder": "^0.3.4",
     "relationship.js": "^1.2.7",
-    "three": "^0.171.0",
+    "three": "^0.172.0",
     "tldraw": "^3.6.0",
     "ua-parser-js": "^1.0.39",
     "uuid": "^11.0.3",
