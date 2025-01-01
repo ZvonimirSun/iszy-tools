@@ -102,8 +102,8 @@ importers:
         specifier: ^2.9.0
         version: 2.9.0(vue@3.5.13(typescript@5.6.3))
       eslint-linter-browserify:
-        specifier: ^9.16.0
-        version: 9.16.0
+        specifier: ^9.17.0
+        version: 9.17.0
       esri-leaflet:
         specifier: ^3.0.13
         version: 3.0.13(leaflet@1.9.4)
@@ -5147,8 +5147,8 @@ packages:
       '@eslint/json':
         optional: true
 
-  eslint-linter-browserify@9.16.0:
-    resolution: {integrity: sha512-0239dEGTm0rDPAE2IiI69HYlUQNU4ZcuH2L8Y/GZsjCZXOO48gcyYMEvSvtChECsdWFGweAHwGRw56LYVlg2eg==}
+  eslint-linter-browserify@9.17.0:
+    resolution: {integrity: sha512-1Kgu8RFS9pn8OQMwlGL0PWtqXOUU2KAwOHaHt/85NLz0NB/143o5bB3xfHhjG4NaE0tpwfUIxZRt3hH30++nRg==}
 
   eslint-merge-processors@0.1.0:
     resolution: {integrity: sha512-IvRXXtEajLeyssvW4wJcZ2etxkR9mUf4zpNwgI+m/Uac9RfXHskuJefkHUcawVzePnd6xp24enp5jfgdHzjRdQ==}
@@ -15143,7 +15143,7 @@ snapshots:
       esquery: 1.6.0
       jsonc-eslint-parser: 2.4.0
 
-  eslint-linter-browserify@9.16.0: {}
+  eslint-linter-browserify@9.17.0: {}
 
   eslint-merge-processors@0.1.0(eslint@9.16.0(jiti@2.4.0)):
     dependencies:
