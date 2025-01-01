@@ -35,7 +35,7 @@
     "@geoman-io/leaflet-geoman-free": "^2.17.0",
     "@highlightjs/vue-plugin": "^2.1.0",
     "@supermap/iclient-leaflet": "^11.1.1",
-    "@tldraw/assets": "^3.6.0",
+    "@tldraw/assets": "^3.6.1",
     "@turf/turf": "^7.1.0",
     "@vueuse/core": "^12.0.0",
     "@vueuse/integrations": "^12.0.0",
