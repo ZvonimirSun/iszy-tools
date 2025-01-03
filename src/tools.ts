@@ -95,7 +95,7 @@ const tools: Optional<ToolMenu, 'id'>[] = [
         link: '/colorTransform',
       },
       {
-        name: 'Base64字符串编解码',
+        name: 'Base64编码',
         link: '/base64',
       },
       {
