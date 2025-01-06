@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import config from '@/config'
 import $axios from '@/plugins/Axios'
 import md from '@/utils/markdown.js'
 import dayjs from 'dayjs'
@@ -41,7 +42,7 @@ onMounted(() => {
 
 async function query(c: string) {
   try {
-    const res = await $axios.get(`https://jsdelivr.cdn.iszy.xyz/gh/jaywcjlove/linux-command@1.8.1/command/${c}.md`)
+    const res = await $axios.get(`${config.cdnOrigin}/jsd/gh/jaywcjlove/linux-command@1.8.1/command/${c}.md`)
     command.value = c
     commandData.value = res.data
     showModal.value = true

@@ -57,7 +57,7 @@ export default defineConfig({
             tag: 'link',
             attrs: {
               rel: 'preconnect',
-              href: `https://jsdelivr.${config.cdnHost}`,
+              href: config.cdnOrigin,
               crossorigin: 'anonymous',
             },
           },

@@ -6,7 +6,7 @@ import { control, Icon, map } from 'leaflet'
 import persistMap, { add } from './persistMap'
 import 'leaflet/dist/leaflet.css'
 
-Icon.Default.prototype.options.imagePath = `https://jsdelivr.${config.cdnHost}/gh/zvonimirsun/leaflet-color-markers@master/img/`
+Icon.Default.prototype.options.imagePath = `${config.cdnOrigin}/jsd/gh/zvonimirsun/leaflet-color-markers@master/img/`
 Icon.Default.prototype.options.iconUrl = 'marker-icon-blue.png'
 Icon.Default.prototype.options.iconRetinaUrl = 'marker-icon-2x-blue.png'
 

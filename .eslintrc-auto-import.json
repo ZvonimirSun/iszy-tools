@@ -332,6 +332,9 @@
     "useId": true,
     "useModel": true,
     "useTemplateRef": true,
-    "useUrlEncodeStore": true
+    "useUrlEncodeStore": true,
+    "onElementRemoval": true,
+    "usePreferredReducedTransparency": true,
+    "useSSRWidth": true
   }
 }
