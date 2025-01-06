@@ -34,6 +34,10 @@ export default defineConfig({
         mono: 'JetBrains Mono:300,400,700',
         inter: 'Inter:500,700',
       },
+      timeouts: {
+        warning: 5000,
+        failure: 10000,
+      },
     }),
     presetTypography(),
   ],
