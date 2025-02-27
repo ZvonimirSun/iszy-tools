@@ -67,7 +67,7 @@
     "relationship.js": "^1.2.7",
     "three": "^0.173.0",
     "tldraw": "^3.8.1",
-    "ua-parser-js": "^1.0.39",
+    "ua-parser-js": "^2.0.2",
     "uuid": "^11.1.0",
     "vanilla-jsoneditor": "^0.23.8",
     "veaury": "^2.6.2",

@@ -1,7 +1,5 @@
 <script>
-import UAParser from 'ua-parser-js'
-
-const parser = new UAParser()
+import { UAParser } from 'ua-parser-js'
 
 export default {
   name: 'UserAgent',
@@ -10,8 +8,7 @@ export default {
   }),
   computed: {
     result() {
-      parser.setUA(this.data)
-      return parser.getResult()
+      return UAParser(this.data)
     },
   },
   mounted() {
