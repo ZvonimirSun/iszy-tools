@@ -155,6 +155,7 @@ declare global {
   const useComponentRef: typeof import('../composables/useComponentRef')['useComponentRef']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
   const useCopy: typeof import('../composables/useCopy')['useCopy']
+  const useCountdown: typeof import('@vueuse/core')['useCountdown']
   const useCounter: typeof import('@vueuse/core')['useCounter']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVar: typeof import('@vueuse/core')['useCssVar']
@@ -480,6 +481,7 @@ declare module 'vue' {
     readonly useComponentRef: UnwrapRef<typeof import('../composables/useComponentRef')['useComponentRef']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
     readonly useCopy: UnwrapRef<typeof import('../composables/useCopy')['useCopy']>
+    readonly useCountdown: UnwrapRef<typeof import('@vueuse/core')['useCountdown']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVar: UnwrapRef<typeof import('@vueuse/core')['useCssVar']>
