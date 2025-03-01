@@ -54,7 +54,7 @@
     "esri-leaflet": "^3.0.14",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.11.1",
-    "js-beautify": "^1.15.3",
+    "js-beautify": "^1.15.4",
     "json-editor-vue": "^0.17.3",
     "leaflet": "^1.9.4",
     "localforage": "^1.10.0",
