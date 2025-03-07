@@ -39,13 +39,15 @@ onMounted(() => {
       return
     }
     window.requestAnimationFrame(() => {
-      centerMarker.setLatLng(map.getCenter())
-      updatePopupContent(map.getCenter(), centerMarker.getPopup())
+      const center = map.getCenter()
+      centerMarker.setLatLng(center)
+      updatePopupContent(center.wrap(), centerMarker.getPopup())
     })
   })
-  map.on('click', (val) => {
-    keyword.value = `${val.latlng.lng},${val.latlng.lat}`
-    locateLocation(val.latlng)
+  map.on('click', ({ latlng }: { latlng: LatLng }) => {
+    latlng = latlng.wrap()
+    keyword.value = `${latlng.lng},${latlng.lat}`
+    locateLocation(latlng)
   })
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -63,9 +65,13 @@ function handler() {
   }
   const tmp = keyword.value.replace(/，/g, ',').split(',')
   if (tmp.length === 2) {
-    if (!Number.isNaN(Number.parseFloat(tmp[0].trim())) && !Number.isNaN(Number.parseFloat(tmp[1].trim()))) {
+    const lng = Number.parseFloat(tmp[0].trim())
+    const lat = Number.parseFloat(tmp[1].trim())
+    if (!Number.isNaN(lng) && !Number.isNaN(lat)) {
       // 格式满足经纬度格式
-      locateLocation(new LatLng(Number.parseFloat(tmp[1].trim()), Number.parseFloat(tmp[0].trim())), true)
+      const latLng = new LatLng(lat, lng).wrap()
+      keyword.value = `${latLng.lng},${latLng.lat}`
+      locateLocation(latLng, true)
       return
     }
   }
@@ -83,10 +89,7 @@ function updatePopupContent(location: LatLng, popup?: Popup, address?: string): 
     })
   }
   const lat = location.lat
-  let lng = location.lng % 360
-  if (lng <= -180) {
-    lng += 360
-  }
+  const lng = location.lng
   let content = ''
   if (lat >= 0) {
     content += `<p>北纬N: ${Math.abs(lat)}</p>`
