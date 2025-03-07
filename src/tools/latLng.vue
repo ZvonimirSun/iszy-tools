@@ -41,12 +41,12 @@ onMounted(() => {
     window.requestAnimationFrame(() => {
       const center = map.getCenter()
       centerMarker.setLatLng(center)
-      updatePopupContent(center.wrap(), centerMarker.getPopup())
+      updatePopupContent(center, centerMarker.getPopup())
     })
   })
   map.on('click', ({ latlng }: { latlng: LatLng }) => {
-    latlng = latlng.wrap()
-    keyword.value = `${latlng.lng},${latlng.lat}`
+    const wrapLatLng = latlng.wrap()
+    keyword.value = `${wrapLatLng.lng},${wrapLatLng.lat}`
     locateLocation(latlng)
   })
   if ('geolocation' in navigator) {
@@ -88,6 +88,7 @@ function updatePopupContent(location: LatLng, popup?: Popup, address?: string): 
       closeOnClick: false,
     })
   }
+  location = location.wrap()
   const lat = location.lat
   const lng = location.lng
   let content = ''
