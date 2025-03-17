@@ -107,7 +107,7 @@ function save() {
       @change="updateCustomCopyContent"
     >
       <el-radio
-        label="standard"
+        value="standard"
       >
         标准
         <a-typography-text
@@ -116,7 +116,7 @@ function save() {
         />
       </el-radio>
       <el-radio
-        label="markdown"
+        value="markdown"
       >
         MarkDown
         <a-typography-text
@@ -125,7 +125,7 @@ function save() {
         />
       </el-radio>
       <el-radio
-        label="custom"
+        value="custom"
       >
         自定义
         <el-input
