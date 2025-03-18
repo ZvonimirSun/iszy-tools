@@ -111,8 +111,16 @@ async function deleteUser(row: User) {
 </script>
 
 <template>
-  <div h-full w-full>
-    <el-auto-resizer>
+  <div h-full w-full flex flex-col gap-4 pa-4>
+    <el-breadcrumb v-if="$route.meta.parentInfo">
+      <el-breadcrumb-item :to="$route.meta.parentInfo.link">
+        {{ $route.meta.parentInfo.name }}
+      </el-breadcrumb-item>
+      <el-breadcrumb-item>
+        {{ $route.name }}
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-auto-resizer flex-1>
       <template #default="{ width, height }">
         <el-table-v2
           :columns="columns"
@@ -127,5 +135,7 @@ async function deleteUser(row: User) {
 </template>
 
 <style scoped lang="scss">
-
+.el-breadcrumb {
+  font-size: 1.6rem;
+}
 </style>

@@ -92,7 +92,7 @@ async function updateUser(formEl: FormInstance | undefined) {
 </script>
 
 <template>
-  <div h-full w-full flex flex-col>
+  <div h-full w-full flex flex-col gap-4 pa-4>
     <el-breadcrumb v-if="$route.meta.parentInfo">
       <el-breadcrumb-item :to="$route.meta.parentInfo.link">
         {{ $route.meta.parentInfo.name }}
@@ -222,5 +222,9 @@ h5.ant-typography,
 
 .el-button + .el-button {
   margin: 0;
+}
+
+.el-breadcrumb {
+  font-size: 1.6rem;
 }
 </style>
