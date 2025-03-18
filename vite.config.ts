@@ -109,9 +109,6 @@ export default defineConfig({
         overrideManifestIcons: true,
       },
       workbox: {
-        globPatterns: ['**/*'],
-        cleanupOutdatedCaches: true,
-        navigateFallback: 'index.html',
         runtimeCaching: [
           // api
           {
@@ -144,7 +141,7 @@ export default defineConfig({
             urlPattern: /^https:\/\/.*cdn\.iszy\.cc/,
             handler: 'CacheFirst',
             options: {
-              cacheName: `${config.key}cc-cdn`,
+              cacheName: `${config.key}-cdn`,
               expiration: {
                 maxEntries: 30,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
