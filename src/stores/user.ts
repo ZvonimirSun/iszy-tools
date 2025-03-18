@@ -160,6 +160,10 @@ export const useUserStore = defineStore('user', {
         return false
       }
     },
+    async checkThirdPartyLogin() {
+      this.logged = true
+      await this.checkToken()
+    },
     checkAccess(authOption: AuthOption) {
       if (authOption === false) {
         return true

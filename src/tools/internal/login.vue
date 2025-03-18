@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LocationQuery } from 'vue-router'
+import config from '@/config'
 
 const form = reactive({
   userName: '',
@@ -19,7 +20,7 @@ watch(route, (val) => {
     if (typeof query.redirect === 'string') {
       redirect.value = query.redirect
     }
-    otherQuery.value = getOtherQuery(query)
+    otherQuery.value = _getOtherQuery(query)
   }
 }, { immediate: true })
 
@@ -27,6 +28,10 @@ onMounted(() => {
   if (userStore.logged) {
     router.push({ path: redirect.value || '/', query: otherQuery.value })
   }
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('message', thirdPartyLoginCallback)
 })
 
 async function login() {
@@ -41,8 +46,7 @@ async function login() {
         userName: form.userName,
         password: form.password,
       })
-      ElMessage.success('登录成功！')
-      router.push({ path: redirect.value || '/', query: otherQuery.value })
+      _afterLogin()
     }
     catch (e) {
       if (e instanceof Error) {
@@ -57,7 +61,29 @@ function register() {
   router.push('/register')
 }
 
-function getOtherQuery(query: LocationQuery) {
+function githubLogin() {
+  window.addEventListener('message', thirdPartyLoginCallback)
+  window.open(`${config.apiOrigin}/auth/github`, '_blank')
+}
+
+async function thirdPartyLoginCallback(e: MessageEvent<{
+  type: string
+}>) {
+  const page = e.source as Window
+  if (e.data?.type === 'oauth_complete') {
+    window.removeEventListener('message', thirdPartyLoginCallback)
+    page.close()
+    await userStore.checkThirdPartyLogin()
+    _afterLogin()
+  }
+}
+
+function _afterLogin() {
+  ElMessage.success('登录成功！')
+  router.push({ path: redirect.value || '/', query: otherQuery.value })
+}
+
+function _getOtherQuery(query: LocationQuery) {
   const { redirect, ...result } = query
   return result
 }
@@ -121,6 +147,12 @@ function getOtherQuery(query: LocationQuery) {
           </el-button>
         </el-form-item>
       </el-form>
+      <el-divider />
+      <el-space>
+        <div class="third-party" title="GitHub登录" @click="githubLogin">
+          <i class="i-icon-park-outline:github" />
+        </div>
+      </el-space>
     </div>
   </div>
 </template>
@@ -135,6 +167,15 @@ function getOtherQuery(query: LocationQuery) {
     min-width: 26rem;
     width: 36.8rem;
     margin: 0 auto;
+  }
+}
+
+.third-party {
+  cursor: pointer;
+  font-size: 40px;
+
+  &:hover {
+    color: var(--el-color-primary);
   }
 }
 </style>
