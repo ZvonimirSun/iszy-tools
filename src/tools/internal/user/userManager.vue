@@ -55,7 +55,7 @@ function operation(row: User, operation: string) {
 
 async function disableUser(row: User) {
   try {
-    const data = (await $axios.post(`${config.apiOrigin}/user/ban`, null, {
+    const data = (await $axios.put(`${config.apiOrigin}/user/ban`, null, {
       params: {
         id: row.userId,
       },
@@ -75,7 +75,7 @@ async function disableUser(row: User) {
 
 async function activateUser(row: User) {
   try {
-    const data = (await $axios.post(`${config.apiOrigin}/user/activate`, null, {
+    const data = (await $axios.put(`${config.apiOrigin}/user/activate`, null, {
       params: {
         id: row.userId,
       },
@@ -95,11 +95,7 @@ async function activateUser(row: User) {
 
 async function deleteUser(row: User) {
   try {
-    const data = (await $axios.post(`${config.apiOrigin}/user/remove`, null, {
-      params: {
-        id: row.userId,
-      },
-    })).data
+    const data = (await $axios.delete(`${config.apiOrigin}/user/${row.userId}`)).data
     if (data.success) {
       ElMessage.success(data.message)
       await getUsers(page.index, page.size)
