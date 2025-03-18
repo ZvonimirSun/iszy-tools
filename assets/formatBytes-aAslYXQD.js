@@ -1,0 +1,1 @@
+function e(t,o=2){if(t===0)return"0 Bytes";const B=1024,n=o<0?0:o,s=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],r=Math.floor(Math.log(t)/Math.log(B));return`${Number.parseFloat((t/B**r).toFixed(n))} ${s[r]}`}export{e as f};
