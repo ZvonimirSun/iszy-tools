@@ -121,30 +121,14 @@ async function updateUser(formEl: FormInstance | undefined) {
         {{ userStore.profile?.roles?.[0]?.alias ?? '注册用户' }}
       </div>
     </div>
-    <div
-      flex
-      gap-4
+    <el-button
+      @click="editUser"
     >
-      <el-button
-        v-if="!editingUser"
-        @click="editUser"
-      >
-        修改信息
-      </el-button>
-      <template v-else>
-        <el-button
-          type="primary"
-          @click="updateUser(ruleFormRef)"
-        >
-          保存
-        </el-button>
-        <el-button @click="cancelEditUser">
-          取消
-        </el-button>
-      </template>
-    </div>
+      修改信息
+    </el-button>
+  </div>
+  <el-dialog v-model="editingUser" title="修改信息" :before-close="cancelEditUser">
     <el-form
-      v-if="editingUser"
       ref="ruleFormRef"
       :model="userForm"
       :rules="rules"
@@ -194,7 +178,18 @@ async function updateUser(formEl: FormInstance | undefined) {
         />
       </el-form-item>
     </el-form>
-  </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="cancelEditUser">取消</el-button>
+        <el-button
+          type="primary"
+          @click="updateUser(ruleFormRef)"
+        >
+          保存
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -203,10 +198,6 @@ h4.ant-typography,
 h5.ant-typography,
 .ant-typography h5 {
   margin-top: .8rem;
-}
-
-.el-button + .el-button {
-  margin: 0;
 }
 
 .el-breadcrumb {
