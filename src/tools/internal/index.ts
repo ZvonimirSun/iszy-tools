@@ -19,10 +19,4 @@ export const internalTools: ToolItem[] = [
       roles: ['superadmin'],
     },
   },
-  {
-    parent: '/settings',
-    name: '个人中心',
-    link: '/personalCenter',
-    requiresAuth: true,
-  },
 ]

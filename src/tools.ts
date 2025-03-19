@@ -311,7 +311,7 @@ const tools: Optional<ToolMenu, 'id'>[] = [
     icon: 'i-icon-park-solid-setting-two',
     children: [
       {
-        name: '网站管理',
+        name: '个人中心',
         link: '/settings',
         statistics: false,
       },

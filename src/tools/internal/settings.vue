@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PersonalInfo from './child/personalInfo.vue'
+
 const router = useRouter()
 const route = useRoute()
 const styleStore = useGlobalStore()
@@ -33,44 +35,44 @@ function logout() {
   <a-typography-title v-if="userStore.logged" :level="3">
     {{ userStore.profile.nickName }} 欢迎你~
   </a-typography-title>
-  <div
+  <template
     v-if="userStore.logged"
-    flex items-center gap-4
   >
-    <el-button
-      type="primary"
-      @click="logout"
+    <div
+      flex items-center gap-4
     >
-      登出
-    </el-button>
-    <router-link to="/personalCenter">
-      <el-button>
-        个人中心
+      <el-button
+        type="primary"
+        @click="logout"
+      >
+        登出
       </el-button>
-    </router-link>
-    <HaveAccess
-      v-slot="{ goto }"
-      link="/userManager"
-    >
-      <el-button @click="goto">
-        用户权限中心
-      </el-button>
-    </HaveAccess>
-    <el-popconfirm
-      title="您是否确定要清空本地缓存？"
-      confirm-button-text="清空"
-      @confirm="clearOfflineCache"
-    >
-      <template #reference>
-        <el-button
-          type="danger"
-          plain
-        >
-          清空本地缓存
+      <HaveAccess
+        v-slot="{ goto }"
+        link="/userManager"
+      >
+        <el-button @click="goto">
+          用户权限中心
         </el-button>
-      </template>
-    </el-popconfirm>
-  </div>
+      </HaveAccess>
+      <el-popconfirm
+        title="您是否确定要清空本地缓存？"
+        confirm-button-text="清空"
+        @confirm="clearOfflineCache"
+      >
+        <template #reference>
+          <el-button
+            type="danger"
+            plain
+          >
+            清空本地缓存
+          </el-button>
+        </template>
+      </el-popconfirm>
+    </div>
+    <el-divider />
+    <PersonalInfo />
+  </template>
   <el-space v-else mt-4>
     <el-button
       type="primary"
