@@ -1,4 +1,5 @@
 let devApiOrigin = ''
+let devApiPath = ''
 
 const config: {
   readonly name: string
@@ -23,6 +24,8 @@ const config: {
 
   readonly siteOrigin: string
   apiOrigin: string
+  apiPath: string
+  readonly apiBaseUrl: string
   readonly cdnOrigin: string
 } = {
   name: 'iszy_tools',
@@ -59,6 +62,15 @@ const config: {
   },
   set apiOrigin(value: string) {
     devApiOrigin = value
+  },
+  get apiPath() {
+    return devApiPath || ''
+  },
+  set apiPath(value: string) {
+    devApiPath = value
+  },
+  get apiBaseUrl() {
+    return `${this.apiOrigin}${this.apiPath}`
   },
   get cdnOrigin() {
     return `${this.schema}://${this.cdnHost}`

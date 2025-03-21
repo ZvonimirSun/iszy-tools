@@ -1,3 +1,4 @@
+import config from '@/config'
 import axios from '@/plugins/Axios'
 import randomString from '@/utils/randomString.js'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
@@ -118,7 +119,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
 
     async getSyncData() {
       try {
-        const data = (await (axios.get(`${axios.$apiBase}/tools/jsoneditor`))).data
+        const data = (await (axios.get(`${config.apiBaseUrl}/tools/jsoneditor`))).data
         if (data.success) {
           this.replaceState(data.data)
         }
@@ -135,7 +136,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       data: SyncDto
     }) => {
       if (navigator.onLine) {
-        _mutex.enqueue(axios.post(`${axios.$apiBase}/tools/jsoneditor/${id}`, data))
+        _mutex.enqueue(axios.post(`${config.apiBaseUrl}/tools/jsoneditor/${id}`, data))
       }
       else {
         waitList[id] = data
@@ -218,7 +219,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
     async deleteData({ id } = {} as { id: string }) {
       if (this.syncCloud) {
         try {
-          const data = (await axios.delete(`${axios.$apiBase}/tools/jsoneditor/${id}`)).data
+          const data = (await axios.delete(`${config.apiBaseUrl}/tools/jsoneditor/${id}`)).data
           if (data.success) {
             if (this.leftId === id) {
               this.leftId = null

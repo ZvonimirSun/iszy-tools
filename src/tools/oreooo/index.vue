@@ -1,5 +1,5 @@
 <script>
-import Axios from 'axios'
+import Axios from '@/plugins/Axios'
 import O from './assets/image/O.png'
 import Ob from './assets/image/Ob.png'
 import Oreo from './assets/image/oreo.png'

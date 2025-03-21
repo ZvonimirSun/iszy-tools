@@ -38,7 +38,7 @@ export const useUserStore = defineStore('user', {
       let error = ''
       try {
         if (userName && password) {
-          const res = (await axios.post(`${axios.$apiBase}/auth/login`, {
+          const res = (await axios.post(`${config.apiBaseUrl}/auth/login`, {
             username: userName.trim(),
             password,
           })).data
@@ -69,7 +69,7 @@ export const useUserStore = defineStore('user', {
     },
     async logout() {
       try {
-        const data = (await axios.post(`${axios.$apiBase}/auth/logout`)).data
+        const data = (await axios.post(`${config.apiBaseUrl}/auth/logout`)).data
         if (data && data.success) {
           this.clearToken()
         }
@@ -83,7 +83,7 @@ export const useUserStore = defineStore('user', {
     },
     async register(form: Omit<User, 'roles' | 'userId'>) {
       try {
-        const data = (await axios.post(`${config.apiOrigin}/auth/register`, form)).data
+        const data = (await axios.post(`${config.apiBaseUrl}/auth/register`, form)).data
         if (data && data.success) {
           return true
         }
@@ -105,7 +105,7 @@ export const useUserStore = defineStore('user', {
       oldPasswd?: string
     }) {
       try {
-        const data = (await axios.put(`${axios.$apiBase}/auth/profile`, options)).data
+        const data = (await axios.put(`${config.apiBaseUrl}/auth/profile`, options)).data
         if (data && data.success) {
           this.profile = data.data || clone(emptyProfile)
           ElMessage.success('更新成功！')
@@ -128,7 +128,7 @@ export const useUserStore = defineStore('user', {
         }
         else {
           if (!checkTokenPromise) {
-            checkTokenPromise = axios.get(`${axios.$apiBase}/auth/profile`)
+            checkTokenPromise = axios.get(`${config.apiBaseUrl}/auth/profile`)
             checkTokenPromise.then((res) => {
               console.log('已登录')
               const data = res.data

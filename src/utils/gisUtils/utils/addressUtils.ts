@@ -8,7 +8,7 @@ export async function getLocation(address: string): Promise<{
   latLng: LatLng
   address: string
 }> {
-  const res = await $axios.get(`${config.apiOrigin}/amap/v3/geocode/geo`, {
+  const res = await $axios.get(`${config.apiBaseUrl}/amap/v3/geocode/geo`, {
     params: {
       address,
       key: gaodeToken,
@@ -30,7 +30,7 @@ export async function getLocation(address: string): Promise<{
 export async function getAddress(location: LatLng): Promise<string> {
   location = location.wrap()
   const gaodeLatLng = csysConvert.gps84_To_gcj02(location.lng, location.lat)
-  const res = await $axios.get(`${config.apiOrigin}/amap/v3/geocode/regeo`, {
+  const res = await $axios.get(`${config.apiBaseUrl}/amap/v3/geocode/regeo`, {
     params: {
       location: `${gaodeLatLng.lng},${gaodeLatLng.lat}`,
       output: 'json',

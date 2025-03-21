@@ -1,4 +1,5 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, StoreGeneric, SubscriptionCallbackMutation } from 'pinia'
+import config from '@/config'
 import $axios from '@/plugins/Axios'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import { debounce } from 'lodash-es'
@@ -94,7 +95,7 @@ async function uploadSettings(store: StoreGeneric, syncOptions: SyncOptions<Stat
       // serializer
     } = syncOptions
     try {
-      const data = (await $axios.post(`${$axios.$apiBase}/tools/settings/${key}`, toRaw(store.$state))).data
+      const data = (await $axios.post(`${config.apiBaseUrl}/tools/settings/${key}`, toRaw(store.$state))).data
       return data.success as boolean
     }
     catch (e) {
@@ -115,7 +116,7 @@ async function downloadSettings(store: StoreGeneric, syncOptions: SyncOptions<St
       // serializer
     } = syncOptions
     try {
-      const data = (await $axios.get(`${$axios.$apiBase}/tools/settings/${key}`)).data
+      const data = (await $axios.get(`${config.apiBaseUrl}/tools/settings/${key}`)).data
       let status = data.success as boolean
       if (data.data) {
         store.$patch(data.data)

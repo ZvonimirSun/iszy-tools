@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import type { Column } from 'element-plus'
 import type { MockData } from './mock'
-import axios from '@/plugins/Axios'
+import config from '@/config'
 import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 import { createData, deleteData, editData, getNewMockData, mockData, selectedProject, setProject } from './mockData.service'
 
@@ -156,7 +156,7 @@ async function createOrEditData(data: MockData & { response: any }) {
           接口根地址
         </div>
         <CopyableText
-          :val="`${axios.$apiBase}/mock/${selectedProject.id}${selectedProject.path}`"
+          :val="`${config.apiBaseUrl}/mock/${selectedProject.id}${selectedProject.path}`"
           class="prj-meta-content"
         />
       </div>

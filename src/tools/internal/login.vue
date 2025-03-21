@@ -63,7 +63,7 @@ function register() {
 
 function githubLogin() {
   window.addEventListener('message', thirdPartyLoginCallback)
-  window.open(`${config.apiOrigin}/auth/github`, '_blank')
+  window.open(`${config.apiBaseUrl}/auth/github`, '_blank')
 }
 
 async function thirdPartyLoginCallback(e: MessageEvent<{

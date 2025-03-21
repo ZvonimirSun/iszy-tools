@@ -19,7 +19,6 @@ declare module 'axios' {
   import type { AxiosResponse } from 'axios'
 
   export interface AxiosInstance {
-    $apiBase?: string
     getData?: (res: AxiosResponse) => any
   }
 }

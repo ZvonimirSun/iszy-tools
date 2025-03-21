@@ -1,21 +1,23 @@
 import App from '@/App.vue'
-import axios from '@/plugins/Axios'
 import { createPiniaPersist } from '@/plugins/PiniaPersist'
 import { createPiniaSync } from '@/plugins/PiniaSync'
 import config from './config'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:uno.css'
 
-const $apiBase = import.meta.env.PROD ? config.apiOrigin : (import.meta.env.VITE_API_BASE_URL || '/api')
 if (!import.meta.env.PROD) {
-  config.apiOrigin = $apiBase
+  if (import.meta.env.VITE_API_BASE_URL) {
+    config.apiOrigin = import.meta.env.VITE_API_BASE_URL
+  }
+  else {
+    config.apiOrigin = window.origin
+    config.apiPath = '/api'
+  }
 }
 
 (async () => {
   const pinia = createPinia()
   const app = createApp(App)
-
-  axios.$apiBase = $apiBase
 
   const piniaPersistPlugin = await createPiniaPersist({
     name: config.name,

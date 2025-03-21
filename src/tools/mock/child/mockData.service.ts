@@ -1,4 +1,5 @@
 import type { MockData, MockPrj, ResultDto } from './mock'
+import config from '@/config'
 import axios from '@/plugins/Axios'
 import { deleteParam, setParam } from '@/utils/hashHandler'
 import dayjs from 'dayjs'
@@ -43,7 +44,7 @@ export async function setProject(prj?: MockPrj) {
 
 export async function editData(data: MockData) {
   try {
-    const res: ResultDto<never> = await axios.put(`${axios.$apiBase}/mock/api/data/${data.id}`, {
+    const res: ResultDto<never> = await axios.put(`${config.apiBaseUrl}/mock/api/data/${data.id}`, {
       ...data,
       id: undefined,
       projectId: undefined,
@@ -65,7 +66,7 @@ export async function editData(data: MockData) {
 
 export async function createData(data: MockData) {
   try {
-    const res: ResultDto<never> = await axios.post(`${axios.$apiBase}/mock/api/data`, { ...data, id: undefined, projectId: selectedProject.value?.id }).then(axios.getData)
+    const res: ResultDto<never> = await axios.post(`${config.apiBaseUrl}/mock/api/data`, { ...data, id: undefined, projectId: selectedProject.value?.id }).then(axios.getData)
     if (res.success) {
       ElMessage.success('创建数据成功')
       refreshMockData().then()
@@ -83,7 +84,7 @@ export async function createData(data: MockData) {
 
 export async function deleteData(data: MockData) {
   try {
-    const res: ResultDto<never> = await axios.delete(`${axios.$apiBase}/mock/api/data/${data.id}`).then(axios.getData)
+    const res: ResultDto<never> = await axios.delete(`${config.apiBaseUrl}/mock/api/data/${data.id}`).then(axios.getData)
     if (res.success) {
       ElMessage.success('删除数据成功')
       refreshMockData().then()
@@ -115,11 +116,11 @@ async function refreshMockData() {
 
 // 获取接口列表
 async function getMockData(prj: MockPrj) {
-  const data: ResultDto<MockData[]> = await (axios.get(`${axios.$apiBase}/mock/api/prj/${prj.id}/list`).then(axios.getData))
+  const data: ResultDto<MockData[]> = await (axios.get(`${config.apiBaseUrl}/mock/api/prj/${prj.id}/list`).then(axios.getData))
   if (data.success) {
     return (data.data || []).map((item) => {
       item.createdAt = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')
-      item.url = `${axios.$apiBase}/mock/${prj.id}${prj.path}${item.path}`
+      item.url = `${config.apiBaseUrl}/mock/${prj.id}${prj.path}${item.path}`
       return item
     })
   }

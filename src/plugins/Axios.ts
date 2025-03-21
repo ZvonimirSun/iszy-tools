@@ -1,16 +1,16 @@
 import type { AxiosResponse } from 'axios'
 import Axios from 'axios'
+import configs from '../config'
 
-Axios.$apiBase = ''
 Axios.interceptors.request.use((config) => {
-  if (config.url && config.url.startsWith(Axios.$apiBase as string)) {
+  if (config.url && config.url.startsWith(configs.apiBaseUrl)) {
     config.withCredentials = true
   }
   return config
 })
 Axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    if (response.status === 401 && response.config.url && response.config.url.startsWith(Axios.$apiBase as string)) {
+    if (response.status === 401 && response.config.url && response.config.url.startsWith(configs.apiBaseUrl)) {
       useUserStore().logout()
     }
     return response
