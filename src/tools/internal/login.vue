@@ -95,15 +95,15 @@ async function _thirdPartyLoginCallback(e: MessageEvent<{
   }
 }
 
-function _openThirdPartyLogin(url: string, title = '第三方登录', width = 300, height = 400) {
+function _openThirdPartyLogin(url: string, title = '第三方登录', width = 500, height = 600) {
   if (loading.value) {
     ElMessage.warning('登录进行中，请勿重复点击')
     return
   }
   loading.value = true
   window.addEventListener('message', _thirdPartyLoginCallback)
-  const top = (window.screen.height - 400) / 2
-  const left = (window.screen.width - 300) / 2
+  const top = (window.screen.height - width) / 2
+  const left = (window.screen.width - height) / 2
   const page = window.open(url, title, `popup,width=${width},height=${height},top=${top},left=${left}`)
   if (!page) {
     loading.value = false
