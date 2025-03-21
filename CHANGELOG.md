@@ -1,2 +1,2 @@
-feat: 调整修改用户操作为弹窗
-feat: 个人中心迁移位置
+feat: 封装调整第三方登录逻辑
+feat: 移除apiBase，直接从config里获取api地址
