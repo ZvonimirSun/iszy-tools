@@ -27,7 +27,7 @@ export default defineConfig({
     presetWebFonts({
       provider: 'google',
       customFetch(url) {
-        url = url.replace('fonts.googleapis.com', `${config.cdnHost}/fonts`)
+        url = url.replace('https://fonts.googleapis.com', `${config.cdnOrigin}/fonts`)
         return axios.get(url).then(res => res.data)
       },
       fonts: {
