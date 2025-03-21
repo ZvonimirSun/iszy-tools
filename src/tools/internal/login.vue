@@ -31,10 +31,13 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('message', thirdPartyLoginCallback)
+  window.removeEventListener('message', _thirdPartyLoginCallback)
 })
 
 async function login() {
+  if (loading.value) {
+    return
+  }
   if (!navigator.onLine) {
     ElMessage.warning('已离线！')
     return
@@ -62,20 +65,8 @@ function register() {
 }
 
 function githubLogin() {
-  window.addEventListener('message', thirdPartyLoginCallback)
-  window.open(`${config.apiBaseUrl}/auth/github`, '_blank')
-}
-
-async function thirdPartyLoginCallback(e: MessageEvent<{
-  type: string
-}>) {
-  const page = e.source as Window
-  if (e.data?.type === 'oauth_complete') {
-    window.removeEventListener('message', thirdPartyLoginCallback)
-    page.close()
-    await userStore.checkThirdPartyLogin()
-    _afterLogin()
-  }
+  const url = `${config.apiBaseUrl}/auth/github`
+  _openThirdPartyLogin(url, 'GitHub登录')
 }
 
 function _afterLogin() {
@@ -86,6 +77,45 @@ function _afterLogin() {
 function _getOtherQuery(query: LocationQuery) {
   const { redirect, ...result } = query
   return result
+}
+
+async function _thirdPartyLoginCallback(e: MessageEvent<{
+  type: string
+}>) {
+  const page = e.source as Window
+  if (import.meta.env.PROD && e.origin !== config.apiBaseUrl) {
+    return
+  }
+  if (e.data?.type === 'oauth_complete') {
+    window.removeEventListener('message', _thirdPartyLoginCallback)
+    page.close()
+    loading.value = false
+    await userStore.checkThirdPartyLogin()
+    _afterLogin()
+  }
+}
+
+function _openThirdPartyLogin(url: string, title = '第三方登录', width = 300, height = 400) {
+  if (loading.value) {
+    ElMessage.warning('登录进行中，请勿重复点击')
+    return
+  }
+  loading.value = true
+  window.addEventListener('message', _thirdPartyLoginCallback)
+  const top = (window.screen.height - 400) / 2
+  const left = (window.screen.width - 300) / 2
+  const page = window.open(url, title, `popup,width=${width},height=${height},top=${top},left=${left}`)
+  if (!page) {
+    loading.value = false
+    ElMessage.error('请允许浏览器弹出窗口！')
+    return
+  }
+  const index = window.setInterval(() => {
+    if (page.closed) {
+      window.clearInterval(index)
+      loading.value = false
+    }
+  }, 500)
 }
 </script>
 
