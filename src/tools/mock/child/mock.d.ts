@@ -5,7 +5,7 @@ export interface MockPrj {
   description: string
 }
 
-type RequestType = 'post' | 'get' | 'delete' | 'put'
+type RequestType = 'all' | 'post' | 'get' | 'delete' | 'put'
 
 export interface MockData {
   id: number

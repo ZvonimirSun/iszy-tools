@@ -222,6 +222,10 @@ async function createOrEditData(data: MockData & { response: any }) {
             v-model="dataForm.type"
           >
             <el-option
+              label="ALL"
+              value="all"
+            />
+            <el-option
               label="GET"
               value="get"
             />

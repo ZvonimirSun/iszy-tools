@@ -22,7 +22,7 @@ export async function init() {
     }
   }
   catch (e) {
-    throw new Error('获取项目列表失败')
+    throw new Error((e as Error).message || '获取项目列表失败')
   }
 }
 
@@ -46,57 +46,42 @@ export function selectProject(prj: MockPrj | string) {
 
 export async function createProject(prj: MockPrj) {
   try {
-    const res: ResultDto<never> = await axios.post(`${config.apiBaseUrl}/mock/api/prj`, {
+    await axios.post(`${config.apiBaseUrl}/mock/api/prj`, {
       ...prj,
       id: undefined,
     }).then(axios.getData)
-    if (res.success) {
-      ElMessage.success('创建项目成功')
-      refreshMockProject().then()
-      return true
-    }
-    else {
-      ElMessage.error('创建项目失败')
-    }
+    ElMessage.success('创建项目成功')
+    refreshMockProject().then()
+    return true
   }
   catch (e) {
-    ElMessage.error('创建项目失败')
+    ElMessage.error((e as Error).message || '创建项目失败')
   }
   return false
 }
 
 export async function updateProject(prj: MockPrj) {
   try {
-    const res: ResultDto<never> = await axios.put(`${config.apiBaseUrl}/mock/api/prj/${prj.id}`, prj).then(axios.getData)
-    if (res.success) {
-      ElMessage.success('更新项目成功')
-      refreshMockProject().then()
-      return true
-    }
-    else {
-      ElMessage.error('更新项目失败')
-    }
+    await axios.put(`${config.apiBaseUrl}/mock/api/prj/${prj.id}`, prj).then(axios.getData)
+    ElMessage.success('更新项目成功')
+    refreshMockProject().then()
+    return true
   }
   catch (e) {
-    ElMessage.error('更新项目失败')
+    ElMessage.error((e as Error).message || '更新项目失败')
   }
   return false
 }
 
 export async function deleteProject(prj: MockPrj) {
   try {
-    const res: ResultDto<never> = await axios.delete(`${config.apiBaseUrl}/mock/api/prj/${prj.id}`).then(axios.getData)
-    if (res.success) {
-      ElMessage.success('删除项目成功')
-      refreshMockProject().then()
-      return true
-    }
-    else {
-      ElMessage.error('删除项目失败')
-    }
+    await axios.delete(`${config.apiBaseUrl}/mock/api/prj/${prj.id}`).then(axios.getData)
+    ElMessage.success('删除项目成功')
+    refreshMockProject().then()
+    return true
   }
   catch (e) {
-    ElMessage.error('删除项目失败')
+    ElMessage.error((e as Error).message || '删除项目失败')
   }
   return false
 }
@@ -104,15 +89,10 @@ export async function deleteProject(prj: MockPrj) {
 async function refreshMockProject() {
   try {
     const data: ResultDto<MockPrj[]> = await (axios.get(`${config.apiBaseUrl}/mock/api/prj/list`).then(axios.getData))
-    if (data.success) {
-      projects.value = data.data || []
-    }
-    else {
-      ElMessage.error('获取项目列表失败')
-    }
+    projects.value = data.data || []
   }
   catch (e) {
     console.log(e)
-    ElMessage.error('获取项目列表失败')
+    ElMessage.error((e as Error).message || '获取项目列表失败')
   }
 }

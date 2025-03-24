@@ -8,7 +8,7 @@ import ElMessage from 'element-plus/es/components/message/index'
 const emptyMockData: MockData = {
   id: -1,
   name: '',
-  type: 'get',
+  type: 'all',
   enabled: true,
   path: '',
   description: '',
