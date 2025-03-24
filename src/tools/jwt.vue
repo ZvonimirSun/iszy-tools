@@ -73,6 +73,7 @@ function tokenChange() {
 <style scoped lang="scss">
 .ant-typography {
   margin-bottom: .8rem;
+  margin-top: 0;
 }
 
 .ant-typography + .ant-typography {
@@ -92,8 +93,8 @@ h3.ant-typography {
 
   .encoded, .decoded {
     height: 100%;
-    width: calc(50% - .4rem);
-    overflow: hidden;
+    overflow: auto;
+    flex: 1;
   }
 
   .encoded .el-textarea {
