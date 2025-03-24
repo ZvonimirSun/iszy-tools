@@ -29,99 +29,76 @@ function tokenChange() {
 </script>
 
 <template>
-  <div class="wrapper">
-    <div class="encoded">
+  <div h-full w-full flex flex-wrap gap-4 class="wrapper">
+    <div flex flex-1 flex-col gap-4>
       <a-typography-title :level="3">
         Encoded
       </a-typography-title>
-      <a-typography-title :level="4">
-        Token
-      </a-typography-title>
-      <el-input
-        v-model="token"
-        type="textarea"
-        label="Token"
-        @change="tokenChange"
-      />
+      <div flex flex-1 flex-col gap-4>
+        <a-typography-title :level="4">
+          Token
+        </a-typography-title>
+        <el-input
+          v-model="token"
+          type="textarea"
+          label="Token"
+          @change="tokenChange"
+        />
+      </div>
     </div>
-    <div class="decoded">
+    <div flex flex-1 flex-col gap-4>
       <a-typography-title :level="3">
         Decoded
       </a-typography-title>
-      <a-typography-title :level="4">
-        Header
-      </a-typography-title>
-      <el-input
-        v-model="header"
-        type="textarea"
-        label="Header"
-        readonly
-      />
-      <a-typography-title :level="4">
-        Payload
-      </a-typography-title>
-      <el-input
-        v-model="payload"
-        type="textarea"
-        label="Payload"
-        readonly
-      />
+      <div flex flex-1 flex-col gap-4 class="wrapper">
+        <a-typography-title :level="4">
+          Header
+        </a-typography-title>
+        <el-input
+          v-model="header"
+          type="textarea"
+          label="Header"
+          readonly
+        />
+        <a-typography-title :level="4">
+          Payload
+        </a-typography-title>
+        <el-input
+          v-model="payload"
+          type="textarea"
+          label="Payload"
+          readonly
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .ant-typography {
-  margin-bottom: .8rem;
-  margin-top: 0;
+  margin: 0;
 }
 
 .ant-typography + .ant-typography {
-  margin-top: 0;
+  margin: 0;
 }
 
 h3.ant-typography {
   height: 32px;
 }
 
-.wrapper {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: .8rem;
+:deep(.el-textarea) {
+  flex: 1;
 
-  .encoded, .decoded {
-    height: 100%;
-    overflow: auto;
-    flex: 1;
-  }
-
-  .encoded .el-textarea {
-    height: calc(100% - 60px - 1.6rem);
-  }
-
-  .decoded .el-textarea {
-    height: calc((100% - 88px - 2.4rem) / 2);
-  }
-
-  :deep(.el-textarea) .el-textarea__inner {
+  .el-textarea__inner {
     height: 100%;
     resize: none;
   }
+}
 
-  @media screen and (max-width: 576px) {
-    .encoded {
-      height: calc(40% - .8rem);
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .decoded {
-      height: calc(60% - .8rem);
-      width: 100%;
-      overflow: hidden;
-    }
+@media screen and (max-width: 576px) {
+  .wrapper {
+    flex-direction: column;
   }
 }
 </style>
