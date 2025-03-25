@@ -118,6 +118,7 @@
     "vite": "^6.2.2",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-vue-devtools": "^7.7.2",
     "vitest": "^3.0.9",
     "vue-tsc": "^2.2.8",
     "workbox-build": "^7.3.0",
