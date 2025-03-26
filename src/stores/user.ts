@@ -3,11 +3,11 @@ import type { AxiosError, AxiosResponse } from 'axios'
 import config from '@/config'
 import axios from '@/plugins/Axios'
 import { downloadSettings } from '@/plugins/PiniaSync'
-import { clone } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 let tokenChecked = false
 let checkTokenPromise: Promise<AxiosResponse> | null = null
+let refreshTokenPromise: Promise<AxiosResponse> | null = null
 
 const emptyProfile: User = {
   nickName: '',
@@ -22,7 +22,9 @@ export const useUserStore = defineStore('user', {
   persist: true,
   state: () => ({
     logged: false,
-    profile: clone(emptyProfile) as User,
+    access_token: '',
+    refresh_token: '',
+    profile: emptyProfile as User,
   }),
   getters: {
     isAdmin: (state) => {
@@ -45,7 +47,9 @@ export const useUserStore = defineStore('user', {
           if (res.success) {
             this.logged = true
             tokenChecked = true
-            this.profile = res.data || clone(emptyProfile)
+            this.access_token = res.data.access_token
+            this.refresh_token = res.data.refresh_token
+            this.profile = res.data.profile || emptyProfile
             await downloadSettings()
             return
           }
@@ -81,6 +85,41 @@ export const useUserStore = defineStore('user', {
         this.clearToken()
       }
     },
+    async refresh() {
+      if (!this.logged) {
+        return
+      }
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = axios.post(`${config.apiBaseUrl}/auth/refresh`, null, {
+          headers: {
+            Authorization: `Bearer ${this.refresh_token}`,
+          },
+        })
+        refreshTokenPromise.then((res) => {
+          const data = res.data
+          if (data && data.success) {
+            this.access_token = data.data.access_token
+            this.refresh_token = data.data.refresh_token
+            this.profile = data.data.profile || emptyProfile
+          }
+        })
+      }
+      try {
+        const data = (await refreshTokenPromise).data
+        if (!data || !data.success) {
+          this.clearToken()
+        }
+      }
+      catch (e) {
+        if (axios.isCancel && !axios.isCancel(e)) {
+          this.clearToken()
+        }
+        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
+        }
+        throw e
+      }
+    },
     async register(form: Omit<User, 'roles' | 'userId'>) {
       try {
         const data = (await axios.post(`${config.apiBaseUrl}/auth/register`, form)).data
@@ -107,7 +146,7 @@ export const useUserStore = defineStore('user', {
       try {
         const data = (await axios.put(`${config.apiBaseUrl}/auth/profile`, options)).data
         if (data && data.success) {
-          this.profile = data.data || clone(emptyProfile)
+          this.profile = data.data || emptyProfile
           ElMessage.success('更新成功！')
         }
         else {
@@ -122,41 +161,37 @@ export const useUserStore = defineStore('user', {
       }
     },
     async checkToken() {
-      if (this.logged) {
-        if (tokenChecked) {
+      if (!this.logged) {
+        return false
+      }
+      if (tokenChecked) {
+        return true
+      }
+      if (!checkTokenPromise) {
+        checkTokenPromise = axios.get(`${config.apiBaseUrl}/auth/profile`)
+        checkTokenPromise.then((res) => {
+          console.log('已登录')
+          const data = res.data
+          if (data && data.success) {
+            this.profile = data.data || emptyProfile
+          }
+        })
+      }
+      try {
+        const data = (await checkTokenPromise).data
+        if (data && data.success) {
+          tokenChecked = true
           return true
         }
         else {
-          if (!checkTokenPromise) {
-            checkTokenPromise = axios.get(`${config.apiBaseUrl}/auth/profile`)
-            checkTokenPromise.then((res) => {
-              console.log('已登录')
-              const data = res.data
-              if (data && data.success) {
-                this.profile = data.data || clone(emptyProfile)
-              }
-            })
-          }
-          try {
-            const data = (await checkTokenPromise).data
-            if (data && data.success) {
-              tokenChecked = true
-              return true
-            }
-            else {
-              this.clearToken()
-              return false
-            }
-          }
-          catch (e) {
-            if (axios.isCancel && !axios.isCancel(e)) {
-              this.clearToken()
-            }
-            return false
-          }
+          this.clearToken()
+          return false
         }
       }
-      else {
+      catch (e) {
+        if (axios.isCancel && !axios.isCancel(e)) {
+          this.clearToken()
+        }
         return false
       }
     },
@@ -194,7 +229,9 @@ export const useUserStore = defineStore('user', {
 
     clearToken() {
       this.logged = false
-      this.profile = clone(emptyProfile)
+      this.access_token = ''
+      this.refresh_token = ''
+      this.profile = emptyProfile
     },
     importConfig(data: any) {
       useUserStore().$patch(data)
