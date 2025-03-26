@@ -3,6 +3,7 @@ import type { AxiosError, AxiosResponse } from 'axios'
 import config from '@/config'
 import axios from '@/plugins/Axios'
 import { downloadSettings } from '@/plugins/PiniaSync'
+import { cloneDeep } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 let tokenChecked = false
@@ -24,7 +25,7 @@ export const useUserStore = defineStore('user', {
     logged: false,
     access_token: '',
     refresh_token: '',
-    profile: emptyProfile as User,
+    profile: cloneDeep(emptyProfile) as User,
   }),
   getters: {
     isAdmin: (state) => {
@@ -47,9 +48,7 @@ export const useUserStore = defineStore('user', {
           if (res.success) {
             this.logged = true
             tokenChecked = true
-            this.access_token = res.data.access_token
-            this.refresh_token = res.data.refresh_token
-            this.profile = res.data.profile || emptyProfile
+            this.updateProfile(res.data)
             await downloadSettings()
             return
           }
@@ -98,9 +97,7 @@ export const useUserStore = defineStore('user', {
         refreshTokenPromise.then((res) => {
           const data = res.data
           if (data && data.success) {
-            this.access_token = data.data.access_token
-            this.refresh_token = data.data.refresh_token
-            this.profile = data.data.profile || emptyProfile
+            this.updateProfile(data.data)
           }
         })
       }
@@ -146,7 +143,7 @@ export const useUserStore = defineStore('user', {
       try {
         const data = (await axios.put(`${config.apiBaseUrl}/auth/profile`, options)).data
         if (data && data.success) {
-          this.profile = data.data || emptyProfile
+          this.profile = data.data || cloneDeep(emptyProfile)
           ElMessage.success('更新成功！')
         }
         else {
@@ -173,7 +170,7 @@ export const useUserStore = defineStore('user', {
           console.log('已登录')
           const data = res.data
           if (data && data.success) {
-            this.profile = data.data || emptyProfile
+            this.profile = data.data || cloneDeep(emptyProfile)
           }
         })
       }
@@ -195,9 +192,14 @@ export const useUserStore = defineStore('user', {
         return false
       }
     },
-    async checkThirdPartyLogin() {
+    async checkThirdPartyLogin(data: {
+      access_token: string
+      refresh_token: string
+    }) {
       this.logged = true
-      await this.checkToken()
+      tokenChecked = true
+      this.updateProfile(data)
+      await downloadSettings()
     },
     checkAccess(authOption: AuthOption) {
       if (authOption === false) {
@@ -227,11 +229,21 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    updateProfile(data: {
+      access_token: string
+      refresh_token: string
+      profile?: User
+    }) {
+      this.access_token = data.access_token
+      this.refresh_token = data.refresh_token
+      this.profile = data.profile || cloneDeep(emptyProfile)
+    },
     clearToken() {
       this.logged = false
-      this.access_token = ''
-      this.refresh_token = ''
-      this.profile = emptyProfile
+      this.updateProfile({
+        access_token: '',
+        refresh_token: '',
+      })
     },
     importConfig(data: any) {
       useUserStore().$patch(data)

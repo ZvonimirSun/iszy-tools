@@ -81,6 +81,11 @@ function _getOtherQuery(query: LocationQuery) {
 
 async function _thirdPartyLoginCallback(e: MessageEvent<{
   type: string
+  data: {
+    access_token: string
+    refresh_token: string
+    profile: any
+  }
 }>) {
   const page = e.source as Window
   if (import.meta.env.PROD && e.origin !== config.apiBaseUrl) {
@@ -90,7 +95,7 @@ async function _thirdPartyLoginCallback(e: MessageEvent<{
     window.removeEventListener('message', _thirdPartyLoginCallback)
     page.close()
     loading.value = false
-    await userStore.checkThirdPartyLogin()
+    await userStore.checkThirdPartyLogin(e.data.data)
     _afterLogin()
   }
 }
