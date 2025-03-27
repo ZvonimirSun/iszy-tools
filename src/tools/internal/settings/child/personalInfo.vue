@@ -91,115 +91,110 @@ async function updateUser(formEl: FormInstance | undefined) {
 </script>
 
 <template>
-  <a-typography-title :level="4">
-    账户信息
-  </a-typography-title>
-  <div
-    flex flex-col items-start gap-4 text-7
-  >
-    <div flex>
-      <div w-32>
-        昵称:
-      </div>
-      <div>
-        {{ userStore.profile.nickName }}
-      </div>
-    </div>
-    <div flex>
-      <div w-32>
-        邮箱:
-      </div>
-      <div>
-        {{ userStore.profile.email }}
-      </div>
-    </div>
-    <div flex>
-      <div w-32>
-        角色
-      </div>
-      <div>
-        {{ userStore.profile?.roles?.[0]?.alias ?? '注册用户' }}
-      </div>
-    </div>
-    <el-button
-      @click="editUser"
+  <div>
+    <a-typography-title :level="4">
+      账户信息
+    </a-typography-title>
+    <div
+      flex flex-col items-start gap-4 text-7
     >
-      修改信息
-    </el-button>
-  </div>
-  <el-dialog v-model="editingUser" title="修改信息" :before-close="cancelEditUser">
-    <el-form
-      ref="ruleFormRef"
-      :model="userForm"
-      :rules="rules"
-      label-width="8rem"
-      label-position="left"
-    >
-      <el-form-item
-        label="昵称"
-        prop="nickName"
+      <div flex>
+        <div w-32>
+          昵称:
+        </div>
+        <div>
+          {{ userStore.profile.nickName }}
+        </div>
+      </div>
+      <div flex>
+        <div w-32>
+          邮箱:
+        </div>
+        <div>
+          {{ userStore.profile.email }}
+        </div>
+      </div>
+      <div flex>
+        <div w-32>
+          角色
+        </div>
+        <div>
+          {{ userStore.profile?.roles?.[0]?.alias ?? '注册用户' }}
+        </div>
+      </div>
+      <el-button
+        @click="editUser"
       >
-        <el-input v-model="userForm.nickName" />
-      </el-form-item>
-      <el-form-item
-        label="邮箱"
-        prop="email"
+        修改信息
+      </el-button>
+    </div>
+    <el-dialog v-model="editingUser" title="修改信息" :before-close="cancelEditUser">
+      <el-form
+        ref="ruleFormRef"
+        :model="userForm"
+        :rules="rules"
+        label-width="8rem"
+        label-position="left"
       >
-        <el-input v-model="userForm.email" />
-      </el-form-item>
-      <el-form-item
-        label="旧密码"
-        prop="oldPasswd"
-      >
-        <el-input
-          v-model="userForm.oldPasswd"
-          type="password"
-          autocomplete="off"
-        />
-      </el-form-item>
-      <el-form-item
-        label="新密码"
-        prop="passwd"
-      >
-        <el-input
-          v-model="userForm.passwd"
-          type="password"
-          autocomplete="off"
-        />
-      </el-form-item>
-      <el-form-item
-        label="确认密码"
-        prop="rePasswd"
-      >
-        <el-input
-          v-model="userForm.rePasswd"
-          type="password"
-          autocomplete="off"
-        />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="cancelEditUser">取消</el-button>
-        <el-button
-          type="primary"
-          @click="updateUser(ruleFormRef)"
+        <el-form-item
+          label="昵称"
+          prop="nickName"
         >
-          保存
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+          <el-input v-model="userForm.nickName" />
+        </el-form-item>
+        <el-form-item
+          label="邮箱"
+          prop="email"
+        >
+          <el-input v-model="userForm.email" />
+        </el-form-item>
+        <el-form-item
+          label="旧密码"
+          prop="oldPasswd"
+        >
+          <el-input
+            v-model="userForm.oldPasswd"
+            type="password"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item
+          label="新密码"
+          prop="passwd"
+        >
+          <el-input
+            v-model="userForm.passwd"
+            type="password"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item
+          label="确认密码"
+          prop="rePasswd"
+        >
+          <el-input
+            v-model="userForm.rePasswd"
+            type="password"
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="cancelEditUser">取消</el-button>
+          <el-button
+            type="primary"
+            @click="updateUser(ruleFormRef)"
+          >
+            保存
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <style scoped lang="scss">
-h4.ant-typography,
-.ant-typography h4,
-h5.ant-typography,
-.ant-typography h5 {
-  margin-top: .8rem;
-}
-
 .el-breadcrumb {
   font-size: 1.6rem;
 }
