@@ -16,7 +16,7 @@ Axios.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config
-    if (error.response.status === 401 && originalRequest.url?.startsWith(configs.apiBaseUrl)) {
+    if (error.response.status === 401 && originalRequest.url?.startsWith(configs.apiBaseUrl) && originalRequest.url !== `${configs.apiBaseUrl}/auth/refresh`) {
       if (!useUserStore().logged) {
         return Promise.reject(error)
       }
