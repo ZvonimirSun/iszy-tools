@@ -1,1 +1,1 @@
-fix(user): 修复无法正常刷新token时未登出
+feat(register): 增强字段验证，根据注册状态修改提示
