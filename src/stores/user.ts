@@ -117,11 +117,11 @@ export const useUserStore = defineStore('user', {
         throw e
       }
     },
-    async register(form: Omit<User, 'roles' | 'userId'>) {
+    async register(form: Omit<User, 'roles' | 'userId'>): Promise<boolean> {
       try {
         const data = (await axios.post(`${config.apiBaseUrl}/auth/register`, form)).data
         if (data && data.success) {
-          return true
+          return data.data
         }
         else {
           throw new Error(data.message)

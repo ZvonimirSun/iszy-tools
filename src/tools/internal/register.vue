@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
+import { REGEX_EMAIL, REGEX_MOBILE_PHONE } from '@/utils/regexUtils'
 
 interface RegisterForm {
   userName: string
@@ -21,13 +22,27 @@ const form = reactive<RegisterForm>({
 const rules = reactive<FormRules<RegisterForm>>({
   userName: [{
     required: true,
-    message: '请输入用户名',
     trigger: 'blur',
+    validator: (_rule: any, value: string, callback: any) => {
+      if (!value || !value.trim()) {
+        callback(new Error('请输入用户名'))
+      }
+      else {
+        callback()
+      }
+    },
   }],
   nickName: [{
     required: true,
-    message: '请输入昵称',
     trigger: 'blur',
+    validator: (_rule: any, value: string, callback: any) => {
+      if (!value || !value.trim()) {
+        callback(new Error('请输入昵称'))
+      }
+      else {
+        callback()
+      }
+    },
   }],
   password: [{
     trigger: 'blur',
@@ -66,7 +81,7 @@ const rules = reactive<FormRules<RegisterForm>>({
         callback()
       }
       else {
-        if (!/^1[3-9]\d{9}$/.test(value)) {
+        if (!REGEX_MOBILE_PHONE.test(value)) {
           callback('请输入正确的手机号码')
         }
         else {
@@ -82,7 +97,7 @@ const rules = reactive<FormRules<RegisterForm>>({
         callback()
       }
       else {
-        if (!/^[\w-]+@[\w-]+(?:\.[\w-]+)+$/.test(value)) {
+        if (!REGEX_EMAIL.test(value)) {
           callback('请输入正确的邮箱')
         }
         else {
@@ -109,10 +124,20 @@ function register() {
     return
   registerFormRef.value.validate((valid) => {
     if (valid) {
+      form.userName = form.userName.trim()
+      form.nickName = form.nickName.trim()
+      form.email = form.email.trim()
+      form.mobile = form.mobile.trim()
       loading.value = true
-      userStore.register(form).then(() => {
-        ElMessage.success('注册成功，请等待管理员审批')
-        router.push('/')
+      userStore.register(form).then((isActivated: boolean) => {
+        if (isActivated) {
+          ElMessage.success('注册成功，请前往登录')
+          router.push('/login')
+        }
+        else {
+          ElMessage.success('注册成功，请等待管理员审批')
+          router.push('/')
+        }
       }).catch((e) => {
         ElMessage.error((e as Error).message)
       }).finally(() => {
