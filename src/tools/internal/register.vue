@@ -61,7 +61,7 @@ const rules = reactive<FormRules<RegisterForm>>({
     },
   }],
   rePassword: [{
-    trigger: 'blur',
+    trigger: 'change',
     validator: (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
@@ -75,7 +75,7 @@ const rules = reactive<FormRules<RegisterForm>>({
     },
   }],
   mobile: [{
-    trigger: 'blur',
+    trigger: 'change',
     validator: (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback()
@@ -91,7 +91,7 @@ const rules = reactive<FormRules<RegisterForm>>({
     },
   }],
   email: [{
-    trigger: 'blur',
+    trigger: 'change',
     validator: (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback()

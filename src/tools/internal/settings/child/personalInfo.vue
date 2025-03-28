@@ -6,6 +6,7 @@ const userStore = useUserStore()
 const editingUser = ref(false)
 const ruleFormRef = ref<FormInstance>()
 const userForm = reactive({
+  userName: '',
   nickName: '',
   email: '',
   passwd: '',
@@ -13,7 +14,30 @@ const userForm = reactive({
   oldPasswd: '',
 })
 const rules = reactive<FormRules<typeof userForm>>({
+  userName: [{
+    trigger: 'change',
+    validator: (_rule: any, value: string, callback: any) => {
+      if (value && !value.trim()) {
+        callback(new Error('用户名无效'))
+      }
+      else {
+        callback()
+      }
+    },
+  }],
+  nickName: [{
+    trigger: 'change',
+    validator: (_rule: any, value: string, callback: any) => {
+      if (value && !value.trim()) {
+        callback(new Error('昵称无效'))
+      }
+      else {
+        callback()
+      }
+    },
+  }],
   rePasswd: [{
+    trigger: 'change',
     validator: (rule: any, value: string, callback: (e?: Error) => void) => {
       if (value && value !== userForm.passwd) {
         callback(new Error('两次输入的密码不一致'))
@@ -23,19 +47,10 @@ const rules = reactive<FormRules<typeof userForm>>({
       }
     },
   }],
-  oldPasswd: [{
-    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
-      if (!value && (userForm.passwd || userForm.rePasswd)) {
-        callback(new Error('请输入旧密码'))
-      }
-      else {
-        callback()
-      }
-    },
-  }],
 })
 
 function editUser() {
+  userForm.userName = userStore.profile.userName ?? ''
   userForm.nickName = userStore.profile.nickName ?? ''
   userForm.email = userStore.profile.email ?? ''
   userForm.passwd = ''
@@ -55,11 +70,15 @@ async function updateUser(formEl: FormInstance | undefined) {
   await formEl.validate(async (valid) => {
     if (valid) {
       const options: {
+        userName?: string
         nickName?: string
         email?: string
         passwd?: string
         oldPasswd?: string
       } = {
+      }
+      if (userForm.userName) {
+        options.userName = userForm.userName
       }
       if (userForm.nickName) {
         options.nickName = userForm.nickName
@@ -69,7 +88,9 @@ async function updateUser(formEl: FormInstance | undefined) {
       }
       if (userForm.passwd) {
         options.passwd = userForm.passwd
-        options.oldPasswd = userForm.oldPasswd
+        if (userForm.oldPasswd) {
+          options.oldPasswd = userForm.oldPasswd
+        }
       }
       if (Object.keys(options).length === 0) {
         ElMessage.warning('没有需要修改的信息')

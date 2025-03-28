@@ -135,6 +135,7 @@ export const useUserStore = defineStore('user', {
       }
     },
     async updateUser(options: {
+      userName?: string
       nickName?: string
       email?: string
       passwd?: string
