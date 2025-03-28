@@ -158,6 +158,12 @@ async function updateUser(formEl: FormInstance | undefined) {
         label-position="left"
       >
         <el-form-item
+          label="用户名"
+          prop="userName"
+        >
+          <el-input v-model="userForm.userName" />
+        </el-form-item>
+        <el-form-item
           label="昵称"
           prop="nickName"
         >
