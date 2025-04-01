@@ -15,6 +15,7 @@ export interface User {
   userId: number
   mobile: string
   github?: string
+  linuxdo?: string
   roles: Role[]
   createdAt?: string
   updatedAt?: string

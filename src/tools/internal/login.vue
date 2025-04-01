@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LocationQuery } from 'vue-router'
+import LinuxDoImg from '@/assets/images/linuxdo.png'
 import config from '@/config'
 
 const form = reactive({
@@ -13,6 +14,24 @@ const loading = ref(false)
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
+
+const thirdParties: {
+  type: 'github' | 'linuxdo'
+  title: string
+  icon?: string
+  img?: string
+}[] = [
+  {
+    type: 'github',
+    title: 'Github',
+    icon: 'i-icon-park-outline:github',
+  },
+  {
+    type: 'linuxdo',
+    title: 'LINUX DO',
+    img: LinuxDoImg,
+  },
+]
 
 watch(route, (val) => {
   const query = val.query
@@ -64,8 +83,8 @@ function register() {
   router.push('/register')
 }
 
-function githubLogin() {
-  const url = `${config.apiBaseUrl}/auth/github`
+function thirdPartyLogin(type: 'github' | 'linuxdo') {
+  const url = `${config.apiBaseUrl}/auth/${type}`
   _openThirdPartyLogin(url, 'GitHub登录')
 }
 
@@ -184,8 +203,23 @@ function _openThirdPartyLogin(url: string, title = '第三方登录', width = 50
       </el-form>
       <el-divider />
       <el-space>
-        <div class="third-party" title="GitHub登录" @click="githubLogin">
-          <i class="i-icon-park-outline:github" />
+        <div
+          v-for="item in thirdParties"
+          :key="item.type"
+          class="third-party"
+          :title="item.title"
+          @click="thirdPartyLogin(item.type)"
+        >
+          <i
+            v-if="item.icon"
+            :class="item.icon"
+          />
+          <img
+            v-else
+            class="third-party-img"
+            :src="item.img"
+            alt=""
+          >
         </div>
       </el-space>
     </div>
@@ -208,6 +242,12 @@ function _openThirdPartyLogin(url: string, title = '第三方登录', width = 50
 .third-party {
   cursor: pointer;
   font-size: 4rem;
+
+  .third-party-img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+  }
 
   &:hover {
     color: var(--el-color-primary);

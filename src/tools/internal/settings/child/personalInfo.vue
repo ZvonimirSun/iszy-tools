@@ -1,8 +1,27 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
+import LinuxDoImg from '@/assets/images/linuxdo.png'
 import config from '@/config'
 
 const userStore = useUserStore()
+
+const thirdParties: {
+  type: 'github' | 'linuxdo'
+  title: string
+  icon?: string
+  img?: string
+}[] = [
+  {
+    type: 'github',
+    title: 'Github',
+    icon: 'i-icon-park-outline:github',
+  },
+  {
+    type: 'linuxdo',
+    title: 'LINUX DO',
+    img: LinuxDoImg,
+  },
+]
 
 const editingUser = ref(false)
 const ruleFormRef = ref<FormInstance>()
@@ -39,7 +58,7 @@ const rules = reactive<FormRules<typeof userForm>>({
   }],
   rePasswd: [{
     trigger: 'change',
-    validator: (rule: any, value: string, callback: (e?: Error) => void) => {
+    validator: (_rule: any, value: string, callback: (e?: Error) => void) => {
       if (value && value !== userForm.passwd) {
         callback(new Error('两次输入的密码不一致'))
       }
@@ -113,20 +132,25 @@ async function updateUser(formEl: FormInstance | undefined) {
   })
 }
 
-async function bind(type: 'github' | 'linuxdo', add: boolean) {
-  if (add) {
-    const url = new URL(`${config.apiBaseUrl}/auth/${type}/bind`)
-    url.searchParams.append('access_token', userStore.access_token)
-    _openThirdPartyBind(type, url.toString())
+async function bind(type: 'github' | 'linuxdo', title?: string) {
+  if (userStore.profile[type]) {
+    return
   }
-  else {
-    try {
-      await userStore.thirdPartyUnbind(type)
-      ElMessage.success('解绑成功')
-    }
-    catch (e) {
-      ElMessage.error((e as Error).message)
-    }
+  const url = new URL(`${config.apiBaseUrl}/auth/${type}/bind`)
+  url.searchParams.append('access_token', userStore.access_token)
+  _openThirdPartyBind(type, url.toString(), title)
+}
+
+async function unbind(type: 'github' | 'linuxdo') {
+  if (!userStore.profile[type]) {
+    return
+  }
+  try {
+    await userStore.thirdPartyUnbind(type)
+    ElMessage.success('解绑成功')
+  }
+  catch (e) {
+    ElMessage.error((e as Error).message)
   }
 }
 
@@ -228,15 +252,31 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
         <div w-32 text-right>
           绑定:
         </div>
-        <div flex items-center gap-2>
+        <div flex items-center gap-4>
           <div
-            class="third-party" title="Github" :class="{
-              active: userStore.profile.github,
+            v-for="(item) in thirdParties"
+            :key="item.type"
+            class="third-party"
+            :title="item.title"
+            :class="{
+              active: userStore.profile[item.type],
             }"
-            @click="bind('github', !userStore.profile.github)"
+            @click="bind(item.type, `${item.title} 绑定`)"
           >
-            <i class="i-icon-park-outline:github" />
-            <div v-if="userStore.profile.github" class="unbind-btn" @click.stop="bind('github', false)">
+            <i v-if="item.icon" :class="item.icon" />
+            <img
+              v-else-if="item.img"
+              :src="item.img"
+              class="third-party-img"
+              alt=""
+            >
+
+            <div
+              v-if="userStore.profile[item.type]"
+              class="unbind-btn"
+              title="解绑"
+              @click.stop="unbind(item.type)"
+            >
               <i class="i-icon-park-solid:close-one" />
             </div>
           </div>
@@ -331,6 +371,13 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
   color: var(--el-text-color-disabled);
   position: relative;
 
+  .third-party-img {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    filter: grayscale(1);
+  }
+
   .unbind-btn {
     position: absolute;
     cursor: pointer;
@@ -338,21 +385,14 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
     right: -.5rem;
     font-size: 1.4rem;
     line-height: 1.4rem;
-    display: none;
   }
 
   &.active {
     cursor: unset;
     color: var(--el-text-color-primary);
 
-    &:hover {
-      .unbind-btn {
-        display: block;
-
-        &:hover {
-          color: var(--el-color-primary);
-        }
-      }
+    .third-party-img {
+      filter: unset;
     }
   }
 
