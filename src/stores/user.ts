@@ -204,11 +204,20 @@ export const useUserStore = defineStore('user', {
     },
     async thirdPartyBind(type: string, id: string) {
       try {
-        const data = (await axios.post(`${config.apiBaseUrl}/auth/bind/${type}/${id}`)).data
-        if (data && data.success) {
-          await this.checkToken(true)
-          ElMessage.success('更新成功！')
+        await axios.post(`${config.apiBaseUrl}/auth/bind/${type}/${id}`)
+        await this.checkToken(true)
+      }
+      catch (e) {
+        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
         }
+        throw e
+      }
+    },
+    async thirdPartyUnbind(type: string) {
+      try {
+        await axios.delete(`${config.apiBaseUrl}/auth/bind/${type}`)
+        await this.checkToken(true)
       }
       catch (e) {
         if (((e as AxiosError)?.response?.data as { message: string })?.message) {

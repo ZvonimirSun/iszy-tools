@@ -113,11 +113,20 @@ async function updateUser(formEl: FormInstance | undefined) {
   })
 }
 
-function bind(type: 'github' | 'linuxdo', add: boolean) {
+async function bind(type: 'github' | 'linuxdo', add: boolean) {
   if (add) {
     const url = new URL(`${config.apiBaseUrl}/auth/${type}/bind`)
     url.searchParams.append('access_token', userStore.access_token)
     _openThirdPartyBind(type, url.toString())
+  }
+  else {
+    try {
+      await userStore.thirdPartyUnbind(type)
+      ElMessage.success('解绑成功')
+    }
+    catch (e) {
+      ElMessage.error((e as Error).message)
+    }
   }
 }
 
@@ -227,6 +236,9 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
             @click="bind('github', !userStore.profile.github)"
           >
             <i class="i-icon-park-outline:github" />
+            <div v-if="userStore.profile.github" class="unbind-btn" @click.stop="bind('github', false)">
+              <i class="i-icon-park-solid:close-one" />
+            </div>
           </div>
         </div>
       </div>
@@ -317,12 +329,34 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
   cursor: pointer;
   font-size: 2.8rem;
   color: var(--el-text-color-disabled);
+  position: relative;
 
-  &.active {
-    color: var(--el-text-color);
+  .unbind-btn {
+    position: absolute;
+    cursor: pointer;
+    top: -.5rem;
+    right: -.5rem;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    display: none;
   }
 
-  &:hover {
+  &.active {
+    cursor: unset;
+    color: var(--el-text-color-primary);
+
+    &:hover {
+      .unbind-btn {
+        display: block;
+
+        &:hover {
+          color: var(--el-color-primary);
+        }
+      }
+    }
+  }
+
+  &:hover:not(.active) {
     color: var(--el-color-primary);
   }
 }
