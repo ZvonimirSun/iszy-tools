@@ -14,6 +14,7 @@ export interface User {
   email: string
   userId: number
   mobile: string
+  github?: string
   roles: Role[]
   createdAt?: string
   updatedAt?: string

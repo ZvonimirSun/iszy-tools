@@ -158,14 +158,14 @@ export const useUserStore = defineStore('user', {
         throw e
       }
     },
-    async checkToken() {
+    async checkToken(force?: boolean) {
       if (!this.logged) {
         return false
       }
-      if (tokenChecked) {
+      if (tokenChecked && !force) {
         return true
       }
-      if (!checkTokenPromise) {
+      if (!checkTokenPromise || force) {
         checkTokenPromise = axios.get(`${config.apiBaseUrl}/auth/profile`)
         checkTokenPromise.then((res) => {
           console.log('已登录')
@@ -193,7 +193,7 @@ export const useUserStore = defineStore('user', {
         return false
       }
     },
-    async checkThirdPartyLogin(data: {
+    async thirdPartyLogin(data: {
       access_token: string
       refresh_token: string
     }) {
@@ -201,6 +201,21 @@ export const useUserStore = defineStore('user', {
       tokenChecked = true
       this.updateProfile(data)
       await downloadSettings()
+    },
+    async thirdPartyBind(type: string, id: string) {
+      try {
+        const data = (await axios.post(`${config.apiBaseUrl}/auth/bind/${type}/${id}`)).data
+        if (data && data.success) {
+          await this.checkToken(true)
+          ElMessage.success('更新成功！')
+        }
+      }
+      catch (e) {
+        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
+          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
+        }
+        throw e
+      }
     },
     checkAccess(authOption: AuthOption) {
       if (authOption === false) {

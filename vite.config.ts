@@ -24,13 +24,6 @@ export default defineConfig(({ command }) => {
       hmr: {
         port: 3000,
       },
-      proxy: {
-        '/api': {
-          target: config.apiOrigin,
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, ''),
-        },
-      },
     },
     plugins: [
       vue(),

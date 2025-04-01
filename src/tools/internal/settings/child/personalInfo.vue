@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
+import config from '@/config'
 
 const userStore = useUserStore()
 
@@ -48,6 +49,8 @@ const rules = reactive<FormRules<typeof userForm>>({
     },
   }],
 })
+
+const binding = ref('')
 
 function editUser() {
   userForm.userName = userStore.profile.userName ?? ''
@@ -109,6 +112,67 @@ async function updateUser(formEl: FormInstance | undefined) {
     }
   })
 }
+
+function bind(type: 'github' | 'linuxdo', add: boolean) {
+  if (add) {
+    const url = new URL(`${config.apiBaseUrl}/auth/${type}/bind`)
+    url.searchParams.append('access_token', userStore.access_token)
+    _openThirdPartyBind(type, url.toString())
+  }
+}
+
+async function _thirdPartyBindCallback(e: MessageEvent<{
+  type: string
+  data: string
+}>) {
+  const page = e.source as Window
+  if (import.meta.env.PROD && e.origin !== config.apiBaseUrl) {
+    return
+  }
+  if (e.data?.type === 'bind_success') {
+    window.removeEventListener('message', _thirdPartyBindCallback)
+    page.close()
+    try {
+      await userStore.thirdPartyBind(binding.value, e.data.data)
+      ElMessage.success('绑定成功')
+    }
+    catch (e) {
+      ElMessage.error((e as Error).message)
+    }
+    finally {
+      binding.value = ''
+    }
+  }
+  else if (e.data?.type === 'bind_fail') {
+    window.removeEventListener('message', _thirdPartyBindCallback)
+    page.close()
+    binding.value = ''
+    ElMessage.error('绑定失败')
+  }
+}
+
+function _openThirdPartyBind(type: string, url: string, title = '绑定第三方登录', width = 500, height = 600) {
+  if (binding.value) {
+    ElMessage.warning('绑定进行中，请勿重复点击')
+    return
+  }
+  binding.value = type
+  window.addEventListener('message', _thirdPartyBindCallback)
+  const top = (window.screen.height - width) / 2
+  const left = (window.screen.width - height) / 2
+  const page = window.open(url, title, `popup,width=${width},height=${height},top=${top},left=${left}`)
+  if (!page) {
+    binding.value = ''
+    ElMessage.error('请允许浏览器弹出窗口！')
+    return
+  }
+  const index = window.setInterval(() => {
+    if (page.closed) {
+      window.clearInterval(index)
+      binding.value = ''
+    }
+  }, 500)
+}
 </script>
 
 <template>
@@ -119,28 +183,51 @@ async function updateUser(formEl: FormInstance | undefined) {
     <div
       flex flex-col items-start gap-4 text-7
     >
-      <div flex>
-        <div w-32>
+      <div flex items-center gap-4>
+        <div w-32 text-right>
+          用户名:
+        </div>
+        <div>
+          {{ userStore.profile.userName }}
+        </div>
+      </div>
+      <div flex items-center gap-4>
+        <div w-32 text-right>
           昵称:
         </div>
         <div>
           {{ userStore.profile.nickName }}
         </div>
       </div>
-      <div flex>
-        <div w-32>
+      <div flex items-center gap-4>
+        <div w-32 text-right>
           邮箱:
         </div>
         <div>
           {{ userStore.profile.email }}
         </div>
       </div>
-      <div flex>
-        <div w-32>
-          角色
+      <div flex items-center gap-4>
+        <div w-32 text-right>
+          角色:
         </div>
         <div>
           {{ userStore.profile?.roles?.[0]?.alias ?? '注册用户' }}
+        </div>
+      </div>
+      <div flex items-center gap-4>
+        <div w-32 text-right>
+          绑定:
+        </div>
+        <div flex items-center gap-2>
+          <div
+            class="third-party" title="Github" :class="{
+              active: userStore.profile.github,
+            }"
+            @click="bind('github', !userStore.profile.github)"
+          >
+            <i class="i-icon-park-outline:github" />
+          </div>
         </div>
       </div>
       <el-button
@@ -224,5 +311,19 @@ async function updateUser(formEl: FormInstance | undefined) {
 <style scoped lang="scss">
 .el-breadcrumb {
   font-size: 1.6rem;
+}
+
+.third-party {
+  cursor: pointer;
+  font-size: 2.8rem;
+  color: var(--el-text-color-disabled);
+
+  &.active {
+    color: var(--el-text-color);
+  }
+
+  &:hover {
+    color: var(--el-color-primary);
+  }
 }
 </style>

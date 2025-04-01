@@ -9,10 +9,6 @@ if (!import.meta.env.PROD) {
   if (import.meta.env.VITE_API_BASE_URL) {
     config.apiOrigin = import.meta.env.VITE_API_BASE_URL
   }
-  else {
-    config.apiOrigin = window.origin
-    config.apiPath = '/api'
-  }
 }
 
 (async () => {

@@ -95,7 +95,7 @@ async function _thirdPartyLoginCallback(e: MessageEvent<{
     window.removeEventListener('message', _thirdPartyLoginCallback)
     page.close()
     loading.value = false
-    await userStore.checkThirdPartyLogin(e.data.data)
+    await userStore.thirdPartyLogin(e.data.data)
     _afterLogin()
   }
 }
@@ -207,7 +207,7 @@ function _openThirdPartyLogin(url: string, title = '第三方登录', width = 50
 
 .third-party {
   cursor: pointer;
-  font-size: 40px;
+  font-size: 4rem;
 
   &:hover {
     color: var(--el-color-primary);
