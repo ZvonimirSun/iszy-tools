@@ -108,7 +108,7 @@
     "lint-staged": "^15.5.0",
     "postcss": "^8.5.3",
     "sass": "^1.86.0",
-    "simple-git-hooks": "^2.11.1",
+    "simple-git-hooks": "^2.12.1",
     "sitemap": "^8.0.0",
     "taze": "^19.0.2",
     "typescript": "~5.8.2",
