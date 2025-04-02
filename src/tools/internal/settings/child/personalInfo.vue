@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { UpdateUser } from '@zvonimirsun/iszy-common'
 import type { FormInstance, FormRules } from 'element-plus'
 import LinuxDoImg from '@/assets/images/linuxdo.png'
 import config from '@/config'
@@ -25,7 +26,9 @@ const thirdParties: {
 
 const editingUser = ref(false)
 const ruleFormRef = ref<FormInstance>()
-const userForm = reactive({
+const userForm = reactive<UpdateUser & {
+  rePasswd?: string
+}>({
   userName: '',
   nickName: '',
   email: '',
@@ -91,13 +94,7 @@ async function updateUser(formEl: FormInstance | undefined) {
   }
   await formEl.validate(async (valid) => {
     if (valid) {
-      const options: {
-        userName?: string
-        nickName?: string
-        email?: string
-        passwd?: string
-        oldPasswd?: string
-      } = {
+      const options: UpdateUser = {
       }
       if (userForm.userName) {
         options.userName = userForm.userName

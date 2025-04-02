@@ -1,21 +1,17 @@
 <script setup lang="ts">
+import type { RegisterUser } from '@zvonimirsun/iszy-common'
 import type { FormInstance, FormRules } from 'element-plus'
 import { REGEX_EMAIL, REGEX_MOBILE_PHONE } from '@/utils/regexUtils'
 
-interface RegisterForm {
-  userName: string
-  nickName: string
-  password: string
-  rePassword: string
-  mobile: string
-  email: string
+interface RegisterForm extends Required<RegisterUser> {
+  rePasswd: string
 }
 const registerFormRef = ref<FormInstance>()
 const form = reactive<RegisterForm>({
   userName: '',
   nickName: '',
-  password: '',
-  rePassword: '',
+  passwd: '',
+  rePasswd: '',
   mobile: '',
   email: '',
 })
@@ -44,29 +40,29 @@ const rules = reactive<FormRules<RegisterForm>>({
       }
     },
   }],
-  password: [{
+  passwd: [{
     trigger: 'blur',
     validator: (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback(new Error('请输入密码'))
       }
       else {
-        if (form.rePassword !== '') {
+        if (form.rePasswd !== '') {
           if (!registerFormRef.value)
             return
-          registerFormRef.value.validateField('rePassword', () => undefined)
+          registerFormRef.value.validateField('rePasswd', () => undefined)
         }
         callback()
       }
     },
   }],
-  rePassword: [{
+  rePasswd: [{
     trigger: 'change',
     validator: (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
       }
-      else if (value !== form.password) {
+      else if (value !== form.passwd) {
         callback('两次输入密码不一致!')
       }
       else {
@@ -193,9 +189,9 @@ function login() {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item required label="密码" prop="password">
+        <el-form-item required label="密码" prop="passwd">
           <el-input
-            v-model="form.password"
+            v-model="form.passwd"
             type="password"
             size="large"
             show-password
@@ -209,9 +205,9 @@ function login() {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item required label="重复密码" prop="rePassword">
+        <el-form-item required label="重复密码" prop="rePasswd">
           <el-input
-            v-model="form.rePassword"
+            v-model="form.rePasswd"
             type="password"
             size="large"
             show-password
