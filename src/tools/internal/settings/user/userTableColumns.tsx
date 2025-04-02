@@ -1,4 +1,4 @@
-import type { User } from '@/types/auth'
+import type { PublicUser } from '@zvonimirsun/iszy-common'
 import type { Columns } from 'element-plus'
 import dayjs from 'dayjs'
 import { ElButton, ElPopconfirm, ElTag } from 'element-plus'
@@ -8,13 +8,12 @@ import 'element-plus/es/components/button/style/css'
 import 'element-plus/es/components/popconfirm/style/css'
 
 enum UserStatus {
-  DELETED = -1,
   DEACTIVATED = 0,
   ENABLED = 1,
   DISABLED = 2,
 }
 
-export function getUserTableColumns(onClick: (row: User, operation: string) => void): Columns<any> {
+export function getUserTableColumns(onClick: (row: PublicUser, operation: string) => void): Columns<any> {
   return [
     {
       key: 'userId',
@@ -48,7 +47,7 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
       title: '角色',
       width: 150,
       align: 'center',
-      cellRenderer: ({ rowData }: { rowData: User }) => {
+      cellRenderer: ({ rowData }: { rowData: PublicUser }) => {
         const data = rowData.roles?.map((item) => {
           return item.name
         }).join(', ') || ''
@@ -60,7 +59,7 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
       title: '状态',
       width: 100,
       align: 'center',
-      cellRenderer: ({ rowData }: { rowData: User }) => {
+      cellRenderer: ({ rowData }: { rowData: PublicUser }) => {
         switch (rowData.status) {
           case UserStatus.ENABLED:
             return <ElTag type="success">正常</ElTag>
@@ -78,7 +77,11 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
       title: '创建时间',
       width: 200,
       align: 'center',
-      cellRenderer: ({ rowData }: { rowData: User }) => {
+      cellRenderer: ({ rowData }: {
+        rowData: PublicUser & {
+          createdAt: string
+        }
+      }) => {
         return <span>{dayjs(rowData.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
       },
     },
@@ -87,7 +90,11 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
       title: '更新时间',
       width: 200,
       align: 'center',
-      cellRenderer: ({ rowData }: { rowData: User }) => {
+      cellRenderer: ({ rowData }: {
+        rowData: PublicUser & {
+          updatedAt: string
+        }
+      }) => {
         return <span>{dayjs(rowData.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</span>
       },
     },
@@ -96,7 +103,7 @@ export function getUserTableColumns(onClick: (row: User, operation: string) => v
       title: '操作',
       width: 200,
       fixed: FixedDir.RIGHT,
-      cellRenderer: ({ rowData }: { rowData: User }) => {
+      cellRenderer: ({ rowData }: { rowData: PublicUser }) => {
         return (
           <>
             <ElButton

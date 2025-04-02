@@ -1,5 +1,6 @@
+import type { AlgoNames } from './hashFile.service'
 import { lib } from 'crypto-js'
-import { type AlgoNames, algos } from './hashFile.service'
+import { algos } from './hashFile.service'
 
 const hashFile = (algo: AlgoNames, value: lib.WordArray) => algos[algo](value).toString()
 

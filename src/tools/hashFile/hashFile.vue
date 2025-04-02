@@ -65,7 +65,7 @@ function calculate(rawFile: File) {
       <el-upload
         class="upload-demo"
 
-        drag multiple
+        multiple drag
         :before-upload="calculate"
         :disabled="loading"
         :show-file-list="false"

@@ -2,9 +2,9 @@ import type { EditorPlugin } from '@/types/editor'
 import { esLint, javascript } from '@codemirror/lang-javascript'
 import { linter } from '@codemirror/lint'
 
-import { js as jsBeautify } from 'js-beautify'
 // Uses linter.mjs
 import * as eslint from 'eslint-linter-browserify'
+import { js as jsBeautify } from 'js-beautify'
 
 const config = {
   // eslint configuration

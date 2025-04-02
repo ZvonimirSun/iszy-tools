@@ -5,7 +5,7 @@ import $eventBus from '@/plugins/EventBus'
 import { debounce } from 'lodash-es'
 
 withDefaults(defineProps<{
-  height: number | null
+  height?: number | null
 }>(), {
   height: null,
 })

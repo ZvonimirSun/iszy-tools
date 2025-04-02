@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type Colord, colord, extend } from 'colord'
+import type { Colord } from 'colord'
+import { colord, extend } from 'colord'
 import cmykPlugin from 'colord/plugins/cmyk'
 import hwbPlugin from 'colord/plugins/hwb'
 import lchPlugin from 'colord/plugins/lch'

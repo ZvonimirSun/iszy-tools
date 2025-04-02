@@ -2,7 +2,7 @@
 import * as uploaders from '../uploader/index'
 
 const props = withDefaults(defineProps<{
-  activeKey: string
+  activeKey?: string
 }>(), {
   activeKey: '',
 })

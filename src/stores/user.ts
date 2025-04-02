@@ -1,4 +1,5 @@
-import type { AuthOption, User } from '@/types/auth'
+import type { AuthOption } from '@/types/auth'
+import type { PublicUser, RegisterUser, UpdateUser } from '@zvonimirsun/iszy-common'
 import type { AxiosError, AxiosResponse } from 'axios'
 import config from '@/config'
 import axios from '@/plugins/Axios'
@@ -10,13 +11,16 @@ let tokenChecked = false
 let checkTokenPromise: Promise<AxiosResponse> | null = null
 let refreshTokenPromise: Promise<AxiosResponse> | null = null
 
-const emptyProfile: User = {
+const emptyProfile: PublicUser = {
   nickName: '',
   userName: '',
   email: '',
   userId: -1,
   roles: [],
   mobile: '',
+  status: 1,
+  createBy: -1,
+  updateBy: -1,
 }
 
 export const useUserStore = defineStore('user', {
@@ -25,7 +29,7 @@ export const useUserStore = defineStore('user', {
     logged: false,
     access_token: '',
     refresh_token: '',
-    profile: cloneDeep(emptyProfile) as User,
+    profile: cloneDeep(emptyProfile) as PublicUser,
   }),
   getters: {
     isAdmin: (state) => {
@@ -117,7 +121,7 @@ export const useUserStore = defineStore('user', {
         throw e
       }
     },
-    async register(form: Omit<User, 'roles' | 'userId'>): Promise<boolean> {
+    async register(form: RegisterUser): Promise<boolean> {
       try {
         const data = (await axios.post(`${config.apiBaseUrl}/auth/register`, form)).data
         if (data && data.success) {
@@ -134,13 +138,7 @@ export const useUserStore = defineStore('user', {
         throw e
       }
     },
-    async updateUser(options: {
-      userName?: string
-      nickName?: string
-      email?: string
-      passwd?: string
-      oldPasswd?: string
-    }) {
+    async updateUser(options: UpdateUser) {
       try {
         const data = (await axios.put(`${config.apiBaseUrl}/auth/profile`, options)).data
         if (data && data.success) {
@@ -257,7 +255,7 @@ export const useUserStore = defineStore('user', {
     updateProfile(data: {
       access_token: string
       refresh_token: string
-      profile?: User
+      profile?: PublicUser
     }) {
       this.access_token = data.access_token
       this.refresh_token = data.refresh_token

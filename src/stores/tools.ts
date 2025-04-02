@@ -1,6 +1,6 @@
 import type { AuthOption } from '@/types/auth'
-import type { OptionalExcept } from '@/types/common'
 import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
+import type { OptionalExcept } from '@zvonimirsun/iszy-common'
 import oriTools from '@/tools'
 import { internalTools } from '@/tools/internal'
 import { flatten } from 'lodash-es'

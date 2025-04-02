@@ -1,5 +1,5 @@
-import type { Optional } from '@/types/common'
 import type { ToolMenu } from '@/types/tool'
+import type { Optional } from '@zvonimirsun/iszy-common'
 
 const tools: Optional<ToolMenu, 'id'>[] = [
   {

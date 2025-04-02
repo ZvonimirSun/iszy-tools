@@ -22,7 +22,3 @@ declare module 'axios' {
     getData?: (res: AxiosResponse) => any
   }
 }
-
-declare interface Window {
-  // extend the window
-}

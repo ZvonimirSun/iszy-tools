@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { User } from '@/types/auth'
+import type { PublicUser } from '@zvonimirsun/iszy-common'
 import config from '@/config'
 import $axios from '@/plugins/Axios'
 import { getUserTableColumns } from './userTableColumns'
 
-const userList = reactive<User[]>([])
+const userList = reactive<PublicUser[]>([])
 const page = reactive({
   index: 1,
   size: 10,
@@ -36,7 +36,7 @@ async function getUsers(pageIndex: number, pageSize: number) {
   }
 }
 
-function operation(row: User, operation: string) {
+function operation(row: PublicUser, operation: string) {
   switch (operation) {
     case 'edit':
       // todo
@@ -53,7 +53,7 @@ function operation(row: User, operation: string) {
   }
 }
 
-async function disableUser(row: User) {
+async function disableUser(row: PublicUser) {
   try {
     const data = (await $axios.put(`${config.apiBaseUrl}/user/ban`, null, {
       params: {
@@ -73,7 +73,7 @@ async function disableUser(row: User) {
   }
 }
 
-async function activateUser(row: User) {
+async function activateUser(row: PublicUser) {
   try {
     const data = (await $axios.put(`${config.apiBaseUrl}/user/activate`, null, {
       params: {
@@ -93,7 +93,7 @@ async function activateUser(row: User) {
   }
 }
 
-async function deleteUser(row: User) {
+async function deleteUser(row: PublicUser) {
   try {
     const data = (await $axios.delete(`${config.apiBaseUrl}/user/${row.userId}`)).data
     if (data.success) {
