@@ -15,6 +15,8 @@ const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 
+let pollIndex: number | null = null
+
 const thirdParties: {
   type: 'github' | 'linuxdo'
   title: string
@@ -50,6 +52,10 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  if (pollIndex != null) {
+    clearInterval(pollIndex)
+    pollIndex = null
+  }
   window.removeEventListener('message', _thirdPartyLoginCallback)
 })
 
@@ -107,16 +113,27 @@ async function _thirdPartyLoginCallback(e: MessageEvent<{
   }
 }>) {
   const page = e.source as Window
-  if (import.meta.env.PROD && e.origin !== config.apiBaseUrl) {
+  if (e.origin !== config.apiBaseUrl) {
+    console.log(`origin ${e.origin} is not valid`)
     return
   }
-  if (e.data?.type === 'oauth_complete') {
-    window.removeEventListener('message', _thirdPartyLoginCallback)
-    page.close()
-    loading.value = false
+  if (e.data?.type !== 'oauth_complete' && e.data?.type !== 'oauth_fail') {
+    return
+  }
+  window.removeEventListener('message', _thirdPartyLoginCallback)
+  if (pollIndex != null) {
+    clearInterval(pollIndex)
+    pollIndex = null
+  }
+  page.close()
+  if (e.data.type === 'oauth_complete') {
     await userStore.thirdPartyLogin(e.data.data)
     _afterLogin()
   }
+  else {
+    ElMessage.error('登录失败！')
+  }
+  loading.value = false
 }
 
 function _openThirdPartyLogin(url: string, title = '第三方登录', width = 500, height = 600) {
@@ -134,9 +151,12 @@ function _openThirdPartyLogin(url: string, title = '第三方登录', width = 50
     ElMessage.error('请允许浏览器弹出窗口！')
     return
   }
-  const index = window.setInterval(() => {
+  pollIndex = window.setInterval(() => {
     if (page.closed) {
-      window.clearInterval(index)
+      if (pollIndex != null) {
+        clearInterval(pollIndex)
+        pollIndex = null
+      }
       loading.value = false
     }
   }, 500)
