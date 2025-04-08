@@ -187,7 +187,7 @@ export default defineConfig(({ command }) => {
             attrs: {
               'defer': true,
               'src': 'https://static.cloudflareinsights.com/beacon.min.js',
-              'data-cf-beacon': '{"token": "c68cf7920b0f4e2a9dd42c7a5b379fd7"}',
+              'data-cf-beacon': '{"token": "0b723291f221420b8daf80c0611f7bc7"}',
             },
           },
         ],
