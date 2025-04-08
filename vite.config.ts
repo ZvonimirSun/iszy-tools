@@ -181,6 +181,15 @@ export default defineConfig(({ command }) => {
               crossorigin: 'anonymous',
             },
           },
+          {
+            injectTo: 'head',
+            tag: 'script',
+            attrs: {
+              'defer': true,
+              'src': 'https://static.cloudflareinsights.com/beacon.min.js',
+              'data-cf-beacon': '{"token": "c68cf7920b0f4e2a9dd42c7a5b379fd7"}',
+            },
+          },
         ],
       },
     }))
