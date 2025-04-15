@@ -1,2 +1,2 @@
-feat: 增加cloudflare监控
-feat: 增加cloudflare监控
+feat(mock): 添加contentType配置
+feat(settings): 添加登录设备管理
