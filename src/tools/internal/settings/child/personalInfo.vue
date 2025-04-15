@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UpdateUser } from '@zvonimirsun/iszy-common'
+import type { Device, UpdateUser } from '@zvonimirsun/iszy-common'
 import type { FormInstance, FormRules } from 'element-plus'
 import LinuxDoImg from '@/assets/images/linuxdo.png'
 import config from '@/config'
@@ -73,6 +73,42 @@ const rules = reactive<FormRules<typeof userForm>>({
 })
 
 const binding = ref('')
+
+const managingDevices = ref(false)
+const devices = ref<Device[]>([])
+
+async function manageDevices() {
+  try {
+    devices.value = await userStore.getDevices()
+    managingDevices.value = true
+  }
+  catch (e) {
+    managingDevices.value = false
+    ElMessage.error((e as Error).message)
+  }
+}
+
+function cancelManageDevices() {
+  managingDevices.value = false
+}
+
+async function logout(options: {
+  deviceId?: string
+  all?: boolean
+  other?: boolean
+  current?: boolean
+}) {
+  if (options.current) {
+    await userStore.logout()
+    ElMessage.success('登出成功')
+    return
+  }
+  await userStore.logoutDevice(options)
+  ElMessage.success('登出成功')
+  if (!options.all) {
+    devices.value = await userStore.getDevices()
+  }
+}
 
 function editUser() {
   userForm.userName = userStore.profile.userName ?? ''
@@ -279,11 +315,18 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
           </div>
         </div>
       </div>
-      <el-button
-        @click="editUser"
-      >
-        修改信息
-      </el-button>
+      <div flex items-center>
+        <el-button
+          @click="editUser"
+        >
+          修改信息
+        </el-button>
+        <el-button
+          @click="manageDevices"
+        >
+          登录设备管理
+        </el-button>
+      </div>
     </div>
     <el-dialog v-model="editingUser" title="修改信息" :before-close="cancelEditUser">
       <el-form
@@ -350,6 +393,44 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
             @click="updateUser(ruleFormRef)"
           >
             保存
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <el-dialog v-model="managingDevices" title="管理登录设备" :before-close="cancelManageDevices" :width="400">
+      <ul flex flex-col gap-4 p-0>
+        <li
+          v-for="(item, index) in devices"
+          :key="index"
+          w-full flex flex-col
+        >
+          <div w-full flex-inline items-center gap-2>
+            <span flex-1>{{ item.name || item.id }}: </span>
+            <span v-if="item.current">(当前设备)</span>
+            <el-button size="small" @click="logout({ deviceId: item.id, current: item.current })">
+              登出
+            </el-button>
+          </div>
+          <div w-full flex-col gap-2 p-l-4>
+            <span w-70>IP: {{ item.ip }}</span>
+          </div>
+        </li>
+        <li flex items-center>
+          <el-button size="small" @click="logout({ other: true })">
+            登出其他
+          </el-button>
+          <el-button size="small" @click="logout({ all: true })">
+            登出所有
+          </el-button>
+        </li>
+      </ul>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button
+            type="primary"
+            @click="cancelManageDevices"
+          >
+            关闭
           </el-button>
         </span>
       </template>

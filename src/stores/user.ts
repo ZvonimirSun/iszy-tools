@@ -1,5 +1,5 @@
 import type { AuthOption } from '@/types/auth'
-import type { PublicUser, RegisterUser, UpdateUser } from '@zvonimirsun/iszy-common'
+import type { Device, PublicUser, RegisterUser, UpdateUser } from '@zvonimirsun/iszy-common'
 import type { AxiosError, AxiosResponse } from 'axios'
 import config from '@/config'
 import axios from '@/plugins/Axios'
@@ -86,6 +86,52 @@ export const useUserStore = defineStore('user', {
       }
       catch (e) {
         this.clearToken()
+      }
+    },
+    async logoutDevice({ deviceId, all, other }: {
+      deviceId?: string
+      all?: boolean
+      other?: boolean
+    }) {
+      if (other) {
+        try {
+          await axios.post(`${config.apiBaseUrl}/auth/logout`, null, {
+            params: {
+              deviceId,
+              other,
+            },
+          })
+        }
+        catch (e) {
+          ElMessage.warning('登出失败！')
+        }
+        return
+      }
+      if (all) {
+        try {
+          await axios.post(`${config.apiBaseUrl}/auth/logout`, null, {
+            params: {
+              all,
+            },
+          })
+        }
+        catch (e) {
+          ElMessage.warning('登出失败！')
+        }
+        this.clearToken()
+        return
+      }
+      if (deviceId) {
+        try {
+          await axios.post(`${config.apiBaseUrl}/auth/logout`, null, {
+            params: {
+              deviceId,
+            },
+          })
+        }
+        catch (e) {
+          ElMessage.warning('登出失败！')
+        }
       }
     },
     async refresh() {
@@ -224,6 +270,12 @@ export const useUserStore = defineStore('user', {
         throw e
       }
     },
+
+    async getDevices(): Promise<Device[]> {
+      const res = (await axios.get(`${config.apiBaseUrl}/auth/devices`)).data
+      return res.data
+    },
+
     checkAccess(authOption: AuthOption) {
       if (authOption === false) {
         return true
