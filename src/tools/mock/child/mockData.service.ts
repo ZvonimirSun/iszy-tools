@@ -13,6 +13,7 @@ const emptyMockData: MockData = {
   path: '',
   description: '',
   delay: 0,
+  contentType: '',
   response: '',
   projectId: '',
 }

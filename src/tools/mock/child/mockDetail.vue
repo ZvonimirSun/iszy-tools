@@ -253,6 +253,27 @@ async function createOrEditData(data: MockData & { response: any }) {
           />
         </el-form-item>
         <el-form-item
+          label="数据类型"
+          :label-width="120"
+        >
+          <el-select
+            v-model="dataForm.contentType"
+          >
+            <el-option
+              label="自动"
+              value=""
+            />
+            <el-option
+              label="XML"
+              value="text/xml"
+            />
+            <el-option
+              label="HTML"
+              value="text/html"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
           label="接口"
           :label-width="120"
           :required="true"

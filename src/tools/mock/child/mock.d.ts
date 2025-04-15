@@ -15,6 +15,7 @@ export interface MockData {
   path: string
   description?: string
   delay: number
+  contentType: string
   response: string
   projectId: string
   createdAt?: string
