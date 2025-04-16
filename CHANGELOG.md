@@ -1,2 +1,1 @@
-feat(mock): 添加contentType配置
-feat(settings): 添加登录设备管理
+fix: 更新tlDraw资源版本
