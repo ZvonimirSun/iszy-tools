@@ -6,7 +6,7 @@ import { applyReactInVue } from 'veaury'
 import 'tldraw/tldraw.css'
 
 const assetUrls = getAssetUrls({
-  baseUrl: `${config.cdnOrigin}/jsd/npm/@tldraw/assets@2.0.0/`,
+  baseUrl: `${config.cdnOrigin}/jsd/npm/@tldraw/assets@3.12.0/`,
 })
 const TldrawComponent = applyReactInVue(Tldraw)
 </script>
