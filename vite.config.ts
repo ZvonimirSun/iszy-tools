@@ -182,7 +182,7 @@ export default defineConfig(({ command }) => {
             },
           },
           {
-            injectTo: 'head',
+            injectTo: 'body',
             tag: 'script',
             attrs: {
               'defer': true,
