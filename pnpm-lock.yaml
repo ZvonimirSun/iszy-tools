@@ -69,8 +69,8 @@ importers:
         specifier: ^13.1.0
         version: 13.1.0(async-validator@4.2.5)(axios@1.8.4)(qrcode@1.5.4)(vue@3.5.13(typescript@5.8.3))
       '@zvonimirsun/iszy-common':
-        specifier: ^1.0.10
-        version: 1.0.10
+        specifier: ^1.0.11
+        version: 1.0.11
       algoliasearch:
         specifier: ^4.24.0
         version: 4.24.0
@@ -4548,8 +4548,8 @@ packages:
   '@webgpu/types@0.1.44':
     resolution: {integrity: sha512-JDpYJN5E/asw84LTYhKyvPpxGnD+bAKPtpW9Ilurf7cZpxaTbxkQcGwOd7jgB9BPBrTYQ+32ufo4HiuomTjHNQ==}
 
-  '@zvonimirsun/iszy-common@1.0.10':
-    resolution: {integrity: sha512-MyMyMkBkYEvlC7LbBYKUb9xieoeRRCmngmw4Z4Ju8PO2LxISU7n3B32NIfvU/H2jg0qGQ/CiTPC12Hj/AonVUA==}
+  '@zvonimirsun/iszy-common@1.0.11':
+    resolution: {integrity: sha512-DvlubqCDlHpsHZThWgG3oPmOIOYhSpwOLNtYOVGuW7ofO67s32eqZcbsl+1X5taUW6lzGyqs/jiQmY0TJ9r4vw==}
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -14812,7 +14812,7 @@ snapshots:
 
   '@webgpu/types@0.1.44': {}
 
-  '@zvonimirsun/iszy-common@1.0.10':
+  '@zvonimirsun/iszy-common@1.0.11':
     dependencies:
       uuid: 11.1.0
 

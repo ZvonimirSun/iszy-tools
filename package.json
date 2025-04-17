@@ -39,7 +39,7 @@
     "@turf/turf": "^7.2.0",
     "@vueuse/core": "^13.1.0",
     "@vueuse/integrations": "^13.1.0",
-    "@zvonimirsun/iszy-common": "^1.0.10",
+    "@zvonimirsun/iszy-common": "^1.0.11",
     "algoliasearch": "^4.24.0",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.8.4",

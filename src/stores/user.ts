@@ -4,6 +4,7 @@ import type { AxiosError, AxiosResponse } from 'axios'
 import config from '@/config'
 import axios from '@/plugins/Axios'
 import { downloadSettings } from '@/plugins/PiniaSync'
+import dayjs from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
@@ -271,9 +272,27 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async getDevices(): Promise<Device[]> {
+    async getDevices(): Promise<(Device & {
+      createTime?: string
+      lastLoginTime?: string
+    })[]> {
       const res = (await axios.get(`${config.apiBaseUrl}/auth/devices`)).data
-      return res.data
+      return res.data.map((device: Device & {
+        createTime?: string
+        lastLoginTime?: string
+      }) => {
+        const ip = device.ip
+        if (!ip) {
+          device.ip = '未知'
+        }
+        else {
+          const tmp = ip.split('.')
+          device.ip = `${tmp[0]}.${tmp[1]}.***.***`
+        }
+        device.createTime = dayjs(device.createdAt!).format('YYYY年MM月DD日 HH:mm')
+        device.lastLoginTime = dayjs(device.updatedAt!).format('YYYY年MM月DD日 HH:mm')
+        return device
+      })
     },
 
     checkAccess(authOption: AuthOption) {

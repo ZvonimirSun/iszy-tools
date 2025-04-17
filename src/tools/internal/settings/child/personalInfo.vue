@@ -75,7 +75,10 @@ const rules = reactive<FormRules<typeof userForm>>({
 const binding = ref('')
 
 const managingDevices = ref(false)
-const devices = ref<Device[]>([])
+const devices = ref<(Device & {
+  createTime?: string
+  lastLoginTime?: string
+})[]>([])
 
 async function manageDevices() {
   try {
@@ -405,14 +408,16 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
           w-full flex flex-col
         >
           <div w-full flex-inline items-center gap-2>
-            <span flex-1>{{ item.name || item.id }}: </span>
+            <span flex-1>{{ item.name || item.id }}</span>
             <span v-if="item.current">(当前设备)</span>
             <el-button size="small" @click="logout({ deviceId: item.id, current: item.current })">
               登出
             </el-button>
           </div>
-          <div w-full flex-col gap-2 p-l-4>
-            <span w-70>IP: {{ item.ip }}</span>
+          <div w-full flex flex-col p-l-6>
+            <span>IP: {{ item.ip }}</span>
+            <span>首次登录时间: {{ item.createTime }}</span>
+            <span>最后登录时间: {{ item.lastLoginTime }}</span>
           </div>
         </li>
         <li flex items-center>
