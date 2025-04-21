@@ -401,23 +401,43 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
       </template>
     </el-dialog>
     <el-dialog v-model="managingDevices" title="管理登录设备" :before-close="cancelManageDevices" :width="400">
-      <ul flex flex-col gap-4 p-0>
+      <ul flex="~ col" m-0 gap-4 p-0>
         <li
           v-for="(item, index) in devices"
           :key="index"
-          w-full flex flex-col
+          w-full flex="~ col"
         >
           <div w-full flex-inline items-center gap-2>
-            <span flex-1>{{ item.name || item.id }}</span>
+            <span flex-1 overflow-hidden font-bold text="ellipsis nowrap" :title="item.name || item.id">{{ item.name || item.id }}</span>
             <span v-if="item.current">(当前设备)</span>
             <el-button size="small" @click="logout({ deviceId: item.id, current: item.current })">
               登出
             </el-button>
           </div>
-          <div w-full flex flex-col p-l-6>
-            <span>IP: {{ item.ip }}</span>
-            <span>首次登录时间: {{ item.createTime }}</span>
-            <span>最后登录时间: {{ item.lastLoginTime }}</span>
+          <div w-full p-l-6>
+            <table>
+              <tr>
+                <td text-right>
+                  IP:
+                </td><td underline>
+                  {{ item.ip }}
+                </td>
+              </tr>
+              <tr>
+                <td text-right>
+                  首次登录时间:
+                </td><td underline>
+                  {{ item.createTime }}
+                </td>
+              </tr>
+              <tr>
+                <td text-right>
+                  最后登录时间:
+                </td><td underline>
+                  {{ item.lastLoginTime }}
+                </td>
+              </tr>
+            </table>
           </div>
         </li>
         <li flex items-center>
