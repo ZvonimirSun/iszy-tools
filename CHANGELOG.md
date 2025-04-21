@@ -1,1 +1,1 @@
-feat(auth): 补充设备信息
+feat(personalInfo): 样式微调
