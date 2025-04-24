@@ -1,1 +1,1 @@
-feat(personalInfo): 样式微调
+feat(imgHosting): 同时传递ContentType
