@@ -106,6 +106,7 @@ async function upload(options: AliOssConfig, file: File): Promise<ImageItem> {
     Key: path + file.name,
     // 指定文件内容或Buffer。
     Body: new Blob([file]),
+    ContentType: file.type,
   })
   try {
     await s3Client.send(command)
