@@ -51,7 +51,7 @@
     "dayjs": "^1.11.13",
     "dom-to-image": "^2.6.0",
     "element-plus": "^2.9.7",
-    "eslint-linter-browserify": "^9.24.0",
+    "eslint-linter-browserify": "^9.25.1",
     "esri-leaflet": "^3.0.15",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.11.1",

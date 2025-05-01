@@ -105,8 +105,8 @@ importers:
         specifier: ^2.9.7
         version: 2.9.7(vue@3.5.13(typescript@5.8.3))
       eslint-linter-browserify:
-        specifier: ^9.24.0
-        version: 9.24.0
+        specifier: ^9.25.1
+        version: 9.25.1
       esri-leaflet:
         specifier: ^3.0.15
         version: 3.0.15(leaflet@1.9.4)
@@ -5394,8 +5394,8 @@ packages:
       '@eslint/json':
         optional: true
 
-  eslint-linter-browserify@9.24.0:
-    resolution: {integrity: sha512-h+y3gq15Hb+7o6VyN/zzkERvfmoAx+wO3l1UJwteCWYPUav0Ffp36j9sb8ZjTi78/nInx7xUHBUYhOT+9xxDMA==}
+  eslint-linter-browserify@9.25.1:
+    resolution: {integrity: sha512-gBOB5/W59xaupXI2/2O0qAk7XxYRLnKzx4TRbbplb5NjmOLZv6QAmVowD3TjnMQvIlnU4SbiQk+RncmNtsn+QQ==}
 
   eslint-merge-processors@2.0.0:
     resolution: {integrity: sha512-sUuhSf3IrJdGooquEUB5TNpGNpBoQccbnaLHsb1XkBLUPPqCNivCpY05ZcpCOiV9uHwO2yxXEWVczVclzMxYlA==}
@@ -8381,8 +8381,8 @@ packages:
     resolution: {integrity: sha512-Z/DRB0ZAKj5vAQg++XsfQQKfT73Vfj5n5lKIVXobBDQEva6NHWUTxOA6OohJmEcpoy8AEqBmSGkXXAnFwt5qAA==}
     engines: {node: '>= 16'}
 
-  xml-utils@1.10.1:
-    resolution: {integrity: sha512-Dn6vJ1Z9v1tepSjvnCpwk5QqwIPcEFKdgnjqfYOABv1ngSofuAhtlugcUC3ehS1OHdgDWSG6C5mvj+Qm15udTQ==}
+  xml-utils@1.10.2:
+    resolution: {integrity: sha512-RqM+2o1RYs6T8+3DzDSoTRAUfrvaejbVHcp3+thnAtDKo8LskR+HomLajEy5UjTz24rpka7AxVBRR3g2wTUkJA==}
 
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
@@ -15767,7 +15767,7 @@ snapshots:
       esquery: 1.6.0
       jsonc-eslint-parser: 2.4.0
 
-  eslint-linter-browserify@9.24.0: {}
+  eslint-linter-browserify@9.25.1: {}
 
   eslint-merge-processors@2.0.0(eslint@9.24.0(jiti@2.4.2)):
     dependencies:
@@ -16250,7 +16250,7 @@ snapshots:
       pako: 2.1.0
       parse-headers: 2.0.6
       web-worker: 1.5.0
-      xml-utils: 1.10.1
+      xml-utils: 1.10.2
 
   get-caller-file@2.0.5: {}
 
@@ -19292,7 +19292,7 @@ snapshots:
 
   xml-parser-xo@4.1.2: {}
 
-  xml-utils@1.10.1: {}
+  xml-utils@1.10.2: {}
 
   xmlchars@2.2.0: {}
 
