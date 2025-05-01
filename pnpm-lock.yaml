@@ -57,8 +57,8 @@ importers:
         specifier: ^11.1.1
         version: 11.1.1(ol@6.15.1)
       '@tldraw/assets':
-        specifier: ^3.12.0
-        version: 3.12.0
+        specifier: ^3.12.1
+        version: 3.12.1
       '@turf/turf':
         specifier: ^7.2.0
         version: 7.2.0
@@ -3223,8 +3223,8 @@ packages:
   '@tiptap/starter-kit@2.11.5':
     resolution: {integrity: sha512-SLI7Aj2ruU1t//6Mk8f+fqW+18uTqpdfLUJYgwu0CkqBckrkRZYZh6GVLk/02k3H2ki7QkFxiFbZrdbZdng0JA==}
 
-  '@tldraw/assets@3.12.0':
-    resolution: {integrity: sha512-8OgbBbKGDALlVpg/QiOhvCXTjZmOO72qmgY8Y/Cqq5S6YcYuxqkQfS891ZhFAX9KYJHnKnFRG/ihKbifLTt9yQ==}
+  '@tldraw/assets@3.12.1':
+    resolution: {integrity: sha512-9nlrcdzb5H1/dauP/M6w9NzQKdzmYJMpwawC/UNR9QGOKdLNknOKhY3i6JNAhh8yEV/ehei84tdeoYucWeug6Q==}
 
   '@tldraw/editor@3.12.0':
     resolution: {integrity: sha512-qSFz2Lk1j0ExeyEUT2opajD9XNSpoR9DW5ewbBXIRb04yPkFxc9tw3ol7qZlXGNZBjNARisX/5kWX+pabYLsoA==}
@@ -3254,6 +3254,9 @@ packages:
 
   '@tldraw/utils@3.12.0':
     resolution: {integrity: sha512-85yyGjmV9s3S4BS+DzK4soqRixNcRXcotX7WwuZP5RjQ2GwoQToOM/QIc6tEo7XYGQcE9sfi3UCiz8ledHQu0A==}
+
+  '@tldraw/utils@3.12.1':
+    resolution: {integrity: sha512-P5gVY9sjlMuCE9IjORvpu9mXtNBuZ3ovxIfHLV4MLeyQkHheof6qIQjNc1tQ05f28GDWtCiLzYnzDg+qmr74lw==}
 
   '@tldraw/validate@3.12.0':
     resolution: {integrity: sha512-v33vlkFaCH0H3RqQT95sof83FzVz/sXQVM16ILHT9JMiCE5EDq9vRJIV/5AxRyLFkNRaayRY4vLoB2JbgRYqhQ==}
@@ -8381,8 +8384,8 @@ packages:
     resolution: {integrity: sha512-Z/DRB0ZAKj5vAQg++XsfQQKfT73Vfj5n5lKIVXobBDQEva6NHWUTxOA6OohJmEcpoy8AEqBmSGkXXAnFwt5qAA==}
     engines: {node: '>= 16'}
 
-  xml-utils@1.10.1:
-    resolution: {integrity: sha512-Dn6vJ1Z9v1tepSjvnCpwk5QqwIPcEFKdgnjqfYOABv1ngSofuAhtlugcUC3ehS1OHdgDWSG6C5mvj+Qm15udTQ==}
+  xml-utils@1.10.2:
+    resolution: {integrity: sha512-RqM+2o1RYs6T8+3DzDSoTRAUfrvaejbVHcp3+thnAtDKo8LskR+HomLajEy5UjTz24rpka7AxVBRR3g2wTUkJA==}
 
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
@@ -12041,9 +12044,9 @@ snapshots:
       '@tiptap/extension-text-style': 2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))
       '@tiptap/pm': 2.11.5
 
-  '@tldraw/assets@3.12.0':
+  '@tldraw/assets@3.12.1':
     dependencies:
-      '@tldraw/utils': 3.12.0
+      '@tldraw/utils': 3.12.1
 
   '@tldraw/editor@3.12.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -12095,6 +12098,12 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@tldraw/utils@3.12.0':
+    dependencies:
+      fractional-indexing-jittered: 0.9.1
+      lodash.throttle: 4.1.1
+      lodash.uniq: 4.5.0
+
+  '@tldraw/utils@3.12.1':
     dependencies:
       fractional-indexing-jittered: 0.9.1
       lodash.throttle: 4.1.1
@@ -16250,7 +16259,7 @@ snapshots:
       pako: 2.1.0
       parse-headers: 2.0.6
       web-worker: 1.5.0
-      xml-utils: 1.10.1
+      xml-utils: 1.10.2
 
   get-caller-file@2.0.5: {}
 
@@ -19292,7 +19301,7 @@ snapshots:
 
   xml-parser-xo@4.1.2: {}
 
-  xml-utils@1.10.1: {}
+  xml-utils@1.10.2: {}
 
   xmlchars@2.2.0: {}
 
