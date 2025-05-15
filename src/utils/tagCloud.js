@@ -12,7 +12,7 @@ class TagCloud {
     // params
     this.$container = container
     this.texts = texts || []
-    this.config = { ...TagCloud._defaultConfig, ...options || {} }
+    this.config = { ...TagCloud._defaultConfig, ...options }
 
     // calculate config
     this.radius = this.config.radius // rolling radius
