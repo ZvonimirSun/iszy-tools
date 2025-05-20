@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import type { Column } from 'element-plus'
 import type { MockData } from './mock'
+import { TableV2FixedDir } from 'element-plus'
 import config from '@/config'
-import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
 import { createData, deleteData, editData, getNewMockData, mockData, selectedProject, setProject } from './mockData.service'
 
 const { copy } = useCopy({ text: '复制成功' })
@@ -16,7 +16,7 @@ const columns: Column[] = [
     key: 'name',
     dataKey: 'name',
     width: 300,
-    fixed: FixedDir.LEFT,
+    fixed: TableV2FixedDir.LEFT,
   },
   {
     title: '请求类型',
@@ -56,7 +56,7 @@ const columns: Column[] = [
   {
     title: '操作',
     key: 'operations',
-    fixed: FixedDir.RIGHT,
+    fixed: TableV2FixedDir.RIGHT,
     cellRenderer: ({ rowData: data }: { rowData: MockData }) => (
       <>
         <el-button size="small" onClick={() => copy(data.url ?? '')}>复制</el-button>

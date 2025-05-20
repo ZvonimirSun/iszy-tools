@@ -1,8 +1,7 @@
 import type { PublicUser } from '@zvonimirsun/iszy-common'
 import type { Columns } from 'element-plus'
 import dayjs from 'dayjs'
-import { ElButton, ElPopconfirm, ElTag } from 'element-plus'
-import { FixedDir } from 'element-plus/es/components/table-v2/src/constants'
+import { ElButton, ElPopconfirm, ElTag, TableV2FixedDir } from 'element-plus'
 import 'element-plus/es/components/tag/style/css'
 import 'element-plus/es/components/button/style/css'
 import 'element-plus/es/components/popconfirm/style/css'
@@ -102,7 +101,7 @@ export function getUserTableColumns(onClick: (row: PublicUser, operation: string
       key: 'operations',
       title: '操作',
       width: 200,
-      fixed: FixedDir.RIGHT,
+      fixed: TableV2FixedDir.RIGHT,
       cellRenderer: ({ rowData }: { rowData: PublicUser }) => {
         return (
           <>

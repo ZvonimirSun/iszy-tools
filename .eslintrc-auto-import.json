@@ -337,6 +337,8 @@
     "usePreferredReducedTransparency": true,
     "useSSRWidth": true,
     "useCountdown": true,
-    "createRef": true
+    "createRef": true,
+    "Slot": true,
+    "Slots": true
   }
 }
