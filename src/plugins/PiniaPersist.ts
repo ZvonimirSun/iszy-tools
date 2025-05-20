@@ -134,7 +134,7 @@ async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions
 
     // 更新数据
     const updateState = debounce(() => {
-      _mutex.enqueue(setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch((e) => {
+      _mutex.enqueue(() => setState(key, serializer ? serializer.serialize(store.$state) : store.$state).catch((e) => {
         debug && console.log(e)
       }))
     }, 100)

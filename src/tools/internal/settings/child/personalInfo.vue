@@ -416,27 +416,29 @@ function _openThirdPartyBind(type: string, url: string, title = '绑定第三方
           </div>
           <div w-full p-l-6>
             <table>
-              <tr>
-                <td text-right>
-                  IP:
-                </td><td underline>
-                  {{ item.ip }}
-                </td>
-              </tr>
-              <tr>
-                <td text-right>
-                  首次登录时间:
-                </td><td underline>
-                  {{ item.createTime }}
-                </td>
-              </tr>
-              <tr>
-                <td text-right>
-                  最后登录时间:
-                </td><td underline>
-                  {{ item.lastLoginTime }}
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td text-right>
+                    IP:
+                  </td><td underline>
+                    {{ item.ip }}
+                  </td>
+                </tr>
+                <tr>
+                  <td text-right>
+                    首次登录时间:
+                  </td><td underline>
+                    {{ item.createTime }}
+                  </td>
+                </tr>
+                <tr>
+                  <td text-right>
+                    最后登录时间:
+                  </td><td underline>
+                    {{ item.lastLoginTime }}
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </li>

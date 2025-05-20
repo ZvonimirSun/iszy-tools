@@ -1,5 +1,5 @@
 import config from '@/config'
-import axios from '@/plugins/Axios'
+import { API } from '@/plugins/API'
 import randomString from '@/utils/randomString.js'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import dayjs from 'dayjs'
@@ -119,7 +119,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
 
     async getSyncData() {
       try {
-        const data = (await (axios.get(`${config.apiBaseUrl}/tools/jsoneditor`))).data
+        const data = await API.get(`/tools/jsoneditor`)
         if (data.success) {
           this.replaceState(data.data)
         }
@@ -136,7 +136,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       data: SyncDto
     }) => {
       if (navigator.onLine) {
-        _mutex.enqueue(axios.post(`${config.apiBaseUrl}/tools/jsoneditor/${id}`, data))
+        _mutex.enqueue(() => API.post(`/tools/jsoneditor/${id}`, data))
       }
       else {
         waitList[id] = data
@@ -219,7 +219,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
     async deleteData({ id } = {} as { id: string }) {
       if (this.syncCloud) {
         try {
-          const data = (await axios.delete(`${config.apiBaseUrl}/tools/jsoneditor/${id}`)).data
+          const data = await API.delete(`/tools/jsoneditor/${id}`)
           if (data.success) {
             if (this.leftId === id) {
               this.leftId = null

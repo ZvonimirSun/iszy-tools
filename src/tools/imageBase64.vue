@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import $axios from '@/plugins/Axios'
+import $axios from 'axios'
 
 const dataUrl = ref('')
 const imgPreview = ref<HTMLImageElement>()

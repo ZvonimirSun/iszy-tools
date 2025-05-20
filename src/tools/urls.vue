@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import config from '@/config'
-import $axios from '@/plugins/Axios'
+import { API } from '@/plugins/API'
 import dayjs from 'dayjs'
 
 interface Url {
@@ -42,12 +41,12 @@ async function getUrlList(pageIndex: number, pageSize: number) {
     loading.value = true
   }, 300)
   try {
-    const res = (await $axios.get(`${config.apiBaseUrl}/urls/admin/urls`, {
+    const res = await API.get(`/urls/admin/urls`, {
       params: {
         pageIndex,
         pageSize,
       },
-    })).data
+    })
     if (res.success) {
       count.value = res.data.count
       urlList.value = res.data.rows.map((item: Url) => {
@@ -72,10 +71,10 @@ async function createUrl() {
     return
   }
   try {
-    const res = (await $axios.post(`${config.apiBaseUrl}/urls/admin/url`, {
+    const res = await API.post(`/urls/admin/url`, {
       url: newUrl.url,
       keyword: newUrl.keyword,
-    })).data
+    })
     if (res.success) {
       ElMessage.success('创建成功')
       newUrl.url = ''
@@ -93,9 +92,9 @@ async function createUrl() {
 
 async function updateUrl(url: Url) {
   try {
-    const res = (await $axios.put(`${config.apiBaseUrl}/urls/admin/url/${url.keyword}`, {
+    const res = await API.put(`/urls/admin/url/${url.keyword}`, {
       url: editingUrl[url.keyword],
-    })).data
+    })
     if (res.success) {
       ElMessage.success('更新成功')
       url.url = editingUrl[url.keyword]
@@ -113,11 +112,11 @@ async function updateUrl(url: Url) {
 
 async function deleteUrl(url: Url) {
   try {
-    const res = (await $axios.delete(`${config.apiBaseUrl}/urls/admin/url/${url.keyword}`, {
+    const res = await API.delete(`/urls/admin/url/${url.keyword}`, {
       params: {
         keyword: url.keyword,
       },
-    })).data
+    })
     if (res.success) {
       await getUrlList(pageIndex.value - 1, pageSize.value)
       ElMessage.success('删除成功')

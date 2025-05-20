@@ -1,6 +1,6 @@
 import type { MockData, MockPrj, ResultDto } from './mock'
 import config from '@/config'
-import axios from '@/plugins/Axios'
+import { API } from '@/plugins/API'
 import { deleteParam, setParam } from '@/utils/hashHandler'
 import dayjs from 'dayjs'
 import ElMessage from 'element-plus/es/components/message/index'
@@ -45,11 +45,11 @@ export async function setProject(prj?: MockPrj) {
 
 export async function editData(data: MockData) {
   try {
-    const res: ResultDto<never> = await axios.put(`${config.apiBaseUrl}/mock/api/data/${data.id}`, {
+    const res: ResultDto<never> = await API.put(`/mock/api/data/${data.id}`, {
       ...data,
       id: undefined,
       projectId: undefined,
-    }).then(axios.getData)
+    })
     if (res.success) {
       ElMessage.success('修改数据成功')
       refreshMockData().then()
@@ -67,7 +67,7 @@ export async function editData(data: MockData) {
 
 export async function createData(data: MockData) {
   try {
-    const res: ResultDto<never> = await axios.post(`${config.apiBaseUrl}/mock/api/data`, { ...data, id: undefined, projectId: selectedProject.value?.id }).then(axios.getData)
+    const res: ResultDto<never> = await API.post(`/mock/api/data`, { ...data, id: undefined, projectId: selectedProject.value?.id })
     if (res.success) {
       ElMessage.success('创建数据成功')
       refreshMockData().then()
@@ -85,7 +85,7 @@ export async function createData(data: MockData) {
 
 export async function deleteData(data: MockData) {
   try {
-    const res: ResultDto<never> = await axios.delete(`${config.apiBaseUrl}/mock/api/data/${data.id}`).then(axios.getData)
+    const res: ResultDto<never> = await API.delete(`/mock/api/data/${data.id}`)
     if (res.success) {
       ElMessage.success('删除数据成功')
       refreshMockData().then()
@@ -117,7 +117,7 @@ async function refreshMockData() {
 
 // 获取接口列表
 async function getMockData(prj: MockPrj) {
-  const data: ResultDto<MockData[]> = await (axios.get(`${config.apiBaseUrl}/mock/api/prj/${prj.id}/list`).then(axios.getData))
+  const data: ResultDto<MockData[]> = await API.get(`/mock/api/prj/${prj.id}/list`)
   if (data.success) {
     return (data.data || []).map((item) => {
       item.createdAt = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')

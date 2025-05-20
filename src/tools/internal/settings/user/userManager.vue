@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PublicUser } from '@zvonimirsun/iszy-common'
-import config from '@/config'
-import $axios from '@/plugins/Axios'
+import { API } from '@/plugins/API'
 import { getUserTableColumns } from './userTableColumns'
 
+const $route = useRoute()
 const userList = reactive<PublicUser[]>([])
 const page = reactive({
   index: 1,
@@ -18,12 +18,12 @@ onMounted(() => {
 
 async function getUsers(pageIndex: number, pageSize: number) {
   try {
-    const data = (await $axios.get(`${config.apiBaseUrl}/user/list`, {
+    const data = await API.get(`/user/list`, {
       params: {
         pageIndex,
         pageSize,
       },
-    })).data
+    })
     if (data.success) {
       userList.splice(0, userList.length, ...data.data)
     }
@@ -55,11 +55,11 @@ function operation(row: PublicUser, operation: string) {
 
 async function disableUser(row: PublicUser) {
   try {
-    const data = (await $axios.put(`${config.apiBaseUrl}/user/ban`, null, {
+    const data = await API.put(`/user/ban`, null, {
       params: {
         id: row.userId,
       },
-    })).data
+    })
     if (data.success) {
       ElMessage.success(data.message)
       await getUsers(page.index, page.size)
@@ -75,11 +75,11 @@ async function disableUser(row: PublicUser) {
 
 async function activateUser(row: PublicUser) {
   try {
-    const data = (await $axios.put(`${config.apiBaseUrl}/user/activate`, null, {
+    const data = await API.put(`/user/activate`, null, {
       params: {
         id: row.userId,
       },
-    })).data
+    })
     if (data.success) {
       ElMessage.success(data.message)
       await getUsers(page.index, page.size)
@@ -95,7 +95,7 @@ async function activateUser(row: PublicUser) {
 
 async function deleteUser(row: PublicUser) {
   try {
-    const data = (await $axios.delete(`${config.apiBaseUrl}/user/${row.userId}`)).data
+    const data = await API.delete(`/user/${row.userId}`)
     if (data.success) {
       ElMessage.success(data.message)
       await getUsers(page.index, page.size)

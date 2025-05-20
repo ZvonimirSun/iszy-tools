@@ -1,6 +1,5 @@
 import type { MockPrj, ResultDto } from './mock'
-import config from '@/config'
-import axios from '@/plugins/Axios'
+import { API } from '@/plugins/API'
 import { getParam } from '@/utils/hashHandler'
 import { setProject } from './mockData.service'
 
@@ -46,10 +45,10 @@ export function selectProject(prj: MockPrj | string) {
 
 export async function createProject(prj: MockPrj) {
   try {
-    await axios.post(`${config.apiBaseUrl}/mock/api/prj`, {
+    await API.post(`/mock/api/prj`, {
       ...prj,
       id: undefined,
-    }).then(axios.getData)
+    })
     ElMessage.success('创建项目成功')
     refreshMockProject().then()
     return true
@@ -62,7 +61,7 @@ export async function createProject(prj: MockPrj) {
 
 export async function updateProject(prj: MockPrj) {
   try {
-    await axios.put(`${config.apiBaseUrl}/mock/api/prj/${prj.id}`, prj).then(axios.getData)
+    await API.put(`/mock/api/prj/${prj.id}`, prj)
     ElMessage.success('更新项目成功')
     refreshMockProject().then()
     return true
@@ -75,7 +74,7 @@ export async function updateProject(prj: MockPrj) {
 
 export async function deleteProject(prj: MockPrj) {
   try {
-    await axios.delete(`${config.apiBaseUrl}/mock/api/prj/${prj.id}`).then(axios.getData)
+    await API.delete(`/mock/api/prj/${prj.id}`)
     ElMessage.success('删除项目成功')
     refreshMockProject().then()
     return true
@@ -88,7 +87,7 @@ export async function deleteProject(prj: MockPrj) {
 
 async function refreshMockProject() {
   try {
-    const data: ResultDto<MockPrj[]> = await (axios.get(`${config.apiBaseUrl}/mock/api/prj/list`).then(axios.getData))
+    const data: ResultDto<MockPrj[]> = await API.get('/mock/api/prj/list')
     projects.value = data.data || []
   }
   catch (e) {

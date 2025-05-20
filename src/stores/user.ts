@@ -1,16 +1,16 @@
 import type { AuthOption } from '@/types/auth'
 import type { Device, PublicUser, RegisterUser, UpdateUser } from '@zvonimirsun/iszy-common'
-import type { AxiosError, AxiosResponse } from 'axios'
-import config from '@/config'
-import axios from '@/plugins/Axios'
+import type { AxiosError } from 'axios'
+import { API } from '@/plugins/API'
 import { downloadSettings } from '@/plugins/PiniaSync'
+import { isCancel } from 'axios'
 import dayjs from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 let tokenChecked = false
-let checkTokenPromise: Promise<AxiosResponse> | null = null
-let refreshTokenPromise: Promise<AxiosResponse> | null = null
+let checkTokenPromise: Promise<any> | null = null
+let refreshTokenPromise: Promise<any> | null = null
 
 const emptyProfile: PublicUser = {
   nickName: '',
@@ -46,10 +46,10 @@ export const useUserStore = defineStore('user', {
       let error = ''
       try {
         if (userName && password) {
-          const res = (await axios.post(`${config.apiBaseUrl}/auth/login`, {
+          const res = await API.post(`/auth/login`, {
             username: userName.trim(),
             password,
-          })).data
+          })
           if (res.success) {
             this.logged = true
             tokenChecked = true
@@ -77,7 +77,7 @@ export const useUserStore = defineStore('user', {
     },
     async logout() {
       try {
-        const data = (await axios.post(`${config.apiBaseUrl}/auth/logout`)).data
+        const data = await API.post(`/auth/logout`)
         if (data && data.success) {
           this.clearToken()
         }
@@ -96,7 +96,7 @@ export const useUserStore = defineStore('user', {
     }) {
       if (other) {
         try {
-          await axios.post(`${config.apiBaseUrl}/auth/logout`, null, {
+          await API.post(`/auth/logout`, null, {
             params: {
               deviceId,
               other,
@@ -110,7 +110,7 @@ export const useUserStore = defineStore('user', {
       }
       if (all) {
         try {
-          await axios.post(`${config.apiBaseUrl}/auth/logout`, null, {
+          await API.post(`/auth/logout`, null, {
             params: {
               all,
             },
@@ -124,7 +124,7 @@ export const useUserStore = defineStore('user', {
       }
       if (deviceId) {
         try {
-          await axios.post(`${config.apiBaseUrl}/auth/logout`, null, {
+          await API.post(`/auth/logout`, null, {
             params: {
               deviceId,
             },
@@ -140,26 +140,25 @@ export const useUserStore = defineStore('user', {
         return
       }
       if (!refreshTokenPromise) {
-        refreshTokenPromise = axios.post(`${config.apiBaseUrl}/auth/refresh`, null, {
+        refreshTokenPromise = API.post(`/auth/refresh`, null, {
           headers: {
             Authorization: `Bearer ${this.refresh_token}`,
           },
         })
-        refreshTokenPromise.then((res) => {
-          const data = res.data
+        refreshTokenPromise.then((data) => {
           if (data && data.success) {
             this.updateProfile(data.data)
           }
         })
       }
       try {
-        const data = (await refreshTokenPromise).data
+        const data = await refreshTokenPromise
         if (!data || !data.success) {
           this.clearToken()
         }
       }
       catch (e) {
-        if (axios.isCancel && !axios.isCancel(e)) {
+        if (isCancel && !isCancel(e)) {
           this.clearToken()
         }
         if (((e as AxiosError)?.response?.data as { message: string })?.message) {
@@ -170,7 +169,7 @@ export const useUserStore = defineStore('user', {
     },
     async register(form: RegisterUser): Promise<boolean> {
       try {
-        const data = (await axios.post(`${config.apiBaseUrl}/auth/register`, form)).data
+        const data = await API.post(`/auth/register`, form)
         if (data && data.success) {
           return data.data
         }
@@ -187,7 +186,7 @@ export const useUserStore = defineStore('user', {
     },
     async updateUser(options: UpdateUser) {
       try {
-        const data = (await axios.put(`${config.apiBaseUrl}/auth/profile`, options)).data
+        const data = await API.put(`/auth/profile`, options)
         if (data && data.success) {
           this.profile = data.data || cloneDeep(emptyProfile)
           ElMessage.success('更新成功！')
@@ -211,17 +210,16 @@ export const useUserStore = defineStore('user', {
         return true
       }
       if (!checkTokenPromise || force) {
-        checkTokenPromise = axios.get(`${config.apiBaseUrl}/auth/profile`)
-        checkTokenPromise.then((res) => {
+        checkTokenPromise = API.get(`/auth/profile`)
+        checkTokenPromise.then((data) => {
           console.log('已登录')
-          const data = res.data
           if (data && data.success) {
             this.profile = data.data || cloneDeep(emptyProfile)
           }
         })
       }
       try {
-        const data = (await checkTokenPromise).data
+        const data = await checkTokenPromise
         if (data && data.success) {
           tokenChecked = true
           return true
@@ -232,7 +230,7 @@ export const useUserStore = defineStore('user', {
         }
       }
       catch (e) {
-        if (axios.isCancel && !axios.isCancel(e)) {
+        if (isCancel && !isCancel(e)) {
           this.clearToken()
         }
         return false
@@ -249,7 +247,7 @@ export const useUserStore = defineStore('user', {
     },
     async thirdPartyBind(type: string, id: string) {
       try {
-        await axios.post(`${config.apiBaseUrl}/auth/bind/${type}/${id}`)
+        await API.post(`/auth/bind/${type}/${id}`)
         await this.checkToken(true)
       }
       catch (e) {
@@ -261,7 +259,7 @@ export const useUserStore = defineStore('user', {
     },
     async thirdPartyUnbind(type: string) {
       try {
-        await axios.delete(`${config.apiBaseUrl}/auth/bind/${type}`)
+        await API.delete(`/auth/bind/${type}`)
         await this.checkToken(true)
       }
       catch (e) {
@@ -276,7 +274,7 @@ export const useUserStore = defineStore('user', {
       createTime?: string
       lastLoginTime?: string
     })[]> {
-      const res = (await axios.get(`${config.apiBaseUrl}/auth/devices`)).data
+      const res = await API.get(`/auth/devices`)
       return res.data.map((device: Device & {
         createTime?: string
         lastLoginTime?: string

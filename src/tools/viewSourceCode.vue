@@ -1,6 +1,6 @@
 <script>
-import $axios from '@/plugins/Axios'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
+import $axios from 'axios'
 import { html_beautify as htmlBeatify } from 'js-beautify'
 import 'highlight.js/lib/common'
 import 'highlight.js/styles/idea.css'

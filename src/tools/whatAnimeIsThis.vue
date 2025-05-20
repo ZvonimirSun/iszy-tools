@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import $axios from '@/plugins/Axios'
+import $axios from 'axios'
 
 const file = ref('')
 const img = ref<File>()

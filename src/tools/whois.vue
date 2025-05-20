@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import $axios from '@/plugins/Axios'
+import $axios from 'axios'
 
 const loading = ref(false)
 const domains = ref('')

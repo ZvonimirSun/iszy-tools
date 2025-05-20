@@ -1,6 +1,6 @@
 import config from '@/config'
-import $axios from '@/plugins/Axios'
 import { gaodeToken } from '@/utils/gisUtils'
+import $axios from 'axios'
 import { LatLng } from 'leaflet'
 import { csysConvert } from '../core/leaflet.ChineseLayer'
 

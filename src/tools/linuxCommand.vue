@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import config from '@/config'
-import $axios from '@/plugins/Axios'
-import md from '@/utils/markdown.js'
+import md from '@/utils/markdown'
+import $axios from 'axios'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 

@@ -1,5 +1,5 @@
 import config from '@/config'
-import axios from '@/plugins/Axios'
+import axios from 'axios'
 import dayjs from 'dayjs'
 import { defineStore } from 'pinia'
 

@@ -1,6 +1,5 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, StoreGeneric, SubscriptionCallbackMutation } from 'pinia'
-import config from '@/config'
-import $axios from '@/plugins/Axios'
+import { API } from '@/plugins/API'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import { debounce } from 'lodash-es'
 
@@ -60,11 +59,12 @@ function createPiniaSync<S extends StateTree = StateTree>(): PiniaPlugin {
       }
       if (userStore.logged) {
         syncing = true
-        userStore.checkToken().then(() => {
-          _mutex.enqueue(uploadSettings(store, syncOptions).then(() => {
-            syncing = false
-          }))
-        })
+        userStore.checkToken().then(
+          () =>
+            _mutex.enqueue(() => uploadSettings(store, syncOptions).then(() => {
+              syncing = false
+            })),
+        )
       }
     }, 100)
 
@@ -95,7 +95,7 @@ async function uploadSettings(store: StoreGeneric, syncOptions: SyncOptions<Stat
       // serializer
     } = syncOptions
     try {
-      const data = (await $axios.post(`${config.apiBaseUrl}/tools/settings/${key}`, toRaw(store.$state))).data
+      const data = await API.post(`/tools/settings/${key}`, toRaw(store.$state))
       return data.success as boolean
     }
     catch (e) {
@@ -116,7 +116,7 @@ async function downloadSettings(store: StoreGeneric, syncOptions: SyncOptions<St
       // serializer
     } = syncOptions
     try {
-      const data = (await $axios.get(`${config.apiBaseUrl}/tools/settings/${key}`)).data
+      const data = await API.get(`/tools/settings/${key}`)
       let status = data.success as boolean
       if (data.data) {
         store.$patch(data.data)
