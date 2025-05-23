@@ -1,5 +1,5 @@
-import type { APIInstance } from '@/types/axios'
 import type { AxiosResponse } from 'axios'
+import type { APIInstance } from '@/types/axios'
 import Axios from 'axios'
 import configs from '../config'
 
@@ -28,6 +28,7 @@ API.interceptors.response.use(
       }
       if (!originalRequest._retry) {
         originalRequest._retry = true
+        delete originalRequest.headers.Authorization
         await useUserStore().refresh()
         return API(originalRequest)
       }
