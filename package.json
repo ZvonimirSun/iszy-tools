@@ -109,7 +109,7 @@
     "jsdom": "^26.1.0",
     "less": "^4.3.0",
     "lint-staged": "^15.5.2",
-    "npm-run-all2": "^8.0.2",
+    "npm-run-all2": "^8.0.4",
     "postcss": "^8.5.3",
     "sass": "^1.89.0",
     "simple-git-hooks": "^2.13.0",
