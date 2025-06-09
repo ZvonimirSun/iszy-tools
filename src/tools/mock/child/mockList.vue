@@ -62,11 +62,27 @@ async function createOrEditPrj(prj: MockPrj) {
         <div class="prj-title">
           {{ prj.name }}
         </div>
-        <div class="prj-path">
-          {{ prj.path }}
-        </div>
-        <div class="prj-desc">
-          {{ prj.description }}
+        <div class="prj-content">
+          <table max-h-full w-full>
+            <tbody>
+              <tr class="prj-path">
+                <td class="prj-content-label">
+                  接口路径:
+                </td>
+                <td class="prj-content-value">
+                  {{ prj.path }}
+                </td>
+              </tr>
+              <tr class="prj-desc">
+                <td class="prj-content-label">
+                  描述:
+                </td>
+                <td class="prj-content-value">
+                  {{ prj.description }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="prj-control">
           <div
@@ -189,17 +205,26 @@ async function createOrEditPrj(prj: MockPrj) {
       background-color: var(--el-fill-color);
     }
 
-    .prj-path {
-      padding: 0 2rem;
-      font-weight: bold;
-      height: 2rem;
+    .prj-content {
+      padding: 1rem;
+      flex: 1;
       line-height: 2.2rem;
       font-size: 1.6rem;
+
+      .prj-content-label {
+        font-weight: bold;
+        width: 7rem;
+        text-align: right;
+        padding-right: 1rem;
+      }
+
+      .prj-content-value {
+        overflow: auto;
+        white-space: pre-wrap;
+      }
     }
 
-    .prj-desc {
-      flex: 1;
-      padding: 1rem 2rem;
+    .prj-desc .prj-content-value {
       color: var(--el-text-color-secondary);
     }
 
