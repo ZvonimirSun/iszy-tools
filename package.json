@@ -76,7 +76,7 @@
     "xml-formatter": "^3.6.6"
   },
   "devDependencies": {
-    "@algolia/client-search": "^4.24.0",
+    "@algolia/client-search": "^5.27.0",
     "@antfu/eslint-config": "^4.14.1",
     "@iconify-json/fa-solid": "^1.2.1",
     "@iconify-json/fa6-solid": "^1.2.3",
