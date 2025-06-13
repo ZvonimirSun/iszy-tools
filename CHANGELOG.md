@@ -1,1 +1,1 @@
-feat(mock): 调整mock列表样式
+fix(mock): 修复页面状态不跟随hash参数变化
