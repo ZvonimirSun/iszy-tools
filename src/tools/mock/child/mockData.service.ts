@@ -1,9 +1,9 @@
 import type { MockData, MockPrj, ResultDto } from './mock'
+import dayjs from 'dayjs'
+import ElMessage from 'element-plus/es/components/message/index'
 import config from '@/config'
 import { API } from '@/plugins/API'
 import { deleteParam, setParam } from '@/utils/hashHandler'
-import dayjs from 'dayjs'
-import ElMessage from 'element-plus/es/components/message/index'
 
 const emptyMockData: MockData = {
   id: -1,

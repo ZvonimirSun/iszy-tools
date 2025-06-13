@@ -81,7 +81,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     VanillaJsonEditor: typeof import('./../components/VanillaJsonEditor.vue')['default']
   }
-  export interface ComponentCustomProperties {
+  export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
