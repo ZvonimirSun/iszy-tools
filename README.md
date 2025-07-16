@@ -1,6 +1,7 @@
 # ISZY-TOOLS
 
 [![Deploy](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml/badge.svg)](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FZvonimirSun%2Fiszy-tools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FZvonimirSun%2Fiszy-tools?ref=badge_shield)
 
 [![Vue 3.x](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://v3.cn.vuejs.org/) [![Vite 5.x](https://img.shields.io/badge/Vite-5.x-blue)](https://cn.vitejs.dev/) [![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config)
 
@@ -38,3 +39,7 @@ pnpm run serve
 ### 自定义配置
 
 前往 [官方中文文档](https://cn.vitejs.dev/config/).
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FZvonimirSun%2Fiszy-tools.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FZvonimirSun%2Fiszy-tools?ref=badge_large)
