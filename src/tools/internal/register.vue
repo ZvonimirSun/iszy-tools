@@ -155,6 +155,7 @@ function login() {
 <template>
   <div class="login-container">
     <div class="main">
+      <el-alert title="注意，本站未开放注册" type="warning" />
       <el-form
         ref="registerFormRef"
         layout="horizontal"
@@ -289,6 +290,17 @@ function login() {
     min-width: 26rem;
     width: 36.8rem;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .el-form-item {
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 </style>

@@ -130,7 +130,6 @@ export default defineConfig(({ command }) => {
       preprocessorOptions: {
         scss: {
           charset: false,
-          api: 'modern-compiler',
         },
         less: {
           javascriptEnabled: true,

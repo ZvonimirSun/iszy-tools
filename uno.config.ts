@@ -28,6 +28,7 @@ export default defineConfig({
       provider: 'google',
       customFetch(url) {
         url = url.replace('https://fonts.googleapis.com', `${config.cdnOrigin}/fonts`)
+        console.log(`Fetching font from: ${url}`)
         return axios.get(url).then(res => res.data)
       },
       fonts: {
