@@ -305,7 +305,7 @@ async function createOrEditData(data: MockData & { response: any }) {
           />
         </el-form-item>
       </el-form>
-      <JsonEditor
+      <SimpleJsonEditor
         v-model="dataForm.response"
         class="edit-data-json"
         mode="text"

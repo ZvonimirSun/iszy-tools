@@ -1,11 +1,11 @@
+import type { OptionalExcept } from '@zvonimirsun/iszy-common'
 import type { AuthOption } from '@/types/auth'
 import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
-import type { OptionalExcept } from '@zvonimirsun/iszy-common'
-import oriTools from '@/tools'
-import { internalTools } from '@/tools/internal'
 import { flatten } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { v4 as uuid } from 'uuid'
+import oriTools from '@/tools'
+import { internalTools } from '@/tools/internal'
 
 const toolsMap: Record<string, ToolItem> = {}
 const oriToolMenus: ToolMenu[] = (oriTools || []).map((item: OptionalExcept<ToolMenu, 'children'>) => {

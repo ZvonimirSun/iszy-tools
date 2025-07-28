@@ -76,9 +76,9 @@ declare module 'vue' {
     FixedWidgets: typeof import('./../components/fixed-widgets.vue')['default']
     FormatTransformer: typeof import('./../components/FormatTransformer.vue')['default']
     HaveAccess: typeof import('./../components/HaveAccess.vue')['default']
-    JsonEditor: typeof import('./../components/JsonEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SimpleJsonEditor: typeof import('./../components/SimpleJsonEditor.vue')['default']
     VanillaJsonEditor: typeof import('./../components/VanillaJsonEditor.vue')['default']
   }
   export interface GlobalDirectives {
