@@ -1,1 +1,1 @@
-feat(register): 添加未开放注册提示
+fix: 移除废弃api参数，更新unocss兼容vite7
