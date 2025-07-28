@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { Content, JsonEditor } from 'vanilla-jsoneditor'
 import type { EditorValue } from '@/types/editor'
-import type { Content } from 'vanilla-jsoneditor'
+import { clone } from 'lodash-es'
+import { createJSONEditor, isJSONContent } from 'vanilla-jsoneditor'
 import createFile from '@/utils/createFile'
 import formatBytes from '@/utils/formatBytes'
-import { clone } from 'lodash-es'
-import { isJSONContent, JSONEditor } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 
 const props = withDefaults(defineProps<{
@@ -62,7 +62,7 @@ const propNames = [
 const jsonEditorDiv = ref<HTMLDivElement>()
 const container = ref<HTMLDivElement>()
 const uploader = ref<HTMLInputElement>()
-let jsonEditor: JSONEditor
+let jsonEditor: JsonEditor
 
 const _name = ref('')
 const _indent = ref(2)
@@ -134,7 +134,7 @@ onMounted(() => {
     return
   }
   oldConfig = clone(props.config)
-  jsonEditor = new JSONEditor({
+  jsonEditor = createJSONEditor({
     target: jsonEditorDiv.value,
     props: {
       content: { json: {} },
