@@ -97,7 +97,7 @@ async function updateUrl(url: Url) {
     })
     if (res.success) {
       ElMessage.success('更新成功')
-      url.url = editingUrl[url.keyword]
+      url.url = editingUrl[url.keyword]!
       editing[url.keyword] = false
       await getUrlList(pageIndex.value - 1, pageSize.value)
     }

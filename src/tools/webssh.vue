@@ -3,7 +3,7 @@
 
 <template>
   <iframe
-    src="https://webssh.iszy.xyz/"
+    src="https://webssh.iszy.cc/"
     class="webssh"
     title="webssh"
   />

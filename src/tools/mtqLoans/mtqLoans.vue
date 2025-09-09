@@ -64,13 +64,13 @@ const options = computed<Partial<Options>>(() => {
       let flag = true
       for (const i in data.prepayment) {
         if (i === '0') {
-          if (!(data.prepayment[i].repaymentDate && dayjs(data.prepayment[i].repaymentDate).diff(dayjs(data.firstRepaymentDate).subtract(1, 'M'), 'days') >= 0)) {
+          if (!(data.prepayment[i]!.repaymentDate && dayjs(data.prepayment[i]!.repaymentDate).diff(dayjs(data.firstRepaymentDate).subtract(1, 'M'), 'days') >= 0)) {
             flag = false
             break
           }
         }
         else {
-          if (!(data.prepayment[i].repaymentDate && dayjs(data.prepayment[i].repaymentDate).diff(data.prepayment[Number.parseInt(i) - 1].repaymentDate, 'days') >= 0)) {
+          if (!(data.prepayment[i]!.repaymentDate && dayjs(data.prepayment[i]!.repaymentDate).diff(data.prepayment[Number.parseInt(i) - 1]!.repaymentDate, 'days') >= 0)) {
             flag = false
             break
           }
@@ -180,7 +180,7 @@ const dataSource = computed<Array<Partial<{
       const prepayment = cloneDeep(validOptions.value.prepayment)
       for (let i = 1; i <= validOptions.value.loanMonth - adjustLoanMonth; i++) {
         if (i > 0) {
-          while (prepayment.length > 0 && dayjs(prepayment[0].repaymentDate).isBetween(validOptions.value.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M'), '[)' as OpUnitType)) {
+          while (prepayment.length > 0 && dayjs(prepayment[0]!.repaymentDate).isBetween(validOptions.value.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M'), '[)' as OpUnitType)) {
             const a: SinglePayment = prepayment.shift() as SinglePayment
             remain.loanAmount -= Number(a.repaymentAmount)
             remain.lendingRates = Number(a.lendingRates || 0)
@@ -224,7 +224,7 @@ const dataSource = computed<Array<Partial<{
       const prepayment = cloneDeep(validOptions.value.prepayment)
       for (let i = 1; i <= validOptions.value.loanMonth - adjustLoanMonth; i++) {
         if (prepayment.length > 0 && i > 1) {
-          if (dayjs(prepayment[0].repaymentDate).isBetween(validOptions.value.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M'), '[)' as OpUnitType)) {
+          if (dayjs(prepayment[0]!.repaymentDate).isBetween(validOptions.value.firstRepaymentDate.clone().add(i - 2, 'M').subtract(1, 'days'), validOptions.value.firstRepaymentDate.clone().add(i - 1, 'M'), '[)' as OpUnitType)) {
             const a = prepayment.shift() as SinglePayment
             remain.loanAmount -= Number(a.repaymentAmount)
             remain.lendingRates = Number(a.lendingRates || 0)
@@ -321,8 +321,8 @@ function addPrepayment() {
     _lendingRates = data.lendingRates || 0
   }
   else {
-    date = data.prepayment[data.prepayment.length - 1].repaymentDate || new Date()
-    _lendingRates = data.prepayment[data.prepayment.length - 1].lendingRates || 0
+    date = data.prepayment[data.prepayment.length - 1]!.repaymentDate || new Date()
+    _lendingRates = data.prepayment[data.prepayment.length - 1]!.lendingRates || 0
   }
   data.prepayment.push({
     repaymentDate: date,

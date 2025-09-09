@@ -7,7 +7,7 @@ export const useMainStore = defineStore('main', {
     clearOfflineCacheTag: false,
   }),
   getters: {
-    getData: state => (key: string): never => {
+    getData: state => (key: string): any => {
       if (key) {
         return (state._cache || {})[key]
       }

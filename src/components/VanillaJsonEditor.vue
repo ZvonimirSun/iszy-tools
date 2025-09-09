@@ -207,6 +207,9 @@ function openFile(e: Event) {
   const target = e.target as HTMLInputElement
   if (target.files && target.files.length) {
     const file = target.files[0]
+    if (!file) {
+      return
+    }
     const reader = new FileReader()
     reader.onload = () => {
       if (reader.result) {

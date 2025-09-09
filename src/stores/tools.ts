@@ -141,9 +141,9 @@ export const useToolsStore = defineStore('tools', {
         if (!link) {
           return
         }
-        const tmp = this.favorite.filter(item => (item.name === name))
-        if (tmp.length > 0) {
-          tmp[0].link = link
+        const tmp = this.favorite.find(item => (item.name === name))
+        if (tmp) {
+          tmp.link = link
         }
         else {
           this.favorite.push({ name, link })
@@ -155,11 +155,11 @@ export const useToolsStore = defineStore('tools', {
     },
     access({ name, link } = {} as { name: string, link: string }) {
       if (Array.isArray(this.statistics)) {
-        const tmp = this.statistics.filter(item => (item.name === name))
-        if (tmp.length > 0) {
-          tmp[0].times++
-          tmp[0].lastAccessTime = new Date().getTime()
-          tmp[0].link = link
+        const tmp = this.statistics.find(item => (item.name === name))
+        if (tmp) {
+          tmp.times++
+          tmp.lastAccessTime = new Date().getTime()
+          tmp.link = link
         }
         else {
           this.statistics.push({

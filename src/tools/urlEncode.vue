@@ -33,8 +33,8 @@ function clear() {
 }
 
 function revertHistory(history: Array<string>) {
-  value.value = history[0]
-  result.value = history[1]
+  value.value = history[0]!
+  result.value = history[1]!
 }
 </script>
 

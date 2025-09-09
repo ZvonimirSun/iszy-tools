@@ -212,7 +212,7 @@ function startDrag(e: TouchEvent | MouseEvent) {
     originWidth = 0
   }
   if (e instanceof TouchEvent) {
-    startX = e.touches[0].clientX
+    startX = e.touches[0]!.clientX
     document.addEventListener('touchend', endDrag)
     document.addEventListener('touchmove', dragMove)
   }
@@ -229,7 +229,7 @@ function dragMove(e: TouchEvent | MouseEvent) {
   moved = true
   let clientX = 0
   if (e instanceof TouchEvent) {
-    clientX = e.touches[0].clientX
+    clientX = e.touches[0]!.clientX
   }
   else {
     clientX = e.clientX

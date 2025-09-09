@@ -5,14 +5,14 @@ import type {
   RouteLocationRaw,
   RouteRecordRaw,
 } from 'vue-router'
-import config from '@/config'
-import { Home, Offline, Page403, Page404, Redirect } from '@/pages'
-import { isExternalLink } from '@/utils/common'
 import {
   createRouter,
   createWebHistory,
   RouterView,
 } from 'vue-router'
+import config from '@/config'
+import { Home, Offline, Page403, Page404, Redirect } from '@/pages'
+import { isExternalLink } from '@/utils/common'
 
 const toolsStore = useToolsStore()
 const userStore = useUserStore()
@@ -36,7 +36,7 @@ for (const key in vueFiles) {
   routeMap[path] = {
     path,
     component: vueFiles[key],
-  }
+  } as any
 }
 
 let routes: RouteRecordRaw[] = []
@@ -58,7 +58,7 @@ for (const tool of toolsStore.toolItemsWithInternal) {
       routeMap[path].meta = meta
       if (meta.parent) {
         meta.parentInfo = {
-          name: routeMap[meta.parent].name as string,
+          name: routeMap[meta.parent]!.name as string,
           link: meta.parent,
         }
       }
