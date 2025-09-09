@@ -10,7 +10,7 @@ interface Url {
   updatedAt: string
 }
 
-const urlBase = 'https://url.iszy.xyz'
+const urlBase = 'https://url.iszy.cc'
 const urlList = ref<Url[]>([])
 const pageSize = ref(10)
 const pageIndex = ref(1)
