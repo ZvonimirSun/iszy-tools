@@ -65,8 +65,8 @@ function handler() {
   }
   const tmp = keyword.value.replace(/，/g, ',').split(',')
   if (tmp.length === 2) {
-    const lng = Number.parseFloat(tmp[0].trim())
-    const lat = Number.parseFloat(tmp[1].trim())
+    const lng = Number.parseFloat(tmp[0]!.trim())
+    const lat = Number.parseFloat(tmp[1]!.trim())
     if (!Number.isNaN(lng) && !Number.isNaN(lat)) {
       // 格式满足经纬度格式
       const latLng = new LatLng(lat, lng).wrap()

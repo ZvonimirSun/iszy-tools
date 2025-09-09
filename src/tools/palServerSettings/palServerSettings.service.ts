@@ -461,10 +461,10 @@ export function iniToSettings(ini: string): SettingObject[] {
     const iniMap: Partial<{
       [key in SettingKey]: string
     }> = {}
-    ini.replaceAll('\n', '').replaceAll('\r', '').slice(0, -1).split('OptionSettings=(')[1].split(',').forEach((item) => {
+    ini.replaceAll('\n', '').replaceAll('\r', '').slice(0, -1).split('OptionSettings=(')[1]!.split(',').forEach((item) => {
       const tmp = item.split('=')
-      const key: SettingKey = tmp[0].trim() as SettingKey
-      let value = tmp[1].trim()
+      const key: SettingKey = tmp[0]!.trim() as SettingKey
+      let value = tmp[1]!.trim()
       if (value.startsWith('"') && value.endsWith('"')) {
         value = value.slice(1, -1)
       }

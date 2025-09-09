@@ -1,10 +1,9 @@
-import config from '@/config'
-import { API } from '@/plugins/API'
-import randomString from '@/utils/randomString.js'
-import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 import dayjs from 'dayjs'
 import { clamp, debounce } from 'lodash-es'
 import { defineStore } from 'pinia'
+import { API } from '@/plugins/API'
+import randomString from '@/utils/randomString.js'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 
 interface EditorData {
   name: string
@@ -42,8 +41,8 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       for (const key in state.$_data) {
         result.push({
           _id: key,
-          name: state.$_data[key].name,
-          updated: dayjs(state.$_data[key].updated).format('YYYY-MM-DD HH:mm'),
+          name: state.$_data[key]!.name,
+          updated: dayjs(state.$_data[key]!.updated).format('YYYY-MM-DD HH:mm'),
         })
       }
       if (keyword) {
@@ -65,7 +64,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       if (state.leftId && state.$_data[state.leftId]) {
         return {
           ...state.$_data[state.leftId],
-          updated: dayjs(state.$_data[state.leftId].updated).format('YYYY-MM-DD HH:mm'),
+          updated: dayjs(state.$_data[state.leftId]!.updated).format('YYYY-MM-DD HH:mm'),
         }
       }
       else {
@@ -76,7 +75,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       if (state.rightId && state.$_data[state.rightId]) {
         return {
           ...state.$_data[state.rightId],
-          updated: dayjs(state.$_data[state.rightId].updated).format('YYYY-MM-DD HH:mm'),
+          updated: dayjs(state.$_data[state.rightId]!.updated).format('YYYY-MM-DD HH:mm'),
         }
       }
       else {
@@ -107,12 +106,12 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
           content: {},
         }
         if (d.text != null) {
-          data[d.key].content.text = d.text
+          data[d.key]!.content.text = d.text
         }
         else if (d.json != null) {
-          data[d.key].content.json = d.json
+          data[d.key]!.content.json = d.json
         }
-        data[d.key].updated = dayjs(d.updatedAt).format()
+        data[d.key]!.updated = dayjs(d.updatedAt).format()
       }
       this.$_data = data as Record<string, EditorData>
     },
@@ -178,19 +177,19 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
       }
       if (typeof content !== 'undefined') {
         id = id || randomString(6)
-        this.$_data[id] = this.$_data[id] || {}
-        this.$_data[id].name = name || this.$_data[id].name || `文档-${id}`
+        this.$_data[id] = this.$_data[id] || {} as EditorData
+        this.$_data[id]!.name = name || this.$_data[id]!.name || `文档-${id}`
         if (typeof content === 'string') {
-          this.$_data[id].content = {
+          this.$_data[id]!.content = {
             text: content,
           }
         }
         else {
-          this.$_data[id].content = {
+          this.$_data[id]!.content = {
             json: markRaw(content),
           }
         }
-        this.$_data[id].updated = dayjs().format()
+        this.$_data[id]!.updated = dayjs().format()
         if (left) {
           this.leftId = id
         }
@@ -205,7 +204,7 @@ export const useJsonEditorStore = defineStore('jsonEditor', {
         if (right) {
           this.rightId = id
         }
-        this.$_data[id].name = name || this.$_data[id].name
+        this.$_data[id]!.name = name || this.$_data[id]!.name
       }
       else {
         if (left) {

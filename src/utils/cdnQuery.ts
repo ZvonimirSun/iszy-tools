@@ -86,8 +86,8 @@ function parseQuery(queryString: string) {
   while ((match = ATTR_REGEXP.exec(substr)) !== null) {
     const temp = match[0].split(':')
 
-    if (filterMapping[temp[0].trim()]) {
-      filters.push(`${filterMapping[temp[0].trim()]}:${temp[1].trim()}`)
+    if (filterMapping[temp[0]!.trim()]) {
+      filters.push(`${filterMapping[temp[0]!.trim()]}:${temp[1]!.trim()}`)
     }
   }
 
