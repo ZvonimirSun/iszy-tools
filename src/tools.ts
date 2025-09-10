@@ -1,5 +1,5 @@
-import type { ToolMenu } from '@/types/tool'
 import type { Optional } from '@zvonimirsun/iszy-common'
+import type { ToolMenu } from '@/types/tool'
 
 const tools: Optional<ToolMenu, 'id'>[] = [
   {
@@ -45,6 +45,10 @@ const tools: Optional<ToolMenu, 'id'>[] = [
       {
         name: '经纬度查询',
         link: '/latLng',
+      },
+      {
+        name: '坐标系查询',
+        link: '/epsg',
       },
       {
         name: '切片方案计算',
