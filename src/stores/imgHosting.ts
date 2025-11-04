@@ -20,7 +20,7 @@ export const useImgHostingStore = defineStore('imgHosting', {
     },
     config() {
       return (uploader: string): Record<string, string> => {
-        return userImgHosting.configs[uploader]
+        return userImgHosting.configs[uploader]!
       }
     },
     commonConfig() {
@@ -49,7 +49,7 @@ export const useImgHostingStore = defineStore('imgHosting', {
     },
     removeImage({ id } = {} as { id: string }) {
       for (const i in this.imgList || []) {
-        if (this.imgList[i].id === id) {
+        if (this.imgList[i]!.id === id) {
           this.imgList.splice(Number.parseInt(i), 1)
         }
       }

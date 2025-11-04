@@ -54,7 +54,7 @@ function buildColorForm<T extends { [p: string]: ReturnType<typeof buildColorFor
   for (const key in formats) {
     rules[key] = [
       {
-        validator: formats[key].validation,
+        validator: formats[key]!.validation,
         trigger: 'change',
       },
     ]

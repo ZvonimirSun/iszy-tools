@@ -219,7 +219,7 @@ const currentDisplayMediaOptions = computed(() => {
   if (localScreenShareStream) {
     const tracks: Array<MediaStreamTrack> = localScreenShareStream.getVideoTracks()
     if (tracks.length > 0) {
-      const settings: MediaTrackSettingsUserShared = tracks[0].getSettings()
+      const settings: MediaTrackSettingsUserShared = tracks[0]!.getSettings()
       const currentOptions = {
         recordAudio: recordAudioOptions.find(item => (recordAudio.value === item.value))?.label,
         recordMicro: recordMicroOptions.find(item => (recordMicro.value === item.value))?.label,
@@ -264,7 +264,7 @@ async function openScreenShare() {
     localScreenShareStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions.value)
     if (recordMicro.value === 'always') {
       const tempStream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      localScreenShareStream.addTrack(tempStream.getAudioTracks()[0])
+      localScreenShareStream.addTrack(tempStream.getAudioTracks()[0]!)
     }
 
     const screenShareTrack = localScreenShareStream.getVideoTracks()[0]

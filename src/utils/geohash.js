@@ -35,7 +35,7 @@ const refineInterval = function (interval, cd, mask) {
   else { interval[1] = (interval[0] + interval[1]) / 2 }
 }
 
-function encodeGeoHash(latitude, longitude) {
+export function encodeGeoHash(latitude, longitude) {
   if (typeof latitude === 'string') {
     const tmp = latitude.split(',')
     if (tmp.length >= 2) {
@@ -89,7 +89,8 @@ function encodeGeoHash(latitude, longitude) {
   }
   return geohash
 }
-function decodeGeoHash(geohash) {
+
+export function decodeGeoHash(geohash) {
   let isEven = 1
   const lat = []; const lon = []
   lat[0] = -90.0; lat[1] = 90.0
@@ -117,7 +118,8 @@ function decodeGeoHash(geohash) {
 
   return { latitude: lat[2], longitude: lon[2] }
 }
-function calculateAdjacent(srcHash, dir) {
+
+export function calculateAdjacent(srcHash, dir) {
   srcHash = srcHash.toLowerCase()
   const lastChr = srcHash.charAt(srcHash.length - 1)
   const type = (srcHash.length % 2) ? 'odd' : 'even'
@@ -125,5 +127,3 @@ function calculateAdjacent(srcHash, dir) {
   if (BORDERS[dir][type].includes(lastChr)) { base = calculateAdjacent(base, dir) }
   return base + BASE32[NEIGHBORS[dir][type].indexOf(lastChr)]
 }
-
-export { encodeGeoHash, decodeGeoHash }
