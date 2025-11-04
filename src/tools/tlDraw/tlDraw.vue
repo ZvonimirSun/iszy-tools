@@ -6,7 +6,7 @@ import config from '@/config'
 import 'tldraw/tldraw.css'
 
 const assetUrls = getAssetUrls({
-  baseUrl: `${config.cdnOrigin}/jsd/npm/@tldraw/assets@4.1.2/`,
+  baseUrl: `${config.cdnOrigin}/jsd/npm/@tldraw/assets@3/`,
 })
 const TldrawComponent = applyReactInVue(Tldraw)
 </script>
