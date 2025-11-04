@@ -57,7 +57,7 @@ importers:
         specifier: ^11.1.1
         version: 11.1.1(ol@6.15.1)
       '@tldraw/assets':
-        specifier: ^3.15.4
+        specifier: ^3.15.5
         version: 3.15.5
       '@turf/turf':
         specifier: ^7.2.0
@@ -156,7 +156,7 @@ importers:
         specifier: ^0.181.0
         version: 0.181.0
       tldraw:
-        specifier: ^3.15.4
+        specifier: ^3.15.5
         version: 3.15.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ua-parser-js:
         specifier: ^2.0.6
