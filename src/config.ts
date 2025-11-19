@@ -6,8 +6,8 @@ const config = {
   key: 'iszy',
 
   siteOrigin: 'https://tools.iszy.xyz',
-  cdnOrigin: 'https://cdn.iszy.cc',
-  apiOrigin: 'https://api.iszy.cc',
+  cdnOrigin: 'https://cdn.owooo.cc',
+  apiOrigin: 'https://api.owooo.cc',
   apiPath: '',
 
   whiteList: ['/login', '/logout'],

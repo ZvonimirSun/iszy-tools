@@ -75,7 +75,7 @@ export default defineConfig(({ command }) => {
           runtimeCaching: [
             // api
             {
-              urlPattern: ({ url }) => url.origin === 'https://api.iszy.cc',
+              urlPattern: ({ url }) => url.origin === 'https://api.owooo.cc',
               handler: 'NetworkFirst',
               options: {
                 cacheName: `${config.key}-api`,
