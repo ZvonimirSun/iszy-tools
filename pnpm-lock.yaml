@@ -12,7 +12,7 @@ importers:
   .:
     dependencies:
       '@aws-sdk/client-s3':
-        specifier: ~3.726.1
+        specifier: 3.726.1
         version: 3.726.1
       '@ckpack/vue-color':
         specifier: ^1.6.0
@@ -57,7 +57,7 @@ importers:
         specifier: ^11.1.1
         version: 11.1.1(ol@6.15.1)
       '@tldraw/assets':
-        specifier: ^3.15.5
+        specifier: 3.15.5
         version: 3.15.5
       '@turf/turf':
         specifier: ^7.3.1
@@ -75,7 +75,7 @@ importers:
         specifier: ^1.0.12
         version: 1.0.12
       algoliasearch:
-        specifier: ^4.25.3
+        specifier: 4.25.3
         version: 4.25.3
       ant-design-vue:
         specifier: ^4.2.6
@@ -156,7 +156,7 @@ importers:
         specifier: ^0.182.0
         version: 0.182.0
       tldraw:
-        specifier: ^3.15.5
+        specifier: 3.15.5
         version: 3.15.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ua-parser-js:
         specifier: ^2.0.7
@@ -181,7 +181,7 @@ importers:
         version: 3.6.7
     devDependencies:
       '@algolia/client-search':
-        specifier: ^4.25.3
+        specifier: 4.25.3
         version: 4.25.3
       '@antfu/eslint-config':
         specifier: ^6.7.3
@@ -3181,6 +3181,7 @@ packages:
   '@smithy/core@3.18.4':
     resolution: {integrity: sha512-o5tMqPZILBvvROfC8vC+dSVnWJl9a0u9ax1i1+Bq8515eYjUJqqk5XjjEsDLoeL5dSqGSh6WGdVx1eJ1E/Nwhw==}
     engines: {node: '>=18.0.0'}
+    deprecated: Please upgrade your lockfile to use the latest 3.x version of @smithy/core for various fixes, see https://github.com/smithy-lang/smithy-typescript/blob/main/packages/core/CHANGELOG.md
 
   '@smithy/credential-provider-imds@4.2.5':
     resolution: {integrity: sha512-BZwotjoZWn9+36nimwm/OLIcVe+KYRwzMjfhd4QT7QxPm9WY0HiOV8t/Wlh+HVUif0SBVV7ksq8//hPaBC/okQ==}
