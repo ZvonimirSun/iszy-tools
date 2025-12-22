@@ -1,1 +1,0 @@
-import{di as n}from"./index-CRxzzwo-.js";function t(d,i,f){return d===d&&(f!==void 0&&(d=d<=f?d:f),i!==void 0&&(d=d>=i?d:i)),d}function c(d,i,f){return f===void 0&&(f=i,i=void 0),f!==void 0&&(f=n(f),f=f===f?f:0),i!==void 0&&(i=n(i),i=i===i?i:0),t(n(d),i,f)}export{c};
