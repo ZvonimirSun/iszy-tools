@@ -75,7 +75,7 @@ export default defineConfig(({ command }) => {
           runtimeCaching: [
             // api
             {
-              urlPattern: ({ url }) => url.origin === 'https://api.owooo.cc',
+              urlPattern: ({ url }) => url.origin === 'https://api.ovooo.cc',
               handler: 'NetworkFirst',
               options: {
                 cacheName: `${config.key}-api`,

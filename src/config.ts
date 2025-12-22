@@ -7,7 +7,7 @@ const config = {
 
   siteOrigin: 'https://tools.iszy.xyz',
   cdnOrigin: 'https://cdn.owooo.cc',
-  apiOrigin: 'https://api.owooo.cc',
+  apiOrigin: 'https://api.ovooo.cc',
   apiPath: '',
 
   whiteList: ['/login', '/logout'],
