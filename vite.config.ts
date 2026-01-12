@@ -86,23 +86,8 @@ export default defineConfig(({ command }) => {
             },
             // cdn
             {
-              urlPattern: /^https:\/\/.*cdn\.iszy\.xyz/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: `${config.key}-cdn`,
-                expiration: {
-                  maxEntries: 30,
-                  maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
-              },
-            },
-            // cdn
-            {
-              urlPattern: /^https:\/\/.*cdn\.iszy\.cc/,
-              handler: 'CacheFirst',
+              urlPattern: /^https:\/\/.*cdn\.ovooo\.cc/,
+              handler: 'NetworkFirst',
               options: {
                 cacheName: `${config.key}-cdn`,
                 expiration: {
