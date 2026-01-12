@@ -18,7 +18,7 @@ export default {
       if (this.url) {
         this.loading = true
         try {
-          const res = await $axios(`https://cdn.owooo.cc/cors/${this.url}`)
+          const res = await $axios(`https://cdn.ovooo.cc/cors/${this.url}`)
           this.data = htmlBeatify(res.data || '')
           ElMessage.success('解析成功')
         }

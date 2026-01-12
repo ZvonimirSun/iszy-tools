@@ -10,7 +10,7 @@ async function search() {
     return
   loading.value = true
   try {
-    const res = (await $axios.get(`https://cdn.owooo.cc/cors/https://www.iana.org/whois?q=${domains.value}`)).data
+    const res = (await $axios.get(`https://cdn.ovooo.cc/cors/https://www.iana.org/whois?q=${domains.value}`)).data
     const tree = new DOMParser().parseFromString(res, 'text/html')
     result.value = tree.querySelector('#results + pre')?.innerHTML
   }

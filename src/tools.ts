@@ -1,5 +1,5 @@
-import type { ToolMenu } from '@/types/tool'
 import type { Optional } from '@zvonimirsun/iszy-common'
+import type { ToolMenu } from '@/types/tool'
 
 const tools: Optional<ToolMenu, 'id'>[] = [
   {
@@ -216,7 +216,7 @@ const tools: Optional<ToolMenu, 'id'>[] = [
       },
       {
         name: '资源包',
-        link: 'https://libview.iszy.xyz',
+        link: 'https://lib.iszy.xyz',
       },
     ],
   },
@@ -242,10 +242,6 @@ const tools: Optional<ToolMenu, 'id'>[] = [
     type: '运维',
     icon: 'i-icon-park-outline-computer',
     children: [
-      {
-        name: 'WebSSH',
-        link: '/webssh',
-      },
       {
         name: 'Linux命令查询',
         link: '/linuxCommand',
@@ -289,20 +285,6 @@ const tools: Optional<ToolMenu, 'id'>[] = [
       {
         name: 'PalWorld服务器设置',
         link: '/palServerSettings',
-      },
-    ],
-  },
-  {
-    type: '其他',
-    icon: 'i-icon-park-solid-all-application',
-    children: [
-      {
-        name: 'Chromium下载',
-        link: 'https://chromium.cypress.io/',
-      },
-      {
-        name: '淘宝优惠券精选',
-        link: 'https://shop.iszy.xyz',
       },
     ],
   },

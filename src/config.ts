@@ -6,7 +6,7 @@ const config = {
   key: 'iszy',
 
   siteOrigin: 'https://tools.iszy.xyz',
-  cdnOrigin: 'https://cdn.owooo.cc',
+  cdnOrigin: 'https://cdn.ovooo.cc',
   apiOrigin: 'https://api.ovooo.cc',
   apiPath: '',
 
