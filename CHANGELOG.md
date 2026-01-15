@@ -1,1 +1,1 @@
-fix: 修复ts错误
+feat(mock): 调整首页展示
