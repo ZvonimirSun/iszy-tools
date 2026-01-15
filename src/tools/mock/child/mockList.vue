@@ -63,8 +63,16 @@ async function createOrEditPrj(prj: MockPrj) {
           {{ prj.name }}
         </div>
         <div class="prj-content">
-          <table max-h-full w-full>
+          <table w-full>
             <tbody>
+              <tr class="prj-id">
+                <td class="prj-content-label">
+                  项目ID:
+                </td>
+                <td class="prj-content-value">
+                  {{ prj.id }}
+                </td>
+              </tr>
               <tr class="prj-path">
                 <td class="prj-content-label">
                   接口路径:
@@ -176,15 +184,16 @@ async function createOrEditPrj(prj: MockPrj) {
 
 .prj-list {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   flex-wrap: wrap;
 
   .prj-item, .prj-add {
     background: var(--el-fill-color-blank);
     box-shadow: var(--el-box-shadow-light);
     border-radius: var(--el-border-radius-middle);
-    width: 30rem;
-    height: 20rem;
+    width: 40rem;
+    max-width: 100%;
+    height: 25rem;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -197,7 +206,7 @@ async function createOrEditPrj(prj: MockPrj) {
   .prj-item {
 
     .prj-title {
-      font-size: 1.6rem;
+      font-size: 2rem;
       font-weight: bold;
       padding: 0 2rem;
       height: 4rem;
@@ -210,17 +219,20 @@ async function createOrEditPrj(prj: MockPrj) {
       flex: 1;
       line-height: 2.2rem;
       font-size: 1.6rem;
+      overflow: auto;
 
       .prj-content-label {
         font-weight: bold;
         width: 7rem;
         text-align: right;
         padding-right: 1rem;
+        vertical-align: top;
       }
 
       .prj-content-value {
         overflow: auto;
         white-space: pre-wrap;
+        vertical-align: top;
       }
     }
 
@@ -229,7 +241,7 @@ async function createOrEditPrj(prj: MockPrj) {
     }
 
     .prj-control {
-      height: 3rem;
+      height: 4rem;
       display: flex;
       border-top: solid .1rem var(--el-border-color);
 
@@ -243,7 +255,7 @@ async function createOrEditPrj(prj: MockPrj) {
 
         cursor: pointer;
 
-        font-size: 1.8rem;
+        font-size: 2rem;
         transition: all .3s;
 
         &:hover {
