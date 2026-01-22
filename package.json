@@ -58,7 +58,7 @@
     "json-editor-vue": "^0.18.1",
     "leaflet": "^1.9.4",
     "localforage": "^1.10.0",
-    "lodash-es": "^4.17.22",
+    "lodash-es": "^4.17.23",
     "markdown-it": "^14.1.0",
     "nzh": "^1.0.14",
     "pinia": "^3.0.4",
