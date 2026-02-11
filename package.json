@@ -41,7 +41,7 @@
     "@zvonimirsun/iszy-common": "^1.0.12",
     "algoliasearch": "4.25.3",
     "ant-design-vue": "^4.2.6",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "buffer": "^6.0.3",
     "codemirror": "^6.0.2",
     "colord": "^2.9.3",
