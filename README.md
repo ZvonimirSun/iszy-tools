@@ -13,25 +13,25 @@ ISZY 工具集合，基于 Vue 3 开发，使用 Vite 5 进行构建。
 
 ## 项目安装
 
-```
+```shell
 pnpm install
 ```
 
 ### 启动开发服务器
 
-```
+```shell
 pnpm run dev
 ```
 
 ### 为生产环境构建产物
 
-```
+```shell
 pnpm run build
 ```
 
 ### 本地预览生产构建产物
 
-```
+```shell
 pnpm run serve
 ```
 

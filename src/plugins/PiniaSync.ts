@@ -1,7 +1,7 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, StoreGeneric, SubscriptionCallbackMutation } from 'pinia'
+import { debounce } from 'lodash-es'
 import { API } from '@/plugins/API'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
-import { debounce } from 'lodash-es'
 
 interface SyncOptions<S> {
   key?: string

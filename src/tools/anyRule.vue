@@ -1,6 +1,6 @@
 <script setup>
-import anyRule from '@/utils/anyRule.js'
 import { v4 as uuid } from 'uuid'
+import anyRule from '@/utils/anyRule.js'
 
 const model = ref({})
 const anyRules = ref([])

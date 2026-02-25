@@ -4,6 +4,10 @@ import type {
   GeoJSON,
   Map,
 } from 'leaflet'
+import {
+  Icon,
+  Marker,
+} from 'leaflet'
 import $eventBus from '@/plugins/EventBus'
 import {
   addDefaultBaseLayers,
@@ -13,10 +17,6 @@ import {
   initDrawLayer,
   initDrawMap,
 } from '@/utils/gisUtils'
-import {
-  Icon,
-  Marker,
-} from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 const defaultIcon = new Icon.Default()

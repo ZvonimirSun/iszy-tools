@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { Map, Marker } from 'leaflet'
 import type { Ref } from 'vue'
-import { addDefaultBaseLayers, createMap, formatDegree, getAddress, getLocation } from '@/utils/gisUtils'
 import { Icon, LatLng, marker, Popup } from 'leaflet'
+import { addDefaultBaseLayers, createMap, formatDegree, getAddress, getLocation } from '@/utils/gisUtils'
 
 const yellowIcon = new Icon.Default({
   iconUrl: 'marker-icon-yellow.png',

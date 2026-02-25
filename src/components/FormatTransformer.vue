@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { EditorPlugin } from '@/types/editor'
 import type { FormRules } from 'element-plus'
-import EditorMini from '@/components/editor/EditorMini.vue'
+import type { EditorPlugin } from '@/types/editor'
 import { identity } from 'lodash-es'
+import EditorMini from '@/components/editor/EditorMini.vue'
 
 const props = withDefaults(
   defineProps<{

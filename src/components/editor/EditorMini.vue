@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { EditorPlugin } from '@/types/editor'
 import type { ViewUpdate } from '@codemirror/view'
+import type { EditorPlugin } from '@/types/editor'
 import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { Compartment, EditorState } from '@codemirror/state'
 import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'

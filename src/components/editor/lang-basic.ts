@@ -1,5 +1,5 @@
-import type { EditorPlugin } from '@/types/editor'
 import type { EditorView, Panel, ViewUpdate } from '@codemirror/view'
+import type { EditorPlugin } from '@/types/editor'
 import { lintGutter } from '@codemirror/lint'
 import { showPanel } from '@codemirror/view'
 

@@ -1,12 +1,12 @@
-import type { AuthOption } from '@/types/auth'
 import type { Device, PublicUser, RegisterUser, UpdateUser } from '@zvonimirsun/iszy-common'
 import type { AxiosError } from 'axios'
-import { API } from '@/plugins/API'
-import { downloadSettings } from '@/plugins/PiniaSync'
+import type { AuthOption } from '@/types/auth'
 import { isCancel } from 'axios'
 import dayjs from 'dayjs'
 import { cloneDeep } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { API } from '@/plugins/API'
+import { downloadSettings } from '@/plugins/PiniaSync'
 
 let tokenChecked = false
 let checkTokenPromise: Promise<any> | null = null

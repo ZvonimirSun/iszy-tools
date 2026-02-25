@@ -1,8 +1,8 @@
-import type { InitMapOptions } from '@/utils/gisUtils/type'
-
 import type { Map, MapOptions } from 'leaflet'
-import config from '@/config'
+
+import type { InitMapOptions } from '@/utils/gisUtils/type'
 import { control, Icon, map } from 'leaflet'
+import config from '@/config'
 import persistMap, { add } from './persistMap'
 import 'leaflet/dist/leaflet.css'
 

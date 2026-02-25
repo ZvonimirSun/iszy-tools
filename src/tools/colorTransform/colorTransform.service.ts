@@ -2,8 +2,8 @@ import type { Colord } from 'colord'
 import type { FormRules } from 'element-plus'
 import type { FormItemRule } from 'element-plus/es/components/form/src/types'
 import type { Arrayable } from 'element-plus/es/utils'
-import { withDefaultOnError } from '@/utils/defaults'
 import { colord } from 'colord'
+import { withDefaultOnError } from '@/utils/defaults'
 
 function buildColorFormat({
   label,

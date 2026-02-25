@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { EditorPlugin } from '@/types/editor'
 import type { EditorView } from '@codemirror/view'
+import type { EditorPlugin } from '@/types/editor'
 import { redo, redoDepth, undo, undoDepth } from '@codemirror/commands'
 import EditorMini from './EditorMini.vue'
 import basic from './lang-basic'

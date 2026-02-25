@@ -1,7 +1,7 @@
 import type { PiniaPlugin, PiniaPluginContext, StateTree, SubscriptionCallbackMutation } from 'pinia'
-import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 import localforage from 'localforage'
 import { cloneDeep, debounce, merge } from 'lodash-es'
+import SimplePromiseQueue from '@/utils/SimplePromiseQueue.js'
 
 interface PersistOptions<S> {
   key?: string

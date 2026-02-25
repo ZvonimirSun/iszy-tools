@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { API } from '@/plugins/API'
 import dayjs from 'dayjs'
+import { API } from '@/plugins/API'
 
 interface Url {
   keyword: string

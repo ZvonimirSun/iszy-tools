@@ -1,7 +1,7 @@
-import config from '@/config'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { defineStore } from 'pinia'
+import config from '@/config'
 
 export const useLinuxCommandStore = defineStore('linuxCommand', {
   persist: true,

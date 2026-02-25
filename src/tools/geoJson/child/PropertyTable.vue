@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import type { Column, InputInstance } from 'element-plus'
 import type { FeatureCollection, GeoJsonProperties } from 'geojson'
-import $eventBus from '@/plugins/EventBus'
 import { debounce } from 'lodash-es'
+import $eventBus from '@/plugins/EventBus'
 
 withDefaults(defineProps<{
   height?: number | null
