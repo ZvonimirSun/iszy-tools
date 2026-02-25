@@ -247,7 +247,7 @@ export const useUserStore = defineStore('user', {
     },
     async thirdPartyUnbind(type: string) {
       try {
-        await API.post(`/auth/${type}/bind`)
+        await API.post(`/auth/${type}/unbind`)
         await this.checkToken(true)
       }
       catch (e) {
