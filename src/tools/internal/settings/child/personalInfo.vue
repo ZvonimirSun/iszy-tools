@@ -202,7 +202,7 @@ async function _thirdPartyBindCallback(e: MessageEvent<{
     window.removeEventListener('message', _thirdPartyBindCallback)
     page.close()
     try {
-      await userStore.thirdPartyBind(binding.value, e.data.data)
+      await userStore.checkToken(true)
       ElMessage.success('绑定成功')
     }
     catch (e) {

@@ -186,7 +186,7 @@ export const useUserStore = defineStore('user', {
     },
     async updateUser(options: UpdateUser) {
       try {
-        const data = await API.put(`/auth/profile`, options)
+        const data = await API.put(`/user/me`, options)
         if (data && data.success) {
           this.profile = data.data || cloneDeep(emptyProfile)
           ElMessage.success('更新成功！')
@@ -210,7 +210,7 @@ export const useUserStore = defineStore('user', {
         return true
       }
       if (!checkTokenPromise || force) {
-        checkTokenPromise = API.get(`/auth/profile`)
+        checkTokenPromise = API.get(`/user/me`)
         checkTokenPromise.then((data) => {
           console.log('已登录')
           if (data && data.success) {
@@ -245,21 +245,9 @@ export const useUserStore = defineStore('user', {
       this.updateProfile(data)
       await downloadSettings()
     },
-    async thirdPartyBind(type: string, id: string) {
-      try {
-        await API.post(`/auth/bind/${type}/${id}`)
-        await this.checkToken(true)
-      }
-      catch (e) {
-        if (((e as AxiosError)?.response?.data as { message: string })?.message) {
-          throw new Error(((e as AxiosError)?.response?.data as { message: string })?.message)
-        }
-        throw e
-      }
-    },
     async thirdPartyUnbind(type: string) {
       try {
-        await API.delete(`/auth/bind/${type}`)
+        await API.post(`/auth/${type}/bind`)
         await this.checkToken(true)
       }
       catch (e) {
