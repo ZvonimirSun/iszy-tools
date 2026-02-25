@@ -1,1 +1,0 @@
-import{b as t,d as r,a as s,r as o,e as a,o as l,ae as p,k as n}from"./index-BRNEAQYo.js";const d=t({to:{type:r([String,Object]),required:!0},disabled:Boolean});var i=s({__name:"teleport",props:d,setup(u){return(e,c)=>e.disabled?o(e.$slots,"default",{key:0}):(l(),a(p,{key:1,to:e.to},[o(e.$slots,"default")],8,["to"]))}});const b=n(i);export{b as E,d as t};

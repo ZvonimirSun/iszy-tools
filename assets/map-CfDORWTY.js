@@ -1,0 +1,1 @@
+import{bS as n,b_ as f,aR as i}from"./index-CHfiD-OV.js";import{b as p}from"./_baseIteratee-fCI9EvlX.js";import{b as u}from"./_baseEach-BJYNeoAb.js";function o(a,r){var s=-1,e=n(a)?Array(a.length):[];return u(a,function(t,b,m){e[++s]=r(t,b,m)}),e}function v(a,r){var s=i(a)?f:o;return s(a,p(r))}export{o as b,v as m};
