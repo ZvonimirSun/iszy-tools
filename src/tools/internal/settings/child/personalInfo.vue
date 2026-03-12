@@ -172,7 +172,7 @@ async function bind(type: 'github' | 'linuxdo', title?: string) {
   if (userStore.profile[type]) {
     return
   }
-  const url = new URL(`${config.apiBaseUrl}/auth/${type}/bind`)
+  const url = new URL(`${config.apiBaseUrl}/oauth/${type}/bind`)
   url.searchParams.append('access_token', userStore.access_token)
   _openThirdPartyBind(type, url.toString(), title)
 }

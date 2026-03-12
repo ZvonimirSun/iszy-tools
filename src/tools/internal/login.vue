@@ -90,7 +90,7 @@ function register() {
 }
 
 function thirdPartyLogin(type: 'github' | 'linuxdo') {
-  const url = `${config.apiBaseUrl}/auth/${type}`
+  const url = `${config.apiBaseUrl}/oauth/${type}`
   _openThirdPartyLogin(url, 'GitHub登录')
 }
 
