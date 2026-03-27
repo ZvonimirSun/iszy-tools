@@ -106,7 +106,6 @@ declare global {
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
-  const state: typeof import('../stores/user').state
   const storeToRefs: typeof import('pinia').storeToRefs
   const syncRef: typeof import('@vueuse/core').syncRef
   const syncRefs: typeof import('@vueuse/core').syncRefs
@@ -127,7 +126,6 @@ declare global {
   const unref: typeof import('vue').unref
   const unrefElement: typeof import('@vueuse/core').unrefElement
   const until: typeof import('@vueuse/core').until
-  const use2048Store: typeof import('../stores/2048').use2048Store
   const useActiveElement: typeof import('@vueuse/core').useActiveElement
   const useAnimate: typeof import('@vueuse/core').useAnimate
   const useArrayDifference: typeof import('@vueuse/core').useArrayDifference
@@ -199,23 +197,18 @@ declare global {
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
   const useGamepad: typeof import('@vueuse/core').useGamepad
   const useGeolocation: typeof import('@vueuse/core').useGeolocation
-  const useGlobalStore: typeof import('../stores/global').useGlobalStore
   const useId: typeof import('vue').useId
   const useIdle: typeof import('@vueuse/core').useIdle
   const useImage: typeof import('@vueuse/core').useImage
-  const useImgHostingStore: typeof import('../stores/imgHosting').useImgHostingStore
   const useInfiniteScroll: typeof import('@vueuse/core').useInfiniteScroll
   const useIntersectionObserver: typeof import('@vueuse/core').useIntersectionObserver
   const useInterval: typeof import('@vueuse/core').useInterval
   const useIntervalFn: typeof import('@vueuse/core').useIntervalFn
-  const useJsonEditorStore: typeof import('../stores/jsonEditor').useJsonEditorStore
   const useKeyModifier: typeof import('@vueuse/core').useKeyModifier
   const useLastChanged: typeof import('@vueuse/core').useLastChanged
   const useLink: typeof import('vue-router').useLink
-  const useLinuxCommandStore: typeof import('../stores/linuxCommand').useLinuxCommandStore
   const useLocalStorage: typeof import('@vueuse/core').useLocalStorage
   const useMagicKeys: typeof import('@vueuse/core').useMagicKeys
-  const useMainStore: typeof import('../stores/main').useMainStore
   const useManualRefHistory: typeof import('@vueuse/core').useManualRefHistory
   const useMediaControls: typeof import('@vueuse/core').useMediaControls
   const useMediaQuery: typeof import('@vueuse/core').useMediaQuery
@@ -260,7 +253,6 @@ declare global {
   const useScroll: typeof import('@vueuse/core').useScroll
   const useScrollLock: typeof import('@vueuse/core').useScrollLock
   const useSessionStorage: typeof import('@vueuse/core').useSessionStorage
-  const useSettingStore: typeof import('../stores/setting').useSettingStore
   const useShare: typeof import('@vueuse/core').useShare
   const useSlots: typeof import('vue').useSlots
   const useSorted: typeof import('@vueuse/core').useSorted
@@ -286,17 +278,13 @@ declare global {
   const useTimeoutFn: typeof import('@vueuse/core').useTimeoutFn
   const useTimeoutPoll: typeof import('@vueuse/core').useTimeoutPoll
   const useTimestamp: typeof import('@vueuse/core').useTimestamp
-  const useTinyEditorStore: typeof import('../stores/tinyEditor').useTinyEditorStore
   const useTitle: typeof import('@vueuse/core').useTitle
   const useToNumber: typeof import('@vueuse/core').useToNumber
   const useToString: typeof import('@vueuse/core').useToString
   const useToggle: typeof import('@vueuse/core').useToggle
-  const useToolsStore: typeof import('../stores/tools').useToolsStore
   const useTransition: typeof import('@vueuse/core').useTransition
-  const useUrlEncodeStore: typeof import('../stores/urlEncode').useUrlEncodeStore
   const useUrlSearchParams: typeof import('@vueuse/core').useUrlSearchParams
   const useUserMedia: typeof import('@vueuse/core').useUserMedia
-  const useUserStore: typeof import('../stores/user').useUserStore
   const useVModel: typeof import('@vueuse/core').useVModel
   const useVModels: typeof import('@vueuse/core').useVModels
   const useVibrate: typeof import('@vueuse/core').useVibrate
