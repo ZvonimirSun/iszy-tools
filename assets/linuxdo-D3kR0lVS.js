@@ -1,0 +1,1 @@
+var e=`/assets/linuxdo-B5-OBFfW.png`;export{e as t};

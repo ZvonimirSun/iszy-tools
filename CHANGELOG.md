@@ -1,2 +1,2 @@
-feat: 适配新的第三方登录接口
-feat: 适配新的第三方登录接口
+feat: 用qr-scanner替换陈旧的qrcode-decoder
+fix: 移除stores的自动导入

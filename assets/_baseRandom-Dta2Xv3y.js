@@ -1,0 +1,1 @@
+var e=Math.floor,t=Math.random;function n(n,r){return n+e(t()*(r-n+1))}export{n as t};

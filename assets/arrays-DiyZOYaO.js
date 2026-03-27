@@ -1,0 +1,1 @@
+import{At as e}from"./runtime-core.esm-bundler-BIc4P3wE.js";import{h as t}from"./_getPrototype-CshsP0t-.js";function n(){if(!arguments.length)return[];var e=arguments[0];return t(e)?e:[e]}var r=t=>e(t)?t[0]:t,i=t=>!t&&t!==0?[]:e(t)?t:[t];export{r as n,n as r,i as t};
