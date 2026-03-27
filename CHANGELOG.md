@@ -1,2 +1,1 @@
-feat: 用qr-scanner替换陈旧的qrcode-decoder
-fix: 移除stores的自动导入
+fix: 补充遗漏的导入
