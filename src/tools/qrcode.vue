@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import qrScanner from 'qr-scanner'
 import { toDataURL } from 'qrcode'
-import QrcodeDecoder from 'qrcode-decoder'
 import createFile from '@/utils/createFile'
 
 const generateContent = ref('')
@@ -57,8 +57,9 @@ function upload(img: File) {
 
 async function decodeQRCode(img: HTMLImageElement) {
   try {
-    const qrcodeDecoder = new QrcodeDecoder()
-    const res = await qrcodeDecoder.decodeFromImage(img) as { data: string }
+    const res = await qrScanner.scanImage(img, {
+      returnDetailedScanResult: true,
+    })
     if (res) {
       decodeResult.value = res.data
     }
