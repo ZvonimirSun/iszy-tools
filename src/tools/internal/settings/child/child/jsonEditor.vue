@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useSettingStore } from '@/stores/setting.ts'
+import { useUserStore } from '@/stores/user.ts'
+
 const settingStore = useSettingStore()
 const userStore = useUserStore()
 const settings = settingStore.modules.jsonEditor

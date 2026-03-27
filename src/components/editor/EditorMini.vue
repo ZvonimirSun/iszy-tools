@@ -5,6 +5,7 @@ import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { Compartment, EditorState } from '@codemirror/state'
 import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'
 import { EditorView, placeholder as PlaceHolder } from '@codemirror/view'
+import { useGlobalStore } from '@/stores/global.ts'
 import mini from './lang-mini'
 
 const props = withDefaults(defineProps<{

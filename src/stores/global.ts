@@ -1,3 +1,5 @@
+import { useSettingStore } from '@/stores/setting.ts'
+
 const isDark = useDark()
 
 export const useGlobalStore = defineStore('global', {

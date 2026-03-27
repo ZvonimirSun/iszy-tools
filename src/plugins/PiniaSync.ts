@@ -2,6 +2,7 @@ import type { PiniaPlugin, PiniaPluginContext, StateTree, StoreGeneric, Subscrip
 import { debounce } from 'lodash-es'
 import { API } from '@/plugins/API'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
+import {useUserStore} from "@/stores/user.ts";
 
 interface SyncOptions<S> {
   key?: string

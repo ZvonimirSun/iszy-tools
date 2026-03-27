@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios'
 import type { APIInstance } from '@/types/axios'
 import Axios from 'axios'
+import { useUserStore } from '@/stores/user.ts'
 import configs from '../config'
 
 const API: APIInstance = Axios.create({

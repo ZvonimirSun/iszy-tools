@@ -32,11 +32,11 @@ const _mutex = new SimplePromiseQueue()
 
 async function createPiniaPersist<S extends StateTree = StateTree>(pluginOptions: PluginOptions<S> = ({} as PluginOptions)): Promise<PiniaPlugin> {
   // 应用名称
-  const name = (pluginOptions.name != null ? pluginOptions.name : 'pinia')
+  const name = (pluginOptions.name ?? 'pinia')
   // 库名
-  const storeName = (pluginOptions.storeName != null ? pluginOptions.storeName : 'keyvaluepairs')
+  const storeName = (pluginOptions.storeName ?? 'keyvaluepairs')
   // 库版本号
-  const version = (pluginOptions.version != null ? pluginOptions.version : 1)
+  const version = (pluginOptions.version ?? 1)
 
   // 设置库
   const localStore = localforage.createInstance({

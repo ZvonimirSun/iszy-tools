@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useMainStore } from '@/stores/main.ts'
+import { useUserStore } from '@/stores/user.ts'
 import PersonalInfo from './personalInfo.vue'
 
 const router = useRouter()

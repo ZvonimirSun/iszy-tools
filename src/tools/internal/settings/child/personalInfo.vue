@@ -3,6 +3,7 @@ import type { Device, UpdateUser } from '@zvonimirsun/iszy-common'
 import type { FormInstance, FormRules } from 'element-plus'
 import LinuxDoImg from '@/assets/images/linuxdo.png'
 import config from '@/config'
+import { useUserStore } from '@/stores/user.ts'
 
 const userStore = useUserStore()
 

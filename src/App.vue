@@ -3,6 +3,7 @@ import zhCN from 'element-plus/es/locale/lang/zh-cn'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import config from '@/config'
 import { useGlobalStore } from '@/stores/global'
+import { useUserStore } from '@/stores/user.ts'
 import { deleteParam, hasParam, setParam } from '@/utils/hashHandler.js'
 
 const {

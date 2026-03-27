@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useImgHostingStore } from '@/stores/imgHosting.ts'
 import * as uploaders from '../uploader/index'
 
 const props = withDefaults(defineProps<{
@@ -30,7 +31,7 @@ async function customRequest(file: File) {
   if (uploader && config(uploader)) {
     if (commonConfig.renameTimeStamp) {
       const tmp = tmpFile.name || ''
-      tmpFile = new File([tmpFile], ((new Date().getTime()) + tmp.substring(tmp.lastIndexOf('.'))).toLowerCase(), {
+      tmpFile = new File([tmpFile], ((Date.now()) + tmp.substring(tmp.lastIndexOf('.'))).toLowerCase(), {
         type: tmpFile.type,
         lastModified: tmpFile.lastModified,
       })

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Config } from '../type'
 import { merge } from 'lodash-es'
+import { useImgHostingStore } from '@/stores/imgHosting.ts'
 import * as uploaders from '../uploader/index'
 
 const imgHosingStore = useImgHostingStore()

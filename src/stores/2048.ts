@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useSettingStore } from '@/stores/setting.ts'
 
 export const use2048Store = defineStore('2048', {
   persist: true,

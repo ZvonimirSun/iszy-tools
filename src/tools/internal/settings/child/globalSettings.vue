@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useGlobalStore } from '@/stores/global.ts'
+import { useSettingStore } from '@/stores/setting.ts'
+
 const settingStore = useSettingStore()
 const styleStore = useGlobalStore()
 const settings = settingStore.general

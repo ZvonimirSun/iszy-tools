@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import { clamp, debounce } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { API } from '@/plugins/API'
+import { useSettingStore } from '@/stores/setting.ts'
+import { useUserStore } from '@/stores/user.ts'
 import randomString from '@/utils/randomString.js'
 import SimplePromiseQueue from '@/utils/SimplePromiseQueue'
 

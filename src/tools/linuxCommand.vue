@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import config from '@/config'
 import md from '@/utils/markdown'
+import {useLinuxCommandStore} from "@/stores/linuxCommand.ts";
 
 dayjs.extend(duration)
 

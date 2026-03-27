@@ -2,6 +2,7 @@
 import type { LocationQuery } from 'vue-router'
 import LinuxDoImg from '@/assets/images/linuxdo.png'
 import config from '@/config'
+import { useUserStore } from '@/stores/user.ts'
 
 const form = reactive({
   userName: '',

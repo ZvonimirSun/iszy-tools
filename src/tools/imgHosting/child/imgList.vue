@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ImageItem } from '../type'
+import { useImgHostingStore } from '@/stores/imgHosting.ts'
 import * as uploaders from '../uploader/index'
 
 const imgList = computed(() => {

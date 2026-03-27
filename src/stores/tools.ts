@@ -4,6 +4,7 @@ import type { Favorite, Statistic, ToolItem, ToolMenu } from '@/types/tool'
 import { flatten } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { v4 as uuid } from 'uuid'
+import { useSettingStore } from '@/stores/setting.ts'
 import oriTools from '@/tools'
 import { internalTools } from '@/tools/internal'
 
@@ -158,7 +159,7 @@ export const useToolsStore = defineStore('tools', {
         const tmp = this.statistics.find(item => (item.name === name))
         if (tmp) {
           tmp.times++
-          tmp.lastAccessTime = new Date().getTime()
+          tmp.lastAccessTime = Date.now()
           tmp.link = link
         }
         else {
@@ -166,7 +167,7 @@ export const useToolsStore = defineStore('tools', {
             name,
             link,
             times: 1,
-            lastAccessTime: new Date().getTime(),
+            lastAccessTime: Date.now(),
           })
         }
       }
@@ -175,7 +176,7 @@ export const useToolsStore = defineStore('tools', {
           name,
           link,
           times: 1,
-          lastAccessTime: new Date().getTime(),
+          lastAccessTime: Date.now(),
         }]
       }
     },

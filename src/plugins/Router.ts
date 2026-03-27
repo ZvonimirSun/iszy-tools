@@ -12,6 +12,8 @@ import {
 } from 'vue-router'
 import config from '@/config'
 import { Home, Offline, Page403, Page404, Redirect } from '@/pages'
+import { useToolsStore } from '@/stores/tools.ts'
+import { useUserStore } from '@/stores/user.ts'
 import { isExternalLink } from '@/utils/common'
 
 const toolsStore = useToolsStore()
@@ -30,7 +32,7 @@ for (const key in vueFiles) {
   let path = '/'
   if (tmpKey) {
     const tmp1 = tmpKey.split('/')
-    path += tmp1[tmp1.length - 1]
+    path += tmp1.at(-1)
   }
 
   routeMap[path] = {

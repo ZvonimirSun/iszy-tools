@@ -2,6 +2,7 @@
 import type { RegisterUser } from '@zvonimirsun/iszy-common'
 import type { FormInstance, FormRules } from 'element-plus'
 import { REGEX_EMAIL, REGEX_MOBILE_PHONE } from '@/utils/regexUtils'
+import {useUserStore} from "@/stores/user.ts";
 
 interface RegisterForm extends Required<RegisterUser> {
   rePasswd: string

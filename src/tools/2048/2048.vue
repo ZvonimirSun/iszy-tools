@@ -1,4 +1,6 @@
 <script>
+import { use2048Store } from '@/stores/2048.ts'
+import { useSettingStore } from '@/stores/setting.ts'
 import GameManager from './js/GameManager.js'
 
 let gameManager

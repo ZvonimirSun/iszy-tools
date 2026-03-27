@@ -40,7 +40,7 @@ export default defineConfig(({ command }) => {
         eslintrc: {
           enabled: true,
         },
-        dirs: ['src/composables', 'src/stores'],
+        dirs: ['src/composables'],
         vueTemplate: true,
         dts: 'src/types/auto-imports.d.ts',
       }),

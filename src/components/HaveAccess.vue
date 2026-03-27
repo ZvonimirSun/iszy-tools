@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { AuthOption } from '@/types/auth'
+import { useToolsStore } from '@/stores/tools.ts'
+import { useUserStore } from '@/stores/user.ts'
 
 defineOptions({
   inheritAttrs: false,

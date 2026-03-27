@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import VanillaJsonEditor from '@/components/VanillaJsonEditor.vue'
+import { useJsonEditorStore } from '@/stores/jsonEditor.ts'
 
 const editorPanelContainerLeft = useComponentRef(VanillaJsonEditor)
 const editorPanelContainerRight = useComponentRef(VanillaJsonEditor)

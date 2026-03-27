@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSettingStore } from '@/stores/setting.ts'
+import { useToolsStore } from '@/stores/tools.ts'
 import { isExternalLink } from '@/utils/common'
 
 const searchStr = ref('')

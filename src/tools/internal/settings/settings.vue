@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUserStore } from '@/stores/user.ts'
 import ToolSettings from '@/tools/internal/settings/child/toolSettings.vue'
 import AuthInfo from './child/authInfo.vue'
 import GlobalSettings from './child/globalSettings.vue'

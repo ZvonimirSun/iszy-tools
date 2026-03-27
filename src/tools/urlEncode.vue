@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useUrlEncodeStore } from '@/stores/urlEncode.ts'
+
 const value = ref('')
 const result = ref('')
 const urlEncodeStore = useUrlEncodeStore()
