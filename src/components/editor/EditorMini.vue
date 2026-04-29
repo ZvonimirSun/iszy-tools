@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ViewUpdate } from '@codemirror/view'
 import type { EditorPlugin } from '@/types/editor'
-import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { Compartment, EditorState } from '@codemirror/state'
-import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'
+import { oneDark } from '@codemirror/theme-one-dark'
 import { EditorView, placeholder as PlaceHolder } from '@codemirror/view'
 import { useGlobalStore } from '@/stores/global.ts'
 import mini from './lang-mini'
@@ -30,14 +29,12 @@ defineExpose({
 const editor = ref<HTMLDivElement>()
 let cm: EditorView
 const themeCompartment = new Compartment()
-const highLightCompartment = new Compartment()
 
 const extensions = [
   mini.extensions,
   props.plugin ? props.plugin.miniExtensions || props.plugin.extensions : [],
   EditorView.updateListener.of(onChange),
-  themeCompartment.of(useGlobalStore().isDark ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-  highLightCompartment.of(useGlobalStore().isDark ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle)),
+  themeCompartment.of(useGlobalStore().isDark ? oneDark : EditorView.theme({}, { dark: false })),
 ]
 if (props.placeholder) {
   extensions.push(PlaceHolder(props.placeholder))
@@ -62,10 +59,7 @@ onUnmounted(() => {
 
 watch(() => useGlobalStore().isDark, (val) => {
   cm.dispatch({
-    effects: [
-      themeCompartment.reconfigure(val ? oneDarkTheme : EditorView.theme({}, { dark: false })),
-      highLightCompartment.reconfigure(val ? syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }) : syntaxHighlighting(defaultHighlightStyle)),
-    ],
+    effects: [themeCompartment.reconfigure(val ? oneDark : EditorView.theme({}, { dark: false }))],
   })
 })
 
