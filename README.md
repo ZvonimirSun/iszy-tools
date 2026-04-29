@@ -2,7 +2,7 @@
 
 [![Deploy](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml/badge.svg)](https://github.com/ZvonimirSun/iszy-tools/actions/workflows/deploy.yml)
 
-[![Vue 3.x](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://v3.cn.vuejs.org/) [![Vite 5.x](https://img.shields.io/badge/Vite-5.x-blue)](https://cn.vitejs.dev/) [![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config)
+[![Vue 3.x](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://v3.cn.vuejs.org/) [![Vite 5.x](https://img.shields.io/badge/Vite-5.x-blue)](https://cn.vitejs.dev/) [![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ZvonimirSun/iszy-tools)
 
 ISZY 工具集合，基于 Vue 3 开发，使用 Vite 5 进行构建。
 
