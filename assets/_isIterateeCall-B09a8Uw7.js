@@ -1,1 +1,0 @@
-import{l as e,m as t,s as n}from"./_getPrototype-CshsP0t-.js";import{y as r}from"./_Uint8Array-BvokRuwn.js";function i(i,a,o){if(!t(o))return!1;var s=typeof a;return(s==`number`?r(o)&&e(a,o.length):s==`string`&&a in o)?n(o[a],i):!1}export{i as t};

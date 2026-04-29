@@ -1,0 +1,1 @@
+import{ft as e}from"./runtime-core.esm-bundler-ob9stUEL.js";function t(t){return e()}export{t};

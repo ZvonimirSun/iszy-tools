@@ -1,1 +1,0 @@
-import{R as e,p as t,xt as n}from"./runtime-core.esm-bundler-BIc4P3wE.js";import{t as r}from"./FormatTransformer-CgMt1irn.js";import{t as i}from"./lang-css-BkGiDeoR.js";var a={__name:`cssFormatter`,setup(a){return(a,o)=>{let s=r;return e(),t(s,{"w-full":``,plugin:n(i),target:`CSS`},null,8,[`plugin`])}}};export{a as default};

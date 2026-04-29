@@ -1,1 +1,0 @@
-import{g as e,h as t}from"./_getPrototype-CshsP0t-.js";import{y as n}from"./_Uint8Array-BvokRuwn.js";import{t as r}from"./_baseIteratee-FtsI7Euh.js";import{t as i}from"./_baseEach-gdCSBG-x.js";function a(e,t){var r=-1,a=n(e)?Array(e.length):[];return i(e,function(e,n,i){a[++r]=t(e,n,i)}),a}function o(n,i){return(t(n)?e:a)(n,r(i,3))}export{a as n,o as t};
