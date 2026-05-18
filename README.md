@@ -4,6 +4,8 @@
 
 [![Vue 3.x](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://v3.cn.vuejs.org/) [![Vite 5.x](https://img.shields.io/badge/Vite-5.x-blue)](https://cn.vitejs.dev/) [![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ZvonimirSun/iszy-tools)
 
+此项目不再更新，查看[ISZY TOOLS NEXT](https://github.com/zvonimirsun/iszy-tools-next)
+
 ISZY 工具集合，基于 Vue 3 开发，使用 Vite 5 进行构建。
 
 - JavaScript 框架: [Vue 3](https://v3.cn.vuejs.org/)
