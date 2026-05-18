@@ -1,1 +1,0 @@
-import{Cr as e}from"./index-BW5Y3H8V.js";function t(t){return typeof t==`function`?t:e}export{t};

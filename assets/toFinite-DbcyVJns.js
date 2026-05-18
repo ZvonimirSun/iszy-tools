@@ -1,1 +1,0 @@
-import{wr as e}from"./index-BW5Y3H8V.js";var t=1/0,n=17976931348623157e292;function r(r){return r?(r=e(r),r===t||r===-t?(r<0?-1:1)*n:r===r?r:0):r===0?r:0}export{r as t};

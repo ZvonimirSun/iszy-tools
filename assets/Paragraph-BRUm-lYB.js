@@ -1,0 +1,1 @@
+import{y as e}from"./runtime-core.esm-bundler-ob9stUEL.js";import{c as t,i as n,n as r,t as i}from"./Base-Ciq10-Wg.js";var a=()=>n(r(),[`component`]),o=(n,r)=>{let{slots:a,attrs:o}=r;return e(i,t(t(t({},n),{component:`div`}),o),a)};o.displayName=`ATypographyParagraph`,o.inheritAttrs=!1,o.props=a();export{o as t};
