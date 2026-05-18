@@ -16,9 +16,19 @@ const userStore = useUserStore()
 
 const fullScreenStatus = ref(false)
 
+const showMigrationNotice = ref(false)
+
 onMounted(() => {
   window.addEventListener('keydown', fullScreenListener, false)
+  if (!localStorage.getItem('ovooo_notice_dismissed')) {
+    showMigrationNotice.value = true
+  }
 })
+
+function dismissMigrationNotice() {
+  localStorage.setItem('ovooo_notice_dismissed', '1')
+  showMigrationNotice.value = false
+}
 
 watch(offlineReady, (val) => {
   if (val) {
@@ -170,6 +180,41 @@ function fullScreenListener(e: KeyboardEvent) {
         </el-footer>
       </el-container>
     </el-config-provider>
+
+    <el-dialog
+      v-model="showMigrationNotice"
+      title="🎉 推荐新工具集"
+      width="420px"
+      align-center
+      :close-on-click-modal="false"
+    >
+      <div style="text-align: center; padding: 8px 0 16px;">
+        <p style="font-size: 15px; line-height: 1.8; color: var(--el-text-color-primary);">
+          本项目已停止更新，推荐体验全新升级的
+        </p>
+        <p style="font-size: 20px; font-weight: 700; margin: 12px 0;">
+          🛠️ OVOOO 工具集
+        </p>
+        <p style="font-size: 13px; color: var(--el-text-color-secondary); margin-bottom: 20px;">
+          更多工具，持续更新，欢迎体验！
+        </p>
+        <el-button
+          type="primary"
+          size="large"
+          tag="a"
+          href="https://tools.ovooo.cc"
+          target="_blank"
+          style="color: #fff !important;"
+        >
+          立即前往 →
+        </el-button>
+      </div>
+      <template #footer>
+        <el-button @click="dismissMigrationNotice">
+          不再提示
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
