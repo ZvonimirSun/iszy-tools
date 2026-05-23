@@ -17,6 +17,8 @@ const userStore = useUserStore()
 const fullScreenStatus = ref(false)
 
 const showMigrationNotice = ref(false)
+const ovoooToolsOrigin = 'https://tools.ovooo.cc'
+const ovoooToolsCurrentUrl = computed(() => `${ovoooToolsOrigin}${route.fullPath}`)
 
 onMounted(() => {
   window.addEventListener('keydown', fullScreenListener, false)
@@ -100,16 +102,26 @@ function fullScreenListener(e: KeyboardEvent) {
       :locale="zhCN"
     >
       <el-container class="main">
-        <el-button
-          type="primary"
-          class="dark-mode-trigger"
-          circle
-          @click="useGlobalStore().toggleTheme"
-        >
-          <i
-            class="i-icon-park-outline-sun-one dark:i-icon-park-outline-moon"
-          />
-        </el-button>
+        <div class="header-actions">
+          <el-button
+            type="primary"
+            class="new-tools-link"
+            tag="a"
+            :href="ovoooToolsCurrentUrl"
+            target="_blank"
+          >
+            从新版打开
+          </el-button>
+          <el-button
+            type="primary"
+            circle
+            @click="useGlobalStore().toggleTheme"
+          >
+            <i
+              class="i-icon-park-outline-sun-one dark:i-icon-park-outline-moon"
+            />
+          </el-button>
+        </div>
         <el-header
           v-show="!fullScreenStatus"
           class="main-header"
@@ -169,6 +181,13 @@ function fullScreenListener(e: KeyboardEvent) {
             target="_blank"
           >
             随遇而安Blog
+          </a>
+          <span>&nbsp;|&nbsp;</span>
+          <a
+            :href="ovoooToolsOrigin"
+            target="_blank"
+          >
+            OVOOO工具集
           </a>
           <br>
           <a
@@ -306,9 +325,21 @@ function fullScreenListener(e: KeyboardEvent) {
   }
 }
 
-.dark-mode-trigger {
+.header-actions {
   position: absolute;
   right: 1.6rem;
   top: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+
+  .new-tools-link {
+    color: var(--el-color-white) !important;
+
+    &:hover,
+    &:focus {
+      color: var(--el-color-white) !important;
+    }
+  }
 }
 </style>
