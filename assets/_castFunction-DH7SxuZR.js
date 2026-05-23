@@ -1,1 +1,0 @@
-import{Sr as e}from"./index-tayMitCy.js";function t(t){return typeof t==`function`?t:e}export{t};

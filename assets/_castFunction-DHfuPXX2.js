@@ -1,0 +1,1 @@
+import{Sr as e}from"./index-DlTsTb-L.js";function t(t){return typeof t==`function`?t:e}export{t};

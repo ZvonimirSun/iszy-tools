@@ -1,1 +1,1 @@
-feat: 提示迁移到新页面
+feat: add new tools entry links
