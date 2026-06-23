@@ -1,1 +1,0 @@
-import{C as e,l as t}from"./index-DlTsTb-L.js";function n({source:n,text:r=`已复制到剪贴板`,createToast:i=!0}={}){let{copy:a,...o}=t({source:n,legacy:!0});return{...o,async copy(t,{notificationMessage:o}={}){n?await a():await a(t),i&&e.success(o??r)}}}export{n as t};

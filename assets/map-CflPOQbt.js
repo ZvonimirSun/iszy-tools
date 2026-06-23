@@ -1,0 +1,1 @@
+import{g as e,h as t}from"./_getPrototype-DI9X0-LS.js";import{t as n}from"./_baseIteratee-CGPIgOuw.js";import{t as r}from"./_baseEach-B10A6PR-.js";import{_r as i}from"./index-fX1XKfyR.js";function a(e,t){var n=-1,a=i(e)?Array(e.length):[];return r(e,function(e,r,i){a[++n]=t(e,r,i)}),a}function o(r,i){return(t(r)?e:a)(r,n(i,3))}export{a as n,o as t};

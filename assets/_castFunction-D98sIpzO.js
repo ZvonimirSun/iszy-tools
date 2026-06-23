@@ -1,0 +1,1 @@
+import{Sr as e}from"./index-fX1XKfyR.js";function t(t){return typeof t==`function`?t:e}export{t};

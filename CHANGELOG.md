@@ -1,1 +1,1 @@
-feat: add new tools entry links
+fix: 移除注册页面入口
