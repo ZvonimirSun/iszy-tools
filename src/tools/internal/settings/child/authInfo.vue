@@ -18,10 +18,6 @@ function login() {
   })
 }
 
-function register() {
-  router.push('/register')
-}
-
 function logout() {
   router.push('/logout')
 }
@@ -72,11 +68,6 @@ function logout() {
       @click="login"
     >
       登录
-    </el-button>
-    <el-button
-      @click="register"
-    >
-      注册
     </el-button>
     <el-popconfirm
       title="您是否确定要清空本地缓存？"

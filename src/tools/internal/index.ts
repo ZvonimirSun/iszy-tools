@@ -7,11 +7,6 @@ export const internalTools: ToolItem[] = [
     type: 'internal',
   },
   {
-    name: '注册',
-    link: '/register',
-    type: 'internal',
-  },
-  {
     parent: '/settings',
     name: '用户管理',
     link: '/userManager',

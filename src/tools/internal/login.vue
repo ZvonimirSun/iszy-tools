@@ -86,10 +86,6 @@ async function login() {
   }
 }
 
-function register() {
-  router.push('/register')
-}
-
 function thirdPartyLogin(type: 'github' | 'linuxdo') {
   const url = `${config.apiBaseUrl}/oauth/${type}`
   _openThirdPartyLogin(url, 'GitHub登录')
@@ -211,14 +207,6 @@ function _openThirdPartyLogin(url: string, title = '第三方登录', width = 50
             @click="login"
           >
             登录
-          </el-button>
-          <el-button
-            block
-            size="large"
-            :disabled="loading"
-            @click="register"
-          >
-            注册
           </el-button>
         </el-form-item>
       </el-form>
